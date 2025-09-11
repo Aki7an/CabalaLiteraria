@@ -92,7 +92,7 @@ func _populate_from_parsed(parsed: Variant) -> void:
 			descartados += 1
 			continue
 
-		var img_num := int(item.get("image_number", -1))
+		var img_num := int(item.get("index", -1))
 		if img_num < 0:
 			continue
 
@@ -181,7 +181,7 @@ func _create_image_button_node(image_number: int, image_path: String) -> Button:
 	btn.add_child(lbl)
 
 	# Metadatos y señal
-	btn.set_meta("image_number", image_number)
+	btn.set_meta("index", image_number)
 	btn.set_meta("image_path", image_path)
 	btn.pressed.connect(func(): _on_image_button_pressed(image_number, image_path))
 

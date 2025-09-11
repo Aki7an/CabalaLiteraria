@@ -1,10 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://du2hnjcxrr54b"]
+[gd_scene load_steps=7 format=3 uid="uid://du2hnjcxrr54b"]
 
 [ext_resource type="Script" uid="uid://dgn8v4ma2syyf" path="res://scenes/menu_select_level_by_id.gd" id="1_w3ub2"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_sum86"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="3_6ejtj"]
-[ext_resource type="Texture2D" uid="uid://cli51a4n1p87r" path="res://images/Mockups/MenuShop.jpg" id="4_1f7ew"]
-[ext_resource type="Texture2D" uid="uid://b3klg4uq56buf" path="res://images/Mockups/MenuShop_2.jpg" id="5_ysmp6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jxwg"]
 bg_color = Color(0.889317, 0.843552, 0.693583, 1)
@@ -73,11 +71,9 @@ text = "RANDOM"
 [node name="MenuShop" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(512, 928)
-texture = ExtResource("4_1f7ew")
 
 [node name="MenuShop2" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(505, 920)
-texture = ExtResource("5_ysmp6")
 
 [connection signal="pressed" from="ButtonRandom" to="." method="_on_button_random_pressed"]
