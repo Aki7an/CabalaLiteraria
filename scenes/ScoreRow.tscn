@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://dwuc107ak55s8"]
+
+[ext_resource type="Script" uid="uid://bfpwo28xbdacp" path="res://scenes/ScoreRow.gd" id="1_xhimg"]
+[ext_resource type="FontFile" uid="uid://gtmrv3jw7ynj" path="res://fonts/Fonts/Iconoclasta/Inconsolata-ExtraBold.ttf" id="2_0nijv"]
+[ext_resource type="FontFile" uid="uid://btpckw1n0m1mv" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-ExtraBold.ttf" id="3_0nijv"]
+[ext_resource type="FontFile" uid="uid://b3du85fkr63ov" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="3_3w1jq"]
+
+[sub_resource type="FontVariation" id="FontVariation_3w1jq"]
+base_font = ExtResource("2_0nijv")
+
+[sub_resource type="FontVariation" id="FontVariation_cf3aa"]
+base_font = ExtResource("3_0nijv")
+
+[sub_resource type="FontVariation" id="FontVariation_0nijv"]
+base_font = ExtResource("3_3w1jq")
+
+[node name="ScoreRow" type="HBoxContainer"]
+offset_right = 1024.0
+offset_bottom = 50.0
+script = ExtResource("1_xhimg")
+
+[node name="PosLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Pos"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+
+[node name="NombreLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = SubResource("FontVariation_3w1jq")
+theme_override_font_sizes/font_size = 60
+text = "Name"
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+
+[node name="PuntosLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.632114, 0.365523, 0.284578, 1)
+theme_override_fonts/font = SubResource("FontVariation_cf3aa")
+theme_override_font_sizes/font_size = 70
+text = "Score"
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_left = 20
+
+[node name="FechaLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("FontVariation_0nijv")
+theme_override_font_sizes/font_size = 30
+text = "Date"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0

@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca2qo0shwqmmg"]
+
+[ext_resource type="Texture2D" uid="uid://c5vgyrpnbtrql" path="res://images/Bombilla_1.png" id="1_w6m44"]
+[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="2_r3cwx"]
+
+[node name="Slide4" type="Panel" groups=["Tip"]]
+
+[node name="TextureRectBombilla" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 16.0
+offset_right = 526.0
+offset_bottom = 211.0
+texture = ExtResource("1_w6m44")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 344.0
+offset_top = -35.0
+offset_right = 482.0
+offset_bottom = 53.0
+theme = ExtResource("2_r3cwx")
+theme_override_colors/font_color = Color(0.592157, 0.376471, 0.313726, 1)
+theme_override_font_sizes/font_size = 60
+text = "TIP"
+horizontal_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = -48.0
+offset_top = 247.0
+offset_right = 848.0
+offset_bottom = 575.0
+theme = ExtResource("2_r3cwx")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "“Long texts may take more time and feel harder, but they offer more words to deduce from”"
+horizontal_alignment = 1

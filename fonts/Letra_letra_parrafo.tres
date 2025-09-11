@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dosjgf8s5yv4o"]
+
+[ext_resource type="FontFile" uid="uid://5262ah7h38dj" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="1_yyt2x"]
+
+[resource]
+default_font = ExtResource("1_yyt2x")
+default_font_size = 40

@@ -1,0 +1,83 @@
+[gd_scene load_steps=3 format=3 uid="uid://bku6plg8xj7w7"]
+
+[ext_resource type="Script" uid="uid://dijo7mmylcuwj" path="res://scenes/tools.gd" id="1_v3ruf"]
+[ext_resource type="Theme" uid="uid://cslpdoapgbmbl" path="res://Theme_tools.tres" id="2_86cxc"]
+
+[node name="Tools" type="Node2D"]
+script = ExtResource("1_v3ruf")
+
+[node name="Label4" type="Label" parent="."]
+offset_left = 64.0
+offset_top = 976.0
+offset_right = 608.0
+offset_bottom = 1031.0
+theme = ExtResource("2_86cxc")
+text = "LONGITUD A ADIVINAR:  "
+
+[node name="LabelLongitudAdivinar" type="Label" parent="."]
+offset_left = 640.0
+offset_top = 976.0
+offset_right = 751.0
+offset_bottom = 1031.0
+theme = ExtResource("2_86cxc")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "-"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 64.0
+offset_top = 55.0
+offset_right = 175.0
+offset_bottom = 110.0
+theme = ExtResource("2_86cxc")
+text = "FRASE"
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 64.0
+offset_top = 904.0
+offset_right = 608.0
+offset_bottom = 959.0
+theme = ExtResource("2_86cxc")
+text = "LONGITUD FRASE  ORIGINAL:  "
+
+[node name="LabelLongitud" type="Label" parent="."]
+offset_left = 640.0
+offset_top = 904.0
+offset_right = 751.0
+offset_bottom = 959.0
+theme = ExtResource("2_86cxc")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "-"
+
+[node name="Button" type="Button" parent="."]
+offset_left = 64.0
+offset_top = 768.0
+offset_right = 304.0
+offset_bottom = 872.0
+theme = ExtResource("2_86cxc")
+text = "CALCULA"
+
+[node name="Frase" type="TextEdit" parent="."]
+offset_left = 64.0
+offset_top = 136.0
+offset_right = 960.0
+offset_bottom = 352.0
+theme = ExtResource("2_86cxc")
+placeholder_text = "Introduce frase..."
+
+[node name="Label3" type="Label" parent="."]
+offset_left = 64.0
+offset_top = 384.0
+offset_right = 175.0
+offset_bottom = 439.0
+theme = ExtResource("2_86cxc")
+text = "LETRAS INICIALES A ELIMINAR"
+
+[node name="LetrasEliminar" type="TextEdit" parent="."]
+offset_left = 64.0
+offset_top = 465.0
+offset_right = 960.0
+offset_bottom = 552.0
+theme = ExtResource("2_86cxc")
+placeholder_text = "Introduce letras iniciales a eliminar..."
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

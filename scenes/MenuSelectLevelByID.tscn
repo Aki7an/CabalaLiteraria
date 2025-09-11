@@ -1,0 +1,82 @@
+[gd_scene load_steps=9 format=3 uid="uid://du2hnjcxrr54b"]
+
+[ext_resource type="Script" uid="uid://dgn8v4ma2syyf" path="res://scenes/menu_select_level_by_id.gd" id="1_w3ub2"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_sum86"]
+[ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="3_6ejtj"]
+[ext_resource type="Texture2D" uid="uid://cli51a4n1p87r" path="res://images/Mockups/MenuShop.jpg" id="4_1f7ew"]
+[ext_resource type="Texture2D" uid="uid://b3klg4uq56buf" path="res://images/Mockups/MenuShop_2.jpg" id="5_ysmp6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jxwg"]
+bg_color = Color(0.889317, 0.843552, 0.693583, 1)
+
+[sub_resource type="Gradient" id="Gradient_h4fpn"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.854902, 0.592157, 0.141176, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_c607x"]
+gradient = SubResource("Gradient_h4fpn")
+
+[node name="MenuSelectLevel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_w3ub2")
+JSON_PATH = "res://data/frases.json"
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1024.0
+offset_bottom = 1920.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1jxwg")
+
+[node name="TextureRect2" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.493164
+anchor_top = -0.479167
+anchor_right = -0.493164
+anchor_bottom = -0.4625
+offset_left = 505.0
+offset_top = 920.0
+offset_right = 1530.0
+offset_bottom = 1056.0
+texture = SubResource("GradientTexture1D_c607x")
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelScoreText" type="Label" parent="Panel/TextureRect2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.898039, 0.854902, 0.713726, 1)
+theme_override_fonts/font = ExtResource("2_sum86")
+theme_override_font_sizes/font_size = 120
+text = "SELECT"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonRandom" type="Button" parent="."]
+layout_mode = 1
+offset_left = 280.0
+offset_top = 1696.0
+offset_right = 793.988
+offset_bottom = 1958.07
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(224, 104)
+theme = ExtResource("3_6ejtj")
+theme_override_font_sizes/font_size = 80
+text = "RANDOM"
+
+[node name="MenuShop" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(512, 928)
+texture = ExtResource("4_1f7ew")
+
+[node name="MenuShop2" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(505, 920)
+texture = ExtResource("5_ysmp6")
+
+[connection signal="pressed" from="ButtonRandom" to="." method="_on_button_random_pressed"]

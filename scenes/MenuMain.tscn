@@ -1,0 +1,791 @@
+[gd_scene load_steps=55 format=3 uid="uid://bvpri1mtnymgf"]
+
+[ext_resource type="Script" uid="uid://cp7diyyw67hkl" path="res://scenes/menu_main.gd" id="1_5cqvi"]
+[ext_resource type="Texture2D" uid="uid://cf81sgcawr5lp" path="res://images/Fondo.png" id="2_4efdv"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_nnl2u"]
+[ext_resource type="Script" uid="uid://drgng4haeeuj3" path="res://scenes/button_play_Fx.gd" id="5_8d7n0"]
+[ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="5_apv0w"]
+[ext_resource type="PackedScene" uid="uid://cffefknpxfylk" path="res://scenes/titulo_cifra_letra.tscn" id="5_nnl2u"]
+[ext_resource type="Theme" uid="uid://kvodnc6jed0r" path="res://GUI/ButtonMain.tres" id="5_tjj4m"]
+[ext_resource type="Shader" uid="uid://8b7nr3sen4t0" path="res://scenes/PlayBuoon.gdshader" id="6_akxp2"]
+[ext_resource type="Texture2D" uid="uid://b1q15vddra5wi" path="res://images/settings.png" id="6_fnepi"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="6_nf8ut"]
+[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="8_1f17j"]
+[ext_resource type="Texture2D" uid="uid://dk73kgaaacau3" path="res://GUI/BotonPlayPlano.png" id="8_akxp2"]
+[ext_resource type="Texture2D" uid="uid://bp623p23x4e0o" path="res://images/Shop3.png" id="9_1hsi3"]
+[ext_resource type="Texture2D" uid="uid://2ihewkmwcck0" path="res://images/Stats.png" id="9_8myay"]
+[ext_resource type="Texture2D" uid="uid://dfqcfbc4gla42" path="res://GUI/BotonPlaySimboloTextura.png" id="9_fnepi"]
+[ext_resource type="FontFile" uid="uid://foahejbukn0g" path="res://fonts/Fonts/Fredoka One/FredokaOne-Regular.ttf" id="10_87486"]
+[ext_resource type="Texture2D" uid="uid://cwjmgxbigi0se" path="res://images/Tutorial.png" id="10_ittxv"]
+[ext_resource type="Texture2D" uid="uid://b7arn7bxj0hq1" path="res://images/Leaderboard2.png" id="10_t01w5"]
+[ext_resource type="Script" uid="uid://bt4vf7weivebq" path="res://scenes/AdjustSize.gd" id="11_11y0k"]
+[ext_resource type="Script" uid="uid://brd14tiskdrxk" path="res://scenes/tips_box.gd" id="20_1hsi3"]
+[ext_resource type="Texture2D" uid="uid://b0ave6ecxfho3" path="res://images/Bombilla_1.png" id="21_apv0w"]
+[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="22_j3ils"]
+[ext_resource type="Texture2D" uid="uid://br3oj7kcnkcl8" path="res://images/Colores.png" id="23_1hsi3"]
+[ext_resource type="PackedScene" uid="uid://b5igvptryo3md" path="res://scenes/Tutorial/Tutorial_Slide3.tscn" id="24_op7yq"]
+[ext_resource type="PackedScene" uid="uid://ca2qo0shwqmmg" path="res://scenes/Tutorial/Tutorial_Slide4.tscn" id="25_yo6ju"]
+[ext_resource type="PackedScene" uid="uid://rcntxn7g0j8h" path="res://scenes/Tutorial/Tutorial_Slide5.tscn" id="26_wyay2"]
+[ext_resource type="PackedScene" uid="uid://ivd170uuiwos" path="res://scenes/Tutorial/Tutorial_Slide6.tscn" id="27_0h3ts"]
+[ext_resource type="PackedScene" uid="uid://dqwy8s4gb23i6" path="res://scenes/Tutorial/Tutorial_Slide7.tscn" id="28_2ievp"]
+[ext_resource type="PackedScene" uid="uid://d2qc7xaa3rsm6" path="res://scenes/Tutorial/Tutorial_Slide8.tscn" id="29_ocsik"]
+[ext_resource type="PackedScene" uid="uid://c50bhv1vbggd7" path="res://scenes/Tutorial/Tutorial_Slide9.tscn" id="30_ssce3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5cqvi"]
+bg_color = Color(0.889317, 0.843552, 0.693583, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8v5mb"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.41, 0.41, 0.65098)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_op7yq"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.97, 0.97, 0.97, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yo6ju"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.61, 0.61, 0.61, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wyay2"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(4.09111e-06, 0.776379, 0.180672, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0h3ts"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.41, 0.41, 1)
+
+[sub_resource type="Theme" id="Theme_1hsi3"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_8v5mb")
+Button/styles/focus = SubResource("StyleBoxTexture_op7yq")
+Button/styles/hover = SubResource("StyleBoxTexture_yo6ju")
+Button/styles/normal = SubResource("StyleBoxTexture_wyay2")
+Button/styles/pressed = SubResource("StyleBoxTexture_0h3ts")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mlydr"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.41, 0.41, 0.65098)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8b67"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.97, 0.97, 0.97, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xnqa"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.61, 0.61, 0.61, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_apv0w"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.78, 0, 0.0129998, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nwuey"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.41, 0.41, 1)
+
+[sub_resource type="Theme" id="Theme_j3ils"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_mlydr")
+Button/styles/focus = SubResource("StyleBoxTexture_j8b67")
+Button/styles/hover = SubResource("StyleBoxTexture_1xnqa")
+Button/styles/normal = SubResource("StyleBoxTexture_apv0w")
+Button/styles/pressed = SubResource("StyleBoxTexture_nwuey")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ittxv"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.219608, 0.647059, 0.768627, 1)
+
+[sub_resource type="Theme" id="Theme_7jnvx"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_mlydr")
+Button/styles/focus = SubResource("StyleBoxTexture_j8b67")
+Button/styles/hover = SubResource("StyleBoxTexture_1xnqa")
+Button/styles/normal = SubResource("StyleBoxTexture_ittxv")
+Button/styles/pressed = SubResource("StyleBoxTexture_nwuey")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1hsi3"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.933333, 0.529412, 0.454902, 1)
+
+[sub_resource type="Theme" id="Theme_apv0w"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_mlydr")
+Button/styles/focus = SubResource("StyleBoxTexture_j8b67")
+Button/styles/hover = SubResource("StyleBoxTexture_1xnqa")
+Button/styles/normal = SubResource("StyleBoxTexture_1hsi3")
+Button/styles/pressed = SubResource("StyleBoxTexture_nwuey")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j3ils"]
+texture = ExtResource("8_1f17j")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.904616, 0.51972, 0.660716, 1)
+
+[sub_resource type="Theme" id="Theme_b10ut"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_mlydr")
+Button/styles/focus = SubResource("StyleBoxTexture_j8b67")
+Button/styles/hover = SubResource("StyleBoxTexture_1xnqa")
+Button/styles/normal = SubResource("StyleBoxTexture_j3ils")
+Button/styles/pressed = SubResource("StyleBoxTexture_nwuey")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fnepi"]
+shader = ExtResource("6_akxp2")
+shader_parameter/progress = -0.3
+shader_parameter/width = 0.25
+shader_parameter/angle_deg = 30.0
+shader_parameter/intensity = 0.9
+shader_parameter/alpha = 0.0
+
+[sub_resource type="Theme" id="Theme_i44n1"]
+
+[sub_resource type="FontVariation" id="FontVariation_mb0qt"]
+base_font = ExtResource("10_87486")
+
+[sub_resource type="Gradient" id="Gradient_apv0w"]
+offsets = PackedFloat32Array(0, 0.235294, 0.252101, 0.441176, 0.462185, 1)
+colors = PackedColorArray(1, 0.6745, 0.07, 0, 1, 0.6745, 0.07, 0, 1, 0.670588, 0.0705882, 1, 1, 0.670588, 0.0705882, 1, 1, 1, 1, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j3ils"]
+gradient = SubResource("Gradient_apv0w")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[node name="MenuMain" type="Node2D"]
+script = ExtResource("1_5cqvi")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1024.0
+offset_bottom = 1920.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5cqvi")
+metadata/_edit_lock_ = true
+
+[node name="Fondo2" parent="Panel" instance=ExtResource("2_nnl2u")]
+metadata/_edit_lock_ = true
+
+[node name="Fondo" type="Control" parent="Panel"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Fondo" type="Sprite2D" parent="Panel/Fondo"]
+modulate = Color(0.59, 0.377403, 0.3127, 0.101961)
+position = Vector2(676, 728)
+rotation = 0.523598
+scale = Vector2(3.81806, 3.81806)
+texture = ExtResource("2_4efdv")
+metadata/_edit_lock_ = true
+
+[node name="Fondo2" type="Sprite2D" parent="Panel/Fondo"]
+modulate = Color(0.59, 0.377403, 0.3127, 0.101961)
+position = Vector2(-120, 2056)
+rotation = 0.523598
+scale = Vector2(3.81806, 3.81806)
+texture = ExtResource("2_4efdv")
+metadata/_edit_lock_ = true
+
+[node name="ButtonSettings" type="Button" parent="Panel"]
+layout_mode = 1
+offset_left = 128.0
+offset_top = 896.0
+offset_right = 320.0
+offset_bottom = 1096.0
+pivot_offset = Vector2(96, 96)
+theme = ExtResource("5_tjj4m")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+script = ExtResource("5_apv0w")
+
+[node name="Label2" type="Label" parent="Panel/ButtonSettings"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = 10.0
+offset_right = 96.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.74, 0.5069, 0.074, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 40
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/ButtonSettings"]
+layout_mode = 0
+offset_left = -80.0
+offset_top = -80.0
+offset_right = 268.0
+offset_bottom = 268.0
+scale = Vector2(0.322268, 0.322268)
+pivot_offset = Vector2(173.768, 173.769)
+texture = ExtResource("6_fnepi")
+metadata/_edit_lock_ = true
+
+[node name="ButtonShop" type="Button" parent="Panel"]
+layout_mode = 1
+offset_left = 128.0
+offset_top = 1203.0
+offset_right = 320.0
+offset_bottom = 1403.0
+pivot_offset = Vector2(96, 96)
+theme = SubResource("Theme_1hsi3")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+script = ExtResource("5_apv0w")
+
+[node name="Label2" type="Label" parent="Panel/ButtonShop"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = 16.0
+offset_right = 96.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.024, 0.6, 0.1584, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 40
+text = "Shop"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/ButtonShop"]
+layout_mode = 0
+offset_left = -424.0
+offset_top = -395.0
+offset_right = 775.0
+offset_bottom = 804.0
+scale = Vector2(0.162278, 0.162278)
+pivot_offset = Vector2(501.798, 464.819)
+texture = ExtResource("9_1hsi3")
+
+[node name="ButtonSettings3" type="Button" parent="Panel"]
+layout_mode = 1
+offset_left = 396.0
+offset_top = 1203.0
+offset_right = 588.0
+offset_bottom = 1403.0
+pivot_offset = Vector2(96, 96)
+theme = SubResource("Theme_j3ils")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+script = ExtResource("5_apv0w")
+
+[node name="Label2" type="Label" parent="Panel/ButtonSettings3"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = 16.0
+offset_right = 1.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.788235, 0.0392157, 0.0470588, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 40
+text = "Tutorial"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/ButtonSettings3"]
+layout_mode = 0
+offset_left = -160.0
+offset_top = -296.0
+offset_right = 363.0
+offset_bottom = 473.0
+scale = Vector2(0.241151, 0.122268)
+pivot_offset = Vector2(261.812, 388.308)
+texture = ExtResource("10_ittxv")
+metadata/_edit_lock_ = true
+
+[node name="ButtonShop2" type="Button" parent="Panel"]
+layout_mode = 1
+offset_left = 664.0
+offset_top = 1203.0
+offset_right = 856.0
+offset_bottom = 1403.0
+pivot_offset = Vector2(96, 96)
+theme = SubResource("Theme_7jnvx")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+script = ExtResource("5_apv0w")
+
+[node name="Label2" type="Label" parent="Panel/ButtonShop2"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = 16.0
+offset_right = 1.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.219608, 0.647059, 0.764706, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 40
+text = "Stats"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/ButtonShop2"]
+layout_mode = 0
+offset_left = -168.0
+offset_top = -240.0
+offset_right = 349.0
+offset_bottom = 355.0
+scale = Vector2(0.202268, 0.202268)
+pivot_offset = Vector2(268.849, 343.006)
+texture = ExtResource("9_8myay")
+metadata/_edit_lock_ = true
+
+[node name="ButtonLeaderboard2" type="Button" parent="Panel"]
+layout_mode = 1
+offset_left = 396.0
+offset_top = 896.0
+offset_right = 588.0
+offset_bottom = 1096.0
+theme = SubResource("Theme_apv0w")
+theme_override_font_sizes/font_size = 40
+script = ExtResource("5_apv0w")
+
+[node name="Label3" type="Label" parent="Panel/ButtonLeaderboard2"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -132.0
+offset_top = 8.0
+offset_right = 132.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.7, 0.414167, 0.357, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 40
+text = "Local"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="Panel/ButtonLeaderboard2"]
+layout_mode = 0
+offset_left = -352.0
+offset_top = -200.0
+offset_right = 1248.0
+offset_bottom = 786.0
+scale = Vector2(0.08, 0.1)
+pivot_offset = Vector2(415.539, 263.903)
+texture = ExtResource("10_t01w5")
+metadata/_edit_lock_ = true
+
+[node name="ButtonLeaderboard3" type="Button" parent="Panel"]
+layout_mode = 1
+offset_left = 664.0
+offset_top = 896.0
+offset_right = 856.0
+offset_bottom = 1096.0
+theme = SubResource("Theme_b10ut")
+theme_override_font_sizes/font_size = 40
+script = ExtResource("5_apv0w")
+
+[node name="Label3" type="Label" parent="Panel/ButtonLeaderboard3"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -136.0
+offset_top = 8.0
+offset_right = 128.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.77, 0.4389, 0.560303, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 40
+text = "Online"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="Panel/ButtonLeaderboard3"]
+layout_mode = 0
+offset_left = -352.0
+offset_top = -200.0
+offset_right = 1248.0
+offset_bottom = 786.0
+scale = Vector2(0.08, 0.1)
+pivot_offset = Vector2(415.539, 263.903)
+texture = ExtResource("10_t01w5")
+metadata/_edit_lock_ = true
+
+[node name="PlayButtonFx" type="TextureButton" parent="Panel"]
+material = SubResource("ShaderMaterial_fnepi")
+layout_mode = 0
+offset_left = 128.0
+offset_top = 1488.0
+offset_right = 872.0
+offset_bottom = 1912.0
+theme = SubResource("Theme_i44n1")
+texture_normal = ExtResource("8_akxp2")
+stretch_mode = 5
+script = ExtResource("5_8d7n0")
+
+[node name="TextureRect" type="TextureRect" parent="Panel/PlayButtonFx"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 128.0
+offset_right = 226.0
+offset_bottom = 290.0
+texture = ExtResource("9_fnepi")
+stretch_mode = 5
+
+[node name="Play" type="Label" parent="Panel/PlayButtonFx"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.107
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 360.608
+offset_top = 32.0
+offset_right = 17.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.853531, 0.853531)
+theme_override_colors/font_color = Color(0.490196, 0.196078, 0.0352941, 1)
+theme_override_fonts/font = SubResource("FontVariation_mb0qt")
+theme_override_font_sizes/font_size = 190
+text = "PLAY"
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 0
+script = ExtResource("11_11y0k")
+min_font_size = 80
+max_font_size = 190
+available_x = 480
+
+[node name="Titulo CifraLetra" parent="." instance=ExtResource("5_nnl2u")]
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 24.0
+offset_top = 32.0
+offset_right = 984.0
+offset_bottom = 232.0
+
+[node name="TipsBox" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 112.0
+offset_top = 264.0
+offset_right = 112.0
+offset_bottom = 264.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("20_1hsi3")
+
+[node name="Timer" type="Timer" parent="TipsBox"]
+
+[node name="LabelMarco" type="Label" parent="TipsBox"]
+layout_mode = 1
+offset_left = -48.0
+offset_top = -32.0
+offset_right = 848.0
+offset_bottom = 592.0
+
+[node name="Slide1" type="Panel" parent="TipsBox/LabelMarco" groups=["Tip"]]
+layout_mode = 1
+offset_left = 48.0
+offset_top = 32.0
+offset_right = 48.0
+offset_bottom = 32.0
+
+[node name="TextureRectBombilla" type="TextureRect" parent="TipsBox/LabelMarco/Slide1"]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 16.0
+offset_right = 526.0
+offset_bottom = 211.0
+texture = ExtResource("21_apv0w")
+
+[node name="Label" type="Label" parent="TipsBox/LabelMarco/Slide1"]
+layout_mode = 0
+offset_left = 344.0
+offset_top = -35.0
+offset_right = 482.0
+offset_bottom = 53.0
+theme = ExtResource("22_j3ils")
+theme_override_colors/font_color = Color(0.592157, 0.376471, 0.313726, 1)
+theme_override_font_sizes/font_size = 60
+text = "TIP"
+horizontal_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TipsBox/LabelMarco/Slide1"]
+layout_mode = 0
+offset_left = -48.0
+offset_top = 247.0
+offset_right = 848.0
+offset_bottom = 575.0
+theme = ExtResource("22_j3ils")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "“Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score”"
+horizontal_alignment = 1
+
+[node name="Slide2" type="Panel" parent="TipsBox" groups=["Tip"]]
+visible = false
+layout_mode = 0
+
+[node name="TextureRectBombilla" type="TextureRect" parent="TipsBox/Slide2"]
+layout_mode = 1
+offset_left = 280.0
+offset_top = 16.0
+offset_right = 526.0
+offset_bottom = 211.0
+texture = ExtResource("21_apv0w")
+
+[node name="Label" type="Label" parent="TipsBox/Slide2"]
+layout_mode = 0
+offset_left = 344.0
+offset_top = -35.0
+offset_right = 482.0
+offset_bottom = 53.0
+theme = ExtResource("22_j3ils")
+theme_override_colors/font_color = Color(0.592157, 0.376471, 0.313726, 1)
+theme_override_font_sizes/font_size = 60
+text = "TIP"
+horizontal_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TipsBox/Slide2"]
+layout_mode = 0
+offset_left = -48.0
+offset_top = 247.0
+offset_right = 848.0
+offset_bottom = 575.0
+theme = ExtResource("22_j3ils")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "“Try to guess where the vowels are. Use the cell-coloring aids to spot them across the whole sentence”"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="TipsBox/Slide2"]
+layout_mode = 0
+offset_left = 148.0
+offset_top = 496.0
+offset_right = 652.0
+offset_bottom = 564.0
+texture = ExtResource("23_1hsi3")
+
+[node name="Slide3" parent="TipsBox" instance=ExtResource("24_op7yq")]
+visible = false
+layout_mode = 0
+
+[node name="Slide4" parent="TipsBox" instance=ExtResource("25_yo6ju")]
+visible = false
+layout_mode = 0
+
+[node name="Slide5" parent="TipsBox" instance=ExtResource("26_wyay2")]
+visible = false
+layout_mode = 0
+
+[node name="Slide6" parent="TipsBox" instance=ExtResource("27_0h3ts")]
+visible = false
+layout_mode = 0
+
+[node name="Slide7" parent="TipsBox" instance=ExtResource("28_2ievp")]
+visible = false
+layout_mode = 0
+
+[node name="Slide8" parent="TipsBox" instance=ExtResource("29_ocsik")]
+visible = false
+layout_mode = 0
+
+[node name="Slide9" parent="TipsBox" instance=ExtResource("30_ssce3")]
+visible = false
+layout_mode = 0
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="TipsBox"]
+layout_mode = 2
+offset_left = 341.0
+offset_top = 47.0
+offset_right = 417.0
+offset_bottom = 117.0
+scale = Vector2(2, 2)
+value = 94.0
+fill_mode = 4
+texture_progress = SubResource("GradientTexture2D_j3ils")
+
+[connection signal="pressed" from="Panel/ButtonSettings" to="." method="_on_button_settings_pressed"]
+[connection signal="pressed" from="Panel/ButtonShop" to="." method="_on_button_shop_pressed"]
+[connection signal="pressed" from="Panel/ButtonSettings3" to="." method="_on_button_settings_3_pressed"]
+[connection signal="pressed" from="Panel/ButtonShop2" to="." method="_on_button_shop_2_pressed"]
+[connection signal="pressed" from="Panel/ButtonLeaderboard2" to="." method="_on_button_leaderboard_2_pressed"]
+[connection signal="pressed" from="Panel/ButtonLeaderboard3" to="." method="_on_button_leaderboard_3_pressed"]
+[connection signal="pressed" from="Panel/PlayButtonFx" to="." method="_on_play_button_fx_pressed"]

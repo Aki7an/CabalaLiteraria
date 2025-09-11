@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://di23p5dr7gut2"]
+
+[ext_resource type="Script" uid="uid://dfntrn5rgfcu4" path="res://autoload/play_fab.gd" id="1_e6ku8"]
+
+[node name="PlayFab" type="Node2D"]
+script = ExtResource("1_e6ku8")

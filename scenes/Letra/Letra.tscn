@@ -1,0 +1,144 @@
+[gd_scene load_steps=7 format=3 uid="uid://b4707jdpu10es"]
+
+[ext_resource type="Script" uid="uid://1gggswfp2io1" path="res://scenes/Letra/Letra.gd" id="1_jcy3o"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jcy3o"]
+bg_color = Color(0.92, 0.9131, 0.9108, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ewu8p"]
+bg_color = Color(0.270588, 0.270588, 0.270588, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lda0"]
+bg_color = Color(0.768627, 0.768627, 0, 0.4)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.769222, 0.769996, 0.302051, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_of430"]
+bg_color = Color(0.769222, 0.769996, 0.302051, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omubc"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="Letra" type="Control" groups=["Letra"]]
+custom_minimum_size = Vector2(64, 104)
+layout_mode = 3
+anchor_right = 0.062
+anchor_bottom = 0.054
+offset_right = 0.511997
+offset_bottom = 0.32
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_jcy3o")
+
+[node name="PanelLetra" type="Panel" parent="."]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_jcy3o")
+
+[node name="LabelLetra" type="Label" parent="PanelLetra"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelNumero" type="Label" parent="PanelLetra"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -66.0
+pivot_offset = Vector2(16, 13)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "22"
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 160
+
+[node name="Marco1" type="Panel" parent="PanelLetra"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.0199231
+offset_bottom = -0.072
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
+metadata/_edit_use_anchors_ = true
+
+[node name="Marco2" type="Panel" parent="PanelLetra"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.03125
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
+metadata/_edit_use_anchors_ = true
+
+[node name="Marco3" type="Panel" parent="PanelLetra"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.969
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.0160027
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
+
+[node name="Marco4" type="Panel" parent="PanelLetra"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.981
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.0240097
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
+
+[node name="LetraSelected" type="Panel" parent="PanelLetra"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(32, 0)
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_7lda0")
+
+[node name="Button" type="Button" parent="PanelLetra"]
+custom_minimum_size = Vector2(60, 100)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_of430")
+theme_override_styles/normal = SubResource("StyleBoxFlat_omubc")
+metadata/_edit_lock_ = true
+
+[connection signal="pressed" from="PanelLetra/Button" to="." method="_on_button_pressed"]

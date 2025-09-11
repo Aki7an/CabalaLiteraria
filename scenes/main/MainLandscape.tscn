@@ -1,0 +1,192 @@
+[gd_scene load_steps=14 format=3 uid="uid://ch60ss40l08hw"]
+
+[ext_resource type="Script" uid="uid://cslm7emlex4my" path="res://scenes/main/main_landscape.gd" id="1_dkd17"]
+[ext_resource type="PackedScene" uid="uid://csvvjjmaptuc4" path="res://scenes/game/CanvasJuego.tscn" id="1_vdkkw"]
+[ext_resource type="PackedScene" uid="uid://qdxg6ofjqkq5" path="res://scenes/game/panel_letras.tscn" id="2_dkd17"]
+[ext_resource type="PackedScene" uid="uid://y1k8m1upqvmd" path="res://scenes/game/PanelColors.tscn" id="3_6rg1y"]
+[ext_resource type="PackedScene" uid="uid://df2olneywrcjb" path="res://scenes/PanelUP/panel_up.tscn" id="4_g8lxm"]
+[ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="5_2fw3d"]
+[ext_resource type="Script" uid="uid://328p3wf54q2r" path="res://scenes/main/column_+.gd" id="6_2l0ww"]
+[ext_resource type="Script" uid="uid://cprxs3q16bcth" path="res://scenes/main/column__.gd" id="7_1g38a"]
+[ext_resource type="Texture2D" uid="uid://cg4vl73i707b3" path="res://images/triangulo-hacia-arriba.png" id="8_mbpb6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rhdn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sjxhf"]
+bg_color = Color(0.398793, 0.398793, 0.398793, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ko0rf"]
+content_margin_left = 20.0
+content_margin_right = 20.0
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="GDScript" id="GDScript_vdkkw"]
+script/source = "extends Button
+
+
+func _on_pressed():
+	SignalManager.move_canvas.emit(-GameManager.canvas_wide)
+"
+
+[node name="MainLandscape" type="Node2D"]
+script = ExtResource("1_dkd17")
+
+[node name="Portrait" type="Panel" parent="."]
+custom_minimum_size = Vector2(1920, 1024)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="Portrait"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CanvasJuego" parent="Portrait" instance=ExtResource("1_vdkkw")]
+layout_mode = 1
+offset_top = 160.0
+offset_bottom = -288.0
+grow_horizontal = 1
+grow_vertical = 1
+size_flags_horizontal = 1
+
+[node name="ColorRect2" type="ColorRect" parent="Portrait"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 896.0
+offset_top = 680.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.445312, 0.123141, 0.123141, 1)
+
+[node name="PanelLetras" parent="Portrait" instance=ExtResource("2_dkd17")]
+layout_mode = 1
+offset_left = 184.0
+offset_top = 840.0
+offset_right = -8.0
+offset_bottom = 691.2
+
+[node name="PanelColors" parent="Portrait" instance=ExtResource("3_6rg1y")]
+layout_mode = 1
+anchors_preset = 15
+anchor_bottom = 1.0
+offset_left = 904.0
+offset_top = 688.0
+offset_right = -8.0
+offset_bottom = -200.0
+grow_horizontal = 1
+grow_vertical = 1
+size_flags_vertical = 1
+
+[node name="PanelUP" parent="Portrait" instance=ExtResource("4_g8lxm")]
+layout_mode = 1
+anchors_preset = 15
+anchor_bottom = 1.0
+offset_right = -1920.0
+offset_bottom = -1024.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Column +" type="Button" parent="Portrait"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 672.0
+offset_top = 696.0
+offset_right = -1040.0
+offset_bottom = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+theme = ExtResource("5_2fw3d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1rhdn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
+text = "Column +"
+script = ExtResource("6_2l0ww")
+
+[node name="Column -" type="Button" parent="Portrait"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 448.0
+offset_top = 696.0
+offset_right = -1264.0
+offset_bottom = -200.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+theme = ExtResource("5_2fw3d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1rhdn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
+text = "Column -"
+script = ExtResource("7_1g38a")
+
+[node name="PanelMap" type="Panel" parent="Portrait"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 632.0
+offset_right = -1744.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Page+" type="Button" parent="Portrait/PanelMap"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+offset_left = 160.0
+offset_top = 376.0
+offset_right = 712.0
+offset_bottom = 1300.0
+rotation = 3.14159
+scale = Vector2(0.269724, 0.10445)
+size_flags_horizontal = 0
+theme = ExtResource("5_2fw3d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1rhdn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
+text = "-"
+icon = ExtResource("8_mbpb6")
+icon_alignment = 1
+script = SubResource("GDScript_vdkkw")
+
+[node name="Page-" type="Button" parent="Portrait/PanelMap"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 560.0
+offset_bottom = 903.0
+scale = Vector2(0.269724, 0.10445)
+size_flags_horizontal = 0
+theme = ExtResource("5_2fw3d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1rhdn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
+text = "-"
+icon = ExtResource("8_mbpb6")
+icon_alignment = 1
+script = SubResource("GDScript_vdkkw")
+
+[connection signal="pressed" from="Portrait/Column +" to="Portrait/Column +" method="_on_pressed"]
+[connection signal="pressed" from="Portrait/Column -" to="Portrait/Column -" method="_on_pressed"]

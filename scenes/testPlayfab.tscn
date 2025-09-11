@@ -1,0 +1,326 @@
+[gd_scene load_steps=2 format=3 uid="uid://cywvtp7802n5s"]
+
+[sub_resource type="GDScript" id="GDScript_j366v"]
+script/source = "# PlayFabTools.gd — Godot 4.4.x
+extends Node
+
+signal login_succeeded(playfab_id: String, newly_created: bool)
+signal login_failed(error_message: String, http_code: int)
+
+
+const LEADERBOARD_NAME: String = \"Score\"  # nombre de la estadística
+
+## Ajusta tu TitleId aquí o desde fuera (set_title_id)
+@export var TITLE_ID: String = \"1BC2FD\"
+
+## Resultado de login reutilizable durante la sesión
+@export var session_ticket: String = \"\"
+@export var playfab_id: String = _get_device_custom_id()
+
+var newly_created: bool = false
+
+@onready var http: HTTPRequest = HTTPRequest.new()
+
+func _ready() -> void:
+	add_child(http)
+	http.timeout = 30
+	login_with_custom_id(playfab_id,true)
+	print(\"playfabid: \" , playfab_id)
+	var ok: bool = await PlayFabTools.login_with_custom_id(playfab_id, true)
+	if ok:
+		print(\"Listo. Ticket:\", PlayFabTools.session_ticket, \"ID:\", PlayFabTools.playfab_id)
+		# …ya puedes llamar Client APIs con X-Authorization
+	else:
+		print(\"No se pudo iniciar sesión en PlayFab.\")
+	
+## (Opcional) Cambiar TitleId en runtime
+func set_title_id(id: String) -> void:
+	TITLE_ID = id
+
+## Login con CustomId (p_create=true para crear cuenta si no existe)
+## Devuelve true si el login fue correcto y rellena session_ticket / playfab_id
+func login_with_custom_id(custom_id: String, p_create: bool = true) -> bool:
+	if TITLE_ID.strip_edges() == \"\":
+		push_error(\"PlayFab TITLE_ID vacío. Configúralo antes de hacer login.\")
+		return false
+
+	var url: String = \"https://%s.playfabapi.com/Client/LoginWithCustomID\" % TITLE_ID
+	var body: Dictionary = {
+		\"TitleId\": TITLE_ID,
+		\"CustomId\": custom_id,
+		\"CreateAccount\": p_create
+	}
+	# X-ReportErrorAsSuccess hace que PlayFab responda 200 y ponga 'code' en el JSON
+	var headers: PackedStringArray = PackedStringArray([
+		\"Content-Type: application/json\",
+		\"Accept: application/json\",
+		\"Accept-Encoding: identity\",
+		\"X-ReportErrorAsSuccess: true\"
+	])
+
+	var err: int = http.request(url, headers, HTTPClient.METHOD_POST, JSON.stringify(body))
+	if err != OK:
+		var msg := \"HTTPRequest error al loguear: %s\" % err
+		push_warning(msg)
+		print(\"❌ \", msg)
+		emit_signal(\"login_failed\", msg, -1)
+		return false
+
+	# ✅ Forma correcta: recoger el array de la señal y tipar cada elemento
+	var r: Array = await http.request_completed
+	var result: int = r[0]
+	var response_code: int = r[1]
+	var resp_headers: PackedStringArray = r[2]
+	var body_bytes: PackedByteArray = r[3]
+
+	var text: String = body_bytes.get_string_from_utf8()
+
+	# Parseo JSON tipado
+	var parsed: Variant = JSON.parse_string(text)
+	if !(parsed is Dictionary):
+		var msg2 := \"Respuesta JSON inválida en login.\"
+		push_warning(msg2)
+		print(\"❌ \", msg2)
+		emit_signal(\"login_failed\", msg2, response_code)
+		return false
+
+	var json: Dictionary = parsed
+	# Si usamos X-ReportErrorAsSuccess, PlayFab mete su código en json['code'].
+	var pf_code: int = int(json.get(\"code\", response_code))
+	if pf_code != 200:
+		var err_msg := str(json.get(\"errorMessage\", \"Error desconocido\"))
+		push_warning(\"PlayFab LoginWithCustomID falló: %s\" % err_msg)
+		print(\"❌ PlayFab login FAILED: %s (http=%d pf_code=%d)\" % [err_msg, response_code, pf_code])
+		emit_signal(\"login_failed\", err_msg, response_code)
+		return false
+
+	var data_any: Variant = json.get(\"data\", {})
+	var data: Dictionary = (data_any as Dictionary) if (data_any is Dictionary) else {}
+	if !data.has(\"SessionTicket\"):
+		var msg3 := \"Login sin SessionTicket en respuesta.\"
+		push_warning(msg3)
+		print(\"❌ \", msg3)
+		emit_signal(\"login_failed\", msg3, response_code)
+		return false
+
+	# Guardar credenciales de sesión
+	session_ticket = str(data[\"SessionTicket\"])
+	playfab_id = str(data.get(\"PlayFabId\", \"\"))
+	newly_created = bool(data.get(\"NewlyCreated\", false))
+
+	# --- Debug/Estado en consola ---
+	print(\"✅ PlayFab login OK — PlayFabId=%s | NewlyCreated=%s\" % [playfab_id, str(newly_created)])
+
+	emit_signal(\"login_succeeded\", playfab_id, newly_created)
+	return true
+
+## Utilidad: ¿estamos autenticados?
+func is_logged_in() -> bool:
+	return session_ticket != \"\"
+
+## Imprime el estado actual del login en consola (con el ID si existe)
+func print_login_status() -> void:
+	if is_logged_in():
+		print(\"🔐 Logeado en PlayFab como PlayFabId=%s\" % playfab_id)
+	else:
+		print(\"🔓 No estás logeado en PlayFab.\")
+
+## (Opcional) limpiar sesión (memoria)
+func logout() -> void:
+	session_ticket = \"\"
+	playfab_id = \"\"
+	newly_created = false
+	print(\"🔄 Sesión PlayFab limpiada.\")
+
+
+func _get_device_custom_id() -> String:
+	var platform: String = OS.get_name()  # \"Android\", \"iOS\", \"Windows\", \"Linux\", \"macOS\", \"Web\", etc.
+
+	# --- iOS / Android: usar el identificador único del SO si es válido ---
+	if platform == \"Android\" or platform == \"iOS\":
+		var dev_id: String = OS.get_unique_id()
+		# Filtramos valores inútiles que algunas plataformas/devices devuelven
+		var invalid: bool = (dev_id == \"\" or dev_id.to_lower() == \"unknown\" or dev_id.to_lower() == \"android_id\")
+		if not invalid:
+			var prefix: String = (\"AND_\" if platform == \"Android\" else \"IOS_\")
+			return prefix + dev_id
+		# Si no hay ID válido, caemos a persistido por instalación
+
+	# --- PC (Windows/Linux/macOS) o fallback: ID persistido por instalación ---
+	return _load_or_create_persisted_custom_id(platform)
+
+
+# Guarda en user:// un CustomId estable por instalación (sirve para PC y fallback móvil).
+func _load_or_create_persisted_custom_id(platform: String) -> String:
+	const CFG_PATH := \"user://playfab_auth.cfg\"
+	const CFG_SECTION := \"auth\"
+	const CFG_KEY := \"custom_id\"
+
+	var cfg := ConfigFile.new()
+	if cfg.load(CFG_PATH) == OK:
+		var saved_any: Variant = cfg.get_value(CFG_SECTION, CFG_KEY, \"\")
+		var saved: String = str(saved_any)
+		if saved != \"\":
+			return saved
+
+	# Generar uno nuevo (aleatorio + timestamp + plataforma) y guardarlo
+	var seed: String = \"%s|%s|%s|%s\" % [platform, Time.get_unix_time_from_system(), randi(), OS.get_unique_id()]
+	var hc := HashingContext.new()
+	hc.start(HashingContext.HASH_SHA256)
+	hc.update(seed.to_utf8_buffer())
+	var custom_id: String = \"CL_\" + hc.finish().hex_encode().substr(0, 32)  # 32 hex
+
+	cfg.set_value(CFG_SECTION, CFG_KEY, custom_id)
+	cfg.save(CFG_PATH)
+	print(\"CUSTOM ID Creado: \" , custom_id)
+	return custom_id
+
+
+# -------------------------------------------------------------------
+# Envía la puntuación del jugador a la estadística \"Score\".
+# Devuelve true si PlayFab respondió OK, false si hubo error.
+# -------------------------------------------------------------------
+# Envía puntuación y (opcional) fija el nombre del jugador para que
+# aparezca en el leaderboard como DisplayName.
+# Requiere estar logeado con PlayFabTools (autoload).
+func submit_player_score(score: int, player_name: String = \"\", stat_name: String = \"Score\") -> bool:
+	# 1) Comprobar sesión
+	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
+		push_warning(\"No hay sesión PlayFab. Inicia sesión antes de enviar puntuación/nombre.\")
+		return false
+
+	# 2) Si viene nombre, intentar guardarlo como DisplayName (no falla la puntuación si esto falla)
+	if player_name.strip_edges() != \"\":
+		var ok_name := await _update_player_display_name(player_name)
+		if not ok_name:
+			push_warning(\"No se pudo actualizar el DisplayName. Continuo con el envío de puntuación…\")
+
+	# 3) Enviar puntuación a la estadística (Score por defecto)
+	var url_stats: String = \"https://%s.playfabapi.com/Client/UpdatePlayerStatistics\" % PlayFabTools.TITLE_ID
+	var body_stats: Dictionary = {
+		\"Statistics\": [
+			{
+				\"StatisticName\": stat_name,  # \"Score\"
+				\"Value\": score
+			}
+		]
+	}
+	var headers: PackedStringArray = PackedStringArray([
+		\"Content-Type: application/json\",
+		\"Accept: application/json\",
+		\"Accept-Encoding: identity\",
+		\"X-Authorization: \" + PlayFabTools.session_ticket,
+		\"X-ReportErrorAsSuccess: true\"
+	])
+
+	var req := HTTPRequest.new()
+	add_child(req)
+	req.timeout = 30
+	var err := req.request(url_stats, headers, HTTPClient.METHOD_POST, JSON.stringify(body_stats))
+	if err != OK:
+		push_warning(\"HTTPRequest error al enviar puntuación: %s\" % err)
+		req.queue_free()
+		return false
+
+	var r: Array = await req.request_completed
+	var http_code: int = r[1]
+	var body_bytes: PackedByteArray = r[3]
+	var text: String = body_bytes.get_string_from_utf8()
+	req.queue_free()
+
+	var parsed: Variant = JSON.parse_string(text)
+	if !(parsed is Dictionary):
+		push_warning(\"Respuesta no válida de PlayFab al enviar puntuación.\")
+		return false
+
+	var json: Dictionary = parsed
+	var pf_code: int = int(json.get(\"code\", http_code))
+	if pf_code != 200:
+		var err_msg := str(json.get(\"errorMessage\", \"Error desconocido\"))
+		push_warning(\"UpdatePlayerStatistics falló: %s\" % err_msg)
+		return false
+
+	return true
+
+
+# ----- Helper: fija el DisplayName del jugador en este título -----
+func _update_player_display_name(player_name: String) -> bool:
+	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
+		return false
+
+	# PlayFab suele limitar a 3..25 caracteres (evita nombres vacíos o muy largos)
+	var name := player_name.strip_edges()
+	if name == \"\":
+		return false
+	if name.length() > 25:
+		name = name.substr(0, 25)
+
+	var url_name: String = \"https://%s.playfabapi.com/Client/UpdateUserTitleDisplayName\" % PlayFabTools.TITLE_ID
+	var body_name: Dictionary = { \"DisplayName\": name }
+	var headers: PackedStringArray = PackedStringArray([
+		\"Content-Type: application/json\",
+		\"Accept: application/json\",
+		\"Accept-Encoding: identity\",
+		\"X-Authorization: \" + PlayFabTools.session_ticket,
+		\"X-ReportErrorAsSuccess: true\"
+	])
+
+	var req := HTTPRequest.new()
+	add_child(req)
+	req.timeout = 30
+	var err := req.request(url_name, headers, HTTPClient.METHOD_POST, JSON.stringify(body_name))
+	if err != OK:
+		req.queue_free()
+		return false
+
+	var r: Array = await req.request_completed
+	var http_code: int = r[1]
+	var body_bytes: PackedByteArray = r[3]
+	var text: String = body_bytes.get_string_from_utf8()
+	req.queue_free()
+
+	var parsed: Variant = JSON.parse_string(text)
+	if !(parsed is Dictionary):
+		return false
+
+	var json: Dictionary = parsed
+	var pf_code: int = int(json.get(\"code\", http_code))
+	return pf_code == 200
+
+func send_match_event(duration_sec: int, vowelsAE: int, vowelsIOU:int, letras: int, pistas: int, cambios: int, dificultad: int, categoria: String) -> bool:
+	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
+		return false
+
+	var url := \"https://%s.playfabapi.com/Client/WritePlayerEvent\" % PlayFabTools.TITLE_ID
+	var body := {
+		\"EventName\": \"match_finished\",
+		\"Body\": {
+			\"duration_sec\": duration_sec,
+			\"vowelsAE_bought\": vowelsAE,
+			\"vowelsIOU_bought\": vowelsIOU,
+			\"lettersAE_bought\": letras,
+			\"hints_used\": pistas,
+			\"swaps_made\": cambios,
+			\"difficulty\": dificultad,
+			\"category\": categoria
+		}
+	}
+	var headers := PackedStringArray([
+		\"Content-Type: application/json\",
+		\"X-Authorization: \" + PlayFabTools.session_ticket, # SessionTicket del login
+		\"X-ReportErrorAsSuccess: true\"
+	])
+
+	var req := HTTPRequest.new(); add_child(req); req.timeout = 30
+	var err := req.request(url, headers, HTTPClient.METHOD_POST, JSON.stringify(body))
+	if err != OK: req.queue_free(); return false
+	var r: Array = await req.request_completed
+	req.queue_free()
+
+	var http_code: int = r[1]
+	var parsed: Variant = JSON.parse_string((r[3] as PackedByteArray).get_string_from_utf8())
+	return (parsed is Dictionary) and (int((parsed as Dictionary).get(\"code\", http_code)) == 200)
+"
+
+[node name="TestPlayfab" type="Node2D"]
+script = SubResource("GDScript_j366v")

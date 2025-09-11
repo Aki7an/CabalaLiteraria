@@ -1,0 +1,2 @@
+#- File Locator -
+listingFile=../../bundle_ide_model/monoRelease/output-metadata.json

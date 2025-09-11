@@ -1,0 +1,188 @@
+[gd_scene load_steps=15 format=3 uid="uid://dpat6e5e2i47l"]
+
+[ext_resource type="Script" uid="uid://dp8350faic2ec" path="res://scenes/menu_game_over.gd" id="1_4ja6d"]
+[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="2_4rb3m"]
+[ext_resource type="Texture2D" uid="uid://crvyotwoh2yy5" path="res://images/Captura de pantalla 2025-09-06 221159.png" id="2_67j2n"]
+[ext_resource type="Texture2D" uid="uid://cdth2qh5cdowu" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="3_f7b2p"]
+[ext_resource type="Texture2D" uid="uid://bmxxcyolsuj0w" path="res://images/CheckOK.png" id="4_4rb3m"]
+[ext_resource type="FontFile" uid="uid://cmmdod6te460c" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="4_yd5qk"]
+[ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="5_p42y5"]
+[ext_resource type="Texture2D" uid="uid://dmtkdhiggbfbe" path="res://images/Info.png" id="6_f7b2p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t8ghf"]
+bg_color = Color(0.984314, 0.976471, 0.933333, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_0cr37"]
+base_font = ExtResource("4_yd5qk")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_op5qx"]
+texture = ExtResource("3_f7b2p")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.417204, 0.811498, 0.422634, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q6gwn"]
+texture = ExtResource("3_f7b2p")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.32549, 0.74902, 0.356863, 1)
+
+[sub_resource type="Theme" id="Theme_i3j8r"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_op5qx")
+Button/styles/focus = SubResource("StyleBoxTexture_q6gwn")
+Button/styles/hover = SubResource("StyleBoxTexture_q6gwn")
+Button/styles/normal = SubResource("StyleBoxTexture_q6gwn")
+Button/styles/pressed = SubResource("StyleBoxTexture_op5qx")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p42y5"]
+bg_color = Color(0.97794, 0.966852, 0.911845, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[node name="MenuGameOver" type="ColorRect"]
+offset_right = 1024.0
+offset_bottom = 1920.0
+color = Color(1, 1, 1, 0.803922)
+script = ExtResource("1_4ja6d")
+
+[node name="GameOver" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(422, 564)
+theme_override_styles/normal = SubResource("StyleBoxFlat_t8ghf")
+
+[node name="CapturaDePantalla2025-09-06221159" type="Sprite2D" parent="GameOver"]
+position = Vector2(512, 112)
+scale = Vector2(0.75572, 0.667715)
+texture = ExtResource("2_67j2n")
+
+[node name="RichTextLabel1" type="RichTextLabel" parent="GameOver"]
+layout_mode = 1
+offset_left = 40.0
+offset_top = 37.0
+offset_right = 936.0
+offset_bottom = 245.0
+theme = ExtResource("2_4rb3m")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_0cr37")
+theme_override_font_sizes/normal_font_size = 60
+text = "¡¡¡ENHORABUENA !!!!
+Has resuelto la frase
+
+"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonFx" type="Button" parent="GameOver"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0234375
+anchor_top = -0.216667
+anchor_right = 0.015625
+anchor_bottom = 0.425
+offset_left = 80.0
+offset_top = 640.0
+offset_right = 944.0
+offset_bottom = 904.0
+theme = SubResource("Theme_i3j8r")
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="BlancoRefranesPopulares" type="TextureRect" parent="GameOver/ButtonFx"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 728.0
+offset_top = 880.0
+offset_right = 104.0
+offset_bottom = 525.325
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_4rb3m")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="GameOver"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 880.0
+offset_right = 928.0
+offset_bottom = 1688.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p42y5")
+
+[node name="Info" type="Sprite2D" parent="GameOver/Label"]
+modulate = Color(0.0117647, 0.266667, 0.0980392, 1)
+position = Vector2(412.875, 67.8749)
+scale = Vector2(0.111004, 0.111004)
+texture = ExtResource("6_f7b2p")
+
+[node name="RichTextFraseInfoExtra" type="RichTextLabel" parent="GameOver/Label"]
+layout_mode = 1
+offset_left = 32.0
+offset_top = 127.999
+offset_right = 800.0
+offset_bottom = 855.999
+theme_override_colors/default_color = Color(0.0117647, 0.266667, 0.0980392, 1)
+theme_override_font_sizes/normal_font_size = 40
+text = "Cristóbal Colón llegó a tierras americanas, desembarcando en una isla del Caribe a la que llamó San Salvador. 
+Este hecho marcó el encuentro entre Europa y América, iniciando la exploración y conquista del Nuevo Mundo. Se considera el comienzo de la Edad Moderna en la historia universal."
+horizontal_alignment = 1
+
+[node name="RichTextFraseOriginal" type="RichTextLabel" parent="GameOver/Label"]
+layout_mode = 1
+offset_left = 32.0
+offset_top = -616.0
+offset_right = 808.0
+offset_bottom = -32.0
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[img=120x100]res://images/comillas_abre.png[/img]  El 12 de octubre de       1492 Colón llegó a América, iniciando el encuentro histórico entre Europa y el Nuevo Mundo    [img=120x100]res://images/comillas_cierra.png[/img]
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonBack" type="Button" parent="."]
+layout_mode = 1
+offset_left = 312.0
+offset_top = 1704.0
+offset_right = 760.0
+offset_bottom = 1944.07
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(224, 104)
+theme = ExtResource("5_p42y5")
+theme_override_font_sizes/font_size = 80
+text = "OK"
+
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

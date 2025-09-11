@@ -1,0 +1,64 @@
+[gd_scene load_steps=3 format=3 uid="uid://cffefknpxfylk"]
+
+[ext_resource type="FontFile" uid="uid://1oc1fewipk23" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="1_0ns7n"]
+[ext_resource type="Texture2D" uid="uid://dhy8jhoi1p1ej" path="res://images/Candado.png" id="2_1xmha"]
+
+[node name="Titulo CifraLetra" type="Control"]
+layout_mode = 3
+anchor_left = 0.078
+anchor_right = 1.0
+anchor_bottom = 0.133
+offset_left = 0.127998
+offset_bottom = 0.639999
+pivot_offset = Vector2(496, 136)
+
+[node name="Cifra" type="Label" parent="."]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.107
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.128006
+offset_right = -352.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.853531, 0.853531)
+theme_override_colors/font_color = Color(0.592157, 0.376471, 0.313726, 1)
+theme_override_fonts/font = ExtResource("1_0ns7n")
+theme_override_font_sizes/font_size = 180
+text = "Cipher"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Letra" type="Label" parent="."]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.192
+anchor_bottom = 1.0
+offset_left = 504.0
+offset_right = 106.336
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.853531, 0.853531)
+theme_override_colors/font_color = Color(0.168627, 0.694118, 0.611765, 1)
+theme_override_fonts/font = ExtResource("1_0ns7n")
+theme_override_font_sizes/font_size = 180
+text = "Letter"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color(0.490196, 0.266667, 0.2, 1)
+layout_mode = 0
+offset_left = 88.0
+offset_top = -56.0
+offset_right = 192.0
+offset_bottom = 77.0
+texture = ExtResource("2_1xmha")
+expand_mode = 1

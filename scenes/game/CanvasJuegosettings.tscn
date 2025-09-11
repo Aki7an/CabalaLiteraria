@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://lehjbq6gtdln"]
+
+[ext_resource type="Script" uid="uid://btxoc17uxojhr" path="res://scenes/game/canvas_juegosettings.gd" id="1_mb8xh"]
+[ext_resource type="Script" uid="uid://ca5lyu8e63yj" path="res://scenes/game/color_rect_down.gd" id="2_bdu65"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ht4c5"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="CanvasJuego" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1820.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ht4c5")
+script = ExtResource("1_mb8xh")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_top = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+columns = 8
+
+[node name="ColorRectUp" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.008
+offset_bottom = 0.639999
+color = Color(0.658911, 1.9132e-06, 5.29438e-07, 1)
+
+[node name="ColorRectDown" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.008
+offset_top = 100.0
+offset_bottom = 100.64
+color = Color(0.658911, 1.9132e-06, 5.29438e-07, 1)
+script = ExtResource("2_bdu65")

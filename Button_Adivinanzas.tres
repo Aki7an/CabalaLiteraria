@@ -1,0 +1,63 @@
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://b6lxeht0ciwma"]
+
+[ext_resource type="FontFile" uid="uid://bl4xtlrkkmyw7" path="res://fonts/Archivo,Chivo,Cormorant_Garamond,Courier_Prime,Fira_Sans,etc/Archivo/Archivo-VariableFont_wdth,wght.ttf" id="1_58q10"]
+[ext_resource type="StyleBox" uid="uid://bv3solbyk3vc8" path="res://Button_Normal.tres" id="2_6aeh2"]
+[ext_resource type="Texture2D" uid="uid://cdth2qh5cdowu" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="2_58q10"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6aeh2"]
+texture = ExtResource("2_58q10")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.35465, 0.0779, 0.65098)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_58q10"]
+texture = ExtResource("2_58q10")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.972058, 0.889649, 0.519944, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ckqqy"]
+texture = ExtResource("2_58q10")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.61, 0.5307, 0.1342, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5qsbv"]
+texture = ExtResource("2_58q10")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.3567, 0.0902, 1)
+
+[resource]
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = ExtResource("1_58q10")
+Button/styles/disabled = SubResource("StyleBoxTexture_6aeh2")
+Button/styles/focus = SubResource("StyleBoxTexture_58q10")
+Button/styles/hover = SubResource("StyleBoxTexture_ckqqy")
+Button/styles/normal = ExtResource("2_6aeh2")
+Button/styles/pressed = SubResource("StyleBoxTexture_5qsbv")

@@ -1,0 +1,271 @@
+[gd_scene load_steps=23 format=3 uid="uid://ciwx4uk36f7u3"]
+
+[ext_resource type="Texture2D" uid="uid://cbu5defm4vraf" path="res://images/Shop3.png" id="1_nk4yh"]
+[ext_resource type="Script" uid="uid://csm86csqrk3bo" path="res://scenes/fondo_comprar_letra.gd" id="1_q36r8"]
+[ext_resource type="Texture2D" uid="uid://cdth2qh5cdowu" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_i54d3"]
+[ext_resource type="Texture2D" uid="uid://d58j8nw41ha8" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="4_q36r8"]
+[ext_resource type="Texture2D" uid="uid://dpvvloc2v0i43" path="res://images/Cruz.png" id="5_i54d3"]
+[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="7_rb1w2"]
+[ext_resource type="Theme" uid="uid://k7hcs8goxg0c" path="res://Label_Nunito_font.tres" id="8_cb75i"]
+[ext_resource type="FontFile" uid="uid://1aox3mfsrged" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="9_fbh3i"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dnf3t"]
+bg_color = Color(0.70649, 0.6794, 0.86, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vg763"]
+texture = ExtResource("4_i54d3")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(8.90419e-07, 0.720339, 5.77569e-07, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcnqu"]
+texture = ExtResource("4_i54d3")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(8.90419e-07, 0.720339, 5.77569e-07, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_plsrp"]
+texture = ExtResource("4_i54d3")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0, 0.88, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nk4yh"]
+texture = ExtResource("4_i54d3")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.556863, 0.501961, 0.862745, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dnf3t"]
+texture = ExtResource("4_i54d3")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0, 0.34, 0, 1)
+
+[sub_resource type="Theme" id="Theme_4sjrv"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_vg763")
+Button/styles/focus = SubResource("StyleBoxTexture_tcnqu")
+Button/styles/hover = SubResource("StyleBoxTexture_plsrp")
+Button/styles/normal = SubResource("StyleBoxTexture_nk4yh")
+Button/styles/pressed = SubResource("StyleBoxTexture_dnf3t")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qvaug"]
+texture = ExtResource("4_q36r8")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.695588, 0, 0.118002, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yge2w"]
+texture = ExtResource("4_q36r8")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.695588, 0, 0.118002, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yxtkm"]
+texture = ExtResource("4_q36r8")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.93, 0, 0.155, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5nwj5"]
+texture = ExtResource("4_q36r8")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.6075, 0, 0.0271776, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hyvrp"]
+texture = ExtResource("4_q36r8")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.3, 0, 0.0500001, 1)
+
+[sub_resource type="Theme" id="Theme_ipdrk"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_qvaug")
+Button/styles/focus = SubResource("StyleBoxTexture_yge2w")
+Button/styles/hover = SubResource("StyleBoxTexture_yxtkm")
+Button/styles/normal = SubResource("StyleBoxTexture_5nwj5")
+Button/styles/pressed = SubResource("StyleBoxTexture_hyvrp")
+
+[sub_resource type="FontVariation" id="FontVariation_6i0am"]
+base_font = ExtResource("9_fbh3i")
+
+[node name="FondoComprarLetra" type="ColorRect" groups=["FondoCompraLetra"]]
+offset_right = 1024.0
+offset_bottom = 1600.0
+pivot_offset = Vector2(482, 856)
+color = Color(1, 1, 1, 0.803922)
+script = ExtResource("1_q36r8")
+
+[node name="CuadroSalirPartida" type="Label" parent="."]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 168.0
+offset_right = 958.0
+offset_bottom = 1576.0
+pivot_offset = Vector2(440, 168)
+theme_override_styles/normal = SubResource("StyleBoxFlat_dnf3t")
+
+[node name="ImagenViñeta" type="TextureRect" parent="CuadroSalirPartida"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 306.0
+offset_right = -331.0
+offset_bottom = -928.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_nk4yh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel0" type="RichTextLabel" parent="CuadroSalirPartida"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 38.0
+offset_top = 240.0
+offset_right = -60.0
+offset_bottom = -232.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 40
+text = "Coste A, E : 2.000.000 y 5 monedas
+Coste I,O,U: 1.000.000 y 5 monedas
+
+Coste consonantes: 100.000 y 5 monedas
+
+Selecciona la letra que quieras comprar en el teclado.
+
+Letra seleccionada: L"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonComprar" type="Button" parent="CuadroSalirPartida"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+offset_left = 114.0
+offset_top = 1240.0
+offset_right = 831.0
+offset_bottom = 1480.07
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 0
+theme = SubResource("Theme_4sjrv")
+theme_override_font_sizes/font_size = 80
+text = "COMPRAR"
+alignment = 0
+
+[node name="ButtonCancel" type="Button" parent="."]
+layout_mode = 0
+offset_left = 608.0
+offset_top = 1408.0
+offset_right = 712.0
+offset_bottom = 1518.0
+pivot_offset = Vector2(52, 48)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_ipdrk")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Cruz" type="Sprite2D" parent="ButtonCancel"]
+modulate = Color(0.945098, 0.854902, 0.690196, 1)
+position = Vector2(52, 50)
+scale = Vector2(0.117187, 0.117188)
+texture = ExtResource("5_i54d3")
+metadata/_edit_lock_ = true
+
+[node name="ScoreText" type="Label" parent="."]
+layout_mode = 0
+offset_left = 363.0
+offset_top = 16.0
+offset_right = 745.0
+offset_bottom = 72.0
+theme = ExtResource("7_rb1w2")
+theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
+text = "SCORE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LetraSeleccionada" type="Label" parent="."]
+layout_mode = 0
+offset_left = 363.0
+offset_top = 1184.0
+offset_right = 745.0
+offset_bottom = 1240.0
+theme = ExtResource("7_rb1w2")
+theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score2" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 328.0
+offset_top = 56.0
+offset_right = 775.0
+offset_bottom = 185.0
+theme = ExtResource("8_cb75i")
+theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
+theme_override_fonts/font = SubResource("FontVariation_6i0am")
+theme_override_font_sizes/font_size = 90
+text = "99.999.999"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="CuadroSalirPartida/ButtonComprar" to="." method="_on_button_comprar_pressed"]
+[connection signal="pressed" from="ButtonCancel" to="." method="_on_button_cancel_pressed"]

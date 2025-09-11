@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://qdxg6ofjqkq5"]
+
+[ext_resource type="Script" uid="uid://cfrl3ayqqet8p" path="res://scenes/game/panel_letras.gd" id="1_dyiv1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ln8q6"]
+bg_color = Color(0.556863, 0.317647, 0.196078, 1)
+
+[node name="PanelLetras" type="Panel"]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.325
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ln8q6")
+script = ExtResource("1_dyiv1")
+COLUMNAS_POR_FILA = 9
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+grow_horizontal = 2
+columns = 10

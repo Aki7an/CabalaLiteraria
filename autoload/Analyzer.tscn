@@ -1,0 +1,111 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0vvbh0qli3vc"]
+
+[ext_resource type="Script" uid="uid://c3l0p81b74lds" path="res://autoload/Analyzer.gd" id="1_0w8dq"]
+
+[node name="CifraLetraAnalyzer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0w8dq")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "Analizador CifraLetra — normalización y dificultad"
+
+[node name="HBoxTop" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="LeftPanel" type="VBoxContainer" parent="Margin/VBox/HBoxTop"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LblResumen" type="Label" parent="Margin/VBox/HBoxTop/LeftPanel"]
+layout_mode = 2
+text = "Frecuencia de letras (filtrado sin descubiertas):"
+
+[node name="TableFreq" type="RichTextLabel" parent="Margin/VBox/HBoxTop/LeftPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+
+[node name="RightPanel" type="VBoxContainer" parent="Margin/VBox/HBoxTop"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LblNorm" type="Label" parent="Margin/VBox/HBoxTop/RightPanel"]
+layout_mode = 2
+text = "Texto normalizado:"
+
+[node name="TxtNormalizado" type="RichTextLabel" parent="Margin/VBox/HBoxTop/RightPanel"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+
+[node name="LblFiltrado" type="Label" parent="Margin/VBox/HBoxTop/RightPanel"]
+layout_mode = 2
+text = "Texto filtrado (sin descubiertas):"
+
+[node name="TxtFiltrado" type="RichTextLabel" parent="Margin/VBox/HBoxTop/RightPanel"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+
+[node name="LblDesc" type="Label" parent="Margin/VBox/HBoxTop/RightPanel"]
+layout_mode = 2
+text = "Letras descubiertas (normalizadas):"
+
+[node name="TxtDescubiertas" type="RichTextLabel" parent="Margin/VBox/HBoxTop/RightPanel"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="LblDif" type="Label" parent="Margin/VBox/HBoxTop/RightPanel"]
+layout_mode = 2
+text = "Dificultad estimada (0–10):"
+
+[node name="TxtDificultad" type="RichTextLabel" parent="Margin/VBox/HBoxTop/RightPanel"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="LblVars" type="Label" parent="Margin/VBox/HBoxTop/RightPanel"]
+layout_mode = 2
+text = "Variables:"
+
+[node name="TxtVars" type="RichTextLabel" parent="Margin/VBox/HBoxTop/RightPanel"]
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+
+[node name="Hint" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "Usa desde código: datos_funcion(frase_original, letras_descubiertas)"

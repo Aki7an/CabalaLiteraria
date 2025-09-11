@@ -1,0 +1,215 @@
+[gd_scene load_steps=18 format=3 uid="uid://c7j81pj5n8i4k"]
+
+[ext_resource type="Script" uid="uid://vft2d7m6jrfy" path="res://scenes/fondo_aviso_borrado.gd" id="1_7xuc6"]
+[ext_resource type="Texture2D" uid="uid://d58j8nw41ha8" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="2_7xuc6"]
+[ext_resource type="Texture2D" uid="uid://dpvvloc2v0i43" path="res://images/Cruz.png" id="3_v6ic6"]
+[ext_resource type="Texture2D" uid="uid://dsupwquskrprr" path="res://images/eraser_2.png" id="4_plv2b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hyvrp"]
+bg_color = Color(0.835294, 0.635294, 0.576471, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7xuc6"]
+texture = ExtResource("2_7xuc6")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.695588, 0, 0.118002, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v6ic6"]
+texture = ExtResource("2_7xuc6")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.695588, 0, 0.118002, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_plv2b"]
+texture = ExtResource("2_7xuc6")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.93, 0, 0.155, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6kla6"]
+texture = ExtResource("2_7xuc6")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.6075, 0, 0.0271776, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dbr4w"]
+texture = ExtResource("2_7xuc6")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.3, 0, 0.0500001, 1)
+
+[sub_resource type="Theme" id="Theme_hyvrp"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_7xuc6")
+Button/styles/focus = SubResource("StyleBoxTexture_v6ic6")
+Button/styles/hover = SubResource("StyleBoxTexture_plv2b")
+Button/styles/normal = SubResource("StyleBoxTexture_6kla6")
+Button/styles/pressed = SubResource("StyleBoxTexture_dbr4w")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qvaug"]
+texture = ExtResource("2_7xuc6")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.695588, 0, 0.118002, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yge2w"]
+texture = ExtResource("2_7xuc6")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.695588, 0, 0.118002, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yxtkm"]
+texture = ExtResource("2_7xuc6")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.93, 0, 0.155, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jefcy"]
+texture = ExtResource("2_7xuc6")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0, 0.637216, 0.269161, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hyvrp"]
+texture = ExtResource("2_7xuc6")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.3, 0, 0.0500001, 1)
+
+[sub_resource type="Theme" id="Theme_f3br7"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_qvaug")
+Button/styles/focus = SubResource("StyleBoxTexture_yge2w")
+Button/styles/hover = SubResource("StyleBoxTexture_yxtkm")
+Button/styles/normal = SubResource("StyleBoxTexture_jefcy")
+Button/styles/pressed = SubResource("StyleBoxTexture_hyvrp")
+
+[node name="FondoAvisoBorrado" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(482, 856)
+color = Color(1, 1, 1, 0.803922)
+script = ExtResource("1_7xuc6")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 1920.0
+color = Color(1, 1, 1, 0.772549)
+
+[node name="CuadroSalirBorrado" type="Label" parent="."]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 512.0
+offset_right = 958.0
+offset_bottom = 1232.0
+pivot_offset = Vector2(440, 168)
+theme_override_styles/normal = SubResource("StyleBoxFlat_hyvrp")
+
+[node name="ButtonCancel" type="Button" parent="CuadroSalirBorrado"]
+layout_mode = 1
+offset_left = 466.0
+offset_top = 544.0
+offset_right = 599.0
+offset_bottom = 684.0
+pivot_offset = Vector2(84, 86)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_hyvrp")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Cruz" type="Sprite2D" parent="CuadroSalirBorrado/ButtonCancel"]
+modulate = Color(0.945098, 0.854902, 0.690196, 1)
+position = Vector2(68, 68)
+scale = Vector2(0.140625, 0.140625)
+texture = ExtResource("3_v6ic6")
+
+[node name="ButtonErase" type="Button" parent="CuadroSalirBorrado"]
+layout_mode = 1
+offset_left = 282.0
+offset_top = 544.0
+offset_right = 415.0
+offset_bottom = 684.0
+pivot_offset = Vector2(84, 86)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_f3br7")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Cruz" type="Sprite2D" parent="CuadroSalirBorrado/ButtonErase"]
+modulate = Color(0.945098, 0.854902, 0.690196, 1)
+position = Vector2(69, 61.9999)
+scale = Vector2(0.136718, 0.147089)
+texture = ExtResource("4_plv2b")
+
+[node name="ImagenViñeta" type="TextureRect" parent="CuadroSalirBorrado"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 327.0
+offset_top = 48.0
+offset_right = -383.0
+offset_bottom = -475.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_plv2b")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel0" type="RichTextLabel" parent="CuadroSalirBorrado"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 38.0
+offset_top = 240.0
+offset_right = -60.0
+offset_bottom = -184.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 40
+text = "Are you sure you want to delete the letter? (it will cost you 1,000 points from your score)"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[connection signal="pressed" from="CuadroSalirBorrado/ButtonCancel" to="." method="_on_button_cancel_pressed"]
+[connection signal="pressed" from="CuadroSalirBorrado/ButtonErase" to="." method="_on_button_erase_pressed"]

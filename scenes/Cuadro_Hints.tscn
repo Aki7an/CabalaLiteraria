@@ -1,0 +1,656 @@
+[gd_scene load_steps=36 format=3 uid="uid://bxrl1uirj3inf"]
+
+[ext_resource type="Theme" uid="uid://diacxsbys358g" path="res://fonts/Letra_Titulo_1.tres" id="1_ltjow"]
+[ext_resource type="Script" uid="uid://crbpumhhxvpx2" path="res://scenes/cuadro_hints.gd" id="1_mpm3g"]
+[ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="3_mpm3g"]
+[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_dofcg"]
+[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="6_24n6l"]
+[ext_resource type="Texture2D" uid="uid://dhy8jhoi1p1ej" path="res://images/Candado.png" id="6_waxq6"]
+[ext_resource type="Texture2D" uid="uid://bwwm8eyqclx0m" path="res://images/Cruz.png" id="7_017l8"]
+[ext_resource type="Texture2D" uid="uid://ofm8cbhk2t5a" path="res://images/Coin.png" id="8_4yxy3"]
+[ext_resource type="Texture2D" uid="uid://dr1kokrh1c77b" path="res://images/play-64.png" id="9_017l8"]
+[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="11_4yxy3"]
+[ext_resource type="Theme" uid="uid://k7hcs8goxg0c" path="res://Label_Nunito_font.tres" id="12_w8vuo"]
+[ext_resource type="FontFile" uid="uid://bqj1te7xeljg3" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="13_nghln"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dnf3t"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8vuo"]
+bg_color = Color(0.858824, 0.917647, 0.858824, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.290196, 0.552941, 0.509804, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mpm3g"]
+bg_color = Color(0.858824, 0.917647, 0.858824, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.290196, 0.552941, 0.509804, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dj36u"]
+texture = ExtResource("4_dofcg")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.44, 0.335427, 0.3036, 0.65098)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_24n6l"]
+texture = ExtResource("4_dofcg")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.2385, 0.45, 0.411225, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mpm3g"]
+texture = ExtResource("4_dofcg")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.227451, 0.623529, 0.584314, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_017l8"]
+texture = ExtResource("4_dofcg")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.1908, 0.36, 0.32898, 1)
+
+[sub_resource type="Theme" id="Theme_24n6l"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_dj36u")
+Button/styles/focus = null
+Button/styles/hover = SubResource("StyleBoxTexture_24n6l")
+Button/styles/normal = SubResource("StyleBoxTexture_mpm3g")
+Button/styles/pressed = SubResource("StyleBoxTexture_017l8")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_24n6l"]
+bg_color = Color(0.960784, 0.94902, 0.917647, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.290196, 0.552941, 0.509804, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i3j8r"]
+texture = ExtResource("4_dofcg")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.6, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5evft"]
+texture = ExtResource("4_dofcg")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.227451, 0.623529, 0.584314, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u86xj"]
+texture = ExtResource("4_dofcg")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_kmbax"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_dj36u")
+Button/styles/focus = null
+Button/styles/hover = SubResource("StyleBoxTexture_i3j8r")
+Button/styles/normal = SubResource("StyleBoxTexture_5evft")
+Button/styles/pressed = SubResource("StyleBoxTexture_u86xj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4yxy3"]
+texture = ExtResource("6_24n6l")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w8vuo"]
+texture = ExtResource("6_24n6l")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nghln"]
+texture = ExtResource("6_24n6l")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_whjgw"]
+texture = ExtResource("6_24n6l")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_isor6"]
+texture = ExtResource("6_24n6l")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.66, 0.44517, 0.0462, 1)
+
+[sub_resource type="Theme" id="Theme_ity34"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_4yxy3")
+Button/styles/focus = SubResource("StyleBoxTexture_w8vuo")
+Button/styles/hover = SubResource("StyleBoxTexture_nghln")
+Button/styles/normal = SubResource("StyleBoxTexture_whjgw")
+Button/styles/pressed = SubResource("StyleBoxTexture_isor6")
+
+[sub_resource type="Animation" id="Animation_017l8"]
+resource_name = "Blink"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CuadroSalirPartida/ButtonCancel:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 1.2)]
+}
+
+[sub_resource type="Animation" id="Animation_4yxy3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CuadroSalirPartida/ButtonCancel:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w8vuo"]
+_data = {
+&"Blink": SubResource("Animation_017l8"),
+&"RESET": SubResource("Animation_4yxy3")
+}
+
+[sub_resource type="FontVariation" id="FontVariation_whjgw"]
+base_font = ExtResource("13_nghln")
+
+[node name="FondoHints" type="ColorRect" groups=["FondoHint"]]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(504, 864)
+color = Color(1, 1, 1, 0)
+script = ExtResource("1_mpm3g")
+
+[node name="CuadroSalirPartida" type="Label" parent="."]
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 1920.0
+pivot_offset = Vector2(520, 864)
+mouse_filter = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_dnf3t")
+
+[node name="CuadroHint1" type="Label" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 168.0
+offset_right = 961.0
+offset_bottom = 840.0
+pivot_offset = Vector2(440, 168)
+theme_override_styles/normal = SubResource("StyleBoxFlat_w8vuo")
+
+[node name="Label" type="Label" parent="CuadroSalirPartida/CuadroHint1"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 32.0
+offset_right = 235.0
+offset_bottom = 107.0
+theme = ExtResource("1_ltjow")
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "HINT 1"
+
+[node name="ImagenViñeta" type="TextureRect" parent="CuadroSalirPartida/CuadroHint1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 112.0
+offset_top = 128.0
+offset_right = -104.0
+offset_bottom = -104.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_017l8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label5" type="Label" parent="CuadroSalirPartida/CuadroHint1"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 584.0
+offset_right = 275.0
+offset_bottom = 634.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
+text = "Free"
+horizontal_alignment = 1
+
+[node name="Label7" type="Label" parent="CuadroSalirPartida/CuadroHint1"]
+layout_mode = 0
+offset_left = 526.0
+offset_top = 584.0
+offset_right = 802.0
+offset_bottom = 634.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
+text = "0 points"
+horizontal_alignment = 1
+
+[node name="LabelUnkockedHint1" type="Label" parent="CuadroSalirPartida/CuadroHint1"]
+layout_mode = 0
+offset_left = 326.0
+offset_top = 40.0
+offset_right = 602.0
+offset_bottom = 96.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
+text = "UNLOCKED"
+horizontal_alignment = 1
+
+[node name="Label9" type="Label" parent="CuadroSalirPartida/CuadroHint1"]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 584.0
+offset_right = 707.0
+offset_bottom = 640.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.4, 0.216, 0.16, 1)
+theme_override_font_sizes/font_size = 35
+text = "Cost:"
+
+[node name="CuadroHint2" type="Label" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 856.0
+offset_right = 961.0
+offset_bottom = 1296.0
+pivot_offset = Vector2(440, 168)
+theme_override_styles/normal = SubResource("StyleBoxFlat_mpm3g")
+
+[node name="LabelPAID" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 325.0
+offset_right = 383.0
+offset_bottom = 375.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
+text = "PAID"
+
+[node name="Label5" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
+layout_mode = 0
+offset_left = 551.0
+offset_top = 328.0
+offset_right = 827.0
+offset_bottom = 431.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+text = "10.000 points"
+
+[node name="Label2" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 32.0
+offset_right = 235.0
+offset_bottom = 107.0
+theme = ExtResource("1_ltjow")
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "HINT 2"
+
+[node name="Label8" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
+layout_mode = 0
+offset_left = 415.0
+offset_top = 328.0
+offset_right = 691.0
+offset_bottom = 388.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.4, 0.216, 0.16, 1)
+theme_override_font_sizes/font_size = 35
+text = "Cost:"
+
+[node name="RichTextLabelHint2" type="RichTextLabel" parent="CuadroSalirPartida/CuadroHint2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 144.0
+offset_right = -24.0
+offset_bottom = -184.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.396078, 0.215686, 0.156863, 1)
+theme_override_font_sizes/normal_font_size = 40
+text = "*** **** ** * * ***** * * * *** * * ** * ***** ******* ***** *** * **"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="ButtonHint2" type="Button" parent="CuadroSalirPartida/CuadroHint2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+offset_left = 24.0
+offset_top = 286.0
+offset_right = 648.0
+offset_bottom = 548.072
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 0
+theme = SubResource("Theme_24n6l")
+theme_override_font_sizes/font_size = 80
+text = "GET"
+
+[node name="LabelAvailableHint2" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
+layout_mode = 0
+offset_left = 326.0
+offset_top = 40.0
+offset_right = 602.0
+offset_bottom = 96.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.81, 0.40041, 0.1458, 1)
+text = "AVAILABLE"
+horizontal_alignment = 1
+
+[node name="LabelUnkockedHint2" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
+visible = false
+layout_mode = 0
+offset_left = 327.0
+offset_top = 40.0
+offset_right = 603.0
+offset_bottom = 96.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
+text = "UNLOCKED"
+horizontal_alignment = 1
+
+[node name="CuadroHint3" type="Label" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 1312.0
+offset_right = 961.0
+offset_bottom = 1752.0
+pivot_offset = Vector2(440, 168)
+theme_override_styles/normal = SubResource("StyleBoxFlat_24n6l")
+
+[node name="LabelPAID2" type="Label" parent="CuadroSalirPartida/CuadroHint3"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 304.0
+offset_right = 391.0
+offset_bottom = 354.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
+text = "PAID"
+
+[node name="LabelAvailableHint3" type="Label" parent="CuadroSalirPartida/CuadroHint3"]
+layout_mode = 0
+offset_left = 326.0
+offset_top = 40.0
+offset_right = 602.0
+offset_bottom = 96.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.81, 0.40041, 0.1458, 1)
+text = "AVAILABLE"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="CuadroSalirPartida/CuadroHint3"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 32.0
+offset_right = 235.0
+offset_bottom = 107.0
+theme = ExtResource("1_ltjow")
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "HINT 3"
+
+[node name="Label10000" type="Label" parent="CuadroSalirPartida/CuadroHint3"]
+layout_mode = 0
+offset_left = 575.0
+offset_top = 296.0
+offset_right = 851.0
+offset_bottom = 356.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+text = "10.000 points"
+
+[node name="LabelCoste" type="Label" parent="CuadroSalirPartida/CuadroHint3"]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 297.271
+offset_right = 708.0
+offset_bottom = 357.271
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.4, 0.216, 0.16, 1)
+theme_override_font_sizes/font_size = 35
+text = "Cost:"
+
+[node name="LabelCoins" type="Label" parent="CuadroSalirPartida/CuadroHint3"]
+layout_mode = 0
+offset_left = 600.0
+offset_top = 346.0
+offset_right = 648.0
+offset_bottom = 406.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+text = "5"
+vertical_alignment = 1
+
+[node name="ButtonHint3" type="Button" parent="CuadroSalirPartida/CuadroHint3"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+offset_left = 24.0
+offset_top = 286.0
+offset_right = 648.0
+offset_bottom = 548.072
+scale = Vector2(0.5, 0.5)
+size_flags_horizontal = 0
+theme = SubResource("Theme_kmbax")
+theme_override_font_sizes/font_size = 80
+text = "GET"
+alignment = 2
+
+[node name="Candado" type="Sprite2D" parent="CuadroSalirPartida/CuadroHint3/ButtonHint3"]
+modulate = Color(0.980392, 0.941176, 0.87451, 1)
+position = Vector2(100, 112)
+scale = Vector2(0.675336, 0.675336)
+texture = ExtResource("6_waxq6")
+
+[node name="Coin" type="Sprite2D" parent="CuadroSalirPartida/CuadroHint3"]
+position = Vector2(663, 376)
+scale = Vector2(0.0755095, 0.0755095)
+texture = ExtResource("8_4yxy3")
+
+[node name="RichTextLabelHint3" type="RichTextLabel" parent="CuadroSalirPartida/CuadroHint3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 112.0
+offset_right = -24.0
+offset_bottom = -144.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_mpm3g")
+theme_override_colors/default_color = Color(0.396078, 0.215686, 0.156863, 1)
+theme_override_font_sizes/normal_font_size = 40
+text = "Unlocks after purchasing track 2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelLockedHint3" type="Label" parent="CuadroSalirPartida/CuadroHint3"]
+layout_mode = 0
+offset_left = 326.0
+offset_top = 40.0
+offset_right = 602.0
+offset_bottom = 96.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "LOCKED"
+horizontal_alignment = 1
+
+[node name="LabelUnkockedHint3" type="Label" parent="CuadroSalirPartida/CuadroHint3"]
+visible = false
+layout_mode = 0
+offset_left = 326.0
+offset_top = 40.0
+offset_right = 602.0
+offset_bottom = 96.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
+text = "UNLOCKED"
+horizontal_alignment = 1
+
+[node name="ButtonCancel" type="Button" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 464.0
+offset_top = 1776.0
+offset_right = 576.0
+offset_bottom = 1886.0
+pivot_offset = Vector2(52, 48)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_ity34")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CuadroSalirPartida/ButtonCancel"]
+root_node = NodePath("../../..")
+libraries = {
+&"": SubResource("AnimationLibrary_w8vuo")
+}
+autoplay = "Blink"
+speed_scale = 2.0
+
+[node name="Cruz" type="Sprite2D" parent="CuadroSalirPartida/ButtonCancel"]
+modulate = Color(0.945098, 0.854902, 0.690196, 1)
+position = Vector2(65, 52)
+texture = ExtResource("9_017l8")
+
+[node name="ScoreText" type="Label" parent="."]
+layout_mode = 0
+offset_left = 363.0
+offset_top = 16.0
+offset_right = 745.0
+offset_bottom = 72.0
+theme = ExtResource("11_4yxy3")
+theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
+text = "SCORE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score2" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 328.0
+offset_top = 56.0
+offset_right = 775.0
+offset_bottom = 185.0
+theme = ExtResource("12_w8vuo")
+theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
+theme_override_fonts/font = SubResource("FontVariation_whjgw")
+theme_override_font_sizes/font_size = 90
+text = "99.999.999"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="CuadroSalirPartida/CuadroHint2/ButtonHint2" to="." method="_on_button_hint_2_pressed"]
+[connection signal="pressed" from="CuadroSalirPartida/CuadroHint3/ButtonHint3" to="." method="_on_button_hint_3_pressed"]
+[connection signal="pressed" from="CuadroSalirPartida/ButtonCancel" to="." method="_on_button_cancel_pressed"]

@@ -1,0 +1,88 @@
+[gd_scene load_steps=6 format=3 uid="uid://b34imw6fcdojr"]
+
+[ext_resource type="Script" uid="uid://dsth7j5dasb6e" path="res://scenes/menu_player_name_record_online.gd" id="1_ed5lp"]
+[ext_resource type="Texture2D" uid="uid://b2puluyuy824t" path="res://images/Felicitacion.png" id="1_ff1wu"]
+[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="3_3npoo"]
+[ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="3_mxkpq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hyvrp"]
+bg_color = Color(0.835294, 0.635294, 0.576471, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[node name="FondoPlayerNameRecord" type="ColorRect"]
+offset_right = 1024.0
+offset_bottom = 1920.0
+pivot_offset = Vector2(482, 856)
+color = Color(1, 1, 1, 0.803922)
+script = ExtResource("1_ed5lp")
+
+[node name="CuadroSalirBorrado" type="Label" parent="."]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 280.0
+offset_right = 960.0
+offset_bottom = 1000.0
+pivot_offset = Vector2(440, 168)
+theme_override_styles/normal = SubResource("StyleBoxFlat_hyvrp")
+
+[node name="ImagenViñeta" type="TextureRect" parent="CuadroSalirBorrado"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 306.0
+offset_top = 24.0
+offset_right = -343.0
+offset_bottom = -448.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ff1wu")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="CuadroSalirBorrado"]
+layout_mode = 0
+offset_top = 328.0
+offset_right = 896.0
+offset_bottom = 378.0
+theme = ExtResource("3_3npoo")
+theme_override_font_sizes/font_size = 40
+text = "Nuevo record ONLINE en categoría"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="CuadroSalirBorrado"]
+layout_mode = 0
+offset_top = 424.0
+offset_right = 896.0
+offset_bottom = 474.0
+theme = ExtResource("3_3npoo")
+theme_override_font_sizes/font_size = 40
+text = "FACIL - EFEMERIDES"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="CuadroSalirBorrado"]
+layout_mode = 0
+offset_top = 504.0
+offset_right = 896.0
+offset_bottom = 554.0
+theme = ExtResource("3_3npoo")
+theme_override_font_sizes/font_size = 40
+text = "Posición Online Nº"
+horizontal_alignment = 1
+
+[node name="ButtonBack" type="Button" parent="."]
+layout_mode = 1
+offset_left = 288.0
+offset_top = 1712.0
+offset_right = 736.0
+offset_bottom = 1952.07
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(224, 104)
+theme = ExtResource("3_mxkpq")
+theme_override_font_sizes/font_size = 80
+text = "OK"
+
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://5jpc6ghf8igj"]
+
+[ext_resource type="AudioStream" uid="uid://b78idveq24sss" path="res://audio/click_celda.wav" id="1_08ara"]
+[ext_resource type="Script" uid="uid://b63w0yroiwewt" path="res://autoload/sound_manager.gd" id="1_k2nfr"]
+[ext_resource type="Script" uid="uid://ceyow7w5ylff1" path="res://audio/polyphonic.gd" id="3_bacxp"]
+[ext_resource type="AudioStream" uid="uid://cq8amuph2p0i1" path="res://audio/404743__owlstorm__retro-video-game-sfx-fail.wav" id="4_3wxfx"]
+[ext_resource type="AudioStream" uid="uid://wjs5ey04o2m8" path="res://audio/Campana_Hotel.ogg" id="5_34vgw"]
+[ext_resource type="AudioStream" uid="uid://blxkodycm4rep" path="res://audio/sucess.ogg" id="6_34vgw"]
+[ext_resource type="AudioStream" uid="uid://cgkee1mrglgon" path="res://audio/ButtonClick.ogg" id="7_34vgw"]
+
+[node name="SoundManager" type="Node"]
+script = ExtResource("1_k2nfr")
+
+[node name="ClickCelda" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_08ara")
+bus = &"SoundFx"
+script = ExtResource("3_bacxp")
+
+[node name="ClickCeldaYaSeleccionada" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_08ara")
+pitch_scale = 4.0
+bus = &"SoundFx"
+script = ExtResource("3_bacxp")
+
+[node name="ClickLetra" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_08ara")
+pitch_scale = 2.01
+bus = &"SoundFx"
+script = ExtResource("3_bacxp")
+
+[node name="LoseLive" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_3wxfx")
+volume_db = -29.434
+pitch_scale = 2.01
+bus = &"SoundFx"
+script = ExtResource("3_bacxp")
+
+[node name="Tip1" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_34vgw")
+volume_db = 7.866
+pitch_scale = 2.01
+bus = &"SoundFx"
+script = ExtResource("3_bacxp")
+
+[node name="PlayAvailable" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_34vgw")
+volume_db = 7.866
+pitch_scale = 2.01
+bus = &"SoundFx"
+script = ExtResource("3_bacxp")
+
+[node name="ButtonClick" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_34vgw")
+volume_db = 7.866
+pitch_scale = 2.01
+bus = &"SoundFx"
+script = ExtResource("3_bacxp")

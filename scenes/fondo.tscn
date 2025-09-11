@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=3 uid="uid://dxcpxbcwph8ik"]
+
+[ext_resource type="Script" uid="uid://da8bl37xknfwy" path="res://scenes/fondo.gd" id="1_j6jja"]
+[ext_resource type="Texture2D" uid="uid://cf81sgcawr5lp" path="res://images/Fondo.png" id="2_4kc6w"]
+
+[sub_resource type="Animation" id="Animation_boodw"]
+resource_name = "FondoMovimiento1"
+length = 20.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Container:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 19.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(584, -1200)]
+}
+
+[sub_resource type="Animation" id="Animation_j6jja"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Container:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_40mfy"]
+_data = {
+&"FondoMovimiento1": SubResource("Animation_boodw"),
+&"RESET": SubResource("Animation_j6jja")
+}
+
+[node name="Fondo" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_j6jja")
+
+[node name="Container" type="Container" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Fondo" type="Sprite2D" parent="Container"]
+modulate = Color(0.59, 0.377403, 0.3127, 0.101961)
+position = Vector2(676, 728)
+rotation = 0.523598
+scale = Vector2(3.81806, 3.81806)
+texture = ExtResource("2_4kc6w")
+metadata/_edit_lock_ = true
+
+[node name="Fondo2" type="Sprite2D" parent="Container"]
+modulate = Color(0.59, 0.377403, 0.3127, 0.101961)
+position = Vector2(-120, 2056)
+rotation = 0.523598
+scale = Vector2(3.81806, 3.81806)
+texture = ExtResource("2_4kc6w")
+metadata/_edit_lock_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_40mfy")
+}
+autoplay = "FondoMovimiento1"
+speed_scale = 0.5

@@ -1,0 +1,1992 @@
+[gd_scene load_steps=43 format=3 uid="uid://fwvrs81xpbno"]
+
+[ext_resource type="Script" uid="uid://djfuwgey5l4bd" path="res://scenes/menu_tutorial.gd" id="1_5nqfq"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_14pat"]
+[ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="2_tojt8"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="5_mkqcm"]
+[ext_resource type="Texture2D" uid="uid://b62tdps38fra2" path="res://images/Letra.png" id="6_x3c50"]
+[ext_resource type="Texture2D" uid="uid://ctpbivwi1vpvw" path="res://images/Flecha.png" id="7_cs7op"]
+[ext_resource type="Texture2D" uid="uid://bexpq0mq8vbw4" path="res://images/Teclado.png" id="8_p410d"]
+[ext_resource type="Texture2D" uid="uid://ddkfwe8eavgka" path="res://images/BotonBorrar.png" id="10_5onnj"]
+[ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="11_os3rs"]
+[ext_resource type="Texture2D" uid="uid://ofm8cbhk2t5a" path="res://images/Coin.png" id="12_2077r"]
+[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
+[ext_resource type="Texture2D" uid="uid://ciq7bte5h1epo" path="res://images/CifraLetraFull.png" id="15_jcm6x"]
+[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="16_l6n8b"]
+[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="17_vet1h"]
+[ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="18_5onnj"]
+[ext_resource type="Texture2D" uid="uid://bp623p23x4e0o" path="res://images/Shop3.png" id="19_os3rs"]
+[ext_resource type="Texture2D" uid="uid://dd65vcvp8rtev" path="res://images/ImagenPista.png" id="21_5onnj"]
+[ext_resource type="Theme" uid="uid://lkfr6pageoc2" path="res://GUI/Button_difficulty.tres" id="22_euxot"]
+[ext_resource type="Texture2D" uid="uid://bmmpn46jvs1t7" path="res://images/BotonPista.png" id="22_os3rs"]
+[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="23_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://bkog17syftljg" path="res://images/BotonLetras.png" id="23_euxot"]
+[ext_resource type="Texture2D" uid="uid://dfflig3f3g0c8" path="res://images/contorno_estrella_blanco.png" id="24_88ncm"]
+[ext_resource type="Texture2D" uid="uid://yimwuqsh68l8" path="res://images/CheckOK.png" id="25_ohopp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tojt8"]
+bg_color = Color(0.889317, 0.843552, 0.693583, 1)
+
+[sub_resource type="Gradient" id="Gradient_14pat"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.854902, 0.592157, 0.141176, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gp0p4"]
+gradient = SubResource("Gradient_14pat")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vet1h"]
+bg_color = Color(1, 0.882067, 0.693982, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p410d"]
+bg_color = Color(0.952941, 0.94902, 0.94902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5onnj"]
+bg_color = Color(0.768627, 0.768627, 0, 0)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.992157, 0.827451, 0.329412, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2077r"]
+bg_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_euxot"]
+bg_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xhfx"]
+bg_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mlydr"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.41, 0.41, 0.65098)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8b67"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.97, 0.97, 0.97, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xnqa"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.61, 0.61, 0.61, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7jnvx"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(4.09111e-06, 0.776379, 0.180672, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nwuey"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.41, 0.41, 1)
+
+[sub_resource type="Theme" id="Theme_2077r"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_mlydr")
+Button/styles/focus = SubResource("StyleBoxTexture_j8b67")
+Button/styles/hover = SubResource("StyleBoxTexture_1xnqa")
+Button/styles/normal = SubResource("StyleBoxTexture_7jnvx")
+Button/styles/pressed = SubResource("StyleBoxTexture_nwuey")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4xhfx"]
+texture = ExtResource("14_euxot")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2077r"]
+texture = ExtResource("14_euxot")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.73, 0, 0.121667, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_euxot"]
+texture = ExtResource("14_euxot")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.3, 0, 0.0500001, 1)
+
+[sub_resource type="Theme" id="Theme_88ncm"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_4xhfx")
+Button/styles/focus = SubResource("StyleBoxTexture_2077r")
+Button/styles/hover = SubResource("StyleBoxTexture_4xhfx")
+Button/styles/normal = SubResource("StyleBoxTexture_4xhfx")
+Button/styles/pressed = SubResource("StyleBoxTexture_euxot")
+
+[node name="MenuTutorial" type="Node2D"]
+script = ExtResource("1_5nqfq")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1024.0
+offset_bottom = 1920.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tojt8")
+metadata/_edit_lock_ = true
+
+[node name="Fondo" parent="." instance=ExtResource("2_14pat")]
+offset_left = 150.0
+offset_top = 96.0
+offset_right = 190.0
+offset_bottom = 136.0
+metadata/_edit_lock_ = true
+
+[node name="TextureRectTutulo" type="TextureRect" parent="."]
+anchors_preset = -1
+anchor_bottom = 0.0166667
+offset_right = 1025.0
+offset_bottom = 136.0
+texture = SubResource("GradientTexture1D_gp0p4")
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelScoreText" type="Label" parent="TextureRectTutulo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.898039, 0.854902, 0.713726, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 120
+text = "TUTORIAL"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Label" type="Label" parent="."]
+offset_left = 24.0
+offset_top = 144.0
+offset_right = 1000.0
+offset_bottom = 1520.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_vet1h")
+
+[node name="Control" type="Control" parent="Label"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -24.0
+offset_top = -160.0
+offset_right = -24.0
+offset_bottom = -160.0
+
+[node name="1" type="Control" parent="Label/Control"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelMarcoA" type="Label" parent="Label/Control/1"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 192.0
+offset_right = 962.0
+offset_bottom = 264.0
+
+[node name="Slide1" type="Panel" parent="Label/Control/1/LabelMarcoA" groups=["Tip"]]
+layout_mode = 1
+offset_left = 48.0
+offset_top = 32.0
+offset_right = 48.0
+offset_bottom = 32.0
+metadata/_edit_lock_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Label/Control/1/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -58.0
+offset_top = 310.0
+offset_right = 848.0
+offset_bottom = 503.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "Descubre la letra que corresponde a cada número para resolver las frases ocultas."
+horizontal_alignment = 1
+
+[node name="TextureRectCifraLetra" type="TextureRect" parent="Label/Control/1/LabelMarcoA"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.08333
+anchor_bottom = 1.1
+offset_left = -10.0
+offset_top = 490.0
+offset_right = 1015.0
+offset_bottom = 695.889
+scale = Vector2(0.875398, 0.875398)
+texture = ExtResource("15_jcm6x")
+expand_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label_C" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 82.0
+offset_right = 82.0
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_I" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 117.661
+offset_top = 82.2483
+offset_right = 190.661
+offset_bottom = 183.248
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_F" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 219.329
+offset_top = 82.0
+offset_right = 292.329
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_R" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 328.993
+offset_top = 82.2483
+offset_right = 401.993
+offset_bottom = 183.248
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_A" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
+visible = false
+layout_mode = 0
+offset_left = 420.0
+offset_top = 82.0
+offset_right = 502.0
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_L" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 530.045
+offset_top = 82.0
+offset_right = 603.045
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_E" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 630.57
+offset_top = 82.0
+offset_right = 703.57
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_T" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 731.096
+offset_top = 82.0
+offset_right = 804.096
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_R2" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 840.76
+offset_top = 82.0
+offset_right = 913.76
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_A2" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
+visible = false
+layout_mode = 0
+offset_left = 932.148
+offset_top = 82.2483
+offset_right = 1014.15
+offset_bottom = 183.248
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="LabelMarcoB" type="Label" parent="Label/Control/1"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 856.0
+offset_right = 962.0
+offset_bottom = 1480.0
+metadata/_edit_lock_ = true
+
+[node name="LabelScoreText2" type="Label" parent="Label/Control/1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = 200.0
+offset_right = 920.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 80
+text = "¡Bienvenido a "
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelScoreText3" type="Label" parent="Label/Control/1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = 328.0
+offset_right = 920.0
+offset_bottom = 431.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 120
+text = "CifraLetra!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelScoreText4" type="Label" parent="Label/Control/1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 971.0
+offset_right = 984.0
+offset_bottom = 1003.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 60
+text = "Celdas del juego"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelScoreText5" type="Label" parent="Label/Control/1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 480.0
+offset_top = 1379.0
+offset_right = 832.0
+offset_bottom = 1399.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 40
+text = "Letra"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelScoreText6" type="Label" parent="Label/Control/1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 144.0
+offset_top = 1242.0
+offset_right = 522.0
+offset_bottom = 1266.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 40
+text = "Número"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelScoreText7" type="Label" parent="Label/Control/1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 235.0
+offset_top = 1291.0
+offset_right = 419.0
+offset_bottom = 1350.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 33
+text = "Siempre visible"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelScoreText8" type="Label" parent="Label/Control/1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 559.0
+offset_top = 1427.0
+offset_right = 743.0
+offset_bottom = 1486.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 33
+text = "Debes descubrirla"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Letra" type="Sprite2D" parent="Label/Control/1"]
+position = Vector2(520, 1219)
+scale = Vector2(2.90816, 2.90816)
+texture = ExtResource("6_x3c50")
+
+[node name="Flecha" type="Sprite2D" parent="Label/Control/1/Letra"]
+position = Vector2(-33.0105, -11.0035)
+scale = Vector2(0.223031, 0.223031)
+texture = ExtResource("7_cs7op")
+
+[node name="Flecha2" type="Sprite2D" parent="Label/Control/1/Letra"]
+position = Vector2(35.7614, 33.0105)
+scale = Vector2(0.223031, 0.223031)
+texture = ExtResource("7_cs7op")
+flip_h = true
+
+[node name="2" type="Control" parent="Label/Control"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelMarcoA" type="Label" parent="Label/Control/2"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 192.0
+offset_right = 962.0
+offset_bottom = 264.0
+
+[node name="Slide1" type="Panel" parent="Label/Control/2/LabelMarcoA" groups=["Tip"]]
+layout_mode = 1
+offset_left = 48.0
+offset_top = 32.0
+offset_right = 48.0
+offset_bottom = 32.0
+metadata/_edit_lock_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Label/Control/2/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -58.0
+offset_top = 361.0
+offset_right = 848.0
+offset_bottom = 425.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "1- Selecciona la CELDA"
+horizontal_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/2/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -66.0
+offset_top = 792.0
+offset_right = 840.0
+offset_bottom = 856.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "2- Selecciona la LETRA"
+horizontal_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/2/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -66.0
+offset_top = 1136.0
+offset_right = 840.0
+offset_bottom = 1288.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 40
+text = "Todas las celdas con el numero 3 serán rellenadas con la letra A"
+horizontal_alignment = 1
+
+[node name="TextureRectCifraLetra" type="TextureRect" parent="Label/Control/2/LabelMarcoA"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -3.36111
+anchor_bottom = -3.34444
+offset_left = -2.0
+offset_top = 403.0
+offset_right = 1023.0
+offset_bottom = 608.889
+scale = Vector2(0.875398, 0.875398)
+texture = ExtResource("15_jcm6x")
+expand_mode = 5
+
+[node name="Label_C" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 82.0
+offset_right = 82.0
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_I" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 117.661
+offset_top = 82.2483
+offset_right = 190.661
+offset_bottom = 183.248
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_F" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 219.329
+offset_top = 82.0
+offset_right = 292.329
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_R" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 328.993
+offset_top = 82.2483
+offset_right = 401.993
+offset_bottom = 183.248
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_A" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 420.0
+offset_top = 82.0
+offset_right = 502.0
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_L" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 530.045
+offset_top = 82.0
+offset_right = 603.045
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_E" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 630.57
+offset_top = 82.0
+offset_right = 703.57
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_T" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 731.096
+offset_top = 82.0
+offset_right = 804.096
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_R2" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 840.76
+offset_top = 82.0
+offset_right = 913.76
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_A2" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+layout_mode = 0
+offset_left = 932.148
+offset_top = 82.2483
+offset_right = 1014.15
+offset_bottom = 183.248
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Flecha" type="Sprite2D" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+modulate = Color(0.611242, 0.266987, 0.351546, 1)
+position = Vector2(840.76, 163.354)
+scale = Vector2(1.08723, 1.07219)
+texture = ExtResource("7_cs7op")
+
+[node name="Teclado" type="Sprite2D" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+position = Vector2(502.628, 519.764)
+scale = Vector2(1.9506, 1.9506)
+texture = ExtResource("8_p410d")
+
+[node name="CeldaSelected" type="Panel" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra/Teclado"]
+modulate = Color(0.93426, 0.305472, 0.44197, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -82.0
+offset_right = -707.0
+offset_bottom = -182.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_5onnj")
+
+[node name="Flecha3" type="Sprite2D" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+modulate = Color(0.611242, 0.266987, 0.351546, 1)
+position = Vector2(244.569, 526.454)
+scale = Vector2(1.58142, 1.58142)
+texture = ExtResource("7_cs7op")
+flip_h = true
+
+[node name="CeldaSelected" type="Panel" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
+modulate = Color(0.93426, 0.305472, 0.44197, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 923.0
+offset_bottom = -0.0887451
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_5onnj")
+
+[node name="TextureRectCifraLetra2" type="TextureRect" parent="Label/Control/2/LabelMarcoA"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -3.36111
+anchor_bottom = -3.34444
+offset_left = -26.0002
+offset_top = 1186.0
+offset_right = 999.0
+offset_bottom = 1391.89
+scale = Vector2(0.875398, 0.875398)
+texture = ExtResource("15_jcm6x")
+expand_mode = 5
+
+[node name="Label_C" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra2"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 82.0
+offset_right = 82.0
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_I" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra2"]
+layout_mode = 0
+offset_left = 117.661
+offset_top = 82.2483
+offset_right = 190.661
+offset_bottom = 183.248
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_F" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra2"]
+layout_mode = 0
+offset_left = 219.329
+offset_top = 82.0
+offset_right = 292.329
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_R" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra2"]
+layout_mode = 0
+offset_left = 328.993
+offset_top = 82.2483
+offset_right = 401.993
+offset_bottom = 183.248
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_A" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra2"]
+visible = false
+layout_mode = 0
+offset_left = 420.0
+offset_top = 82.0
+offset_right = 502.0
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_L" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra2"]
+layout_mode = 0
+offset_left = 530.045
+offset_top = 82.0
+offset_right = 603.045
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_E" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra2"]
+layout_mode = 0
+offset_left = 630.57
+offset_top = 82.0
+offset_right = 703.57
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_T" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra2"]
+layout_mode = 0
+offset_left = 731.096
+offset_top = 82.0
+offset_right = 804.096
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_R2" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra2"]
+layout_mode = 0
+offset_left = 840.76
+offset_top = 82.0
+offset_right = 913.76
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="Label_A2" type="Label" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra2"]
+visible = false
+layout_mode = 0
+offset_left = 932.148
+offset_top = 82.2483
+offset_right = 1014.15
+offset_bottom = 183.248
+theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
+metadata/_edit_lock_ = true
+
+[node name="LabelMarcoB" type="Label" parent="Label/Control/2"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 856.0
+offset_right = 962.0
+offset_bottom = 1480.0
+metadata/_edit_lock_ = true
+
+[node name="LabelScoreText9" type="Label" parent="Label/Control/2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 216.0
+offset_right = 984.0
+offset_bottom = 248.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 60
+text = "Entrada de letras"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="3" type="Control" parent="Label/Control"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelMarcoA" type="Label" parent="Label/Control/3"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 192.0
+offset_right = 962.0
+offset_bottom = 264.0
+
+[node name="Slide1" type="Panel" parent="Label/Control/3/LabelMarcoA" groups=["Tip"]]
+layout_mode = 1
+offset_left = 48.0
+offset_top = 32.0
+offset_right = 48.0
+offset_bottom = 32.0
+metadata/_edit_lock_ = true
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/3/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -74.0
+offset_top = 454.0
+offset_right = 832.0
+offset_bottom = 598.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "Para borrar letras, usa el botón BORRAR."
+horizontal_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/3/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -58.0
+offset_top = 944.0
+offset_right = 848.0
+offset_bottom = 1088.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "Cada vez que borres una letra perderás puntos:"
+horizontal_alignment = 1
+
+[node name="BotonBorrar" type="Sprite2D" parent="Label/Control/3/LabelMarcoA"]
+position = Vector2(437, 760)
+scale = Vector2(2.41448, 2.41448)
+texture = ExtResource("10_5onnj")
+
+[node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/3/LabelMarcoA"]
+layout_mode = 0
+offset_left = -42.0
+offset_top = 1123.0
+offset_right = 926.0
+offset_bottom = 1185.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+text = "-100.000 putos"
+horizontal_alignment = 1
+
+[node name="LabelMarcoB" type="Label" parent="Label/Control/3"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 856.0
+offset_right = 962.0
+offset_bottom = 1480.0
+metadata/_edit_lock_ = true
+
+[node name="LabelScoreText9" type="Label" parent="Label/Control/3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 56.0
+offset_top = 224.0
+offset_right = 910.0
+offset_bottom = 357.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 65
+text = "¡El juego no avisa si la elección es correcta o no!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelScoreText10" type="Label" parent="Label/Control/3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 56.0
+offset_top = 432.0
+offset_right = 910.0
+offset_bottom = 565.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 50
+text = "Depende de ti deducir la correcta."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="4" type="Control" parent="Label/Control"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelMarcoA" type="Label" parent="Label/Control/4"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 192.0
+offset_right = 962.0
+offset_bottom = 264.0
+
+[node name="Slide1" type="Panel" parent="Label/Control/4/LabelMarcoA" groups=["Tip"]]
+layout_mode = 1
+offset_left = 48.0
+offset_top = 32.0
+offset_right = 48.0
+offset_bottom = 32.0
+metadata/_edit_lock_ = true
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 160.0
+offset_right = 886.0
+offset_bottom = 222.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
+text = "PISTA 1 - Imagen"
+horizontal_alignment = 1
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 352.0
+offset_right = 1028.0
+offset_bottom = 414.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
+text = "GRATIS"
+horizontal_alignment = 1
+
+[node name="RichTextLabel9" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 760.0
+offset_right = 878.0
+offset_bottom = 822.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+text = "-10.000 puntos"
+horizontal_alignment = 1
+
+[node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 1120.0
+offset_right = 878.0
+offset_bottom = 1182.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+text = "-10.000 putos"
+horizontal_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 568.0
+offset_right = 886.0
+offset_bottom = 630.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_euxot")
+text = "PISTA 2 - Texto descripción"
+horizontal_alignment = 1
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -55.0
+offset_top = 672.0
+offset_right = 851.0
+offset_bottom = 736.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+text = "Texto para tener más contexto sobre la frase"
+horizontal_alignment = 1
+
+[node name="RichTextLabel7" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -50.0
+offset_top = 1040.0
+offset_right = 856.0
+offset_bottom = 1096.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+text = "Algunas palabras que contiene la frase"
+horizontal_alignment = 1
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 936.0
+offset_right = 886.0
+offset_bottom = 998.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_4xhfx")
+text = "PISTA 3 - Palabras en la frase"
+horizontal_alignment = 1
+
+[node name="LabelCoins" type="Label" parent="Label/Control/4/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 334.0
+offset_top = 1200.0
+offset_right = 383.0
+offset_bottom = 1262.0
+theme = ExtResource("11_os3rs")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "-5"
+vertical_alignment = 1
+
+[node name="Coin" type="Sprite2D" parent="Label/Control/4/LabelMarcoA/Slide1"]
+position = Vector2(422, 1231)
+scale = Vector2(0.0755095, 0.0755095)
+texture = ExtResource("12_2077r")
+
+[node name="CapturaDeJuego02" type="Sprite2D" parent="Label/Control/4/LabelMarcoA"]
+position = Vector2(313.708, 427.248)
+scale = Vector2(1.01537, 1.01537)
+texture = ExtResource("21_5onnj")
+
+[node name="LabelMarcoB" type="Label" parent="Label/Control/4"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 856.0
+offset_right = 962.0
+offset_bottom = 1480.0
+metadata/_edit_lock_ = true
+
+[node name="BotonPista" type="Sprite2D" parent="Label/Control/4"]
+position = Vector2(510, 264)
+scale = Vector2(2.04762, 2.04762)
+texture = ExtResource("22_os3rs")
+
+[node name="5" type="Control" parent="Label/Control"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelMarcoA" type="Label" parent="Label/Control/5"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 192.0
+offset_right = 962.0
+offset_bottom = 264.0
+
+[node name="Slide1" type="Panel" parent="Label/Control/5/LabelMarcoA" groups=["Tip"]]
+layout_mode = 1
+offset_left = 48.0
+offset_top = 32.0
+offset_right = 48.0
+offset_bottom = 32.0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 489.0
+offset_right = 886.0
+offset_bottom = 551.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
+text = "Comprar: A - E"
+horizontal_alignment = 1
+
+[node name="RichTextLabel8" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -98.0
+offset_top = 160.0
+offset_right = 878.0
+offset_bottom = 222.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
+text = "Letras iniciales "
+horizontal_alignment = 1
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 271.0
+offset_top = 362.0
+offset_right = 517.0
+offset_bottom = 424.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
+text = "GRATIS"
+horizontal_alignment = 1
+
+[node name="RichTextLabel11" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 561.0
+offset_right = 878.0
+offset_bottom = 623.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+text = "-2.000.000 puntos"
+horizontal_alignment = 1
+
+[node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 1140.0
+offset_right = 878.0
+offset_bottom = 1202.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+text = "-100.000 putos"
+horizontal_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 760.0
+offset_right = 886.0
+offset_bottom = 822.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_euxot")
+text = "Comprar: I - O - U"
+horizontal_alignment = 1
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 244.0
+offset_right = 758.0
+offset_bottom = 348.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+text = "Las frases contienen letras iniciales ya reveladas según la dificultad.
+"
+horizontal_alignment = 1
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 1046.0
+offset_right = 886.0
+offset_bottom = 1108.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_4xhfx")
+text = "Comprar: Consonante"
+horizontal_alignment = 1
+
+[node name="LabelCoins" type="Label" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 334.0
+offset_top = 1220.0
+offset_right = 383.0
+offset_bottom = 1282.0
+theme = ExtResource("11_os3rs")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "-5"
+vertical_alignment = 1
+
+[node name="Coin" type="Sprite2D" parent="Label/Control/5/LabelMarcoA/Slide1"]
+position = Vector2(422, 1251)
+scale = Vector2(0.0755095, 0.0755095)
+texture = ExtResource("12_2077r")
+
+[node name="LabelCoins2" type="Label" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 334.0
+offset_top = 617.0
+offset_right = 383.0
+offset_bottom = 679.0
+theme = ExtResource("11_os3rs")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "-5"
+vertical_alignment = 1
+
+[node name="Coin2" type="Sprite2D" parent="Label/Control/5/LabelMarcoA/Slide1"]
+position = Vector2(422, 648)
+scale = Vector2(0.0755095, 0.0755095)
+texture = ExtResource("12_2077r")
+
+[node name="RichTextLabel12" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 856.0
+offset_right = 878.0
+offset_bottom = 918.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+text = "-1.000.000 puntos"
+horizontal_alignment = 1
+
+[node name="LabelCoins3" type="Label" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 334.0
+offset_top = 912.0
+offset_right = 383.0
+offset_bottom = 974.0
+theme = ExtResource("11_os3rs")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "-5"
+vertical_alignment = 1
+
+[node name="Coin3" type="Sprite2D" parent="Label/Control/5/LabelMarcoA/Slide1"]
+position = Vector2(422, 943)
+scale = Vector2(0.0755095, 0.0755095)
+texture = ExtResource("12_2077r")
+
+[node name="LabelMarcoB" type="Label" parent="Label/Control/5"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 856.0
+offset_right = 962.0
+offset_bottom = 1480.0
+metadata/_edit_lock_ = true
+
+[node name="BotonPista2" type="Sprite2D" parent="Label/Control/5"]
+position = Vector2(510, 264)
+scale = Vector2(2.04762, 2.04762)
+texture = ExtResource("23_euxot")
+
+[node name="6" type="Control" parent="Label/Control"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelMarcoA" type="Label" parent="Label/Control/6"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 192.0
+offset_right = 962.0
+offset_bottom = 264.0
+
+[node name="Slide1" type="Panel" parent="Label/Control/6/LabelMarcoA" groups=["Tip"]]
+layout_mode = 1
+offset_left = 48.0
+offset_top = 32.0
+offset_right = 48.0
+offset_bottom = 32.0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
+visible = false
+layout_mode = 0
+offset_left = 277.0
+offset_top = 920.0
+offset_right = 523.0
+offset_bottom = 982.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
+text = "1.99 €"
+horizontal_alignment = 1
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 326.0
+offset_top = 137.0
+offset_right = 854.0
+offset_bottom = 457.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
+text = "Frases de menos de [font_size=40][color=034419]150[/color][/font_size] caracteres por descubrir.
+
+Tiempo medio de partida"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1/RichTextLabel6"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 183.0
+offset_right = 496.0
+offset_bottom = 239.0
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+text = "3 minutos"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel7" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 326.0
+offset_top = 489.0
+offset_right = 854.0
+offset_bottom = 809.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
+text = "Frases de menos de [font_size=40][color=034419]250[/color][/font_size] caracteres por descubrir.
+
+Tiempo medio de partida"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1/RichTextLabel7"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 191.0
+offset_right = 496.0
+offset_bottom = 247.0
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+text = "7 minutos"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel8" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 326.0
+offset_top = 910.0
+offset_right = 854.0
+offset_bottom = 1230.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
+text = "Frases de más de [font_size=40][color=034419]250[/color][/font_size] caracteres por ser resueltos.
+
+Tiempo medio de partida"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1/RichTextLabel8"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 198.0
+offset_right = 496.0
+offset_bottom = 254.0
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+text = "25 minutos"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelMarcoB" type="Label" parent="Label/Control/6"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 856.0
+offset_right = 962.0
+offset_bottom = 1480.0
+metadata/_edit_lock_ = true
+
+[node name="LabelScoreText9" type="Label" parent="Label/Control/6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 198.0
+offset_right = 952.0
+offset_bottom = 246.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 60
+text = "DIFICULTADES"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonDifficulty1" type="Button" parent="Label/Control/6"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 370.0
+offset_right = 410.0
+offset_bottom = 586.0
+pivot_offset = Vector2(128, 112)
+theme = ExtResource("22_euxot")
+icon_alignment = 1
+script = ExtResource("18_5onnj")
+enable_intro_sheen = true
+
+[node name="TextureRect5" type="TextureRect" parent="Label/Control/6/ButtonDifficulty1"]
+modulate = Color(0.025859, 0.399018, 0.160759, 1)
+layout_mode = 0
+offset_left = 96.0
+offset_top = 45.0
+offset_right = 149.0
+offset_bottom = 93.0
+texture = ExtResource("23_4xhfx")
+expand_mode = 1
+
+[node name="TextureRect6" type="TextureRect" parent="Label/Control/6/ButtonDifficulty1"]
+modulate = Color(0.025859, 0.399018, 0.160759, 1)
+layout_mode = 0
+offset_left = 160.0
+offset_top = 45.0
+offset_right = 213.0
+offset_bottom = 93.0
+texture = ExtResource("24_88ncm")
+expand_mode = 1
+
+[node name="TextureRect7" type="TextureRect" parent="Label/Control/6/ButtonDifficulty1"]
+modulate = Color(0.025859, 0.399018, 0.160759, 1)
+layout_mode = 0
+offset_left = 224.0
+offset_top = 45.0
+offset_right = 277.0
+offset_bottom = 93.0
+texture = ExtResource("24_88ncm")
+expand_mode = 1
+
+[node name="Label3" type="Label" parent="Label/Control/6/ButtonDifficulty1"]
+modulate = Color(0.490145, 0.64362, 0.161896, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 112.0
+offset_right = -0.300995
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.025859, 0.399018, 0.160759, 1)
+theme_override_font_sizes/font_size = 60
+text = "Easy"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Blanco1" type="TextureRect" parent="Label/Control/6/ButtonDifficulty1"]
+visible = false
+layout_mode = 0
+offset_left = 192.0
+offset_top = 144.0
+offset_right = 245.0
+offset_bottom = 192.0
+texture = ExtResource("25_ohopp")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="ButtonDifficulty2" type="Button" parent="Label/Control/6"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 721.0
+offset_right = 410.301
+offset_bottom = 939.07
+pivot_offset = Vector2(176, 111)
+theme = ExtResource("22_euxot")
+theme_override_font_sizes/font_size = 60
+icon_alignment = 1
+script = ExtResource("18_5onnj")
+enable_intro_sheen = true
+
+[node name="TextureRect2" type="TextureRect" parent="Label/Control/6/ButtonDifficulty2"]
+modulate = Color(0.977525, 0.467886, 1.73271e-06, 1)
+layout_mode = 0
+offset_left = 80.0
+offset_top = 40.0
+offset_right = 133.0
+offset_bottom = 88.0
+texture = ExtResource("23_4xhfx")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="TextureRect3" type="TextureRect" parent="Label/Control/6/ButtonDifficulty2"]
+modulate = Color(0.977525, 0.467886, 1.73271e-06, 1)
+layout_mode = 0
+offset_left = 144.0
+offset_top = 40.0
+offset_right = 197.0
+offset_bottom = 88.0
+texture = ExtResource("23_4xhfx")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="TextureRect4" type="TextureRect" parent="Label/Control/6/ButtonDifficulty2"]
+modulate = Color(0.977525, 0.467886, 1.73271e-06, 1)
+layout_mode = 0
+offset_left = 208.0
+offset_top = 40.0
+offset_right = 261.0
+offset_bottom = 88.0
+texture = ExtResource("24_88ncm")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Label4" type="Label" parent="Label/Control/6/ButtonDifficulty2"]
+modulate = Color(0.85, 0.3978, 0.204, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 112.0
+offset_right = -0.300995
+offset_bottom = -8.07227
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.834423, 0.623338, 1)
+theme_override_font_sizes/font_size = 60
+text = "Normal"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="Blanco2" type="TextureRect" parent="Label/Control/6/ButtonDifficulty2"]
+visible = false
+layout_mode = 0
+offset_left = 288.0
+offset_top = 143.0
+offset_right = 341.0
+offset_bottom = 191.0
+texture = ExtResource("25_ohopp")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="ButtonDifficulty3" type="Button" parent="Label/Control/6"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 1134.0
+offset_right = 416.0
+offset_bottom = 1352.0
+pivot_offset = Vector2(151, 111)
+theme = ExtResource("22_euxot")
+theme_override_font_sizes/font_size = 60
+icon_alignment = 1
+script = ExtResource("18_5onnj")
+enable_intro_sheen = true
+
+[node name="TextureRect4" type="TextureRect" parent="Label/Control/6/ButtonDifficulty3"]
+modulate = Color(0.81, 0, 0, 1)
+layout_mode = 0
+offset_left = 94.0
+offset_top = 37.0
+offset_right = 147.0
+offset_bottom = 85.0
+texture = ExtResource("23_4xhfx")
+expand_mode = 1
+
+[node name="TextureRect5" type="TextureRect" parent="Label/Control/6/ButtonDifficulty3"]
+modulate = Color(0.81, 0, 0, 1)
+layout_mode = 0
+offset_left = 158.0
+offset_top = 37.0
+offset_right = 211.0
+offset_bottom = 85.0
+texture = ExtResource("23_4xhfx")
+expand_mode = 1
+
+[node name="TextureRect6" type="TextureRect" parent="Label/Control/6/ButtonDifficulty3"]
+modulate = Color(0.81, 0, 0, 1)
+layout_mode = 0
+offset_left = 222.0
+offset_top = 37.0
+offset_right = 275.0
+offset_bottom = 85.0
+texture = ExtResource("23_4xhfx")
+expand_mode = 1
+
+[node name="Label6" type="Label" parent="Label/Control/6/ButtonDifficulty3"]
+modulate = Color(0.81, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 112.0
+offset_right = -3.30099
+offset_bottom = -8.0722
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 60
+text = "Hard"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="Blanco3" type="TextureRect" parent="Label/Control/6/ButtonDifficulty3"]
+visible = false
+layout_mode = 0
+offset_left = 239.0
+offset_top = 143.0
+offset_right = 292.0
+offset_bottom = 191.0
+texture = ExtResource("25_ohopp")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="7" type="Control" parent="Label/Control"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelMarcoA" type="Label" parent="Label/Control/7"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 192.0
+offset_right = 962.0
+offset_bottom = 264.0
+
+[node name="Slide1" type="Panel" parent="Label/Control/7/LabelMarcoA" groups=["Tip"]]
+layout_mode = 1
+offset_left = 48.0
+offset_top = 32.0
+offset_right = 48.0
+offset_bottom = 32.0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 632.0
+offset_right = 886.0
+offset_bottom = 694.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
+text = "Comprar aplicación"
+horizontal_alignment = 1
+
+[node name="RichTextLabel8" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = -90.0
+offset_top = 256.0
+offset_right = 886.0
+offset_bottom = 318.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
+text = "Utilidad"
+horizontal_alignment = 1
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 278.0
+offset_top = 920.0
+offset_right = 524.0
+offset_bottom = 982.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
+text = "1,99 €"
+horizontal_alignment = 1
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 336.0
+offset_right = 726.0
+offset_bottom = 568.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+text = "Las monedas te servirán para comprar letras, y pistas.
+
+Compra monedas viendo anuncios o comprando la aplicación
+"
+horizontal_alignment = 1
+
+[node name="RichTextLabel7" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 743.0
+offset_right = 726.0
+offset_bottom = 893.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+text = "Al comprar la aplicación eliminas los anuncios que se abren durante el juego y consigues monedas infinitas.
+"
+horizontal_alignment = 1
+
+[node name="Coin4" type="Sprite2D" parent="Label/Control/7/LabelMarcoA/Slide1"]
+position = Vector2(374, 129)
+scale = Vector2(0.212427, 0.212427)
+texture = ExtResource("12_2077r")
+
+[node name="ButtonShop" type="Button" parent="Label/Control/7/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 294.0
+offset_top = 996.0
+offset_right = 486.0
+offset_bottom = 1196.0
+pivot_offset = Vector2(96, 96)
+theme = SubResource("Theme_2077r")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+script = ExtResource("18_5onnj")
+
+[node name="Label2" type="Label" parent="Label/Control/7/LabelMarcoA/Slide1/ButtonShop"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = 16.0
+offset_right = 96.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.024, 0.6, 0.1584, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 40
+text = "Shop"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Label/Control/7/LabelMarcoA/Slide1/ButtonShop"]
+layout_mode = 0
+offset_left = -424.0
+offset_top = -395.0
+offset_right = 775.0
+offset_bottom = 804.0
+scale = Vector2(0.162278, 0.162278)
+pivot_offset = Vector2(501.798, 464.819)
+texture = ExtResource("19_os3rs")
+
+[node name="LabelMarcoB" type="Label" parent="Label/Control/7"]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 856.0
+offset_right = 962.0
+offset_bottom = 1480.0
+metadata/_edit_lock_ = true
+
+[node name="LabelScoreText9" type="Label" parent="Label/Control/7"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 176.0
+offset_right = 952.0
+offset_bottom = 224.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 60
+text = "MONEDAS"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="CheckBox" type="CheckBox" parent="Label/Control"]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 1712.0
+offset_right = 248.0
+offset_bottom = 1736.0
+scale = Vector2(3, 3)
+button_pressed = true
+
+[node name="Label" type="Label" parent="Label"]
+layout_mode = 0
+offset_left = 289.0
+offset_top = 1568.0
+offset_right = 799.0
+offset_bottom = 1606.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/font_size = 30
+text = "Mostrar tutorial antes de partida"
+
+[node name="ButtonBack" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 30.6
+anchor_top = -0.1
+anchor_right = 30.6
+anchor_bottom = 0.498251
+offset_left = 288.0
+offset_top = 1712.0
+offset_right = 736.0
+offset_bottom = 1952.07
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(224, 104)
+theme = ExtResource("2_tojt8")
+theme_override_font_sizes/font_size = 80
+text = "OK"
+metadata/_edit_use_anchors_ = true
+
+[node name="Button1" type="Button" parent="."]
+offset_left = -1.2
+offset_top = 1510.2
+offset_right = 166.8
+offset_bottom = 1730.2
+scale = Vector2(0.7, 0.7)
+pivot_offset = Vector2(84, 86)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_88ncm")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 80
+toggle_mode = true
+text = "1"
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button2" type="Button" parent="."]
+offset_left = 142.8
+offset_top = 1510.2
+offset_right = 310.8
+offset_bottom = 1730.2
+scale = Vector2(0.7, 0.7)
+pivot_offset = Vector2(84, 86)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_88ncm")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 80
+toggle_mode = true
+text = "2"
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button3" type="Button" parent="."]
+offset_left = 286.8
+offset_top = 1510.2
+offset_right = 454.8
+offset_bottom = 1730.2
+scale = Vector2(0.7, 0.7)
+pivot_offset = Vector2(84, 86)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_88ncm")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 80
+toggle_mode = true
+text = "3"
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button4" type="Button" parent="."]
+offset_left = 430.8
+offset_top = 1510.2
+offset_right = 598.8
+offset_bottom = 1730.2
+scale = Vector2(0.7, 0.7)
+pivot_offset = Vector2(84, 86)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_88ncm")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 80
+toggle_mode = true
+text = "4"
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button5" type="Button" parent="."]
+offset_left = 574.8
+offset_top = 1510.2
+offset_right = 742.8
+offset_bottom = 1730.2
+scale = Vector2(0.7, 0.7)
+pivot_offset = Vector2(84, 86)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_88ncm")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 80
+toggle_mode = true
+text = "5"
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button6" type="Button" parent="."]
+offset_left = 718.8
+offset_top = 1510.2
+offset_right = 886.8
+offset_bottom = 1730.2
+scale = Vector2(0.7, 0.7)
+pivot_offset = Vector2(84, 86)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_88ncm")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 80
+toggle_mode = true
+text = "6"
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Button7" type="Button" parent="."]
+offset_left = 862.8
+offset_top = 1510.2
+offset_right = 1030.8
+offset_bottom = 1730.2
+scale = Vector2(0.7, 0.7)
+pivot_offset = Vector2(84, 86)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_88ncm")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 80
+toggle_mode = true
+text = "7"
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+metadata/_edit_use_anchors_ = true
+
+[node name="BotonPista" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(496, 368)
+scale = Vector2(1.92857, 1.92857)
+texture = ExtResource("23_euxot")
+
+[connection signal="toggled" from="Label/Control/CheckBox" to="." method="_on_check_box_toggled"]
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="Button1" to="." method="_on_button_1_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="Button5" to="." method="_on_button_5_pressed"]
+[connection signal="pressed" from="Button6" to="." method="_on_button_6_pressed"]
+[connection signal="pressed" from="Button7" to="." method="_on_button_7_pressed"]

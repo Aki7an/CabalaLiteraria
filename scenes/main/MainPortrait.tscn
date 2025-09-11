@@ -1,0 +1,158 @@
+[gd_scene load_steps=15 format=3 uid="uid://e5wl5e0vlqnu"]
+
+[ext_resource type="PackedScene" uid="uid://csvvjjmaptuc4" path="res://scenes/game/CanvasJuego.tscn" id="1_j1ox2"]
+[ext_resource type="Script" uid="uid://bk8npk8rjf1wj" path="res://scenes/main/main_portrait.gd" id="1_qtrpv"]
+[ext_resource type="PackedScene" uid="uid://qdxg6ofjqkq5" path="res://scenes/game/panel_letras.tscn" id="2_qtrpv"]
+[ext_resource type="PackedScene" uid="uid://y1k8m1upqvmd" path="res://scenes/game/PanelColors.tscn" id="3_c53kp"]
+[ext_resource type="PackedScene" uid="uid://df2olneywrcjb" path="res://scenes/PanelUP/panel_up.tscn" id="4_6wj6l"]
+[ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="5_22c6s"]
+[ext_resource type="Texture2D" uid="uid://dpq6nevhlufn6" path="res://images/triangulo-hacia-arriba -blanco.png" id="8_j1ox2"]
+[ext_resource type="Script" uid="uid://llhs580ksxi7" path="res://scenes/main/page_up.gd" id="9_qtrpv"]
+[ext_resource type="Script" uid="uid://n8vtfkg80eut" path="res://scenes/main/page_down.gd" id="10_c53kp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qtrpv"]
+bg_color = Color(0.632114, 0.365523, 0.284578, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j1ox2"]
+bg_color = Color(0.52, 0.300733, 0.234, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sjxhf"]
+bg_color = Color(0.34, 0.196633, 0.153, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ko0rf"]
+content_margin_left = 20.0
+content_margin_right = 20.0
+bg_color = Color(0.632114, 0.365523, 0.284578, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rhdn"]
+bg_color = Color(0.53, 0.306517, 0.2385, 1)
+
+[node name="MainPortrait" type="Node2D"]
+script = ExtResource("1_qtrpv")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1024.0
+offset_bottom = 1920.0
+color = Color(0.92, 0.9131, 0.9108, 1)
+
+[node name="CanvasJuego" parent="." instance=ExtResource("1_j1ox2")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 8.0
+offset_top = 440.0
+offset_right = 1016.0
+offset_bottom = 1440.0
+grow_horizontal = 1
+grow_vertical = 1
+size_flags_horizontal = 1
+
+[node name="Panel" type="Panel" parent="."]
+offset_top = 1440.0
+offset_right = 1024.0
+offset_bottom = 1920.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qtrpv")
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+visible = false
+offset_top = 1456.0
+offset_right = 1024.0
+offset_bottom = 1920.0
+color = Color(0.632114, 0.365523, 0.284578, 1)
+
+[node name="PanelLetras" parent="." instance=ExtResource("2_qtrpv")]
+offset_left = 8.0
+offset_top = 1608.0
+offset_right = 1016.0
+offset_bottom = 1912.0
+
+[node name="PanelColors" parent="." instance=ExtResource("3_c53kp")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 8.0
+offset_top = 1464.0
+offset_right = 1016.0
+offset_bottom = 1588.0
+grow_horizontal = 1
+grow_vertical = 1
+size_flags_vertical = 1
+
+[node name="PanelMap" type="Panel" parent="."]
+visible = false
+offset_left = 1056.0
+offset_top = 1464.0
+offset_right = 1224.0
+offset_bottom = 1912.0
+
+[node name="PageUp" type="Button" parent="PanelMap"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 560.0
+offset_bottom = 903.0
+scale = Vector2(0.269724, 0.10445)
+size_flags_horizontal = 0
+theme = ExtResource("5_22c6s")
+theme_override_styles/hover = SubResource("StyleBoxFlat_j1ox2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
+text = "-"
+icon_alignment = 1
+script = ExtResource("9_qtrpv")
+
+[node name="TextureRect2" type="TextureRect" parent="PanelMap/PageUp"]
+modulate = Color(0.835294, 0.635294, 0.576471, 1)
+layout_mode = 0
+offset_left = 118.64
+offset_top = 0.000366211
+offset_right = 452.64
+offset_bottom = 924.0
+texture = ExtResource("8_j1ox2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PageDown" type="Button" parent="PanelMap"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+offset_left = 157.0
+offset_top = 440.0
+offset_right = 709.0
+offset_bottom = 1364.0
+rotation = 3.14159
+scale = Vector2(0.269724, 0.10445)
+size_flags_horizontal = 0
+theme = ExtResource("5_22c6s")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1rhdn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
+text = "-"
+icon_alignment = 1
+script = ExtResource("10_c53kp")
+
+[node name="TextureRect" type="TextureRect" parent="PanelMap/PageDown"]
+modulate = Color(0.835294, 0.635294, 0.576471, 1)
+layout_mode = 0
+offset_left = 107.517
+offset_top = 0.00070388
+offset_right = 441.517
+offset_bottom = 924.001
+texture = ExtResource("8_j1ox2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PanelUP" parent="." instance=ExtResource("4_6wj6l")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_bottom = 0.0
+
+[connection signal="pressed" from="PanelMap/PageUp" to="PanelMap/PageUp" method="_on_pressed"]
+[connection signal="pressed" from="PanelMap/PageDown" to="PanelMap/PageDown" method="_on_pressed"]

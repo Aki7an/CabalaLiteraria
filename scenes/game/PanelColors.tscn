@@ -1,0 +1,256 @@
+[gd_scene load_steps=19 format=3 uid="uid://y1k8m1upqvmd"]
+
+[ext_resource type="Script" uid="uid://7fpd4dm3ml4u" path="res://scenes/game/panel_colors.gd" id="1_egxq0"]
+[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="3_8wmjc"]
+[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="3_qyr5c"]
+[ext_resource type="Script" uid="uid://328p3wf54q2r" path="res://scenes/main/column_+.gd" id="4_8wmjc"]
+[ext_resource type="Texture2D" uid="uid://b1q15vddra5wi" path="res://images/settings.png" id="4_ymjlu"]
+[ext_resource type="Texture2D" uid="uid://bv6k6rg4ip3h3" path="res://images/eraser_2.png" id="5_0kj3y"]
+[ext_resource type="FontFile" uid="uid://bp1reworugrvn" path="res://fonts/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf" id="6_ytfxw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_egxq0"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ytfxw"]
+texture = ExtResource("3_8wmjc")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.933333, 0.819608, 0.654902, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_osufa"]
+texture = ExtResource("3_8wmjc")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.933333, 0.819608, 0.654902, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qrjx4"]
+texture = ExtResource("3_8wmjc")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.7, 0.6125, 0.49, 1)
+
+[sub_resource type="Theme" id="Theme_c1gjs"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = null
+Button/styles/focus = null
+Button/styles/hover = SubResource("StyleBoxTexture_ytfxw")
+Button/styles/normal = SubResource("StyleBoxTexture_osufa")
+Button/styles/pressed = SubResource("StyleBoxTexture_qrjx4")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q4xca"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ayw1j"]
+bg_color = Color(0.6, 0.156863, 0.6, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0kj3y"]
+texture = ExtResource("3_qyr5c")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.8, 0.6684, 0.424, 0.541176)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i8kq8"]
+texture = ExtResource("3_qyr5c")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.901961, 0.698039, 0.309804, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qyr5c"]
+texture = ExtResource("3_qyr5c")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.74, 0.56906, 0.2516, 1)
+
+[sub_resource type="Theme" id="Theme_8wmjc"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_0kj3y")
+Button/styles/focus = null
+Button/styles/hover = SubResource("StyleBoxTexture_i8kq8")
+Button/styles/normal = SubResource("StyleBoxTexture_i8kq8")
+Button/styles/pressed = SubResource("StyleBoxTexture_qyr5c")
+
+[node name="PanelColors" type="Panel"]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.067
+offset_bottom = 0.360001
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_egxq0")
+script = ExtResource("1_egxq0")
+
+[node name="ButtonPortugues" type="Button" parent="."]
+visible = false
+layout_mode = 1
+offset_left = 880.0
+offset_top = -167.0
+offset_right = 1016.0
+offset_bottom = -24.0
+pivot_offset = Vector2(84, 80)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_c1gjs")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="TextureRect" type="TextureRect" parent="ButtonPortugues"]
+modulate = Color(0.627451, 0.486275, 0.298039, 1)
+layout_mode = 0
+offset_left = 30.0
+offset_top = 31.0
+offset_right = 286.0
+offset_bottom = 287.0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_ymjlu")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(400, 80)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Button0" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_q4xca")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ayw1j")
+text = "0"
+
+[node name="Button1" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_q4xca")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ayw1j")
+text = "1"
+
+[node name="Button2" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_q4xca")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ayw1j")
+text = "2"
+
+[node name="Button3" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_q4xca")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ayw1j")
+text = "3"
+
+[node name="Button4" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_q4xca")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ayw1j")
+text = "4"
+
+[node name="Button5" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/hover = SubResource("StyleBoxFlat_q4xca")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ayw1j")
+text = "5"
+
+[node name="BtnErase" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_8wmjc")
+disabled = true
+script = ExtResource("4_8wmjc")
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/BtnErase"]
+modulate = Color(0.356863, 0.27451, 0.211765, 1)
+layout_mode = 0
+offset_left = 33.0
+offset_top = 16.5
+offset_right = 545.0
+offset_bottom = 474.5
+scale = Vector2(0.17, 0.17)
+texture = ExtResource("5_0kj3y")
+
+[node name="Label" type="Label" parent="HBoxContainer/BtnErase"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 97.5
+offset_right = 145.0
+offset_bottom = 129.5
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_ytfxw")
+theme_override_font_sizes/font_size = 25
+text = "ERASE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="HBoxContainer/Button0" to="." method="_on_button_0_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button1" to="." method="_on_button_1_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button5" to="." method="_on_button_5_pressed"]
+[connection signal="pressed" from="HBoxContainer/BtnErase" to="." method="_on_btn_erase_pressed"]

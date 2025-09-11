@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://cue48v884sw43"]
+
+[ext_resource type="Script" uid="uid://blst6ae0lwfec" path="res://scenes/LeaderboardLocal.gd" id="1_0tlxa"]
+[ext_resource type="FontFile" uid="uid://bhfo1jcrwhcei" path="res://Font_titulos.tres" id="2_bnibd"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_cnd66"]
+
+[node name="LeaderBoard" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_0tlxa")
+fila_scene = null
+history_node_path = null
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1024.0
+offset_bottom = 1912.0
+color = Color(0.980392, 0.886275, 0.709804, 1)
+
+[node name="Fondo" parent="." instance=ExtResource("2_cnd66")]
+
+[node name="Filtros" type="Node" parent="."]
+
+[node name="Dificultad" type="OptionButton" parent="Filtros"]
+unique_name_in_owner = true
+offset_left = 40.0
+offset_top = 144.0
+offset_right = 232.0
+offset_bottom = 184.0
+theme_override_fonts/font = ExtResource("2_bnibd")
+theme_override_font_sizes/font_size = 40
+
+[node name="Categoria" type="OptionButton" parent="Filtros"]
+unique_name_in_owner = true
+offset_left = 320.0
+offset_top = 144.0
+offset_right = 544.0
+offset_bottom = 184.0
+theme_override_fonts/font = ExtResource("2_bnibd")
+theme_override_font_sizes/font_size = 40
+
+[node name="Lista" type="Node" parent="."]
+
+[node name="Contenido" type="VBoxContainer" parent="Lista"]
+unique_name_in_owner = true
+offset_left = 32.0
+offset_top = 192.0
+offset_right = 1000.0
+offset_bottom = 232.0

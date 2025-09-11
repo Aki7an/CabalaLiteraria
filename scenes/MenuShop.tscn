@@ -1,0 +1,99 @@
+[gd_scene load_steps=9 format=3 uid="uid://dxalsld2rolt0"]
+
+[ext_resource type="Script" uid="uid://dqihpgpaxp0c0" path="res://scenes/menu_shop.gd" id="1_sbmxc"]
+[ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="2_1jxwg"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_b0jd2"]
+[ext_resource type="Texture2D" uid="uid://cli51a4n1p87r" path="res://images/Mockups/MenuShop.jpg" id="4_nouij"]
+[ext_resource type="Texture2D" uid="uid://b3klg4uq56buf" path="res://images/Mockups/MenuShop_2.jpg" id="5_tclq7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jxwg"]
+bg_color = Color(0.889317, 0.843552, 0.693583, 1)
+
+[sub_resource type="Gradient" id="Gradient_h4fpn"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.854902, 0.592157, 0.141176, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_c607x"]
+gradient = SubResource("Gradient_h4fpn")
+
+[node name="MenuShop" type="Node2D"]
+script = ExtResource("1_sbmxc")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1024.0
+offset_bottom = 1920.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1jxwg")
+metadata/_edit_lock_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.493164
+anchor_top = -0.479167
+anchor_right = -0.493164
+anchor_bottom = -0.4625
+offset_left = 505.0
+offset_top = 920.0
+offset_right = 1530.0
+offset_bottom = 1056.0
+texture = SubResource("GradientTexture1D_c607x")
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelScoreText" type="Label" parent="Panel/TextureRect2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.898039, 0.854902, 0.713726, 1)
+theme_override_fonts/font = ExtResource("2_b0jd2")
+theme_override_font_sizes/font_size = 120
+text = "SHOP"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonRemoveAdds" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.945313
+anchor_top = -0.05
+anchor_right = 0.945313
+anchor_bottom = -0.05
+offset_left = 128.0
+offset_top = 1552.0
+offset_right = 896.0
+offset_bottom = 1832.0
+theme_override_font_sizes/font_size = 100
+text = "Remove Adds"
+metadata/_edit_use_anchors_ = true
+
+[node name="ButtonBack" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 30.6
+anchor_top = -0.1
+anchor_right = 30.6
+anchor_bottom = 0.498251
+offset_left = 288.0
+offset_top = 1672.0
+offset_right = 736.0
+offset_bottom = 1912.07
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(224, 104)
+theme = ExtResource("2_1jxwg")
+theme_override_font_sizes/font_size = 80
+text = "OK"
+metadata/_edit_use_anchors_ = true
+
+[node name="MenuShop" type="Sprite2D" parent="."]
+position = Vector2(512, 928)
+texture = ExtResource("4_nouij")
+
+[node name="MenuShop2" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(505, 920)
+texture = ExtResource("5_tclq7")
+
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

@@ -1,0 +1,143 @@
+[gd_scene load_steps=13 format=3 uid="uid://bw2h4e2lr1lmd"]
+
+[ext_resource type="PackedScene" uid="uid://df2olneywrcjb" path="res://scenes/PanelUP/panel_up.tscn" id="1_gyg6b"]
+[ext_resource type="PackedScene" uid="uid://csvvjjmaptuc4" path="res://scenes/game/CanvasJuego.tscn" id="1_u1xfj"]
+[ext_resource type="PackedScene" uid="uid://y1k8m1upqvmd" path="res://scenes/game/PanelColors.tscn" id="2_nha0i"]
+[ext_resource type="PackedScene" uid="uid://qdxg6ofjqkq5" path="res://scenes/game/panel_letras.tscn" id="3_q24mn"]
+[ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="5_dc040"]
+[ext_resource type="Texture2D" uid="uid://cg4vl73i707b3" path="res://images/triangulo-hacia-arriba.png" id="6_ostsq"]
+[ext_resource type="Script" uid="uid://da4v0m01peb0x" path="res://scenes/main/zoom__.gd" id="7_ostsq"]
+[ext_resource type="Script" uid="uid://328p3wf54q2r" path="res://scenes/main/column_+.gd" id="8_3km4f"]
+[ext_resource type="Script" uid="uid://cprxs3q16bcth" path="res://scenes/main/column__.gd" id="9_qkm1d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rhdn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sjxhf"]
+bg_color = Color(0.398793, 0.398793, 0.398793, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ko0rf"]
+content_margin_left = 20.0
+content_margin_right = 20.0
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Main" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1024.0
+offset_bottom = 1920.0
+
+[node name="CanvasJuego" parent="." instance=ExtResource("1_u1xfj")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 160.0
+offset_right = 1024.0
+offset_bottom = 1456.0
+grow_horizontal = 1
+grow_vertical = 1
+size_flags_horizontal = 1
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+offset_top = 1456.0
+offset_right = 1024.0
+offset_bottom = 1920.0
+color = Color(0.445312, 0.123141, 0.123141, 1)
+
+[node name="PanelLetras" parent="." instance=ExtResource("3_q24mn")]
+offset_left = 8.0
+offset_top = 1608.0
+offset_right = 1017.0
+offset_bottom = 1912.0
+
+[node name="PanelColors" parent="." instance=ExtResource("2_nha0i")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 8.0
+offset_top = 1464.0
+offset_right = 1016.0
+offset_bottom = 1600.0
+grow_horizontal = 1
+grow_vertical = 1
+size_flags_vertical = 1
+
+[node name="PanelUP" parent="." instance=ExtResource("1_gyg6b")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_bottom = 0.0
+grow_horizontal = 1
+
+[node name="Column +" type="Button" parent="."]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 808.0
+offset_top = 1320.0
+offset_right = 1016.0
+offset_bottom = 1448.0
+size_flags_horizontal = 0
+theme = ExtResource("5_dc040")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1rhdn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
+text = "Column +"
+script = ExtResource("8_3km4f")
+
+[node name="Column -" type="Button" parent="."]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 592.0
+offset_top = 1320.0
+offset_right = 800.0
+offset_bottom = 1448.0
+size_flags_horizontal = 0
+theme = ExtResource("5_dc040")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1rhdn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
+text = "Column -"
+script = ExtResource("9_qkm1d")
+
+[node name="PanelMap" type="Panel" parent="."]
+offset_top = 1072.0
+offset_right = 168.0
+offset_bottom = 1456.0
+
+[node name="Page+" type="Button" parent="PanelMap"]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 160.0
+offset_top = 376.0
+offset_right = 712.0
+offset_bottom = 1300.0
+rotation = 3.14159
+scale = Vector2(0.269724, 0.10445)
+size_flags_horizontal = 0
+theme = ExtResource("5_dc040")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1rhdn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
+text = "-"
+icon = ExtResource("6_ostsq")
+icon_alignment = 1
+script = ExtResource("7_ostsq")
+
+[node name="Page-" type="Button" parent="PanelMap"]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 560.0
+offset_bottom = 903.0
+scale = Vector2(0.269724, 0.10445)
+size_flags_horizontal = 0
+theme = ExtResource("5_dc040")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1rhdn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
+text = "-"
+icon = ExtResource("6_ostsq")
+icon_alignment = 1
+script = ExtResource("7_ostsq")
+
+[connection signal="pressed" from="Column +" to="Column +" method="_on_pressed"]
+[connection signal="pressed" from="Column -" to="Column -" method="_on_pressed"]

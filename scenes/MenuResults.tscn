@@ -1,0 +1,616 @@
+[gd_scene load_steps=24 format=3 uid="uid://dy1qd7mww4u6w"]
+
+[ext_resource type="Script" uid="uid://catwixw28tr0" path="res://scenes/menu_results.gd" id="1_22d8p"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_g0hrh"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_5poqe"]
+[ext_resource type="Script" uid="uid://dyn7g2ptbxlio" path="res://scenes/label_nuevo_record.gd" id="4_23av1"]
+[ext_resource type="Texture2D" uid="uid://b2puluyuy824t" path="res://images/Felicitacion.png" id="5_pih6d"]
+[ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="7_6oi1c"]
+[ext_resource type="Texture2D" uid="uid://cvdb51ixx3ih" path="res://images/iconosResultados.png" id="24_5poqe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fvb13"]
+bg_color = Color(0.889317, 0.843552, 0.693583, 1)
+
+[sub_resource type="Gradient" id="Gradient_23av1"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.85, 0.591317, 0.1445, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_yl02v"]
+gradient = SubResource("Gradient_23av1")
+
+[sub_resource type="Animation" id="Animation_23av1"]
+resource_name = "Blink"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LabelScore:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 2, 2),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.99272), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_pih6d"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LabelScore:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nuqtu"]
+_data = {
+&"Blink": SubResource("Animation_23av1"),
+&"RESET": SubResource("Animation_pih6d")
+}
+
+[sub_resource type="Theme" id="Theme_nuqtu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6blou"]
+bg_color = Color(0.1715, 0.49, 0.26705, 1)
+border_width_bottom = 10
+border_color = Color(0.513233, 0.513233, 0.513233, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="Theme" id="Theme_23av1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pih6d"]
+bg_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="Animation" id="Animation_nuqtu"]
+resource_name = "Blink"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_styles/normal:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.2, 0.8),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Color(0.821421, 0.746791, 0, 1), Color(1, 0.6745, 0.07, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6blou"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_styles/normal:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.670588, 0.0705882, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_owxb7"]
+_data = {
+&"Blink": SubResource("Animation_nuqtu"),
+&"RESET": SubResource("Animation_6blou")
+}
+
+[sub_resource type="Animation" id="Animation_owxb7"]
+resource_name = "Blink"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 2, 2),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.7), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_33sqp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bmywh"]
+_data = {
+&"Blink": SubResource("Animation_owxb7"),
+&"RESET": SubResource("Animation_33sqp")
+}
+
+[node name="MenuResults" type="Node2D"]
+script = ExtResource("1_22d8p")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1024.0
+offset_bottom = 1920.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fvb13")
+metadata/_edit_lock_ = true
+
+[node name="Fondo" parent="Panel" instance=ExtResource("2_g0hrh")]
+metadata/_edit_lock_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.441667
+anchor_bottom = 0.458333
+offset_right = 1025.0
+offset_bottom = 136.0
+texture = SubResource("GradientTexture1D_yl02v")
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelScoreText" type="Label" parent="Panel/TextureRect2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.898039, 0.854902, 0.713726, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 120
+text = "SCORE"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRectRECORD" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.454166
+offset_top = -840.0
+offset_right = 1025.0
+offset_bottom = -704.0
+texture = SubResource("GradientTexture1D_yl02v")
+
+[node name="LabelScore" type="Label" parent="Panel/TextureRectRECORD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.898039, 0.854902, 0.713726, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 120
+text = "RECORD"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Panel/TextureRectRECORD"]
+libraries = {
+&"": SubResource("AnimationLibrary_nuqtu")
+}
+autoplay = "Blink"
+
+[node name="LabelScore" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_top = 200.0
+offset_right = 1024.0
+offset_bottom = 379.0
+theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 150
+text = "2.010.235"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound3" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 514.0
+offset_top = 383.0
+offset_right = 954.0
+offset_bottom = 455.0
+theme_override_colors/font_color = Color(0.196697, 0.447487, 0.577553, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 60
+text = "x 10.000.000"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound12" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 528.0
+offset_top = 453.4
+offset_right = 954.0
+offset_bottom = 525.4
+theme_override_colors/font_color = Color(0.196697, 0.447487, 0.577553, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 60
+text = "x 1.000.000"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound14" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 576.0
+offset_top = 523.8
+offset_right = 954.0
+offset_bottom = 595.8
+theme_override_colors/font_color = Color(0.196697, 0.447487, 0.577553, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 60
+text = "x 100.000"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound4" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 450.0
+offset_top = 594.2
+offset_right = 954.0
+offset_bottom = 666.2
+theme_override_colors/font_color = Color(0.196697, 0.447487, 0.577553, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 60
+text = "x 10.000"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound5" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 576.0
+offset_top = 664.6
+offset_right = 954.0
+offset_bottom = 736.6
+theme_override_colors/font_color = Color(0.196697, 0.447487, 0.577553, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 60
+text = " x 1.000"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound6" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 458.0
+offset_top = 732.0
+offset_right = 954.0
+offset_bottom = 804.0
+theme_override_colors/font_color = Color(0.196697, 0.447487, 0.577553, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 60
+text = "x 1"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound7" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 162.0
+offset_top = 389.0
+offset_right = 514.0
+offset_bottom = 449.0
+theme_override_colors/font_color = Color(0.632114, 0.365523, 0.284578, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 50
+text = "Difficulty"
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound8" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 162.0
+offset_top = 459.4
+offset_right = 538.0
+offset_bottom = 519.4
+theme_override_colors/font_color = Color(0.632114, 0.365523, 0.284578, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 50
+text = "Vowels"
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound11" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 162.0
+offset_top = 529.8
+offset_right = 538.0
+offset_bottom = 589.8
+theme_override_colors/font_color = Color(0.632114, 0.365523, 0.284578, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 50
+text = "Consonants"
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound9" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 162.0
+offset_top = 670.6
+offset_right = 794.0
+offset_bottom = 730.6
+theme_override_colors/font_color = Color(0.632114, 0.365523, 0.284578, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 50
+text = "Erased"
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound13" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 162.0
+offset_top = 600.2
+offset_right = 794.0
+offset_bottom = 660.2
+theme_override_colors/font_color = Color(0.632114, 0.365523, 0.284578, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 50
+text = "Clues"
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound10" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.4375
+anchor_bottom = 0.4375
+offset_left = 162.0
+offset_top = 741.0
+offset_right = 658.0
+offset_bottom = 801.0
+theme_override_colors/font_color = Color(0.632114, 0.365523, 0.284578, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 50
+text = "Time"
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelNuevoRecord" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 224.0
+offset_right = 984.0
+offset_bottom = 592.0
+theme = SubResource("Theme_nuqtu")
+theme_override_styles/normal = SubResource("StyleBoxFlat_6blou")
+script = ExtResource("4_23av1")
+
+[node name="NombreRemarcar" type="Label" parent="Panel/LabelNuevoRecord"]
+visible = false
+layout_mode = 0
+offset_left = 160.0
+offset_top = 392.001
+offset_right = 784.0
+offset_bottom = 560.001
+theme = SubResource("Theme_23av1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_pih6d")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Panel/LabelNuevoRecord/NombreRemarcar"]
+libraries = {
+&"": SubResource("AnimationLibrary_owxb7")
+}
+autoplay = "Blink"
+
+[node name="Felicitacion" type="Sprite2D" parent="Panel/LabelNuevoRecord"]
+position = Vector2(88, 264)
+scale = Vector2(0.277778, 0.277778)
+texture = ExtResource("5_pih6d")
+
+[node name="Felicitacion2" type="Sprite2D" parent="Panel/LabelNuevoRecord"]
+position = Vector2(856, 264.001)
+scale = Vector2(0.277778, 0.277778)
+texture = ExtResource("5_pih6d")
+flip_h = true
+
+[node name="Nombre" type="LineEdit" parent="Panel/LabelNuevoRecord"]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 415.001
+offset_right = 760.0
+offset_bottom = 535.001
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Enter Name"
+alignment = 1
+max_length = 10
+clear_button_enabled = true
+select_all_on_focus = true
+caret_blink = true
+caret_force_displayed = true
+
+[node name="Label2" type="Label" parent="Panel/LabelNuevoRecord"]
+layout_mode = 1
+offset_left = 24.0
+offset_right = 920.0
+offset_bottom = 136.0
+theme_override_colors/font_color = Color(0.987247, 0.958011, 0.949124, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 70
+text = "New local record!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Panel/LabelNuevoRecord/Label2"]
+libraries = {
+&"": SubResource("AnimationLibrary_bmywh")
+}
+autoplay = "Blink"
+
+[node name="LabelPuestoTOP" type="Label" parent="Panel/LabelNuevoRecord"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.153017
+anchor_top = 0.461738
+anchor_right = 0.847458
+anchor_bottom = 0.997282
+offset_left = 7.552
+offset_top = 0.0802917
+offset_right = -8.00006
+offset_bottom = -15.9998
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.987247, 0.958011, 0.949124, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 50
+text = "Rank 3 in LOCAL TOP"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="LabelCatDiff" type="Label" parent="Panel/LabelNuevoRecord"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.153017
+anchor_top = 0.651957
+anchor_right = 0.847458
+anchor_bottom = 0.978262
+offset_left = 7.552
+offset_top = 0.0802917
+offset_right = -8.00006
+offset_bottom = -15.9998
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.987247, 0.958011, 0.949124, 1)
+theme_override_fonts/font = ExtResource("3_5poqe")
+theme_override_font_sizes/font_size = 50
+text = "Easy – Ephemerides
+"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="ButtonBack" type="Button" parent="."]
+anchors_preset = -1
+anchor_left = 30.6
+anchor_top = -0.1
+anchor_right = 30.6
+anchor_bottom = 0.498251
+offset_left = 288.0
+offset_top = 1688.0
+offset_right = 736.0
+offset_bottom = 1928.07
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(224, 104)
+theme = ExtResource("7_6oi1c")
+theme_override_font_sizes/font_size = 80
+text = "OK"
+metadata/_edit_use_anchors_ = true
+
+[node name="IconosResultados" type="Sprite2D" parent="."]
+position = Vector2(96, 1264)
+texture = ExtResource("24_5poqe")
+region_enabled = true
+region_rect = Rect2(0, 0, 61, 61)
+
+[node name="IconosResultados2" type="Sprite2D" parent="."]
+position = Vector2(96, 1333.1)
+texture = ExtResource("24_5poqe")
+region_enabled = true
+region_rect = Rect2(0, 73, 61, 62)
+
+[node name="IconosResultados3" type="Sprite2D" parent="."]
+position = Vector2(96, 1402.2)
+texture = ExtResource("24_5poqe")
+region_enabled = true
+region_rect = Rect2(0, 147, 61, 61)
+
+[node name="IconosResultados4" type="Sprite2D" parent="."]
+position = Vector2(96, 1470.8)
+texture = ExtResource("24_5poqe")
+region_enabled = true
+region_rect = Rect2(0, 220, 61, 61)
+
+[node name="IconosResultados5" type="Sprite2D" parent="."]
+position = Vector2(96, 1539.4)
+texture = ExtResource("24_5poqe")
+region_enabled = true
+region_rect = Rect2(0, 293, 61, 62)
+
+[node name="IconosResultados6" type="Sprite2D" parent="."]
+position = Vector2(96, 1608)
+texture = ExtResource("24_5poqe")
+region_enabled = true
+region_rect = Rect2(0, 367, 61, 60)
+
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

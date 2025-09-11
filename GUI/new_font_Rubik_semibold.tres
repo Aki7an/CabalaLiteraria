@@ -1,0 +1,6 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://b30tgh5qseyh0"]
+
+[ext_resource type="FontFile" uid="uid://is08ue42opgl" path="res://fonts/Fonts/Rubik-SemiBold.ttf" id="1_l0nu7"]
+
+[resource]
+base_font = ExtResource("1_l0nu7")

@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cslpdoapgbmbl"]
+
+[ext_resource type="FontFile" uid="uid://bhfo1jcrwhcei" path="res://Font_titulos.tres" id="1_pr0iu"]
+
+[resource]
+default_font = ExtResource("1_pr0iu")
+default_font_size = 40

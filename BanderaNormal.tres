@@ -1,0 +1,8 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://chaqwx1myjwnn"]
+
+[ext_resource type="Texture2D" uid="uid://d58j8nw41ha8" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="1_c7vlj"]
+
+[resource]
+texture = ExtResource("1_c7vlj")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.695588, 0, 0.118002, 1)

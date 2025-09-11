@@ -1,0 +1,268 @@
+[gd_scene load_steps=7 format=3 uid="uid://bf1rpdqdbbj1g"]
+
+[ext_resource type="Script" uid="uid://c35i4wdcl1b5f" path="res://scenes/Celda/celda.gd" id="1_omubc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d3qfr"]
+bg_color = Color(0.955319, 0.950491, 0.94895, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ewu8p"]
+bg_color = Color(0.168627, 0.180392, 0.188235, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lda0"]
+bg_color = Color(0.768627, 0.768627, 0, 0)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.992157, 0.827451, 0.329412, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_of430"]
+bg_color = Color(0.769222, 0.769996, 0.302051, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omubc"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="Celda" type="Control" groups=["Celda"]]
+custom_minimum_size = Vector2(60, 120)
+layout_mode = 3
+anchor_right = 0.078125
+anchor_bottom = 0.075
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_omubc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Fondo" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_d3qfr")
+
+[node name="LabelNumero" type="Label" parent="Fondo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -50.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.168627, 0.180392, 0.188235, 1)
+theme_override_font_sizes/font_size = 60
+text = "22"
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 160
+
+[node name="LabelLetra" type="Label" parent="Fondo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 26.0
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.168627, 0.180392, 0.188235, 1)
+theme_override_font_sizes/font_size = 100
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelPuntuacionPunto" type="Label" parent="Fondo"]
+visible = false
+layout_mode = 0
+offset_left = 17.0
+offset_top = 32.0
+offset_right = 66.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 60
+text = "."
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LabelPuntuacionComa" type="Label" parent="Fondo"]
+visible = false
+layout_mode = 0
+offset_left = 17.0
+offset_top = 32.0
+offset_right = 66.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 60
+text = ","
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LabelPuntuacionPuntoComa" type="Label" parent="Fondo"]
+visible = false
+layout_mode = 0
+offset_left = 17.0
+offset_top = 32.0
+offset_right = 66.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 60
+text = ";"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LabelPuntuacionDosPuntos" type="Label" parent="Fondo"]
+visible = false
+layout_mode = 0
+offset_left = 17.0
+offset_top = 32.0
+offset_right = 66.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 60
+text = ":"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LabelPuntuacionComillasInicio" type="Label" parent="Fondo"]
+visible = false
+layout_mode = 0
+offset_left = -24.0
+offset_top = 32.0
+offset_right = 25.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 60
+text = "\""
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LabelPuntuacionComillasFin" type="Label" parent="Fondo"]
+visible = false
+layout_mode = 0
+offset_left = 15.0
+offset_top = 32.0
+offset_right = 64.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 60
+text = "\""
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LabelPuntuacionExclamaciónInicio" type="Label" parent="Fondo"]
+visible = false
+layout_mode = 0
+offset_left = -33.0
+offset_top = 32.0
+offset_right = 16.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 60
+text = "¡"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LabelPuntuacionExclamaciónFin" type="Label" parent="Fondo"]
+visible = false
+layout_mode = 0
+offset_left = 15.0
+offset_top = 32.0
+offset_right = 64.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 60
+text = "!"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LabelPuntuacionEInterrogacionInicio" type="Label" parent="Fondo"]
+visible = false
+layout_mode = 0
+offset_left = -23.0
+offset_top = 32.0
+offset_right = 26.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 60
+text = "¿"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LabelPuntuacionEInterrogacionFin" type="Label" parent="Fondo"]
+visible = false
+layout_mode = 0
+offset_left = 15.0
+offset_top = 32.0
+offset_right = 64.0
+offset_bottom = 126.0
+theme_override_font_sizes/font_size = 60
+text = "?"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="EspacioBlanco" type="Panel" parent="Fondo"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
+
+[node name="Marco1" type="Panel" parent="Fondo"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
+
+[node name="Marco2" type="Panel" parent="Fondo"]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
+
+[node name="Marco3" type="Panel" parent="Fondo"]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
+
+[node name="Marco4" type="Panel" parent="Fondo"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.986
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.0159912
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
+
+[node name="CeldaSelected" type="Panel" parent="Fondo"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_7lda0")
+
+[node name="Button" type="Button" parent="Fondo"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.002
+anchor_bottom = 1.0
+offset_right = -0.128006
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_of430")
+theme_override_styles/normal = SubResource("StyleBoxFlat_omubc")
+metadata/_edit_lock_ = true
+
+[connection signal="pressed" from="Fondo/Button" to="." method="_on_button_pressed"]

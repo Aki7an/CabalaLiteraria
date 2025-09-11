@@ -1,0 +1,32 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://dfw7q1ctkms07"]
+
+[ext_resource type="Texture2D" uid="uid://b2km67albqyot" path="res://images/TrianguloAbajo.png" id="1_46dms"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_46dms"]
+bg_color = Color(0.716296, 0.716296, 0.716296, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ybgsu"]
+bg_color = Color(0.74558, 0.74558, 0.74558, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ybgsu"]
+grow_begin = 12.0
+grow_end = 20.0
+thickness = 10
+
+[resource]
+OptionButton/colors/font_color = Color(0.13, 0.13, 0.13, 1)
+OptionButton/colors/font_focus_color = Color(0.16, 0.16, 0.16, 1)
+OptionButton/colors/font_hover_color = Color(0.15, 0.15, 0.15, 1)
+OptionButton/icons/arrow = ExtResource("1_46dms")
+PopupMenu/colors/font_color = Color(1, 1, 1, 1)
+PopupMenu/colors/font_hover_color = Color(0, 0, 0, 1)
+PopupMenu/constants/h_separation = 20
+PopupMenu/constants/item_end_padding = 10
+PopupMenu/constants/item_start_padding = 10
+PopupMenu/constants/v_separation = 20
+PopupMenu/font_sizes/font_separator_size = 40
+PopupMenu/font_sizes/font_size = 40
+PopupMenu/font_sizes/title_font_size = 50
+PopupMenu/styles/hover = SubResource("StyleBoxFlat_46dms")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_ybgsu")
+PopupMenu/styles/separator = SubResource("StyleBoxLine_ybgsu")
