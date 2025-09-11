@@ -1,4 +1,4 @@
-res://scenes/MenuSelectLevelByID.tscn
+res://scenes/MenuMain.tscn
 res://GUI/ButtonMain.tres
 res://scenes/PlayBuoon.gdshader
 res://Label_Monserrat.tres
@@ -9,8 +9,6 @@ res://Botones.tres
 res://GUI/ButtonPista.tres
 res://GUI/Button_difficulty.tres
 res://GUI/Bandera.tres
-res://scenes/menu_select_level_by_id.gd
-res://scenes/MenuMain.tscn
 res://scenes/MenuSelectGame.tscn
 res://scenes/PanelUP/panel_up.tscn
 res://scenes/game/PanelColors.tscn
@@ -24,8 +22,5 @@ res://scenes/Cuadro_Hints.tscn
 res://scenes/menu_player_name_record_online.tscn
 res://scenes/MenuSettingsGame.tscn
 res://scenes/MenuShop.tscn
-res://scenes/menu_select_game.gd
-res://autoload/GameManager.gd
-res://scenes/cuadro_hints.gd
-res://scenes/PanelUP/panel_up.gd
+res://scenes/MenuSelectLevelByID.tscn
 res://scenes/main/MainPortrait.tscn
