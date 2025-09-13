@@ -7,7 +7,7 @@ extends Panel
 @onready var OverlaySceneFondoAvisoBorrado := preload("res://scenes/fondo_aviso_borrado.tscn")
 @onready var OverlaySceneCuadroHints := preload("res://scenes/Cuadro_Hints.tscn")
 @onready var OverlaySceneCuadroComprarLetra := preload("res://scenes/fondo_comprar_letra.tscn")
-
+@onready var OverlaySceneSettingsGame := preload("res://scenes/MenuSettingsGame.tscn")
 
 #@onready var rich_text_frase = $MenuGameOver/GameOver/RichTextFrase
 @onready var score = %Score2
@@ -335,3 +335,10 @@ func _on_button_letters_pressed():
 	add_child(overlay)                             # no cierra lo de abajo
 	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP  # bloquea clicks al fondo
+
+
+func _on_button_settings_pressed():
+	var overlay := OverlaySceneSettingsGame.instantiate()
+	add_child(overlay)                             # no cierra lo de abajo
+	#overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	#overlay.mouse_filter = Control.MOUSE_FILTER_STOP  # bloquea clicks al fondo

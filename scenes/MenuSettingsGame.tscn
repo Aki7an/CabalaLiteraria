@@ -1,12 +1,18 @@
-[gd_scene load_steps=43 format=3 uid="uid://bam2caihapi4m"]
+[gd_scene load_steps=51 format=3 uid="uid://bam2caihapi4m"]
 
 [ext_resource type="Script" uid="uid://bk4vllnl42st8" path="res://scenes/menu_settings_game.gd" id="1_yytc7"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_6r1xw"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="3_if2lk"]
 [ext_resource type="Theme" uid="uid://bjpeu7rrl4i88" path="res://GUI/Bandera.tres" id="4_p50gw"]
+[ext_resource type="Texture2D" uid="uid://bbbgchiy8176h" path="res://images/Cols/col08.png" id="4_wr6ke"]
+[ext_resource type="Texture2D" uid="uid://760p6juthl2h" path="res://images/Cols/col09.png" id="5_458mo"]
+[ext_resource type="Texture2D" uid="uid://crsdp8ahd6jkx" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Arrow_Dowm.png" id="5_wiqcu"]
+[ext_resource type="Texture2D" uid="uid://bjh87gtn2f2kw" path="res://images/Cols/Cols10.png" id="6_6r1xw"]
+[ext_resource type="Texture2D" uid="uid://by7ljalxm0ppo" path="res://images/Cols/Cols11.png" id="7_if2lk"]
+[ext_resource type="Texture2D" uid="uid://dhpekgjiayhnv" path="res://images/Cols/cols12.png" id="8_p50gw"]
+[ext_resource type="Texture2D" uid="uid://b0mjf3cq0h1uc" path="res://images/Cols/cols13.png" id="9_cw4mi"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="12_qkxxw"]
 [ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="14_akf1u"]
-[ext_resource type="PackedScene" uid="uid://lehjbq6gtdln" path="res://scenes/game/CanvasJuegosettings.tscn" id="15_54dfu"]
 [ext_resource type="Texture2D" uid="uid://ccw8ctoqdfe68" path="res://images/NotaMusical.png" id="15_sq3f1"]
 [ext_resource type="Texture2D" uid="uid://bnqqdvtauk5fv" path="res://images/ButtonCheckOK.png" id="16_glfws"]
 [ext_resource type="Texture2D" uid="uid://br0p7hp3nqjvu" path="res://images/ButtonCheckNOOK.png.png" id="17_eql01"]
@@ -18,54 +24,33 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7e130"]
 bg_color = Color(0.889317, 0.843552, 0.693583, 1)
 
-[sub_resource type="Gradient" id="Gradient_h4fpn"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0.854902, 0.592157, 0.141176, 1)
+[sub_resource type="Theme" id="Theme_yytc7"]
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_yl02v"]
-gradient = SubResource("Gradient_h4fpn")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54dfu"]
+bg_color = Color(0.952191, 0.930307, 0.860025, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
+border_color = Color(0.866667, 0.619608, 0.196078, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qke6e"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_13p2l"]
 texture = ExtResource("14_akf1u")
 texture_margin_left = 76.3134
 texture_margin_top = 76.0722
 texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
-modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
+modulate_color = Color(0.417204, 0.811498, 0.422634, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ph7et"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pk3fb"]
 texture = ExtResource("14_akf1u")
 texture_margin_left = 76.3134
 texture_margin_top = 76.0722
 texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
-modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
+modulate_color = Color(0.417204, 0.811498, 0.422634, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h4fpn"]
-texture = ExtResource("14_akf1u")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yl02v"]
-texture = ExtResource("14_akf1u")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_38sug"]
-texture = ExtResource("14_akf1u")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
-
-[sub_resource type="Theme" id="Theme_md1y2"]
+[sub_resource type="Theme" id="Theme_ph7et"]
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
@@ -85,11 +70,11 @@ Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
 Button/font_sizes/font_size = 50
 Button/fonts/font = null
-Button/styles/disabled = SubResource("StyleBoxTexture_qke6e")
-Button/styles/focus = SubResource("StyleBoxTexture_ph7et")
-Button/styles/hover = SubResource("StyleBoxTexture_h4fpn")
-Button/styles/normal = SubResource("StyleBoxTexture_yl02v")
-Button/styles/pressed = SubResource("StyleBoxTexture_38sug")
+Button/styles/disabled = SubResource("StyleBoxTexture_13p2l")
+Button/styles/focus = SubResource("StyleBoxTexture_13p2l")
+Button/styles/hover = SubResource("StyleBoxTexture_13p2l")
+Button/styles/normal = SubResource("StyleBoxTexture_pk3fb")
+Button/styles/pressed = SubResource("StyleBoxTexture_13p2l")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_md1y2"]
 texture_margin_left = 76.3134
@@ -168,15 +153,15 @@ texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
 modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
 
-[sub_resource type="Theme" id="Theme_38sug"]
+[sub_resource type="Theme" id="Theme_yl02v"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_13p2l"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_38sug"]
 bg_color = Color(0.286275, 0.666667, 0.529412, 1)
 border_width_left = 10
 border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
-border_color = Color(0.3618, 0.54, 0.44199, 1)
+border_color = Color(0.1715, 0.49, 0.26705, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -190,23 +175,54 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_13p2l"]
+[sub_resource type="Gradient" id="Gradient_h4fpn"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.854902, 0.592157, 0.141176, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_yl02v"]
+gradient = SubResource("Gradient_h4fpn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qke6e"]
 texture = ExtResource("14_akf1u")
 texture_margin_left = 76.3134
 texture_margin_top = 76.0722
 texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
-modulate_color = Color(0.417204, 0.811498, 0.422634, 1)
+modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pk3fb"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ph7et"]
 texture = ExtResource("14_akf1u")
 texture_margin_left = 76.3134
 texture_margin_top = 76.0722
 texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
-modulate_color = Color(0.417204, 0.811498, 0.422634, 1)
+modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
 
-[sub_resource type="Theme" id="Theme_ph7et"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h4fpn"]
+texture = ExtResource("14_akf1u")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yl02v"]
+texture = ExtResource("14_akf1u")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_38sug"]
+texture = ExtResource("14_akf1u")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.596078, 0.898039, 0.729412, 1)
+
+[sub_resource type="Theme" id="Theme_md1y2"]
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
@@ -226,21 +242,21 @@ Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
 Button/font_sizes/font_size = 50
 Button/fonts/font = null
-Button/styles/disabled = SubResource("StyleBoxTexture_13p2l")
-Button/styles/focus = SubResource("StyleBoxTexture_13p2l")
-Button/styles/hover = SubResource("StyleBoxTexture_13p2l")
-Button/styles/normal = SubResource("StyleBoxTexture_pk3fb")
-Button/styles/pressed = SubResource("StyleBoxTexture_13p2l")
+Button/styles/disabled = SubResource("StyleBoxTexture_qke6e")
+Button/styles/focus = SubResource("StyleBoxTexture_ph7et")
+Button/styles/hover = SubResource("StyleBoxTexture_h4fpn")
+Button/styles/normal = SubResource("StyleBoxTexture_yl02v")
+Button/styles/pressed = SubResource("StyleBoxTexture_38sug")
 
-[sub_resource type="Theme" id="Theme_yl02v"]
+[sub_resource type="Theme" id="Theme_38sug"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_38sug"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_13p2l"]
 bg_color = Color(0.286275, 0.666667, 0.529412, 1)
 border_width_left = 10
 border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
-border_color = Color(0.1715, 0.49, 0.26705, 1)
+border_color = Color(0.3618, 0.54, 0.44199, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -253,9 +269,26 @@ script = ExtResource("1_yytc7")
 offset_right = 1024.0
 offset_bottom = 1920.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_7e130")
-metadata/_edit_lock_ = true
 
 [node name="Fondo" parent="Panel" instance=ExtResource("2_6r1xw")]
+metadata/_edit_use_anchors_ = true
+
+[node name="ButtonBack2" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 30.6
+anchor_top = -0.1
+anchor_right = 30.6
+anchor_bottom = -0.098996
+offset_left = -31046.4
+offset_top = 1880.0
+offset_right = -30598.4
+offset_bottom = 2142.07
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(224, 104)
+theme = ExtResource("3_if2lk")
+theme_override_font_sizes/font_size = 80
+text = "OK"
 metadata/_edit_use_anchors_ = true
 
 [node name="ButtonBack" type="Button" parent="Panel"]
@@ -271,7 +304,41 @@ theme_override_font_sizes/font_size = 40
 text = "Back"
 metadata/_edit_use_anchors_ = true
 
-[node name="ButtonCol+" type="Button" parent="."]
+[node name="Cols08" type="Sprite2D" parent="Panel"]
+position = Vector2(512, 1489.25)
+scale = Vector2(2, 1.72549)
+texture = ExtResource("4_wr6ke")
+
+[node name="Cols09" type="Sprite2D" parent="Panel"]
+position = Vector2(512, 1489.25)
+scale = Vector2(2, 1.72549)
+texture = ExtResource("5_458mo")
+
+[node name="Cols10" type="Sprite2D" parent="Panel"]
+position = Vector2(512, 1489.25)
+scale = Vector2(2, 1.72549)
+texture = ExtResource("6_6r1xw")
+
+[node name="Cols11" type="Sprite2D" parent="Panel"]
+position = Vector2(512, 1489.25)
+scale = Vector2(2, 1.72549)
+texture = ExtResource("7_if2lk")
+
+[node name="Cols12" type="Sprite2D" parent="Panel"]
+position = Vector2(512, 1489.25)
+scale = Vector2(2, 1.72549)
+texture = ExtResource("8_p50gw")
+
+[node name="Cols13" type="Sprite2D" parent="Panel"]
+position = Vector2(512, 1489.25)
+scale = Vector2(2, 1.72549)
+texture = ExtResource("9_cw4mi")
+
+[node name="ButtonColPlus" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0703125
+anchor_right = -0.0703125
 offset_left = 288.0
 offset_top = 1160.0
 offset_right = 456.0
@@ -280,13 +347,22 @@ pivot_offset = Vector2(88, 89)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("4_p50gw")
-text = "+"
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
 metadata/_edit_use_anchors_ = true
 
-[node name="ButtonCol-" type="Button" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="Panel/ButtonColPlus"]
+position = Vector2(84, 84)
+rotation = 3.14159
+scale = Vector2(1.95556, 1.72549)
+texture = ExtResource("5_wiqcu")
+
+[node name="ButtonColLess" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0859375
+anchor_right = 0.0859375
 offset_left = 552.0
 offset_top = 1160.0
 offset_right = 720.0
@@ -295,69 +371,21 @@ pivot_offset = Vector2(84.3333, 84)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("4_p50gw")
-text = "-"
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
 metadata/_edit_use_anchors_ = true
 
-[node name="TextureRect2" type="TextureRect" parent="."]
-offset_top = 160.0
-offset_right = 1025.0
-offset_bottom = 296.0
-texture = SubResource("GradientTexture1D_yl02v")
-metadata/_edit_use_anchors_ = true
+[node name="Sprite2D2" type="Sprite2D" parent="Panel/ButtonColLess"]
+position = Vector2(88, 84)
+scale = Vector2(1.95556, 1.72549)
+texture = ExtResource("5_wiqcu")
 
-[node name="LabelSound" type="Label" parent="TextureRect2"]
+[node name="LabelSound2" type="Label" parent="Panel"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
-theme_override_fonts/font = ExtResource("12_qkxxw")
-theme_override_font_sizes/font_size = 70
-text = "SOUND"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_lock_ = true
-
-[node name="TextureRect3" type="TextureRect" parent="."]
-offset_top = 968.0
-offset_right = 1025.0
-offset_bottom = 1104.0
-texture = SubResource("GradientTexture1D_yl02v")
-metadata/_edit_use_anchors_ = true
-
-[node name="LabeLanguage" type="Label" parent="TextureRect3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
-theme_override_fonts/font = ExtResource("12_qkxxw")
-theme_override_font_sizes/font_size = 70
-text = "COLUMNS"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelSound2" type="Label" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
 offset_top = 16.0
 offset_right = 1024.0
 offset_bottom = 152.0
-grow_horizontal = 2
-grow_vertical = 2
 theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
 theme_override_fonts/font = ExtResource("12_qkxxw")
 theme_override_font_sizes/font_size = 90
@@ -367,93 +395,24 @@ vertical_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="ButtonRefranesPopulares2" type="Button" parent="."]
-offset_left = 80.0
-offset_top = 344.0
-offset_right = 944.0
-offset_bottom = 608.0
-theme = SubResource("Theme_md1y2")
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="TextureRect4" type="TextureRect" parent="ButtonRefranesPopulares2"]
-modulate = Color(0.0745098, 0.286275, 0.380392, 1)
+[node name="LabeColumns" type="Label" parent="Panel"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 40.0
-offset_top = 32.0
-offset_right = -670.0
-offset_bottom = -136.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("15_sq3f1")
-expand_mode = 1
-stretch_mode = 5
-metadata/_edit_use_anchors_ = true
-
-[node name="Label2" type="Label" parent="ButtonRefranesPopulares2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 224.0
-offset_top = -40.0
-offset_right = -96.0
-offset_bottom = -56.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.286275, 0.380392, 1)
+offset_left = 448.0
+offset_top = 1192.0
+offset_right = 581.0
+offset_bottom = 1312.0
+theme = SubResource("Theme_yytc7")
+theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
 theme_override_fonts/font = ExtResource("12_qkxxw")
-theme_override_font_sizes/font_size = 80
-text = "Music"
+theme_override_font_sizes/font_size = 70
+theme_override_styles/normal = SubResource("StyleBoxFlat_54dfu")
+text = "8"
+horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
 
-[node name="CheckButtonMusic" type="CheckButton" parent="ButtonRefranesPopulares2"]
+[node name="ButtonFx" type="Button" parent="Panel"]
 layout_mode = 0
-offset_left = 624.0
-offset_top = 32.0
-offset_right = 1208.3
-offset_bottom = 357.072
-scale = Vector2(0.32, 0.32)
-theme_override_styles/focus = SubResource("StyleBoxTexture_md1y2")
-theme_override_styles/disabled_mirrored = SubResource("StyleBoxTexture_v7qtb")
-theme_override_styles/disabled = SubResource("StyleBoxTexture_auhj5")
-theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxTexture_2ttv4")
-theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_q8vym")
-theme_override_styles/hover_mirrored = SubResource("StyleBoxTexture_outxp")
-theme_override_styles/hover = SubResource("StyleBoxTexture_l6k1i")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxTexture_bxtyl")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_d14nq")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxTexture_xilmn")
-theme_override_styles/normal = SubResource("StyleBoxTexture_8ej8a")
-theme_override_icons/checked = ExtResource("16_glfws")
-theme_override_icons/unchecked = ExtResource("17_eql01")
-button_pressed = true
-flat = true
-metadata/_edit_use_anchors_ = true
-
-[node name="HSliderSound" type="HSlider" parent="ButtonRefranesPopulares2"]
-layout_mode = 0
-offset_left = 80.0
-offset_top = 128.0
-offset_right = 616.0
-offset_bottom = 248.0
-theme = SubResource("Theme_38sug")
-theme_override_icons/grabber = ExtResource("18_4aem6")
-theme_override_icons/grabber_highlight = ExtResource("19_isy87")
-theme_override_styles/slider = SubResource("StyleBoxFlat_13p2l")
-theme_override_styles/grabber_area = SubResource("StyleBoxFlat_md1y2")
-theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_md1y2")
-max_value = 1.0
-step = 0.01
-value = 0.8
-metadata/_edit_use_anchors_ = true
-
-[node name="ButtonFx" type="Button" parent="."]
 offset_left = 80.0
 offset_top = 640.0
 offset_right = 944.0
@@ -462,7 +421,7 @@ theme = SubResource("Theme_ph7et")
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="CheckButtonFx" type="CheckButton" parent="ButtonFx"]
+[node name="CheckButtonFx" type="CheckButton" parent="Panel/ButtonFx"]
 layout_mode = 0
 offset_left = 624.0
 offset_top = 24.0
@@ -486,7 +445,7 @@ button_pressed = true
 flat = true
 metadata/_edit_use_anchors_ = true
 
-[node name="TextureRect4" type="TextureRect" parent="ButtonFx"]
+[node name="TextureRect4" type="TextureRect" parent="Panel/ButtonFx"]
 modulate = Color(0.1715, 0.49, 0.26705, 1)
 layout_mode = 1
 anchors_preset = 15
@@ -503,7 +462,7 @@ expand_mode = 1
 stretch_mode = 5
 metadata/_edit_use_anchors_ = true
 
-[node name="Label2" type="Label" parent="ButtonFx"]
+[node name="Label2" type="Label" parent="Panel/ButtonFx"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -522,7 +481,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="HSliderFx" type="HSlider" parent="ButtonFx"]
+[node name="HSliderFx" type="HSlider" parent="Panel/ButtonFx"]
 layout_mode = 0
 offset_left = 80.0
 offset_top = 120.0
@@ -538,7 +497,7 @@ step = 0.01
 value = 0.8
 metadata/_edit_use_anchors_ = true
 
-[node name="BlancoRefranesPopulares" type="TextureRect" parent="ButtonFx"]
+[node name="BlancoRefranesPopulares" type="TextureRect" parent="Panel/ButtonFx"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -554,32 +513,148 @@ texture = ExtResource("21_msoap")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ButtonBack" type="Button" parent="."]
-anchors_preset = -1
-anchor_left = 30.6
-anchor_top = -0.1
-anchor_right = 30.6
-anchor_bottom = 0.498251
-offset_left = 288.0
-offset_top = 1688.0
-offset_right = 736.0
-offset_bottom = 1928.07
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("3_if2lk")
-theme_override_font_sizes/font_size = 80
-text = "OK"
+[node name="TextureRect3" type="TextureRect" parent="Panel"]
+layout_mode = 0
+offset_top = 968.0
+offset_right = 1025.0
+offset_bottom = 1104.0
+texture = SubResource("GradientTexture1D_yl02v")
 metadata/_edit_use_anchors_ = true
 
-[node name="CanvasJuego" parent="." instance=ExtResource("15_54dfu")]
-offset_top = 1400.0
-offset_bottom = 1400.0
+[node name="LabeLanguage" type="Label" parent="Panel/TextureRect3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
+theme_override_fonts/font = ExtResource("12_qkxxw")
+theme_override_font_sizes/font_size = 70
+text = "COLUMNS"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
 
+[node name="TextureRect2" type="TextureRect" parent="Panel"]
+layout_mode = 0
+offset_top = 160.0
+offset_right = 1025.0
+offset_bottom = 296.0
+texture = SubResource("GradientTexture1D_yl02v")
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelSound" type="Label" parent="Panel/TextureRect2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
+theme_override_fonts/font = ExtResource("12_qkxxw")
+theme_override_font_sizes/font_size = 70
+text = "SOUND"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_lock_ = true
+
+[node name="ButtonRefranesPopulares2" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 344.0
+offset_right = 944.0
+offset_bottom = 608.0
+theme = SubResource("Theme_md1y2")
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect4" type="TextureRect" parent="Panel/ButtonRefranesPopulares2"]
+modulate = Color(0.0745098, 0.286275, 0.380392, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 32.0
+offset_right = -670.0
+offset_bottom = -136.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_sq3f1")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="Panel/ButtonRefranesPopulares2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 224.0
+offset_top = -40.0
+offset_right = -96.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.0705882, 0.286275, 0.380392, 1)
+theme_override_fonts/font = ExtResource("12_qkxxw")
+theme_override_font_sizes/font_size = 80
+text = "Music"
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CheckButtonMusic" type="CheckButton" parent="Panel/ButtonRefranesPopulares2"]
+layout_mode = 0
+offset_left = 624.0
+offset_top = 32.0
+offset_right = 1208.3
+offset_bottom = 357.072
+scale = Vector2(0.32, 0.32)
+theme_override_styles/focus = SubResource("StyleBoxTexture_md1y2")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxTexture_v7qtb")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_auhj5")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxTexture_2ttv4")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_q8vym")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxTexture_outxp")
+theme_override_styles/hover = SubResource("StyleBoxTexture_l6k1i")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxTexture_bxtyl")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_d14nq")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxTexture_xilmn")
+theme_override_styles/normal = SubResource("StyleBoxTexture_8ej8a")
+theme_override_icons/checked = ExtResource("16_glfws")
+theme_override_icons/unchecked = ExtResource("17_eql01")
+button_pressed = true
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="HSliderSound" type="HSlider" parent="Panel/ButtonRefranesPopulares2"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 128.0
+offset_right = 616.0
+offset_bottom = 248.0
+theme = SubResource("Theme_38sug")
+theme_override_icons/grabber = ExtResource("18_4aem6")
+theme_override_icons/grabber_highlight = ExtResource("19_isy87")
+theme_override_styles/slider = SubResource("StyleBoxFlat_13p2l")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_md1y2")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_md1y2")
+max_value = 1.0
+step = 0.01
+value = 0.8
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="Panel/ButtonBack2" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="Panel/ButtonBack" to="." method="_on_button_back_pressed"]
-[connection signal="pressed" from="ButtonCol+" to="." method="_on_button_español_pressed"]
-[connection signal="pressed" from="ButtonCol-" to="." method="_on_button_euskera_pressed"]
-[connection signal="pressed" from="ButtonRefranesPopulares2/CheckButtonMusic" to="." method="_on_check_button_music_pressed"]
-[connection signal="value_changed" from="ButtonRefranesPopulares2/HSliderSound" to="." method="_on_h_slider_sound_value_changed"]
-[connection signal="pressed" from="ButtonFx/CheckButtonFx" to="." method="_on_check_button_2_pressed"]
-[connection signal="value_changed" from="ButtonFx/HSliderFx" to="." method="_on_h_slider_fx_value_changed"]
-[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="Panel/ButtonColPlus" to="." method="_on_button_col_plus_pressed"]
+[connection signal="pressed" from="Panel/ButtonColLess" to="." method="_on_button_col_less_pressed"]
+[connection signal="pressed" from="Panel/ButtonFx/CheckButtonFx" to="." method="_on_check_button_2_pressed"]
+[connection signal="value_changed" from="Panel/ButtonFx/HSliderFx" to="." method="_on_h_slider_fx_value_changed"]
+[connection signal="pressed" from="Panel/ButtonRefranesPopulares2/CheckButtonMusic" to="." method="_on_check_button_music_pressed"]
+[connection signal="value_changed" from="Panel/ButtonRefranesPopulares2/HSliderSound" to="." method="_on_h_slider_sound_value_changed"]

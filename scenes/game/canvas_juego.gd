@@ -1,6 +1,16 @@
 extends Panel
 # Script final (Godot 4.4)
 
+
+# ------------------ Nodos ------------------
+@onready var canvas_juego: Panel = $"."                 
+@onready var grid_container: GridContainer = $GridContainer
+var _input_blocker: Control = null
+
+# Laterales
+var _left_stripe: VBoxContainer
+var _right_stripe: VBoxContainer
+
 var _move_tween: Tween
 
 @onready var color_rect_down = $ColorRectDown
@@ -8,6 +18,7 @@ var _move_tween: Tween
 # ------------------ Config ------------------
 const DRAG_THRESHOLD := 8.0  # píxeles para considerar que es drag
 const SCROLL_STEP := 80.0  # píxeles por “tic” de rueda (ajústalo a gusto)
+const STRIPE_WIDTH := 80.0   # ancho de las columnas laterales
 
 # ------------------ Estado input ------------------
 var tocando: bool = false
@@ -15,10 +26,7 @@ var dragging: bool = false
 var start_pos: Vector2 = Vector2.ZERO
 var ultima_posicion: Vector2 = Vector2.ZERO
 
-# ------------------ Nodos ------------------
-@onready var canvas_juego: Panel = $"."                 # Panel raíz (el canvas que movemos/zoomeamos)
-@onready var grid_container: GridContainer = $GridContainer
-var _input_blocker: Control = null
+
 
 # ------------------ Escenas / datos ------------------
 var escena_celda: PackedScene = preload("res://scenes/Celda/Celda.tscn")
@@ -37,9 +45,14 @@ func _ready() -> void:
 	reset_zoom_scale()
 	reset_grid()
 
+	# Crear columnas laterales
+	_create_side_stripes()
+
 	# Recalcular alturas cuando cambie el tamaño del grid y clamping
 	grid_container.resized.connect(func ():
 		_update_cell_min_heights()
+		_rebuild_side_stripes()
+		_rebuild_side_stripes()
 		_clamp_canvas_y()
 	)
 
@@ -47,11 +60,11 @@ func _ready() -> void:
 	if SignalManager.has_signal("update_canvas_grid"):
 		SignalManager.update_canvas_grid.connect(change_grid)
 
-	# Ajuste inicial con tamaño real
 	await get_tree().process_frame
 	_update_cell_min_heights()
+	_rebuild_side_stripes()
 	_clamp_canvas_y()
-	position.y= GameManager.min_y_canvas
+	position.y = GameManager.min_y_canvas
 	update_position_botton_red_line()
 	_añade_las_letras_iniciales()
 
@@ -69,6 +82,124 @@ func grid_bottom_in_parent(gc: GridContainer) -> float:
 	# Si acabas de añadir hijos, espera 1 frame para que el layout se actualice:
 	#await get_tree().process_frame
 	return gc.position.y + gc.size.y
+
+func _create_side_stripes() -> void:
+	# Crea contenedores laterales una única vez
+	_left_stripe = VBoxContainer.new()
+	_right_stripe = VBoxContainer.new()
+
+	_left_stripe.name = "LeftStripe"
+	_right_stripe.name = "RightStripe"
+
+	# No queremos que capten el ratón (solo decoración)
+	_left_stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_right_stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	# Que ocupen exactamente su ancho
+	_left_stripe.custom_minimum_size.x = STRIPE_WIDTH
+	_right_stripe.custom_minimum_size.x = STRIPE_WIDTH
+
+	# Asegura que estén en el mismo canvas del grid
+	add_child(_left_stripe)
+	add_child(_right_stripe)
+
+	# Z opcional si quieres que queden por debajo/encima
+	_left_stripe.z_index = grid_container.z_index
+	_right_stripe.z_index = grid_container.z_index
+
+func _rebuild_side_stripes() -> void:
+	if _left_stripe == null or _right_stripe == null:
+		return
+
+	# Limpia contenido previo
+	for c in _left_stripe.get_children():
+		c.queue_free()
+	for c in _right_stripe.get_children():
+		c.queue_free()
+
+	# Calcula alturas como en _update_cell_min_heights()
+	var cols: int = max(1, grid_container.columns)
+	var total_w: float = grid_container.size.x
+	var hsep: int = _grid_hsep()
+	var usable_w: float = total_w - float(hsep) * float(cols - 1)
+	if usable_w <= 0.0:
+		return
+	var cell_w: float = usable_w / float(cols)
+	var cell_h: float = cell_w * 2.0  # mismo ratio 1:2 que tus celdas
+
+	# Número de filas actuales
+	var filas: int = int(ceil(float(GameManager.TOTAL_CELDAS) / float(cols)))
+
+	# Crea las tiras fila a fila, alternando color
+	for i in range(filas):
+		var color_even: Color  = Color(0.935, 0.852, 0.738)
+		var color_odd: Color   = Color(0.617, 0.356, 0.275)
+		var color_odd2: Color  = Color(0.277, 0.142, 0.1)
+
+		# Secuencia: [odd, even, odd2, even] y repetir
+		var cycle: Array[Color] = [color_odd, color_even, color_odd2, color_even]
+		var col: Color = cycle[i % cycle.size()]
+
+		var left_rect := ColorRect.new()
+		left_rect.color = col
+		left_rect.custom_minimum_size = Vector2(STRIPE_WIDTH, cell_h)
+		left_rect.size_flags_horizontal = Control.SIZE_FILL
+		left_rect.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		_left_stripe.add_child(left_rect)
+
+		var right_rect := ColorRect.new()
+		right_rect.color = col
+		right_rect.custom_minimum_size = Vector2(STRIPE_WIDTH, cell_h)
+		right_rect.size_flags_horizontal = Control.SIZE_FILL
+		right_rect.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		_right_stripe.add_child(right_rect)
+
+	# Posiciona las columnas pegadas al grid, a izquierda y derecha
+	_left_stripe.position  = Vector2(grid_container.position.x - STRIPE_WIDTH, grid_container.position.y)
+	_right_stripe.position = Vector2(grid_container.position.x + grid_container.size.x, grid_container.position.y)
+
+	# Alto total igual al del grid (para evitar “sobresalir”)
+	_left_stripe.custom_minimum_size.y = filas * cell_h + float(_grid_vsep()) * float(max(filas - 1, 0))
+	_right_stripe.custom_minimum_size.y = _left_stripe.custom_minimum_size.y
+
+func change_grid(step: int) -> void:
+	grid_container.columns = max(1, grid_container.columns + step)
+	_update_cell_min_heights()
+	_rebuild_side_stripes()
+	_clamp_canvas_y()
+	var filas := int(ceil(GameManager.TOTAL_CELDAS / grid_container.columns))
+	GameManager.set_columns_and_rows(grid_container.columns, filas)
+	await get_tree().process_frame
+	update_position_botton_red_line()
+	GameManager.max_y_canvas = grid_container.position.y - grid_container.size.y + 40
+
+func reset_grid() -> void:
+	grid_container.columns = max(1, GameManager.NUM_COLUMNAS)
+	_update_cell_min_heights()
+	_rebuild_side_stripes()
+	_clamp_canvas_y()
+
+func _update_cell_min_heights() -> void:
+	var cols: int = max(1, grid_container.columns)
+	var total_w: float = grid_container.size.x
+	var hsep: int = _grid_hsep()
+	var usable_w: float = total_w - float(hsep) * float(cols - 1)
+	if usable_w <= 0.0:
+		return
+	var cell_w: float = usable_w / float(cols)
+	var cell_h: float = cell_w * 2.0
+
+	for child in grid_container.get_children():
+		if child is AspectRatioContainer:
+			var arc := child as AspectRatioContainer
+			arc.custom_minimum_size = Vector2(cell_w, cell_h)
+		elif child is Control:
+			var c := child as Control
+			c.custom_minimum_size.y = cell_h
+
+	# reconstruye laterales con el nuevo alto de fila
+	_rebuild_side_stripes()
+	_clamp_canvas_y()
 
 	
 func _añade_las_letras_iniciales() -> void:
@@ -195,28 +326,31 @@ func _input(event: InputEvent) -> void:
 		nuevo_escala = nuevo_escala.clamp(Vector2(0.5, 0.5), Vector2(3, 3))
 		canvas_juego.scale = nuevo_escala
 		_update_cell_min_heights() # por si el layout depende visualmente del zoom
+		_rebuild_side_stripes()
 		_clamp_canvas_y()
 
 
 # ----------------------------------------------------
 #                 LAYOUT / GRID UTILS
 # ----------------------------------------------------
-func change_grid(step: int) -> void:
-	grid_container.columns = max(1, grid_container.columns + step)
-	_update_cell_min_heights()
-	_clamp_canvas_y()
-	var filas := int(ceil(GameManager.TOTAL_CELDAS / grid_container.columns))
-	GameManager.set_columns_and_rows(grid_container.columns, filas)
-	await get_tree().process_frame
-	update_position_botton_red_line()
-	#pan_to_y(GameManager.min_y_canvas, 0.5)
-	GameManager.max_y_canvas = grid_container.position.y - grid_container.size.y + 40
-	#print("Nueva posicion: ", GameManager.max_y_canvas)
-	
-func reset_grid() -> void:
-	grid_container.columns = max(1, GameManager.NUM_COLUMNAS)
-	_update_cell_min_heights()
-	_clamp_canvas_y()
+#func change_grid(step: int) -> void:
+	#grid_container.columns = max(1, grid_container.columns + step)
+	#_update_cell_min_heights()
+	#_rebuild_side_stripes()
+	#_clamp_canvas_y()
+	#var filas := int(ceil(GameManager.TOTAL_CELDAS / grid_container.columns))
+	#GameManager.set_columns_and_rows(grid_container.columns, filas)
+	#await get_tree().process_frame
+	#update_position_botton_red_line()
+	##pan_to_y(GameManager.min_y_canvas, 0.5)
+	#GameManager.max_y_canvas = grid_container.position.y - grid_container.size.y + 40
+	##print("Nueva posicion: ", GameManager.max_y_canvas)
+	#
+#func reset_grid() -> void:
+	#grid_container.columns = max(1, GameManager.NUM_COLUMNAS)
+	#_update_cell_min_heights()
+	#_rebuild_side_stripes()
+	#_clamp_canvas_y()
 
 func _grid_hsep() -> int:
 	return grid_container.get_theme_constant("h_separation")
@@ -225,24 +359,24 @@ func _grid_vsep() -> int:
 	return grid_container.get_theme_constant("v_separation")
 
 # Ajusta el alto mínimo por fila para evitar solapes (ratio 1:2)
-func _update_cell_min_heights() -> void:
-	var cols: int = max(1, grid_container.columns)
-	var total_w: float = grid_container.size.x
-	var hsep: int = _grid_hsep()
-	var usable_w: float = total_w - float(hsep) * float(cols - 1)
-	if usable_w <= 0.0:
-		return
-	var cell_w: float = usable_w / float(cols)
-	var cell_h: float = cell_w * 2.0  # ratio 1:2 => alto = 2*ancho
-
-	for child in grid_container.get_children():
-		if child is AspectRatioContainer:
-			var arc := child as AspectRatioContainer
-			arc.custom_minimum_size = Vector2(cell_w, cell_h)
-		elif child is Control:
-			var c := child as Control
-			c.custom_minimum_size.y = cell_h
-	_clamp_canvas_y()
+#func _update_cell_min_heights() -> void:
+	#var cols: int = max(1, grid_container.columns)
+	#var total_w: float = grid_container.size.x
+	#var hsep: int = _grid_hsep()
+	#var usable_w: float = total_w - float(hsep) * float(cols - 1)
+	#if usable_w <= 0.0:
+		#return
+	#var cell_w: float = usable_w / float(cols)
+	#var cell_h: float = cell_w * 2.0  # ratio 1:2 => alto = 2*ancho
+#
+	#for child in grid_container.get_children():
+		#if child is AspectRatioContainer:
+			#var arc := child as AspectRatioContainer
+			#arc.custom_minimum_size = Vector2(cell_w, cell_h)
+		#elif child is Control:
+			#var c := child as Control
+			#c.custom_minimum_size.y = cell_h
+	#_clamp_canvas_y()
 
 # Limita la posición Y del canvas para que:
 #  - Primera fila quede arriba (y = 0)

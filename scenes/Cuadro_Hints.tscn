@@ -626,10 +626,10 @@ texture = ExtResource("9_017l8")
 
 [node name="ScoreText" type="Label" parent="."]
 layout_mode = 0
-offset_left = 363.0
-offset_top = 16.0
-offset_right = 745.0
-offset_bottom = 72.0
+offset_left = 441.0
+offset_top = 24.0
+offset_right = 823.0
+offset_bottom = 80.0
 theme = ExtResource("11_4yxy3")
 theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
 text = "SCORE"
@@ -639,10 +639,10 @@ vertical_alignment = 1
 [node name="Score2" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 328.0
-offset_top = 56.0
-offset_right = 775.0
-offset_bottom = 185.0
+offset_left = 406.0
+offset_top = 47.0
+offset_right = 853.0
+offset_bottom = 176.0
 theme = ExtResource("12_w8vuo")
 theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
 theme_override_fonts/font = SubResource("FontVariation_whjgw")

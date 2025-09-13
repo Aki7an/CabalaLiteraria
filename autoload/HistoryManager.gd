@@ -1,27 +1,61 @@
+# res://autoload/HistoryManager.gd
 extends Node
 
 const HISTORY_PATH := "user://history.json"
 
+signal stats_updated
+
 var _historial: Array = []
+
+# ================= STATS CACHÉ (públicas) =================
+var stat_total_play_time_str: String = ""
+var stat_matches_count_str: String = ""
+
+var stat_letters_bought_by_difficulty_str: String = ""
+var stat_hints_used_by_difficulty_str: String = ""
+var stat_vowels_bought_by_difficulty_str: String = ""
+var stat_swaps_made_by_difficulty_str: String = ""
+
+# Por dificultad (1 Fácil, 2 Normal, 3 Difícil)
+var stat_letters_bought_facil_str: String = ""
+var stat_letters_bought_normal_str: String = ""
+var stat_letters_bought_dificil_str: String = ""
+
+var stat_hints_used_facil_str: String = ""
+var stat_hints_used_normal_str: String = ""
+var stat_hints_used_dificil_str: String = ""
+
+var stat_vowels_bought_facil_str: String = ""
+var stat_vowels_bought_normal_str: String = ""
+var stat_vowels_bought_dificil_str: String = ""
+
+var stat_swaps_made_facil_str: String = ""
+var stat_swaps_made_normal_str: String = ""
+var stat_swaps_made_dificil_str: String = ""
+
+# Partidas por dificultad
+var stat_matches_by_difficulty_str: String = ""   # "Facil: X | Normal: Y | Dificil: Z"
+var stat_matches_facil_str: String = ""
+var stat_matches_normal_str: String = ""
+var stat_matches_dificil_str: String = ""
+
+# Tiempo medio por dificultad
+var stat_avg_time_facil_str: String = ""        # "HH:MM:SS"
+var stat_avg_time_normal_str: String = ""       # "HH:MM:SS"
+var stat_avg_time_dificil_str: String = ""      # "HH:MM:SS"
+var stat_avg_time_by_difficulty_str: String = ""# "Facil: ... | Normal: ... | Dificil: ..."
+
+# Paquete opcional
+var stat_pack: Dictionary = {}
 
 func _ready() -> void:
 	_historial = _load_history()
-	#print(_historial)
+	_recompute_stats()
 
-# ---------- API PÚBLICA ----------
-
-## Registra el resultado de una partida.
-## - player_name: String
-## - category: String
-## - score: int
-## - tiempo_partida: int
-## - breakdown (opcional): Dictionary con:
-##   dificultad:int, letras_compradas:int, vocales_compradas:int,
-##   pistas_consumidas:int, cambios_hechos:int, tiempo_partida_seg:int
+# ------------------- API PÚBLICA -------------------
 
 func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> void:
 	var now: Dictionary = Time.get_datetime_dict_from_system()
-
 	var fecha: Dictionary = {
 		"dia": now["day"],
 		"mes": now["month"],
@@ -38,62 +72,68 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 		"fecha": fecha,
 		"jugador_nombre": GameManager.player_name,
 		"categoria": GameManager.categoria_actual,
-		"score": score,
-		"tiempo_partida": GameManager.tiempo_partida,
-		"dificultad": GameManager.dificultad_actual,
+		"score": int(score),
+		"tiempo_partida": int(GameManager.tiempo_partida), # segundos
+		"dificultad": int(GameManager.dificultad_actual),   # 1,2,3
 		"letras_compradas": int(bd.get("letras_compradas", 0)),
 		"vocales_compradas": int(bd.get("vocales_compradas", 0)),
 		"pistas_consumidas": int(bd.get("pistas_consumidas", 0)),
 		"cambios_hechos": int(bd.get("cambios_hechos", 0)),
-		#"tiempo_partida_seg": int(bd.get("tiempo_partida_seg", 0))
 	}
-
 	_historial.append(entry)
 	_save_history(_historial)
+	_recompute_stats()
 
-
-## Devuelve todo el historial (puedes filtrar por categoría, jugador, etc. fuera)
 func get_history() -> Array:
 	return _historial.duplicate(true)
 
-## Limpia el historial (opcional)
 func clear_history() -> void:
 	_historial.clear()
 	_save_history(_historial)
+	_recompute_stats()
 
-# ---------- INTERNOS ----------
+# ------------------- CARGA / GUARDADO -------------------
 
 func _load_history() -> Array:
 	if not FileAccess.file_exists(HISTORY_PATH):
 		return []
-
-	var f: FileAccess = FileAccess.open(HISTORY_PATH, FileAccess.READ)
+	var f := FileAccess.open(HISTORY_PATH, FileAccess.READ)
 	if f == null:
 		push_error("No se pudo abrir " + HISTORY_PATH)
 		return []
-
-	var txt: String = f.get_as_text()
+	var txt := f.get_as_text()
 	f.close()
 
 	var parsed: Variant = JSON.parse_string(txt)
-	if typeof(parsed) == TYPE_ARRAY:
-		return parsed as Array
-	return []
+	if typeof(parsed) != TYPE_ARRAY:
+		return []
 
+	# Normalización mínima de tipos esperados
+	var arr: Array = []
+	for v in parsed:
+		if v is Dictionary:
+			var e: Dictionary = v
+			e["dificultad"] = int(e.get("dificultad", 0))
+			e["letras_compradas"] = int(e.get("letras_compradas", 0))
+			e["vocales_compradas"] = int(e.get("vocales_compradas", 0))
+			e["pistas_consumidas"] = int(e.get("pistas_consumidas", 0))
+			e["cambios_hechos"] = int(e.get("cambios_hechos", 0))
+			e["tiempo_partida"] = int(e.get("tiempo_partida", int(e.get("tiempo_partida_seg", 0))))
+			e["score"] = int(e.get("score", 0))
+			arr.append(e)
+	return arr
 
 func _save_history(data: Array) -> void:
 	var f := FileAccess.open(HISTORY_PATH, FileAccess.WRITE)
 	if f == null:
 		push_error("No se pudo escribir " + HISTORY_PATH)
 		return
-	var json_text := JSON.stringify(data, "  ")  # con indentado
+	var json_text := JSON.stringify(data, "  ")
 	f.store_string(json_text)
 	f.close()
 
-# Si tu sistema de puntuación codifica los datos, define aquí la lógica.
-# De momento devuelve ceros (para que todo compile).
+# Placeholder si no mandas breakdown (mejor sustituir con tus contadores reales)
 func _derive_from_score(score: int) -> Dictionary:
-	# TODO: sustituir por tu fórmula real de decodificación del score
 	return {
 		"dificultad": 0,
 		"letras_compradas": 0,
@@ -103,65 +143,174 @@ func _derive_from_score(score: int) -> Dictionary:
 		"tiempo_partida_seg": 0
 	}
 
-## Devuelve resultados filtrados por categoría y dificultad,
-## ordenados por score descendente.
-## - category: String ("Todas" para no filtrar)
-## - difficulty: int (-1 para no filtrar)
+# ------------------- FILTROS / RÁNKING -------------------
+
 func get_results_filtered(category: String = "Todas", difficulty: int = -1) -> Array:
 	var filtrados: Array = []
-
 	for entry in _historial:
-		# Filtrar por categoría
 		if category != "Todas" and entry.get("categoria", "") != category:
 			continue
-		# Filtrar por dificultad
 		if difficulty != -1 and int(entry.get("dificultad", -1)) != difficulty:
 			continue
-
 		filtrados.append(entry)
-
-	# Ordenar de mayor a menor score
 	filtrados.sort_custom(func(a, b):
 		return int(a.get("score", 0)) > int(b.get("score", 0))
 	)
-	#print("CATEGORIA: ", category)
-	#print("DIFICULTAD: ", difficulty)
-	#print(filtrados)
 	return filtrados
 
-## Devuelve true si el score entra en el TOP 8 de la categoría+dificultad.
-## Criterio: hay menos de 8 partidas con puntuación estrictamente mayor.
 func partida_dentro_de_record(categoria: String, dificultad: int, score: int) -> bool:
 	const TOP_LIMIT := 8
-	var filtrados: Array = get_results_filtered(categoria, dificultad)  # ya viene ordenado DESC
-	var count_greater: int = 0
-
+	var filtrados: Array = get_results_filtered(categoria, dificultad)
+	var count_greater := 0
 	for e in filtrados:
-		var s: int = int(e.get("score", 0))
-		if s > score:
+		if int(e.get("score", 0)) > score:
 			count_greater += 1
 			if count_greater >= TOP_LIMIT:
 				return false
-
-	# Si hay menos de 8 con score estrictamente mayor, entra (incluye empates).
 	return true
 
 func numero_de_record_de_partida_dentro_de_record(categoria: String, dificultad: int, score: int) -> int:
 	const TOP_LIMIT := 8
-	var filtrados: Array = get_results_filtered(categoria, dificultad)  # ya viene ordenado DESC
-	var count_greater: int = 0
-	var pos:int = 1
-	
+	var filtrados: Array = get_results_filtered(categoria, dificultad)
+	var pos := 1
+	var count_greater := 0
 	for e in filtrados:
-		
-		var s: int = int(e.get("score", 0))
+		var s := int(e.get("score", 0))
 		if s > score:
 			count_greater += 1
 			pos += 1
 			if count_greater >= TOP_LIMIT:
-				return false
+				return -1
 		else:
 			return pos
+	return pos if count_greater < TOP_LIMIT else -1
 
-	# Si hay menos de 8 con score estrictamente mayor, entra (incluye empates).
-	return pos
+# ------------------- HELPERS -------------------
+
+func _format_time_hms(total_sec: int) -> String:
+	total_sec = max(total_sec, 0)
+
+	var h: int = int(total_sec / 3600)
+	var m: int = int((total_sec % 3600) / 60)
+	var s: int = int(total_sec % 60)
+
+	if h == 0:
+		# M:SS  (p. ej., 40:24)
+		print(str(m) + ":" + ("%02d" % s))
+		return str(m) + ":" + ("%02d" % s)
+	else:
+		# H:MM:SS  (p. ej., 9:04:23 o 123:59:59)
+		return str(h) + ":" + ("%02d:%02d" % [m, s])
+
+
+# ------------------- RE-CÁLCULO CENTRAL -------------------
+
+func _recompute_stats() -> void:
+	# Arrays indexados 0..3 (usamos 1..3)
+	var letters := [0, 0, 0, 0]
+	var hints   := [0, 0, 0, 0]
+	var vowels  := [0, 0, 0, 0]
+	var swaps   := [0, 0, 0, 0]
+	var matches := [0, 0, 0, 0]
+	var time_by_diff := [0, 0, 0, 0]
+
+	var total_play_sec := 0
+
+	for e in _historial:
+		var d := int(e.get("dificultad", 0))  # debe ser 1..3
+		if d < 1 or d > 3:
+			continue
+
+		matches[d] += 1
+		letters[d] += int(e.get("letras_compradas", 0))
+		hints[d]   += int(e.get("pistas_consumidas", 0))
+		vowels[d]  += int(e.get("vocales_compradas", 0))
+		swaps[d]   += int(e.get("cambios_hechos", 0))
+
+		var secs := int(e.get("tiempo_partida", 0))
+		time_by_diff[d] += secs
+		total_play_sec += secs
+
+	# Globales
+	stat_total_play_time_str = _format_time_hms(total_play_sec)
+	stat_matches_count_str = str(_historial.size())
+
+	# Partidas por dificultad
+	stat_matches_by_difficulty_str = "Facil: %d | Normal: %d | Dificil: %d" % [matches[1], matches[2], matches[3]]
+	stat_matches_facil_str  = str(matches[1])
+	stat_matches_normal_str = str(matches[2])
+	stat_matches_dificil_str= str(matches[3])
+
+	# Agregados por dificultad
+	stat_letters_bought_by_difficulty_str = "Facil: %d | Normal: %d | Dificil: %d" % [letters[1], letters[2], letters[3]]
+	stat_hints_used_by_difficulty_str     = "Facil: %d | Normal: %d | Dificil: %d" % [hints[1],   hints[2],   hints[3]]
+	stat_vowels_bought_by_difficulty_str  = "Facil: %d | Normal: %d | Dificil: %d" % [vowels[1],  vowels[2],  vowels[3]]
+	stat_swaps_made_by_difficulty_str     = "Facil: %d | Normal: %d | Dificil: %d" % [swaps[1],   swaps[2],   swaps[3]]
+
+	# Strings simples por dificultad
+	stat_letters_bought_facil_str  = str(letters[1])
+	stat_letters_bought_normal_str = str(letters[2])
+	stat_letters_bought_dificil_str= str(letters[3])
+
+	stat_hints_used_facil_str      = str(hints[1])
+	stat_hints_used_normal_str     = str(hints[2])
+	stat_hints_used_dificil_str    = str(hints[3])
+
+	stat_vowels_bought_facil_str   = str(vowels[1])
+	stat_vowels_bought_normal_str  = str(vowels[2])
+	stat_vowels_bought_dificil_str = str(vowels[3])
+
+	stat_swaps_made_facil_str      = str(swaps[1])
+	stat_swaps_made_normal_str     = str(swaps[2])
+	stat_swaps_made_dificil_str    = str(swaps[3])
+
+	# Tiempo medio por dificultad (HH:MM:SS)
+	var avg_f := int(time_by_diff[1] / matches[1]) if matches[1] > 0 else 0
+	var avg_n := int(time_by_diff[2] / matches[2]) if matches[2] > 0 else 0
+	var avg_d := int(time_by_diff[3] / matches[3]) if matches[3] > 0 else 0
+
+	stat_avg_time_facil_str   = _format_time_hms(avg_f)
+	stat_avg_time_normal_str  = _format_time_hms(avg_n)
+	stat_avg_time_dificil_str = _format_time_hms(avg_d)
+	stat_avg_time_by_difficulty_str = "Facil: %s | Normal: %s | Dificil: %s" % [
+		stat_avg_time_facil_str, stat_avg_time_normal_str, stat_avg_time_dificil_str
+	]
+
+	# Paquete opcional
+	stat_pack = {
+		"total_play_time": stat_total_play_time_str,
+		"matches_count": stat_matches_count_str,
+
+		"matches_by_diff": stat_matches_by_difficulty_str,
+		"matches_facil": stat_matches_facil_str,
+		"matches_normal": stat_matches_normal_str,
+		"matches_dificil": stat_matches_dificil_str,
+
+		"letters_by_diff": stat_letters_bought_by_difficulty_str,
+		"hints_by_diff":   stat_hints_used_by_difficulty_str,
+		"vowels_by_diff":  stat_vowels_bought_by_difficulty_str,
+		"swaps_by_diff":   stat_swaps_made_by_difficulty_str,
+
+		"letters_facil":  stat_letters_bought_facil_str,
+		"letters_normal": stat_letters_bought_normal_str,
+		"letters_dificil":stat_letters_bought_dificil_str,
+
+		"hints_facil":    stat_hints_used_facil_str,
+		"hints_normal":   stat_hints_used_normal_str,
+		"hints_dificil":  stat_hints_used_dificil_str,
+
+		"vowels_facil":   stat_vowels_bought_facil_str,
+		"vowels_normal":  stat_vowels_bought_normal_str,
+		"vowels_dificil": stat_vowels_bought_dificil_str,
+
+		"swaps_facil":    stat_swaps_made_facil_str,
+		"swaps_normal":   stat_swaps_made_normal_str,
+		"swaps_dificil":  stat_swaps_made_dificil_str,
+
+		"avg_time_facil":   stat_avg_time_facil_str,
+		"avg_time_normal":  stat_avg_time_normal_str,
+		"avg_time_dificil": stat_avg_time_dificil_str,
+		"avg_time_by_diff": stat_avg_time_by_difficulty_str,
+	}
+
+	emit_signal("stats_updated")

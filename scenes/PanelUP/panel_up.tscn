@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://df2olneywrcjb"]
+[gd_scene load_steps=66 format=3 uid="uid://df2olneywrcjb"]
 
 [ext_resource type="FontFile" uid="uid://bhfo1jcrwhcei" path="res://Font_titulos.tres" id="1_kisgu"]
 [ext_resource type="Script" uid="uid://cqp7mrxkl3xi5" path="res://scenes/PanelUP/panel_up.gd" id="1_yg0a0"]
@@ -18,6 +18,7 @@
 [ext_resource type="Theme" uid="uid://k7hcs8goxg0c" path="res://Label_Nunito_font.tres" id="18_5evft"]
 [ext_resource type="FontFile" uid="uid://bg87tkoaof74f" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="19_u86xj"]
 [ext_resource type="FontFile" uid="uid://d3jg83nbfug5a" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="22_310ny"]
+[ext_resource type="Texture2D" uid="uid://dslqrdlfkvkm0" path="res://images/settings.png" id="22_dj36u"]
 [ext_resource type="FontFile" uid="uid://ys0y54nml84h" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-ExtraBold.ttf" id="24_dnf3t"]
 [ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="30_310ny"]
 [ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="31_dnf3t"]
@@ -326,6 +327,57 @@ Button/styles/hover = SubResource("StyleBoxTexture_310ny")
 Button/styles/normal = SubResource("StyleBoxTexture_dnf3t")
 Button/styles/pressed = SubResource("StyleBoxTexture_qvaug")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dlt0r"]
+texture = ExtResource("30_310ny")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.717647, 0.545098, 0.313726, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i3j8r"]
+texture = ExtResource("30_310ny")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.717647, 0.545098, 0.313726, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dj36u"]
+texture = ExtResource("30_310ny")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.81, 0.61344, 0.3564, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u86xj"]
+texture = ExtResource("30_310ny")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.717647, 0.545098, 0.313726, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kmbax"]
+texture = ExtResource("30_310ny")
+region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+modulate_color = Color(0.27, 0.20448, 0.1188, 1)
+
+[sub_resource type="Theme" id="Theme_tcnqu"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_dlt0r")
+Button/styles/focus = SubResource("StyleBoxTexture_i3j8r")
+Button/styles/hover = SubResource("StyleBoxTexture_dj36u")
+Button/styles/normal = SubResource("StyleBoxTexture_u86xj")
+Button/styles/pressed = SubResource("StyleBoxTexture_kmbax")
+
 [node name="PanelUP" type="Panel"]
 self_modulate = Color(0.702461, 0.396118, 0.379202, 1)
 anchors_preset = -1
@@ -335,7 +387,6 @@ offset_bottom = 39.36
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_yg0a0")
-metadata/_edit_lock_ = true
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
@@ -380,9 +431,9 @@ script = ExtResource("5_vflv6")
 
 [node name="Coins" type="TextureRect" parent="."]
 layout_mode = 1
-offset_left = 32.0
+offset_left = 24.0
 offset_top = 168.0
-offset_right = 136.0
+offset_right = 128.0
 offset_bottom = 280.0
 texture = ExtResource("13_310ny")
 expand_mode = 1
@@ -590,10 +641,10 @@ vertical_alignment = 1
 
 [node name="Categorias" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 24.0
-offset_right = 296.0
-offset_bottom = 81.0
+offset_left = 136.0
+offset_top = 31.0
+offset_right = 416.0
+offset_bottom = 93.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_plsrp")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Categorias"]
@@ -626,10 +677,10 @@ metadata/_edit_lock_ = true
 
 [node name="ScoreText" type="Label" parent="."]
 layout_mode = 2
-offset_left = 363.0
-offset_top = 16.0
-offset_right = 745.0
-offset_bottom = 72.0
+offset_left = 440.0
+offset_top = 24.0
+offset_right = 822.0
+offset_bottom = 80.0
 theme = ExtResource("17_kmbax")
 theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
 text = "SCORE"
@@ -639,10 +690,10 @@ vertical_alignment = 1
 [node name="Score2" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 328.0
-offset_top = 56.0
-offset_right = 775.0
-offset_bottom = 185.0
+offset_left = 408.0
+offset_top = 48.0
+offset_right = 855.0
+offset_bottom = 177.0
 theme = ExtResource("18_5evft")
 theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
 theme_override_fonts/font = SubResource("FontVariation_dnf3t")
@@ -975,10 +1026,10 @@ vertical_alignment = 1
 
 [node name="Dificultad" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_left = 24.0
-offset_top = 83.0
-offset_right = 292.0
-offset_bottom = 137.0
+offset_left = 144.0
+offset_top = 90.0
+offset_right = 412.0
+offset_bottom = 144.0
 theme = SubResource("Theme_qvaug")
 theme_override_styles/panel = SubResource("StyleBoxFlat_yge2w")
 
@@ -1105,9 +1156,9 @@ vertical_alignment = 1
 [node name="ButtonExit" type="Button" parent="."]
 layout_mode = 1
 offset_left = 896.0
-offset_top = 16.0
+offset_top = 32.0
 offset_right = 1000.0
-offset_bottom = 126.0
+offset_bottom = 142.0
 pivot_offset = Vector2(84, 86)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1122,6 +1173,26 @@ position = Vector2(52, 50)
 scale = Vector2(0.117187, 0.117187)
 texture = ExtResource("31_dnf3t")
 
+[node name="ButtonSettings" type="Button" parent="."]
+layout_mode = 1
+offset_left = 24.0
+offset_top = 31.0
+offset_right = 128.0
+offset_bottom = 141.0
+pivot_offset = Vector2(52, 55)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_tcnqu")
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Settings" type="Sprite2D" parent="ButtonSettings"]
+modulate = Color(0.945098, 0.854902, 0.690196, 1)
+position = Vector2(52, 53)
+scale = Vector2(0.230468, 0.230468)
+texture = ExtResource("22_dj36u")
+
 [connection signal="pressed" from="Column +" to="Column +" method="_on_pressed"]
 [connection signal="pressed" from="Column -" to="Column -" method="_on_pressed"]
 [connection signal="pressed" from="ButtonPista" to="." method="_on_button_pista_pressed"]
@@ -1132,3 +1203,4 @@ texture = ExtResource("31_dnf3t")
 [connection signal="pressed" from="CuadroTips2/ButtonPistaClose2" to="." method="_on_button_pista_close_2_pressed"]
 [connection signal="pressed" from="CuadroTips3/ButtonPistaClose3" to="." method="_on_button_pista_close_3_pressed"]
 [connection signal="pressed" from="ButtonExit" to="." method="_on_button_exit_pressed"]
+[connection signal="pressed" from="ButtonSettings" to="." method="_on_button_settings_pressed"]

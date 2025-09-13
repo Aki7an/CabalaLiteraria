@@ -1,13 +1,13 @@
-[gd_scene load_steps=23 format=3 uid="uid://ciwx4uk36f7u3"]
+[gd_scene load_steps=26 format=3 uid="uid://ciwx4uk36f7u3"]
 
-[ext_resource type="Texture2D" uid="uid://cbu5defm4vraf" path="res://images/Shop3.png" id="1_nk4yh"]
+[ext_resource type="Texture2D" uid="uid://dtcjxiq444mtd" path="res://images/Shop3.png" id="1_nk4yh"]
 [ext_resource type="Script" uid="uid://csm86csqrk3bo" path="res://scenes/fondo_comprar_letra.gd" id="1_q36r8"]
-[ext_resource type="Texture2D" uid="uid://cdth2qh5cdowu" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_i54d3"]
-[ext_resource type="Texture2D" uid="uid://d58j8nw41ha8" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="4_q36r8"]
-[ext_resource type="Texture2D" uid="uid://dpvvloc2v0i43" path="res://images/Cruz.png" id="5_i54d3"]
+[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_i54d3"]
+[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="4_q36r8"]
+[ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="5_i54d3"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="7_rb1w2"]
 [ext_resource type="Theme" uid="uid://k7hcs8goxg0c" path="res://Label_Nunito_font.tres" id="8_cb75i"]
-[ext_resource type="FontFile" uid="uid://1aox3mfsrged" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="9_fbh3i"]
+[ext_resource type="FontFile" uid="uid://d3jg83nbfug5a" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="9_fbh3i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dnf3t"]
 bg_color = Color(0.70649, 0.6794, 0.86, 1)
@@ -141,6 +141,115 @@ Button/styles/pressed = SubResource("StyleBoxTexture_hyvrp")
 [sub_resource type="FontVariation" id="FontVariation_6i0am"]
 base_font = ExtResource("9_fbh3i")
 
+[sub_resource type="Animation" id="Animation_ipdrk"]
+resource_name = "Blink"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.333333, 1),
+"transitions": PackedFloat32Array(0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 0, 1), Color(1, 1, 0, 0), Color(1, 1, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../ColorRect2:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.333333, 1),
+"transitions": PackedFloat32Array(0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 0, 1), Color(1, 1, 0, 0), Color(1, 1, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../ColorRect3:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.333333, 1),
+"transitions": PackedFloat32Array(0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 0, 1), Color(1, 1, 0, 0), Color(1, 1, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.333333, 1),
+"transitions": PackedFloat32Array(0, 0, 0),
+"update": 0,
+"values": [Color(1, 1, 0, 1), Color(1, 1, 0, 0), Color(1, 1, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_rb1w2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../ColorRect2:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../ColorRect3:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cb75i"]
+_data = {
+&"Blink": SubResource("Animation_ipdrk"),
+&"RESET": SubResource("Animation_rb1w2")
+}
+
 [node name="FondoComprarLetra" type="ColorRect" groups=["FondoCompraLetra"]]
 offset_right = 1024.0
 offset_bottom = 1600.0
@@ -231,10 +340,10 @@ metadata/_edit_lock_ = true
 
 [node name="ScoreText" type="Label" parent="."]
 layout_mode = 0
-offset_left = 363.0
-offset_top = 16.0
-offset_right = 745.0
-offset_bottom = 72.0
+offset_left = 437.0
+offset_top = 23.0
+offset_right = 819.0
+offset_bottom = 79.0
 theme = ExtResource("7_rb1w2")
 theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
 text = "SCORE"
@@ -255,10 +364,10 @@ vertical_alignment = 1
 [node name="Score2" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 328.0
-offset_top = 56.0
-offset_right = 775.0
-offset_bottom = 185.0
+offset_left = 410.0
+offset_top = 49.0
+offset_right = 857.0
+offset_bottom = 178.0
 theme = ExtResource("8_cb75i")
 theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
 theme_override_fonts/font = SubResource("FontVariation_6i0am")
@@ -266,6 +375,46 @@ theme_override_font_sizes/font_size = 90
 text = "99.999.999"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 1600.0
+offset_right = 1024.0
+offset_bottom = 1616.0
+mouse_filter = 1
+color = Color(1, 1, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 1904.0
+offset_right = 1024.0
+offset_bottom = 1920.0
+mouse_filter = 1
+color = Color(1, 1, 0, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 1616.0
+offset_right = 16.0
+offset_bottom = 1904.0
+mouse_filter = 1
+color = Color(1, 1, 0, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 1008.0
+offset_top = 1616.0
+offset_right = 1024.0
+offset_bottom = 1904.0
+mouse_filter = 1
+color = Color(1, 1, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ColorRect4"]
+libraries = {
+&"": SubResource("AnimationLibrary_cb75i")
+}
+autoplay = "Blink"
+speed_scale = 1.429
 
 [connection signal="pressed" from="CuadroSalirPartida/ButtonComprar" to="." method="_on_button_comprar_pressed"]
 [connection signal="pressed" from="ButtonCancel" to="." method="_on_button_cancel_pressed"]

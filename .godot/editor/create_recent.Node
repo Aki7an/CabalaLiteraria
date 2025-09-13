@@ -1,5 +1,7 @@
-Control
+Sprite2D
 AnimationPlayer
+ColorRect
+Control
 CheckBox
 Label
 Button
@@ -8,6 +10,5 @@ HBoxContainer
 GridContainer
 LineEdit
 RichTextLabel
-ColorRect
 TextureRect
 AcceptDialog
