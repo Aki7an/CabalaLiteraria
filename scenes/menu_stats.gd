@@ -23,9 +23,15 @@ const scene_to_load_MenuMain = preload("res://scenes/MenuMain.tscn")
 @onready var label_letras_facil = $Panel/LabelLetrasFacil
 @onready var label_letras_normal = $Panel/LabelLetrasNormal
 @onready var label_letras_dificil = $Panel/LabelLetrasDificil
-@onready var label_vocales_facil = $Panel/LabelVocalesFacil
-@onready var label_vocales_normal = $Panel/LabelVocalesNormal
-@onready var label_vocales_dificil = $Panel/LabelVocalesDificil
+
+@onready var label_vocales_ae_facil: Label = $Panel/LabelVocalesAEFacil
+@onready var label_vocales_ae_normal: Label = $Panel/LabelVocalesAENormal
+@onready var label_vocales_ae_dificil: Label = $Panel/LabelVocalesAEDificil
+
+@onready var label_vocales_iou_facil: Label = $Panel/LabelVocalesIOUFacil
+@onready var label_vocales_iou_normal: Label = $Panel/LabelVocalesIOUNormal
+@onready var label_vocales_iou_dificil: Label = $Panel/LabelVocalesIOUDificil
+
 @onready var label_borrador_facil = $Panel/LabelBorradorFacil
 @onready var label_borrador_normal = $Panel/LabelBorradorNormal
 @onready var label_borrador_dificil = $Panel/LabelBorradorDificil
@@ -33,6 +39,10 @@ const scene_to_load_MenuMain = preload("res://scenes/MenuMain.tscn")
 @onready var label_tiempo_normal = $Panel/LabelTiempoNormal
 @onready var label_tiempo_dificil = $Panel/LabelTiempoDificil
 @onready var label_tiempo_total = $Panel/LabelTiempoTotal
+
+@onready var label_tiempo_jugado_facil: Label = $Panel/LabelTiempoJugadoFacil
+@onready var label_tiempo_jugado_normal: Label = $Panel/LabelTiempoJugadoNormal
+@onready var label_tiempo_jugado_dificil: Label = $Panel/LabelTiempoJugadoDificil
 
 
 func go_to_main_menu() -> void:
@@ -50,7 +60,10 @@ func go_to_name_record_online() -> void:
 
 
 func _on_button_back_pressed():
-	queue_free()
+	TransitionScreen.transition_to_black()
+	await TransitionScreen._on_animation_finished("fade_to_black", 1)
+	get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
+	SoundManager.play("ButtonClick")
 
 
 func _ready() -> void:
@@ -70,9 +83,13 @@ func _ready() -> void:
 	label_letras_facil.text = HistoryManager.stat_letters_bought_facil_str
 	label_letras_normal.text = HistoryManager.stat_letters_bought_normal_str
 	label_letras_dificil.text =  HistoryManager.stat_letters_bought_dificil_str
-	label_vocales_facil.text = HistoryManager.stat_vowels_bought_facil_str
-	label_vocales_normal.text =  HistoryManager.stat_vowels_bought_normal_str
-	label_vocales_dificil.text =  HistoryManager.stat_vowels_bought_dificil_str
+	label_vocales_ae_facil.text = HistoryManager.stat_vowelsAE_bought_facil_str
+	label_vocales_ae_normal.text =  HistoryManager.stat_vowelsAE_bought_normal_str
+	label_vocales_ae_dificil.text =  HistoryManager.stat_vowelsAE_bought_dificil_str
+	label_vocales_iou_facil.text = HistoryManager.stat_vowelsIOU_bought_facil_str
+	label_vocales_iou_normal.text = HistoryManager.stat_vowelsIOU_bought_normal_str
+	label_vocales_iou_dificil.text = HistoryManager.stat_vowelsIOU_bought_dificil_str
+	
 	label_borrador_facil.text = HistoryManager.stat_swaps_made_facil_str
 	label_borrador_normal.text =  HistoryManager.stat_swaps_made_normal_str
 	label_borrador_dificil.text =  HistoryManager.stat_swaps_made_dificil_str
@@ -81,4 +98,7 @@ func _ready() -> void:
 	label_tiempo_normal.text =  HistoryManager.stat_avg_time_normal_str
 	label_tiempo_dificil.text =  HistoryManager.stat_avg_time_dificil_str
 	
+	label_tiempo_jugado_facil.text = HistoryManager.stat_time_facil_str
+	label_tiempo_jugado_normal.text = HistoryManager.stat_time_normal_str
+	label_tiempo_jugado_dificil.text = HistoryManager.stat_time_dificil_str
 	

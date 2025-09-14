@@ -13,7 +13,8 @@ var stat_matches_count_str: String = ""
 
 var stat_letters_bought_by_difficulty_str: String = ""
 var stat_hints_used_by_difficulty_str: String = ""
-var stat_vowels_bought_by_difficulty_str: String = ""
+var stat_vowelsAE_bought_by_difficulty_str: String = ""
+var stat_vowelsIOU_bought_by_difficulty_str: String = ""
 var stat_swaps_made_by_difficulty_str: String = ""
 
 # Por dificultad (1 Fácil, 2 Normal, 3 Difícil)
@@ -25,9 +26,13 @@ var stat_hints_used_facil_str: String = ""
 var stat_hints_used_normal_str: String = ""
 var stat_hints_used_dificil_str: String = ""
 
-var stat_vowels_bought_facil_str: String = ""
-var stat_vowels_bought_normal_str: String = ""
-var stat_vowels_bought_dificil_str: String = ""
+var stat_vowelsAE_bought_facil_str: String = ""
+var stat_vowelsAE_bought_normal_str: String = ""
+var stat_vowelsAE_bought_dificil_str: String = ""
+
+var stat_vowelsIOU_bought_facil_str: String = ""
+var stat_vowelsIOU_bought_normal_str: String = ""
+var stat_vowelsIOU_bought_dificil_str: String = ""
 
 var stat_swaps_made_facil_str: String = ""
 var stat_swaps_made_normal_str: String = ""
@@ -44,6 +49,11 @@ var stat_avg_time_facil_str: String = ""        # "HH:MM:SS"
 var stat_avg_time_normal_str: String = ""       # "HH:MM:SS"
 var stat_avg_time_dificil_str: String = ""      # "HH:MM:SS"
 var stat_avg_time_by_difficulty_str: String = ""# "Facil: ... | Normal: ... | Dificil: ..."
+
+# Tiempo por dificultad
+var stat_time_facil_str: String = ""
+var stat_time_normal_str: String = ""
+var stat_time_dificil_str: String = ""
 
 # Paquete opcional
 var stat_pack: Dictionary = {}
@@ -75,10 +85,11 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 		"score": int(score),
 		"tiempo_partida": int(GameManager.tiempo_partida), # segundos
 		"dificultad": int(GameManager.dificultad_actual),   # 1,2,3
-		"letras_compradas": int(bd.get("letras_compradas", 0)),
-		"vocales_compradas": int(bd.get("vocales_compradas", 0)),
-		"pistas_consumidas": int(bd.get("pistas_consumidas", 0)),
-		"cambios_hechos": int(bd.get("cambios_hechos", 0)),
+		"consonantes_compradas": GameManager.consonantes_compradas,
+		"vocales_compradas_AE": GameManager.vocalesAE_compradas,
+		"vocales_compradas_IOU": GameManager.vocalesIOU_compradas,
+		"pistas_consumidas": GameManager.pistas_utilizadas,
+		"cambios_hechos": GameManager.cambios_hechos,
 	}
 	_historial.append(entry)
 	_save_history(_historial)
@@ -114,8 +125,9 @@ func _load_history() -> Array:
 		if v is Dictionary:
 			var e: Dictionary = v
 			e["dificultad"] = int(e.get("dificultad", 0))
-			e["letras_compradas"] = int(e.get("letras_compradas", 0))
-			e["vocales_compradas"] = int(e.get("vocales_compradas", 0))
+			e["consonantes_compradas"] = int(e.get("consonantes_compradas", 0))
+			e["vocales_compradas_AE"] = int(e.get("vocales_compradas_AE", 0))
+			e["vocales_compradas_IOU"] = int(e.get("vocales_compradas_IOU", 0))
 			e["pistas_consumidas"] = int(e.get("pistas_consumidas", 0))
 			e["cambios_hechos"] = int(e.get("cambios_hechos", 0))
 			e["tiempo_partida"] = int(e.get("tiempo_partida", int(e.get("tiempo_partida_seg", 0))))
@@ -136,7 +148,7 @@ func _save_history(data: Array) -> void:
 func _derive_from_score(score: int) -> Dictionary:
 	return {
 		"dificultad": 0,
-		"letras_compradas": 0,
+		"consonantes_compradas": 0,
 		"vocales_compradas": 0,
 		"pistas_consumidas": 0,
 		"cambios_hechos": 0,
@@ -196,8 +208,18 @@ func _format_time_hms(total_sec: int) -> String:
 
 	if h == 0:
 		# M:SS  (p. ej., 40:24)
-		print(str(m) + ":" + ("%02d" % s))
-		return str(m) + ":" + ("%02d" % s)
+		if m==0:
+			print("S:",s)
+			print(str("%02d" % s))
+			return str("%02d" % s)
+		elif m<10:
+			print("m:" , m, " S: ",s)
+			print(str("M<10 %1d" % m) + ":" + ("%02d" % s))
+			return str("%1d" % m) + ":" + ("%02d" % s)
+		else:
+			print("m:" , m, " S: ",s)
+			print("M>10" + str(m) + ":" + ("%02d" % s))
+			return str(m) + ":" + ("%02d" % s)
 	else:
 		# H:MM:SS  (p. ej., 9:04:23 o 123:59:59)
 		return str(h) + ":" + ("%02d:%02d" % [m, s])
@@ -209,7 +231,8 @@ func _recompute_stats() -> void:
 	# Arrays indexados 0..3 (usamos 1..3)
 	var letters := [0, 0, 0, 0]
 	var hints   := [0, 0, 0, 0]
-	var vowels  := [0, 0, 0, 0]
+	var vowelsAE  := [0, 0, 0, 0]
+	var vowelsIOU  := [0, 0, 0, 0]
 	var swaps   := [0, 0, 0, 0]
 	var matches := [0, 0, 0, 0]
 	var time_by_diff := [0, 0, 0, 0]
@@ -222,9 +245,10 @@ func _recompute_stats() -> void:
 			continue
 
 		matches[d] += 1
-		letters[d] += int(e.get("letras_compradas", 0))
+		letters[d] += int(e.get("consonantes_compradas", 0))
 		hints[d]   += int(e.get("pistas_consumidas", 0))
-		vowels[d]  += int(e.get("vocales_compradas", 0))
+		vowelsAE[d]  += int(e.get("vocales_compradas_AE", 0))
+		vowelsIOU[d]  += int(e.get("vocales_compradas_IOU", 0))
 		swaps[d]   += int(e.get("cambios_hechos", 0))
 
 		var secs := int(e.get("tiempo_partida", 0))
@@ -244,7 +268,8 @@ func _recompute_stats() -> void:
 	# Agregados por dificultad
 	stat_letters_bought_by_difficulty_str = "Facil: %d | Normal: %d | Dificil: %d" % [letters[1], letters[2], letters[3]]
 	stat_hints_used_by_difficulty_str     = "Facil: %d | Normal: %d | Dificil: %d" % [hints[1],   hints[2],   hints[3]]
-	stat_vowels_bought_by_difficulty_str  = "Facil: %d | Normal: %d | Dificil: %d" % [vowels[1],  vowels[2],  vowels[3]]
+	stat_vowelsAE_bought_by_difficulty_str  = "Facil: %d | Normal: %d | Dificil: %d" % [vowelsAE[1],  vowelsAE[2],  vowelsAE[3]]
+	stat_vowelsIOU_bought_by_difficulty_str  = "Facil: %d | Normal: %d | Dificil: %d" % [vowelsIOU[1],  vowelsIOU[2],  vowelsIOU[3]]
 	stat_swaps_made_by_difficulty_str     = "Facil: %d | Normal: %d | Dificil: %d" % [swaps[1],   swaps[2],   swaps[3]]
 
 	# Strings simples por dificultad
@@ -256,10 +281,14 @@ func _recompute_stats() -> void:
 	stat_hints_used_normal_str     = str(hints[2])
 	stat_hints_used_dificil_str    = str(hints[3])
 
-	stat_vowels_bought_facil_str   = str(vowels[1])
-	stat_vowels_bought_normal_str  = str(vowels[2])
-	stat_vowels_bought_dificil_str = str(vowels[3])
+	stat_vowelsAE_bought_facil_str   = str(vowelsAE[1])
+	stat_vowelsAE_bought_normal_str  = str(vowelsAE[2])
+	stat_vowelsAE_bought_dificil_str = str(vowelsAE[3])
 
+	stat_vowelsIOU_bought_facil_str   = str(vowelsIOU[1])
+	stat_vowelsIOU_bought_normal_str  = str(vowelsIOU[2])
+	stat_vowelsIOU_bought_dificil_str = str(vowelsIOU[3])
+	
 	stat_swaps_made_facil_str      = str(swaps[1])
 	stat_swaps_made_normal_str     = str(swaps[2])
 	stat_swaps_made_dificil_str    = str(swaps[3])
@@ -273,9 +302,14 @@ func _recompute_stats() -> void:
 	stat_avg_time_normal_str  = _format_time_hms(avg_n)
 	stat_avg_time_dificil_str = _format_time_hms(avg_d)
 	stat_avg_time_by_difficulty_str = "Facil: %s | Normal: %s | Dificil: %s" % [
-		stat_avg_time_facil_str, stat_avg_time_normal_str, stat_avg_time_dificil_str
-	]
-
+		stat_avg_time_facil_str, stat_avg_time_normal_str, stat_avg_time_dificil_str]
+		
+			# Tiempo jugado por dificultad
+	stat_avg_time_facil_str
+	stat_time_facil_str = _format_time_hms(time_by_diff[1])
+	stat_time_normal_str = _format_time_hms(time_by_diff[2])
+	stat_time_dificil_str = _format_time_hms(time_by_diff[3])
+	
 	# Paquete opcional
 	stat_pack = {
 		"total_play_time": stat_total_play_time_str,
@@ -288,7 +322,8 @@ func _recompute_stats() -> void:
 
 		"letters_by_diff": stat_letters_bought_by_difficulty_str,
 		"hints_by_diff":   stat_hints_used_by_difficulty_str,
-		"vowels_by_diff":  stat_vowels_bought_by_difficulty_str,
+		"vowelsAE_by_diff":  stat_vowelsAE_bought_by_difficulty_str,
+		"vowelsIOU_by_diff":  stat_vowelsIOU_bought_by_difficulty_str,
 		"swaps_by_diff":   stat_swaps_made_by_difficulty_str,
 
 		"letters_facil":  stat_letters_bought_facil_str,
@@ -299,10 +334,15 @@ func _recompute_stats() -> void:
 		"hints_normal":   stat_hints_used_normal_str,
 		"hints_dificil":  stat_hints_used_dificil_str,
 
-		"vowels_facil":   stat_vowels_bought_facil_str,
-		"vowels_normal":  stat_vowels_bought_normal_str,
-		"vowels_dificil": stat_vowels_bought_dificil_str,
+		"vowelsAE_facil":   stat_vowelsAE_bought_facil_str,
+		"vowelsAE_normal":  stat_vowelsAE_bought_normal_str,
+		"vowelsAE_dificil": stat_vowelsAE_bought_dificil_str,
 
+		"vowelsIOU_facil":   stat_vowelsIOU_bought_facil_str,
+		"vowelsIOU_normal":  stat_vowelsIOU_bought_normal_str,
+		"vowelsIOU_dificil": stat_vowelsIOU_bought_dificil_str,
+
+		
 		"swaps_facil":    stat_swaps_made_facil_str,
 		"swaps_normal":   stat_swaps_made_normal_str,
 		"swaps_dificil":  stat_swaps_made_dificil_str,

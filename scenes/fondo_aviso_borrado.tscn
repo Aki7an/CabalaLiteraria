@@ -1,9 +1,9 @@
 [gd_scene load_steps=18 format=3 uid="uid://c7j81pj5n8i4k"]
 
 [ext_resource type="Script" uid="uid://vft2d7m6jrfy" path="res://scenes/fondo_aviso_borrado.gd" id="1_7xuc6"]
-[ext_resource type="Texture2D" uid="uid://d58j8nw41ha8" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="2_7xuc6"]
-[ext_resource type="Texture2D" uid="uid://dpvvloc2v0i43" path="res://images/Cruz.png" id="3_v6ic6"]
-[ext_resource type="Texture2D" uid="uid://dsupwquskrprr" path="res://images/eraser_2.png" id="4_plv2b"]
+[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="2_7xuc6"]
+[ext_resource type="Texture2D" uid="uid://bwwm8eyqclx0m" path="res://images/Cruz.png" id="3_v6ic6"]
+[ext_resource type="Texture2D" uid="uid://bv6k6rg4ip3h3" path="res://images/eraser_2.png" id="4_plv2b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hyvrp"]
 bg_color = Color(0.835294, 0.635294, 0.576471, 1)

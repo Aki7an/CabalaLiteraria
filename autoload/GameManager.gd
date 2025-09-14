@@ -6,6 +6,11 @@ extends Node
 @export var vocalesIOU_compradas: int = 0
 @export var consonantes_compradas: int = 0
 
+#@export var letras_compradas: int = 0
+@export var vocales_compradas: int = 0
+@export var cambios_hechos: int = 0
+@export var pistas_utilizadas: int = 0 
+
 @export var player_name: String = "Aki"
 @export var score: int = 99999999
 
@@ -18,7 +23,7 @@ extends Node
 @export var dificultad_ultima_partida: int
 
 @export 	var frase_original_til: String
-@export var cambios: int = 0
+
 @export var partida_terminada: bool = false
 
 var frases_db: Array = []
@@ -33,14 +38,12 @@ var descripcion_final: String = ""
 var letras_iniciales: String = ""
 var pistas_actuales: Array[String] = []
 var descripcion_final_actual: String = ""
-var numero_imagen_actual: int = -1
-var id_image: int = 0
+
 
 @export var pista_1: bool = false
 @export var pista_2: bool = false
 @export var pista_3: bool = false
 
-@export var pistas_utilizadas: int = 0
 
 @export var canvas_wide:int = 1000
 
@@ -133,6 +136,9 @@ var id_image: int = 0
 
 func _ready():
 	partida_terminada = false
+	
+	
+	
 #	letras_reveladas = ""
 	TranslationServer.set_locale("es")
 	randomize()
@@ -169,7 +175,13 @@ func resetear_partida_terminada() -> void:
 func reset_game_paremeters() -> void:
 	score = 99999999
 	pistas_utilizadas = 0
-	cambios = 0
+#	letras_compradas = 0
+#	vocales_compradas = 0
+	vocalesAE_compradas = 0
+	vocalesIOU_compradas = 0
+	consonantes_compradas = 0
+	cambios_hechos = 0
+	pistas_utilizadas = 0 
 	tiempo_partida = 0	
 
 func _game_finished() -> void:
@@ -190,10 +202,10 @@ func set_go_to_game_disable() -> void:
 	go_to_game = false
 	
 func calcula_score() -> void:
-	score = GameManager.dificultad_actual * 10000000 + 2000000 * (2 - GameManager.vocalesAE_compradas) + 1000000 * (3-GameManager.vocalesIOU_compradas) + 100000 * (9-GameManager.consonantes_compradas) + (3-GameManager.pistas_utilizadas) * 10000 + (9- GameManager.cambios) * 1000 + 999 - GameManager.tiempo_partida 
+	score = GameManager.dificultad_actual * 10000000 + 2000000 * (2 - GameManager.vocalesAE_compradas) + 1000000 * (3-GameManager.vocalesIOU_compradas) + 100000 * (9-GameManager.consonantes_compradas) + (3-GameManager.pistas_utilizadas) * 10000 + (9- GameManager.cambios_hechos) * 1000 + 999 - GameManager.tiempo_partida 
 	
 func cambios_increase() -> void:
-	cambios = cambios + 1
+	cambios_hechos = cambios_hechos + 1
 
 func _inicializar_datos():
 	_inicializar_lista_letras(frase_original)

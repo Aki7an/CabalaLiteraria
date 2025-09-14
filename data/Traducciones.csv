@@ -1,4 +1,4 @@
-﻿Key,es,en,de,fr,eu,it,pt
+Key,es,en,de,fr,eu,it,pt
 Play,Jugar,Play,Spielen,Jouer,Jolastu,Gioca,Jogar
 Settings,Ajustes,Settings,Einstellungen,Paramètres,Ezarpenak,Impostazioni,Configurações
 Shop,Tienda,Shop,Laden,Boutique,Denda,Negozio,Loja
@@ -61,27 +61,27 @@ e
 DIFICULDADE"
 SCORE,PUNTUACIÓN,SCORE,PUNKTZAHL,SCORE,PUNTUAZIOA,PUNTO,PONTUAÇÃO
 Difficulty,Dificultad,Difficulty,Schwierig,Difficulté,Zailtasuna,Difficoltà,Dificuldade
-“Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score”,"""Según la dificultad: algunas pistas o compras pueden ser gratis. 
-El resto de pistas o compras te harán perder monedas y puntuación""",“Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score”,Je nach Schwierigkeitsgrad: Einige Hinweise oder Käufe können kostenlos sein. Die übrigen kosten Münzen und Punkte,Selon la difficulté : certains indices ou achats peuvent être gratuits. Les autres te feront perdre des pièces et des points,Zailtasunaren arabera: pista edo erosketa batzuk doakoak izan daitezke. Gainerakoek txanponak eta puntuak galduko dizkizute,In base alla difficoltà: alcuni indizi o acquisti possono essere gratuiti. Gli altri ti faranno perdere monete e punteggio,Conforme a dificuldade: algumas dicas ou compras podem ser gratuitas. As demais farão você perder moedas e pontuação
-“Try to guess where the vowels are. Use the cell-coloring aids to spot them across the whole sentence”,"""Trata de adivinar donde están las vocales.
-Usa las ayudas de colorear celdas para detectarlas en toda la frase""",“Try to guess where the vowels are. Use the cell-coloring aids to spot them across the whole sentence”,"Versuche zu erraten, wo die Vokale sind. Nutze die Zellfärbungs-Hilfen, um sie im ganzen Satz zu erkennen",Essaie de deviner où sont les voyelles. Utilise l’aide de coloration des cases pour les repérer dans toute la phrase,Saiatu bokalak non dauden asmatzen. Erabili gelaxken koloreztatzeko laguntza esaldi osoan antzemateko,Prova a indovinare dove sono le vocali. Usa gli aiuti di colorazione delle celle per individuarle in tutta la frase,Tente adivinhar onde estão as vogais. Use as ajudas de colorir células para identificá-las em toda a frase
-“Some special letters are easier to spot”,"""Algunas letras especiales son más fácilmente detectables: Y, LL,RR,CC…""",“Some special letters are easier to spot”,Einige besondere Buchstaben sind leichter zu erkennen,Certaines lettres particulières sont plus faciles à repérer,Zenbait letra berezi errazago antzematen dira,Alcune lettere speciali sono più facili da individuare,"Algumas letras especiais são mais fáceis de identificar: Y, LL, RR, CC…"
-"“Long texts may take more time and feel harder, but they offer more words to deduce from”","""Los textos largos pueden llevar más tiempo y parecer más díciles, pero ofrecen más palabras para deducir""","“Long texts may take more time and feel harder, but they offer more words to deduce from”","Längere Texte brauchen mehr Zeit und wirken schwieriger, bieten aber mehr Wörter zum Schlussfolgern","Les textes longs peuvent prendre plus de temps et sembler plus difficiles, mais ils offrent davantage de mots pour déduire","Testu luzeek denbora gehiago behar dute eta zailagoak dirudite, baina hitz gehiago eskaintzen dituzte ondorioztatzeko","I testi lunghi possono richiedere più tempo e sembrare più difficili, ma offrono più parole da cui dedurre","Textos longos podem levar mais tempo e parecer mais difíceis, mas oferecem mais palavras para deduzir"
-“The game doesn’t tell you if a letter is in the correct cell. You can always buy that letter to be sure”,"""El juego no te avisa de si has puesto una letra en la casilla correcta o no.
-Siempre puedes comprar esa letra para estar seguro de que está bien""",“The game doesn’t tell you if a letter is in the correct cell. You can always buy that letter to be sure”,"Das Spiel teilt dir nicht mit, ob ein Buchstabe im richtigen Feld steht. Du kannst diesen Buchstaben jederzeit kaufen, um sicher zu sein",Le jeu ne t’indique pas si une lettre est dans la bonne case. Tu peux toujours acheter cette lettre pour en être sûr,Jokoak ez dizu esaten letra laukitxo egokian dagoen ala ez. Beti eros dezakezu letra hori ziur egoteko,Il gioco non ti dice se una lettera è nella casella giusta. Puoi sempre comprare quella lettera per esserne sicuro,O jogo não indica se a letra está na casa correta. Você sempre pode comprar essa letra para ter certeza
-“You can change the board’s number of columns in the options menu”,"""Puedes cambiar el número de columnas del tablero desde el menú de opciones""",“You can change the board’s number of columns in the options menu”,Du kannst die Anzahl der Spalten des Spielfelds im Optionen-Menü ändern,Tu peux changer le nombre de colonnes du plateau dans le menu des options,Aukeren menuan alda dezakezu taularen zutabe kopurua,Puoi cambiare il numero di colonne della griglia dal menu opzioni,Você pode alterar o número de colunas do tabuleiro no menu de opções
-“Biggest penalties (order): buy vowels > buy letters > buy hints > change letters”,"""Lo que más penaliza es: comprar vocales > comprar letras > comprar pistas > cambiar letras""",“Biggest penalties (order): buy vowels > buy letters > buy hints > change letters”,Größte Strafreihenfolge: Vokale kaufen > Buchstaben kaufen > Hinweise kaufen > Buchstaben ändern,Ce qui pénalise le plus : acheter des voyelles > acheter des lettres > acheter des indices > changer des lettres,Zigor handiena honela: bokalak erosi > letrak erosi > pistak erosi > letrak aldatu,Penalità (ordine): comprare vocali > comprare lettere > comprare indizi > cambiare lettere,Maior penalização (ordem): comprar vogais > comprar letras > comprar dicas > trocar letras
-“Only your first completion of a board counts for online and local leaderboards”,"""Solo puntua para los rankings online y local la primera vez que haces un tablero""",“Only your first completion of a board counts for online and local leaderboards”,Nur der erste Abschluss eines Brettes zählt für die Online- und lokalen Bestenlisten,Seul ton premier achèvement d’un tableau compte pour les classements en ligne et locaux,Taula bat lehen aldiz osatzen duzunean bakarrik balio du online eta tokiko sailkapenetarako,Solo la prima volta che completi una griglia vale per le classifiche online e locali,Apenas a primeira vez que concluires um tabuleiro conta para os rankings online e local
-"“Score depends on the difficulty, not on the sentence’s theme”","""La puntuación depende de la dificultad, no del tema de la frase""","“Score depends on the difficulty, not on the sentence’s theme”","Die Punktzahl hängt von der Schwierigkeit ab, nicht vom Thema des Satzes","Le score dépend de la difficulté, pas du thème de la phrase","Puntuazioa zailtasunaren araberakoa da, ez esaldiaren gaiaren","Il punteggio dipende dalla difficoltà, non dal tema della frase","A pontuação depende da dificuldade, não do tema da frase"
+Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score,"Según la dificultad: algunas pistas o compras pueden ser gratis. 
+El resto de pistas o compras te harán perder monedas y puntuación",Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score,Je nach Schwierigkeitsgrad: Einige Hinweise oder Käufe können kostenlos sein. Die übrigen kosten Münzen und Punkte,Selon la difficulté : certains indices ou achats peuvent être gratuits. Les autres te feront perdre des pièces et des points,Zailtasunaren arabera: pista edo erosketa batzuk doakoak izan daitezke. Gainerakoek txanponak eta puntuak galduko dizkizute,In base alla difficoltà: alcuni indizi o acquisti possono essere gratuiti. Gli altri ti faranno perdere monete e punteggio,Conforme a dificuldade: algumas dicas ou compras podem ser gratuitas. As demais farão você perder moedas e pontuação
+Try to guess where the vowels are. Use the cell-coloring aids to spot them across the whole sentence,"Trata de adivinar donde están las vocales.
+Usa las ayudas de colorear celdas para detectarlas en toda la frase",Try to guess where the vowels are. Use the cell-coloring aids to spot them across the whole sentence,,,,,
+Some special letters are easier to spot,Algunas letras especiales son más fácilmente detectables,Some special letters are easier to spot,Einige besondere Buchstaben sind leichter zu erkennen,Certaines lettres particulières sont plus faciles à repérer,Zenbait letra berezi errazago antzematen dira,Alcune lettere speciali sono più facili da individuare,Algumas letras especiais são mais fáceis de identificar: Y
+"Long texts may take more time and feel harder, but they offer more words to deduce from",,"Long texts may take more time and feel harder, but they offer more words to deduce from",,,,,
+The game doesn’t tell you if a letter is in the correct cell. You can always buy that letter to be sure,"El juego no te avisa de si has puesto una letra en la casilla correcta o no.
+Siempre puedes comprar esa letra para estar seguro de que está bien",The game doesn’t tell you if a letter is in the correct cell. You can always buy that letter to be sure,,,,,
+You can change the board’s number of columns in the options menu,Puedes cambiar el número de columnas del tablero desde el menú de opciones,You can change the board’s number of columns in the options menu,Du kannst die Anzahl der Spalten des Spielfelds im Optionen-Menü ändern,Tu peux changer le nombre de colonnes du plateau dans le menu des options,Aukeren menuan alda dezakezu taularen zutabe kopurua,Puoi cambiare il numero di colonne della griglia dal menu opzioni,Você pode alterar o número de colunas do tabuleiro no menu de opções
+Biggest penalties (order): buy vowels > buy letters > buy hints > change letters,Lo que más penaliza es: comprar vocales > comprar letras > comprar pistas > cambiar letras,Biggest penalties (order): buy vowels > buy letters > buy hints > change letters,Größte Strafreihenfolge: Vokale kaufen > Buchstaben kaufen > Hinweise kaufen > Buchstaben ändern,Ce qui pénalise le plus : acheter des voyelles > acheter des lettres > acheter des indices > changer des lettres,Zigor handiena honela: bokalak erosi > letrak erosi > pistak erosi > letrak aldatu,Penalità (ordine): comprare vocali > comprare lettere > comprare indizi > cambiare lettere,Maior penalização (ordem): comprar vogais > comprar letras > comprar dicas > trocar letras
+Only your first completion of a board counts for online and local leaderboards,Solo puntua para los rankings online y local la primera vez que haces un tablero,Only your first completion of a board counts for online and local leaderboards,Nur der erste Abschluss eines Brettes zählt für die Online- und lokalen Bestenlisten,Seul ton premier achèvement d’un tableau compte pour les classements en ligne et locaux,Taula bat lehen aldiz osatzen duzunean bakarrik balio du online eta tokiko sailkapenetarako,Solo la prima volta che completi una griglia vale per le classifiche online e locali,Apenas a primeira vez que concluires um tabuleiro conta para os rankings online e local
+The score depends on the difficulty and not on the topic of the sentence,La puntuación depende de la dificultad y no del tema de la frase,The score depends on the difficulty and not on the topic of the sentence,,,,,
 ERASE,BORRAR,ERASE,LÖSCHEN,SUPPRIMER,EZABATU,ELIMINA,EXCLUIR
 TIME,TIEMPO,TIME,ZEIT,TEMPS,DENBORA,TEMPO,TEMPO
 CHANGES,CAMBIOS,CHANGES,ÄNDERUNGEN,MODIFICATIONS,ALDAKETAK,MODIFICHE,ALTERAÇÕES
 LETTERS,LETRAS,LETTERS,BUCHSTABEN,LETTRES,LETRAK,LETTERE,LETRAS
 HINTS,PISTAS,HINTS,HINWEISE,INDICES,PISTAK,INDIZI,DICAS
-"Are you sure you want to delete the letter? (it will cost you 1,000 points from your score)",¿Estás seguro de que quieres borrar la letra? (te costará 1.000 puntos en tu marcador),"Are you sure you want to delete the letter? (it will cost you 1,000 points from your score)","Bist du sicher, dass du den Buchstaben löschen möchtest? (das kostet dich 1.000 Punkte von deinem Punktestand)",Es-tu sûr de vouloir supprimer la lettre ? (cela te coûtera 1 000 points de ton score),Ziur zaude letra ezabatu nahi duzula? (zure puntuaziotik 1.000 puntu kenduko dira),Sei sicuro di voler eliminare la lettera? (ti costerà 1.000 punti dal punteggio),Tem certeza de que deseja excluir a letra? (isso vai custar 1.000 pontos da sua pontuação)
+Are you sure you want to delete the letter? (it will cost you 1000 points from your score),¿Estás seguro de que quieres borrar la letra? (te costará 1.000 puntos en tu marcador),Are you sure you want to delete the letter? (it will cost you 1000 points from your score),,,Ziur zaude letra ezabatu nahi duzula? (zure puntuaziotik 1.000 puntu kenduko dira),,
 EXIT,SALIR,EXIT,BEENDEN,QUITTER,IRTEN,USCIRE,SAIR
 CONTINUE,SEGUIR,CONTINUE,FORTSETZEN,CONTINUER,JARRAITU,CONTINUARE,CONTINUAR
-"Are you sure you want to leave the game? (if you abandon it, you won’t be able to score on it later)","¿Estás seguro de que quieres salir de la partida? (si abandonas, ya no podrás puntuar en ella más adelante)","Are you sure you want to leave the game? (if you abandon it, you won’t be able to score on it later)","Bist du sicher, dass du die Partie verlassen möchtest? (wenn du abbrichst, kannst du später keine Punkte mehr dafür erzielen)","Es-tu sûr de vouloir quitter la partie ? (si tu abandonnes, tu ne pourras plus marquer de points dessus plus tard)","Ziur zaude partida utzi nahi duzula? (uzten baduzu, gero ezin izango duzu bertan puntuatu)","Sei sicuro di voler uscire dalla partita? (se abbandoni, non potrai più segnare punti in seguito)","Tem certeza de que deseja sair da partida? (se abandonar, você não poderá pontuar nela depois)"
+Are you sure you want to leave the game? (if you abandon it  you won’t be able to score on it later),¿Estás seguro de que quieres salir de la partida? (si abandonas ya no podrás puntuar en ella más adelante),Are you sure you want to leave the game? (if you abandon it  you won’t be able to score on it later),,,,,
 GAME SETTINGS,AJUSTES DE JUEGO,GAME SETTINGS,SPIELEINSTELLUNGEN,PARAMÈTRES DE JEU,JOKOAREN EZARPENAK,IMPOSTAZIONI DI GIOCO,CONFIGURAÇÕES DO JOGO
 Enter Name,Introduce Nombre,Enter Name,Geben Sie den Namen ein,Entrez le nom,sartu izena,Inserisci il nome,Digite o nome
 COLUMNS,COLUMNAS,COLUMNS,SPALTEN,COLONNES,ZUTABEAK,COLONNE,COLUNAS
@@ -122,16 +122,35 @@ Hints,Pistas,Hints,Hinweise,Indices,Pistak,Indizi,Dicas
 Erased,Borradas,Erased,Gelöscht,Effacées,Ezabatuta,Cancellate,Excluídas
 Time,Tiempo,Time,Zeit,Temps,Denbora,Tempo,Tempo
 RECORD,RECORD,RECORD,HIGHSCORE,MEILLEUR SCORE,ERREKOR,MIGLIOR PUNTEGGIO,RECORDE
-BUY,COMPRAR,BUY,,,,,
-HINT 1,PISTA 1,HINT 1,,,,,
-HINT 2,PISTA 2,HINT 2,,,,,
-HINT 3,PISTA 3,HINT 3,,,,,
-Free,Gratis,Free,,,,,
-UNLOCKED,DESBLOQUEADO,UNLOCKED,,,,,
-PAID,COMPRADO,PAID,,,,,
-GET,OBTENER,GET,,,,,
-LOCKED,BLOQUEADO,LOCKED,,,,,
-AVAILABLE,DISPONIBLE,AVAILABLE,,,,,
-Cost:,Coste:,Cost:,,,,,
-Unlocks after purchasing track 2,Desbloquea tras comprar pista 2,Unlocks after purchasing track 2,,,,,
-10.000 points,10.000 puntos,10.000 points,,,,,
+BUY,COMPRAR,BUY,KAUFEN,ACHETER,EROSI,COMPRARE,COMPRAR
+HINT 1,PISTA 1,HINT 1,HINWEIS 1,INDICE 1,PISTA 1,INDIZIO 1,DICA 1
+HINT 2,PISTA 2,HINT 2,HINWEIS 2,INDICE 2,PISTA 2,INDIZIO 2,DICA 2
+HINT 3,PISTA 3,HINT 3,HINWEIS 3,INDICE 3,PISTA 3,INDIZIO 3,DICA 3
+Free,Gratis,Free,Kostenlos,Gratuit,Doan,Gratis,Grátis
+UNLOCKED,DESBLOQUEADO,UNLOCKED,FREIGESCHALTET,DÉBLOQUÉ,DESBLOKEATUTA,SBLOCCATO,DESBLOQUEADO
+PAID,COMPRADO,PAID,GEKAUFT,ACHETÉ,EROSIK,ACQUISTATO,PAGO
+GET,OBTENER,GET,HOLEN,OBTENIR,LORTU,OTTIENI,OBTER
+LOCKED,BLOQUEADO,LOCKED,GESPERRT,VERROUILLÉ,BLOKEATUTA,BLOCCATO,BLOQUEADO
+AVAILABLE,DISPONIBLE,AVAILABLE,VERFÜGBAR,DISPONIBLE,ESKURAGARRI,DISPONIBILE,DISPONÍVEL
+Cost:,Coste:,Cost:,Kosten:,Coût :,Kostua:,Costo:,Custo:
+Unlocks after purchasing track 2,Desbloquea tras comprar pista 2,Unlocks after purchasing track 2,Wird freigeschaltet nach dem Kauf von Spur 2,Débloqué après avoir acheté la piste 2,2. pista erosi ondoren…,Si sblocca dopo aver acquistato la traccia 2,Desbloqueia após comprar a pista 2
+- 10.000 points,- 10.000 puntos,- 10.000 points,- 10.000 Punkte,- 10 000 points,- 10.000 puntu,- 10.000 punti,- 10.000 pontos
+Welcome to,¡Bienvenido a ,Welcome to,Willkommen bei,Bienvenue à,Ongi etorri,Benvenuto a,Bem-vindo ao
+CipherLetter!,CifraLetra!,CipherLetter,CipherLetter!,CipherLetter!,CifraLetra!,CipherLetter!,CipherLetter!
+Discover the letter that corresponds to each number to solve the hidden phrases.,Descubre la letra que corresponde a cada número para resolver las frases ocultas.,Discover the letter that corresponds to each number to solve the hidden phrases.,,,,,
+Game cells,Celdas del juego,Game cells,Spielfelder,Cellules du jeu,Joko gelaxkak,Celle di gioco,Células do jogo
+Number,Número,Number,Zahl,Nombre,Zenbakia,Numero,Número
+Always visible,Siempre visible,Always visible,Immer sichtbar,Toujours visible,Beti ikusgai,Sempre visibile,Sempre visível
+Letter,Letra,Letter,Buchstabe,Lettre,Letra,Lettera,Letra
+You must discover it,You must discover it,You must discover it,Du musst es entdecken,Tu dois la découvrir,Aurkitu behar duzu,Devi scoprirla,Tens de descobri-la
+Show pre-game tutorial,Mostrar tutorial antes de partida,Show pre-game tutorial,Vor-Spiel-Tutorial anzeigen,Montrer le tutoriel avant la partie,Partida aurretik tutoriala,Mostrare il tutorial prima della partita,Mostrar tutorial antes do jogo
+Letter entry,Entrada de letras,Letter entry,Buchstabeneingabe,Saisie de lettre,Letra sarrera,Inserimento lettere,Entrada de letras
+1- Select the CELL,1- Selecciona la CELDA,1- Select the CELL,1- Wähle die Zelle aus,1- Sélectionne la cellule,1- Gelaxka hautatu,1- Seleziona la cella,1- Seleciona a célula
+2- Select the LETTER,2- Selecciona la LETRA,2- Select the LETTER,2- Wähle den Buchstaben aus,2- Sélectionne la lettre,2- Letra hautatu,2- Seleziona la lettera,2- Seleciona a letra
+(All cells with the number 3 will be filled with the letter A),(Todas las celdas con el numero 3 serán rellenadas con la letra A),(All cells with the number 3 will be filled with the letter A),,,,,
+The game doesn't tell you whether the choice is correct or not!,¡El juego no avisa si la elección es correcta o no!,The game doesn't tell you whether the choice is correct or not!,,,,,
+It's up to you to deduce the correct one.,Depende de ti deducir la correcta.,It's up to you to deduce the correct one.,,,,Zure gain dago…,
+To delete letters use the ERASE button.,Para borrar letras usa el botón BORRAR.,To delete letters use the ERASE button.,,,,,
+Every time you delete a letter you will lose points:,Cada vez que borres una letra perderás puntos:,Every time you delete a letter you will lose points:,,,,,
+-100.000 points,-100.000 puntos,-100.000 points,-100.000 Punkte,-100 000 points,-100.000 puntu,-100.000 punti,-100.000 pontos
+HINT 1 - Image,PISTA 1 - Imagen,HINT 1 - Image,HINWEIS 1 - BILD,,,,

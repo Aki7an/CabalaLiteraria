@@ -1,12 +1,12 @@
 [gd_scene load_steps=19 format=3 uid="uid://y1k8m1upqvmd"]
 
 [ext_resource type="Script" uid="uid://7fpd4dm3ml4u" path="res://scenes/game/panel_colors.gd" id="1_egxq0"]
-[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="3_8wmjc"]
-[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="3_qyr5c"]
+[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="3_8wmjc"]
+[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="3_qyr5c"]
 [ext_resource type="Script" uid="uid://328p3wf54q2r" path="res://scenes/main/column_+.gd" id="4_8wmjc"]
-[ext_resource type="Texture2D" uid="uid://dslqrdlfkvkm0" path="res://images/settings.png" id="4_ymjlu"]
-[ext_resource type="Texture2D" uid="uid://db10fm7xpcqle" path="res://images/eraser_2.png" id="5_0kj3y"]
-[ext_resource type="FontFile" uid="uid://cixkiol5tnrib" path="res://fonts/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf" id="6_ytfxw"]
+[ext_resource type="Texture2D" uid="uid://b1q15vddra5wi" path="res://images/settings.png" id="4_ymjlu"]
+[ext_resource type="Texture2D" uid="uid://bv6k6rg4ip3h3" path="res://images/eraser_2.png" id="5_0kj3y"]
+[ext_resource type="FontFile" uid="uid://bp1reworugrvn" path="res://fonts/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf" id="6_ytfxw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_egxq0"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -62,7 +62,7 @@ corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0kj3y"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qyr5c"]
 texture = ExtResource("3_qyr5c")
 texture_margin_left = 76.3134
 texture_margin_top = 76.0722
@@ -70,7 +70,7 @@ texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
 modulate_color = Color(0.8, 0.6684, 0.424, 0.541176)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i8kq8"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8wmjc"]
 texture = ExtResource("3_qyr5c")
 texture_margin_left = 76.3134
 texture_margin_top = 76.0722
@@ -78,7 +78,7 @@ texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
 modulate_color = Color(0.901961, 0.698039, 0.309804, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qyr5c"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ymjlu"]
 texture = ExtResource("3_qyr5c")
 texture_margin_left = 76.3134
 texture_margin_top = 76.0722
@@ -106,11 +106,11 @@ Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
 Button/font_sizes/font_size = 50
 Button/fonts/font = null
-Button/styles/disabled = SubResource("StyleBoxTexture_0kj3y")
+Button/styles/disabled = SubResource("StyleBoxTexture_qyr5c")
 Button/styles/focus = null
-Button/styles/hover = SubResource("StyleBoxTexture_i8kq8")
-Button/styles/normal = SubResource("StyleBoxTexture_i8kq8")
-Button/styles/pressed = SubResource("StyleBoxTexture_qyr5c")
+Button/styles/hover = SubResource("StyleBoxTexture_8wmjc")
+Button/styles/normal = SubResource("StyleBoxTexture_8wmjc")
+Button/styles/pressed = SubResource("StyleBoxTexture_ymjlu")
 
 [node name="PanelColors" type="Panel"]
 anchors_preset = -1

@@ -1,28 +1,31 @@
-[gd_scene load_steps=43 format=3 uid="uid://fwvrs81xpbno"]
+[gd_scene load_steps=64 format=3 uid="uid://fwvrs81xpbno"]
 
 [ext_resource type="Script" uid="uid://djfuwgey5l4bd" path="res://scenes/menu_tutorial.gd" id="1_5nqfq"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_14pat"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="2_tojt8"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="5_mkqcm"]
-[ext_resource type="Texture2D" uid="uid://dj0q4a0nj4v2s" path="res://images/Letra.png" id="6_x3c50"]
-[ext_resource type="Texture2D" uid="uid://btdwfts88pjy1" path="res://images/Flecha.png" id="7_cs7op"]
-[ext_resource type="Texture2D" uid="uid://b5ujh1ms4cdlu" path="res://images/Teclado.png" id="8_p410d"]
-[ext_resource type="Texture2D" uid="uid://dho3yhntdr2yk" path="res://images/BotonBorrar.png" id="10_5onnj"]
+[ext_resource type="Texture2D" uid="uid://b62tdps38fra2" path="res://images/Letra.png" id="6_x3c50"]
+[ext_resource type="Texture2D" uid="uid://ctpbivwi1vpvw" path="res://images/Flecha.png" id="7_cs7op"]
+[ext_resource type="Texture2D" uid="uid://bexpq0mq8vbw4" path="res://images/Teclado.png" id="8_p410d"]
+[ext_resource type="Texture2D" uid="uid://bv6k6rg4ip3h3" path="res://images/eraser_2.png" id="10_2077r"]
+[ext_resource type="FontFile" uid="uid://bp1reworugrvn" path="res://fonts/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf" id="11_euxot"]
 [ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="11_os3rs"]
-[ext_resource type="Texture2D" uid="uid://cc5fvr2p5neit" path="res://images/Coin.png" id="12_2077r"]
-[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
-[ext_resource type="Texture2D" uid="uid://hke85fvhjg50" path="res://images/CifraLetraFull.png" id="15_jcm6x"]
+[ext_resource type="Texture2D" uid="uid://ofm8cbhk2t5a" path="res://images/Coin.png" id="12_2077r"]
+[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
+[ext_resource type="FontFile" uid="uid://dhgtsbb1kopcf" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="15_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://ciq7bte5h1epo" path="res://images/CifraLetraFull.png" id="15_jcm6x"]
+[ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="16_4xhfx"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="16_l6n8b"]
-[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="17_vet1h"]
+[ext_resource type="Texture2D" uid="uid://be3ladiw7ys8a" path="res://images/Pista.png" id="17_88ncm"]
+[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="17_vet1h"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="18_5onnj"]
-[ext_resource type="Texture2D" uid="uid://dtcjxiq444mtd" path="res://images/Shop3.png" id="19_os3rs"]
-[ext_resource type="Texture2D" uid="uid://26hmsfh26pep" path="res://images/ImagenPista.png" id="21_5onnj"]
+[ext_resource type="Texture2D" uid="uid://bp623p23x4e0o" path="res://images/Shop3.png" id="19_os3rs"]
+[ext_resource type="Texture2D" uid="uid://dd65vcvp8rtev" path="res://images/ImagenPista.png" id="21_5onnj"]
 [ext_resource type="Theme" uid="uid://lkfr6pageoc2" path="res://GUI/Button_difficulty.tres" id="22_euxot"]
-[ext_resource type="Texture2D" uid="uid://xq40eu32knxb" path="res://images/BotonPista.png" id="22_os3rs"]
-[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="23_4xhfx"]
-[ext_resource type="Texture2D" uid="uid://cuygqebfmuiu1" path="res://images/BotonLetras.png" id="23_euxot"]
-[ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="24_88ncm"]
-[ext_resource type="Texture2D" uid="uid://b6nxfxre5njbj" path="res://images/CheckOK.png" id="25_ohopp"]
+[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="23_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://bkog17syftljg" path="res://images/BotonLetras.png" id="23_euxot"]
+[ext_resource type="Texture2D" uid="uid://dfflig3f3g0c8" path="res://images/contorno_estrella_blanco.png" id="24_88ncm"]
+[ext_resource type="Texture2D" uid="uid://yimwuqsh68l8" path="res://images/CheckOK.png" id="25_ohopp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tojt8"]
 bg_color = Color(0.889317, 0.843552, 0.693583, 1)
@@ -52,14 +55,192 @@ border_width_right = 10
 border_width_bottom = 10
 border_color = Color(0.992157, 0.827451, 0.329412, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0kj3y"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.8, 0.6684, 0.424, 0.541176)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i8kq8"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.901961, 0.698039, 0.309804, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qyr5c"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.74, 0.56906, 0.2516, 1)
+
+[sub_resource type="Theme" id="Theme_ohopp"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_0kj3y")
+Button/styles/focus = null
+Button/styles/hover = SubResource("StyleBoxTexture_i8kq8")
+Button/styles/normal = SubResource("StyleBoxTexture_i8kq8")
+Button/styles/pressed = SubResource("StyleBoxTexture_qyr5c")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_os3rs"]
+bg_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_88ncm"]
+bg_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ohopp"]
+bg_color = Color(1, 0.670588, 0.0705882, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lbhst"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.276545, 0.0287, 0.65098)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f3br7"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.184314, 0.529412, 0.498039, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a5im7"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.227451, 0.623529, 0.584314, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dk3lr"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.156863, 0.454902, 0.427451, 1)
+
+[sub_resource type="Theme" id="Theme_fpobj"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 60
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_lbhst")
+Button/styles/focus = null
+Button/styles/hover = SubResource("StyleBoxTexture_f3br7")
+Button/styles/normal = SubResource("StyleBoxTexture_a5im7")
+Button/styles/pressed = SubResource("StyleBoxTexture_dk3lr")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2077r"]
+bg_color = Color(0.898039, 0.780392, 0.615686, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpobj"]
 bg_color = Color(1, 0.670588, 0.0705882, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_euxot"]
-bg_color = Color(1, 0.670588, 0.0705882, 1)
+bg_color = Color(0.898039, 0.780392, 0.615686, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xhfx"]
-bg_color = Color(1, 0.670588, 0.0705882, 1)
+bg_color = Color(0.898039, 0.780392, 0.615686, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sjrv"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.276545, 0.0287, 0.65098)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lxerm"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.478431, 0.435294, 0.803922, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1bhqr"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.556863, 0.501961, 0.862745, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lo30q"]
+texture = ExtResource("17_vet1h")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.419608, 0.368627, 0.752941, 1)
+
+[sub_resource type="Theme" id="Theme_55nle"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 60
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_4sjrv")
+Button/styles/focus = null
+Button/styles/hover = SubResource("StyleBoxTexture_lxerm")
+Button/styles/normal = SubResource("StyleBoxTexture_1bhqr")
+Button/styles/pressed = SubResource("StyleBoxTexture_lo30q")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mlydr"]
 texture = ExtResource("17_vet1h")
@@ -252,7 +433,7 @@ offset_right = 848.0
 offset_bottom = 503.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "Descubre la letra que corresponde a cada número para resolver las frases ocultas."
+text = "Discover the letter that corresponds to each number to solve the hidden phrases."
 horizontal_alignment = 1
 
 [node name="TextureRectCifraLetra" type="TextureRect" parent="Label/Control/1/LabelMarcoA"]
@@ -383,7 +564,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 80
-text = "¡Bienvenido a "
+text = "Welcome to"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -402,7 +583,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 120
-text = "CifraLetra!"
+text = "CipherLetter"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -420,7 +601,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 60
-text = "Celdas del juego"
+text = "Game cells"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -439,7 +620,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 40
-text = "Letra"
+text = "Letter"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -458,7 +639,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 40
-text = "Número"
+text = "Number"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -477,7 +658,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 33
-text = "Siempre visible"
+text = "Always visible"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -546,7 +727,7 @@ offset_right = 848.0
 offset_bottom = 425.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "1- Selecciona la CELDA"
+text = "1- Select the CELL"
 horizontal_alignment = 1
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/2/LabelMarcoA/Slide1"]
@@ -557,7 +738,7 @@ offset_right = 840.0
 offset_bottom = 856.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "2- Selecciona la LETRA"
+text = "2- Select the LETTER"
 horizontal_alignment = 1
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/2/LabelMarcoA/Slide1"]
@@ -569,7 +750,7 @@ offset_bottom = 1288.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 40
-text = "Todas las celdas con el numero 3 serán rellenadas con la letra A"
+text = "(All cells with the number 3 will be filled with the letter A)"
 horizontal_alignment = 1
 
 [node name="TextureRectCifraLetra" type="TextureRect" parent="Label/Control/2/LabelMarcoA"]
@@ -846,7 +1027,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 60
-text = "Entrada de letras"
+text = "Letter entry"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -880,7 +1061,7 @@ offset_right = 832.0
 offset_bottom = 598.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "Para borrar letras, usa el botón BORRAR."
+text = "To delete letters, use the ERASE button."
 horizontal_alignment = 1
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/3/LabelMarcoA/Slide1"]
@@ -891,13 +1072,8 @@ offset_right = 848.0
 offset_bottom = 1088.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "Cada vez que borres una letra perderás puntos:"
+text = "Every time you delete a letter you will lose points:"
 horizontal_alignment = 1
-
-[node name="BotonBorrar" type="Sprite2D" parent="Label/Control/3/LabelMarcoA"]
-position = Vector2(437, 760)
-scale = Vector2(2.41448, 2.41448)
-texture = ExtResource("10_5onnj")
 
 [node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/3/LabelMarcoA"]
 layout_mode = 0
@@ -907,8 +1083,41 @@ offset_right = 926.0
 offset_bottom = 1185.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.81, 0, 0, 1)
-text = "-100.000 putos"
+text = "-100,000 points"
 horizontal_alignment = 1
+
+[node name="BtnErase" type="Button" parent="Label/Control/3/LabelMarcoA"]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 342.0
+offset_top = 684.0
+offset_right = 526.0
+offset_bottom = 868.0
+size_flags_horizontal = 0
+theme = SubResource("Theme_ohopp")
+disabled = true
+
+[node name="TextureRect" type="TextureRect" parent="Label/Control/3/LabelMarcoA/BtnErase"]
+modulate = Color(0.356863, 0.27451, 0.211765, 1)
+layout_mode = 0
+offset_left = 33.0
+offset_top = 17.0
+offset_right = 661.0
+offset_bottom = 579.0
+scale = Vector2(0.17, 0.17)
+texture = ExtResource("10_2077r")
+
+[node name="Label" type="Label" parent="Label/Control/3/LabelMarcoA/BtnErase"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 120.0
+offset_right = 168.0
+offset_bottom = 152.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("11_euxot")
+theme_override_font_sizes/font_size = 30
+text = "ERASE"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="LabelMarcoB" type="Label" parent="Label/Control/3"]
 layout_mode = 0
@@ -932,7 +1141,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.81, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 65
-text = "¡El juego no avisa si la elección es correcta o no!"
+text = "The game doesn't tell you whether the choice is correct or not!"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -951,7 +1160,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 50
-text = "Depende de ti deducir la correcta."
+text = "It's up to you to deduce the correct one."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -985,20 +1194,19 @@ offset_right = 886.0
 offset_bottom = 222.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
-text = "PISTA 1 - Imagen"
+theme_override_styles/normal = SubResource("StyleBoxFlat_os3rs")
+text = "HINT 1 - Image"
 horizontal_alignment = 1
 
 [node name="RichTextLabel5" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = 52.0
+offset_left = 502.0
 offset_top = 352.0
-offset_right = 1028.0
+offset_right = 878.0
 offset_bottom = 414.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
-text = "GRATIS"
-horizontal_alignment = 1
+text = "FREE"
 
 [node name="RichTextLabel9" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
 layout_mode = 0
@@ -1030,7 +1238,7 @@ offset_right = 886.0
 offset_bottom = 630.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_euxot")
+theme_override_styles/normal = SubResource("StyleBoxFlat_88ncm")
 text = "PISTA 2 - Texto descripción"
 horizontal_alignment = 1
 
@@ -1066,7 +1274,7 @@ offset_right = 886.0
 offset_bottom = 998.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_4xhfx")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ohopp")
 text = "PISTA 3 - Palabras en la frase"
 horizontal_alignment = 1
 
@@ -1100,13 +1308,32 @@ offset_right = 962.0
 offset_bottom = 1480.0
 metadata/_edit_lock_ = true
 
-[node name="BotonPista" type="Sprite2D" parent="Label/Control/4"]
-position = Vector2(510, 264)
-scale = Vector2(2.04762, 2.04762)
-texture = ExtResource("22_os3rs")
+[node name="ButtonPista0" type="Button" parent="Label/Control/4"]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 424.0
+offset_top = 184.0
+offset_right = 592.0
+offset_bottom = 359.0
+pivot_offset = Vector2(84, 85)
+size_flags_horizontal = 0
+theme = SubResource("Theme_fpobj")
+theme_override_font_sizes/font_size = 60
+
+[node name="Pistas2" type="Label" parent="Label/Control/4/ButtonPista0"]
+layout_mode = 2
+offset_left = 10.0
+offset_top = 48.0
+offset_right = 162.0
+offset_bottom = 127.0
+pivot_offset = Vector2(78, 41)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("15_4xhfx")
+theme_override_font_sizes/font_size = 35
+text = "HINTS"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="5" type="Control" parent="Label/Control"]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1139,13 +1366,13 @@ horizontal_alignment = 1
 
 [node name="RichTextLabel8" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -98.0
+offset_left = -90.0
 offset_top = 160.0
-offset_right = 878.0
+offset_right = 886.0
 offset_bottom = 222.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
+theme_override_styles/normal = SubResource("StyleBoxFlat_fpobj")
 text = "Letras iniciales "
 horizontal_alignment = 1
 
@@ -1281,6 +1508,59 @@ position = Vector2(422, 943)
 scale = Vector2(0.0755095, 0.0755095)
 texture = ExtResource("12_2077r")
 
+[node name="ButtonLetters" type="Button" parent="Label/Control/5/LabelMarcoA"]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 358.0
+offset_top = -16.0
+offset_right = 526.0
+offset_bottom = 159.0
+size_flags_horizontal = 0
+theme = SubResource("Theme_55nle")
+theme_override_font_sizes/font_size = 60
+
+[node name="Categoria2" type="Label" parent="Label/Control/5/LabelMarcoA/ButtonLetters"]
+visible = false
+layout_mode = 1
+offset_left = 25.0
+offset_top = 8.0
+offset_right = 141.0
+offset_bottom = 89.0
+theme = ExtResource("16_4xhfx")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 50
+text = "1"
+horizontal_alignment = 1
+
+[node name="TextureRect3" type="TextureRect" parent="Label/Control/5/LabelMarcoA/ButtonLetters"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 16.0
+offset_right = 6.0
+offset_bottom = -77.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("17_88ncm")
+expand_mode = 1
+stretch_mode = 5
+flip_h = true
+
+[node name="Pistas3" type="Label" parent="Label/Control/5/LabelMarcoA/ButtonLetters"]
+layout_mode = 2
+offset_left = 8.0
+offset_top = 48.0
+offset_right = 160.0
+offset_bottom = 127.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("15_4xhfx")
+theme_override_font_sizes/font_size = 35
+text = "LETTERS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="LabelMarcoB" type="Label" parent="Label/Control/5"]
 layout_mode = 0
 offset_left = 66.0
@@ -1288,11 +1568,6 @@ offset_top = 856.0
 offset_right = 962.0
 offset_bottom = 1480.0
 metadata/_edit_lock_ = true
-
-[node name="BotonPista2" type="Sprite2D" parent="Label/Control/5"]
-position = Vector2(510, 264)
-scale = Vector2(2.04762, 2.04762)
-texture = ExtResource("23_euxot")
 
 [node name="6" type="Control" parent="Label/Control"]
 visible = false
@@ -1649,6 +1924,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="7" type="Control" parent="Label/Control"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1823,7 +2099,7 @@ offset_bottom = 1606.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/font_size = 30
-text = "Mostrar tutorial antes de partida"
+text = "Show pre-game tutorial"
 
 [node name="ButtonBack" type="Button" parent="."]
 anchors_preset = -1

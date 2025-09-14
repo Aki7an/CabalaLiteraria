@@ -106,7 +106,7 @@ func _ready() -> void:
 		partida_en_record = false
 	
 	
-	PlayFabTools.send_match_event(GameManager.tiempo_partida, GameManager.vocalesAE_compradas, GameManager.vocalesIOU_compradas, GameManager.consonantes_compradas, GameManager.pistas_utilizadas, GameManager.cambios, GameManager.dificultad_actual, GameManager.categoria_actual)
+	PlayFabTools.send_match_event(GameManager.tiempo_partida, GameManager.vocalesAE_compradas, GameManager.vocalesIOU_compradas, GameManager.consonantes_compradas, GameManager.pistas_utilizadas, GameManager.cambios_hechos, GameManager.dificultad_actual, GameManager.categoria_actual)
 	
 	
 	focus_texto_y_teclado_android()	

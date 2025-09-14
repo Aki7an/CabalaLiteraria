@@ -142,7 +142,7 @@ func update_coins() -> void:
 	coins.text = str(GameManager.coins)
 	
 func _update_cambios() -> void:
-	cambios.text = str(GameManager.cambios)
+	cambios.text = str(GameManager.cambios_hechos)
 
 func _update_categoria() -> void:
 	categoria.text = GameManager.categoria_actual
