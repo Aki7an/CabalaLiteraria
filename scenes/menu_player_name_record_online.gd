@@ -4,12 +4,9 @@ extends ColorRect
 @onready var label_3 = $CuadroSalirBorrado/Label3
 
 @onready var color_cat_citas_celebres: Color = Color(0.106, 0.541, 0.812)
-@onready var color_cat_adivinanzas: Color = Color(0.812, 0.718, 0.251)
-@onready var color_cat_refranes_populares: Color = Color(0.416, 0.812, 0.424)
 @onready var color_cat_efemerides: Color = Color(0.812, 0.408, 0.38)
-@onready var color_cat_citas_biblicas: Color = Color(0.576, 0.42, 0.812)
 @onready var color_cat_fragmentos_literarios: Color = Color(0.4, 0.824, 0.698)
-@onready var color_cat_chistes: Color = Color(0.812, 0.463, 0.176)
+@onready var color_cat_curiosidades: Color = Color(0.812, 0.463, 0.176)
 
 @onready var cuadro_salir_borrado: Label = $CuadroSalirBorrado
 
@@ -28,10 +25,6 @@ func _ready():
 	else:
 		label_2.text = "DIFÍCIL - " + GameManager.categoria_actual
 		
-	
-	if GameManager.categoria_actual == "Adivinanza":
-		#label_cat_diff.text = dificultad_actual + " - Adivinanzas"
-		set_label_bg_only(cuadro_salir_borrado, color_cat_adivinanzas)
 
 	if GameManager.categoria_actual == "Efeméride":
 		#label_cat_diff.text = dificultad_actual + " - Efemérides"
@@ -41,21 +34,13 @@ func _ready():
 		#label_cat_diff.text = dificultad_actual + " - Fragmento"
 		set_label_bg_only(cuadro_salir_borrado, color_cat_fragmentos_literarios)
 
-	if GameManager.categoria_actual == "Cita célebre":
+	if GameManager.categoria_actual == "Cita":
 		#label_cat_diff.text = dificultad_actual + " - Citas Célebres"
 		set_label_bg_only(cuadro_salir_borrado, color_cat_citas_celebres)
-
-	if GameManager.categoria_actual == "Chiste":
-		#label_cat_diff.text = dificultad_actual + " - Chistes"
-		set_label_bg_only(cuadro_salir_borrado, color_cat_chistes)
-
-	if GameManager.categoria_actual == "Refrán":
-		#label_cat_diff.text = dificultad_actual + " - Refranes"
-		set_label_bg_only(cuadro_salir_borrado, color_cat_refranes_populares)
 		
-	if GameManager.categoria_actual == "Cita Biblia":
+	if GameManager.categoria_actual == "Curiosidad":
 		#label_cat_diff.text = dificultad_actual + " - Citas Bíblicas"
-		set_label_bg_only(cuadro_salir_borrado, color_cat_citas_biblicas)
+		set_label_bg_only(cuadro_salir_borrado, color_cat_curiosidad)
 
 	label_3.text = "Posición Online Nº " + str(await PlayFabTools.get_player_rank_in_current_difficulty())
 

@@ -5,11 +5,9 @@ extends Control
 
 @onready var color_cat_citas_celebres: Color = Color(0.106, 0.541, 0.812)
 @onready var color_cat_adivinanzas: Color = Color(0.812, 0.718, 0.251)
-@onready var color_cat_refranes_populares: Color = Color(0.416, 0.812, 0.424)
 @onready var color_cat_efemerides: Color = Color(0.812, 0.408, 0.38)
-@onready var color_cat_citas_biblicas: Color = Color(0.576, 0.42, 0.812)
 @onready var color_cat_fragmentos_literarios: Color = Color(0.4, 0.824, 0.698)
-@onready var color_cat_chistes: Color = Color(0.812, 0.463, 0.176)
+@onready var color_cat_curiosidades: Color = Color(0.812, 0.463, 0.176)
 
 # =========================================================
 # CONFIG & NODOS
@@ -177,8 +175,8 @@ func _poblar_optionbuttons() -> void:
 	var cats := _get_categorias_desde_history()
 	if cats.is_empty():
 		cats = [
-			"Efemérides","Adivinanzas","Fragmentos literarios",
-			"Citas célebres","Chistes","Refranes populares","Citas Bíblicas"
+			"Efeméride","Fragmento",
+			"Cita","Curiosidad"
 		]
 	cats.sort_custom(func(a,b): return a.naturalnocasecmp_to(b) < 0)
 	ob_categoria.clear()
@@ -255,27 +253,19 @@ func _refrescar_lista() -> void:
 	titulo_dificultad_categoria.text = str(ob_dificultad.get_item_text(ob_dificultad.selected)) + " - " + str(ob_categoria.get_item_text(ob_categoria.selected))
 
 	# (tu lógica de color de cabecera se mantiene)
-	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Adivinanza":
-		set_label_bg_only(titulo_dificultad_categoria, color_cat_adivinanzas)
-		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_adivinanzas)
+
 	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Efeméride":
 		set_label_bg_only(titulo_dificultad_categoria, color_cat_efemerides)
 		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_efemerides)
 	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Fragmento":
 		set_label_bg_only(titulo_dificultad_categoria, color_cat_fragmentos_literarios)
 		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_fragmentos_literarios)
-	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Cita célebre":
+	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Cita":
 		set_label_bg_only(titulo_dificultad_categoria, color_cat_citas_celebres)
 		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_citas_celebres)
-	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Chiste":
-		set_label_bg_only(titulo_dificultad_categoria, color_cat_chistes)
-		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_chistes)
-	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Refrán":
-		set_label_bg_only(titulo_dificultad_categoria, color_cat_refranes_populares)
-		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_refranes_populares)
-	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Cita Biblia":
-		set_label_bg_only(titulo_dificultad_categoria, color_cat_citas_biblicas)
-		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_citas_biblicas)
+	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Curiosidad":
+		set_label_bg_only(titulo_dificultad_categoria, color_cat_curiosidades)
+		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_curiosidades)
 
 # === NUEVO: comprobar si una fila es la de la última partida (score + fecha de hoy) ===
 func _es_fila_resaltada(puntos: int, fecha_iso: String) -> bool:

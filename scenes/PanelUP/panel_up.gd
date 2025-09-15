@@ -78,7 +78,7 @@ func _ready() -> void:
 	
 	update_coins()
 	
-	_silueta_o_texto()
+	#_silueta_o_texto()
 	rich_text_label_1.clear()
 	rich_text_label_2.clear()
 	rich_text_label_3.clear()
@@ -129,14 +129,14 @@ func _update_score() -> void:
 	GameManager.calcula_score()
 	score.text = GameManager.formatear_numero(GameManager.score)
 	
-func _silueta_o_texto() -> void:
-	if GameManager.descripcion_actual == "IMAGEN":
-		imagen_viñeta.visible = true
-		imagen_viñeta.texture = lista_imagenes[GameManager.id_frase]
-		rich_text_label_0.text = ""
-	else:
-		rich_text_label_0.text = str(GameManager.descripcion_actual)
-		imagen_viñeta.visible = false
+#func _silueta_o_texto() -> void:
+	#if GameManager.descripcion_actual == "IMAGEN":
+		#imagen_viñeta.visible = true
+		#imagen_viñeta.texture = lista_imagenes[GameManager.id_frase]
+		#rich_text_label_0.text = ""
+	#else:
+		#rich_text_label_0.text = str(GameManager.descripcion_actual)
+		#imagen_viñeta.visible = false
 
 func update_coins() -> void:
 	coins.text = str(GameManager.coins)

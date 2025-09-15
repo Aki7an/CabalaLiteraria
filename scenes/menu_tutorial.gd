@@ -22,9 +22,7 @@ extends Node2D
 
 @onready var check_box :CheckBox = $Label/Control/CheckBox
 
-@onready var button_back = $ButtonBack
-
-
+#@onready var button_back = $ButtonBack
 
 
 func _on_button_back_pressed():
@@ -42,7 +40,7 @@ func _on_button_back_pressed():
 
 func _ready():
 	
-	button_back.disabled = true
+	#button_back.disabled = true
 	
 	if GameManager.mostrar_tuto_antes_partida:
 		check_box.button_pressed = true
@@ -201,7 +199,7 @@ func _on_button_6_pressed():
 
 
 func _on_button_7_pressed():
-	button_back.disabled = false
+	#button_back.disabled = false
 	
 	_1.visible = false
 	_2.visible = false

@@ -4,28 +4,28 @@
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_14pat"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="2_tojt8"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="5_mkqcm"]
-[ext_resource type="Texture2D" uid="uid://b62tdps38fra2" path="res://images/Letra.png" id="6_x3c50"]
-[ext_resource type="Texture2D" uid="uid://ctpbivwi1vpvw" path="res://images/Flecha.png" id="7_cs7op"]
-[ext_resource type="Texture2D" uid="uid://bexpq0mq8vbw4" path="res://images/Teclado.png" id="8_p410d"]
-[ext_resource type="Texture2D" uid="uid://bv6k6rg4ip3h3" path="res://images/eraser_2.png" id="10_2077r"]
-[ext_resource type="FontFile" uid="uid://bp1reworugrvn" path="res://fonts/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf" id="11_euxot"]
+[ext_resource type="Texture2D" uid="uid://dj0q4a0nj4v2s" path="res://images/Letra.png" id="6_x3c50"]
+[ext_resource type="Texture2D" uid="uid://btdwfts88pjy1" path="res://images/Flecha.png" id="7_cs7op"]
+[ext_resource type="Texture2D" uid="uid://b5ujh1ms4cdlu" path="res://images/Teclado.png" id="8_p410d"]
+[ext_resource type="Texture2D" uid="uid://db10fm7xpcqle" path="res://images/eraser_2.png" id="10_2077r"]
+[ext_resource type="FontFile" uid="uid://cixkiol5tnrib" path="res://fonts/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf" id="11_euxot"]
 [ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="11_os3rs"]
-[ext_resource type="Texture2D" uid="uid://ofm8cbhk2t5a" path="res://images/Coin.png" id="12_2077r"]
-[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
-[ext_resource type="FontFile" uid="uid://dhgtsbb1kopcf" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="15_4xhfx"]
-[ext_resource type="Texture2D" uid="uid://ciq7bte5h1epo" path="res://images/CifraLetraFull.png" id="15_jcm6x"]
+[ext_resource type="Texture2D" uid="uid://cc5fvr2p5neit" path="res://images/Coin.png" id="12_2077r"]
+[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
+[ext_resource type="FontFile" uid="uid://bg87tkoaof74f" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="15_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://hke85fvhjg50" path="res://images/CifraLetraFull.png" id="15_jcm6x"]
 [ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="16_4xhfx"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="16_l6n8b"]
-[ext_resource type="Texture2D" uid="uid://be3ladiw7ys8a" path="res://images/Pista.png" id="17_88ncm"]
-[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="17_vet1h"]
+[ext_resource type="Texture2D" uid="uid://ci80dd1w4tkbh" path="res://images/Pista.png" id="17_88ncm"]
+[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="17_vet1h"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="18_5onnj"]
-[ext_resource type="Texture2D" uid="uid://bp623p23x4e0o" path="res://images/Shop3.png" id="19_os3rs"]
-[ext_resource type="Texture2D" uid="uid://dd65vcvp8rtev" path="res://images/ImagenPista.png" id="21_5onnj"]
+[ext_resource type="Texture2D" uid="uid://dtcjxiq444mtd" path="res://images/Shop3.png" id="19_os3rs"]
+[ext_resource type="Texture2D" uid="uid://26hmsfh26pep" path="res://images/ImagenPista.png" id="21_5onnj"]
 [ext_resource type="Theme" uid="uid://lkfr6pageoc2" path="res://GUI/Button_difficulty.tres" id="22_euxot"]
-[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="23_4xhfx"]
-[ext_resource type="Texture2D" uid="uid://bkog17syftljg" path="res://images/BotonLetras.png" id="23_euxot"]
-[ext_resource type="Texture2D" uid="uid://dfflig3f3g0c8" path="res://images/contorno_estrella_blanco.png" id="24_88ncm"]
-[ext_resource type="Texture2D" uid="uid://yimwuqsh68l8" path="res://images/CheckOK.png" id="25_ohopp"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="23_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://cuygqebfmuiu1" path="res://images/BotonLetras.png" id="23_euxot"]
+[ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="24_88ncm"]
+[ext_resource type="Texture2D" uid="uid://b6nxfxre5njbj" path="res://images/CheckOK.png" id="25_ohopp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tojt8"]
 bg_color = Color(0.889317, 0.843552, 0.693583, 1)
@@ -1276,8 +1276,7 @@ offset_bottom = 998.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_ohopp")
-text = "HINT 3 - Words in the sentence
-"
+text = "HINT 3 - Words in the sentence"
 horizontal_alignment = 1
 
 [node name="LabelCoins" type="Label" parent="Label/Control/4/LabelMarcoA/Slide1"]
@@ -1337,7 +1336,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="5" type="Control" parent="Label/Control"]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1377,8 +1375,7 @@ offset_bottom = 222.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_fpobj")
-text = "Initial letters
-"
+text = "Initial letters"
 horizontal_alignment = 1
 
 [node name="RichTextLabel5" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
@@ -1969,6 +1966,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="7" type="Control" parent="Label/Control"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0

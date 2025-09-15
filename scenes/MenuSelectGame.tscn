@@ -2,27 +2,27 @@
 
 [ext_resource type="Script" uid="uid://d02m2bg76jwuk" path="res://scenes/menu_select_game.gd" id="1_db3ki"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_jb4df"]
-[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_cmdop"]
+[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_cmdop"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="5_1o3l6"]
-[ext_resource type="Texture2D" uid="uid://c647iy0syogo0" path="res://images/Citas.png" id="6_jb4df"]
-[ext_resource type="Texture2D" uid="uid://d2i4uwg0joab6" path="res://images/FragmentosLiterarios.png" id="7_33mbh"]
-[ext_resource type="Texture2D" uid="uid://yimwuqsh68l8" path="res://images/CheckOK.png" id="7_ur43h"]
-[ext_resource type="Texture2D" uid="uid://3aogsd0ax8xo" path="res://images/Adivinanza.png" id="10_m1crj"]
-[ext_resource type="Texture2D" uid="uid://b75ntkmt7t0h6" path="res://images/Efemerides.png" id="12_xj0sj"]
+[ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="6_jb4df"]
+[ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="7_33mbh"]
+[ext_resource type="Texture2D" uid="uid://b6nxfxre5njbj" path="res://images/CheckOK.png" id="7_ur43h"]
+[ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="10_m1crj"]
+[ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="12_xj0sj"]
 [ext_resource type="Theme" uid="uid://lkfr6pageoc2" path="res://GUI/Button_difficulty.tres" id="15_jb4df"]
-[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="16_33mbh"]
-[ext_resource type="Texture2D" uid="uid://dfflig3f3g0c8" path="res://images/contorno_estrella_blanco.png" id="17_jb4df"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="16_33mbh"]
+[ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="17_jb4df"]
 [ext_resource type="Shader" uid="uid://8b7nr3sen4t0" path="res://scenes/PlayBuoon.gdshader" id="21_elayp"]
-[ext_resource type="FontFile" uid="uid://1oc1fewipk23" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="22_m1crj"]
-[ext_resource type="Texture2D" uid="uid://dk73kgaaacau3" path="res://GUI/BotonPlayPlano.png" id="22_r6fsd"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="22_m1crj"]
+[ext_resource type="Texture2D" uid="uid://cdo3jiegx0a2x" path="res://GUI/BotonPlayPlano.png" id="22_r6fsd"]
 [ext_resource type="Script" uid="uid://drgng4haeeuj3" path="res://scenes/button_play_Fx.gd" id="23_cuv33"]
-[ext_resource type="Texture2D" uid="uid://dhy8jhoi1p1ej" path="res://images/Candado.png" id="23_xhejm"]
-[ext_resource type="Texture2D" uid="uid://dfqcfbc4gla42" path="res://GUI/BotonPlaySimboloTextura.png" id="24_1o3l6"]
-[ext_resource type="FontFile" uid="uid://foahejbukn0g" path="res://fonts/Fonts/Fredoka One/FredokaOne-Regular.ttf" id="25_4vcgj"]
+[ext_resource type="Texture2D" uid="uid://dy8ag74csllw2" path="res://images/Candado.png" id="23_xhejm"]
+[ext_resource type="Texture2D" uid="uid://c0n8lq36j8ubr" path="res://GUI/BotonPlaySimboloTextura.png" id="24_1o3l6"]
+[ext_resource type="FontFile" uid="uid://qsd4rrtmjkyp" path="res://fonts/Fonts/Fredoka One/FredokaOne-Regular.ttf" id="25_4vcgj"]
 [ext_resource type="Script" uid="uid://bt4vf7weivebq" path="res://scenes/AdjustSize.gd" id="26_0hsxl"]
-[ext_resource type="Texture2D" uid="uid://bbor0efcfp2qn" path="res://GUI/BotonPlayBlanco.png" id="27_r6fsd"]
-[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="28_1o3l6"]
-[ext_resource type="Texture2D" uid="uid://bwwm8eyqclx0m" path="res://images/Cruz.png" id="29_4vcgj"]
+[ext_resource type="Texture2D" uid="uid://bvsmftpcriqo5" path="res://GUI/BotonPlayBlanco.png" id="27_r6fsd"]
+[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="28_1o3l6"]
+[ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="29_4vcgj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3flfr"]
 bg_color = Color(0.969932, 0.877508, 0.735374, 1)
@@ -33,7 +33,7 @@ texture_margin_left = 76.3134
 texture_margin_top = 76.0722
 texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
-modulate_color = Color(0.0533, 0.273265, 0.41, 0.65098)
+modulate_color = Color(0.0533, 0.273265, 0.41, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jb4df"]
 texture = ExtResource("4_cmdop")
@@ -715,6 +715,7 @@ offset_right = -26.0
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/line_spacing = -15
 theme_override_font_sizes/font_size = 40
 text = "Famous Quotes"
 horizontal_alignment = 1
@@ -778,7 +779,7 @@ text = "Curiosities"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BlancoAdivinanzas" type="TextureRect" parent="Panel/ButtonCuriosidades"]
+[node name="BlancoCuriosidades" type="TextureRect" parent="Panel/ButtonCuriosidades"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -887,6 +888,7 @@ offset_right = -24.0
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/line_spacing = -15
 theme_override_font_sizes/font_size = 40
 text = "Literary Fragments"
 horizontal_alignment = 1
@@ -970,10 +972,10 @@ autowrap_mode = 2
 [node name="Blanco1" type="TextureRect" parent="Panel/ButtonDifficulty1"]
 visible = false
 layout_mode = 0
-offset_left = 192.0
-offset_top = 144.0
-offset_right = 245.0
-offset_bottom = 192.0
+offset_left = 264.0
+offset_top = 80.0
+offset_right = 317.0
+offset_bottom = 128.0
 texture = ExtResource("7_ur43h")
 expand_mode = 1
 stretch_mode = 4
@@ -1040,10 +1042,10 @@ autowrap_mode = 2
 [node name="Blanco2" type="TextureRect" parent="Panel/ButtonDifficulty2"]
 visible = false
 layout_mode = 0
-offset_left = 288.0
-offset_top = 143.0
-offset_right = 341.0
-offset_bottom = 191.0
+offset_left = 256.0
+offset_top = 80.0
+offset_right = 309.0
+offset_bottom = 128.0
 texture = ExtResource("7_ur43h")
 expand_mode = 1
 stretch_mode = 4
@@ -1111,10 +1113,10 @@ autowrap_mode = 2
 [node name="Blanco3" type="TextureRect" parent="Panel/ButtonDifficulty3"]
 visible = false
 layout_mode = 0
-offset_left = 239.0
-offset_top = 143.0
-offset_right = 292.0
-offset_bottom = 191.0
+offset_left = 263.0
+offset_top = 79.0
+offset_right = 316.0
+offset_bottom = 127.0
 texture = ExtResource("7_ur43h")
 expand_mode = 1
 stretch_mode = 4
@@ -1306,6 +1308,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(232, 8)
 theme_override_colors/font_color = Color(0.632114, 0.365523, 0.284578, 1)
+theme_override_constants/line_spacing = -15
 theme_override_font_sizes/font_size = 60
 text = "Select
 THEME
@@ -1336,7 +1339,7 @@ texture = ExtResource("29_4vcgj")
 [connection signal="pressed" from="Panel/ButtonCitasCelebres" to="." method="_on_button_citas_celebres_pressed"]
 [connection signal="pressed" from="Panel/ButtonCuriosidades" to="." method="_on_button_curiosidades_pressed"]
 [connection signal="pressed" from="Panel/ButtonEfemerides" to="." method="_on_button_efemerides_pressed"]
-[connection signal="pressed" from="Panel/ButtonFragmentosLiterarios" to="." method="_on_button_refranes_populares_pressed"]
+[connection signal="pressed" from="Panel/ButtonFragmentosLiterarios" to="." method="_on_button_fragmentos_literarios_pressed"]
 [connection signal="pressed" from="Panel/ButtonDifficulty1" to="." method="_on_button_difficulty_1_pressed"]
 [connection signal="pressed" from="Panel/ButtonDifficulty2" to="." method="_on_button_difficulty_2_pressed"]
 [connection signal="pressed" from="Panel/ButtonDifficulty3" to="." method="_on_button_difficulty_3_pressed"]

@@ -33,7 +33,7 @@ var frase_index_actual: int = -1
 var idioma_actual: String = ""
 var categoria_actual: String = ""
 var dificultad_actual: int = 1
-var descripcion_actual: String = ""
+#var descripcion_actual: String = ""
 var descripcion_final: String = ""
 var letras_iniciales: String = ""
 var pistas_actuales: Array[String] = []
@@ -124,7 +124,7 @@ var descripcion_final_actual: String = ""
 @export var numero_letras_reveladas :int =0
 
 # SENTENCE
-@export var frase_original :String = "DE DÍA ME ESCONDO, AUNQUE TODOS ME MIRAN; DE NOCHE ME MUESTRO, PERO NADIE ME TOCA. VIVO EN LOS MUROS Y EN CHARCOS TRANQUILOS. SOY COPIA SIN TINTA, GEMELO SIN LATIDO; SI TÚ SALTAS, YO SALTO; SI TE VAS, ME QUEDO. NO TENGO VOZ Y, AUNQUE DIGO TU POSTURA; NO TENGO PIES Y TE SIGO YA A CADA PASO. ¿QUÉ SOY?: EL REFLEJO"
+@export var frase_original :String = ""
 
 # Original numbers to the original sentence, not randomized
 @export var lista_numeros_frase_original := []
@@ -165,7 +165,12 @@ func set_hints_based_on_difficulty() -> void:
 		#waiting to define rest of the difficulties if they have hints revealed or not
 		set_pista1()
 		
+func set_categoria_actual(categoria: String) -> void:
+	categoria_actual = categoria
 
+func set_dificultad_actual(dificultad: int) -> void:
+	dificultad_actual = dificultad
+ 
 func set_coins(number:int) -> void:
 	coins = number
 
@@ -510,9 +515,9 @@ func cargar_frases_desde_json() -> void:
 		d.index             = int(dict.get("index", frases_db.size() + 1))
 		d.text              = String(dict.get("text", ""))
 		d.letters_init       = String( dict.get("letters_init", "")).to_upper()
-		d.letters_total     = int(dict.get("letters_total", 0))
-		d.letters_discover  = int(dict.get("letters_discover", 0))
-		d.description_init  = String(dict.get("description", ""))
+		#d.letters_total     = int(dict.get("letters_total", 0))
+		#d.letters_discover  = int(dict.get("letters_discover", 0))
+		#d.description_init  = String(dict.get("description", ""))
 		d.description_end   = String(dict.get("description_end", ""))
 		d.category          = String(dict.get("category", ""))
 		d.language          = String(dict.get("language", "es"))
@@ -573,9 +578,8 @@ func _aplicar_frase_desde_db(pos: int) -> void:
 	# Inyecta en tu pipeline actual
 	id_frase           = int(item.index)
 	frase_original_til = String(item.text)
-	descripcion_actual = String(item.description_init)
-	descripcion_final  = String(item.description_end)
-	print("Descripcion final: ", String(item.description_end))
+	#descripcion_actual = String(item.description_init)
+	descripcion_final_actual  = String(item.description_end)
 	categoria_actual   = String(item.category)
 	dificultad_actual  = int(item.difficulty)
 	#id_image           = int(item.image_number)
@@ -586,7 +590,8 @@ func _aplicar_frase_desde_db(pos: int) -> void:
 	hint_3             = String(item.hint_3)
 	
 	frase_original = normalizar_frase_idioma(frase_original_til, "es")
-
+	#descripcion_final_actual = descripcion_final
+	
 	# Reinicia tus estructuras como ya haces
 	_inicializar_datos()
 	_inicializar_lista_numeros_original()
@@ -613,6 +618,18 @@ func seleccionar_por_categoria_y_dificultad(cat: String, diff: int) -> void:
 	# Selecciona una al azar de los candidatos
 	var pos := candidatos[randi() % candidatos.size()]
 	_aplicar_frase_desde_db(pos)
+
+func seleccionar_por_index(index: int) -> void:
+	
+
+	# Buscar frases que cumplan el criterio
+	for i in frases_db.size():
+		var item: Dictionary = frases_db[i]
+		if (item.index == index ):
+			_aplicar_frase_desde_db(i)
+
+
+
 
 func button_blink(button: Button):
 	var t := create_tween()
@@ -913,29 +930,17 @@ func playfab_table() -> String:
 	
 func codifica_score(score_to_codi: int) -> int:
 	var score_final: int = score_to_codi * 10
-	if GameManager.categoria_actual == "Adivinanza":
+	if GameManager.categoria_actual == "Fragmento":
 		score_final += 1
 		return score_final
 	elif GameManager.categoria_actual == "Efeméride":
 		score_final += 2
 		return score_final
-	elif GameManager.categoria_actual == "Fragmento":
+	elif GameManager.categoria_actual == "Curiosidad":
 		score_final += 3
 		return score_final
-	elif GameManager.categoria_actual == "Cita célebre":
+	elif GameManager.categoria_actual == "Cita":
 		score_final += 4
-		return score_final
-	elif GameManager.categoria_actual == "Chiste":
-		score_final += 5
-		return score_final
-	elif GameManager.categoria_actual == "Chistes":
-		score_final += 6
-		return score_final
-	elif GameManager.categoria_actual == "Refrán":
-		score_final += 7
-		return score_final
-	elif GameManager.categoria_actual == "Cita Biblia":
-		score_final += 8
 		return score_final
 	else:
 		return 0

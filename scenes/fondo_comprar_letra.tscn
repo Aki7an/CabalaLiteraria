@@ -1,13 +1,13 @@
 [gd_scene load_steps=26 format=3 uid="uid://ciwx4uk36f7u3"]
 
-[ext_resource type="Texture2D" uid="uid://bp623p23x4e0o" path="res://images/Shop3.png" id="1_nk4yh"]
+[ext_resource type="Texture2D" uid="uid://dtcjxiq444mtd" path="res://images/Shop3.png" id="1_nk4yh"]
 [ext_resource type="Script" uid="uid://csm86csqrk3bo" path="res://scenes/fondo_comprar_letra.gd" id="1_q36r8"]
-[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_i54d3"]
-[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="4_q36r8"]
-[ext_resource type="Texture2D" uid="uid://bwwm8eyqclx0m" path="res://images/Cruz.png" id="5_i54d3"]
+[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_i54d3"]
+[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="4_q36r8"]
+[ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="5_i54d3"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="7_rb1w2"]
 [ext_resource type="Theme" uid="uid://k7hcs8goxg0c" path="res://Label_Nunito_font.tres" id="8_cb75i"]
-[ext_resource type="FontFile" uid="uid://bqj1te7xeljg3" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="9_fbh3i"]
+[ext_resource type="FontFile" uid="uid://d3jg83nbfug5a" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="9_fbh3i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dnf3t"]
 bg_color = Color(0.70649, 0.6794, 0.86, 1)

@@ -12,7 +12,7 @@ const scene_to_load_App = preload("res://scenes/App.tscn")
 @export var FILE_EXTS: PackedStringArray = [".png", ".jpg", ".jpeg", ".webp"]
 @export var H_SEP: int = 8   # separación horizontal entre celdas (px)
 @export var V_SEP: int = 8   # separación vertical entre celdas (px)
-@export_file("*.json") var JSON_PATH: String = "res://data/ejemplo.json"
+@export_file("*.json") var JSON_PATH: String = "res://data/frases.json"
 
 var _grid: GridContainer = null
 
@@ -103,7 +103,7 @@ func _populate_from_parsed(parsed: Variant) -> void:
 		var tt: PackedStringArray = []
 		if item.has("category"): tt.append(str(item["category"]))
 		if item.has("difficulty"): tt.append("Dif: %s" % str(item["difficulty"]))
-		if item.has("text"): tt.append(str(item["text"]))
+		#if item.has("text"): tt.append(str(item["text"]))
 		btn.tooltip_text = "\n".join(tt)
 
 		_grid.add_child(btn)
@@ -201,6 +201,7 @@ func _on_image_button_pressed(image_number: int, image_path: String) -> void:
 		await TransitionScreen._on_animation_finished("fade_to_black", 1)
 		get_tree().change_scene_to_packed(scene_to_tutorial)
 	else:
+		GameManager.seleccionar_por_index(image_number)
 		TransitionScreen.transition_to_black()
 		if typeof(GameManager) != TYPE_NIL:
 			GameManager.set_go_to_game_disable()

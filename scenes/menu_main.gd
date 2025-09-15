@@ -36,7 +36,7 @@ func _on_button_settings_pressed():
 
 func _on_play_button_fx_pressed():
 	TransitionScreen.transition_to_black()
-	GameManager.button_blink_texture(play_button_fx)
+	#GameManager.button_blink_texture(play_button_fx)
 	SoundManager.play("ButtonClick")
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	get_tree().change_scene_to_file("res://scenes/MenuSelectGame.tscn")
