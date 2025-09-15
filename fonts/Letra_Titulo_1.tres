@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=2 format=3 uid="uid://diacxsbys358g"]
 
-[ext_resource type="FontFile" uid="uid://dhgtsbb1kopcf" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="1_d51v6"]
+[ext_resource type="FontFile" uid="uid://bg87tkoaof74f" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="1_d51v6"]
 
 [resource]
 default_font = ExtResource("1_d51v6")

@@ -4,9 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_g0hrh"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_5poqe"]
 [ext_resource type="Script" uid="uid://dyn7g2ptbxlio" path="res://scenes/label_nuevo_record.gd" id="4_23av1"]
-[ext_resource type="Texture2D" uid="uid://b2puluyuy824t" path="res://images/Felicitacion.png" id="5_pih6d"]
+[ext_resource type="Texture2D" uid="uid://blfms7sixe668" path="res://images/Felicitacion.png" id="5_pih6d"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="7_6oi1c"]
-[ext_resource type="Texture2D" uid="uid://cvdb51ixx3ih" path="res://images/iconosResultados.png" id="24_5poqe"]
+[ext_resource type="Texture2D" uid="uid://dqj2swh281hjf" path="res://images/iconosResultados.png" id="24_5poqe"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fvb13"]
 bg_color = Color(0.889317, 0.843552, 0.693583, 1)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ivd170uuiwos"]
 
-[ext_resource type="Texture2D" uid="uid://b0ave6ecxfho3" path="res://images/Bombilla_1.png" id="1_8v2se"]
+[ext_resource type="Texture2D" uid="uid://b224a7f08tbwq" path="res://images/Bombilla_1.png" id="1_8v2se"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="2_tefq8"]
 
 [node name="Slide6" type="Panel" groups=["Tip"]]

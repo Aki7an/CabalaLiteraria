@@ -62,6 +62,7 @@ pointing/emulate_touch_from_mouse=true
 
 [internationalization]
 
+locale/translations=PackedStringArray("res://data/Traducciones.de.translation", "res://data/Traducciones.en.translation", "res://data/Traducciones.es.translation", "res://data/Traducciones.eu.translation", "res://data/Traducciones.fr.translation", "res://data/Traducciones.it.translation", "res://data/Traducciones.pt.translation")
 locale/fallback="es"
 
 [playfab]

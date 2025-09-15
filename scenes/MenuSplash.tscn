@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://brp5lbefmcbdx"]
+[gd_scene load_steps=4 format=3 uid="uid://brp5lbefmcbdx"]
 
 [ext_resource type="Script" uid="uid://sot6m062agvk" path="res://scenes/menu_splash.gd" id="1_vdew7"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="2_2f1ik"]
-[ext_resource type="Texture2D" uid="uid://cbvws32a8yrx6" path="res://images/Mockups/Splash.png" id="3_vdew7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2f1ik"]
 bg_color = Color(0.889317, 0.843552, 0.693583, 1)
@@ -35,6 +34,5 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Splash" type="Sprite2D" parent="."]
 position = Vector2(512, 848)
-texture = ExtResource("3_vdew7")
 
 [connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

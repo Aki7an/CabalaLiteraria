@@ -209,16 +209,11 @@ func _format_time_hms(total_sec: int) -> String:
 	if h == 0:
 		# M:SS  (p. ej., 40:24)
 		if m==0:
-			print("S:",s)
-			print(str("%02d" % s))
 			return str("%02d" % s)
 		elif m<10:
-			print("m:" , m, " S: ",s)
-			print(str("M<10 %1d" % m) + ":" + ("%02d" % s))
+
 			return str("%1d" % m) + ":" + ("%02d" % s)
 		else:
-			print("m:" , m, " S: ",s)
-			print("M>10" + str(m) + ":" + ("%02d" % s))
 			return str(m) + ":" + ("%02d" % s)
 	else:
 		# H:MM:SS  (p. ej., 9:04:23 o 123:59:59)
