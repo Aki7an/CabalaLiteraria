@@ -6,25 +6,19 @@ extends Node2D
 @onready var button_difficulty_1 = $Panel/ButtonDifficulty1
 @onready var button_difficulty_2 = $Panel/ButtonDifficulty2
 @onready var button_difficulty_3 = $Panel/ButtonDifficulty3
+
 @onready var texture_rect_aviso: TextureRect = $TextureRectAviso
 
 @onready var button_home = $ButtonHome
 
 @onready var button_citas_celebres = $Panel/ButtonCitasCelebres
 @onready var button_fragmentos_literarios = $Panel/ButtonFragmentosLiterarios
-@onready var button_chistes = $Panel/ButtonChistes
-@onready var button_adivinanzas = $Panel/ButtonAdivinanzas
-@onready var button_citas_biblia = $Panel/ButtonCitasBiblia
 @onready var button_efemerides = $Panel/ButtonEfemerides
-@onready var button_refranes_populares = $Panel/ButtonRefranesPopulares
 
 @onready var blanco_citas_celebres = $Panel/ButtonCitasCelebres/BlancoCitasCelebres
-@onready var blanco_fragmentos_literarios = $Panel/ButtonFragmentosLiterarios/BlancoFragmentosLiterarios
-@onready var blanco_chistes = $Panel/ButtonChistes/BlancoChistes
-@onready var blanco_adivinanzas = $Panel/ButtonAdivinanzas/BlancoAdivinanzas
-@onready var blanco_citas_biblia = $Panel/ButtonCitasBiblia/BlancoCitasBiblia
 @onready var blanco_efemerides = $Panel/ButtonEfemerides/BlancoEfemerides
-@onready var blanco_refranes_populares = $Panel/ButtonRefranesPopulares/BlancoRefranesPopulares
+@onready var blanco_fragmentos_literarios: TextureRect = $Panel/ButtonFragmentosLiterarios/BlancoFragmentosLiterarios
+
 
 @onready var blanco_1 = $Panel/ButtonDifficulty1/Blanco1
 @onready var blanco_2 = $Panel/ButtonDifficulty2/Blanco2
@@ -49,11 +43,7 @@ func _ready():
 	
 	blanco_citas_celebres.visible = false
 	blanco_fragmentos_literarios.visible = false
-	blanco_chistes.visible = false
-	blanco_adivinanzas.visible = false
-	blanco_citas_biblia.visible = false
 	blanco_efemerides.visible = false
-	blanco_refranes_populares.visible = false
 
 	blanco_1.visible = false
 	blanco_2.visible = false
@@ -135,11 +125,7 @@ func _on_button_citas_celebres_pressed():
 		SoundManager.play("PlayAvailable")
 	blanco_citas_celebres.visible = true
 	blanco_fragmentos_literarios.visible = false
-	blanco_chistes.visible = false
-	blanco_adivinanzas.visible = false
-	blanco_citas_biblia.visible = false
 	blanco_efemerides.visible = false
-	blanco_refranes_populares.visible = false
 	GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
 	GameManager.button_blink(button_citas_celebres)
 	SoundManager.play("ButtonClick")
@@ -154,69 +140,11 @@ func _on_button_fragmentos_literarios_pressed():
 		SoundManager.play("PlayAvailable")
 	blanco_citas_celebres.visible = false
 	blanco_fragmentos_literarios.visible = true
-	blanco_chistes.visible = false
-	blanco_adivinanzas.visible = false
-	blanco_citas_biblia.visible = false
 	blanco_efemerides.visible = false
-	blanco_refranes_populares.visible = false
 	GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
 	GameManager.button_blink(button_fragmentos_literarios)
 	SoundManager.play("ButtonClick")
 
-func _on_button_chistes_pressed():
-	categoria = "Chiste"
-	category_selected = true
-	if difficulty_selected and category_selected:
-		button_play.disabled = false
-		enableButtonPlay()
-		SoundManager.play("PlayAvailable")
-	blanco_citas_celebres.visible = false
-	blanco_fragmentos_literarios.visible = false
-	blanco_chistes.visible = true
-	blanco_adivinanzas.visible = false
-	blanco_citas_biblia.visible = false
-	blanco_efemerides.visible = false
-	blanco_refranes_populares.visible = false
-	GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
-	GameManager.button_blink(button_chistes)
-	SoundManager.play("ButtonClick")
-
-func _on_button_adivinanzas_pressed():
-	categoria = "Adivinanza"
-	category_selected = true
-	if difficulty_selected and category_selected:
-		button_play.disabled = false
-		enableButtonPlay()
-		SoundManager.play("PlayAvailable")
-	blanco_citas_celebres.visible = false
-	blanco_fragmentos_literarios.visible = false
-	blanco_chistes.visible = false
-	blanco_adivinanzas.visible = true
-	blanco_citas_biblia.visible = false
-	blanco_efemerides.visible = false
-	blanco_refranes_populares.visible = false
-	GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
-	GameManager.button_blink(button_adivinanzas)
-	SoundManager.play("ButtonClick")
-
-func _on_button_citas_biblia_pressed():
-	categoria = "Cita Biblia"
-	category_selected = true
-	if difficulty_selected and category_selected:
-		button_play.disabled = false
-		enableButtonPlay()
-		SoundManager.play("PlayAvailable")
-	blanco_citas_celebres.visible = false
-	blanco_fragmentos_literarios.visible = false
-	blanco_chistes.visible = false
-	blanco_adivinanzas.visible = false
-	blanco_citas_biblia.visible = true
-	blanco_efemerides.visible = false
-	blanco_refranes_populares.visible = false
-	GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
-	GameManager.button_blink(button_citas_biblia)
-	SoundManager.play("ButtonClick")
-	
 
 func _on_button_efemerides_pressed():
 	categoria = "Efeméride"
@@ -227,32 +155,11 @@ func _on_button_efemerides_pressed():
 		SoundManager.play("PlayAvailable")
 	blanco_citas_celebres.visible = false
 	blanco_fragmentos_literarios.visible = false
-	blanco_chistes.visible = false
-	blanco_adivinanzas.visible = false
-	blanco_citas_biblia.visible = false
 	blanco_efemerides.visible = true
-	blanco_refranes_populares.visible = false
 	GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
 	GameManager.button_blink(button_efemerides)
 	SoundManager.play("ButtonClick")
 
-func _on_button_refranes_populares_pressed():
-	categoria = "Refrán"
-	category_selected = true
-	if difficulty_selected and category_selected:
-		button_play.disabled = false
-		enableButtonPlay()
-		SoundManager.play("PlayAvailable")
-	blanco_citas_celebres.visible = false
-	blanco_fragmentos_literarios.visible = false
-	blanco_chistes.visible = false
-	blanco_adivinanzas.visible = false
-	blanco_citas_biblia.visible = false
-	blanco_efemerides.visible = false
-	blanco_refranes_populares.visible = true
-	GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
-	GameManager.button_blink(button_refranes_populares)
-	SoundManager.play("ButtonClick")
 
 
 func _on_button_home_pressed():
@@ -277,3 +184,18 @@ func _on_button_exit_pressed():
 	SoundManager.play("ButtonClick")
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	get_tree().change_scene_to_packed(scene_to_load_MenuMain)
+
+
+func _on_button_curiosidades_pressed() -> void:
+	categoria = "Curiosidades"
+	category_selected = true
+	if difficulty_selected and category_selected:
+		button_play.disabled = false
+		enableButtonPlay()
+		SoundManager.play("PlayAvailable")
+	blanco_citas_celebres.visible = false
+	blanco_fragmentos_literarios.visible = false
+	blanco_efemerides.visible = true
+	GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
+	GameManager.button_blink(button_efemerides)
+	SoundManager.play("ButtonClick")

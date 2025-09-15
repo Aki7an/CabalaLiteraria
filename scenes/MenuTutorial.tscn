@@ -4,28 +4,28 @@
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_14pat"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="2_tojt8"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="5_mkqcm"]
-[ext_resource type="Texture2D" uid="uid://dj0q4a0nj4v2s" path="res://images/Letra.png" id="6_x3c50"]
-[ext_resource type="Texture2D" uid="uid://btdwfts88pjy1" path="res://images/Flecha.png" id="7_cs7op"]
-[ext_resource type="Texture2D" uid="uid://b5ujh1ms4cdlu" path="res://images/Teclado.png" id="8_p410d"]
-[ext_resource type="Texture2D" uid="uid://db10fm7xpcqle" path="res://images/eraser_2.png" id="10_2077r"]
-[ext_resource type="FontFile" uid="uid://cixkiol5tnrib" path="res://fonts/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf" id="11_euxot"]
+[ext_resource type="Texture2D" uid="uid://b62tdps38fra2" path="res://images/Letra.png" id="6_x3c50"]
+[ext_resource type="Texture2D" uid="uid://ctpbivwi1vpvw" path="res://images/Flecha.png" id="7_cs7op"]
+[ext_resource type="Texture2D" uid="uid://bexpq0mq8vbw4" path="res://images/Teclado.png" id="8_p410d"]
+[ext_resource type="Texture2D" uid="uid://bv6k6rg4ip3h3" path="res://images/eraser_2.png" id="10_2077r"]
+[ext_resource type="FontFile" uid="uid://bp1reworugrvn" path="res://fonts/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf" id="11_euxot"]
 [ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="11_os3rs"]
-[ext_resource type="Texture2D" uid="uid://cc5fvr2p5neit" path="res://images/Coin.png" id="12_2077r"]
-[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
-[ext_resource type="FontFile" uid="uid://bg87tkoaof74f" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="15_4xhfx"]
-[ext_resource type="Texture2D" uid="uid://hke85fvhjg50" path="res://images/CifraLetraFull.png" id="15_jcm6x"]
+[ext_resource type="Texture2D" uid="uid://ofm8cbhk2t5a" path="res://images/Coin.png" id="12_2077r"]
+[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
+[ext_resource type="FontFile" uid="uid://dhgtsbb1kopcf" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="15_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://ciq7bte5h1epo" path="res://images/CifraLetraFull.png" id="15_jcm6x"]
 [ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="16_4xhfx"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="16_l6n8b"]
-[ext_resource type="Texture2D" uid="uid://ci80dd1w4tkbh" path="res://images/Pista.png" id="17_88ncm"]
-[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="17_vet1h"]
+[ext_resource type="Texture2D" uid="uid://be3ladiw7ys8a" path="res://images/Pista.png" id="17_88ncm"]
+[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="17_vet1h"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="18_5onnj"]
-[ext_resource type="Texture2D" uid="uid://dtcjxiq444mtd" path="res://images/Shop3.png" id="19_os3rs"]
-[ext_resource type="Texture2D" uid="uid://26hmsfh26pep" path="res://images/ImagenPista.png" id="21_5onnj"]
+[ext_resource type="Texture2D" uid="uid://bp623p23x4e0o" path="res://images/Shop3.png" id="19_os3rs"]
+[ext_resource type="Texture2D" uid="uid://dd65vcvp8rtev" path="res://images/ImagenPista.png" id="21_5onnj"]
 [ext_resource type="Theme" uid="uid://lkfr6pageoc2" path="res://GUI/Button_difficulty.tres" id="22_euxot"]
-[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="23_4xhfx"]
-[ext_resource type="Texture2D" uid="uid://cuygqebfmuiu1" path="res://images/BotonLetras.png" id="23_euxot"]
-[ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="24_88ncm"]
-[ext_resource type="Texture2D" uid="uid://b6nxfxre5njbj" path="res://images/CheckOK.png" id="25_ohopp"]
+[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="23_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://bkog17syftljg" path="res://images/BotonLetras.png" id="23_euxot"]
+[ext_resource type="Texture2D" uid="uid://dfflig3f3g0c8" path="res://images/contorno_estrella_blanco.png" id="24_88ncm"]
+[ext_resource type="Texture2D" uid="uid://yimwuqsh68l8" path="res://images/CheckOK.png" id="25_ohopp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tojt8"]
 bg_color = Color(0.889317, 0.843552, 0.693583, 1)
@@ -1033,6 +1033,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="3" type="Control" parent="Label/Control"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1216,7 +1217,7 @@ offset_right = 878.0
 offset_bottom = 822.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.81, 0, 0, 1)
-text = "-10.000 puntos"
+text = "-100.000 points"
 horizontal_alignment = 1
 
 [node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
@@ -1239,7 +1240,7 @@ offset_bottom = 630.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_88ncm")
-text = "PISTA 2 - Texto descripción"
+text = "HINT 2 - Text description"
 horizontal_alignment = 1
 
 [node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
@@ -1251,7 +1252,7 @@ offset_bottom = 736.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 35
-text = "Texto para tener más contexto sobre la frase"
+text = "Text for more context about the phrase"
 horizontal_alignment = 1
 
 [node name="RichTextLabel7" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
@@ -1263,7 +1264,7 @@ offset_bottom = 1096.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 35
-text = "Algunas palabras que contiene la frase"
+text = "Some words that the sentence contains"
 horizontal_alignment = 1
 
 [node name="RichTextLabel4" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
@@ -1275,7 +1276,8 @@ offset_bottom = 998.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_ohopp")
-text = "PISTA 3 - Palabras en la frase"
+text = "HINT 3 - Words in the sentence
+"
 horizontal_alignment = 1
 
 [node name="LabelCoins" type="Label" parent="Label/Control/4/LabelMarcoA/Slide1"]
@@ -1363,7 +1365,7 @@ offset_bottom = 551.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
-text = "Comprar: A - E"
+text = "Buy: A - E"
 horizontal_alignment = 1
 
 [node name="RichTextLabel8" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
@@ -1375,7 +1377,8 @@ offset_bottom = 222.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_fpobj")
-text = "Letras iniciales "
+text = "Initial letters
+"
 horizontal_alignment = 1
 
 [node name="RichTextLabel5" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
@@ -1397,7 +1400,8 @@ offset_right = 878.0
 offset_bottom = 623.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.81, 0, 0, 1)
-text = "-2.000.000 puntos"
+text = "-200.000 points
+"
 horizontal_alignment = 1
 
 [node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
@@ -1420,7 +1424,7 @@ offset_bottom = 822.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_euxot")
-text = "Comprar: I - O - U"
+text = "Buy: I - O - U"
 horizontal_alignment = 1
 
 [node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
@@ -1432,8 +1436,7 @@ offset_bottom = 348.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 35
-text = "Las frases contienen letras iniciales ya reveladas según la dificultad.
-"
+text = "Sentences may contain revealed letters from the beginning"
 horizontal_alignment = 1
 
 [node name="RichTextLabel4" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
@@ -1592,6 +1595,45 @@ offset_top = 32.0
 offset_right = 48.0
 offset_bottom = 32.0
 
+[node name="Label" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 366.0
+offset_top = 320.0
+offset_right = 822.0
+offset_bottom = 376.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "3 minutes"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 366.0
+offset_top = 680.0
+offset_right = 822.0
+offset_bottom = 736.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "7 minutes"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 360.0
+offset_top = 1108.0
+offset_right = 816.0
+offset_bottom = 1164.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "25 minutes"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
 visible = false
 layout_mode = 0
@@ -1609,78 +1651,78 @@ layout_mode = 0
 offset_left = 326.0
 offset_top = 137.0
 offset_right = 854.0
-offset_bottom = 457.0
+offset_bottom = 258.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 35
 bbcode_enabled = true
-text = "Frases de menos de [font_size=40][color=034419]150[/color][/font_size] caracteres por descubrir.
-
-Tiempo medio de partida"
+text = "Sentences of less than [font_size=40][color=034419]150[/color][/font_size] characters to discover."
 horizontal_alignment = 1
 
-[node name="Label" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1/RichTextLabel6"]
+[node name="RichTextLabel9" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = 40.0
-offset_top = 183.0
-offset_right = 496.0
-offset_bottom = 239.0
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-text = "3 minutos"
+offset_left = 326.0
+offset_top = 274.0
+offset_right = 854.0
+offset_bottom = 326.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
+text = "Estimated time"
 horizontal_alignment = 1
-vertical_alignment = 1
+
+[node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 326.0
+offset_top = 632.0
+offset_right = 854.0
+offset_bottom = 684.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
+text = "Estimated time"
+horizontal_alignment = 1
+
+[node name="RichTextLabel11" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 326.0
+offset_top = 1056.0
+offset_right = 854.0
+offset_bottom = 1108.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+bbcode_enabled = true
+text = "Estimated time"
+horizontal_alignment = 1
 
 [node name="RichTextLabel7" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
 layout_mode = 0
 offset_left = 326.0
 offset_top = 489.0
 offset_right = 854.0
-offset_bottom = 809.0
+offset_bottom = 624.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 35
 bbcode_enabled = true
-text = "Frases de menos de [font_size=40][color=034419]250[/color][/font_size] caracteres por descubrir.
-
-Tiempo medio de partida"
+text = "Sentences of less than [font_size=40][color=034419]250[/color][/font_size] characters to discover."
 horizontal_alignment = 1
-
-[node name="Label2" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1/RichTextLabel7"]
-layout_mode = 0
-offset_left = 40.0
-offset_top = 191.0
-offset_right = 496.0
-offset_bottom = 247.0
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-text = "7 minutos"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="RichTextLabel8" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = 326.0
+offset_left = 320.0
 offset_top = 910.0
 offset_right = 854.0
-offset_bottom = 1230.0
+offset_bottom = 1031.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 35
 bbcode_enabled = true
-text = "Frases de más de [font_size=40][color=034419]250[/color][/font_size] caracteres por ser resueltos.
-
-Tiempo medio de partida"
+text = "Sentences of more than [font_size=40][color=034419]250[/color][/font_size] characters to be solved."
 horizontal_alignment = 1
-
-[node name="Label3" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1/RichTextLabel8"]
-layout_mode = 0
-offset_left = 40.0
-offset_top = 198.0
-offset_right = 496.0
-offset_bottom = 254.0
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-text = "25 minutos"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="LabelMarcoB" type="Label" parent="Label/Control/6"]
 layout_mode = 0
@@ -1704,7 +1746,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 60
-text = "DIFICULTADES"
+text = "DIFFICULTIES"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -1927,7 +1969,6 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="7" type="Control" parent="Label/Control"]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1955,7 +1996,7 @@ offset_bottom = 694.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
-text = "Comprar aplicación"
+text = "Buy app"
 horizontal_alignment = 1
 
 [node name="RichTextLabel8" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
@@ -1967,7 +2008,7 @@ offset_bottom = 318.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
-text = "Utilidad"
+text = "Utility"
 horizontal_alignment = 1
 
 [node name="RichTextLabel5" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
@@ -1990,10 +2031,9 @@ offset_bottom = 568.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 35
-text = "Las monedas te servirán para comprar letras, y pistas.
+text = "You can use coins to buy LETTERS and HINTS.
 
-Compra monedas viendo anuncios o comprando la aplicación
-"
+Buy coins by watching ads or purchasing the app."
 horizontal_alignment = 1
 
 [node name="RichTextLabel7" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
@@ -2005,12 +2045,11 @@ offset_bottom = 893.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 35
-text = "Al comprar la aplicación eliminas los anuncios que se abren durante el juego y consigues monedas infinitas.
-"
+text = "By purchasing the app, you remove the ads that appear during the game and get unlimited coins."
 horizontal_alignment = 1
 
 [node name="Coin4" type="Sprite2D" parent="Label/Control/7/LabelMarcoA/Slide1"]
-position = Vector2(374, 129)
+position = Vector2(399, 129)
 scale = Vector2(0.212427, 0.212427)
 texture = ExtResource("12_2077r")
 
@@ -2070,16 +2109,16 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 16.0
+offset_left = 23.0
 offset_top = 176.0
-offset_right = 952.0
+offset_right = 959.0
 offset_bottom = 224.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 60
-text = "MONEDAS"
+text = "COINS"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

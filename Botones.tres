@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=3 format=3 uid="uid://bgrctq4mx0u2g"]
 
-[ext_resource type="FontFile" uid="uid://qib2tlpstjyn" path="res://fonts/Fonts/Nunito/static/Nunito-Bold.ttf" id="1_tiwiy"]
+[ext_resource type="FontFile" uid="uid://b0o6waxelchvg" path="res://fonts/Fonts/Nunito/static/Nunito-Bold.ttf" id="1_tiwiy"]
 
 [sub_resource type="FontVariation" id="FontVariation_1bhqr"]
 base_font = ExtResource("1_tiwiy")
