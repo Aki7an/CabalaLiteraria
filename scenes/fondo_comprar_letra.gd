@@ -20,10 +20,13 @@ func _on_button_comprar_pressed():
 		
 		if letra_sel == "A" or letra_sel =="E":
 			GameManager.increment_vocalesAE_compradas()
+			SignalManager.compra_vocal_ae.emit(GameManager.tiempo_partida)
 		elif letra_sel == "I" or letra_sel == "O" or letra_sel == "U":
 			GameManager.increment_vocalesIOU_compradas()
+			SignalManager.compra_vocal_iou.emit(GameManager.tiempo_partida)
 		else:
 			GameManager.increment_consonantes_compradas()
+			SignalManager.compra_consonante.emit(GameManager.tiempo_partida)
 		
 		GameManager.add_letter_to_letras_iniciales(letra_sel)
 		SignalManager.añade_las_letras_iniciales.emit()

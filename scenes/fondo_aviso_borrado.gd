@@ -23,6 +23,7 @@ func _on_button_erase_pressed():
 	SignalManager.update_cambios.emit()
 	print("señal emitida")
 	SignalManager.añade_las_letras_iniciales.emit()
+	SignalManager.borrar_letra.emit(GameManager.tiempo_partida, GameManager.selected_letra)
 	queue_free()
 
 #func _on_tree_exited() -> void:

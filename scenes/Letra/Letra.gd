@@ -174,6 +174,7 @@ func _on_button_pressed() -> void:
 				SignalManager.update_resting_characters.emit()
 				if GameManager.hay_letra_que_borrar():
 					SignalManager.update_rubber.emit()
+				SignalManager.asignar_letra.emit(GameManager.tiempo_partida, GameManager.selected_letra)
 				SignalManager.update_difficulty.emit(GameManager.frase_original, GameManager.recoger_letras_mostradas()) 
 	
 func _erase_letter() -> void:

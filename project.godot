@@ -27,6 +27,7 @@ PlayerPrefs="*res://autoload/PlayerPrefs.gd"
 HistoryManager="*res://autoload/HistoryManager.gd"
 PlayFabTools="*res://autoload/PlayFab.tscn"
 Analyzer="*res://autoload/Analyzer.gd"
+EventLoggerAutoload="*res://autoload/EventLogger.gd"
 
 [display]
 

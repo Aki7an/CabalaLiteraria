@@ -445,6 +445,7 @@ func update_numero_letras_reveladas() -> void:
 		
 		if frase_usuario == "".join(lista_letras_frase_original_sin_espacios_ni_puntuacion):
 			print ("GAME WINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN")
+			SignalManager.partida_finalizada.emit(str(GameManager.score))
 			if HistoryManager.partida_dentro_de_record(GameManager.categoria_actual, GameManager.dificultad_actual, GameManager.score):
 				SignalManager.game_finished.emit()
 				GameManager.set_categoria_ultima_partida(GameManager.categoria_actual)

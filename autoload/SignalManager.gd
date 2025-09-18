@@ -42,3 +42,14 @@ signal update_coins
 signal letra_seleccionada_para_comprar(letra_seleccionada: String)
 
 signal update_difficulty(frase: String, reveladas: String)
+
+
+signal compra_vocal_ae(t_game_ms:int)
+signal compra_vocal_iou(t_game_ms:int)
+signal compra_consonante(t_game_ms:int)
+signal compra_pista_2(t_game_ms:int)
+signal compra_pista_3(t_game_ms:int)
+signal borrar_letra(t_game_ms:int, celda:int, letra:String)
+signal asignar_letra(t_game_ms:int, celda:int, letra:String) 
+signal partida_iniciada()
+signal partida_finalizada(resultado:String) # "win" / "lose" / "abort"

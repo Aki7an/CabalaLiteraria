@@ -27,6 +27,7 @@ extends Node2D
 
 func _on_button_back_pressed():
 	if GameManager.go_to_game:
+		SignalManager.partida_iniciada.emit()
 		TransitionScreen.transition_to_black()
 		await TransitionScreen._on_animation_finished("fade_to_black", 1)
 		get_tree().change_scene_to_file("res://scenes/App.tscn")

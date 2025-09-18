@@ -377,6 +377,7 @@ func _on_button_hint_2_pressed():
 	rich_text_label_hint_3.text = pasa_a_asteriscos(GameManager.hint_2)
 	GameManager.set_pista2()
 	_state_hint2()
+	SignalManager.compra_pista_2.emit(GameManager.tiempo_partida)
 	
 func _state_hint2():
 	rich_text_label_hint_2.text = GameManager.hint_1
@@ -454,6 +455,7 @@ func _on_button_hint_3_pressed():
 	GameManager.set_pistas_utilizadas(2)
 	rich_text_label_hint_3.text = GameManager.hint_2
 	_state_hint3()
+	SignalManager.compra_pista_3.emit(GameManager.tiempo_partida)
 	
 func _state_hint3() -> void:
 	rich_text_label_hint_2.text = GameManager.hint_1

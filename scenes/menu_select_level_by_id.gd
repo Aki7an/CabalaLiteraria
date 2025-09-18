@@ -243,6 +243,7 @@ func _on_image_button_pressed(image_number: int, _image_path: String) -> void:
 			GameManager.set_go_to_game_disable()
 		TransitionScreen.transition_to_black()
 		await TransitionScreen._on_animation_finished("fade_to_black", 1)
+		SignalManager.partida_iniciada.emit()
 		_go_app()
 
 # --- Redimensión ---
@@ -344,4 +345,5 @@ func _on_button_random_pressed() -> void:
 			GameManager.set_go_to_game_disable()
 		TransitionScreen.transition_to_black()
 		await TransitionScreen._on_animation_finished("fade_to_black", 1)
+		SignalManager.partida_iniciada.emit()
 		_go_app()
