@@ -95,10 +95,8 @@ theme = ExtResource("2_4rb3m")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_0cr37")
 theme_override_font_sizes/normal_font_size = 60
-text = "¡¡¡ENHORABUENA !!!!
-Has resuelto la frase
-
-"
+text = "CONGRATULATIONS!!!!
+You've solved the sentence"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1

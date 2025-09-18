@@ -790,7 +790,7 @@ func send_phrase_feedback(
 			"platform": OS.get_name(),
 			"give_coin_if_first": give_coin_if_first
 		},
-		"GeneratePlayStreamEvent": false
+		"GeneratePlayStreamEvent": true
 	}
 
 	# 3) Petición HTTP

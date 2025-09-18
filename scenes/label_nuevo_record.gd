@@ -38,8 +38,8 @@ func _ready() -> void:
 		label_cat_diff.text = dificultad_actual + " - Citas Célebres"
 		set_label_bg_only(label_nuevo_record, color_cat_citas_celebres)
 
-	if GameManager.categoria_actual == "Curiosidad":
-		label_cat_diff.text = dificultad_actual + " - Curiosidad"
+	if GameManager.categoria_actual == "Curiosidades":
+		label_cat_diff.text = dificultad_actual + " - Curiosidades"
 		set_label_bg_only(label_nuevo_record, color_cat_curiosidad )
 
 

@@ -24,7 +24,7 @@ layout_mode = 0
 offset_left = 64.0
 offset_top = 280.0
 offset_right = 960.0
-offset_bottom = 1000.0
+offset_bottom = 1224.0
 pivot_offset = Vector2(440, 168)
 theme_override_styles/normal = SubResource("StyleBoxFlat_hyvrp")
 
@@ -33,10 +33,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 306.0
-offset_top = 24.0
-offset_right = -343.0
-offset_bottom = -448.0
+offset_left = 336.0
+offset_top = -40.0
+offset_right = -313.0
+offset_bottom = -512.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_ff1wu")
@@ -45,9 +45,9 @@ stretch_mode = 5
 
 [node name="Label" type="Label" parent="CuadroSalirBorrado"]
 layout_mode = 0
-offset_top = 328.0
+offset_top = 392.0
 offset_right = 896.0
-offset_bottom = 378.0
+offset_bottom = 442.0
 theme = ExtResource("3_3npoo")
 theme_override_font_sizes/font_size = 40
 text = "Nuevo record ONLINE en categoría"
@@ -55,9 +55,9 @@ horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="CuadroSalirBorrado"]
 layout_mode = 0
-offset_top = 424.0
+offset_top = 488.0
 offset_right = 896.0
-offset_bottom = 474.0
+offset_bottom = 538.0
 theme = ExtResource("3_3npoo")
 theme_override_font_sizes/font_size = 40
 text = "FACIL - EFEMERIDES"
@@ -65,12 +65,32 @@ horizontal_alignment = 1
 
 [node name="Label3" type="Label" parent="CuadroSalirBorrado"]
 layout_mode = 0
-offset_top = 504.0
+offset_top = 568.0
 offset_right = 896.0
-offset_bottom = 554.0
+offset_bottom = 618.0
 theme = ExtResource("3_3npoo")
 theme_override_font_sizes/font_size = 40
 text = "Posición Online Nº"
+horizontal_alignment = 1
+
+[node name="Label4" type="Label" parent="CuadroSalirBorrado"]
+layout_mode = 0
+offset_top = 704.0
+offset_right = 896.0
+offset_bottom = 754.0
+theme = ExtResource("3_3npoo")
+theme_override_font_sizes/font_size = 40
+text = "Tu nombre de jugador ONLINE es:"
+horizontal_alignment = 1
+
+[node name="Label5" type="Label" parent="CuadroSalirBorrado"]
+layout_mode = 0
+offset_top = 784.0
+offset_right = 896.0
+offset_bottom = 834.0
+theme = ExtResource("3_3npoo")
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 
 [node name="ButtonBack" type="Button" parent="."]

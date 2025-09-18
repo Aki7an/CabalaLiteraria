@@ -73,6 +73,8 @@ func grid_bottom_in_parent(gc: GridContainer) -> float:
 func _añade_las_letras_iniciales() -> void:
 	#falta revisar las Letras y pintarlas en pantalla independientemente de si hay o no letras en la frase
 		# Buscar todos los nodos que pertenezcan al grupo "Letra"
+	
+	
 	var letras := get_tree().get_nodes_in_group("Letra")
 	
 	for letra in letras:

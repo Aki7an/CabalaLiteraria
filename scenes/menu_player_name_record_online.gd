@@ -9,6 +9,7 @@ extends ColorRect
 @onready var color_cat_curiosidades: Color = Color(0.812, 0.463, 0.176)
 
 @onready var cuadro_salir_borrado: Label = $CuadroSalirBorrado
+@onready var label_5 = $CuadroSalirBorrado/Label5
 
 
 func _on_button_back_pressed():
@@ -38,12 +39,12 @@ func _ready():
 		#label_cat_diff.text = dificultad_actual + " - Citas Célebres"
 		set_label_bg_only(cuadro_salir_borrado, color_cat_citas_celebres)
 		
-	if GameManager.categoria_actual == "Curiosidad":
+	if GameManager.categoria_actual == "Curiosidades":
 		#label_cat_diff.text = dificultad_actual + " - Citas Bíblicas"
-		set_label_bg_only(cuadro_salir_borrado, color_cat_curiosidad)
+		set_label_bg_only(cuadro_salir_borrado, color_cat_curiosidades)
 
 	label_3.text = "Posición Online Nº " + str(await PlayFabTools.get_player_rank_in_current_difficulty())
-
+	label_5.text = GameManager.player_name
 		
 func set_label_bg_only(lbl: Label, col: Color) -> void:
 	var base := lbl.get_theme_stylebox("normal")

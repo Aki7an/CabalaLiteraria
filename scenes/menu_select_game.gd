@@ -25,11 +25,17 @@ extends Node2D
 @onready var blanco_2 = $Panel/ButtonDifficulty2/Blanco2
 @onready var blanco_3 = $Panel/ButtonDifficulty3/Blanco3
 
-const scene_to_load_MenuMain = preload("res://scenes/MenuMain.tscn")
-const scene_to_load_App = preload("res://scenes/App.tscn")
-const scene_to_tutorial = preload("res://scenes/MenuTutorial.tscn")
+# Rutas de escena (antes usabas preload de PackedScene)
+const PATH_MENU_MAIN := "res://scenes/MenuMain.tscn"
+const PATH_APP := "res://scenes/App.tscn"
+const PATH_TUTORIAL := "res://scenes/MenuTutorial.tscn"
+const PATH_SELECT_LEVEL := "res://scenes/MenuSelectLevelByID.tscn"
 
-const scene_to_select_level = preload("res://scenes/MenuSelectLevelByID.tscn")
+# Referencias a PackedScene que se cargarán bajo demanda
+var scene_menu_main: PackedScene = null
+var scene_app: PackedScene = null
+var scene_tutorial: PackedScene = null
+var scene_select_level: PackedScene = null
 
 #@onready var button_play = $ButtonPlay
 @onready var button_play: TextureButton = $PlayButtonFx
@@ -59,10 +65,15 @@ func _ready():
 	button_play.enable_scale = false
 	button_play.enable_rotation = false
 
+
 func _on_button_play_pressed():
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_packed(scene_to_load_App)
+
+	# Carga perezosa de la escena App
+	if scene_app == null:
+		scene_app = load(PATH_APP)
+	get_tree().change_scene_to_packed(scene_app)
 
 
 func _on_button_difficulty_1_pressed():
@@ -72,7 +83,6 @@ func _on_button_difficulty_1_pressed():
 		button_play.disabled = false
 		enableButtonPlay()
 		SoundManager.play("PlayAvailable")
-	#GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
 	button_difficulty_2.button_pressed = false
 	button_difficulty_3.button_pressed = false
 	blanco_1.visible = true
@@ -94,7 +104,6 @@ func _on_button_difficulty_2_pressed():
 		button_play.disabled = false
 		enableButtonPlay()
 		SoundManager.play("PlayAvailable")
-	#GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
 	button_difficulty_1.button_pressed = false
 	button_difficulty_3.button_pressed = false
 	blanco_1.visible = false
@@ -109,7 +118,6 @@ func _on_button_difficulty_3_pressed():
 		button_play.disabled = false
 		enableButtonPlay()
 		SoundManager.play("PlayAvailable")
-	#GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
 	button_difficulty_1.button_pressed = false
 	button_difficulty_2.button_pressed = false
 	blanco_1.visible = false
@@ -128,7 +136,6 @@ func _on_button_citas_celebres_pressed():
 	blanco_fragmentos_literarios.visible = false
 	blanco_efemerides.visible = false
 	blanco_curiosidades.visible = false
-	#GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
 	GameManager.button_blink(button_citas_celebres)
 	SoundManager.play("ButtonClick")
 	
@@ -144,7 +151,6 @@ func _on_button_fragmentos_literarios_pressed():
 	blanco_fragmentos_literarios.visible = true
 	blanco_efemerides.visible = false
 	blanco_curiosidades.visible = false
-	#GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
 	GameManager.button_blink(button_fragmentos_literarios)
 	SoundManager.play("ButtonClick")
 
@@ -160,12 +166,11 @@ func _on_button_efemerides_pressed():
 	blanco_fragmentos_literarios.visible = false
 	blanco_efemerides.visible = true
 	blanco_curiosidades.visible = false
-	#GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
 	GameManager.button_blink(button_efemerides)
 	SoundManager.play("ButtonClick")
 
 func _on_button_curiosidades_pressed() -> void:
-	categoria = "Curiosidad"
+	categoria = "Curiosidades"
 	category_selected = true
 	if difficulty_selected and category_selected:
 		button_play.disabled = false
@@ -175,7 +180,6 @@ func _on_button_curiosidades_pressed() -> void:
 	blanco_fragmentos_literarios.visible = false
 	blanco_efemerides.visible = false
 	blanco_curiosidades.visible = true	
-	#GameManager.seleccionar_por_categoria_y_dificultad(categoria, dificultad)
 	GameManager.button_blink(button_curiosidades)
 	SoundManager.play("ButtonClick")
 
@@ -185,7 +189,11 @@ func _on_button_home_pressed():
 	GameManager.button_blink(button_home)
 	SoundManager.play("ButtonClick")
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_packed(scene_to_load_MenuMain)
+
+	# Carga perezosa de MenuMain
+	if scene_menu_main == null:
+		scene_menu_main = load(PATH_MENU_MAIN)
+	get_tree().change_scene_to_packed(scene_menu_main)
 
 
 func _on_play_button_fx_pressed():
@@ -194,13 +202,19 @@ func _on_play_button_fx_pressed():
 	GameManager.set_go_to_game_enable()
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_packed(scene_to_select_level)
-	
 
+	# Carga perezosa de la pantalla de selección de nivel
+	if scene_select_level == null:
+		scene_select_level = load(PATH_SELECT_LEVEL)
+	get_tree().change_scene_to_packed(scene_select_level)
+	
 
 func _on_button_exit_pressed():
 	TransitionScreen.transition_to_black()
-	#GameManager.button_blink(button_home)
 	SoundManager.play("ButtonClick")
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_packed(scene_to_load_MenuMain)
+
+	# Carga perezosa de MenuMain
+	if scene_menu_main == null:
+		scene_menu_main = load(PATH_MENU_MAIN)
+	get_tree().change_scene_to_packed(scene_menu_main)

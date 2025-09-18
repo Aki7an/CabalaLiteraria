@@ -1129,10 +1129,10 @@ metadata/_edit_lock_ = true
 
 [node name="Difficulty" type="Label" parent="."]
 layout_mode = 1
-offset_left = 744.0
-offset_top = 440.0
-offset_right = 839.0
-offset_bottom = 482.0
+offset_left = 760.0
+offset_top = 366.0
+offset_right = 911.0
+offset_bottom = 408.0
 theme = ExtResource("3_yg0a0")
 theme_override_colors/font_color = Color(0.1715, 0.49, 0.26705, 1)
 theme_override_font_sizes/font_size = 30
@@ -1142,10 +1142,10 @@ vertical_alignment = 1
 
 [node name="ID" type="Label" parent="."]
 layout_mode = 1
-offset_left = 11.0
-offset_top = 440.0
-offset_right = 106.0
-offset_bottom = 481.0
+offset_left = 184.0
+offset_top = 366.0
+offset_right = 279.0
+offset_bottom = 408.0
 theme = ExtResource("3_yg0a0")
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 30

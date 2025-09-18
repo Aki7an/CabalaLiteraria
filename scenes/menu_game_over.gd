@@ -19,7 +19,7 @@ func _ready():
 	
 	var frase_con_comillas = "[img=120x100]res://images/comillas_abre.png[/img]  " + GameManager.frase_original_til + "  [img=120x100]res://images/comillas_cierra.png[/img]"
 	rich_text_frase_original.text = frase_con_comillas
-	rich_text_frase_info_extra.text = GameManager.descripcion_final
+	rich_text_frase_info_extra.text = GameManager.descripcion_final_actual
 	
 	
 	

@@ -176,7 +176,7 @@ func _poblar_optionbuttons() -> void:
 	if cats.is_empty():
 		cats = [
 			"Efeméride","Fragmento",
-			"Cita","Curiosidad"
+			"Cita","Curiosidades"
 		]
 	cats.sort_custom(func(a,b): return a.naturalnocasecmp_to(b) < 0)
 	ob_categoria.clear()
@@ -263,7 +263,7 @@ func _refrescar_lista() -> void:
 	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Cita":
 		set_label_bg_only(titulo_dificultad_categoria, color_cat_citas_celebres)
 		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_citas_celebres)
-	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Curiosidad":
+	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Curiosidades":
 		set_label_bg_only(titulo_dificultad_categoria, color_cat_curiosidades)
 		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_curiosidades)
 

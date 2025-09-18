@@ -27,6 +27,8 @@ func _on_button_comprar_pressed():
 		
 		GameManager.add_letter_to_letras_iniciales(letra_sel)
 		SignalManager.añade_las_letras_iniciales.emit()
+		#var todos_los_caracteres_a_evaluar: String = GameManager.recoger_letras_mostradas() + GameManager.letras_iniciales
+		SignalManager.update_difficulty.emit(GameManager.frase_original, GameManager.recoger_letras_mostradas() )
 		queue_free()
 
 func _process(delta):

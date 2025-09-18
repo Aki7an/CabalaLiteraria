@@ -9,6 +9,7 @@ res://GUI/Bandera.tres
 res://Botones.tres
 res://GUI/ButtonPista.tres
 res://GUI/Button_difficulty.tres
+res://data/frases_eu.json
 res://scenes/MenuSelectGame.tscn
 res://scenes/PanelUP/panel_up.tscn
 res://scenes/game/PanelColors.tscn
@@ -27,6 +28,9 @@ res://scenes/menu_game_over.tscn
 res://scenes/MenuSelectLevelByID.tscn
 res://scenes/App.tscn
 res://scenes/game/CanvasJuego.tscn
-res://autoload/GameManager.gd
+res://scenes/MenuFeedback.tscn
+res://scenes/menu_player_name_record_online.tscn
+res://scenes/menu_main.gd
+res://scenes/menu_select_game.gd
 res://scenes/menu_select_level_by_id.gd
-res://data/frases.json
+res://data/frases_es.json

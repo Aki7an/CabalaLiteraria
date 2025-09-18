@@ -17,6 +17,14 @@ extends Node
 @export var coins: int = 15
 
 @export var frases_json_path: String = "res://data/frases.json"
+@export var frases_json_path_es: String = "res://data/frases_es.json"
+@export var frases_json_path_en: String = "res://data/frases_en.json"
+@export var frases_json_path_eu: String = "res://data/frases_eu.json"
+@export var frases_json_path_fr: String = "res://data/frases_fr.json"
+@export var frases_json_path_de: String = "res://data/frases_de.json"
+@export var frases_json_path_it: String = "res://data/frases_it.json"
+@export var frases_json_path_pt: String = "res://data/frases_pt.json"
+
 
 @export var score_ultima_partida: int
 @export var categoria_ultima_partida: String
@@ -37,7 +45,7 @@ var dificultad_actual: int = 1
 var descripcion_final: String = ""
 var letras_iniciales: String = ""
 var pistas_actuales: Array[String] = []
-var descripcion_final_actual: String = ""
+@export var descripcion_final_actual: String = ""
 
 
 @export var pista_1: bool = false
@@ -155,8 +163,21 @@ func _ready():
 	set_hints_based_on_difficulty()
 	lista_celdas.clear()
 	SignalManager.update_stars.emit()
-	print ("LETRAS INICIALES:" ,letras_iniciales)
+	
 	SignalManager.game_finished.connect(_game_finished)
+	
+func set_calculo_letras_iniciales() -> void:
+	if letras_iniciales != "" or dificultad_actual ==3:
+		return
+	else:
+		if dificultad_actual == 1:
+			var r1 :String= InitialLettersPicker.pick_initials_for_level(frase_original, 1)
+			letras_iniciales = r1
+			print ("LETRAS INICIALES CALCULADAS:" ,letras_iniciales)
+		else:
+			var r2 :String= InitialLettersPicker.pick_initials_for_level(frase_original, 2)
+			letras_iniciales = r2
+			print ("LETRAS INICIALES CALCULADAS:" ,letras_iniciales)
 	
 func set_hints_based_on_difficulty() -> void:
 	if dificultad_actual==1:
@@ -463,6 +484,23 @@ func set_selected_letter_user(letra: String) -> void:
 
 
 func cargar_frases_desde_json() -> void:
+	
+	# select json by language
+	if  TranslationServer.get_locale() == "es":
+		frases_json_path =  frases_json_path_es
+	elif TranslationServer.get_locale() == "en":
+		frases_json_path = frases_json_path_en
+	elif TranslationServer.get_locale() == "eu":
+		frases_json_path = frases_json_path_eu
+	elif TranslationServer.get_locale() == "fr":
+		frases_json_path = frases_json_path_fr
+	elif TranslationServer.get_locale() == "de":
+		frases_json_path = frases_json_path_de
+	elif TranslationServer.get_locale() == "it":
+		frases_json_path = frases_json_path_it
+	else:
+		frases_json_path = frases_json_path_pt
+	
 	frases_db.clear()
 
 	if not FileAccess.file_exists(frases_json_path):
@@ -593,8 +631,10 @@ func _aplicar_frase_desde_db(pos: int) -> void:
 	#descripcion_final_actual = descripcion_final
 	
 	# Reinicia tus estructuras como ya haces
+	set_calculo_letras_iniciales()
 	_inicializar_datos()
 	_inicializar_lista_numeros_original()
+	
 
 	#print("Frase seleccionada -> index:", item.index, " cat:", categoria_actual, " diff:", dificultad_actual)
 
@@ -936,7 +976,7 @@ func codifica_score(score_to_codi: int) -> int:
 	elif GameManager.categoria_actual == "Efeméride":
 		score_final += 2
 		return score_final
-	elif GameManager.categoria_actual == "Curiosidad":
+	elif GameManager.categoria_actual == "Curiosidades":
 		score_final += 3
 		return score_final
 	elif GameManager.categoria_actual == "Cita":
