@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://rcntxn7g0j8h"]
 
-[ext_resource type="Texture2D" uid="uid://b0ave6ecxfho3" path="res://images/Bombilla_1.png" id="1_ejaq1"]
+[ext_resource type="Texture2D" uid="uid://b224a7f08tbwq" path="res://images/Bombilla_1.png" id="1_ejaq1"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="2_kvpb5"]
 
 [node name="Slide5" type="Panel" groups=["Tip"]]
@@ -15,10 +15,10 @@ texture = ExtResource("1_ejaq1")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 344.0
-offset_top = -35.0
-offset_right = 482.0
-offset_bottom = 53.0
+offset_left = -108.0
+offset_top = -40.0
+offset_right = 908.0
+offset_bottom = 35.0
 theme = ExtResource("2_kvpb5")
 theme_override_colors/font_color = Color(0.592157, 0.376471, 0.313726, 1)
 theme_override_font_sizes/font_size = 60
@@ -33,5 +33,5 @@ offset_right = 848.0
 offset_bottom = 575.0
 theme = ExtResource("2_kvpb5")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "“The game doesn’t tell you if a letter is in the correct cell. You can always buy that letter to be sure”"
+text = "“Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score”"
 horizontal_alignment = 1

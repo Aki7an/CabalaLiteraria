@@ -1,14 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://bvo3pl6nbsbbh"]
 
-[ext_resource type="Texture2D" uid="uid://c5vgyrpnbtrql" path="res://images/Bombilla_1.png" id="1_jhebf"]
+[ext_resource type="Texture2D" uid="uid://b224a7f08tbwq" path="res://images/Bombilla_1.png" id="1_jhebf"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="2_g6xgw"]
 
 [node name="Slide1" type="Panel" groups=["Tip"]]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="TextureRectBombilla" type="TextureRect" parent="."]
 layout_mode = 0
@@ -20,10 +15,10 @@ texture = ExtResource("1_jhebf")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 344.0
-offset_top = -35.0
-offset_right = 482.0
-offset_bottom = 53.0
+offset_left = -112.0
+offset_top = -40.0
+offset_right = 912.0
+offset_bottom = 35.0
 theme = ExtResource("2_g6xgw")
 theme_override_colors/font_color = Color(0.592157, 0.376471, 0.313726, 1)
 theme_override_font_sizes/font_size = 60

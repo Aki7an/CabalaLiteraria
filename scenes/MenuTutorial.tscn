@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://fwvrs81xpbno"]
+[gd_scene load_steps=61 format=3 uid="uid://fwvrs81xpbno"]
 
 [ext_resource type="Script" uid="uid://djfuwgey5l4bd" path="res://scenes/menu_tutorial.gd" id="1_5nqfq"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_14pat"]
@@ -7,8 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://dj0q4a0nj4v2s" path="res://images/Letra.png" id="6_x3c50"]
 [ext_resource type="Texture2D" uid="uid://btdwfts88pjy1" path="res://images/Flecha.png" id="7_cs7op"]
 [ext_resource type="Texture2D" uid="uid://b5ujh1ms4cdlu" path="res://images/Teclado.png" id="8_p410d"]
-[ext_resource type="Texture2D" uid="uid://db10fm7xpcqle" path="res://images/eraser_2.png" id="10_2077r"]
-[ext_resource type="FontFile" uid="uid://cixkiol5tnrib" path="res://fonts/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf" id="11_euxot"]
+[ext_resource type="Texture2D" uid="uid://tg2iwyaqaye1" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_heart.png" id="9_4xhfx"]
+[ext_resource type="Script" uid="uid://xof134ooqxmp" path="res://scenes/PanelUP/BlinkHeart.gd" id="10_88ncm"]
 [ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="11_os3rs"]
 [ext_resource type="Texture2D" uid="uid://cc5fvr2p5neit" path="res://images/Coin.png" id="12_2077r"]
 [ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
@@ -54,56 +54,6 @@ border_width_top = 10
 border_width_right = 10
 border_width_bottom = 10
 border_color = Color(0.992157, 0.827451, 0.329412, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0kj3y"]
-texture = ExtResource("17_vet1h")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.8, 0.6684, 0.424, 0.541176)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i8kq8"]
-texture = ExtResource("17_vet1h")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.901961, 0.698039, 0.309804, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qyr5c"]
-texture = ExtResource("17_vet1h")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.74, 0.56906, 0.2516, 1)
-
-[sub_resource type="Theme" id="Theme_ohopp"]
-Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
-Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
-Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
-Button/colors/icon_focus_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_normal_color = Color(1, 1, 1, 1)
-Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
-Button/constants/align_to_largest_stylebox = 0
-Button/constants/h_separation = 4
-Button/constants/icon_max_width = 0
-Button/constants/outline_size = 0
-Button/font_sizes/font_size = 50
-Button/fonts/font = null
-Button/styles/disabled = SubResource("StyleBoxTexture_0kj3y")
-Button/styles/focus = null
-Button/styles/hover = SubResource("StyleBoxTexture_i8kq8")
-Button/styles/normal = SubResource("StyleBoxTexture_i8kq8")
-Button/styles/pressed = SubResource("StyleBoxTexture_qyr5c")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_os3rs"]
 bg_color = Color(1, 0.670588, 0.0705882, 1)
@@ -241,6 +191,8 @@ Button/styles/focus = null
 Button/styles/hover = SubResource("StyleBoxTexture_lxerm")
 Button/styles/normal = SubResource("StyleBoxTexture_1bhqr")
 Button/styles/pressed = SubResource("StyleBoxTexture_lo30q")
+
+[sub_resource type="Theme" id="Theme_ohopp"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mlydr"]
 texture = ExtResource("17_vet1h")
@@ -405,7 +357,6 @@ offset_right = -24.0
 offset_bottom = -160.0
 
 [node name="1" type="Control" parent="Label/Control"]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1051,82 +1002,20 @@ offset_left = 48.0
 offset_top = 32.0
 offset_right = 48.0
 offset_bottom = 32.0
-metadata/_edit_lock_ = true
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/3/LabelMarcoA/Slide1"]
 layout_mode = 0
 offset_left = -74.0
-offset_top = 454.0
+offset_top = 664.0
 offset_right = 832.0
-offset_bottom = 598.0
+offset_bottom = 853.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "To delete letters, use the ERASE button."
+text = "EASY : 4
+NORMAL : 3
+DIFFICULT : 2
+PRO : 1"
 horizontal_alignment = 1
-
-[node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/3/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = -58.0
-offset_top = 944.0
-offset_right = 848.0
-offset_bottom = 1088.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "Every time you delete a letter you will lose points:"
-horizontal_alignment = 1
-
-[node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/3/LabelMarcoA"]
-layout_mode = 0
-offset_left = -42.0
-offset_top = 1123.0
-offset_right = 926.0
-offset_bottom = 1185.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.81, 0, 0, 1)
-text = "-100,000 points"
-horizontal_alignment = 1
-
-[node name="BtnErase" type="Button" parent="Label/Control/3/LabelMarcoA"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 0
-offset_left = 342.0
-offset_top = 684.0
-offset_right = 526.0
-offset_bottom = 868.0
-size_flags_horizontal = 0
-theme = SubResource("Theme_ohopp")
-disabled = true
-
-[node name="TextureRect" type="TextureRect" parent="Label/Control/3/LabelMarcoA/BtnErase"]
-modulate = Color(0.356863, 0.27451, 0.211765, 1)
-layout_mode = 0
-offset_left = 33.0
-offset_top = 17.0
-offset_right = 661.0
-offset_bottom = 579.0
-scale = Vector2(0.17, 0.17)
-texture = ExtResource("10_2077r")
-
-[node name="Label" type="Label" parent="Label/Control/3/LabelMarcoA/BtnErase"]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 120.0
-offset_right = 168.0
-offset_bottom = 152.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("11_euxot")
-theme_override_font_sizes/font_size = 30
-text = "ERASE"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="LabelMarcoB" type="Label" parent="Label/Control/3"]
-layout_mode = 0
-offset_left = 66.0
-offset_top = 856.0
-offset_right = 962.0
-offset_bottom = 1480.0
-metadata/_edit_lock_ = true
 
 [node name="LabelScoreText9" type="Label" parent="Label/Control/3"]
 layout_mode = 1
@@ -1134,15 +1023,15 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 56.0
-offset_top = 224.0
+offset_top = 424.0
 offset_right = 910.0
-offset_bottom = 357.0
+offset_bottom = 557.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.81, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 65
-text = "The game doesn't tell you whether the choice is correct or not!"
+text = "If you fail to assign a letter to a cell, you will lose a life!"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -1152,19 +1041,53 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 56.0
-offset_top = 432.0
-offset_right = 910.0
-offset_bottom = 565.0
+offset_left = 66.0
+offset_top = 648.0
+offset_right = 920.0
+offset_bottom = 781.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 50
-text = "It's up to you to deduce the correct one."
+text = "If you run out of lives you lose the game"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="ItemiconHeart" type="Sprite2D" parent="Label/Control/3"]
+self_modulate = Color(1, 0.52, 0.52, 1)
+position = Vector2(506, 272)
+scale = Vector2(0.927, 1)
+texture = ExtResource("9_4xhfx")
+script = ExtResource("10_88ncm")
+scale_up = 1.3
+step_duration = 0.08
+
+[node name="LivesNumber" type="Label" parent="Label/Control/3/ItemiconHeart"]
+offset_left = -21.5274
+offset_top = -26.375
+offset_right = 19.4726
+offset_bottom = 48.625
+theme = ExtResource("16_l6n8b")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 60
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Cambios" type="Label" parent="Label/Control/3/ItemiconHeart"]
+offset_left = -112.142
+offset_top = -63.375
+offset_right = 120.858
+offset_bottom = -7.375
+theme = ExtResource("16_l6n8b")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "LIVES"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="4" type="Control" parent="Label/Control"]
 visible = false
@@ -1336,6 +1259,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="5" type="Control" parent="Label/Control"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -2012,12 +1936,45 @@ horizontal_alignment = 1
 [node name="RichTextLabel5" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
 layout_mode = 0
 offset_left = 278.0
-offset_top = 920.0
+offset_top = 910.0
 offset_right = 524.0
-offset_bottom = 982.0
+offset_bottom = 950.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+text = "1,99 €"
+horizontal_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="Label/Control/7/LabelMarcoA/Slide1/RichTextLabel5"]
+layout_mode = 0
+offset_left = 67.0
+offset_top = 18.0
+offset_right = 176.0
+offset_bottom = 20.0
+rotation = -0.261799
+pivot_offset = Vector2(53, 1)
+theme = SubResource("Theme_ohopp")
+color = Color(0.81, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Label/Control/7/LabelMarcoA/Slide1/RichTextLabel5"]
+layout_mode = 0
+offset_left = 67.0
+offset_top = 18.0
+offset_right = 176.0
+offset_bottom = 20.0
+rotation = 0.261799
+pivot_offset = Vector2(53, 1)
+theme = SubResource("Theme_ohopp")
+color = Color(0.81, 0, 0, 1)
+
+[node name="RichTextLabel9" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 278.0
+offset_top = 950.0
+offset_right = 524.0
+offset_bottom = 990.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
-text = "1,99 €"
+text = "0,99 €"
 horizontal_alignment = 1
 
 [node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
@@ -2071,12 +2028,12 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -96.0
-offset_top = 16.0
+offset_top = -76.0
 offset_right = 96.0
-offset_bottom = 58.0
+offset_bottom = -28.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.024, 0.6, 0.1584, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 40
 text = "Shop"
@@ -2086,12 +2043,12 @@ autowrap_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Label/Control/7/LabelMarcoA/Slide1/ButtonShop"]
 layout_mode = 0
-offset_left = -424.0
-offset_top = -395.0
-offset_right = 775.0
-offset_bottom = 804.0
+offset_left = -266.0
+offset_top = -244.0
+offset_right = 355.0
+offset_bottom = 377.0
 scale = Vector2(0.162278, 0.162278)
-pivot_offset = Vector2(501.798, 464.819)
+pivot_offset = Vector2(366.582, 312.506)
 texture = ExtResource("19_os3rs")
 
 [node name="LabelMarcoB" type="Label" parent="Label/Control/7"]

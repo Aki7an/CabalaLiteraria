@@ -1,10 +1,8 @@
-[gd_scene load_steps=55 format=3 uid="uid://bvpri1mtnymgf"]
+[gd_scene load_steps=52 format=3 uid="uid://bvpri1mtnymgf"]
 
 [ext_resource type="Script" uid="uid://cp7diyyw67hkl" path="res://scenes/menu_main.gd" id="1_5cqvi"]
-[ext_resource type="Texture2D" uid="uid://dygb84xfpbrc0" path="res://images/Fondo.png" id="2_4efdv"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_nnl2u"]
 [ext_resource type="Script" uid="uid://drgng4haeeuj3" path="res://scenes/button_play_Fx.gd" id="5_8d7n0"]
-[ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="5_apv0w"]
 [ext_resource type="PackedScene" uid="uid://cffefknpxfylk" path="res://scenes/titulo_cifra_letra.tscn" id="5_nnl2u"]
 [ext_resource type="Theme" uid="uid://kvodnc6jed0r" path="res://GUI/ButtonMain.tres" id="5_tjj4m"]
 [ext_resource type="Shader" uid="uid://8b7nr3sen4t0" path="res://scenes/PlayBuoon.gdshader" id="6_akxp2"]
@@ -20,13 +18,12 @@
 [ext_resource type="Texture2D" uid="uid://bfbujo1eiyth7" path="res://images/Leaderboard2.png" id="10_t01w5"]
 [ext_resource type="Script" uid="uid://bt4vf7weivebq" path="res://scenes/AdjustSize.gd" id="11_11y0k"]
 [ext_resource type="Script" uid="uid://brd14tiskdrxk" path="res://scenes/tips_box.gd" id="20_1hsi3"]
-[ext_resource type="Texture2D" uid="uid://b224a7f08tbwq" path="res://images/Bombilla_1.png" id="21_apv0w"]
-[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="22_j3ils"]
-[ext_resource type="Texture2D" uid="uid://dyp1axx3qfqtj" path="res://images/Colores.png" id="23_1hsi3"]
+[ext_resource type="PackedScene" uid="uid://dpaciknqy415j" path="res://scenes/Tutorial/Tutorial_Slide2.tscn" id="21_awvci"]
 [ext_resource type="PackedScene" uid="uid://b5igvptryo3md" path="res://scenes/Tutorial/Tutorial_Slide3.tscn" id="24_op7yq"]
 [ext_resource type="PackedScene" uid="uid://ca2qo0shwqmmg" path="res://scenes/Tutorial/Tutorial_Slide4.tscn" id="25_yo6ju"]
 [ext_resource type="PackedScene" uid="uid://rcntxn7g0j8h" path="res://scenes/Tutorial/Tutorial_Slide5.tscn" id="26_wyay2"]
 [ext_resource type="PackedScene" uid="uid://ivd170uuiwos" path="res://scenes/Tutorial/Tutorial_Slide6.tscn" id="27_0h3ts"]
+[ext_resource type="PackedScene" uid="uid://bvo3pl6nbsbbh" path="res://scenes/Tutorial/Tutorial_Slide1.tscn" id="27_wygcd"]
 [ext_resource type="PackedScene" uid="uid://dqwy8s4gb23i6" path="res://scenes/Tutorial/Tutorial_Slide7.tscn" id="28_2ievp"]
 [ext_resource type="PackedScene" uid="uid://d2qc7xaa3rsm6" path="res://scenes/Tutorial/Tutorial_Slide8.tscn" id="29_ocsik"]
 [ext_resource type="PackedScene" uid="uid://c50bhv1vbggd7" path="res://scenes/Tutorial/Tutorial_Slide9.tscn" id="30_ssce3"]
@@ -303,40 +300,16 @@ metadata/_edit_lock_ = true
 [node name="Fondo2" parent="Panel" instance=ExtResource("2_nnl2u")]
 metadata/_edit_lock_ = true
 
-[node name="Fondo" type="Control" parent="Panel"]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Fondo" type="Sprite2D" parent="Panel/Fondo"]
-modulate = Color(0.59, 0.377403, 0.3127, 0.101961)
-position = Vector2(676, 728)
-rotation = 0.523598
-scale = Vector2(3.81806, 3.81806)
-texture = ExtResource("2_4efdv")
-metadata/_edit_lock_ = true
-
-[node name="Fondo2" type="Sprite2D" parent="Panel/Fondo"]
-modulate = Color(0.59, 0.377403, 0.3127, 0.101961)
-position = Vector2(-120, 2056)
-rotation = 0.523598
-scale = Vector2(3.81806, 3.81806)
-texture = ExtResource("2_4efdv")
-metadata/_edit_lock_ = true
-
 [node name="ButtonSettings" type="Button" parent="Panel"]
 layout_mode = 1
-offset_left = 128.0
-offset_top = 896.0
-offset_right = 320.0
-offset_bottom = 1096.0
-pivot_offset = Vector2(96, 96)
+offset_left = 88.0
+offset_top = 792.0
+offset_right = 352.0
+offset_bottom = 1064.0
+pivot_offset = Vector2(136, 136)
 theme = ExtResource("5_tjj4m")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
-script = ExtResource("5_apv0w")
 
 [node name="Label2" type="Label" parent="Panel/ButtonSettings"]
 layout_mode = 1
@@ -345,13 +318,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -96.0
-offset_top = 10.0
-offset_right = 96.0
-offset_bottom = 58.0
+offset_left = -90.0
+offset_top = -88.0
+offset_right = 102.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.74, 0.5069, 0.074, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
 theme_override_font_sizes/font_size = 40
 text = "Settings"
@@ -361,26 +334,24 @@ autowrap_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Panel/ButtonSettings"]
 layout_mode = 0
-offset_left = -80.0
-offset_top = -80.0
-offset_right = 268.0
-offset_bottom = 268.0
+offset_left = -40.0
+offset_top = -72.0
+offset_right = 308.0
+offset_bottom = 276.0
 scale = Vector2(0.322268, 0.322268)
 pivot_offset = Vector2(173.768, 173.769)
 texture = ExtResource("6_fnepi")
-metadata/_edit_lock_ = true
 
 [node name="ButtonShop" type="Button" parent="Panel"]
 layout_mode = 1
-offset_left = 128.0
-offset_top = 1203.0
-offset_right = 320.0
-offset_bottom = 1403.0
-pivot_offset = Vector2(96, 96)
+offset_left = 88.0
+offset_top = 1136.0
+offset_right = 352.0
+offset_bottom = 1408.0
+pivot_offset = Vector2(122, 127)
 theme = SubResource("Theme_1hsi3")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
-script = ExtResource("5_apv0w")
 
 [node name="Label2" type="Label" parent="Panel/ButtonShop"]
 layout_mode = 1
@@ -389,13 +360,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -96.0
-offset_top = 16.0
-offset_right = 96.0
-offset_bottom = 58.0
+offset_left = -90.0
+offset_top = -88.0
+offset_right = 102.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.024, 0.6, 0.1584, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
 theme_override_font_sizes/font_size = 40
 text = "Shop"
@@ -405,25 +376,24 @@ autowrap_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Panel/ButtonShop"]
 layout_mode = 0
-offset_left = -424.0
-offset_top = -395.0
-offset_right = 775.0
-offset_bottom = 804.0
+offset_left = -256.0
+offset_top = -280.0
+offset_right = 531.0
+offset_bottom = 507.0
 scale = Vector2(0.162278, 0.162278)
-pivot_offset = Vector2(501.798, 464.819)
+pivot_offset = Vector2(392.122, 385.825)
 texture = ExtResource("9_1hsi3")
 
 [node name="ButtonSettings3" type="Button" parent="Panel"]
 layout_mode = 1
-offset_left = 396.0
-offset_top = 1203.0
-offset_right = 588.0
-offset_bottom = 1403.0
+offset_left = 384.0
+offset_top = 1136.0
+offset_right = 648.0
+offset_bottom = 1408.0
 pivot_offset = Vector2(96, 96)
 theme = SubResource("Theme_j3ils")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
-script = ExtResource("5_apv0w")
 
 [node name="Label2" type="Label" parent="Panel/ButtonSettings3"]
 layout_mode = 1
@@ -432,12 +402,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_top = 16.0
-offset_right = 1.0
-offset_bottom = 58.0
+offset_left = -124.0
+offset_top = -88.0
+offset_right = 120.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.788235, 0.0392157, 0.0470588, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
 theme_override_font_sizes/font_size = 40
 text = "Tutorial"
@@ -447,26 +418,24 @@ autowrap_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Panel/ButtonSettings3"]
 layout_mode = 0
-offset_left = -160.0
+offset_left = -152.0
 offset_top = -296.0
-offset_right = 363.0
-offset_bottom = 473.0
+offset_right = 492.0
+offset_bottom = 651.0
 scale = Vector2(0.241151, 0.122268)
 pivot_offset = Vector2(261.812, 388.308)
 texture = ExtResource("10_ittxv")
-metadata/_edit_lock_ = true
 
 [node name="ButtonShop2" type="Button" parent="Panel"]
 layout_mode = 1
-offset_left = 664.0
-offset_top = 1203.0
-offset_right = 856.0
-offset_bottom = 1403.0
+offset_left = 680.0
+offset_top = 1136.0
+offset_right = 944.0
+offset_bottom = 1408.0
 pivot_offset = Vector2(96, 96)
 theme = SubResource("Theme_7jnvx")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
-script = ExtResource("5_apv0w")
 
 [node name="Label2" type="Label" parent="Panel/ButtonShop2"]
 layout_mode = 1
@@ -475,12 +444,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_top = 16.0
-offset_right = 1.0
-offset_bottom = 58.0
+offset_left = -124.0
+offset_top = -88.0
+offset_right = 124.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.219608, 0.647059, 0.764706, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
 theme_override_font_sizes/font_size = 40
 text = "Stats"
@@ -490,24 +460,22 @@ autowrap_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Panel/ButtonShop2"]
 layout_mode = 0
-offset_left = -168.0
+offset_left = -152.0
 offset_top = -240.0
-offset_right = 349.0
-offset_bottom = 355.0
+offset_right = 528.0
+offset_bottom = 390.0
 scale = Vector2(0.202268, 0.202268)
 pivot_offset = Vector2(268.849, 343.006)
 texture = ExtResource("9_8myay")
-metadata/_edit_lock_ = true
 
 [node name="ButtonLeaderboard2" type="Button" parent="Panel"]
 layout_mode = 1
-offset_left = 396.0
-offset_top = 896.0
-offset_right = 588.0
-offset_bottom = 1096.0
+offset_left = 384.0
+offset_top = 792.0
+offset_right = 648.0
+offset_bottom = 1064.0
 theme = SubResource("Theme_apv0w")
 theme_override_font_sizes/font_size = 40
-script = ExtResource("5_apv0w")
 
 [node name="Label3" type="Label" parent="Panel/ButtonLeaderboard2"]
 layout_mode = 1
@@ -517,12 +485,12 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -132.0
-offset_top = 8.0
+offset_top = -88.0
 offset_right = 132.0
-offset_bottom = 56.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.7, 0.414167, 0.357, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
 theme_override_font_sizes/font_size = 40
 text = "Local"
@@ -532,24 +500,22 @@ autowrap_mode = 2
 
 [node name="TextureRect2" type="TextureRect" parent="Panel/ButtonLeaderboard2"]
 layout_mode = 0
-offset_left = -352.0
-offset_top = -200.0
-offset_right = 1248.0
-offset_bottom = 786.0
+offset_left = -976.0
+offset_top = -544.0
+offset_right = 1245.0
+offset_bottom = 671.0
 scale = Vector2(0.08, 0.1)
-pivot_offset = Vector2(415.539, 263.903)
+pivot_offset = Vector2(1105.03, 656.143)
 texture = ExtResource("10_t01w5")
-metadata/_edit_lock_ = true
 
 [node name="ButtonLeaderboard3" type="Button" parent="Panel"]
 layout_mode = 1
-offset_left = 664.0
-offset_top = 896.0
-offset_right = 856.0
-offset_bottom = 1096.0
+offset_left = 680.0
+offset_top = 792.0
+offset_right = 946.0
+offset_bottom = 1072.0
 theme = SubResource("Theme_b10ut")
 theme_override_font_sizes/font_size = 40
-script = ExtResource("5_apv0w")
 
 [node name="Label3" type="Label" parent="Panel/ButtonLeaderboard3"]
 layout_mode = 1
@@ -558,13 +524,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -136.0
-offset_top = 8.0
-offset_right = 128.0
-offset_bottom = 56.0
+offset_left = -133.0
+offset_top = -96.0
+offset_right = 131.0
+offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.77, 0.4389, 0.560303, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
 theme_override_font_sizes/font_size = 40
 text = "Online"
@@ -574,14 +540,13 @@ autowrap_mode = 2
 
 [node name="TextureRect2" type="TextureRect" parent="Panel/ButtonLeaderboard3"]
 layout_mode = 0
-offset_left = -352.0
-offset_top = -200.0
-offset_right = 1248.0
-offset_bottom = 786.0
+offset_left = -872.0
+offset_top = -544.0
+offset_right = 1149.0
+offset_bottom = 671.0
 scale = Vector2(0.08, 0.1)
-pivot_offset = Vector2(415.539, 263.903)
+pivot_offset = Vector2(1005.02, 656.143)
 texture = ExtResource("10_t01w5")
-metadata/_edit_lock_ = true
 
 [node name="PlayButtonFx" type="TextureButton" parent="Panel"]
 material = SubResource("ShaderMaterial_fnepi")
@@ -646,104 +611,19 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 112.0
-offset_top = 264.0
+offset_top = 304.0
 offset_right = 112.0
-offset_bottom = 264.0
+offset_bottom = 304.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("20_1hsi3")
 
 [node name="Timer" type="Timer" parent="TipsBox"]
 
-[node name="LabelMarco" type="Label" parent="TipsBox"]
-layout_mode = 1
-offset_left = -48.0
-offset_top = -32.0
-offset_right = 848.0
-offset_bottom = 592.0
-
-[node name="Slide1" type="Panel" parent="TipsBox/LabelMarco" groups=["Tip"]]
-layout_mode = 1
-offset_left = 48.0
-offset_top = 32.0
-offset_right = 48.0
-offset_bottom = 32.0
-
-[node name="TextureRectBombilla" type="TextureRect" parent="TipsBox/LabelMarco/Slide1"]
-layout_mode = 0
-offset_left = 280.0
-offset_top = 16.0
-offset_right = 526.0
-offset_bottom = 211.0
-texture = ExtResource("21_apv0w")
-
-[node name="Label" type="Label" parent="TipsBox/LabelMarco/Slide1"]
-layout_mode = 0
-offset_left = -112.0
-offset_top = -35.0
-offset_right = 904.0
-offset_bottom = 53.0
-theme = ExtResource("22_j3ils")
-theme_override_colors/font_color = Color(0.592157, 0.376471, 0.313726, 1)
-theme_override_font_sizes/font_size = 60
-text = "TIP"
-horizontal_alignment = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="TipsBox/LabelMarco/Slide1"]
-layout_mode = 0
-offset_left = -48.0
-offset_top = 247.0
-offset_right = 848.0
-offset_bottom = 575.0
-theme = ExtResource("22_j3ils")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "“Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score”"
-horizontal_alignment = 1
-
-[node name="Slide2" type="Panel" parent="TipsBox" groups=["Tip"]]
-visible = false
-layout_mode = 0
-
-[node name="TextureRectBombilla" type="TextureRect" parent="TipsBox/Slide2"]
-layout_mode = 1
-offset_left = 280.0
-offset_top = 16.0
-offset_right = 526.0
-offset_bottom = 211.0
-texture = ExtResource("21_apv0w")
-
-[node name="Label" type="Label" parent="TipsBox/Slide2"]
-layout_mode = 0
-offset_left = 344.0
-offset_top = -35.0
-offset_right = 482.0
-offset_bottom = 53.0
-theme = ExtResource("22_j3ils")
-theme_override_colors/font_color = Color(0.592157, 0.376471, 0.313726, 1)
-theme_override_font_sizes/font_size = 60
-text = "TIP"
-horizontal_alignment = 1
-
-[node name="RichTextLabel" type="RichTextLabel" parent="TipsBox/Slide2"]
-layout_mode = 0
-offset_left = -48.0
-offset_top = 247.0
-offset_right = 848.0
-offset_bottom = 575.0
-theme = ExtResource("22_j3ils")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "“Try to guess where the vowels are. Use the cell-coloring aids to spot them across the whole sentence”"
-horizontal_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="TipsBox/Slide2"]
-layout_mode = 0
-offset_left = 148.0
-offset_top = 496.0
-offset_right = 652.0
-offset_bottom = 564.0
-texture = ExtResource("23_1hsi3")
-
 [node name="Slide3" parent="TipsBox" instance=ExtResource("24_op7yq")]
+layout_mode = 0
+
+[node name="Slide11" parent="TipsBox" instance=ExtResource("21_awvci")]
 visible = false
 layout_mode = 0
 
@@ -770,6 +650,21 @@ layout_mode = 0
 [node name="Slide9" parent="TipsBox" instance=ExtResource("30_ssce3")]
 visible = false
 layout_mode = 0
+
+[node name="Slide10" parent="TipsBox" instance=ExtResource("27_wygcd")]
+visible = false
+layout_mode = 0
+offset_left = -48.0
+offset_top = -32.0
+offset_right = -48.0
+offset_bottom = -32.0
+
+[node name="LabelMarco" type="Label" parent="TipsBox"]
+layout_mode = 1
+offset_left = -48.0
+offset_top = -32.0
+offset_right = 848.0
+offset_bottom = 592.0
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="TipsBox"]
 layout_mode = 2

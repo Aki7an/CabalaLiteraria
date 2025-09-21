@@ -1,9 +1,9 @@
+Label
+Control
+ColorRect
 Sprite2D
 AnimationPlayer
-ColorRect
-Control
 CheckBox
-Label
 Button
 TextEdit
 HBoxContainer

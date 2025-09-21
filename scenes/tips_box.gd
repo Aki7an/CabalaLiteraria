@@ -6,14 +6,15 @@ extends Control
 @onready var timer: Timer = $Timer
 @onready var texture_progress_bar: TextureProgressBar = $TextureProgressBar
 
-var slides: Array[CanvasItem] = []
-var idx := 0
-var rng := RandomNumberGenerator.new()
+@onready var slides: Array[CanvasItem] = []
+@onready var idx := 0
+@onready var rng := RandomNumberGenerator.new()
 var _progress_tween: Tween
-var _advancing := false
+@onready var _advancing := false
 
 func _ready() -> void:
-	# Solo hijos que estén en el grupo "Tip" y sean CanvasItem
+	# 1) Recoge hijos CanvasItem del grupo "Tip"
+	slides.clear()
 	for c in get_children():
 		if c is CanvasItem and c.is_in_group("Tip"):
 			slides.append(c)
@@ -21,21 +22,27 @@ func _ready() -> void:
 	if slides.is_empty():
 		return
 
-	# Inicializa alphas (solo el primero visible)
+	# 2) Estado inicial: todas visibles; alpha 0 excepto la primera
 	for i in range(slides.size()):
-		var col := slides[i].modulate
+		var ci := slides[i]
+		ci.visible = true
+		var col := ci.modulate
 		col.a = 1.0 if i == 0 else 0.0
-		slides[i].modulate = col
+		ci.modulate = col
+	idx = 0
+	_advancing = false
 
+	# 3) Inicializa RNG y temporizador
 	rng.randomize()
-
-	# Timer en ciclo por slide (sincronizado con el progress)
 	timer.wait_time = interval_seconds
 	timer.one_shot = true
-	timer.timeout.connect(_next_slide)
+	if not timer.timeout.is_connected(_next_slide):
+		timer.timeout.connect(_next_slide)
 
+	# 4) Sincroniza barra de progreso y arranca ciclo
 	_restart_progress()
 	timer.start()
+
 
 func _restart_progress() -> void:
 	# 0 → 100 en interval_seconds

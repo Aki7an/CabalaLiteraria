@@ -1,3 +1,5 @@
+res://scenes
+res://scenes/Tutorial
 C:/Users/Victor/Documents/Godot/apk/Betas
 res://images
 res://autoload
@@ -6,8 +8,6 @@ C:/Users/Victor/Documents/Godot/cabalaliteraria/keystores
 res://
 res://fonts/Fonts/Montserrat/static
 res://fonts
-res://scenes/Tutorial
-res://scenes
 res://fonts/Fonts/Iconoclasta
 res://fonts/Fonts/Source_Sans_3/static
 res://fonts/Fonts/Fredoka One
