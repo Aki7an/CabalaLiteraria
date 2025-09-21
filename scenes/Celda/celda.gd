@@ -113,18 +113,19 @@ func asignar_letra(order:int) -> void:
 	label_numero.add_theme_font_size_override("font_size",font_size_asignada)
 
 func _on_button_pressed() -> void:
+	if celda_mostrada:
+		return
 	print("Tocada CELDA con letra:", letra, " y número:", numero, " orden:" , orden)
 		
 
 		# if CELL is already selected: deselect
-	if celda_selected.visible == true:
-		# double click on an allready selected cell, I have to unselect
-		celda_selected.visible = false
-		GameManager.reset_cell_select()
-		SoundManager.play("ClickCeldaYaSeleccionada")
-		#GameManager.set_selected_letter_user(letter_user)
+	if celda_selected.visible == false:
+		## double click on an allready selected cell, I have to unselect
+		#celda_selected.visible = false
+		#GameManager.reset_cell_select()
+		#SoundManager.play("ClickCeldaYaSeleccionada")
+		##GameManager.set_selected_letter_user(letter_user)
 
-	else:
 		if letra == " ":
 			# no space
 			return

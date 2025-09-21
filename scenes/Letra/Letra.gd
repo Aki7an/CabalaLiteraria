@@ -112,43 +112,39 @@ func obtener_fondo_compra_letra() -> Node:
 	return arr[0] if arr.size() > 0 else null
 
 func _on_button_pressed() -> void:
-	#if has_scene_instance("res://scenes/fondo_comprar_letra.tscn"):
-		#print("La escena HintsPanel está instanciada.")
 
-	#print("paso por aqui inicial bucle")
-	
 	if !hay_fondo_compra_letra() and (GameManager.celda_seleccionada_numero>=100 or GameManager.celda_seleccionada_numero == 0):
 		# avoid selection of Letters if no Cell is selected
 		#print("caracteres a eliminar")
 		return
 		
 	if letra_mostrada == true:
-		#print("letra mostrada true")
 		# selecting an already showed LETTER
-		if letra == GameManager.selected_letra:
-			#print("letra a borrar")
-			# erase letter from selecting the one that exist in the letter
-			#GameManager.cambios_increase()
-			#SignalManager.update_cambios.emit()
-			SignalManager.erase_letter_open_dialog.emit()
-			#_erase_letter()
-			if GameManager.hay_letra_que_borrar():
-				SignalManager.update_rubber.emit()
-			return
-		else:
-			# have to enable the overwrited letter and insert new one
-			# Letra seleccionable
-			
-				#no estoy
-			if GameManager.hay_letra_que_borrar():
-				SignalManager.update_rubber.emit()
+		# do nothing. Never erase letter because now you only can insert letter if it is right. No erase.
+		
+		#if letra == GameManager.selected_letra:
+			##print("letra a borrar")
+			## erase letter from selecting the one that exist in the letter
+			##GameManager.cambios_increase()
+			##SignalManager.update_cambios.emit()
+			#SignalManager.erase_letter_open_dialog.emit()
+			##_erase_letter()
+			#if GameManager.hay_letra_que_borrar():
+				#SignalManager.update_rubber.emit()
+			#return
+		#else:
+			## have to enable the overwrited letter and insert new one
+			## Letra seleccionable
+			#
+				##no estoy
+			#if GameManager.hay_letra_que_borrar():
+				#SignalManager.update_rubber.emit()
 			return
 	else:
 		#letter not showed, but dont know if CELL has letter or not
 		#print("paso por aqui inicial")
 		if GameManager.selected_letra == "":
 			# not letter in CELL
-			#print("paso por aqui")
 			# mira si no estoy en la pantalla de comprar letras
 			if hay_fondo_compra_letra():
 				#estoy
@@ -158,24 +154,29 @@ func _on_button_pressed() -> void:
 			else:
 			# not in buy screen
 				print("Tocada LETRA con letra:", letra)
-				SoundManager.play("ClickLetra")
+				#  check if letter is correct
+				if GameManager.letra_corresponde_a_numero(letra,GameManager.celda_seleccionada_numero):
+				#yes
+					SoundManager.play("ClickLetra")
+					# Crear un nuevo StyleBoxFlat
+					var style_selected := StyleBoxFlat.new()
+					style_selected.bg_color = color_selected
+					# Asignar como fondo normal
+					panel_letra.add_theme_stylebox_override("panel", style_selected)
+					
+					letra_mostrada = true
+					SignalManager.insert_letter_in_number.emit(letra,GameManager.celda_seleccionada_numero)
+					print("Seleccionada Celda:",  GameManager.selected_celda_number)
 
-				# Crear un nuevo StyleBoxFlat
-				var style_selected := StyleBoxFlat.new()
-				style_selected.bg_color = color_selected
-				# Asignar como fondo normal
-				panel_letra.add_theme_stylebox_override("panel", style_selected)
-				
-				letra_mostrada = true
-				SignalManager.insert_letter_in_number.emit(letra,GameManager.celda_seleccionada_numero)
-				print("Seleccionada Celda:",  GameManager.selected_celda_number)
-
-				GameManager.reset_cell_select()
-				SignalManager.update_resting_characters.emit()
-				if GameManager.hay_letra_que_borrar():
-					SignalManager.update_rubber.emit()
-				SignalManager.asignar_letra.emit(GameManager.tiempo_partida, GameManager.selected_letra)
-				SignalManager.update_difficulty.emit(GameManager.frase_original, GameManager.recoger_letras_mostradas()) 
+					GameManager.reset_cell_select()
+					SignalManager.update_resting_characters.emit()
+					if GameManager.hay_letra_que_borrar():
+						SignalManager.update_rubber.emit()
+					SignalManager.asignar_letra.emit(GameManager.tiempo_partida, GameManager.selected_letra)
+					SignalManager.update_difficulty.emit(GameManager.frase_original, GameManager.recoger_letras_mostradas()) 
+				else:
+				# No correcta
+					SignalManager.decrease_live.emit()
 	
 func _erase_letter() -> void:
 	#ERASE selection and enable letter again

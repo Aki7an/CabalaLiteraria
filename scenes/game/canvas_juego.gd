@@ -39,6 +39,7 @@ func _ready() -> void:
 	SignalManager.insert_letter_in_number.connect(_insert_letter_in_number)
 	SignalManager.move_canvas.connect(_move_canvas)
 	SignalManager.añade_las_letras_iniciales.connect(_añade_las_letras_iniciales)
+	SignalManager.mueve_filas.connect(pan_rows)
 	
 	_create_input_blocker()
 	crear_linea_horizontal()
@@ -503,3 +504,32 @@ func pan_to_y(target_y: float, duration: float = 0.5) -> void:
 	_move_tween = create_tween()
 	_move_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_move_tween.tween_property(self, "position:y", target_y, duration)
+
+# --- Cálculo de alto de una fila (celda + separación vertical) ---
+func _row_height() -> float:
+	var cols: int = max(1, grid_container.columns)
+	var total_w: float = grid_container.size.x
+	var hsep: int = _grid_hsep()
+	var usable_w: float = total_w - float(hsep) * float(cols - 1)
+	if usable_w <= 0.0:
+		return 0.0
+	var cell_w: float = usable_w / float(cols)
+	var cell_h: float = cell_w * 2.0  # mismo ratio 1:2 que usas en las celdas
+	return cell_h + float(_grid_vsep())
+
+# --- Mueve el canvas N filas (positivas hacia abajo, negativas hacia arriba) con tween ---
+func pan_rows(delta_rows: int, duration: float = 0.35) -> void:
+	#print(color_rect_down.global_position.y)
+	if delta_rows<0 and color_rect_down.global_position.y <= 1420:
+		return
+	#if delta_rows < 0 and position.y <= (GameManager.max_y_canvas + .5) :
+		#return
+	
+	var step_px: float = _row_height() * float(delta_rows)
+	if step_px == 0.0:
+		return
+	var target_y: float = position.y + step_px
+	# Limitar al rango válido del canvas
+	target_y = clamp(target_y, GameManager.max_y_canvas, GameManager.min_y_canvas)
+	pan_to_y(round(target_y), duration)
+	

@@ -53,3 +53,11 @@ signal borrar_letra(t_game_ms:int, celda:int, letra:String)
 signal asignar_letra(t_game_ms:int, celda:int, letra:String) 
 signal partida_iniciada()
 signal partida_finalizada(resultado:String) # "win" / "lose" / "abort"
+
+signal mueve_filas(rows: int, time: float)
+
+signal update_lives(lives:int)
+
+signal decrease_live
+
+signal game_finished_lost

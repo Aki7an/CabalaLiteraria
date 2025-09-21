@@ -1,5 +1,7 @@
 extends Node
 
+@export var lives: int
+
 @export var go_to_game :bool = false
 
 @export var vocalesAE_compradas: int = 0
@@ -147,6 +149,7 @@ func _ready():
 	
 	
 	
+	
 #	letras_reveladas = ""
 	TranslationServer.set_locale("es")
 	randomize()
@@ -161,11 +164,47 @@ func _ready():
 	
 	_inicializar_datos()
 	set_hints_based_on_difficulty()
+	
 	lista_celdas.clear()
 	SignalManager.update_stars.emit()
-	
+	SignalManager.decrease_live.connect(decrease_live)
 	SignalManager.game_finished.connect(_game_finished)
+
+func set_lives_init() -> void:
+	if dificultad_actual == 1:
+		lives = 4
+	elif dificultad_actual == 2:
+		lives = 3
+	elif dificultad_actual == 3:
+		lives = 2
+	else:
+		lives = 1
 	
+func letra_corresponde_a_numero(letra: String, celda_seleccionada_numero: int) -> bool:
+	print ("celda_seleccionada_numero: ", str(celda_seleccionada_numero))
+	print (busca_posicion_letra_en_array(letra))
+	if celda_seleccionada_numero == busca_posicion_letra_en_array(letra):
+		return true
+	else:
+		return false
+
+func busca_posicion_letra_en_array(letra_comp: String) -> int:
+	if letra_comp.is_empty():
+		return -1
+	
+	var L := letra_comp.strip_edges().to_upper()
+	return GameManager.lista_numeros[GameManager.letters_aphabet_array.find(letra_comp)] + 1
+	
+func decrease_live() -> void:
+	lives -= 1
+	
+	if lives <=0:
+		SignalManager.game_finished_lost.emit()
+		print("GAME LOST")
+		queue_free()
+		
+	SignalManager.update_lives.emit(lives)
+
 func set_calculo_letras_iniciales() -> void:
 	if letras_iniciales != "" or dificultad_actual ==3:
 		return
@@ -191,6 +230,7 @@ func set_categoria_actual(categoria: String) -> void:
 
 func set_dificultad_actual(dificultad: int) -> void:
 	dificultad_actual = dificultad
+	set_lives_init()
  
 func set_coins(number:int) -> void:
 	coins = number

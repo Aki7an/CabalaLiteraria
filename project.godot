@@ -14,7 +14,7 @@ config/name="CifraLetra"
 config/description="CifraLetra - pasatiempo "
 run/main_scene="uid://bvpri1mtnymgf"
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="uid://dbl6g80hlkm50"
+config/icon="uid://dukhln4gxckek"
 
 [autoload]
 
@@ -58,7 +58,6 @@ dev_force_landscape={
 
 [input_devices]
 
-pointing/android/enable_pan_and_scale_gestures=true
 pointing/emulate_touch_from_mouse=true
 
 [internationalization]

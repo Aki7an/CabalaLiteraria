@@ -86,3 +86,11 @@ func _on_btn_erase_pressed() -> void:
 	else:
 		SignalManager.erase_letter_open_dialog.emit()
 		print("hay celda seleccionada ", GameManager.selected_letra)
+
+
+func _on_button_up_pressed():
+	SignalManager.mueve_filas.emit(4,.5)
+
+
+func _on_button_down_pressed():
+	SignalManager.mueve_filas.emit(-4,.5)

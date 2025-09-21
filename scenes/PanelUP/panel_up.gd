@@ -20,10 +20,12 @@ extends Panel
 
 const scene_to_load_MenuResults = preload("res://scenes/MenuResults.tscn")
 
+@onready var lives_number = $ItemiconHeart/LivesNumber
 
 @onready var game_letters: Label = $Completado/ProgressBar/GameLetters
 
 #@onready var menu_game_over = $MenuGameOver
+@onready var itemicon_heart = $ItemiconHeart
 
 
 @onready var id = $ID
@@ -65,12 +67,13 @@ var start_ms: int
 func _ready() -> void:
 	start_ms = Time.get_ticks_msec()
 	SignalManager.update_resting_characters.connect(_update_resting_characters)
-	SignalManager.update_cambios.connect(_update_cambios)
+	#SignalManager.update_cambios.connect(_update_cambios)
 	SignalManager.game_finished.connect(_game_finished_to_results)
 	SignalManager.update_score.connect(_update_score)
 	SignalManager.erase_letter.connect(_erase_letter)
 	SignalManager.erase_letter_open_dialog.connect(_erase_letter_open_dialog)
 	SignalManager.update_coins.connect(update_coins)
+	SignalManager.update_lives.connect(_update_lives)
 	
 	_update_resting_characters()
 	_update_categoria()
@@ -100,7 +103,7 @@ func _ready() -> void:
 	
 	GameManager.reset_numero_letras_reveladas()
 	
-	_update_cambios()
+	#_update_cambios()
 	
 	id.text = "ID " + str(GameManager.id_frase)
 	
@@ -119,12 +122,17 @@ func _ready() -> void:
 	
 	SignalManager.update_difficulty.connect(_update_difficulty_label)
 	SignalManager.update_difficulty.emit(GameManager.frase_original, GameManager.recoger_letras_mostradas)
+	SignalManager.update_lives.emit(GameManager.lives)
 	#print("frase: ", GameManager.frase_original)
 	#print("Letras mostradas: ", GameManager.recoger_letras_mostradas())
 	
 func _update_difficulty_label(frase: String, revelada: String) -> void:
 	difficulty.text = "Dificultad: " + String.num(Analyzer.evaluar_dificultad(frase, revelada),2)
 		
+func _update_lives(lives_int:int) -> void:
+	lives_number.text = str(lives_int)
+	itemicon_heart.start_blink()
+
 func _update_score() -> void:
 	GameManager.calcula_score()
 	score.text = GameManager.formatear_numero(GameManager.score)
@@ -141,8 +149,8 @@ func _update_score() -> void:
 func update_coins() -> void:
 	coins.text = str(GameManager.coins)
 	
-func _update_cambios() -> void:
-	cambios.text = str(GameManager.cambios_hechos)
+#func _update_cambios() -> void:
+	#cambios.text = str(GameManager.cambios_hechos)
 
 func _update_categoria() -> void:
 	categoria.text = GameManager.categoria_actual
@@ -342,3 +350,7 @@ func _on_button_settings_pressed():
 	add_child(overlay)                             # no cierra lo de abajo
 	#overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	#overlay.mouse_filter = Control.MOUSE_FILTER_STOP  # bloquea clicks al fondo
+
+
+func _on_button_up_pressed():
+	SignalManager.mueve_filas.emit(4,.5)

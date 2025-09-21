@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://y1k8m1upqvmd"]
+[gd_scene load_steps=22 format=3 uid="uid://y1k8m1upqvmd"]
 
 [ext_resource type="Script" uid="uid://7fpd4dm3ml4u" path="res://scenes/game/panel_colors.gd" id="1_egxq0"]
 [ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="3_8wmjc"]
 [ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="3_qyr5c"]
 [ext_resource type="Script" uid="uid://328p3wf54q2r" path="res://scenes/main/column_+.gd" id="4_8wmjc"]
 [ext_resource type="Texture2D" uid="uid://dslqrdlfkvkm0" path="res://images/settings.png" id="4_ymjlu"]
+[ext_resource type="Texture2D" uid="uid://duvxnbfhhi6g" path="res://images/triangulo-hacia-arriba -blanco.png" id="4_ytfxw"]
 [ext_resource type="Texture2D" uid="uid://db10fm7xpcqle" path="res://images/eraser_2.png" id="5_0kj3y"]
 [ext_resource type="FontFile" uid="uid://cixkiol5tnrib" path="res://fonts/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf" id="6_ytfxw"]
 
@@ -57,6 +58,20 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ayw1j"]
 bg_color = Color(0.6, 0.156863, 0.6, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8wmjc"]
+bg_color = Color(0.717647, 0.545098, 0.313726, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qyr5c"]
+bg_color = Color(0.63, 0.36435, 0.2835, 1)
 corner_radius_top_left = 30
 corner_radius_top_right = 30
 corner_radius_bottom_right = 30
@@ -216,7 +231,32 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_q4xca")
 theme_override_styles/normal = SubResource("StyleBoxFlat_ayw1j")
 text = "5"
 
+[node name="ButtonDown" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxFlat_8wmjc")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_8wmjc")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_8wmjc")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_8wmjc")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_8wmjc")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_8wmjc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_qyr5c")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxFlat_8wmjc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_8wmjc")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_8wmjc")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8wmjc")
+
+[node name="Triangulo-hacia-arriba-blanco2" type="Sprite2D" parent="HBoxContainer/ButtonDown"]
+modulate = Color(0.945098, 0.854902, 0.690196, 1)
+position = Vector2(73, 64)
+rotation = -3.14159
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("4_ytfxw")
+
 [node name="BtnErase" type="Button" parent="HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -253,4 +293,5 @@ vertical_alignment = 1
 [connection signal="pressed" from="HBoxContainer/Button3" to="." method="_on_button_3_pressed"]
 [connection signal="pressed" from="HBoxContainer/Button4" to="." method="_on_button_4_pressed"]
 [connection signal="pressed" from="HBoxContainer/Button5" to="." method="_on_button_5_pressed"]
+[connection signal="pressed" from="HBoxContainer/ButtonDown" to="." method="_on_button_down_pressed"]
 [connection signal="pressed" from="HBoxContainer/BtnErase" to="." method="_on_btn_erase_pressed"]
