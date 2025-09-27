@@ -9,7 +9,7 @@ const MAX_CONS_CANDIDATES: int  = 10  # top-N consonantes por frecuencia en la f
 const MAX_EVALS: int = 200            # freno de seguridad global
 
 # Objetivos por nivel (0..100, según Analyzer.evaluar_dificultad)
-const TARGET_BY_LEVEL := {1: 50.0, 2: 65.0, 3: 100.0}
+const TARGET_BY_LEVEL := {1: 50.0, 2: 65.0, 3: 80.0, 4: 100.0}
 # Reglas: (num_vowels, num_consonants)
 const PICK_RULES := {1: Vector2i(2, 5), 2: Vector2i(1, 3), 3: Vector2i(0, 0)}
 # Tolerancia relativa (±3%)
@@ -24,7 +24,7 @@ const VOWELS := {"A": true, "E": true, "I": true, "O": true, "U": true}
 ## Devuelve un String con las letras iniciales (p.ej. "AEISNRL").
 ## Early-exit: en cuanto una combinación cae dentro de ±3% del objetivo, se devuelve.
 static func pick_initials_for_level(frase: String, level: int) -> String:
-	level = clampi(level, 1, 3)
+	level = clampi(level, 1, 4)
 	var rule: Vector2i = PICK_RULES[level]
 	var need_v: int = rule.x
 	var need_c: int = rule.y

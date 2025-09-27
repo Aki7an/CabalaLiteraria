@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://df2olneywrcjb"]
+[gd_scene load_steps=64 format=3 uid="uid://df2olneywrcjb"]
 
 [ext_resource type="FontFile" uid="uid://bhfo1jcrwhcei" path="res://Font_titulos.tres" id="1_kisgu"]
 [ext_resource type="Script" uid="uid://cqp7mrxkl3xi5" path="res://scenes/PanelUP/panel_up.gd" id="1_yg0a0"]
@@ -14,6 +14,7 @@
 [ext_resource type="FontFile" uid="uid://qib2tlpstjyn" path="res://fonts/Fonts/Nunito/static/Nunito-Bold.ttf" id="13_dlt0r"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="17_kmbax"]
 [ext_resource type="Theme" uid="uid://k7hcs8goxg0c" path="res://Label_Nunito_font.tres" id="18_5evft"]
+[ext_resource type="Texture2D" uid="uid://bpvbw33ckx2pq" path="res://images/simbolo-de-diamante.png" id="18_i3j8r"]
 [ext_resource type="FontFile" uid="uid://bg87tkoaof74f" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="19_u86xj"]
 [ext_resource type="Texture2D" uid="uid://tg2iwyaqaye1" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_heart.png" id="21_dj36u"]
 [ext_resource type="FontFile" uid="uid://d3jg83nbfug5a" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="22_310ny"]
@@ -361,7 +362,6 @@ offset_bottom = 288.0
 texture = ExtResource("13_310ny")
 expand_mode = 1
 stretch_mode = 5
-flip_h = true
 
 [node name="Coins" type="Label" parent="Coins"]
 layout_mode = 1
@@ -536,10 +536,10 @@ vertical_alignment = 1
 
 [node name="Categorias" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_left = 136.0
-offset_top = 31.0
+offset_left = 152.0
+offset_top = 24.0
 offset_right = 416.0
-offset_bottom = 93.0
+offset_bottom = 86.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_plsrp")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Categorias"]
@@ -922,9 +922,9 @@ vertical_alignment = 1
 [node name="Dificultad" type="PanelContainer" parent="."]
 layout_mode = 0
 offset_left = 144.0
-offset_top = 90.0
+offset_top = 91.0
 offset_right = 412.0
-offset_bottom = 144.0
+offset_bottom = 145.0
 theme = SubResource("Theme_qvaug")
 theme_override_styles/panel = SubResource("StyleBoxFlat_yge2w")
 
@@ -1014,6 +1014,13 @@ scale = Vector2(0.123037, 0.123037)
 texture = ExtResource("9_t8ghf")
 metadata/_edit_lock_ = true
 
+[node name="Diamante" type="Sprite2D" parent="Dificultad/VBoxContainer/HBoxContainer2/Label"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 1)
+position = Vector2(1, 9)
+scale = Vector2(0.10351, 0.10351)
+texture = ExtResource("18_i3j8r")
+
 [node name="Estrella1" type="Sprite2D" parent="Dificultad/VBoxContainer/HBoxContainer2/Label"]
 unique_name_in_owner = true
 modulate = Color(1, 0.670588, 0.0705882, 1)
@@ -1095,13 +1102,14 @@ scale = Vector2(0.927, 1)
 texture = ExtResource("21_dj36u")
 script = ExtResource("22_i3j8r")
 scale_up = 1.3
-step_duration = 0.08
+total_duration = 1.5
+trans_type = 9
 
 [node name="LivesNumber" type="Label" parent="ItemiconHeart"]
-offset_left = -21.5274
-offset_top = -26.375
-offset_right = 19.4726
-offset_bottom = 48.625
+offset_left = -85.0
+offset_top = -26.0
+offset_right = 72.0
+offset_bottom = 49.0
 theme = ExtResource("17_kmbax")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)

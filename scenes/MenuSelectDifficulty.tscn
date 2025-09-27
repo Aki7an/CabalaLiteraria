@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=4 uid="uid://buwybneokavcx"]
 
-[ext_resource type="Script" uid="uid://dq8u7wb0v23qa" path="res://scenes/menu_select_category.gd" id="1_7764r"]
+[ext_resource type="Script" uid="uid://buqyyr7htufh2" path="res://scenes/menu_select_difficulty.gd" id="1_mnvl1"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_p00t6"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="4_1kbma"]
 [ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="5_a8wg7"]
@@ -228,7 +228,7 @@ Button/styles/normal = SubResource("StyleBoxTexture_5nwj5")
 Button/styles/pressed = SubResource("StyleBoxTexture_guwrg")
 
 [node name="MenuSelectDifficulty" type="Node2D"]
-script = ExtResource("1_7764r")
+script = ExtResource("1_mnvl1")
 
 [node name="Panel" type="Panel" parent="."]
 offset_right = 1024.0
@@ -241,32 +241,128 @@ metadata/_edit_use_anchors_ = true
 metadata/_edit_lock_ = true
 
 [node name="Efemerides" type="Label" parent="Panel"]
-layout_mode = 0
-offset_left = 600.0
-offset_top = 328.0
-offset_right = 920.0
-offset_bottom = 640.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.586
+anchor_top = 0.171
+anchor_right = 0.898
+anchor_bottom = 0.333
+offset_left = -88.064
+offset_top = -80.32
+offset_right = -79.5521
+offset_bottom = -79.36
+
+[node name="Label9" type="Label" parent="Panel/Efemerides"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.2
+offset_top = 184.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.611765, 0.407843, 0.337255, 1)
+theme_override_font_sizes/font_size = 40
+text = "Ephemerides"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect3" type="TextureRect" parent="Panel/Efemerides"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.821
+offset_bottom = -56.152
+grow_horizontal = 2
+texture = ExtResource("8_4aytf")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Citas" type="Label" parent="Panel"]
-layout_mode = 0
-offset_left = 600.0
-offset_top = 328.0
-offset_right = 920.0
-offset_bottom = 640.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.586
+anchor_top = 0.171
+anchor_right = 0.898
+anchor_bottom = 0.333
+offset_left = -72.064
+offset_top = -80.32
+offset_right = -71.5521
+offset_bottom = -79.36
+
+[node name="TextureRect5" type="TextureRect" parent="Panel/Citas"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.975
+anchor_bottom = 0.872
+offset_bottom = -72.064
+texture = ExtResource("5_a8wg7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label3" type="Label" parent="Panel/Citas"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 200.0
+offset_right = -8.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.611765, 0.407843, 0.337255, 1)
+theme_override_constants/line_spacing = -15
+theme_override_font_sizes/font_size = 40
+text = "Famous Quotes"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Curiosidades" type="Label" parent="Panel"]
 layout_mode = 0
-offset_left = 600.0
-offset_top = 328.0
-offset_right = 920.0
-offset_bottom = 640.0
+offset_left = 520.0
+offset_top = 232.0
+offset_right = 840.0
+offset_bottom = 544.0
+
+[node name="TextureRect6" type="TextureRect" parent="Panel/Curiosidades"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 8.0
+offset_right = 8.0
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_vcddi")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Panel/Curiosidades"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 240.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.611765, 0.407843, 0.337255, 1)
+theme_override_font_sizes/font_size = 40
+text = "Curiosities"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Fragmentos" type="Label" parent="Panel"]
 layout_mode = 0
-offset_left = 512.0
-offset_top = 304.0
-offset_right = 832.0
-offset_bottom = 616.0
+offset_left = 488.0
+offset_top = 248.0
+offset_right = 896.0
+offset_bottom = 560.0
 
 [node name="TextureRect4" type="TextureRect" parent="Panel/Fragmentos"]
 layout_mode = 1
@@ -286,8 +382,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 224.0
-offset_bottom = 7.0
+offset_top = 200.0
+offset_bottom = -17.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.611765, 0.407843, 0.337255, 1)
@@ -297,102 +393,6 @@ text = "Literary Fragments"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
-
-[node name="TextureRect5" type="TextureRect" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -600.0
-offset_top = 384.0
-offset_right = -1355.0
-offset_bottom = -1352.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("5_a8wg7")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Label3" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -992.0
-offset_top = 592.0
-offset_right = -1042.0
-offset_bottom = -1273.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/line_spacing = -15
-theme_override_font_sizes/font_size = 40
-text = "Famous Quotes"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="Label9" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1424.0
-offset_top = 608.0
-offset_right = -1474.0
-offset_bottom = -1257.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 40
-text = "Ephemerides"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="TextureRect3" type="TextureRect" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1040.0
-offset_top = 304.0
-offset_right = -1872.0
-offset_bottom = -1272.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("8_4aytf")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="TextureRect6" type="TextureRect" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1512.0
-offset_top = 360.0
-offset_right = -2344.0
-offset_bottom = -1328.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("7_vcddi")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Label" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1904.0
-offset_top = 616.0
-offset_right = -1962.0
-offset_bottom = -1249.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 40
-text = "Curiosities"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="ButtonDifficulty1" type="Button" parent="Panel"]
 layout_mode = 1
@@ -614,8 +614,6 @@ pivot_offset = Vector2(151, 111)
 theme = ExtResource("10_1mwli")
 theme_override_font_sizes/font_size = 60
 icon_alignment = 1
-script = ExtResource("4_1kbma")
-enable_intro_sheen = true
 
 [node name="TextureRect5" type="TextureRect" parent="Panel/ButtonDifficulty4"]
 modulate = Color(0.0562916, 0.0562916, 0.0562916, 1)
@@ -668,7 +666,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
 theme_override_font_sizes/font_size = 40
-text = "Frases famosas de personas famosas"
+text = "Frases de más de 300 caracteres.
+1 sola vida"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -686,7 +685,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
 theme_override_font_sizes/font_size = 40
-text = "Frases famosas de personas famosas"
+text = "Frases de unos 300 caracteres.
+2 vidas"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -704,7 +704,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
 theme_override_font_sizes/font_size = 40
-text = "Frases famosas de personas famosas"
+text = "Frases de menos unos 200 caracteres.
+3 vidas"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -722,7 +723,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
 theme_override_font_sizes/font_size = 40
-text = "Frases famosas de personas famosas"
+text = "Frases de  unos 100 caracteres.
+4 vidas"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -732,15 +734,33 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -32.0
-offset_top = 368.0
-offset_right = -528.0
-offset_bottom = -1456.0
+offset_left = 8.0
+offset_top = 304.0
+offset_right = -512.0
+offset_bottom = -1520.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
 theme_override_font_sizes/font_size = 70
 text = "THEME"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Label9" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 560.0
+offset_right = -480.0
+offset_bottom = -1264.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
+theme_override_font_sizes/font_size = 70
+text = "DIFFICULTY"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -855,5 +875,5 @@ texture = ExtResource("23_p2c0c")
 [connection signal="pressed" from="Panel/ButtonDifficulty1" to="." method="_on_button_difficulty_1_pressed"]
 [connection signal="pressed" from="Panel/ButtonDifficulty2" to="." method="_on_button_difficulty_2_pressed"]
 [connection signal="pressed" from="Panel/ButtonDifficulty3" to="." method="_on_button_difficulty_3_pressed"]
-[connection signal="pressed" from="Panel/ButtonDifficulty4" to="." method="_on_button_difficulty_3_pressed"]
+[connection signal="pressed" from="Panel/ButtonDifficulty4" to="." method="_on_button_difficulty_4_pressed"]
 [connection signal="pressed" from="ButtonExit" to="." method="_on_button_exit_pressed"]

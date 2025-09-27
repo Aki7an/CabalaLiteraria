@@ -1062,7 +1062,6 @@ scale = Vector2(0.927, 1)
 texture = ExtResource("9_4xhfx")
 script = ExtResource("10_88ncm")
 scale_up = 1.3
-step_duration = 0.08
 
 [node name="LivesNumber" type="Label" parent="Label/Control/3/ItemiconHeart"]
 offset_left = -21.5274

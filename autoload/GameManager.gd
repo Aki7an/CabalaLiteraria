@@ -206,16 +206,21 @@ func decrease_live() -> void:
 	SignalManager.update_lives.emit(lives)
 
 func set_calculo_letras_iniciales() -> void:
-	if letras_iniciales != "" or dificultad_actual ==3:
+	if letras_iniciales != "" or dificultad_actual ==4:
 		return
 	else:
 		if dificultad_actual == 1:
 			var r1 :String= InitialLettersPicker.pick_initials_for_level(frase_original, 1)
 			letras_iniciales = r1
 			print ("LETRAS INICIALES CALCULADAS:" ,letras_iniciales)
-		else:
+		elif dificultad_actual == 2:
 			var r2 :String= InitialLettersPicker.pick_initials_for_level(frase_original, 2)
 			letras_iniciales = r2
+			print ("LETRAS INICIALES CALCULADAS:" ,letras_iniciales)
+		else:
+			# only level 3 difficulty possible
+			var r3 :String= InitialLettersPicker.pick_initials_for_level(frase_original, 3)
+			letras_iniciales = r3
 			print ("LETRAS INICIALES CALCULADAS:" ,letras_iniciales)
 	
 func set_hints_based_on_difficulty() -> void:
@@ -417,6 +422,15 @@ func letra_a_numero(letra_input: String) -> int:
 func añade_celda(celda_a_añadir:Celda) -> void:
 	lista_celdas.append(celda_a_añadir)
 	
+func show_letter_error(cell_numbero: int) -> void:
+		
+	for node: Node in get_tree().get_nodes_in_group("Celda"):
+		if node is Celda:
+			var c:Celda = node
+			if c.numero == cell_numbero:
+				c.mostrar_letra_errada()
+
+
 func set_celda_seleccionada(orden_celda:int, numero_celda:int) -> void:
 	selected_celda_number = orden_celda
 	celda_seleccionada_numero = numero_celda

@@ -7,6 +7,9 @@ class_name Celda
 @export var letra: String = ""
 @export var letter_user: String = ""
 
+@export var color_error: Color = Color(0.81, 0.0, 0.0, 0.42)
+@export var color_font_default: Color = Color(0.169, 0.18, 0.188)
+
 @export var font_size_inicial: int = 50 #40
 @export var font_size_asignada: int = 30
 
@@ -50,6 +53,11 @@ func _ready():
 	_inicializar_letra()
 	_inicializar_numero()
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	SignalManager.update_size_celdas.connect(set_font_size)
+	
+func set_font_size() -> void:
+	set_letter_font_size()
+	set_number_font_size()
 	
 func _inicializar_puntuacion() -> void:
 	label_puntuacion_punto.visible = false
@@ -66,9 +74,47 @@ func _inicializar_puntuacion() -> void:
 	
 	celda_selected.visible = false
 	
+func set_letter_font_size() -> void:
+	
+	if GameManager.NUM_COLUMNAS == 8:
+	# 8 is the min
+		label_letra.add_theme_font_size_override("font_size", 120)
+	elif GameManager.NUM_COLUMNAS == 9:
+		label_letra.add_theme_font_size_override("font_size", 110)
+	elif GameManager.NUM_COLUMNAS == 10:
+		label_letra.add_theme_font_size_override("font_size", 100)
+	elif GameManager.NUM_COLUMNAS == 11:
+		label_letra.add_theme_font_size_override("font_size", 95)
+	elif GameManager.NUM_COLUMNAS == 12:
+		label_letra.add_theme_font_size_override("font_size", 90)
+	else:
+	# 13 is the max
+		label_letra.add_theme_font_size_override("font_size", 85) 
+		
+func set_number_font_size() -> void:
+	
+	if GameManager.NUM_COLUMNAS == 8:
+	# 8 is the min
+		label_numero.add_theme_font_size_override("font_size", 70)  
+	elif GameManager.NUM_COLUMNAS == 9:
+		label_numero.add_theme_font_size_override("font_size", 65)  
+	elif GameManager.NUM_COLUMNAS == 10:
+		label_numero.add_theme_font_size_override("font_size", 60)  
+	elif GameManager.NUM_COLUMNAS == 11:
+		label_numero.add_theme_font_size_override("font_size", 54)  
+	elif GameManager.NUM_COLUMNAS == 12:
+		label_numero.add_theme_font_size_override("font_size", 50)  
+	else:
+	# 13 is the max
+		label_numero.add_theme_font_size_override("font_size", 46)  
+		
+		
 func _inicializar_letra() -> void:
 	label_letra.text = letra
 	label_letra.visible = false
+	
+	set_letter_font_size()
+		
 	celda_mostrada = false
 	label_numero.add_theme_font_size_override("font_size",font_size_inicial )
 	if letra == " ":
@@ -78,6 +124,8 @@ func _inicializar_letra() -> void:
 func _inicializar_numero() -> void:
 	label_numero.text = str(numero)
 	label_numero.visible = true
+	
+	set_number_font_size()
 	
 	#for the forbiden characters, assign 101 number or higher and dont show number
 	if GameManager.EXCLUIR.has(letra):
@@ -170,7 +218,16 @@ func mostrar_letra() -> void:
 	#label_numero.add_theme_font_size_override("font_size",font_size_asignada )
 	label_letra.text = letter_user
 	label_letra.visible = true
+	label_letra.add_theme_color_override("font_color", color_font_default)
 	celda_mostrada = true
+
+func mostrar_letra_errada() -> void:
+	#label_numero.add_theme_font_size_override("font_size",font_size_asignada )
+	label_letra.text = GameManager.selected_letra
+	label_letra.add_theme_color_override("font_color", color_error)
+	label_letra.visible = true
+	celda_mostrada = false
+
 	
 func mostrar_letra_especifica(letra_a_mostrar: String) -> void:
 	#solo se usa para las letras que regalo al principio de la partida que así se diferencian de las del jugador

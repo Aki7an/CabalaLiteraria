@@ -115,74 +115,57 @@ func _on_button_pressed() -> void:
 
 	if !hay_fondo_compra_letra() and (GameManager.celda_seleccionada_numero>=100 or GameManager.celda_seleccionada_numero == 0):
 		# avoid selection of Letters if no Cell is selected
-		#print("caracteres a eliminar")
+
 		return
 		
 	if letra_mostrada == true:
-		# selecting an already showed LETTER
-		# do nothing. Never erase letter because now you only can insert letter if it is right. No erase.
-		
-		#if letra == GameManager.selected_letra:
-			##print("letra a borrar")
-			## erase letter from selecting the one that exist in the letter
-			##GameManager.cambios_increase()
-			##SignalManager.update_cambios.emit()
-			#SignalManager.erase_letter_open_dialog.emit()
-			##_erase_letter()
-			#if GameManager.hay_letra_que_borrar():
-				#SignalManager.update_rubber.emit()
-			#return
-		#else:
-			## have to enable the overwrited letter and insert new one
-			## Letra seleccionable
-			#
-				##no estoy
-			#if GameManager.hay_letra_que_borrar():
-				#SignalManager.update_rubber.emit()
 			return
 	else:
 		#letter not showed, but dont know if CELL has letter or not
 		#print("paso por aqui inicial")
-		if GameManager.selected_letra == "":
-			# not letter in CELL
-			# mira si no estoy en la pantalla de comprar letras
-			if hay_fondo_compra_letra():
-				#estoy
-				var nodo := obtener_fondo_compra_letra()
-				#print("Encontrado:", nodo)
-				SignalManager.letra_seleccionada_para_comprar.emit(letra)
-			else:
-			# not in buy screen
-				print("Tocada LETRA con letra:", letra)
-				#  check if letter is correct
-				if GameManager.letra_corresponde_a_numero(letra,GameManager.celda_seleccionada_numero):
-				#yes
-					SoundManager.play("ClickLetra")
-					# Crear un nuevo StyleBoxFlat
-					var style_selected := StyleBoxFlat.new()
-					style_selected.bg_color = color_selected
-					# Asignar como fondo normal
-					panel_letra.add_theme_stylebox_override("panel", style_selected)
-					
-					letra_mostrada = true
-					SignalManager.insert_letter_in_number.emit(letra,GameManager.celda_seleccionada_numero)
-					print("Seleccionada Celda:",  GameManager.selected_celda_number)
+		#if GameManager.selected_letra == "":
+		# not letter in CELL
+		# mira si no estoy en la pantalla de comprar letras
+		if hay_fondo_compra_letra():
+			#estoy
+			var nodo := obtener_fondo_compra_letra()
+			#print("Encontrado:", nodo)
+			SignalManager.letra_seleccionada_para_comprar.emit(letra)
+		else:
+		# not in buy screen
+			print("Tocada LETRA con letra:", letra)
+			GameManager.set_selected_letter_user(letra)
+			#  check if letter is correct
+			if GameManager.letra_corresponde_a_numero(letra,GameManager.celda_seleccionada_numero):
+			#yes
+				SoundManager.play("ClickLetra")
+				# Crear un nuevo StyleBoxFlat
+				var style_selected := StyleBoxFlat.new()
+				style_selected.bg_color = color_selected
+				# Asignar como fondo normal
+				panel_letra.add_theme_stylebox_override("panel", style_selected)
+				
+				letra_mostrada = true
+				SignalManager.insert_letter_in_number.emit(letra,GameManager.celda_seleccionada_numero)
+				print("Seleccionada Celda:",  GameManager.selected_celda_number)
 
-					GameManager.reset_cell_select()
-					SignalManager.update_resting_characters.emit()
-					if GameManager.hay_letra_que_borrar():
-						SignalManager.update_rubber.emit()
-					SignalManager.asignar_letra.emit(GameManager.tiempo_partida, GameManager.selected_letra)
-					SignalManager.update_difficulty.emit(GameManager.frase_original, GameManager.recoger_letras_mostradas()) 
-				else:
-				# No correcta
-					SignalManager.decrease_live.emit()
+				GameManager.reset_cell_select()
+				SignalManager.update_resting_characters.emit()
+				if GameManager.hay_letra_que_borrar():
+					SignalManager.update_rubber.emit()
+				SignalManager.asignar_letra.emit(GameManager.tiempo_partida, GameManager.selected_letra)
+				SignalManager.update_difficulty.emit(GameManager.frase_original, GameManager.recoger_letras_mostradas()) 
+			else:
+			# No correcta
+				SignalManager.decrease_live.emit()
+				SoundManager.play("LoseLive")
+				GameManager.show_letter_error(GameManager.celda_seleccionada_numero)
 	
 func _erase_letter() -> void:
 	#ERASE selection and enable letter again
 	
 	SignalManager.insert_letter_in_number.emit("",GameManager.celda_seleccionada_numero)
-	print("Seleccionada Celda para ser borrada:",  GameManager.selected_celda_number)
+
 	GameManager.reset_cell_select()
 	SignalManager.update_resting_characters.emit()
 	letra_mostrada = false

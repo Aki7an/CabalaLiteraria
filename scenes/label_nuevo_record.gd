@@ -19,6 +19,8 @@ func _ready() -> void:
 		dificultad_actual = "Normal"
 	elif GameManager.dificultad_actual == 3:
 		dificultad_actual = "Difícil"
+	elif GameManager.dificultad_actual == 4:
+		dificultad_actual = "PRO"
 	else:
 		dificultad_actual = "?"
 	

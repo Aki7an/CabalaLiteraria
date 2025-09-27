@@ -19,8 +19,8 @@ extends Control
 @onready var ob_categoria:  OptionButton = %Categoria
 @onready var lista_contenido: VBoxContainer = %Contenido
 
-const DIFF_LABELS := ["Fácil", "Normal", "Difícil"]
-const DIFF_CODES  := [1, 2, 3]
+const DIFF_LABELS := ["Fácil", "Normal", "Difícil", "PRO"]
+const DIFF_CODES  := [1, 2, 3, 4]
 const MAX_ROWS    := 8
 
 var _history_provider: Object = null

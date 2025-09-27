@@ -23,8 +23,10 @@ func _ready():
 		label_2.text = "FÁCIL - " + GameManager.categoria_actual
 	elif GameManager.dificultad_actual == 2:
 		label_2.text = "NORMAL - " + GameManager.categoria_actual
-	else:
+	elif GameManager.dificultad_actual == 3:
 		label_2.text = "DIFÍCIL - " + GameManager.categoria_actual
+	else:
+		label_2.text = "PRO - " + GameManager.categoria_actual
 		
 
 	if GameManager.categoria_actual == "Efeméride":

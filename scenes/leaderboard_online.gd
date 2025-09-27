@@ -2,8 +2,8 @@ extends Control
 # PlayFab Leaderboard con estilo por código (GridContainer 3 columnas) — Godot 4.4.x
 @onready var dificultad: Label = $ColorRect/TituloDificultadCategoria4/Dificultad/VBoxContainer/HBoxContainer/Dificultad
 
-const DIFF_LABELS: Array[String] = ["Fácil", "Normal", "Difícil"]
-const DIFF_CODES: Array[int] = [1, 2, 3]
+const DIFF_LABELS: Array[String] = ["Fácil", "Normal", "Difícil", "PRO"]
+const DIFF_CODES: Array[int] = [1, 2, 3, 4]
 
 @onready var ob_dificultad: OptionButton = %Dificultad
 

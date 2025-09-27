@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=4 uid="uid://clypxdctucwq6"]
+[gd_scene load_steps=48 format=4 uid="uid://clypxdctucwq6"]
 
 [ext_resource type="Script" uid="uid://dq8u7wb0v23qa" path="res://scenes/menu_select_category.gd" id="1_8hhtu"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_uil6x"]
@@ -9,18 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="7_wd32e"]
 [ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="8_gv5t4"]
 [ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="9_s3vib"]
-[ext_resource type="Theme" uid="uid://lkfr6pageoc2" path="res://GUI/Button_difficulty.tres" id="10_bdwle"]
-[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="11_edqk4"]
-[ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="12_7k5a6"]
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="13_s306e"]
 [ext_resource type="Texture2D" uid="uid://dy8ag74csllw2" path="res://images/Candado.png" id="14_hs0vb"]
-[ext_resource type="Shader" uid="uid://8b7nr3sen4t0" path="res://scenes/PlayBuoon.gdshader" id="15_32st4"]
-[ext_resource type="Texture2D" uid="uid://cdo3jiegx0a2x" path="res://GUI/BotonPlayPlano.png" id="16_5m4ro"]
-[ext_resource type="Script" uid="uid://drgng4haeeuj3" path="res://scenes/button_play_Fx.gd" id="17_0btpe"]
-[ext_resource type="Texture2D" uid="uid://c0n8lq36j8ubr" path="res://GUI/BotonPlaySimboloTextura.png" id="18_kydc4"]
-[ext_resource type="FontFile" uid="uid://qsd4rrtmjkyp" path="res://fonts/Fonts/Fredoka One/FredokaOne-Regular.ttf" id="19_r5wee"]
-[ext_resource type="Script" uid="uid://bt4vf7weivebq" path="res://scenes/AdjustSize.gd" id="20_h2m3x"]
-[ext_resource type="Texture2D" uid="uid://bvsmftpcriqo5" path="res://GUI/BotonPlayBlanco.png" id="21_drhgl"]
 [ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="22_gavuj"]
 [ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="23_d30gd"]
 
@@ -601,19 +591,6 @@ cache/0/50/0/glyphs/253/size = Vector2(31, 39)
 cache/0/50/0/glyphs/253/uv_rect = Rect2(1, 78, 31, 39)
 cache/0/50/0/glyphs/253/texture_idx = 0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wf2up"]
-shader = ExtResource("15_32st4")
-shader_parameter/progress = -0.3
-shader_parameter/width = 0.25
-shader_parameter/angle_deg = 30.0
-shader_parameter/intensity = 0.9
-shader_parameter/alpha = 0.0
-
-[sub_resource type="Theme" id="Theme_3478o"]
-
-[sub_resource type="FontVariation" id="FontVariation_cdhky"]
-base_font = ExtResource("19_r5wee")
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6ye2o"]
 texture = ExtResource("22_gavuj")
 region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
@@ -911,216 +888,6 @@ texture = ExtResource("6_kilv0")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ButtonDifficulty1" type="Button" parent="Panel"]
-layout_mode = 1
-offset_left = 1280.0
-offset_top = 1840.0
-offset_right = 1600.0
-offset_bottom = 2056.0
-pivot_offset = Vector2(128, 112)
-theme = ExtResource("10_bdwle")
-icon_alignment = 1
-script = ExtResource("4_wboed")
-enable_intro_sheen = true
-
-[node name="TextureRect5" type="TextureRect" parent="Panel/ButtonDifficulty1"]
-modulate = Color(0.466808, 0.65, 0.0715, 1)
-layout_mode = 0
-offset_left = 70.0
-offset_top = 40.0
-offset_right = 123.0
-offset_bottom = 88.0
-texture = ExtResource("11_edqk4")
-expand_mode = 1
-
-[node name="TextureRect6" type="TextureRect" parent="Panel/ButtonDifficulty1"]
-modulate = Color(0.466808, 0.65, 0.0715, 1)
-layout_mode = 0
-offset_left = 134.0
-offset_top = 40.0
-offset_right = 187.0
-offset_bottom = 88.0
-texture = ExtResource("12_7k5a6")
-expand_mode = 1
-
-[node name="TextureRect7" type="TextureRect" parent="Panel/ButtonDifficulty1"]
-modulate = Color(0.466808, 0.65, 0.0715, 1)
-layout_mode = 0
-offset_left = 198.0
-offset_top = 40.0
-offset_right = 251.0
-offset_bottom = 88.0
-texture = ExtResource("12_7k5a6")
-expand_mode = 1
-
-[node name="Label3" type="Label" parent="Panel/ButtonDifficulty1"]
-modulate = Color(0.490145, 0.64362, 0.161896, 1)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 112.0
-offset_right = -0.300995
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 60
-text = "Easy"
-horizontal_alignment = 1
-autowrap_mode = 2
-
-[node name="Blanco1" type="TextureRect" parent="Panel/ButtonDifficulty1"]
-visible = false
-layout_mode = 0
-offset_left = 264.0
-offset_top = 80.0
-offset_right = 317.0
-offset_bottom = 128.0
-texture = ExtResource("6_kilv0")
-expand_mode = 1
-stretch_mode = 4
-
-[node name="ButtonDifficulty2" type="Button" parent="Panel"]
-layout_mode = 1
-offset_left = 1288.0
-offset_top = 1528.0
-offset_right = 1608.0
-offset_bottom = 1746.0
-pivot_offset = Vector2(176, 111)
-theme = ExtResource("10_bdwle")
-theme_override_font_sizes/font_size = 60
-icon_alignment = 1
-script = ExtResource("4_wboed")
-enable_intro_sheen = true
-
-[node name="TextureRect2" type="TextureRect" parent="Panel/ButtonDifficulty2"]
-modulate = Color(0.85, 0.3978, 0.204, 1)
-layout_mode = 0
-offset_left = 70.0
-offset_top = 40.0
-offset_right = 123.0
-offset_bottom = 88.0
-texture = ExtResource("11_edqk4")
-expand_mode = 1
-
-[node name="TextureRect3" type="TextureRect" parent="Panel/ButtonDifficulty2"]
-modulate = Color(0.85, 0.3978, 0.204, 1)
-layout_mode = 0
-offset_left = 134.0
-offset_top = 40.0
-offset_right = 187.0
-offset_bottom = 88.0
-texture = ExtResource("11_edqk4")
-expand_mode = 1
-
-[node name="TextureRect4" type="TextureRect" parent="Panel/ButtonDifficulty2"]
-modulate = Color(0.85, 0.3978, 0.204, 1)
-layout_mode = 0
-offset_left = 198.0
-offset_top = 40.0
-offset_right = 251.0
-offset_bottom = 88.0
-texture = ExtResource("12_7k5a6")
-expand_mode = 1
-
-[node name="Label4" type="Label" parent="Panel/ButtonDifficulty2"]
-modulate = Color(0.85, 0.3978, 0.204, 1)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 112.0
-offset_right = -0.300995
-offset_bottom = -8.07227
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 60
-text = "Normal"
-horizontal_alignment = 1
-autowrap_mode = 2
-
-[node name="Blanco2" type="TextureRect" parent="Panel/ButtonDifficulty2"]
-visible = false
-layout_mode = 0
-offset_left = 256.0
-offset_top = 80.0
-offset_right = 309.0
-offset_bottom = 128.0
-texture = ExtResource("6_kilv0")
-expand_mode = 1
-stretch_mode = 4
-
-[node name="ButtonDifficulty3" type="Button" parent="Panel"]
-layout_mode = 1
-offset_left = 1296.0
-offset_top = 1264.0
-offset_right = 1615.0
-offset_bottom = 1482.0
-pivot_offset = Vector2(151, 111)
-theme = ExtResource("10_bdwle")
-theme_override_font_sizes/font_size = 60
-icon_alignment = 1
-script = ExtResource("4_wboed")
-enable_intro_sheen = true
-
-[node name="TextureRect4" type="TextureRect" parent="Panel/ButtonDifficulty3"]
-modulate = Color(0.852879, 0.203439, 0.29612, 1)
-layout_mode = 0
-offset_left = 67.0
-offset_top = 40.0
-offset_right = 120.0
-offset_bottom = 88.0
-texture = ExtResource("11_edqk4")
-expand_mode = 1
-
-[node name="TextureRect5" type="TextureRect" parent="Panel/ButtonDifficulty3"]
-modulate = Color(0.852879, 0.203439, 0.29612, 1)
-layout_mode = 0
-offset_left = 131.0
-offset_top = 40.0
-offset_right = 184.0
-offset_bottom = 88.0
-texture = ExtResource("11_edqk4")
-expand_mode = 1
-
-[node name="TextureRect6" type="TextureRect" parent="Panel/ButtonDifficulty3"]
-modulate = Color(0.852879, 0.203439, 0.29612, 1)
-layout_mode = 0
-offset_left = 195.0
-offset_top = 40.0
-offset_right = 248.0
-offset_bottom = 88.0
-texture = ExtResource("11_edqk4")
-expand_mode = 1
-
-[node name="Label6" type="Label" parent="Panel/ButtonDifficulty3"]
-modulate = Color(0.852879, 0.203439, 0.29612, 1)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 3.0
-offset_top = 112.0
-offset_right = -3.30099
-offset_bottom = -8.0722
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 60
-text = "Hard"
-horizontal_alignment = 1
-autowrap_mode = 2
-
-[node name="Blanco3" type="TextureRect" parent="Panel/ButtonDifficulty3"]
-visible = false
-layout_mode = 0
-offset_left = 263.0
-offset_top = 79.0
-offset_right = 316.0
-offset_bottom = 127.0
-texture = ExtResource("6_kilv0")
-expand_mode = 1
-stretch_mode = 4
-
 [node name="Label4" type="Label" parent="Panel"]
 layout_mode = 1
 anchors_preset = 15
@@ -1134,7 +901,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
 theme_override_font_sizes/font_size = 40
-text = "Frases famosas de personas famosas"
+text = "Citas famosas de personajes famosos."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -1152,7 +919,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
 theme_override_font_sizes/font_size = 40
-text = "Frases famosas de personas famosas"
+text = "Incluyen la fecha del año en la que sucede la efeméride"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -1170,7 +937,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
 theme_override_font_sizes/font_size = 40
-text = "Frases famosas de personas famosas"
+text = "Curiosidades sobre temas variados"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -1188,7 +955,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
 theme_override_font_sizes/font_size = 40
-text = "Frases famosas de personas famosas"
+text = "Fragmentos de libros de obras de arte universales y fragmentos de la Biblia"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -1297,82 +1064,6 @@ offset_bottom = 77.0
 texture = ExtResource("14_hs0vb")
 expand_mode = 1
 
-[node name="PlayButtonFx" type="TextureButton" parent="."]
-material = SubResource("ShaderMaterial_wf2up")
-offset_left = 1744.0
-offset_top = 904.0
-offset_right = 2488.0
-offset_bottom = 1328.0
-theme = SubResource("Theme_3478o")
-texture_normal = ExtResource("16_5m4ro")
-stretch_mode = 5
-script = ExtResource("17_0btpe")
-
-[node name="TextureRect" type="TextureRect" parent="PlayButtonFx"]
-layout_mode = 0
-offset_left = 96.0
-offset_top = 128.0
-offset_right = 226.0
-offset_bottom = 290.0
-texture = ExtResource("18_kydc4")
-stretch_mode = 5
-
-[node name="Play" type="Label" parent="PlayButtonFx"]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.107
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 360.608
-offset_top = 32.0
-offset_right = 17.0
-offset_bottom = 16.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.853531, 0.853531)
-theme_override_colors/font_color = Color(0.490196, 0.196078, 0.0352941, 1)
-theme_override_fonts/font = SubResource("FontVariation_cdhky")
-theme_override_font_sizes/font_size = 190
-text = "PLAY"
-horizontal_alignment = 1
-vertical_alignment = 1
-justification_flags = 0
-script = ExtResource("20_h2m3x")
-min_font_size = 80
-max_font_size = 190
-available_x = 480
-
-[node name="TextureRectAviso" type="TextureRect" parent="."]
-modulate = Color(1, 1, 1, 0.698039)
-offset_left = 1744.0
-offset_top = 932.0
-offset_right = 2488.0
-offset_bottom = 1300.0
-texture = ExtResource("21_drhgl")
-
-[node name="LabelAviso" type="Label" parent="TextureRectAviso"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 152.0
-offset_top = 40.0
-offset_right = -104.0
-offset_bottom = -40.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(232, 8)
-theme_override_colors/font_color = Color(0.632114, 0.365523, 0.284578, 1)
-theme_override_constants/line_spacing = -15
-theme_override_font_sizes/font_size = 60
-text = "Select
-THEME
-and
-DIFFICULTY"
-horizontal_alignment = 1
-autowrap_mode = 2
-
 [node name="ButtonExit" type="Button" parent="."]
 offset_left = 896.0
 offset_top = 16.0
@@ -1396,8 +1087,4 @@ texture = ExtResource("23_d30gd")
 [connection signal="pressed" from="Panel/ButtonCuriosidades" to="." method="_on_button_curiosidades_pressed"]
 [connection signal="pressed" from="Panel/ButtonEfemerides" to="." method="_on_button_efemerides_pressed"]
 [connection signal="pressed" from="Panel/ButtonFragmentosLiterarios" to="." method="_on_button_fragmentos_literarios_pressed"]
-[connection signal="pressed" from="Panel/ButtonDifficulty1" to="." method="_on_button_difficulty_1_pressed"]
-[connection signal="pressed" from="Panel/ButtonDifficulty2" to="." method="_on_button_difficulty_2_pressed"]
-[connection signal="pressed" from="Panel/ButtonDifficulty3" to="." method="_on_button_difficulty_3_pressed"]
-[connection signal="pressed" from="PlayButtonFx" to="." method="_on_play_button_fx_pressed"]
 [connection signal="pressed" from="ButtonExit" to="." method="_on_button_exit_pressed"]

@@ -6,6 +6,7 @@ extends Label
 @onready var estrella_1 = %Estrella1
 @onready var estrella_2 = %Estrella2
 @onready var estrella_3 = %Estrella3
+@onready var diamante = %Diamante
 
 
 func _ready():
@@ -19,6 +20,7 @@ func _update_stars(diff: int) -> void:
 		estrella_1.visible = true
 		estrella_2.visible = false
 		estrella_3.visible = false
+		diamante.visible = false
 	elif diff == 2:
 		estrella_contorno_1.visible = false
 		estrella_contorno_2.visible = false
@@ -26,6 +28,7 @@ func _update_stars(diff: int) -> void:
 		estrella_1.visible = true
 		estrella_2.visible = true
 		estrella_3.visible = false
+		diamante.visible = false
 	elif diff == 3:
 		estrella_contorno_1.visible = false
 		estrella_contorno_2.visible = false
@@ -33,6 +36,16 @@ func _update_stars(diff: int) -> void:
 		estrella_1.visible = true
 		estrella_2.visible = true
 		estrella_3.visible = true
+		diamante.visible = false
+	elif diff == 4:
+		estrella_contorno_1.visible = false
+		estrella_contorno_2.visible = false
+		estrella_contorno_3.visible = false
+		estrella_1.visible = false
+		estrella_2.visible = false
+		estrella_3.visible = false
+		diamante.visible = true
+		
 	else:
 		estrella_contorno_2.visible = true
 		estrella_contorno_3.visible = true

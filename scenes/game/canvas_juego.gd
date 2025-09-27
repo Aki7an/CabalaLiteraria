@@ -26,8 +26,6 @@ var dragging: bool = false
 var start_pos: Vector2 = Vector2.ZERO
 var ultima_posicion: Vector2 = Vector2.ZERO
 
-
-
 # ------------------ Escenas / datos ------------------
 var escena_celda: PackedScene = preload("res://scenes/Celda/Celda.tscn")
 
@@ -173,6 +171,7 @@ func change_grid(step: int) -> void:
 	await get_tree().process_frame
 	update_position_botton_red_line()
 	GameManager.max_y_canvas = grid_container.position.y - grid_container.size.y + 40
+	SignalManager.update_size_celdas.emit()
 
 func reset_grid() -> void:
 	grid_container.columns = max(1, GameManager.NUM_COLUMNAS)

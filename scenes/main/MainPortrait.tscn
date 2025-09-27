@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://e5wl5e0vlqnu"]
+[gd_scene load_steps=16 format=3 uid="uid://e5wl5e0vlqnu"]
 
 [ext_resource type="PackedScene" uid="uid://csvvjjmaptuc4" path="res://scenes/game/CanvasJuego.tscn" id="1_j1ox2"]
 [ext_resource type="Script" uid="uid://bk8npk8rjf1wj" path="res://scenes/main/main_portrait.gd" id="1_qtrpv"]
+[ext_resource type="Script" uid="uid://cgf78xtxi5uo5" path="res://scenes/main/ErrorFeedback.gd" id="2_c53kp"]
 [ext_resource type="PackedScene" uid="uid://qdxg6ofjqkq5" path="res://scenes/game/panel_letras.tscn" id="2_qtrpv"]
 [ext_resource type="PackedScene" uid="uid://y1k8m1upqvmd" path="res://scenes/game/PanelColors.tscn" id="3_c53kp"]
 [ext_resource type="PackedScene" uid="uid://df2olneywrcjb" path="res://scenes/PanelUP/panel_up.tscn" id="4_6wj6l"]
@@ -36,12 +37,17 @@ bg_color = Color(0.53, 0.306517, 0.2385, 1)
 [node name="MainPortrait" type="Node2D"]
 script = ExtResource("1_qtrpv")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("2_c53kp")
+shake_duration = 1.0
+flash_cycles = 4
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 offset_right = 1024.0
 offset_bottom = 1920.0
 color = Color(0.92, 0.9131, 0.9108, 1)
 
-[node name="CanvasJuego" parent="." instance=ExtResource("1_j1ox2")]
+[node name="CanvasJuego" parent="CanvasLayer" instance=ExtResource("1_j1ox2")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -53,26 +59,26 @@ grow_horizontal = 1
 grow_vertical = 1
 size_flags_horizontal = 1
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="CanvasLayer"]
 offset_top = 1440.0
 offset_right = 1024.0
 offset_bottom = 1920.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_qtrpv")
 
-[node name="ColorRect2" type="ColorRect" parent="."]
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
 visible = false
 offset_top = 1456.0
 offset_right = 1024.0
 offset_bottom = 1920.0
 color = Color(0.632114, 0.365523, 0.284578, 1)
 
-[node name="PanelLetras" parent="." instance=ExtResource("2_qtrpv")]
+[node name="PanelLetras" parent="CanvasLayer" instance=ExtResource("2_qtrpv")]
 offset_left = 8.0
 offset_top = 1608.0
-offset_right = 1016.0
-offset_bottom = 1912.0
+offset_right = -8.0
+offset_bottom = 1296.0
 
-[node name="PanelColors" parent="." instance=ExtResource("3_c53kp")]
+[node name="PanelColors" parent="CanvasLayer" instance=ExtResource("3_c53kp")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -84,14 +90,14 @@ grow_horizontal = 1
 grow_vertical = 1
 size_flags_vertical = 1
 
-[node name="PanelMap" type="Panel" parent="."]
+[node name="PanelMap" type="Panel" parent="CanvasLayer"]
 visible = false
 offset_left = 1056.0
 offset_top = 1464.0
 offset_right = 1224.0
 offset_bottom = 1912.0
 
-[node name="PageUp" type="Button" parent="PanelMap"]
+[node name="PageUp" type="Button" parent="CanvasLayer/PanelMap"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 0
 offset_left = 8.0
@@ -108,7 +114,7 @@ text = "-"
 icon_alignment = 1
 script = ExtResource("9_qtrpv")
 
-[node name="TextureRect2" type="TextureRect" parent="PanelMap/PageUp"]
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/PanelMap/PageUp"]
 modulate = Color(0.835294, 0.635294, 0.576471, 1)
 layout_mode = 0
 offset_left = 118.64
@@ -119,7 +125,7 @@ texture = ExtResource("8_j1ox2")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="PageDown" type="Button" parent="PanelMap"]
+[node name="PageDown" type="Button" parent="CanvasLayer/PanelMap"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 0
 offset_left = 157.0
@@ -137,7 +143,7 @@ text = "-"
 icon_alignment = 1
 script = ExtResource("10_c53kp")
 
-[node name="TextureRect" type="TextureRect" parent="PanelMap/PageDown"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/PanelMap/PageDown"]
 modulate = Color(0.835294, 0.635294, 0.576471, 1)
 layout_mode = 0
 offset_left = 107.517
@@ -148,11 +154,11 @@ texture = ExtResource("8_j1ox2")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="PanelUP" parent="." instance=ExtResource("4_6wj6l")]
+[node name="PanelUP" parent="CanvasLayer" instance=ExtResource("4_6wj6l")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_bottom = 0.0
 
-[connection signal="pressed" from="PanelMap/PageUp" to="PanelMap/PageUp" method="_on_pressed"]
-[connection signal="pressed" from="PanelMap/PageDown" to="PanelMap/PageDown" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelMap/PageUp" to="CanvasLayer/PanelMap/PageUp" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelMap/PageDown" to="CanvasLayer/PanelMap/PageDown" method="_on_pressed"]

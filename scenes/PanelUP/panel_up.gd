@@ -5,7 +5,7 @@ extends Panel
 @onready var OverlaySceneMenuResults := preload("res://scenes/MenuResults.tscn")
 @onready var OverlaySceneMenuGameOver := preload("res://scenes/menu_game_over.tscn")
 @onready var OverlaySceneFondoAvisoBorrado := preload("res://scenes/fondo_aviso_borrado.tscn")
-@onready var OverlaySceneCuadroHints := preload("res://scenes/Cuadro_Hints.tscn")
+@onready var OverlaySceneCuadroHints := preload("res://scenes/Cuadro_Hints_init.tscn") # working
 @onready var OverlaySceneCuadroComprarLetra := preload("res://scenes/fondo_comprar_letra.tscn")
 @onready var OverlaySceneSettingsGame := preload("res://scenes/MenuSettingsGame.tscn")
 
@@ -27,12 +27,10 @@ const scene_to_load_MenuResults = preload("res://scenes/MenuResults.tscn")
 #@onready var menu_game_over = $MenuGameOver
 @onready var itemicon_heart = $ItemiconHeart
 
-
 @onready var id = $ID
 	
 @onready var restante_2 = %Restante2
 @onready var progress_bar = %ProgressBar
-
 
 @onready var label_tiempo: Label = %Tiempo2
 
