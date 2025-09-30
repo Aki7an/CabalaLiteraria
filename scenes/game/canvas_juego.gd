@@ -1,6 +1,14 @@
 extends Panel
 # Script final (Godot 4.4)
 
+# Índices calculados de visibilidad
+var first_full_visible_row: int = 0          # primera fila COMPLETA visible (0-based)
+var first_partial_visible_row: int = 0       # primera fila al menos parcial
+var last_partial_visible_row: int = 0        # última fila al menos parcial
+var last_full_visible_row: int = 0           # última fila COMPLETA visible
+
+@onready var color_rect_down = $ColorRectDown
+@onready var color_rect_up = $ColorRectUp
 
 # ------------------ Nodos ------------------
 @onready var canvas_juego: Panel = $"."                 
@@ -13,8 +21,6 @@ var _right_stripe: VBoxContainer
 
 var _move_tween: Tween
 
-@onready var color_rect_down = $ColorRectDown
-
 # ------------------ Config ------------------
 const DRAG_THRESHOLD := 8.0  # píxeles para considerar que es drag
 const SCROLL_STEP := 80.0  # píxeles por “tic” de rueda (ajústalo a gusto)
@@ -25,6 +31,11 @@ var tocando: bool = false
 var dragging: bool = false
 var start_pos: Vector2 = Vector2.ZERO
 var ultima_posicion: Vector2 = Vector2.ZERO
+
+
+signal global_position_changed(new_global_pos: Vector2)
+
+var _last_global_pos: Vector2
 
 # ------------------ Escenas / datos ------------------
 var escena_celda: PackedScene = preload("res://scenes/Celda/Celda.tscn")
@@ -55,6 +66,12 @@ func _ready() -> void:
 		_clamp_canvas_y()
 	)
 
+# Activa las notificaciones de cambio de transform
+	set_notify_transform(true)
+	_last_global_pos = get_global_rect().position
+	# (Opcional) emite al arrancar
+	emit_signal("global_position_changed", _last_global_pos)
+	
 	# Si cambias columnas por señales externas:
 	if SignalManager.has_signal("update_canvas_grid"):
 		SignalManager.update_canvas_grid.connect(change_grid)
@@ -67,10 +84,25 @@ func _ready() -> void:
 	update_position_botton_red_line()
 	_añade_las_letras_iniciales()
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSFORM_CHANGED:
+		# Para Control, usamos el rect global (incluye anclas, tamaños, etc.)
+		var now := get_global_rect().position
+		if now != _last_global_pos:
+			_last_global_pos = now
+			_on_canvas_global_moved(now)  # tu callback
+			emit_signal("global_position_changed", now)
+
+func _on_canvas_global_moved(new_pos: Vector2) -> void:
+	# Aquí pones lo que quieras ejecutar cuando cambie la posición global
+	# p.ej.: recalcular filas visibles, reconstruir laterales, etc.
+	_update_visible_rows_info() # si usas la función que te pasé antes
+	
 func update_position_botton_red_line() ->void:
 	color_rect_down.position.y = grid_bottom_in_parent(grid_container) + 6
-	#print("global position: ", grid_bottom_global(grid_container) + 6)
-	#print("parte abajo grid: ", grid_bottom_in_parent(grid_container))
+	
+	print("global position linea roja abajo: ", grid_bottom_global(grid_container) + 6)
+	print("global position linea roja arriba: ", str(color_rect_up.position.y))
 	
 func grid_bottom_global(gc: GridContainer) -> float:
 	# Si acabas de añadir hijos, espera 1 frame para que el layout se actualice:
@@ -532,3 +564,103 @@ func pan_rows(delta_rows: int, duration: float = 0.35) -> void:
 	target_y = clamp(target_y, GameManager.max_y_canvas, GameManager.min_y_canvas)
 	pan_to_y(round(target_y), duration)
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Alto SOLO de la celda (sin separación)
+func _cell_height_only() -> float:
+	var cols: int = max(1, grid_container.columns)
+	var total_w: float = grid_container.size.x
+	var hsep: int = _grid_hsep()
+	var usable_w: float = total_w - float(hsep) * float(cols - 1)
+	if usable_w <= 0.0:
+		return 0.0
+	var cell_w: float = usable_w / float(cols)
+	return cell_w * 2.0  # ratio 1:2 (ancho:alto) => alto = 2*ancho
+
+# Rango de filas potenciales
+func _rows_count() -> int:
+	var cols :int= max(1, grid_container.columns)
+	return int(ceil(float(GameManager.TOTAL_CELDAS) / float(cols)))
+
+# Recalcula los índices de filas visibles (parcial y completa)
+func _update_visible_rows_info() -> void:
+	var parent_ctrl := get_parent() as Control
+	if parent_ctrl == null:
+		return
+
+	var rh := _row_height()                    # celda + v_sep
+	var ch := _cell_height_only()              # alto celda sin v_sep
+	if rh <= 0.0 or ch <= 0.0:
+		first_full_visible_row = 0
+		first_partial_visible_row = 0
+		last_partial_visible_row = 0
+		last_full_visible_row = 0
+		return
+
+	# Ventana de visualización del padre (en coords del padre)
+	var view_top    := 0.0
+	var view_bottom := parent_ctrl.size.y
+
+	# Y superior del grid dentro del padre (porque mueves self.position.y)
+	var grid_top := position.y + grid_container.position.y
+
+	# Primeras estimaciones por división
+	var approx_first := int(floor((view_top - grid_top) / rh))
+	approx_first = max(0, approx_first)
+
+	var rows_total := _rows_count()
+	var approx_last := int(floor((view_bottom - grid_top) / rh))
+	approx_last = clamp(approx_last, 0, max(0, rows_total - 1))
+
+	# Parcialmente visibles (cualquier intersección con la ventana)
+	first_partial_visible_row = approx_first
+	last_partial_visible_row  = approx_last
+
+	# Ahora ajusta para COMPLETAMENTE visible
+	var r := approx_first
+	var top_y := grid_top + float(r) * rh
+	var bottom_y := top_y + ch
+
+	# Sube hasta que la fila esté totalmente dentro (si cabe)
+	while r < rows_total and (top_y < view_top or bottom_y > view_bottom):
+		r += 1
+		top_y = grid_top + float(r) * rh
+		bottom_y = top_y + ch
+
+	# Si ninguna fila cabe completa (viewport más bajo que ch), marca -1
+	if r >= rows_total or ch > (view_bottom - view_top):
+		first_full_visible_row = -1
+		last_full_visible_row = -1
+	else:
+		first_full_visible_row = r
+
+		# Buscar la última COMPLETA visible a partir de r
+		var last_full := r
+		while last_full + 1 < rows_total:
+			var next_top    := grid_top + float(last_full + 1) * rh
+			var next_bottom := next_top + ch
+			if next_bottom <= view_bottom:
+				last_full += 1
+			else:
+				break
+		last_full_visible_row = last_full

@@ -4,8 +4,10 @@ extends Panel
 @onready var OverlaySceneFondoSalir := preload("res://scenes/fondo_salir.tscn")
 @onready var OverlaySceneMenuResults := preload("res://scenes/MenuResults.tscn")
 @onready var OverlaySceneMenuGameOver := preload("res://scenes/menu_game_over.tscn")
+@onready var OverlaySceneMenuGameOverFail := preload("res://scenes/menu_game_over_fail.tscn")
 @onready var OverlaySceneFondoAvisoBorrado := preload("res://scenes/fondo_aviso_borrado.tscn")
-@onready var OverlaySceneCuadroHints := preload("res://scenes/Cuadro_Hints_init.tscn") # working
+@onready var OverlaySceneCuadroHintsInit := preload("res://scenes/Cuadro_Hints_init.tscn") # working
+@onready var OverlaySceneCuadroHints := preload("res://scenes/Cuadro_Hints.tscn") # working
 @onready var OverlaySceneCuadroComprarLetra := preload("res://scenes/fondo_comprar_letra.tscn")
 @onready var OverlaySceneSettingsGame := preload("res://scenes/MenuSettingsGame.tscn")
 
@@ -63,10 +65,12 @@ var start_ms: int
 
 
 func _ready() -> void:
-	start_ms = Time.get_ticks_msec()
+	
+	SignalManager.game_start.connect(start_time)
 	SignalManager.update_resting_characters.connect(_update_resting_characters)
 	#SignalManager.update_cambios.connect(_update_cambios)
 	SignalManager.game_finished.connect(_game_finished_to_results)
+	SignalManager.game_finished_lost.connect(_game_finished_fail)
 	SignalManager.update_score.connect(_update_score)
 	SignalManager.erase_letter.connect(_erase_letter)
 	SignalManager.erase_letter_open_dialog.connect(_erase_letter_open_dialog)
@@ -113,7 +117,7 @@ func _ready() -> void:
 	#GameManager.play_pop_animation(cuadro_tips_0)
 	
 	#start with Hint opened
-	var overlay := OverlaySceneCuadroHints.instantiate()
+	var overlay := OverlaySceneCuadroHintsInit.instantiate()
 	add_child(overlay)                             # no cierra lo de abajo
 	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP  # bloquea clicks al fondo
@@ -124,6 +128,9 @@ func _ready() -> void:
 	#print("frase: ", GameManager.frase_original)
 	#print("Letras mostradas: ", GameManager.recoger_letras_mostradas())
 	
+func start_time() -> void:
+	start_ms = Time.get_ticks_msec()
+
 func _update_difficulty_label(frase: String, revelada: String) -> void:
 	difficulty.text = "Dificultad: " + String.num(Analyzer.evaluar_dificultad(frase, revelada),2)
 		
@@ -132,8 +139,9 @@ func _update_lives(lives_int:int) -> void:
 	itemicon_heart.start_blink()
 
 func _update_score() -> void:
-	GameManager.calcula_score()
-	score.text = GameManager.formatear_numero(GameManager.score)
+	if !GameManager.partida_terminada:
+		GameManager.calcula_score()
+		score.text = GameManager.formatear_numero(GameManager.score)
 	
 #func _silueta_o_texto() -> void:
 	#if GameManager.descripcion_actual == "IMAGEN":
@@ -326,6 +334,22 @@ func _game_finished_to_results() -> void:
 
 	#var overlay := OverlaySceneMenuResults.instantiate()
 	var overlay :=OverlaySceneMenuGameOver.instantiate()
+	add_child(overlay)                             # no cierra lo de abajo
+	#overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	#overlay.mouse_filter = Control.MOUSE_FILTER_STOP  # bloquea clicks al fondo
+	# overlay.modulate = Color(1,1,1,0.98)        # si quieres atenuar
+	
+func _game_finished_fail() -> void:
+	print("GAME END FAIL")
+	GameManager._game_finished()
+	GameManager.set_score_ultima_partida(0)
+	GameManager.score = 0
+	SoundManager.play("GameOver")
+	#menu_game_over.visible = true
+	#GameManager.calcula_score()
+
+	#var overlay := OverlaySceneMenuResults.instantiate()
+	var overlay :=OverlaySceneMenuGameOverFail.instantiate()
 	add_child(overlay)                             # no cierra lo de abajo
 	#overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	#overlay.mouse_filter = Control.MOUSE_FILTER_STOP  # bloquea clicks al fondo

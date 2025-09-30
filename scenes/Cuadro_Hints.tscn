@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bxrl1uirj3inf"]
+[gd_scene load_steps=61 format=3 uid="uid://bxrl1uirj3inf"]
 
 [ext_resource type="Theme" uid="uid://diacxsbys358g" path="res://fonts/Letra_Titulo_1.tres" id="1_ltjow"]
 [ext_resource type="Script" uid="uid://crbpumhhxvpx2" path="res://scenes/cuadro_hints.gd" id="1_mpm3g"]
@@ -31,6 +31,41 @@ corner_radius_top_left = 30
 corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
+
+[sub_resource type="Theme" id="Theme_017l8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yxy3"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nghln"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whjgw"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_isor6"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ity34"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gh2e1"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ge8g7"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rufuu"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hh5v4"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ouw56"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x1fqp"]
+bg_color = Color(1, 1, 1, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mpm3g"]
 bg_color = Color(0.858824, 0.917647, 0.858824, 1)
@@ -256,6 +291,53 @@ _data = {
 &"RESET": SubResource("Animation_4yxy3")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_017l8"]
+bg_color = Color(0.858824, 0.917647, 0.858824, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.290196, 0.552941, 0.509804, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="Theme" id="Theme_4yxy3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xg7wx"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b6ved"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dkop5"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fj6cf"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8332h"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d64nx"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_afsl6"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c3i53"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h71ij"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qcya7"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nn74y"]
+bg_color = Color(1, 1, 1, 0)
+
 [sub_resource type="FontVariation" id="FontVariation_whjgw"]
 base_font = ExtResource("13_nghln")
 
@@ -310,6 +392,25 @@ grow_vertical = 2
 texture = ExtResource("7_017l8")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Button" type="Button" parent="CuadroSalirPartida/CuadroHint1"]
+layout_mode = 0
+offset_left = 111.0
+offset_top = 128.0
+offset_right = 792.0
+offset_bottom = 568.0
+theme = SubResource("Theme_017l8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_4yxy3")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_nghln")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_whjgw")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_isor6")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_ity34")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_gh2e1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ge8g7")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxFlat_rufuu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_hh5v4")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_ouw56")
+theme_override_styles/normal = SubResource("StyleBoxFlat_x1fqp")
 
 [node name="Label5" type="Label" parent="CuadroSalirPartida/CuadroHint1"]
 layout_mode = 0
@@ -624,6 +725,96 @@ modulate = Color(0.945098, 0.854902, 0.690196, 1)
 position = Vector2(65, 52)
 texture = ExtResource("9_017l8")
 
+[node name="CuadroImageBig" type="Label" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 168.0
+offset_right = 1016.0
+offset_bottom = 1752.0
+pivot_offset = Vector2(440, 168)
+theme_override_styles/normal = SubResource("StyleBoxFlat_017l8")
+
+[node name="Label" type="Label" parent="CuadroSalirPartida/CuadroImageBig"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 25.0
+offset_right = 235.0
+offset_bottom = 87.0
+theme = ExtResource("1_ltjow")
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+text = "HINT 1"
+vertical_alignment = 1
+
+[node name="ImagenViñetaBIG" type="TextureRect" parent="CuadroSalirPartida/CuadroImageBig"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 23.0
+offset_top = 96.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_017l8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ButtonImageBig" type="Button" parent="CuadroSalirPartida/CuadroImageBig"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 144.0
+offset_right = 992.0
+offset_bottom = 1547.0
+theme = SubResource("Theme_4yxy3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_xg7wx")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxFlat_b6ved")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_dkop5")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_fj6cf")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_8332h")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_d64nx")
+theme_override_styles/hover = SubResource("StyleBoxFlat_afsl6")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxFlat_c3i53")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_h71ij")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_qcya7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_nn74y")
+
+[node name="Label5" type="Label" parent="CuadroSalirPartida/CuadroImageBig"]
+layout_mode = 0
+offset_left = 696.0
+offset_top = 31.0
+offset_right = 972.0
+offset_bottom = 81.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
+text = "Free"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelUnkockedHint1" type="Label" parent="CuadroSalirPartida/CuadroImageBig"]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 28.0
+offset_right = 516.0
+offset_bottom = 84.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
+text = "UNLOCKED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label9" type="Label" parent="CuadroSalirPartida/CuadroImageBig"]
+layout_mode = 0
+offset_left = 640.0
+offset_top = 28.0
+offset_right = 800.0
+offset_bottom = 84.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(0.4, 0.216, 0.16, 1)
+theme_override_font_sizes/font_size = 35
+text = "Cost:"
+vertical_alignment = 1
+
 [node name="ScoreText" type="Label" parent="."]
 layout_mode = 0
 offset_left = 441.0
@@ -651,6 +842,8 @@ text = "99.999.999"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[connection signal="pressed" from="CuadroSalirPartida/CuadroHint1/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CuadroSalirPartida/CuadroHint2/ButtonHint2" to="." method="_on_button_hint_2_pressed"]
 [connection signal="pressed" from="CuadroSalirPartida/CuadroHint3/ButtonHint3" to="." method="_on_button_hint_3_pressed"]
 [connection signal="pressed" from="CuadroSalirPartida/ButtonCancel" to="." method="_on_button_cancel_pressed"]
+[connection signal="pressed" from="CuadroSalirPartida/CuadroImageBig/ButtonImageBig" to="." method="_on_button_image_big_pressed"]

@@ -63,13 +63,16 @@ var _next_instance: Node
 @onready var cuadro_hint_3 = $CuadroSalirPartida/CuadroHint3
 
 @onready var imagen_viñeta = $CuadroSalirPartida/CuadroHint1/ImagenViñeta
+@onready var imagen_viñeta_big = $CuadroSalirPartida/CuadroImageBig/ImagenViñetaBIG
 
 const IMG_DIR := "res://data/images"  
 
 @onready var button_hint_2 = $CuadroSalirPartida/CuadroHint2/ButtonHint2
+@onready var cuadro_image_big = $CuadroSalirPartida/CuadroImageBig
 
 func _ready():
 	_load_image()
+	cuadro_image_big.visible = false
 	rich_text_label_hint_2.text = pasa_a_asteriscos(GameManager.hint_1)
 	if GameManager.pista_1 and !GameManager.pista_2 and !GameManager.pista_3:
 		#Pista 1
@@ -118,6 +121,7 @@ func set_texture_from_index(texrect: TextureRect, index: int) -> void:
 		var tex := load(path)  # CompressedTexture2D importada -> no bloquea tanto
 		if tex is Texture2D:
 			texrect.texture = tex
+			
 		else:
 			push_warning("El recurso no es Texture2D: %s" % path)
 	else:
@@ -126,6 +130,7 @@ func set_texture_from_index(texrect: TextureRect, index: int) -> void:
 
 func _load_image() -> void:
 	set_texture_from_index(imagen_viñeta, GameManager.id_frase)
+	set_texture_from_index(imagen_viñeta_big, GameManager.id_frase)
 	print("id image" , GameManager.id_frase)
 	
 func _process(delta):
@@ -250,7 +255,7 @@ func start_transition(p_btn_group_name: String = "", p_duration: float = -1.0) -
 	# 2) Centro objetivo (botón si existe; si no, centro de la escena inferior)
 	var target_pos: Vector2 = _get_node_center_global(btn_node) if btn_node != null else _get_scene_center_global(next_scene)
 	print(target_pos)
-	target_pos = Vector2(256,256)
+	target_pos = Vector2(500,256)
 	## 3) Pivot para escalar desde el centro SOLO del nodo "FondoHint"
 	if old_visual is ColorRect:
 		var oc := old_visual as Control
@@ -489,3 +494,11 @@ func _state_hint3() -> void:
 	
 	coin.visible = true
 	set_alpha(coin, 1)
+
+
+func _on_button_pressed():
+	print("IMAGEN TOCADA")
+	cuadro_image_big.visible = true
+
+func _on_button_image_big_pressed():
+	cuadro_image_big.visible = false

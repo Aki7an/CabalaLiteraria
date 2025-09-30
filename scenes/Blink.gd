@@ -14,13 +14,15 @@ extends Button
 var _tween: Tween
 var _base_scale := Vector2.ONE
 var _base_modulate := Color(1,1,1,1)
-var _running := false
+@export var _running := false
 
 func _ready() -> void:
 	_base_scale = scale
 	_base_modulate = modulate
 	# Para que escale desde el centro
 	pivot_offset = size * 0.5
+	_running = false
+	
 
 func _exit_tree() -> void:
 	if is_instance_valid(_tween):

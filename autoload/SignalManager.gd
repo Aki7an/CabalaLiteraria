@@ -63,3 +63,5 @@ signal decrease_live
 signal game_finished_lost
 
 signal update_size_celdas
+
+signal game_start

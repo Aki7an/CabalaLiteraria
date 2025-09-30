@@ -1,3 +1,4 @@
+Button
 CanvasLayer
 Label
 Control
@@ -5,11 +6,9 @@ ColorRect
 Sprite2D
 AnimationPlayer
 CheckBox
-Button
 TextEdit
 HBoxContainer
 GridContainer
 LineEdit
 RichTextLabel
 TextureRect
-AcceptDialog

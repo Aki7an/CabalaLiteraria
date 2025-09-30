@@ -27,10 +27,15 @@ func _on_button_send_pressed():
 	PlayFabTools.send_phrase_feedback(GameManager.id_frase,ratings ,"Comentario por consola", true)
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_file("res://scenes/MenuResults.tscn")
-	SoundManager.play("ButtonClick")
-	print("info printed for feedback", estrellas1.question_stars, estrellas2.question_stars, estrellas3.question_stars, estrellas4.question_stars, estrellas5.question_stars)
-
+	if GameManager.score != 0:
+		get_tree().change_scene_to_file("res://scenes/MenuResults.tscn")
+		SoundManager.play("ButtonClick")
+		print("info printed for feedback", estrellas1.question_stars, estrellas2.question_stars, estrellas3.question_stars, estrellas4.question_stars, estrellas5.question_stars)
+	else:
+		#game lost
+		get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
+		SoundManager.play("ButtonClick")
+		print("info printed for feedback", estrellas1.question_stars, estrellas2.question_stars, estrellas3.question_stars, estrellas4.question_stars, estrellas5.question_stars)
 
 func _on_button_cancel_pressed():
 	TransitionScreen.transition_to_black()

@@ -16,6 +16,10 @@ extends Node2D
 @onready var button_6 = $Button6
 @onready var button_7 = $Button7
 
+@onready var flecha_4 = $"Label/Control/2/LabelMarcoA/Flecha4"
+@onready var flecha_5 = $"Label/Control/2/LabelMarcoA/Flecha5"
+
+
 #@onready var button_1: Button = $Button1
 @onready var btn: = $Botton1   # ajusta la ruta si es distinta
 # GameManager.gd (autoload)
@@ -55,6 +59,23 @@ func _ready():
 	_5.visible = false
 	_6.visible = false
 	_7.visible = false
+	
+	button_1.button_pressed = true
+	button_2.button_pressed = false
+	button_3.button_pressed = false
+	button_4.button_pressed = false
+	button_5.button_pressed = false
+	button_6.button_pressed = false
+	button_7.button_pressed = false
+	
+	button_1.stop_blink()
+	button_2.start_blink()
+	button_3.stop_blink()
+	button_4.stop_blink()
+	button_5.stop_blink()
+	button_6.stop_blink()
+	button_7.stop_blink()
+	
 	
 	# Espera 0.5 s desde que entra en escena
 	await get_tree().create_timer(0.5).timeout
@@ -105,6 +126,14 @@ func _on_button_1_pressed():
 	button_5.button_pressed = false
 	button_6.button_pressed = false
 	button_7.button_pressed = false
+	
+	button_1.stop_blink()
+	button_2.start_blink()
+	button_3.stop_blink()
+	button_4.stop_blink()
+	button_5.stop_blink()
+	button_6.stop_blink()
+	button_7.stop_blink()
 
 func _on_button_2_pressed():
 	_1.visible = false
@@ -123,7 +152,16 @@ func _on_button_2_pressed():
 	button_6.button_pressed = false
 	button_7.button_pressed = false
 
-
+	button_1.stop_blink()
+	button_2.stop_blink()
+	button_3.start_blink()
+	button_4.stop_blink()
+	button_5.stop_blink()
+	button_6.stop_blink()
+	button_7.stop_blink()
+	
+	flecha_4.start_blink()
+	flecha_5.start_blink()
 
 func _on_button_3_pressed():
 	_1.visible = false
@@ -141,6 +179,14 @@ func _on_button_3_pressed():
 	button_5.button_pressed = false
 	button_6.button_pressed = false
 	button_7.button_pressed = false
+	
+	button_1.stop_blink()
+	button_2.stop_blink()
+	button_3.stop_blink()
+	button_4.start_blink()
+	button_5.stop_blink()
+	button_6.stop_blink()
+	button_7.stop_blink()
 
 
 func _on_button_4_pressed():
@@ -159,6 +205,14 @@ func _on_button_4_pressed():
 	button_5.button_pressed = false
 	button_6.button_pressed = false
 	button_7.button_pressed = false
+	
+	button_1.stop_blink()
+	button_2.stop_blink()
+	button_3.stop_blink()
+	button_4.stop_blink()
+	button_5.start_blink()
+	button_6.stop_blink()
+	button_7.stop_blink()
 
 func _on_button_5_pressed():
 	_1.visible = false
@@ -177,6 +231,13 @@ func _on_button_5_pressed():
 	button_6.button_pressed = false
 	button_7.button_pressed = false
 
+	button_1.stop_blink()
+	button_2.stop_blink()
+	button_3.stop_blink()
+	button_4.stop_blink()
+	button_5.stop_blink()
+	button_6.start_blink()
+	button_7.stop_blink()
 
 func _on_button_6_pressed():
 	
@@ -198,7 +259,14 @@ func _on_button_6_pressed():
 	button_6.button_pressed = true
 	button_7.button_pressed = false
 
-
+	button_1.stop_blink()
+	button_2.stop_blink()
+	button_3.stop_blink()
+	button_4.stop_blink()
+	button_5.stop_blink()
+	button_6.stop_blink()
+	button_7.start_blink()
+	
 func _on_button_7_pressed():
 	#button_back.disabled = false
 	
@@ -218,6 +286,13 @@ func _on_button_7_pressed():
 	button_6.button_pressed = true
 	button_7.button_pressed = true
 
+	button_1.stop_blink()
+	button_2.stop_blink()
+	button_3.stop_blink()
+	button_4.stop_blink()
+	button_5.stop_blink()
+	button_6.stop_blink()
+	button_7.stop_blink()
 
 func _on_check_box_toggled(toggled_on):
 	if toggled_on:

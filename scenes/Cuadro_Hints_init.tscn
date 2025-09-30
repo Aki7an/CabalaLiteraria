@@ -1,10 +1,9 @@
-[gd_scene load_steps=23 format=3 uid="uid://ph5b10j3o3du"]
+[gd_scene load_steps=16 format=3 uid="uid://ph5b10j3o3du"]
 
 [ext_resource type="Script" uid="uid://bcbqam3xnrhdv" path="res://scenes/cuadro_hints_init.gd" id="1_hbkcf"]
 [ext_resource type="Theme" uid="uid://diacxsbys358g" path="res://fonts/Letra_Titulo_1.tres" id="2_vwk6v"]
 [ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="3_8asvy"]
 [ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="4_hbkcf"]
-[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="5_chgfi"]
 [ext_resource type="Shader" uid="uid://8b7nr3sen4t0" path="res://scenes/PlayBuoon.gdshader" id="10_chgfi"]
 [ext_resource type="Texture2D" uid="uid://cdo3jiegx0a2x" path="res://GUI/BotonPlayPlano.png" id="11_3fjj3"]
 [ext_resource type="Script" uid="uid://drgng4haeeuj3" path="res://scenes/button_play_Fx.gd" id="12_75ha4"]
@@ -31,79 +30,6 @@ corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mpm3g"]
-bg_color = Color(0.858824, 0.917647, 0.858824, 1)
-border_width_left = 10
-border_width_top = 10
-border_width_right = 10
-border_width_bottom = 10
-border_color = Color(0.290196, 0.552941, 0.509804, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dj36u"]
-texture = ExtResource("5_chgfi")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.44, 0.335427, 0.3036, 0.65098)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_24n6l"]
-texture = ExtResource("5_chgfi")
-texture_margin_left = 76.0
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(0.2385, 0.45, 0.411225, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mpm3g"]
-texture = ExtResource("5_chgfi")
-texture_margin_left = 76.0
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(0.227451, 0.623529, 0.584314, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_017l8"]
-texture = ExtResource("5_chgfi")
-texture_margin_left = 76.0
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(0.1908, 0.36, 0.32898, 1)
-
-[sub_resource type="Theme" id="Theme_24n6l"]
-Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
-Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
-Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
-Button/colors/icon_focus_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_normal_color = Color(1, 1, 1, 1)
-Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
-Button/constants/align_to_largest_stylebox = 0
-Button/constants/h_separation = 4
-Button/constants/icon_max_width = 0
-Button/constants/outline_size = 0
-Button/font_sizes/font_size = 50
-Button/fonts/font = null
-Button/styles/disabled = SubResource("StyleBoxTexture_dj36u")
-Button/styles/focus = null
-Button/styles/hover = SubResource("StyleBoxTexture_24n6l")
-Button/styles/normal = SubResource("StyleBoxTexture_mpm3g")
-Button/styles/pressed = SubResource("StyleBoxTexture_017l8")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3k67m"]
 shader = ExtResource("10_chgfi")
 shader_parameter/progress = -0.3
@@ -117,7 +43,7 @@ shader_parameter/alpha = 0.0
 [sub_resource type="FontVariation" id="FontVariation_ubolu"]
 base_font = ExtResource("14_6ecqt")
 
-[node name="FondoHints" type="ColorRect" groups=["FondoHint"]]
+[node name="FondoHintsInit" type="ColorRect" groups=["FondoHint"]]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -137,19 +63,19 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_dnf3t")
 
 [node name="CuadroHint1" type="Label" parent="CuadroSalirPartida"]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 1008.0
-offset_bottom = 1176.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 1016.0
+offset_bottom = 1512.0
 pivot_offset = Vector2(440, 168)
 theme_override_styles/normal = SubResource("StyleBoxFlat_w8vuo")
 
 [node name="Label" type="Label" parent="CuadroSalirPartida/CuadroHint1"]
 layout_mode = 0
 offset_left = 40.0
-offset_top = 24.0
+offset_top = 25.0
 offset_right = 235.0
-offset_bottom = 86.0
+offset_bottom = 87.0
 theme = ExtResource("2_vwk6v")
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 text = "HINT 1"
@@ -173,9 +99,9 @@ stretch_mode = 5
 [node name="Label5" type="Label" parent="CuadroSalirPartida/CuadroHint1"]
 layout_mode = 0
 offset_left = 696.0
-offset_top = 32.0
+offset_top = 31.0
 offset_right = 972.0
-offset_bottom = 82.0
+offset_bottom = 81.0
 theme = ExtResource("4_hbkcf")
 theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
 text = "Free"
@@ -185,9 +111,9 @@ vertical_alignment = 1
 [node name="LabelUnkockedHint1" type="Label" parent="CuadroSalirPartida/CuadroHint1"]
 layout_mode = 0
 offset_left = 240.0
-offset_top = 27.0
+offset_top = 28.0
 offset_right = 516.0
-offset_bottom = 83.0
+offset_bottom = 84.0
 theme = ExtResource("4_hbkcf")
 theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
 text = "UNLOCKED"
@@ -196,107 +122,23 @@ vertical_alignment = 1
 
 [node name="Label9" type="Label" parent="CuadroSalirPartida/CuadroHint1"]
 layout_mode = 0
-offset_left = 616.0
-offset_top = 32.0
-offset_right = 776.0
-offset_bottom = 88.0
+offset_left = 640.0
+offset_top = 28.0
+offset_right = 800.0
+offset_bottom = 84.0
 theme = ExtResource("4_hbkcf")
 theme_override_colors/font_color = Color(0.4, 0.216, 0.16, 1)
 theme_override_font_sizes/font_size = 35
 text = "Cost:"
-
-[node name="CuadroHint2" type="Label" parent="CuadroSalirPartida"]
-layout_mode = 0
-offset_left = 15.0
-offset_top = 1209.0
-offset_right = 1008.0
-offset_bottom = 1473.0
-pivot_offset = Vector2(440, 168)
-theme_override_styles/normal = SubResource("StyleBoxFlat_mpm3g")
-
-[node name="LabelPAID" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
-layout_mode = 0
-offset_left = 49.0
-offset_top = 152.0
-offset_right = 383.0
-offset_bottom = 202.0
-theme = ExtResource("4_hbkcf")
-theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
-text = "PAID"
-
-[node name="Label5" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
-layout_mode = 0
-offset_left = 551.0
-offset_top = 152.0
-offset_right = 828.0
-offset_bottom = 255.0
-theme = ExtResource("4_hbkcf")
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-text = "10.000 points"
-
-[node name="Label2" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
-layout_mode = 0
-offset_left = 40.0
-offset_top = 24.0
-offset_right = 235.0
-offset_bottom = 99.0
-theme = ExtResource("2_vwk6v")
-theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "HINT 2"
-
-[node name="Label8" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
-layout_mode = 0
-offset_left = 415.0
-offset_top = 152.0
-offset_right = 691.0
-offset_bottom = 212.0
-theme = ExtResource("4_hbkcf")
-theme_override_colors/font_color = Color(0.4, 0.216, 0.16, 1)
-theme_override_font_sizes/font_size = 35
-text = "Cost:"
-
-[node name="ButtonHint2" type="Button" parent="CuadroSalirPartida/CuadroHint2"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-offset_left = 24.0
-offset_top = 110.0
-offset_right = 648.0
-offset_bottom = 372.072
-scale = Vector2(0.5, 0.5)
-size_flags_horizontal = 0
-theme = SubResource("Theme_24n6l")
-theme_override_font_sizes/font_size = 80
-text = "GET"
-
-[node name="LabelAvailableHint2" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
-layout_mode = 0
-offset_left = 326.0
-offset_top = 32.0
-offset_right = 602.0
-offset_bottom = 88.0
-theme = ExtResource("4_hbkcf")
-theme_override_colors/font_color = Color(0.81, 0.40041, 0.1458, 1)
-text = "AVAILABLE"
-horizontal_alignment = 1
-
-[node name="LabelUnkockedHint2" type="Label" parent="CuadroSalirPartida/CuadroHint2"]
-visible = false
-layout_mode = 0
-offset_left = 327.0
-offset_top = 40.0
-offset_right = 603.0
-offset_bottom = 96.0
-theme = ExtResource("4_hbkcf")
-theme_override_colors/font_color = Color(0.180392, 0.490196, 0.196078, 1)
-text = "UNLOCKED"
-horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="PlayButtonFx" type="TextureButton" parent="."]
 material = SubResource("ShaderMaterial_3k67m")
+layout_mode = 0
 offset_left = 128.0
-offset_top = 1500.0
+offset_top = 1496.0
 offset_right = 872.0
-offset_bottom = 1924.0
+offset_bottom = 1920.0
 theme = SubResource("Theme_fa1l8")
 texture_normal = ExtResource("11_3fjj3")
 stretch_mode = 5
@@ -337,5 +179,4 @@ min_font_size = 80
 max_font_size = 190
 available_x = 480
 
-[connection signal="pressed" from="CuadroSalirPartida/CuadroHint2/ButtonHint2" to="." method="_on_button_hint_2_pressed"]
 [connection signal="pressed" from="PlayButtonFx" to="." method="_on_play_button_fx_pressed"]

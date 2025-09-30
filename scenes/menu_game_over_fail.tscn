@@ -1,0 +1,283 @@
+[gd_scene load_steps=22 format=3 uid="uid://cwsakfarlyt6b"]
+
+[ext_resource type="Script" uid="uid://cqkjxpk7ooyxd" path="res://scenes/menu_game_over_fail.gd" id="1_h7tbd"]
+[ext_resource type="Texture2D" uid="uid://hggrdc2bwirm" path="res://images/Captura de pantalla 2025-09-06 221159.png" id="2_t4ocq"]
+[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="3_eq0y4"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="4_kqx5s"]
+[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="5_1lsnr"]
+[ext_resource type="Texture2D" uid="uid://64eqp4g8dwld" path="res://images/Info.png" id="7_81s0o"]
+[ext_resource type="Texture2D" uid="uid://bi1gjepfdc0s2" path="res://images/SadFace.png" id="7_t4ocq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eq0y4"]
+bg_color = Color(1, 0.603922, 0.568627, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kqx5s"]
+texture = ExtResource("5_1lsnr")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.980392, 0.333333, 0.286275, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1lsnr"]
+texture = ExtResource("5_1lsnr")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.980392, 0.333333, 0.286275, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_by3x4"]
+texture = ExtResource("5_1lsnr")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.980392, 0.333333, 0.286275, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_81s0o"]
+texture = ExtResource("5_1lsnr")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.980392, 0.333333, 0.286275, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bl04j"]
+texture = ExtResource("5_1lsnr")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.980392, 0.333333, 0.286275, 1)
+
+[sub_resource type="Theme" id="Theme_vq38i"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_kqx5s")
+Button/styles/focus = SubResource("StyleBoxTexture_1lsnr")
+Button/styles/hover = SubResource("StyleBoxTexture_by3x4")
+Button/styles/normal = SubResource("StyleBoxTexture_81s0o")
+Button/styles/pressed = SubResource("StyleBoxTexture_bl04j")
+
+[sub_resource type="FontVariation" id="FontVariation_0cr37"]
+base_font = ExtResource("4_kqx5s")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xvaij"]
+texture = ExtResource("5_1lsnr")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.815686, 0.921569, 0.980392, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h7tbd"]
+texture = ExtResource("5_1lsnr")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.815686, 0.921569, 0.980392, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t4ocq"]
+texture = ExtResource("5_1lsnr")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.815686, 0.921569, 0.980392, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eq0y4"]
+texture = ExtResource("5_1lsnr")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.815686, 0.921569, 0.980392, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vq38i"]
+texture = ExtResource("5_1lsnr")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.815686, 0.921569, 0.980392, 1)
+
+[sub_resource type="Theme" id="Theme_mweim"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_xvaij")
+Button/styles/focus = SubResource("StyleBoxTexture_h7tbd")
+Button/styles/hover = SubResource("StyleBoxTexture_t4ocq")
+Button/styles/normal = SubResource("StyleBoxTexture_eq0y4")
+Button/styles/pressed = SubResource("StyleBoxTexture_vq38i")
+
+[node name="MenuGameOverFail" type="ColorRect"]
+offset_right = 1024.0
+offset_bottom = 1920.0
+color = Color(1, 1, 1, 0.803922)
+script = ExtResource("1_h7tbd")
+
+[node name="GameOver" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(422, 564)
+theme_override_styles/normal = SubResource("StyleBoxFlat_eq0y4")
+
+[node name="ButtonFx" type="Button" parent="GameOver"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.046875
+anchor_top = 0.120833
+anchor_right = 0.03125
+anchor_bottom = 0.416667
+offset_left = 80.0
+offset_top = 640.0
+offset_right = 944.0
+offset_bottom = 904.0
+theme = SubResource("Theme_vq38i")
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextFraseOriginal" type="RichTextLabel" parent="GameOver/ButtonFx"]
+layout_mode = 1
+offset_left = 40.0
+offset_top = 16.0
+offset_right = 912.0
+offset_bottom = 792.0
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[img=120x100]res://images/comillas_abre.png[/img]  El 12 de octubre de       1492 Colón llegó a América, iniciando el encuentro histórico entre Europa y el Nuevo Mundo    [img=120x100]res://images/comillas_cierra.png[/img]
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CapturaDePantalla2025-09-06221159" type="Sprite2D" parent="GameOver"]
+visible = false
+position = Vector2(512, 112)
+scale = Vector2(0.75572, 0.667715)
+texture = ExtResource("2_t4ocq")
+
+[node name="RichTextLabel1" type="RichTextLabel" parent="GameOver"]
+layout_mode = 1
+offset_left = 56.0
+offset_top = 16.0
+offset_right = 952.0
+offset_bottom = 224.0
+theme = ExtResource("3_eq0y4")
+theme_override_colors/default_color = Color(0.980392, 0.282353, 0.231373, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_0cr37")
+theme_override_font_sizes/normal_font_size = 100
+text = "Lo siento..."
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="GameOver"]
+layout_mode = 1
+offset_left = 168.0
+offset_top = 176.0
+offset_right = 776.0
+offset_bottom = 384.0
+theme = ExtResource("3_eq0y4")
+theme_override_colors/default_color = Color(0.541176, 0.298039, 0.286275, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_0cr37")
+theme_override_font_sizes/normal_font_size = 60
+text = "No has superado la pantalla"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="GameOver"]
+layout_mode = 1
+offset_left = 168.0
+offset_top = 704.0
+offset_right = 776.0
+offset_bottom = 912.0
+theme = ExtResource("3_eq0y4")
+theme_override_colors/default_color = Color(0.541176, 0.298039, 0.286275, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_0cr37")
+theme_override_font_sizes/normal_font_size = 60
+text = "La frase era:"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Info" type="Sprite2D" parent="GameOver"]
+modulate = Color(0.0117647, 0.266667, 0.0980392, 1)
+position = Vector2(-1616, 392)
+scale = Vector2(0.111004, 0.111004)
+texture = ExtResource("7_81s0o")
+
+[node name="BlancoRefranesPopulares" type="TextureRect" parent="GameOver"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 232.0
+offset_top = 368.0
+offset_right = -288.0
+offset_bottom = -1163.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_t4ocq")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ButtonBack" type="Button" parent="."]
+layout_mode = 1
+offset_left = 256.0
+offset_top = 1704.0
+offset_right = 842.988
+offset_bottom = 1966.07
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(224, 104)
+theme = SubResource("Theme_mweim")
+theme_override_colors/font_color = Color(0.380392, 0.635294, 0.807843, 1)
+theme_override_font_sizes/font_size = 80
+text = "Main Menu"
+
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

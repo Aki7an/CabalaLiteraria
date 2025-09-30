@@ -201,7 +201,8 @@ func decrease_live() -> void:
 	if lives <=0:
 		SignalManager.game_finished_lost.emit()
 		print("GAME LOST")
-		queue_free()
+		#queue_free()
+		return
 		
 	SignalManager.update_lives.emit(lives)
 

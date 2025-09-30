@@ -71,16 +71,16 @@ const IMG_DIR := "res://data/images"
 func _ready():
 	_load_image()
 	#rich_text_label_hint_2.text = pasa_a_asteriscos(GameManager.hint_1)
-	if GameManager.pista_1 and !GameManager.pista_2 and !GameManager.pista_3:
-		#Pista 1
-		_state_hint1()
-	elif GameManager.pista_1 and GameManager.pista_2 and !GameManager.pista_3:
-		#Pista 2
-		_state_hint2()
-	elif GameManager.pista_1 and GameManager.pista_2 and GameManager.pista_3:
-		#Pista 3
-		_state_hint3()
-	cuadro_salir_partida.self_modulate.a = 0.8
+	#if GameManager.pista_1 and !GameManager.pista_2 and !GameManager.pista_3:
+		##Pista 1
+		#_state_hint1()
+	#elif GameManager.pista_1 and GameManager.pista_2 and !GameManager.pista_3:
+		##Pista 2
+		#_state_hint2()
+	#elif GameManager.pista_1 and GameManager.pista_2 and GameManager.pista_3:
+		##Pista 3
+		#_state_hint3()
+	#cuadro_salir_partida.self_modulate.a = 0.8
 	#score_text.visible = true
 	#score_2.visible = true 
 	
@@ -131,36 +131,36 @@ func _load_image() -> void:
 #func _process(delta):
 	#score_2.text = GameManager.formatear_numero(GameManager.score)
 	
-func _state_hint1() -> void:
-	label_unkocked_hint_1.visible = true
+#func _state_hint1() -> void:
+	#label_unkocked_hint_1.visible = true
 	#label_paid_2.visible = false
-	label_unkocked_hint_2.visible = false
+	#label_unkocked_hint_2.visible = false
 	#label_unkocked_hint_3.visible = false
 	
-	label_locked_hint_3.visible = true
-	label_available_hint_2.visible = true
+	#label_locked_hint_3.visible = true
+	#label_available_hint_2.visible = true
 	
-	button_hint_2.visible = true
-	label_paid.visible = false
+	#button_hint_2.visible = true
+	#label_paid.visible = false
 	
-	candado.visible = true
-	button_hint_3.disabled = true
-	label_available_hint_3.visible = false
-	label_locked_hint_3.visible = true
-	set_label_bg_only(cuadro_hint_1, color_habilitado)
-	set_label_bg_only(cuadro_hint_2, color_habilitado)
-	set_label_bg_only(cuadro_hint_3, color_deshabilitado)
+	#candado.visible = true
+	#button_hint_3.disabled = true
+	#label_available_hint_3.visible = false
+	#label_locked_hint_3.visible = true
+	#set_label_bg_only(cuadro_hint_1, color_habilitado)
+	#set_label_bg_only(cuadro_hint_2, color_habilitado)
+	#set_label_bg_only(cuadro_hint_3, color_deshabilitado)
 	
-	label_10000.visible = true
-	label_coins.visible = true
-	label_coste.visible = true
+	#label_10000.visible = true
+	#label_coins.visible = true
+	#label_coste.visible = true
 	
-	set_alpha(label_10000, 0.3)
-	set_alpha(label_coins, 0.3)
-	set_alpha(label_coste, 0.3)
-	
-	coin.visible = true
-	set_alpha(coin, 0.3)
+	#set_alpha(label_10000, 0.3)
+	#set_alpha(label_coins, 0.3)
+	#set_alpha(label_coste, 0.3)
+	#
+	#coin.visible = true
+	#set_alpha(coin, 0.3)
 	
 
 	
@@ -250,7 +250,7 @@ func start_transition(p_btn_group_name: String = "", p_duration: float = -1.0) -
 	# 2) Centro objetivo (botón si existe; si no, centro de la escena inferior)
 	var target_pos: Vector2 = _get_node_center_global(btn_node) if btn_node != null else _get_scene_center_global(next_scene)
 	print(target_pos)
-	target_pos = Vector2(256,256)
+	target_pos = Vector2(500,256)
 	## 3) Pivot para escalar desde el centro SOLO del nodo "FondoHint"
 	if old_visual is ColorRect:
 		var oc := old_visual as Control
@@ -497,4 +497,5 @@ func _on_play_button_fx_pressed():
 	cuadro_salir_partida.self_modulate.a = 0.0
 	#score_text.visible = false
 	#score_2.visible = false
+	SignalManager.game_start.emit()
 	start_transition("Btn_pista", .8)

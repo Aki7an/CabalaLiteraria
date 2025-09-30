@@ -10,21 +10,32 @@ texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
 modulate_color = Color(0.44, 0.335427, 0.3036, 0.752941)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8b67"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2oqrl"]
 texture = ExtResource("2_j8b67")
-texture_margin_left = 76.3134
+texture_margin_left = 76.0
 texture_margin_top = 76.0722
 texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
-modulate_color = Color(0.97, 0.41225, 0.2425, 1)
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.93, 0.2635, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j8b67"]
+texture = ExtResource("2_j8b67")
+texture_margin_left = 76.0
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.93, 0.2635, 0, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xnqa"]
 texture = ExtResource("2_j8b67")
-texture_margin_left = 76.3134
+texture_margin_left = 76.0
 texture_margin_top = 76.0722
 texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
-modulate_color = Color(0.61, 0.25925, 0.1525, 1)
+region_rect = Rect2(0, 0, 154, 294)
+modulate_color = Color(0.93, 0.2635, 0, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6ohb5"]
 texture = ExtResource("2_j8b67")
@@ -33,15 +44,7 @@ texture_margin_top = 76.0722
 texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
 region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(0.81, 0.34425, 0.2025, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2oqrl"]
-texture = ExtResource("2_j8b67")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.41, 0.17425, 0.1025, 1)
+modulate_color = Color(0.93, 0.2635, 0, 1)
 
 [resource]
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
@@ -64,7 +67,7 @@ Button/constants/outline_size = 0
 Button/font_sizes/font_size = 50
 Button/fonts/font = null
 Button/styles/disabled = SubResource("StyleBoxTexture_mlydr")
-Button/styles/focus = SubResource("StyleBoxTexture_j8b67")
-Button/styles/hover = SubResource("StyleBoxTexture_1xnqa")
-Button/styles/normal = SubResource("StyleBoxTexture_6ohb5")
-Button/styles/pressed = SubResource("StyleBoxTexture_2oqrl")
+Button/styles/focus = SubResource("StyleBoxTexture_2oqrl")
+Button/styles/hover = SubResource("StyleBoxTexture_j8b67")
+Button/styles/normal = SubResource("StyleBoxTexture_1xnqa")
+Button/styles/pressed = SubResource("StyleBoxTexture_6ohb5")

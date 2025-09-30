@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://fwvrs81xpbno"]
+[gd_scene load_steps=63 format=3 uid="uid://fwvrs81xpbno"]
 
 [ext_resource type="Script" uid="uid://djfuwgey5l4bd" path="res://scenes/menu_tutorial.gd" id="1_5nqfq"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_14pat"]
@@ -8,7 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://btdwfts88pjy1" path="res://images/Flecha.png" id="7_cs7op"]
 [ext_resource type="Texture2D" uid="uid://b5ujh1ms4cdlu" path="res://images/Teclado.png" id="8_p410d"]
 [ext_resource type="Texture2D" uid="uid://tg2iwyaqaye1" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_heart.png" id="9_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://b1dn5qdgkvm4k" path="res://GUI/Library/UI_Etc/Tutorial_Focus01_Circle3.png" id="9_88ncm"]
 [ext_resource type="Script" uid="uid://xof134ooqxmp" path="res://scenes/PanelUP/BlinkHeart.gd" id="10_88ncm"]
+[ext_resource type="Script" uid="uid://bi8dnx2f55ykr" path="res://scenes/Blink_Sprite2D.gd" id="10_ohopp"]
 [ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="11_os3rs"]
 [ext_resource type="Texture2D" uid="uid://cc5fvr2p5neit" path="res://images/Coin.png" id="12_2077r"]
 [ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
@@ -23,9 +25,9 @@
 [ext_resource type="Texture2D" uid="uid://26hmsfh26pep" path="res://images/ImagenPista.png" id="21_5onnj"]
 [ext_resource type="Theme" uid="uid://lkfr6pageoc2" path="res://GUI/Button_difficulty.tres" id="22_euxot"]
 [ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="23_4xhfx"]
-[ext_resource type="Texture2D" uid="uid://cuygqebfmuiu1" path="res://images/BotonLetras.png" id="23_euxot"]
 [ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="24_88ncm"]
 [ext_resource type="Texture2D" uid="uid://b6nxfxre5njbj" path="res://images/CheckOK.png" id="25_ohopp"]
+[ext_resource type="Script" uid="uid://dlundgkrxhhjt" path="res://scenes/Blink.gd" id="26_88ncm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tojt8"]
 bg_color = Color(0.889317, 0.843552, 0.693583, 1)
@@ -357,6 +359,7 @@ offset_right = -24.0
 offset_bottom = -160.0
 
 [node name="1" type="Control" parent="Label/Control"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -378,10 +381,10 @@ metadata/_edit_lock_ = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Label/Control/1/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -58.0
-offset_top = 310.0
-offset_right = 848.0
-offset_bottom = 503.0
+offset_left = -66.0
+offset_top = 552.0
+offset_right = 840.0
+offset_bottom = 745.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 text = "Discover the letter that corresponds to each number to solve the hidden phrases."
@@ -390,8 +393,10 @@ horizontal_alignment = 1
 [node name="TextureRectCifraLetra" type="TextureRect" parent="Label/Control/1/LabelMarcoA"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 1.08333
-anchor_bottom = 1.1
+anchor_left = -0.00892857
+anchor_top = -2.02778
+anchor_right = -0.00892857
+anchor_bottom = -2.01111
 offset_left = -10.0
 offset_top = 490.0
 offset_right = 1015.0
@@ -438,7 +443,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
 metadata/_edit_lock_ = true
 
 [node name="Label_A" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
-visible = false
 layout_mode = 0
 offset_left = 420.0
 offset_top = 82.0
@@ -484,7 +488,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
 metadata/_edit_lock_ = true
 
 [node name="Label_A2" type="Label" parent="Label/Control/1/LabelMarcoA/TextureRectCifraLetra"]
-visible = false
 layout_mode = 0
 offset_left = 932.148
 offset_top = 82.2483
@@ -544,9 +547,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 971.0
+offset_top = 931.0
 offset_right = 984.0
-offset_bottom = 1003.0
+offset_bottom = 963.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
@@ -563,9 +566,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 480.0
-offset_top = 1379.0
+offset_top = 1350.5
 offset_right = 832.0
-offset_bottom = 1399.0
+offset_bottom = 1370.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
@@ -582,9 +585,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 144.0
-offset_top = 1242.0
+offset_top = 1213.5
 offset_right = 522.0
-offset_bottom = 1266.0
+offset_bottom = 1237.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
@@ -601,9 +604,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 235.0
-offset_top = 1291.0
+offset_top = 1262.5
 offset_right = 419.0
-offset_bottom = 1350.0
+offset_bottom = 1321.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
@@ -620,9 +623,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 559.0
-offset_top = 1427.0
+offset_top = 1398.5
 offset_right = 743.0
-offset_bottom = 1486.0
+offset_bottom = 1457.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
@@ -634,7 +637,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Letra" type="Sprite2D" parent="Label/Control/1"]
-position = Vector2(520, 1219)
+position = Vector2(520, 1190.5)
 scale = Vector2(2.90816, 2.90816)
 texture = ExtResource("6_x3c50")
 
@@ -650,7 +653,6 @@ texture = ExtResource("7_cs7op")
 flip_h = true
 
 [node name="2" type="Control" parent="Label/Control"]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -956,6 +958,24 @@ offset_right = 1014.15
 offset_bottom = 183.248
 theme_override_styles/normal = SubResource("StyleBoxFlat_p410d")
 metadata/_edit_lock_ = true
+
+[node name="Flecha4" type="Sprite2D" parent="Label/Control/2/LabelMarcoA"]
+modulate = Color(0.611765, 0.172549, 0.027451, 1)
+position = Vector2(376, 1038)
+scale = Vector2(0.434286, 0.571429)
+texture = ExtResource("9_88ncm")
+flip_h = true
+script = ExtResource("10_ohopp")
+_running = true
+
+[node name="Flecha5" type="Sprite2D" parent="Label/Control/2/LabelMarcoA"]
+modulate = Color(0.611765, 0.172549, 0.027451, 1)
+position = Vector2(830, 1038)
+scale = Vector2(0.434286, 0.571429)
+texture = ExtResource("9_88ncm")
+flip_h = true
+script = ExtResource("10_ohopp")
+_running = true
 
 [node name="LabelMarcoB" type="Label" parent="Label/Control/2"]
 layout_mode = 0
@@ -2131,6 +2151,7 @@ text = "1"
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
+script = ExtResource("26_88ncm")
 metadata/_edit_use_anchors_ = true
 
 [node name="Button2" type="Button" parent="."]
@@ -2150,6 +2171,7 @@ text = "2"
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
+script = ExtResource("26_88ncm")
 metadata/_edit_use_anchors_ = true
 
 [node name="Button3" type="Button" parent="."]
@@ -2169,6 +2191,7 @@ text = "3"
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
+script = ExtResource("26_88ncm")
 metadata/_edit_use_anchors_ = true
 
 [node name="Button4" type="Button" parent="."]
@@ -2188,6 +2211,7 @@ text = "4"
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
+script = ExtResource("26_88ncm")
 metadata/_edit_use_anchors_ = true
 
 [node name="Button5" type="Button" parent="."]
@@ -2207,6 +2231,7 @@ text = "5"
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
+script = ExtResource("26_88ncm")
 metadata/_edit_use_anchors_ = true
 
 [node name="Button6" type="Button" parent="."]
@@ -2226,6 +2251,7 @@ text = "6"
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
+script = ExtResource("26_88ncm")
 metadata/_edit_use_anchors_ = true
 
 [node name="Button7" type="Button" parent="."]
@@ -2245,13 +2271,8 @@ text = "7"
 icon_alignment = 1
 vertical_icon_alignment = 0
 expand_icon = true
+script = ExtResource("26_88ncm")
 metadata/_edit_use_anchors_ = true
-
-[node name="BotonPista" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(496, 368)
-scale = Vector2(1.92857, 1.92857)
-texture = ExtResource("23_euxot")
 
 [connection signal="toggled" from="Label/Control/CheckBox" to="." method="_on_check_box_toggled"]
 [connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

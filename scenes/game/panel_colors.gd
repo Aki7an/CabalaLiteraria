@@ -15,6 +15,8 @@ extends Panel
 @onready var color4_usado: bool = false
 @onready var color5_usado: bool = false
 
+@onready var paginas_abajo = $HBoxContainer/ButtonDown/PaginasAbajo
+
 func _ready() -> void:
 	for i in GameManager.lista_colores.size():
 		var style = StyleBoxFlat.new()
@@ -88,9 +90,7 @@ func _on_btn_erase_pressed() -> void:
 		print("hay celda seleccionada ", GameManager.selected_letra)
 
 
-func _on_button_up_pressed():
-	SignalManager.mueve_filas.emit(4,.5)
-
 
 func _on_button_down_pressed():
 	SignalManager.mueve_filas.emit(-4,.5)
+	#paginas_abajo.text = boton_page_down()
