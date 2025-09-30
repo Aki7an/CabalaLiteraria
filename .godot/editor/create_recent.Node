@@ -1,10 +1,10 @@
+AnimationPlayer
 Button
 CanvasLayer
 Label
 Control
 ColorRect
 Sprite2D
-AnimationPlayer
 CheckBox
 TextEdit
 HBoxContainer

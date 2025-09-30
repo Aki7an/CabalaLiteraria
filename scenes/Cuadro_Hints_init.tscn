@@ -2,13 +2,13 @@
 
 [ext_resource type="Script" uid="uid://bcbqam3xnrhdv" path="res://scenes/cuadro_hints_init.gd" id="1_hbkcf"]
 [ext_resource type="Theme" uid="uid://diacxsbys358g" path="res://fonts/Letra_Titulo_1.tres" id="2_vwk6v"]
-[ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="3_8asvy"]
+[ext_resource type="Texture2D" uid="uid://bwwm8eyqclx0m" path="res://images/Cruz.png" id="3_8asvy"]
 [ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="4_hbkcf"]
 [ext_resource type="Shader" uid="uid://8b7nr3sen4t0" path="res://scenes/PlayBuoon.gdshader" id="10_chgfi"]
-[ext_resource type="Texture2D" uid="uid://cdo3jiegx0a2x" path="res://GUI/BotonPlayPlano.png" id="11_3fjj3"]
+[ext_resource type="Texture2D" uid="uid://dk73kgaaacau3" path="res://GUI/BotonPlayPlano.png" id="11_3fjj3"]
 [ext_resource type="Script" uid="uid://drgng4haeeuj3" path="res://scenes/button_play_Fx.gd" id="12_75ha4"]
-[ext_resource type="Texture2D" uid="uid://c0n8lq36j8ubr" path="res://GUI/BotonPlaySimboloTextura.png" id="13_t0ong"]
-[ext_resource type="FontFile" uid="uid://qsd4rrtmjkyp" path="res://fonts/Fonts/Fredoka One/FredokaOne-Regular.ttf" id="14_6ecqt"]
+[ext_resource type="Texture2D" uid="uid://dfqcfbc4gla42" path="res://GUI/BotonPlaySimboloTextura.png" id="13_t0ong"]
+[ext_resource type="FontFile" uid="uid://foahejbukn0g" path="res://fonts/Fonts/Fredoka One/FredokaOne-Regular.ttf" id="14_6ecqt"]
 [ext_resource type="Script" uid="uid://bt4vf7weivebq" path="res://scenes/AdjustSize.gd" id="15_en71a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dnf3t"]

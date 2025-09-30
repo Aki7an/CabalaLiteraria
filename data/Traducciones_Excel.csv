@@ -1,0 +1,217 @@
+Key,es,en,de,fr,eu,it,pt
+Play,Jugar,Play,Spielen,Jouer,Jolastu,Gioca,Jogar
+Settings,Ajustes,Settings,Einstellungen,Paramètres,Ezarpenak,Impostazioni,Configurações
+Shop,Tienda,Shop,Laden,Boutique,Denda,Negozio,Loja
+Leaderboard,Clasificación,Leaderboard,Bestenliste,Classement,Sailkapena,Classifica,Classificação
+Tutorial,Tutorial,Tutorial,Anleitung,Tutoriel,Tutoriala,Tutoriale,Tutorial
+Stats,Estadísticas,Stats,Statistiken,Statistiques,Estatistikak,Statistiche,Estatísticas
+Credits,Créditos,Credits,Mitwirkende,Crédits,Kredituak,Crediti,Créditos
+CipherLetter,CifraLetra,CipherLetter,ZahlBuchstabe,ChiffreLettre,ZifraLetra,CifraLettera,CifraLetra
+Cipher,Cifra,Cipher,Zahl,Chiffre,Zifra,Cifra,Cifra
+Letter,Letra,Letter,Buchstabe,Lettre,Letra,Lettera,Letra
+Back,Atrás,Back,Zurück,Retour,Atzera,Indietro,Voltar
+SOUND,SONIDO,SOUND,TON,SON,SOINU,SUONO,SOM
+LANGUAGE,IDIOMA,LANGUAGE,SPRACHE,LANGUE,HIZKUNTZA,LINGUA,IDIOMA
+Music,Música,Music,Musik,Musique,Musika,Musica,Música
+Fx,Fx,Fx,Fx,Fx,Fx,Fx,Fx
+Spanish,Español,Spanish,Spanisch,Espagnol,Espainiera,Spagnolo,Espanhol
+English,Inglés,English,Englisch,Anglais,Ingelesa,Inglese,Inglês
+German,Alemán,German,Deutsch,Allemand,Alemana,Tedesco,Alemão
+Basque,Euskera,Basque,Baskisch,Basque,Euskara,Basco,Basco
+French,Francés,French,Französisch,Français,Frantsesa,Francese,Francês
+THEME,TEMÁTICA,THEME,THEMA,THÉMATIQUE,GAIA,TEMA,TEMA
+DIFFICULTY,DIFICULTAD,DIFFICULTY,SCHWIERIGKEIT,DIFFICULTÉ,ZAILTASUNA,DIFFICOLTÀ,DIFICULDADE
+Riddles,Adivinanzas,Riddles,Rätsel,Devinettes,Asmakizunak,Indovinelli,Advinhas
+Bible Quotes,Citas Bíblicas,Bible Quotes,Bibelzitate,Citations Bibliques,Aipamen Biblikoak,Citazioni Bibliche,Citações Bíblicas
+Literary Fragments,Fragmentos Literarios,Literary Fragments,Literaturfragmente,Fragments Littéraires,Literatur Zatiak,Frammenti Letterari,Fragmentos Literários
+Jokes,Chistes,Jokes,Witze,Blagues,Txisteak,Barzellette,Piadas
+Famous Quotes,Citas Célebres,Famous Quotes,Berühmte Zitate,Citations Célèbres,Aipamen Ospetsuak,Citazioni Famose,Citações Famosas
+Ephemerides,Efemérides,Ephemerides,Ereignisse,Éphémérides,Efemerideak,Efemeridi,Efemérides
+Popular Sayings,Refranes Populares,Popular Sayings,Sprichwörter,Proverbes Populaires,Esaera Zaharrak,Proverbi Popolari,Provérbios Populares
+Easy,Fácil,Easy,Einfach,Facile,Erraza,Facile,Fácil
+Normal,Normal,Normal,Normal,Normal,Normala,Normale,Normal
+Hard,Difícil,Hard,Schwierig,Difficile,Zaila,Difficile,Difícil
+Select THEME and DIFFICULTY,Selecciona TEMÁTICA y DIFICULTAD,Select THEME and DIFFICULTY,Wähle THEMA und SCHWIERIGKEIT,Sélectionne THÉMATIQUE et DIFFICULTÉ,Hautatu GAIA eta ZAILTASUNA,Seleziona TEMA e DIFFICOLTÀ,Selecione TEMA e DIFICULDADE
+SETTINGS,AJUSTES,SETTINGS,EINSTELLUNGEN,PARAMÈTRES,EZARPENAK,IMPOSTAZIONI,CONFIGURAÇÕES
+PLAY,JUGAR,PLAY,SPIELEN,JOUER,JOLASTU,GIOCA,JOGAR
+"Select
+THEME
+and
+DIFFICULTY","Seleccione
+TEMA
+y
+DIFICULTAD","Select
+THEME
+and
+DIFFICULTY","Wählen Sie
+THEMA
+und
+SCHWIERIGKEITSGRAD","Sélectionnez
+LE SUJET
+et
+LE NIVEAU DE DIFFICULTÉ","Hautatu
+GAIA
+eta
+ZAILTASUNA","Seleziona
+ARGOMENTO
+e
+DIFFICOLTÀ","Selecione
+TÓPICO
+e
+DIFICULDADE"
+SCORE,PUNTUACIÓN,SCORE,PUNKTZAHL,SCORE,PUNTUAZIOA,PUNTO,PONTUAÇÃO
+Difficulty,Dificultad,Difficulty,Schwierig,Difficulté,Zailtasuna,Difficoltà,Dificuldade
+Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score,"Según la dificultad: algunas pistas o compras pueden ser gratis. 
+El resto de pistas o compras te harán perder monedas y puntuación",Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score,Je nach Schwierigkeitsgrad: Einige Hinweise oder Käufe können kostenlos sein. Die übrigen kosten Münzen und Punkte,Selon la difficulté : certains indices ou achats peuvent être gratuits. Les autres te feront perdre des pièces et des points,Zailtasunaren arabera: pista edo erosketa batzuk doakoak izan daitezke. Gainerakoek txanponak eta puntuak galduko dizkizute,In base alla difficoltà: alcuni indizi o acquisti possono essere gratuiti. Gli altri ti faranno perdere monete e punteggio,Conforme a dificuldade: algumas dicas ou compras podem ser gratuitas. As demais farão você perder moedas e pontuação
+Try to guess where the vowels are. Use the cell-coloring aids to spot them across the whole sentence,"Trata de adivinar donde están las vocales.
+Usa las ayudas de colorear celdas para detectarlas en toda la frase",Try to guess where the vowels are. Use the cell-coloring aids to spot them across the whole sentence,,,,,
+Some special letters are easier to spot,Algunas letras especiales son más fácilmente detectables,Some special letters are easier to spot,Einige besondere Buchstaben sind leichter zu erkennen,Certaines lettres particulières sont plus faciles à repérer,Zenbait letra berezi errazago antzematen dira,Alcune lettere speciali sono più facili da individuare,Algumas letras especiais são mais fáceis de identificar: Y
+Long texts may take more time and feel harder, but they offer more words to deduce from,,Long texts may take more time and feel harder, but they offer more words to deduce from,,,
+The game doesn’t tell you if a letter is in the correct cell. You can always buy that letter to be sure,"El juego no te avisa de si has puesto una letra en la casilla correcta o no.
+Siempre puedes comprar esa letra para estar seguro de que está bien",The game doesn’t tell you if a letter is in the correct cell. You can always buy that letter to be sure,,,,,
+You can change the board’s number of columns in the options menu,Puedes cambiar el número de columnas del tablero desde el menú de opciones,You can change the board’s number of columns in the options menu,Du kannst die Anzahl der Spalten des Spielfelds im Optionen-Menü ändern,Tu peux changer le nombre de colonnes du plateau dans le menu des options,Aukeren menuan alda dezakezu taularen zutabe kopurua,Puoi cambiare il numero di colonne della griglia dal menu opzioni,Você pode alterar o número de colunas do tabuleiro no menu de opções
+Biggest penalties (order): buy vowels > buy letters > buy hints > change letters,Lo que más penaliza es: comprar vocales > comprar letras > comprar pistas > cambiar letras,Biggest penalties (order): buy vowels > buy letters > buy hints > change letters,Größte Strafreihenfolge: Vokale kaufen > Buchstaben kaufen > Hinweise kaufen > Buchstaben ändern,Ce qui pénalise le plus : acheter des voyelles > acheter des lettres > acheter des indices > changer des lettres,Zigor handiena honela: bokalak erosi > letrak erosi > pistak erosi > letrak aldatu,Penalità (ordine): comprare vocali > comprare lettere > comprare indizi > cambiare lettere,Maior penalização (ordem): comprar vogais > comprar letras > comprar dicas > trocar letras
+Only your first completion of a board counts for online and local leaderboards,Solo puntua para los rankings online y local la primera vez que haces un tablero,Only your first completion of a board counts for online and local leaderboards,Nur der erste Abschluss eines Brettes zählt für die Online- und lokalen Bestenlisten,Seul ton premier achèvement d’un tableau compte pour les classements en ligne et locaux,Taula bat lehen aldiz osatzen duzunean bakarrik balio du online eta tokiko sailkapenetarako,Solo la prima volta che completi una griglia vale per le classifiche online e locali,Apenas a primeira vez que concluires um tabuleiro conta para os rankings online e local
+The score depends on the difficulty and not on the topic of the sentence,La puntuación depende de la dificultad y no del tema de la frase,The score depends on the difficulty and not on the topic of the sentence,,,,,
+ERASE,BORRAR,ERASE,LÖSCHEN,SUPPRIMER,EZABATU,ELIMINA,EXCLUIR
+TIME,TIEMPO,TIME,ZEIT,TEMPS,DENBORA,TEMPO,TEMPO
+CHANGES,CAMBIOS,CHANGES,ÄNDERUNGEN,MODIFICATIONS,ALDAKETAK,MODIFICHE,ALTERAÇÕES
+LETTERS,LETRAS,LETTERS,BUCHSTABEN,LETTRES,LETRAK,LETTERE,LETRAS
+HINTS,PISTAS,HINTS,HINWEISE,INDICES,PISTAK,INDIZI,DICAS
+Are you sure you want to delete the letter? (it will cost you 1000 points from your score),¿Estás seguro de que quieres borrar la letra? (te costará 1.000 puntos en tu marcador),Are you sure you want to delete the letter? (it will cost you 1000 points from your score),,,Ziur zaude letra ezabatu nahi duzula? (zure puntuaziotik 1.000 puntu kenduko dira),,
+EXIT,SALIR,EXIT,BEENDEN,QUITTER,IRTEN,USCIRE,SAIR
+CONTINUE,SEGUIR,CONTINUE,FORTSETZEN,CONTINUER,JARRAITU,CONTINUARE,CONTINUAR
+Are you sure you want to leave the game? (if you abandon it  you won’t be able to score on it later),¿Estás seguro de que quieres salir de la partida? (si abandonas ya no podrás puntuar en ella más adelante),Are you sure you want to leave the game? (if you abandon it  you won’t be able to score on it later),,,,,
+GAME SETTINGS,AJUSTES DE JUEGO,GAME SETTINGS,SPIELEINSTELLUNGEN,PARAMÈTRES DE JEU,JOKOAREN EZARPENAK,IMPOSTAZIONI DI GIOCO,CONFIGURAÇÕES DO JOGO
+Enter Name,Introduce Nombre,Enter Name,Geben Sie den Namen ein,Entrez le nom,sartu izena,Inserisci il nome,Digite o nome
+COLUMNS,COLUMNAS,COLUMNS,SPALTEN,COLONNES,ZUTABEAK,COLONNE,COLUNAS
+New local record!,¡Nuevo récord local!,New local record!,Neuer lokaler Rekord!,Nouveau record local !,Errekor lokal berria!,Nuovo record locale!,Novo recorde local!
+Rank 1 in LOCAL TOP,Puesto 1 en TOP LOCAL,Rank 1 in LOCAL TOP,Platz 1 in der LOKALEN BESTENLISTE,1er du TOP LOCAL,TOKIKO SAILKAPENEAN 1. postua,1º nel TOP LOCALE,1º no TOP LOCAL
+Rank 2 in LOCAL TOP,Puesto 2 en TOP LOCAL,Rank 2 in LOCAL TOP,Platz 2 in der LOKALEN BESTENLISTE,2e du TOP LOCAL,TOKIKO SAILKAPENEAN 2. postua,2º nel TOP LOCALE,2º no TOP LOCAL
+Rank 3 in LOCAL TOP,Puesto 3 en TOP LOCAL,Rank 3 in LOCAL TOP,Platz 3 in der LOKALEN BESTENLISTE,3e du TOP LOCAL,TOKIKO SAILKAPENEAN 3. postua,3º nel TOP LOCALE,3º no TOP LOCAL
+Rank 4 in LOCAL TOP,Puesto 4 en TOP LOCAL,Rank 4 in LOCAL TOP,Platz 4 in der LOKALEN BESTENLISTE,4e du TOP LOCAL,TOKIKO SAILKAPENEAN 4. postua,4º nel TOP LOCALE,4º no TOP LOCAL
+Rank 5 in LOCAL TOP,Puesto 5 en TOP LOCAL,Rank 5 in LOCAL TOP,Platz 5 in der LOKALEN BESTENLISTE,5e du TOP LOCAL,TOKIKO SAILKAPENEAN 5. postua,5º nel TOP LOCALE,5º no TOP LOCAL
+Rank 6 in LOCAL TOP,Puesto 6 en TOP LOCAL,Rank 6 in LOCAL TOP,Platz 6 in der LOKALEN BESTENLISTE,6e du TOP LOCAL,TOKIKO SAILKAPENEAN 6. postua,6º nel TOP LOCALE,6º no TOP LOCAL
+Rank 7 in LOCAL TOP,Puesto 7 en TOP LOCAL,Rank 7 in LOCAL TOP,Platz 7 in der LOKALEN BESTENLISTE,7e du TOP LOCAL,TOKIKO SAILKAPENEAN 7. postua,7º nel TOP LOCALE,7º no TOP LOCAL
+Rank 8 in LOCAL TOP,Puesto 8 en TOP LOCAL,Rank 8 in LOCAL TOP,Platz 8 in der LOKALEN BESTENLISTE,8e du TOP LOCAL,TOKIKO SAILKAPENEAN 8. postua,8º nel TOP LOCALE,8º no TOP LOCAL
+Easy – Riddles,Fácil – Adivinanza,Easy – Riddles,Einfach – Rätsel,Facile – Devinettes,Erraza – Asmakizunak,Facile – Indovinelli,Fácil – Advinhas
+Easy – Ephemerides,Fácil – Efeméride,Easy – Ephemerides,Einfach – Ereignisse,Facile – Éphémérides,Erraza – Efemerideak,Facile – Efemeridi,Fácil – Efemérides
+Easy – Literary Fragments,Fácil – Fragmento,Easy – Literary Fragments,Einfach – Literaturfragmente,Facile – Fragments Littéraires,Erraza – Literatur Zatiak,Facile – Frammenti Letterari,Fácil – Fragmentos Literários
+Easy – Famous Quotes,Fácil – Cita célebre,Easy – Famous Quotes,Einfach – Berühmte Zitate,Facile – Citations Célèbres,Erraza – Aipamen Ospetsuak,Facile – Citazioni Famose,Fácil – Citações Famosas
+Easy – Jokes,Fácil – Chiste,Easy – Jokes,Einfach – Witze,Facile – Blagues,Erraza – Txisteak,Facile – Barzellette,Fácil – Piadas
+Easy – Popular Sayings,Fácil – Refrán,Easy – Popular Sayings,Einfach – Sprichwörter,Facile – Proverbes Populaires,Erraza – Esaera Zaharrak,Facile – Proverbi Popolari,Fácil – Provérbios Populares
+Easy – Bible Quotes,Fácil – Cita Biblia,Easy – Bible Quotes,Einfach – Bibelzitate,Facile – Citations Bibliques,Erraza – Aipamen Biblikoak,Facile – Citazioni Bibliche,Fácil – Citações Bíblicas
+Normal – Riddles,Normal – Adivinanza,Normal – Riddles,Normal – Rätsel,Normal – Devinettes,Normala – Asmakizunak,Normale – Indovinelli,Normal – Advinhas
+Normal – Ephemerides,Normal – Efeméride,Normal – Ephemerides,Normal – Ereignisse,Normal – Éphémérides,Normala – Efemerideak,Normale – Efemeridi,Normal – Efemérides
+Normal – Literary Fragments,Normal – Fragmento,Normal – Literary Fragments,Normal – Literaturfragmente,Normal – Fragments Littéraires,Normala – Literatur Zatiak,Normale – Frammenti Letterari,Normal – Fragmentos Literários
+Normal – Famous Quotes,Normal – Cita célebre,Normal – Famous Quotes,Normal – Berühmte Zitate,Normal – Citations Célèbres,Normala – Aipamen Ospetsuak,Normale – Citazioni Famose,Normal – Citações Famosas
+Normal – Jokes,Normal – Chiste,Normal – Jokes,Normal – Witze,Normal – Blagues,Normala – Txisteak,Normale – Barzellette,Normal – Piadas
+Normal – Popular Sayings,Normal – Refrán,Normal – Popular Sayings,Normal – Sprichwörter,Normal – Proverbes Populaires,Normala – Esaera Zaharrak,Normale – Proverbi Popolari,Normal – Provérbios Populares
+Normal – Bible Quotes,Normal – Cita Biblia,Normal – Bible Quotes,Normal – Bibelzitate,Normal – Citations Bibliques,Normala – Aipamen Biblikoak,Normale – Citazioni Bibliche,Normal – Citações Bíblicas
+Hard – Riddles,Difícil – Adivinanza,Hard – Riddles,Schwierig – Rätsel,Difficile – Devinettes,Zaila – Asmakizunak,Difficile – Indovinelli,Difícil – Advinhas
+Hard – Ephemerides,Difícil – Efeméride,Hard – Ephemerides,Schwierig – Ereignisse,Difficile – Éphémérides,Zaila – Efemerideak,Difficile – Efemeridi,Difícil – Efemérides
+Hard – Literary Fragments,Difícil – Fragmento,Hard – Literary Fragments,Schwierig – Literaturfragmente,Difficile – Fragments Littéraires,Zaila – Literatur Zatiak,Difficile – Frammenti Letterari,Difícil – Fragmentos Literários
+Hard – Famous Quotes,Difícil – Cita célebre,Hard – Famous Quotes,Schwierig – Berühmte Zitate,Difficile – Citations Célèbres,Zaila – Aipamen Ospetsuak,Difficile – Citazioni Famose,Difícil – Citações Famosas
+Hard – Jokes,Difícil – Chiste,Hard – Jokes,Schwierig – Witze,Difficile – Blagues,Zaila – Txisteak,Difficile – Barzellette,Difícil – Piadas
+Hard – Popular Sayings,Difícil – Refrán,Hard – Popular Sayings,Schwierig – Sprichwörter,Difficile – Proverbes Populaires,Zaila – Esaera Zaharrak,Difficile – Proverbi Popolari,Difícil – Provérbios Populares
+Hard – Bible Quotes,Difícil – Cita Biblia,Hard – Bible Quotes,Schwierig – Bibelzitate,Difficile – Citations Bibliques,Zaila – Aipamen Biblikoak,Difficile – Citazioni Bibliche,Difícil – Citações Bíblicas
+NAME!!,¡¡NOMBRE!!,NAME!!,NAME!!,NOM !!,IZENA!!,NOME!!,NOME!!
+Vowels,Vocales,Vowels,Vokale,Voyelles,Bokalak,Vocali,Vogais
+Consonants,Consonantes,Consonants,Konsonanten,Consonnes,Kontsonanteak,Consonanti,Consoantes
+Hints,Pistas,Hints,Hinweise,Indices,Pistak,Indizi,Dicas
+Erased,Borradas,Erased,Gelöscht,Effacées,Ezabatuta,Cancellate,Excluídas
+Time,Tiempo,Time,Zeit,Temps,Denbora,Tempo,Tempo
+RECORD,RECORD,RECORD,HIGHSCORE,MEILLEUR SCORE,ERREKOR,MIGLIOR PUNTEGGIO,RECORDE
+BUY,COMPRAR,BUY,KAUFEN,ACHETER,EROSI,COMPRARE,COMPRAR
+HINT 1,PISTA 1,HINT 1,HINWEIS 1,INDICE 1,PISTA 1,INDIZIO 1,DICA 1
+HINT 2,PISTA 2,HINT 2,HINWEIS 2,INDICE 2,PISTA 2,INDIZIO 2,DICA 2
+HINT 3,PISTA 3,HINT 3,HINWEIS 3,INDICE 3,PISTA 3,INDIZIO 3,DICA 3
+Free,Gratis,Free,Kostenlos,Gratuit,Doan,Gratis,Grátis
+UNLOCKED,DESBLOQUEADO,UNLOCKED,FREIGESCHALTET,DÉBLOQUÉ,DESBLOKEATUTA,SBLOCCATO,DESBLOQUEADO
+PAID,COMPRADO,PAID,GEKAUFT,ACHETÉ,EROSIK,ACQUISTATO,PAGO
+GET,OBTENER,GET,HOLEN,OBTENIR,LORTU,OTTIENI,OBTER
+LOCKED,BLOQUEADO,LOCKED,GESPERRT,VERROUILLÉ,BLOKEATUTA,BLOCCATO,BLOQUEADO
+AVAILABLE,DISPONIBLE,AVAILABLE,VERFÜGBAR,DISPONIBLE,ESKURAGARRI,DISPONIBILE,DISPONÍVEL
+Cost:,Coste:,Cost:,Kosten:,Coût :,Kostua:,Costo:,Custo:
+Unlocks after purchasing track 2,Desbloquea tras comprar pista 2,Unlocks after purchasing track 2,Wird freigeschaltet nach dem Kauf von Spur 2,Débloqué après avoir acheté la piste 2,2. pista erosi ondoren…,Si sblocca dopo aver acquistato la traccia 2,Desbloqueia após comprar a pista 2
+- 10.000 points,- 10.000 puntos,- 10.000 points,- 10.000 Punkte,- 10 000 points,- 10.000 puntu,- 10.000 punti,- 10.000 pontos
+Welcome to,¡Bienvenido a ,Welcome to,Willkommen bei,Bienvenue à,Ongi etorri,Benvenuto a,Bem-vindo ao
+CipherLetter!,CifraLetra!,CipherLetter,CipherLetter!,CipherLetter!,CifraLetra!,CipherLetter!,CipherLetter!
+Discover the letter that corresponds to each number to solve the hidden phrases.,Descubre la letra que corresponde a cada número para resolver las frases ocultas.,Discover the letter that corresponds to each number to solve the hidden phrases.,,,,,
+Game cells,Celdas del juego,Game cells,Spielfelder,Cellules du jeu,Joko gelaxkak,Celle di gioco,Células do jogo
+Number,Número,Number,Zahl,Nombre,Zenbakia,Numero,Número
+Always visible,Siempre visible,Always visible,Immer sichtbar,Toujours visible,Beti ikusgai,Sempre visibile,Sempre visível
+Letter,Letra,Letter,Buchstabe,Lettre,Letra,Lettera,Letra
+You must discover it,You must discover it,You must discover it,Du musst es entdecken,Tu dois la découvrir,Aurkitu behar duzu,Devi scoprirla,Tens de descobri-la
+Show pre-game tutorial,Mostrar tutorial antes de partida,Show pre-game tutorial,Vor-Spiel-Tutorial anzeigen,Montrer le tutoriel avant la partie,Partida aurretik tutoriala,Mostrare il tutorial prima della partita,Mostrar tutorial antes do jogo
+Letter entry,Entrada de letras,Letter entry,Buchstabeneingabe,Saisie de lettre,Letra sarrera,Inserimento lettere,Entrada de letras
+1- Select the CELL,1- Selecciona la CELDA,1- Select the CELL,1- Wähle die Zelle aus,1- Sélectionne la cellule,1- Gelaxka hautatu,1- Seleziona la cella,1- Seleciona a célula
+2- Select the LETTER,2- Selecciona la LETRA,2- Select the LETTER,2- Wähle den Buchstaben aus,2- Sélectionne la lettre,2- Letra hautatu,2- Seleziona la lettera,2- Seleciona a letra
+(All cells with the number 3 will be filled with the letter A),(Todas las celdas con el numero 3 serán rellenadas con la letra A),(All cells with the number 3 will be filled with the letter A),,,,,
+The game doesn't tell you whether the choice is correct or not!,¡El juego no avisa si la elección es correcta o no!,The game doesn't tell you whether the choice is correct or not!,,,,,
+It's up to you to deduce the correct one.,Depende de ti deducir la correcta.,It's up to you to deduce the correct one.,,,,,
+To delete letters, use the ERASE button.,Para borrar letras, usa el botón BORRAR.,To delete letters, use the ERASE button.,,
+Every time you delete a letter you will lose points:,Cada vez que borres una letra perderás puntos:,Every time you delete a letter you will lose points:,,,,,
+-100.000 points,-100.000 puntos,-100.000 points,-100.000 Punkte,-100 000 points,-100.000 puntu,-100.000 punti,-100.000 pontos
+HINT 1 - Image,PISTA 1 - Imagen,HINT 1 - Image,HINWEIS 1 - BILD,,,,
+FREE,GRATIS,FREE,,,,,
+HINT 2 - Text description,PISTA 2 - Texto descripción,HINT 2 - Text description,,,,,
+Text for more context about the phrase,Texto para tener más contexto sobre la frase,Text for more context about the phrase,,,,,
+HINT 3 - Words in the sentence,PISTA 3 - Palabras en la frase,HINT 3 - Words in the sentence,,,,,
+Some words that the sentence contains,Algunas palabras que contiene la frase,Some words that the sentence contains,,,,,
+Initial letters,Letras iniciales,Initial letters,,,,,
+Sentences may contain revealed letters from the beginning,Las frases pueden contener letras reveladas de inicio,Sentences may contain revealed letters from the beginning,,,,,
+Buy: A - E,Comprar: A - E,Buy: A - E,,,,,
+-200.000 points,-200.000 puntos,-200.000 points,-200.000 Punkte,-200 000 points,-200.000 puntu,-200.000 punti,-200.000 pontos
+Buy: I - O - U,Comprar: I - O - U,Buy: I - O - U,,,,,
+DIFFICULTIES,DIFICULTADES,DIFFICULTIES,,,,,
+Sentences of less than [font_size=40][color=034419]150[/color][/font_size] characters to discover.,Frases de menos de [font_size=40][color=034419]150[/color][/font_size] caracteres por descubrir.,Sentences of less than [font_size=40][color=034419]150[/color][/font_size] characters to discover.,,,,,
+Estimated time,Tiempo estimado,Estimated time,,,,,
+Sentences of less than [font_size=40][color=034419]250[/color][/font_size] characters to discover.,Frases de menos de [font_size=40][color=034419]250[/color][/font_size] caracteres por descubrir.,Sentences of less than [font_size=40][color=034419]250[/color][/font_size] characters to discover.,,,,,
+3 minutes,3 minutos,3 minutes,,,,,
+7 minutes,7 minutos,7 minutes,,,,,
+Sentences of more than [font_size=40][color=034419]250[/color][/font_size] characters to be solved.,Frases de más de [font_size=40][color=034419]250[/color][/font_size] caracteres por ser resueltos.,Sentences of more than [font_size=40][color=034419]250[/color][/font_size] characters to be solved.,,,,,
+25 minutes,25 minutos,25 minutes,,,,,
+COINS,MONEDAS,COINS,,,,,
+Utility,Utilidad,Utility,,,,,
+"You can use coins to buy LETTERS and HINTS.
+
+Buy coins by watching ads or purchasing the app.","Las monedas te servirán para comprar LETRAS, y PISTAS.
+
+Compra monedas viendo anuncios o comprando la aplicación.","You can use coins to buy LETTERS and HINTS.
+
+Buy coins by watching ads or purchasing the app.",,,,,
+Buy app,Comprar aplicación,Buy app,,,,,
+By purchasing the app, you remove the ads that appear during the game and get unlimited coins.,Al comprar la aplicación eliminas los anuncios que se abren durante el juego y consigues monedas infinitas.,By purchasing the app, you remove the ads that appear during the game and get unlimited coins.,,,
+“Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score”,“Dependiendo de la dificultad: algunas pistas o compras pueden ser gratuitas. El resto te costará monedas y puntos.”,“Depending on the difficulty: some hints or purchases may be free. The rest will cost you coins and score”,,,,,
+“Try to guess where the vowels are. Use the cell-coloring aids to spot them across the whole sentence”,“Intenta adivinar dónde están las vocales. Usa las ayudas para colorear celdas y localizar letras en la frase.”,“Try to guess where the vowels are. Use the cell-coloring aids to spot them across the whole sentence”,,,,,
+“Some special letters are easier to spot”,“Algunas letras especiales son más fáciles de detectar”,“Some special letters are easier to spot”,,,,,
+“Score depends on the difficulty, not on the sentence’s theme”,“La puntuación depende de la dificultad, no del tema de la frase”,“Score depends on the difficulty, not on the sentence’s theme”,,
+“Only your first completion of a board counts for online and local leaderboards”,“Solo tu primera finalización de un tablero cuenta para las clasificaciones en línea y locales”,“Only your first completion of a board counts for online and local leaderboards”,,,,,
+“Biggest penalties (order): buy vowels > buy letters > buy hints > change letters”,“Mayores penalizaciones (orden): comprar vocales > comprar letras > comprar pistas > borrar letras”,“Biggest penalties (order): buy vowels > buy letters > buy hints > change letters”,,,,,
+“You can change the board’s number of columns in the options menu”,“Puedes cambiar el número de columnas del tablero en el menú de opciones”,“You can change the board’s number of columns in the options menu”,,,,,
+“The game doesn’t tell you if a letter is in the correct cell. You can always buy that letter to be sure”,“El juego no te avisa si una letra está en la celda correcta. Siempre puedes comprar la letra para asegurarte.” ,“The game doesn’t tell you if a letter is in the correct cell. You can always buy that letter to be sure”,,,,,
+“Long texts may take more time and feel harder, but they offer more words to deduce from”,“Los textos largos pueden requerir más tiempo y resultar más difíciles, pero ofrecen más palabras para deducir”,“Long texts may take more time and feel harder, but they offer more words to deduce from”,,
+TIP,CONSEJOS,TIP,,,,,
+RANDOM,ALEATORIO,RANDOM,,,,,
+SELECT,SELECCIONAR,SELECT,,,,,
+Curiosities,Curiosidades,Curiosities,,,,,
+GAMES PLAYED,PARTIDAS JUGADAS,GAMES PLAYED,,,,,
+TOTAL TIME PLAYED,TIEMPO TOTAL JUGADO,TOTAL TIME PLAYED,,,,,
+STATS,ESTADÍSTICAS,STATS,,,,,
+EASY,FÁCIL,EASY,,,,,
+NORMAL,NORMAL,NORMAL,,,,,
+DIFFICULT,DIFÍCIL,DIFFICULT,,,,,
+GAMES PLAYED,PARTIDAS JUGADAS,GAMES PLAYED,,,,,
+USED HINTS,PISTAS USADAS,USED HINTS,,,,,
+PURCHASED CONSONANTS,CONSONANTES COMPRADAS,PURCHASED CONSONANTS,,,,,
+PURCHASED AE VOWELS,VOCALES AE COMPRADAS,PURCHASED AE VOWELS,,,,,
+PURCHASED IOU VOWELS,VOCALES IOU COMPRADAS,PURCHASED IOU VOWELS,,,,,
+ERASED LETTERS,LETRAS BORRADAS,ERASED LETTERS,,,,,
+AVERAGE GAME TIME,TIEMPO PARTIDA MEDIA,AVERAGE GAME TIME,,,,,
+TIME PLAYED,TIEMPO JUGADO,TIME PLAYED,,,,,
+ONLINE RECORD,RECORD ONLINE,ONLINE RECORD,,,,,
+"CONGRATULATIONS!!!!
+You've solved the sentence","¡¡¡ENHORABUENA !!!!
+Has resuelto la frase","CONGRATULATIONS!!!!
+You've solved the sentence",,,,,

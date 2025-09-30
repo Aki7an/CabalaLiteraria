@@ -1,10 +1,10 @@
 [gd_scene load_steps=17 format=3 uid="uid://y1k8m1upqvmd"]
 
 [ext_resource type="Script" uid="uid://7fpd4dm3ml4u" path="res://scenes/game/panel_colors.gd" id="1_egxq0"]
-[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="3_8wmjc"]
-[ext_resource type="Texture2D" uid="uid://dslqrdlfkvkm0" path="res://images/settings.png" id="4_ymjlu"]
-[ext_resource type="Texture2D" uid="uid://duvxnbfhhi6g" path="res://images/triangulo-hacia-arriba -blanco.png" id="4_ytfxw"]
-[ext_resource type="FontFile" uid="uid://ys0y54nml84h" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-ExtraBold.ttf" id="5_ymjlu"]
+[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="3_8wmjc"]
+[ext_resource type="Texture2D" uid="uid://b1q15vddra5wi" path="res://images/settings.png" id="4_ymjlu"]
+[ext_resource type="Texture2D" uid="uid://dpq6nevhlufn6" path="res://images/triangulo-hacia-arriba -blanco.png" id="4_ytfxw"]
+[ext_resource type="FontFile" uid="uid://btpckw1n0m1mv" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-ExtraBold.ttf" id="5_ymjlu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_egxq0"]
 bg_color = Color(0.6, 0.6, 0.6, 0)

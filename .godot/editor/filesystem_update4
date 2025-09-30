@@ -9,9 +9,6 @@ res://fonts/Letra_Titulo_1.tres
 res://GUI/Bandera.tres
 res://Botones.tres
 res://GUI/ButtonPista.tres
-res://scenes/Blink.gd
-res://data/frases_es.json
-res://scenes/menu_tutorial.gd
 res://scenes/MenuMain.tscn
 res://scenes/MenuSelectDifficulty.tscn
 res://scenes/MenuSelectCategory.tscn
@@ -40,4 +37,5 @@ res://scenes/MenuSelectGame.tscn
 res://scenes/MenuSplash.tscn
 res://scenes/menu_game_over.tscn
 res://scenes/menu_game_over_fail.tscn
-res://scenes/Blink_Sprite2D.gd
+res://scenes/Blink_Label.gd
+res://scenes/Blink_Panel.gd

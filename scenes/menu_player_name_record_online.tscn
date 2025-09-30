@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://b34imw6fcdojr"]
 
 [ext_resource type="Script" uid="uid://dsth7j5dasb6e" path="res://scenes/menu_player_name_record_online.gd" id="1_ed5lp"]
-[ext_resource type="Texture2D" uid="uid://blfms7sixe668" path="res://images/Felicitacion.png" id="1_ff1wu"]
+[ext_resource type="Texture2D" uid="uid://b2puluyuy824t" path="res://images/Felicitacion.png" id="1_ff1wu"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="3_3npoo"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="3_mxkpq"]
 
