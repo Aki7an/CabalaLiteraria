@@ -296,7 +296,7 @@ func _update_player_display_name(player_name: String) -> bool:
 	var pf_code: int = int(json.get("code", http_code))
 	return pf_code == 200
 
-func send_match_event(duration_sec: int, vowelsAE: int, vowelsIOU:int, letras: int, pistas: int, cambios: int, dificultad: int, categoria: String) -> bool:
+func send_match_event(duration_sec: int, vowelsAE: int, vowelsIOU:int, letras: int, pistas1: int, pistas2: int, dificultad: int, categoria: String) -> bool:
 	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
 		return false
 
@@ -308,8 +308,8 @@ func send_match_event(duration_sec: int, vowelsAE: int, vowelsIOU:int, letras: i
 			"vowelsAE_bought": vowelsAE,
 			"vowelsIOU_bought": vowelsIOU,
 			"lettersAE_bought": letras,
-			"hints_used": pistas,
-			"swaps_made": cambios,
+			"hints1_used": pistas1,
+			"hints2_used": pistas2,
 			"difficulty": dificultad,
 			"category": categoria
 		}

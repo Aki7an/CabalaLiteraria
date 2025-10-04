@@ -46,10 +46,10 @@ func _on_button_cancel_pressed():
 func _ready():
 	label_id_nivel.text = "ID NIVEL: " +  str(GameManager.id_frase)
 	
-	if GameManager.pistas_utilizadas == 0:
+	if GameManager.pistas_utilizadas_1 == 0 and GameManager.pistas_utilizadas_2 == 0 : 
 		label_pista_5_disable.visible = true
 		label_pista_6_disable.visible = true
-	elif GameManager.pistas_utilizadas == 1:
+	elif GameManager.pistas_utilizadas_1 == 1 and GameManager.pistas_utilizadas_2 == 0: 
 		label_pista_5_disable.visible = false
 		label_pista_6_disable.visible = true
 	else:

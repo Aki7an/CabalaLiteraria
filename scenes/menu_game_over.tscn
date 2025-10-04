@@ -122,15 +122,29 @@ texture = ExtResource("2_67j2n")
 [node name="RichTextLabel1" type="RichTextLabel" parent="GameOver"]
 layout_mode = 1
 offset_left = 40.0
-offset_top = 37.0
+offset_top = 57.0
 offset_right = 936.0
-offset_bottom = 245.0
+offset_bottom = 265.0
 theme = ExtResource("2_4rb3m")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_0cr37")
 theme_override_font_sizes/normal_font_size = 60
-text = "CONGRATULATIONS!!!!
-You've solved the sentence"
+text = "You've solved the sentence"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="GameOver"]
+layout_mode = 1
+offset_left = 32.0
+offset_top = -15.0
+offset_right = 928.0
+offset_bottom = 193.0
+theme = ExtResource("2_4rb3m")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_0cr37")
+theme_override_font_sizes/normal_font_size = 60
+text = "CONGRATULATIONS!!!!"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1

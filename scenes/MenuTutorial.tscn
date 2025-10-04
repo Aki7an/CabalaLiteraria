@@ -1734,9 +1734,9 @@ vertical_alignment = 1
 
 [node name="RichTextLabel16" type="RichTextLabel" parent="Label/Control/3"]
 layout_mode = 0
-offset_left = 328.0
+offset_left = 20.0
 offset_top = 1267.0
-offset_right = 670.0
+offset_right = 999.0
 offset_bottom = 1338.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.81, 0, 0, 1)
@@ -1822,7 +1822,7 @@ offset_bottom = 695.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_88ncm")
-text = "HINT 2 - Text description"
+text = "HINT 2 - More description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1933,11 +1933,12 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 80
-text = "Buy Hints"
+text = "Hints Purchase"
 vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="5" type="Control" parent="Label/Control"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -1995,7 +1996,7 @@ horizontal_alignment = 1
 
 [node name="RichTextLabel11" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = 502.0
+offset_left = 454.0
 offset_top = 579.0
 offset_right = 869.0
 offset_bottom = 641.0
@@ -2006,7 +2007,7 @@ text = "-3.000 points
 
 [node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = 503.0
+offset_left = 468.0
 offset_top = 1048.0
 offset_right = 869.0
 offset_bottom = 1110.0
@@ -2048,7 +2049,7 @@ offset_bottom = 1186.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_4xhfx")
-text = "Consonante"
+text = "Consonants"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -2108,7 +2109,7 @@ texture = ExtResource("12_2077r")
 
 [node name="RichTextLabel12" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = 503.0
+offset_left = 465.0
 offset_top = 810.0
 offset_right = 861.0
 offset_bottom = 872.0
@@ -2184,7 +2185,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_fonts/font = ExtResource("5_mkqcm")
 theme_override_font_sizes/font_size = 80
-text = "Buy Letters"
+text = "Letters Purchase"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -2354,7 +2355,7 @@ theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "+40.000 points"
+text = "40.000 points"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -2368,7 +2369,7 @@ theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "+50.000 points"
+text = "50.000 points"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -2382,7 +2383,7 @@ theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "+60.000 points"
+text = "60.000 points"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -2396,7 +2397,7 @@ theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "+30.000 points"
+text = "30.000 points"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -2410,7 +2411,7 @@ theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
 theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "+30.000 points"
+text = "30.000 points"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -2596,7 +2597,6 @@ text = "PRO"
 autowrap_mode = 2
 
 [node name="7" type="Control" parent="Label/Control"]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -2686,15 +2686,25 @@ horizontal_alignment = 1
 [node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
 layout_mode = 0
 offset_left = 14.0
-offset_top = 336.0
+offset_top = 448.0
 offset_right = 726.0
 offset_bottom = 568.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 35
-text = "You can use coins to buy LETTERS and HINTS.
+text = "Buy coins by watching ads or purchasing the app."
+horizontal_alignment = 1
 
-Buy coins by watching ads or purchasing the app."
+[node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 336.0
+offset_right = 726.0
+offset_bottom = 452.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 35
+text = "You can use coins to buy LETTERS and HINTS."
 horizontal_alignment = 1
 
 [node name="RichTextLabel7" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
@@ -2717,9 +2727,9 @@ texture = ExtResource("12_2077r")
 [node name="ButtonShop" type="Button" parent="Label/Control/7/LabelMarcoA/Slide1"]
 layout_mode = 0
 offset_left = 294.0
-offset_top = 996.0
+offset_top = 1010.0
 offset_right = 486.0
-offset_bottom = 1196.0
+offset_bottom = 1210.0
 pivot_offset = Vector2(96, 96)
 theme = SubResource("Theme_2077r")
 theme_override_colors/font_color = Color(0, 0, 0, 1)

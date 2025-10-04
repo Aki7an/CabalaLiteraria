@@ -15,7 +15,11 @@ extends Node
 #@export var letras_compradas: int = 0
 @export var vocales_compradas: int = 0
 @export var cambios_hechos: int = 0
+
+@export var pistas_utilizadas_1: int = 0 
+@export var pistas_utilizadas_2: int = 0 
 @export var pistas_utilizadas: int = 0 
+@export var pistas: int = 0 
 
 @export var player_name: String = "Aki"
 @export var score: int
@@ -261,14 +265,15 @@ func resetear_partida_terminada() -> void:
 	
 func reset_game_paremeters() -> void:
 	score = score_init
-	pistas_utilizadas = 0
+	pistas = 0
+	pistas_utilizadas_1 = 0
 #	letras_compradas = 0
 #	vocales_compradas = 0
 	vocalesAE_compradas = 0
 	vocalesIOU_compradas = 0
 	consonantes_compradas = 0
 	cambios_hechos = 0
-	pistas_utilizadas = 0 
+	pistas_utilizadas_2 = 0 
 	tiempo_partida = 0	
 
 func _game_finished() -> void:
@@ -289,7 +294,7 @@ func set_go_to_game_disable() -> void:
 	go_to_game = false
 	
 func calcula_score() -> void:
-	#score = GameManager.dificultad_actual * 10000000 + 2000000 * (2 - GameManager.vocalesAE_compradas) + 1000000 * (3-GameManager.vocalesIOU_compradas) + 100000 * (9-GameManager.consonantes_compradas) + (3-GameManager.pistas_utilizadas) * 10000 + (9- GameManager.cambios_hechos) * 1000 + 999 - GameManager.tiempo_partida 
+	#
 	score = score_init - 5000 * int(GameManager.pista_3) - 3000 * GameManager.vocalesAE_compradas - 2000 * GameManager.vocalesIOU_compradas - 1000 * GameManager.consonantes_compradas - 500 * int(GameManager.pista_2) - GameManager.tiempo_partida 
 	
 func cambios_increase() -> void:
@@ -305,6 +310,8 @@ func _inicializar_datos():
 	pista_1 = false
 	pista_2 = false
 	pista_3 = false
+	pistas_utilizadas_1 = 0
+	pistas_utilizadas_2 = 0
 	
 	vocalesAE_compradas = 0
 	vocalesIOU_compradas = 0
@@ -327,11 +334,14 @@ func increment_consonantes_compradas() -> void:
 func set_pista1() -> void:
 	pista_1 = true
 
+
 func set_pista2() -> void:
 	pista_2 = true
+	pistas_utilizadas_1 = 1
 	
 func set_pista3() -> void:
 	pista_3 = true
+	pistas_utilizadas_2 = 1
 	
 func set_pistas_utilizadas(pistas:int) -> void:
 	pistas_utilizadas = pistas
@@ -712,13 +722,11 @@ func _aplicar_frase_desde_db(pos: int) -> void:
 	# Inyecta en tu pipeline actual
 	id_frase           = int(item.index)
 	frase_original_til = String(item.text)
-	#descripcion_actual = String(item.description_init)
 	descripcion_final_actual  = String(item.description_end)
 	categoria_actual   = String(item.category)
 	dificultad_actual  = int(item.difficulty)
 	id_image           = int(item.image_number)
 	letras_iniciales   = String(item.letters_init)
-	#pistas_actuales    = (item.hints as Array).duplicate()
 	hint_1             = String(item.hint_1)
 	hint_2             = String(item.hint_2)
 	hint_3             = String(item.hint_3)
