@@ -143,15 +143,6 @@ func _update_score() -> void:
 		GameManager.calcula_score()
 		score.text = GameManager.formatear_numero(GameManager.score)
 	
-#func _silueta_o_texto() -> void:
-	#if GameManager.descripcion_actual == "IMAGEN":
-		#imagen_viñeta.visible = true
-		#imagen_viñeta.texture = lista_imagenes[GameManager.id_frase]
-		#rich_text_label_0.text = ""
-	#else:
-		#rich_text_label_0.text = str(GameManager.descripcion_actual)
-		#imagen_viñeta.visible = false
-
 func update_coins() -> void:
 	coins.text = str(GameManager.coins)
 	
@@ -189,6 +180,11 @@ func _update_resting_characters() -> void:
 		progress_bar.value = 0
 	else:
 		progress_bar.value = 100 * GameManager.numero_letras_reveladas / GameManager.numero_letras_a_revelar_originales
+		
+	if (GameManager.numero_letras_a_revelar_originales - GameManager.numero_letras_reveladas) <=5:
+		await get_tree().process_frame
+		GameManager.blink_resting_cells()
+	
 
 func calcula_pistas_utilizadas() -> int:
 	if GameManager.pista_1 and GameManager.pista_2 and GameManager.pista_3:
@@ -330,7 +326,7 @@ func _game_finished_to_results() -> void:
 	print("GAME END SIGNAL DONE")
 	SoundManager.play("ButtonClick")
 	#menu_game_over.visible = true
-	GameManager.calcula_score()
+	#GameManager.calcula_score()
 
 	#var overlay := OverlaySceneMenuResults.instantiate()
 	var overlay :=OverlaySceneMenuGameOver.instantiate()

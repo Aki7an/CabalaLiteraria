@@ -1,13 +1,17 @@
-[gd_scene load_steps=26 format=3 uid="uid://ciwx4uk36f7u3"]
+[gd_scene load_steps=35 format=3 uid="uid://ciwx4uk36f7u3"]
 
-[ext_resource type="Texture2D" uid="uid://bp623p23x4e0o" path="res://images/Shop3.png" id="1_nk4yh"]
+[ext_resource type="Texture2D" uid="uid://dtcjxiq444mtd" path="res://images/Shop3.png" id="1_nk4yh"]
 [ext_resource type="Script" uid="uid://csm86csqrk3bo" path="res://scenes/fondo_comprar_letra.gd" id="1_q36r8"]
-[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_i54d3"]
-[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="4_q36r8"]
-[ext_resource type="Texture2D" uid="uid://bwwm8eyqclx0m" path="res://images/Cruz.png" id="5_i54d3"]
+[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_i54d3"]
+[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="4_q36r8"]
+[ext_resource type="FontFile" uid="uid://bg87tkoaof74f" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="5_6i0am"]
+[ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="5_i54d3"]
+[ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="6_d01ki"]
+[ext_resource type="Texture2D" uid="uid://cc5fvr2p5neit" path="res://images/Coin.png" id="7_0trrb"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="7_rb1w2"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="8_6yjhf"]
 [ext_resource type="Theme" uid="uid://k7hcs8goxg0c" path="res://Label_Nunito_font.tres" id="8_cb75i"]
-[ext_resource type="FontFile" uid="uid://bqj1te7xeljg3" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="9_fbh3i"]
+[ext_resource type="FontFile" uid="uid://d3jg83nbfug5a" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="9_fbh3i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dnf3t"]
 bg_color = Color(0.70649, 0.6794, 0.86, 1)
@@ -86,6 +90,24 @@ Button/styles/focus = SubResource("StyleBoxTexture_tcnqu")
 Button/styles/hover = SubResource("StyleBoxTexture_plsrp")
 Button/styles/normal = SubResource("StyleBoxTexture_nk4yh")
 Button/styles/pressed = SubResource("StyleBoxTexture_dnf3t")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6i0am"]
+bg_color = Color(0.426673, 0.351422, 0.74373, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_5legf"]
+base_font = ExtResource("5_6i0am")
+
+[sub_resource type="Theme" id="Theme_d275m"]
+default_font = SubResource("FontVariation_5legf")
+default_font_size = 50
+
+[sub_resource type="Theme" id="Theme_1sbm3"]
+default_font = SubResource("FontVariation_5legf")
+default_font_size = 50
+
+[sub_resource type="Theme" id="Theme_gs7bo"]
+default_font = SubResource("FontVariation_5legf")
+default_font_size = 50
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qvaug"]
 texture = ExtResource("4_q36r8")
@@ -259,9 +281,9 @@ script = ExtResource("1_q36r8")
 
 [node name="CuadroSalirPartida" type="Label" parent="."]
 layout_mode = 0
-offset_left = 62.0
+offset_left = 24.0
 offset_top = 168.0
-offset_right = 958.0
+offset_right = 1000.0
 offset_bottom = 1576.0
 pivot_offset = Vector2(440, 168)
 theme_override_styles/normal = SubResource("StyleBoxFlat_dnf3t")
@@ -271,9 +293,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 306.0
-offset_right = -331.0
-offset_bottom = -928.0
+offset_left = 413.0
+offset_top = 88.0
+offset_right = -385.0
+offset_bottom = -1176.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_nk4yh")
@@ -281,6 +304,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="RichTextLabel0" type="RichTextLabel" parent="CuadroSalirPartida"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -313,9 +337,168 @@ offset_bottom = 1480.07
 scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 0
 theme = SubResource("Theme_4sjrv")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 80
 text = "COMPRAR"
 alignment = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 398.0
+offset_right = 471.0
+offset_bottom = 534.0
+theme = ExtResource("7_rb1w2")
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_6i0am")
+text = " A - E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel11" type="RichTextLabel" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 583.0
+offset_top = 391.0
+offset_right = 950.0
+offset_bottom = 453.0
+theme = SubResource("Theme_d275m")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+text = "-3.000 points
+"
+
+[node name="RichTextLabel10" type="RichTextLabel" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 584.0
+offset_top = 747.0
+offset_right = 950.0
+offset_bottom = 809.0
+theme = SubResource("Theme_1sbm3")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+text = "-1.000 points"
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 571.0
+offset_right = 471.0
+offset_bottom = 706.0
+theme = ExtResource("7_rb1w2")
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_6i0am")
+text = "I - O - U"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 745.0
+offset_right = 464.0
+offset_bottom = 885.0
+theme = ExtResource("7_rb1w2")
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_6i0am")
+text = "Consonante"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelCoins2" type="Label" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 584.0
+offset_top = 474.0
+offset_right = 950.0
+offset_bottom = 536.0
+theme = ExtResource("6_d01ki")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "-5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coin2" type="Sprite2D" parent="CuadroSalirPartida"]
+position = Vector2(847, 503.288)
+scale = Vector2(0.107624, 0.107624)
+texture = ExtResource("7_0trrb")
+
+[node name="LabelCoins4" type="Label" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 584.0
+offset_top = 645.542
+offset_right = 950.0
+offset_bottom = 707.542
+theme = ExtResource("6_d01ki")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "-5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coin4" type="Sprite2D" parent="CuadroSalirPartida"]
+position = Vector2(847, 674.83)
+scale = Vector2(0.107624, 0.107624)
+texture = ExtResource("7_0trrb")
+
+[node name="LabelCoins5" type="Label" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 584.0
+offset_top = 830.542
+offset_right = 950.0
+offset_bottom = 892.542
+theme = ExtResource("6_d01ki")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "-5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coin5" type="Sprite2D" parent="CuadroSalirPartida"]
+position = Vector2(847, 859.83)
+scale = Vector2(0.107624, 0.107624)
+texture = ExtResource("7_0trrb")
+
+[node name="RichTextLabel12" type="RichTextLabel" parent="CuadroSalirPartida"]
+layout_mode = 0
+offset_left = 584.0
+offset_top = 567.0
+offset_right = 942.0
+offset_bottom = 629.0
+theme = SubResource("Theme_gs7bo")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+text = "-2.000 points"
+
+[node name="LabelScoreText13" type="Label" parent="CuadroSalirPartida"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 264.0
+offset_bottom = -1079.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("8_6yjhf")
+theme_override_font_sizes/font_size = 50
+text = "Buying Cost"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelScoreText14" type="Label" parent="CuadroSalirPartida"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 981.0
+offset_bottom = -362.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("8_6yjhf")
+theme_override_font_sizes/font_size = 50
+text = "Selected Letter:"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="ButtonCancel" type="Button" parent="."]
 layout_mode = 0
@@ -332,11 +515,10 @@ vertical_icon_alignment = 0
 expand_icon = true
 
 [node name="Cruz" type="Sprite2D" parent="ButtonCancel"]
-modulate = Color(0.945098, 0.854902, 0.690196, 1)
-position = Vector2(52, 50)
+modulate = Color(0.964742, 0.964742, 0.964742, 1)
+position = Vector2(53, 54)
 scale = Vector2(0.117187, 0.117188)
 texture = ExtResource("5_i54d3")
-metadata/_edit_lock_ = true
 
 [node name="ScoreText" type="Label" parent="."]
 layout_mode = 0
@@ -346,19 +528,21 @@ offset_right = 819.0
 offset_bottom = 79.0
 theme = ExtResource("7_rb1w2")
 theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 40
 text = "SCORE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LetraSeleccionada" type="Label" parent="."]
 layout_mode = 0
-offset_left = 363.0
-offset_top = 1184.0
-offset_right = 745.0
-offset_bottom = 1240.0
+offset_left = 24.0
+offset_top = 1209.0
+offset_right = 1000.0
+offset_bottom = 1357.0
 theme = ExtResource("7_rb1w2")
-theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 120
+text = "-"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -373,7 +557,7 @@ theme = ExtResource("8_cb75i")
 theme_override_colors/font_color = Color(0.411765, 0.243137, 0.152941, 1)
 theme_override_fonts/font = SubResource("FontVariation_6i0am")
 theme_override_font_sizes/font_size = 80
-text = "99.999.999"
+text = "30.999"
 horizontal_alignment = 1
 vertical_alignment = 1
 

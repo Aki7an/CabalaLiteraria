@@ -1,3 +1,4 @@
+RichTextLabel
 AnimationPlayer
 Button
 CanvasLayer
@@ -10,5 +11,4 @@ TextEdit
 HBoxContainer
 GridContainer
 LineEdit
-RichTextLabel
 TextureRect

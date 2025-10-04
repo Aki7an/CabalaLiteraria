@@ -7,6 +7,11 @@ var mute_musica: bool = false
 var mute_fx: bool = false
 var mostrar_tuto_antes_partida: bool = true
 
+var level_normal_unlocked: bool = false
+var level_dificil_unlocked: bool = false
+var level_pro_unlocked: bool = false
+
+
 const SAVE_PATH := "user://prefs.cfg"
 
 func _ready() -> void:
@@ -26,7 +31,11 @@ func save_prefs() -> void:
 	cfg.set_value("audio", "volumen_fx", volumen_fx)
 	cfg.set_value("audio", "mute_musica", mute_musica)
 	cfg.set_value("audio", "mute_fx", mute_fx)
+	cfg.set_value("levels","levelNormalUnlocked", GameManager.level_normal_unlocked )
+	cfg.set_value("levels","levelDificilUnlocked", GameManager.level_dificil_unlocked )
+	cfg.set_value("levels","levelProUnlocked", GameManager.level_pro_unlocked)
 	cfg.save(SAVE_PATH)
+	
 
 # Cargar de disco
 func load_prefs() -> void:
@@ -39,6 +48,12 @@ func load_prefs() -> void:
 		volumen_fx = cfg.get_value("audio", "volumen_fx", volumen_fx)
 		mute_musica = cfg.get_value("audio", "mute_musica", mute_musica)
 		mute_fx = cfg.get_value("audio", "mute_fx", mute_fx)
+		level_normal_unlocked = cfg.get_value("levels","levelNormalUnlocked", level_normal_unlocked )
+		GameManager.set_level_normal_unlocked(level_normal_unlocked)
+		level_dificil_unlocked = cfg.get_value("levels","levelDificilUnlocked", level_dificil_unlocked )
+		GameManager.set_level_dificil_unlocked(level_dificil_unlocked)
+		level_pro_unlocked = cfg.get_value("levels","levelProUnlocked", level_pro_unlocked )
+		GameManager.set_level_pro_unlocked(level_pro_unlocked)
 		
 		if mostrar_tuto_antes_partida:
 			GameManager.set_mostrar_tuto_antes_partida_enable()

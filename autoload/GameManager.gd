@@ -2,6 +2,10 @@ extends Node
 
 @export var lives: int
 
+@export var level_normal_unlocked: bool = false
+@export var level_dificil_unlocked: bool = false
+@export var level_pro_unlocked: bool = false
+
 @export var go_to_game :bool = false
 
 @export var vocalesAE_compradas: int = 0
@@ -14,7 +18,8 @@ extends Node
 @export var pistas_utilizadas: int = 0 
 
 @export var player_name: String = "Aki"
-@export var score: int = 99999999
+@export var score: int
+@export var score_init: int = 30000
 
 @export var coins: int = 15
 
@@ -122,6 +127,7 @@ var pistas_actuales: Array[String] = []
 @export var lista_celdas := [Celda] # objetos tipo Celda
 
 @export var id_frase : int = 0
+@export var id_image : int = 0
 
 @export var hint_1 : String = ""
 @export var hint_2 : String = ""
@@ -169,6 +175,15 @@ func _ready():
 	SignalManager.update_stars.emit()
 	SignalManager.decrease_live.connect(decrease_live)
 	SignalManager.game_finished.connect(_game_finished)
+
+func set_level_normal_unlocked(state: bool) -> void:
+	level_normal_unlocked = state
+	
+func set_level_dificil_unlocked(state: bool) -> void:
+	level_dificil_unlocked = state
+	
+func set_level_pro_unlocked(state: bool) -> void:
+	level_pro_unlocked = state
 
 func set_lives_init() -> void:
 	if dificultad_actual == 1:
@@ -245,7 +260,7 @@ func resetear_partida_terminada() -> void:
 	partida_terminada= false
 	
 func reset_game_paremeters() -> void:
-	score = 99999999
+	score = score_init
 	pistas_utilizadas = 0
 #	letras_compradas = 0
 #	vocales_compradas = 0
@@ -274,7 +289,8 @@ func set_go_to_game_disable() -> void:
 	go_to_game = false
 	
 func calcula_score() -> void:
-	score = GameManager.dificultad_actual * 10000000 + 2000000 * (2 - GameManager.vocalesAE_compradas) + 1000000 * (3-GameManager.vocalesIOU_compradas) + 100000 * (9-GameManager.consonantes_compradas) + (3-GameManager.pistas_utilizadas) * 10000 + (9- GameManager.cambios_hechos) * 1000 + 999 - GameManager.tiempo_partida 
+	#score = GameManager.dificultad_actual * 10000000 + 2000000 * (2 - GameManager.vocalesAE_compradas) + 1000000 * (3-GameManager.vocalesIOU_compradas) + 100000 * (9-GameManager.consonantes_compradas) + (3-GameManager.pistas_utilizadas) * 10000 + (9- GameManager.cambios_hechos) * 1000 + 999 - GameManager.tiempo_partida 
+	score = score_init - 5000 * int(GameManager.pista_3) - 3000 * GameManager.vocalesAE_compradas - 2000 * GameManager.vocalesIOU_compradas - 1000 * GameManager.consonantes_compradas - 500 * int(GameManager.pista_2) - GameManager.tiempo_partida 
 	
 func cambios_increase() -> void:
 	cambios_hechos = cambios_hechos + 1
@@ -500,6 +516,28 @@ func update_numero_letras_reveladas() -> void:
 		
 		if frase_usuario == "".join(lista_letras_frase_original_sin_espacios_ni_puntuacion):
 			print ("GAME WINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN")
+			if dificultad_actual == 1 and GameManager.level_normal_unlocked == false	:
+				# unlock dificult NORMAL
+				set_level_normal_unlocked(true)
+				PlayerPrefs.save_prefs()
+			elif dificultad_actual == 2 and GameManager.level_dificil_unlocked == false	:
+				# unlock dificult DIFFICULT
+				set_level_dificil_unlocked(true)
+				PlayerPrefs.save_prefs()
+			elif dificultad_actual == 3 and GameManager.level_pro_unlocked == false	:
+				# unlock dificult PRO
+				set_level_pro_unlocked(true)
+				PlayerPrefs.save_prefs()
+			
+			if dificultad_actual == 1:
+				score = score + 30000
+			elif dificultad_actual == 2:
+				score = score + 40000
+			elif dificultad_actual == 3:
+				score = score + 50000
+			else:
+				score = score + 60000
+			
 			SignalManager.partida_finalizada.emit(str(GameManager.score))
 			if HistoryManager.partida_dentro_de_record(GameManager.categoria_actual, GameManager.dificultad_actual, GameManager.score):
 				SignalManager.game_finished.emit()
@@ -513,6 +551,8 @@ func update_numero_letras_reveladas() -> void:
 				GameManager.set_score_ultima_partida(0)
 				GameManager.set_dificultad_ultima_partida(0)
 				SignalManager.game_finished.emit()
+		else:
+			print ("last letter wrong?!!?!?!?!")
 		
 func calcula_lista_letras_frase_usuario() -> void:
 	lista_letras_frase_usuario.clear()
@@ -616,7 +656,7 @@ func cargar_frases_desde_json() -> void:
 		d.category          = String(dict.get("category", ""))
 		d.language          = String(dict.get("language", "es"))
 		d.difficulty        = int(dict.get("difficulty", 1))
-		#d.image_number      = int(dict.get("image_number", -1))
+		d.image_number      = int(dict.get("image_number", -1))
 		d.hint_1            = String(dict.get("hint_1", ""))
 		d.hint_2            = String(dict.get("hint_2", ""))
 		d.hint_3            = String(dict.get("hint_3", ""))
@@ -676,7 +716,7 @@ func _aplicar_frase_desde_db(pos: int) -> void:
 	descripcion_final_actual  = String(item.description_end)
 	categoria_actual   = String(item.category)
 	dificultad_actual  = int(item.difficulty)
-	#id_image           = int(item.image_number)
+	id_image           = int(item.image_number)
 	letras_iniciales   = String(item.letters_init)
 	#pistas_actuales    = (item.hints as Array).duplicate()
 	hint_1             = String(item.hint_1)
@@ -1053,3 +1093,11 @@ func recoger_letras_mostradas() -> String:
 			# Si no, por defecto añade el nombre del nodo
 	#letras_reveladas = resultado
 	return resultado
+
+func blink_resting_cells() -> void:
+	for celda:Celda in get_tree().get_nodes_in_group("Celda"): 
+		if !celda.celda_mostrada:
+			celda._blink()
+		else:
+			celda._blink_stop()
+	

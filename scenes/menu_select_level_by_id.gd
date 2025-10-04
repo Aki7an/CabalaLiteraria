@@ -136,12 +136,16 @@ func _populate_from_parsed(parsed: Variant) -> void:
 			descartados += 1
 			continue
 
-		var img_num: int = int(item.get("index", -1))
+		var img_num: int = int(item.get("image_number", -1))
 		if img_num < 0:
+			continue
+		
+		var index_num: int = int(item.get("index", -1))
+		if index_num < 0:
 			continue
 
 		var path: String = _find_image_path(img_num)
-		var btn: Button = _create_image_button_node(img_num, path)
+		var btn: Button = _create_image_button_node(index_num, img_num, path)
 		btn.custom_minimum_size = Vector2(cell_w, cell_w)
 
 		var tt: PackedStringArray = []
@@ -178,7 +182,7 @@ func _clear_grid_children() -> void:
 		child.queue_free()
 
 # --- Celda ---
-func _create_image_button_node(image_number: int, image_path: String) -> Button:
+func _create_image_button_node(index_num: int, image_number: int, image_path: String) -> Button:
 	var btn: Button = Button.new()
 	btn.name = "Image_%d" % image_number
 	btn.size_flags_horizontal = Control.SIZE_FILL
@@ -198,7 +202,7 @@ func _create_image_button_node(image_number: int, image_path: String) -> Button:
 	btn.add_child(texrect)
 
 	var lbl: Label = Label.new()
-	lbl.text = "ID %d" % image_number
+	lbl.text = "ID %d" % index_num
 	lbl.set_anchors_preset(Control.PRESET_FULL_RECT)
 	lbl.offset_left = 0; lbl.offset_top = 0; lbl.offset_right = 0; lbl.offset_bottom = 0
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -208,9 +212,9 @@ func _create_image_button_node(image_number: int, image_path: String) -> Button:
 	lbl.add_theme_font_size_override("font_size", int(base_sz * 3))
 	btn.add_child(lbl)
 
-	btn.set_meta("index", image_number)
+	btn.set_meta("index", index_num)
 	btn.set_meta("image_path", image_path)
-	btn.pressed.connect(func(): _on_image_button_pressed(image_number, image_path))
+	btn.pressed.connect(func(): _on_image_button_pressed(index_num, image_number, image_path))
 
 	_pending_textures.append(btn)
 	return btn
@@ -225,12 +229,12 @@ func _assign_real_texture(btn: Button) -> void:
 	if tex:
 		texrect.texture = tex
 
-func _on_image_button_pressed(image_number: int, _image_path: String) -> void:
+func _on_image_button_pressed(index_num: int, image_number: int, _image_path: String) -> void:
 	if typeof(GameManager) != TYPE_NIL:
-		GameManager.id_frase = image_number
+		GameManager.id_frase = index_num
 	else:
 		push_warning("GameManager no encontrado como autoload. No se pudo asignar id_frase.")
-	print("Pulsado image_number=%d" % image_number)
+	print("Pulsado image_number=%d" % index_num)
 
 	if typeof(GameManager) != TYPE_NIL and GameManager.mostrar_tuto_antes_partida:
 		GameManager.set_go_to_game_enable()
@@ -239,7 +243,7 @@ func _on_image_button_pressed(image_number: int, _image_path: String) -> void:
 		_go_tutorial()
 	else:
 		if typeof(GameManager) != TYPE_NIL:
-			GameManager.seleccionar_por_index(image_number)
+			GameManager.seleccionar_por_index(index_num)
 			GameManager.set_go_to_game_disable()
 		TransitionScreen.transition_to_black()
 		await TransitionScreen._on_animation_finished("fade_to_black", 1)

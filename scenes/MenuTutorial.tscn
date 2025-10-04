@@ -1,33 +1,33 @@
-[gd_scene load_steps=75 format=3 uid="uid://fwvrs81xpbno"]
+[gd_scene load_steps=76 format=3 uid="uid://fwvrs81xpbno"]
 
 [ext_resource type="Script" uid="uid://djfuwgey5l4bd" path="res://scenes/menu_tutorial.gd" id="1_5nqfq"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_14pat"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="2_tojt8"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="5_mkqcm"]
-[ext_resource type="Texture2D" uid="uid://b62tdps38fra2" path="res://images/Letra.png" id="6_x3c50"]
-[ext_resource type="Texture2D" uid="uid://ctpbivwi1vpvw" path="res://images/Flecha.png" id="7_cs7op"]
-[ext_resource type="Texture2D" uid="uid://bexpq0mq8vbw4" path="res://images/Teclado.png" id="8_p410d"]
-[ext_resource type="Texture2D" uid="uid://b4slywnyabiqp" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_heart.png" id="9_4xhfx"]
-[ext_resource type="Texture2D" uid="uid://b4tsh5n21mcy7" path="res://GUI/Library/UI_Etc/Tutorial_Focus01_Circle3.png" id="9_88ncm"]
+[ext_resource type="Texture2D" uid="uid://dj0q4a0nj4v2s" path="res://images/Letra.png" id="6_x3c50"]
+[ext_resource type="Texture2D" uid="uid://btdwfts88pjy1" path="res://images/Flecha.png" id="7_cs7op"]
+[ext_resource type="Texture2D" uid="uid://b5ujh1ms4cdlu" path="res://images/Teclado.png" id="8_p410d"]
+[ext_resource type="Texture2D" uid="uid://tg2iwyaqaye1" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_heart.png" id="9_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://b1dn5qdgkvm4k" path="res://GUI/Library/UI_Etc/Tutorial_Focus01_Circle3.png" id="9_88ncm"]
 [ext_resource type="Script" uid="uid://dblg364har10l" path="res://scenes/Blink_Panel.gd" id="9_fpobj"]
 [ext_resource type="Script" uid="uid://xof134ooqxmp" path="res://scenes/PanelUP/BlinkHeart.gd" id="10_88ncm"]
 [ext_resource type="Script" uid="uid://bi8dnx2f55ykr" path="res://scenes/Blink_Sprite2D.gd" id="10_ohopp"]
 [ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="11_os3rs"]
-[ext_resource type="Texture2D" uid="uid://ofm8cbhk2t5a" path="res://images/Coin.png" id="12_2077r"]
-[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
-[ext_resource type="FontFile" uid="uid://dhgtsbb1kopcf" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="15_4xhfx"]
-[ext_resource type="Texture2D" uid="uid://ciq7bte5h1epo" path="res://images/CifraLetraFull.png" id="15_jcm6x"]
+[ext_resource type="Texture2D" uid="uid://cc5fvr2p5neit" path="res://images/Coin.png" id="12_2077r"]
+[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="14_euxot"]
+[ext_resource type="FontFile" uid="uid://bg87tkoaof74f" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="15_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://hke85fvhjg50" path="res://images/CifraLetraFull.png" id="15_jcm6x"]
 [ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="16_4xhfx"]
-[ext_resource type="Texture2D" uid="uid://cdlae1n8vjt2m" path="res://images/simbolo-de-diamante.png" id="16_fpobj"]
+[ext_resource type="Texture2D" uid="uid://bpvbw33ckx2pq" path="res://images/simbolo-de-diamante.png" id="16_fpobj"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="16_l6n8b"]
-[ext_resource type="Texture2D" uid="uid://be3ladiw7ys8a" path="res://images/Pista.png" id="17_88ncm"]
-[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="17_vet1h"]
+[ext_resource type="Texture2D" uid="uid://ci80dd1w4tkbh" path="res://images/Pista.png" id="17_88ncm"]
+[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="17_vet1h"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="18_5onnj"]
-[ext_resource type="Texture2D" uid="uid://bp623p23x4e0o" path="res://images/Shop3.png" id="19_os3rs"]
-[ext_resource type="Texture2D" uid="uid://dd65vcvp8rtev" path="res://images/ImagenPista.png" id="21_5onnj"]
-[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="23_4xhfx"]
-[ext_resource type="Texture2D" uid="uid://47ga0n82xqje" path="res://images/CountDown.png" id="24_55nle"]
-[ext_resource type="Texture2D" uid="uid://dfflig3f3g0c8" path="res://images/contorno_estrella_blanco.png" id="24_88ncm"]
+[ext_resource type="Texture2D" uid="uid://dtcjxiq444mtd" path="res://images/Shop3.png" id="19_os3rs"]
+[ext_resource type="Texture2D" uid="uid://26hmsfh26pep" path="res://images/ImagenPista.png" id="21_5onnj"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="23_4xhfx"]
+[ext_resource type="Texture2D" uid="uid://dmwbd7eji8i0n" path="res://images/CountDown.png" id="24_55nle"]
+[ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="24_88ncm"]
 [ext_resource type="Script" uid="uid://dlundgkrxhhjt" path="res://scenes/Blink.gd" id="26_88ncm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tojt8"]
@@ -433,12 +433,15 @@ bg_color = Color(0.898039, 0.780392, 0.615686, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpobj"]
 bg_color = Color(1, 0.670588, 0.0705882, 1)
 
+[sub_resource type="FontVariation" id="FontVariation_fpobj"]
+base_font = ExtResource("15_4xhfx")
+
 [sub_resource type="Theme" id="Theme_5legf"]
-default_font = SubResource("FontVariation_5legf")
+default_font = SubResource("FontVariation_fpobj")
 default_font_size = 50
 
 [sub_resource type="Theme" id="Theme_wikd2"]
-default_font = SubResource("FontVariation_5legf")
+default_font = SubResource("FontVariation_fpobj")
 default_font_size = 50
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_euxot"]
@@ -448,7 +451,7 @@ bg_color = Color(0.898039, 0.780392, 0.615686, 1)
 bg_color = Color(0.898039, 0.780392, 0.615686, 1)
 
 [sub_resource type="Theme" id="Theme_4yxwa"]
-default_font = SubResource("FontVariation_5legf")
+default_font = SubResource("FontVariation_fpobj")
 default_font_size = 50
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4sjrv"]
@@ -615,6 +618,7 @@ Button/styles/pressed = SubResource("StyleBoxTexture_euxot")
 
 [node name="MenuTutorial" type="Node2D"]
 script = ExtResource("1_5nqfq")
+metadata/_edit_vertical_guides_ = [0.0]
 
 [node name="Panel" type="Panel" parent="."]
 offset_right = 1024.0
@@ -994,10 +998,10 @@ metadata/_edit_lock_ = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Label/Control/2/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -58.0
-offset_top = 361.0
-offset_right = 848.0
-offset_bottom = 425.0
+offset_left = -55.0
+offset_top = 88.0
+offset_right = 851.0
+offset_bottom = 152.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 text = "1- Select the CELL"
@@ -1005,10 +1009,10 @@ horizontal_alignment = 1
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/2/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -66.0
-offset_top = 792.0
-offset_right = 840.0
-offset_bottom = 856.0
+offset_left = -58.0
+offset_top = 456.0
+offset_right = 848.0
+offset_bottom = 520.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 text = "2- Select the LETTER"
@@ -1016,10 +1020,10 @@ horizontal_alignment = 1
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/2/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -66.0
-offset_top = 1136.0
-offset_right = 840.0
-offset_bottom = 1288.0
+offset_left = -57.9998
+offset_top = 920.0
+offset_right = 848.0
+offset_bottom = 1072.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 40
@@ -1031,10 +1035,9 @@ layout_mode = 1
 anchors_preset = -1
 anchor_top = -3.36111
 anchor_bottom = -3.34444
-offset_left = -2.0
-offset_top = 403.0
-offset_right = 1023.0
-offset_bottom = 608.889
+offset_top = 449.0
+offset_right = 1025.0
+offset_bottom = 654.889
 scale = Vector2(0.875398, 0.875398)
 texture = ExtResource("15_jcm6x")
 expand_mode = 5
@@ -1136,7 +1139,7 @@ scale = Vector2(1.08723, 1.07219)
 texture = ExtResource("7_cs7op")
 
 [node name="Teclado" type="Sprite2D" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
-position = Vector2(502.628, 519.764)
+position = Vector2(502.629, 576.88)
 scale = Vector2(1.9506, 1.9506)
 texture = ExtResource("8_p410d")
 
@@ -1155,10 +1158,11 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_5onnj")
 script = ExtResource("9_fpobj")
 autostart = true
+metadata/_edit_use_anchors_ = true
 
 [node name="Flecha3" type="Sprite2D" parent="Label/Control/2/LabelMarcoA/TextureRectCifraLetra"]
 modulate = Color(0.611242, 0.266987, 0.351546, 1)
-position = Vector2(244.569, 526.454)
+position = Vector2(244.722, 614.988)
 scale = Vector2(1.58142, 1.58142)
 texture = ExtResource("7_cs7op")
 flip_h = true
@@ -1183,10 +1187,10 @@ layout_mode = 1
 anchors_preset = -1
 anchor_top = -3.36111
 anchor_bottom = -3.34444
-offset_left = -26.0002
-offset_top = 1186.0
-offset_right = 999.0
-offset_bottom = 1391.89
+offset_left = -10.0
+offset_top = 1326.0
+offset_right = 1015.0
+offset_bottom = 1531.89
 scale = Vector2(0.875398, 0.875398)
 texture = ExtResource("15_jcm6x")
 expand_mode = 5
@@ -1285,7 +1289,7 @@ metadata/_edit_lock_ = true
 
 [node name="Flecha4" type="Sprite2D" parent="Label/Control/2/LabelMarcoA"]
 modulate = Color(0.611765, 0.172549, 0.027451, 1)
-position = Vector2(376, 1038)
+position = Vector2(392, 1178)
 scale = Vector2(0.434286, 0.571429)
 texture = ExtResource("9_88ncm")
 flip_h = true
@@ -1294,7 +1298,7 @@ _running = true
 
 [node name="Flecha5" type="Sprite2D" parent="Label/Control/2/LabelMarcoA"]
 modulate = Color(0.611765, 0.172549, 0.027451, 1)
-position = Vector2(830, 1038)
+position = Vector2(846, 1178)
 scale = Vector2(0.434286, 0.571429)
 texture = ExtResource("9_88ncm")
 flip_h = true
@@ -1314,9 +1318,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 216.0
+offset_top = 192.0
 offset_right = 984.0
-offset_bottom = 248.0
+offset_bottom = 224.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
@@ -1347,20 +1351,6 @@ offset_top = 32.0
 offset_right = 48.0
 offset_bottom = 32.0
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/3/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 1174.0
-offset_top = 552.0
-offset_right = 2080.0
-offset_bottom = 741.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-text = "EASY : 4
-NORMAL : 3
-DIFFICULT : 2
-PRO : 1"
-horizontal_alignment = 1
-
 [node name="LabelScoreText9" type="Label" parent="Label/Control/3"]
 layout_mode = 1
 anchors_preset = 15
@@ -1380,25 +1370,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="LabelScoreText10" type="Label" parent="Label/Control/3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1096.0
-offset_top = 224.0
-offset_right = 1950.0
-offset_bottom = 357.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_fonts/font = ExtResource("5_mkqcm")
-theme_override_font_sizes/font_size = 50
-text = "If you run out of lives you lose the game"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
 [node name="ItemiconHeart" type="Sprite2D" parent="Label/Control/3"]
 self_modulate = Color(1, 0.52, 0.52, 1)
 position = Vector2(506, 272)
@@ -1406,20 +1377,6 @@ scale = Vector2(0.927, 1)
 texture = ExtResource("9_4xhfx")
 script = ExtResource("10_88ncm")
 scale_up = 1.3
-
-[node name="LivesNumber" type="Label" parent="Label/Control/3/ItemiconHeart"]
-offset_left = -21.5274
-offset_top = -26.375
-offset_right = 19.4726
-offset_bottom = 48.625
-theme = ExtResource("16_l6n8b")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 60
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Cambios" type="Label" parent="Label/Control/3/ItemiconHeart"]
 offset_left = -112.142
@@ -1432,23 +1389,12 @@ text = "LIVES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="Label/Control/3"]
-offset_left = -530.0
-offset_top = 448.0
-offset_right = -74.0
-offset_bottom = 504.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-theme_override_font_sizes/font_size = 40
-text = "3 minutes"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Label2" type="Label" parent="Label/Control/3"]
-offset_left = 473.0
-offset_top = 1136.0
-offset_right = 929.0
-offset_bottom = 1192.0
+layout_mode = 0
+offset_left = 548.0
+offset_top = 807.895
+offset_right = 1004.0
+offset_bottom = 863.895
 theme = ExtResource("16_l6n8b")
 theme_override_colors/font_color = Color(0.81, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
@@ -1456,68 +1402,9 @@ text = "3 LIVES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label3" type="Label" parent="Label/Control/3"]
-offset_left = -536.0
-offset_top = 1236.0
-offset_right = -80.0
-offset_bottom = 1292.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-theme_override_font_sizes/font_size = 40
-text = "25 minutes"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/3"]
-offset_left = -570.0
-offset_top = 265.0
-offset_right = -42.0
-offset_bottom = 386.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Sentences of less than [font_size=40][color=034419]150[/color][/font_size] characters to discover."
-horizontal_alignment = 1
-
-[node name="RichTextLabel9" type="RichTextLabel" parent="Label/Control/3"]
-offset_left = -570.0
-offset_top = 402.0
-offset_right = -42.0
-offset_bottom = 454.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Estimated time"
-horizontal_alignment = 1
-
-[node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/3"]
-offset_left = -680.0
-offset_top = 1096.0
-offset_right = -152.0
-offset_bottom = 1148.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Estimated time"
-horizontal_alignment = 1
-
-[node name="RichTextLabel11" type="RichTextLabel" parent="Label/Control/3"]
-offset_left = -570.0
-offset_top = 1184.0
-offset_right = -42.0
-offset_bottom = 1236.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Estimated time"
-horizontal_alignment = 1
-
 [node name="RichTextLabel7" type="RichTextLabel" parent="Label/Control/3"]
 visible = false
+layout_mode = 0
 offset_left = 440.0
 offset_top = 1085.0
 offset_right = 968.0
@@ -1530,10 +1417,11 @@ text = "Sentences around [font_size=40][color=034419]200[/color][/font_size] cha
 horizontal_alignment = 1
 
 [node name="Label10" type="Label" parent="Label/Control/3"]
-offset_left = 473.0
-offset_top = 1364.0
-offset_right = 929.0
-offset_bottom = 1420.0
+layout_mode = 0
+offset_left = 548.0
+offset_top = 902.5
+offset_right = 1004.0
+offset_bottom = 958.5
 theme = ExtResource("16_l6n8b")
 theme_override_colors/font_color = Color(0.81, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
@@ -1543,6 +1431,7 @@ vertical_alignment = 1
 
 [node name="RichTextLabel14" type="RichTextLabel" parent="Label/Control/3"]
 visible = false
+layout_mode = 0
 offset_left = 440.0
 offset_top = 1317.0
 offset_right = 968.0
@@ -1555,10 +1444,11 @@ text = "Sentences around [font_size=40][color=034419]100[/color][/font_size] cha
 horizontal_alignment = 1
 
 [node name="Label8" type="Label" parent="Label/Control/3"]
-offset_left = 473.0
-offset_top = 908.0
-offset_right = 929.0
-offset_bottom = 964.0
+layout_mode = 0
+offset_left = 545.0
+offset_top = 719.085
+offset_right = 1001.0
+offset_bottom = 775.085
 theme = ExtResource("16_l6n8b")
 theme_override_colors/font_color = Color(0.81, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
@@ -1568,6 +1458,7 @@ vertical_alignment = 1
 
 [node name="RichTextLabel12" type="RichTextLabel" parent="Label/Control/3"]
 visible = false
+layout_mode = 0
 offset_left = 440.0
 offset_top = 848.0
 offset_right = 968.0
@@ -1581,10 +1472,11 @@ horizontal_alignment = 1
 justification_flags = 162
 
 [node name="Label9" type="Label" parent="Label/Control/3"]
-offset_left = 473.0
-offset_top = 680.0
-offset_right = 929.0
-offset_bottom = 736.0
+layout_mode = 0
+offset_left = 646.0
+offset_top = 624.0
+offset_right = 904.0
+offset_bottom = 680.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/font_color = Color(0.81, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
@@ -1594,6 +1486,7 @@ vertical_alignment = 1
 
 [node name="RichTextLabel13" type="RichTextLabel" parent="Label/Control/3"]
 visible = false
+layout_mode = 0
 offset_left = 430.0
 offset_top = 624.0
 offset_right = 968.0
@@ -1605,45 +1498,33 @@ bbcode_enabled = true
 text = "Sentences of more than [font_size=40][color=034419]300[/color][/font_size] characters to discover."
 horizontal_alignment = 1
 
-[node name="RichTextLabel8" type="RichTextLabel" parent="Label/Control/3"]
-offset_left = -712.0
-offset_top = 1280.0
-offset_right = -178.0
-offset_bottom = 1401.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Sentences of more than [font_size=40][color=034419]250[/color][/font_size] characters to be solved."
-horizontal_alignment = 1
-
 [node name="TextureRect5" type="TextureRect" parent="Label/Control/3"]
 modulate = Color(0.025859, 0.399018, 0.160759, 1)
 layout_mode = 0
-offset_left = 276.0
-offset_top = 1327.0
-offset_right = 329.0
-offset_bottom = 1375.0
+offset_left = 120.0
+offset_top = 906.5
+offset_right = 173.0
+offset_bottom = 954.5
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
 [node name="TextureRect6" type="TextureRect" parent="Label/Control/3"]
 modulate = Color(0.025859, 0.399018, 0.160759, 1)
 layout_mode = 0
-offset_left = 340.0
-offset_top = 1327.0
-offset_right = 393.0
-offset_bottom = 1375.0
+offset_left = 184.0
+offset_top = 906.5
+offset_right = 237.0
+offset_bottom = 954.5
 texture = ExtResource("24_88ncm")
 expand_mode = 1
 
 [node name="TextureRect7" type="TextureRect" parent="Label/Control/3"]
 modulate = Color(0.025859, 0.399018, 0.160759, 1)
 layout_mode = 0
-offset_left = 404.0
-offset_top = 1327.0
-offset_right = 457.0
-offset_bottom = 1375.0
+offset_left = 248.0
+offset_top = 906.5
+offset_right = 301.0
+offset_bottom = 954.5
 texture = ExtResource("24_88ncm")
 expand_mode = 1
 
@@ -1653,10 +1534,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 272.5
-offset_top = 1387.0
-offset_right = 419.5
-offset_bottom = 1430.0
+offset_left = 301.0
+offset_top = 889.0
+offset_right = 653.0
+offset_bottom = 932.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.025859, 0.399018, 0.160759, 1)
@@ -1668,30 +1549,30 @@ autowrap_mode = 2
 [node name="TextureRect2" type="TextureRect" parent="Label/Control/3"]
 modulate = Color(0.977525, 0.467886, 1.73271e-06, 1)
 layout_mode = 0
-offset_left = 272.0
-offset_top = 1094.0
-offset_right = 325.0
-offset_bottom = 1142.0
+offset_left = 120.0
+offset_top = 811.895
+offset_right = 173.0
+offset_bottom = 859.895
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
 [node name="TextureRect3" type="TextureRect" parent="Label/Control/3"]
 modulate = Color(0.977525, 0.467886, 1.73271e-06, 1)
 layout_mode = 0
-offset_left = 336.0
-offset_top = 1094.0
-offset_right = 389.0
-offset_bottom = 1142.0
+offset_left = 184.0
+offset_top = 811.895
+offset_right = 237.0
+offset_bottom = 859.895
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
 [node name="TextureRect4" type="TextureRect" parent="Label/Control/3"]
 modulate = Color(0.977525, 0.467886, 1.73271e-06, 1)
 layout_mode = 0
-offset_left = 400.0
-offset_top = 1094.0
-offset_right = 453.0
-offset_bottom = 1142.0
+offset_left = 248.0
+offset_top = 811.895
+offset_right = 301.0
+offset_bottom = 859.895
 texture = ExtResource("24_88ncm")
 expand_mode = 1
 
@@ -1701,10 +1582,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 278.0
-offset_top = 1156.79
-offset_right = 414.0
-offset_bottom = 1199.79
+offset_left = 306.0
+offset_top = 794.0
+offset_right = 652.0
+offset_bottom = 837.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.834423, 0.623338, 1)
@@ -1716,30 +1597,30 @@ autowrap_mode = 2
 [node name="TextureRect8" type="TextureRect" parent="Label/Control/3"]
 modulate = Color(0.81, 0, 0, 1)
 layout_mode = 0
-offset_left = 275.0
-offset_top = 866.0
-offset_right = 328.0
-offset_bottom = 914.0
+offset_left = 120.0
+offset_top = 723.085
+offset_right = 173.0
+offset_bottom = 771.085
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
 [node name="TextureRect9" type="TextureRect" parent="Label/Control/3"]
 modulate = Color(0.81, 0, 0, 1)
 layout_mode = 0
-offset_left = 339.0
-offset_top = 866.0
-offset_right = 392.0
-offset_bottom = 914.0
+offset_left = 184.0
+offset_top = 723.085
+offset_right = 237.0
+offset_bottom = 771.085
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
 [node name="TextureRect10" type="TextureRect" parent="Label/Control/3"]
 modulate = Color(0.81, 0, 0, 1)
 layout_mode = 0
-offset_left = 403.0
-offset_top = 866.0
-offset_right = 456.0
-offset_bottom = 914.0
+offset_left = 248.0
+offset_top = 723.085
+offset_right = 301.0
+offset_bottom = 771.085
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
@@ -1749,10 +1630,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 278.0
-offset_top = 926.585
-offset_right = 414.0
-offset_bottom = 969.585
+offset_left = 306.0
+offset_top = 706.0
+offset_right = 644.0
+offset_bottom = 749.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 60
@@ -1762,10 +1643,11 @@ autowrap_mode = 2
 
 [node name="TextureRect11" type="TextureRect" parent="Label/Control/3"]
 modulate = Color(0.0562916, 0.0562916, 0.0562916, 1)
-offset_left = 334.0
-offset_top = 632.0
-offset_right = 387.0
-offset_bottom = 680.0
+layout_mode = 0
+offset_left = 184.0
+offset_top = 627.688
+offset_right = 237.0
+offset_bottom = 675.688
 texture = ExtResource("16_fpobj")
 expand_mode = 1
 
@@ -1775,10 +1657,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 279.09
-offset_top = 696.0
-offset_right = 413.09
-offset_bottom = 739.0
+offset_left = 307.0
+offset_top = 610.0
+offset_right = 650.0
+offset_bottom = 653.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 0.00216676
@@ -1786,6 +1668,83 @@ theme_override_font_sizes/font_size = 60
 text = "PRO"
 horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="ItemiconHeart2" type="Sprite2D" parent="Label/Control/3"]
+self_modulate = Color(1, 0.52, 0.52, 1)
+position = Vector2(504, 1195)
+scale = Vector2(0.688933, 0.710526)
+texture = ExtResource("9_4xhfx")
+script = ExtResource("10_88ncm")
+scale_up = 1.3
+
+[node name="LivesNumber2" type="Label" parent="Label/Control/3/ItemiconHeart2"]
+offset_left = -36.288
+offset_top = -45.0372
+offset_right = 8.71204
+offset_bottom = 29.9628
+theme = ExtResource("16_l6n8b")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 60
+text = "-1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LivesNumber" type="Label" parent="Label/Control/3/ItemiconHeart2"]
+visible = false
+offset_left = -21.5274
+offset_top = -26.375
+offset_right = 19.4726
+offset_bottom = 48.625
+theme = ExtResource("16_l6n8b")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 60
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Cambios" type="Label" parent="Label/Control/3/ItemiconHeart2"]
+visible = false
+offset_left = -112.142
+offset_top = -63.375
+offset_right = 120.858
+offset_bottom = -7.375
+theme = ExtResource("16_l6n8b")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "LIVES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel15" type="RichTextLabel" parent="Label/Control/3"]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 1045.0
+offset_right = 712.0
+offset_bottom = 1116.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "Lose one Live:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel16" type="RichTextLabel" parent="Label/Control/3"]
+layout_mode = 0
+offset_left = 328.0
+offset_top = 1267.0
+offset_right = 670.0
+offset_bottom = 1338.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "-3.000 points"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="4" type="Control" parent="Label/Control"]
 visible = false
@@ -1811,9 +1770,9 @@ metadata/_edit_lock_ = true
 [node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/4/LabelMarcoA/Slide1"]
 layout_mode = 0
 offset_left = -90.0
-offset_top = 175.0
+offset_top = 152.0
 offset_right = 886.0
-offset_bottom = 237.0
+offset_bottom = 214.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_os3rs")
@@ -1922,8 +1881,8 @@ scale = Vector2(0.0930677, 0.0930677)
 texture = ExtResource("12_2077r")
 
 [node name="CapturaDeJuego02" type="Sprite2D" parent="Label/Control/4/LabelMarcoA"]
-position = Vector2(291.718, 463.748)
-scale = Vector2(1.1553, 1.1553)
+position = Vector2(266.354, 459.374)
+scale = Vector2(1.23294, 1.23294)
 texture = ExtResource("21_5onnj")
 
 [node name="LabelMarcoB" type="Label" parent="Label/Control/4"]
@@ -1937,9 +1896,9 @@ metadata/_edit_lock_ = true
 [node name="ButtonPista0" type="Button" parent="Label/Control/4"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 0
-offset_left = 424.0
+offset_left = 104.0
 offset_top = 184.0
-offset_right = 592.0
+offset_right = 272.0
 offset_bottom = 359.0
 pivot_offset = Vector2(84, 85)
 size_flags_horizontal = 0
@@ -1959,6 +1918,24 @@ theme_override_font_sizes/font_size = 35
 text = "HINTS"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="LabelScoreText2" type="Label" parent="Label/Control/4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 306.0
+offset_top = 184.0
+offset_right = 945.0
+offset_bottom = 304.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 80
+text = "Buy Hints"
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="5" type="Control" parent="Label/Control"]
 anchors_preset = 0
@@ -1981,15 +1958,16 @@ offset_bottom = 32.0
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -90.0
-offset_top = 489.0
-offset_right = 886.0
-offset_bottom = 551.0
+offset_left = -49.0
+offset_top = 586.0
+offset_right = 390.0
+offset_bottom = 722.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_2077r")
-text = "Buy: A - E"
+text = " A - E"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="RichTextLabel8" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
@@ -2006,10 +1984,10 @@ vertical_alignment = 1
 
 [node name="RichTextLabel5" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = 271.0
-offset_top = 362.0
-offset_right = 517.0
-offset_bottom = 424.0
+offset_left = 268.0
+offset_top = 344.0
+offset_right = 514.0
+offset_bottom = 406.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
 text = "GRATIS"
@@ -2017,38 +1995,37 @@ horizontal_alignment = 1
 
 [node name="RichTextLabel11" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -90.0
-offset_top = 575.0
-offset_right = 878.0
-offset_bottom = 637.0
+offset_left = 502.0
+offset_top = 579.0
+offset_right = 869.0
+offset_bottom = 641.0
 theme = SubResource("Theme_5legf")
 theme_override_colors/default_color = Color(0.81, 0, 0, 1)
 text = "-3.000 points
 "
-horizontal_alignment = 1
 
 [node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -90.0
-offset_top = 1134.0
-offset_right = 878.0
-offset_bottom = 1196.0
+offset_left = 503.0
+offset_top = 1048.0
+offset_right = 869.0
+offset_bottom = 1110.0
 theme = SubResource("Theme_wikd2")
 theme_override_colors/default_color = Color(0.81, 0, 0, 1)
-text = "-1.000 putos"
-horizontal_alignment = 1
+text = "-1.000 points"
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -90.0
-offset_top = 760.0
-offset_right = 886.0
-offset_bottom = 822.0
+offset_left = -49.0
+offset_top = 814.0
+offset_right = 390.0
+offset_bottom = 949.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_euxot")
-text = "Buy: I - O - U"
+text = "I - O - U"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
@@ -2064,84 +2041,87 @@ horizontal_alignment = 1
 
 [node name="RichTextLabel4" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -90.0
+offset_left = -49.0
 offset_top = 1046.0
-offset_right = 886.0
-offset_bottom = 1108.0
+offset_right = 383.0
+offset_bottom = 1186.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_4xhfx")
-text = "Comprar: Consonante"
+text = "Consonante"
 horizontal_alignment = 1
-
-[node name="LabelCoins" type="Label" parent="Label/Control/5/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 334.0
-offset_top = 1214.0
-offset_right = 383.0
-offset_bottom = 1276.0
-theme = ExtResource("11_os3rs")
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
-text = "-5"
 vertical_alignment = 1
-
-[node name="Coin" type="Sprite2D" parent="Label/Control/5/LabelMarcoA/Slide1"]
-position = Vector2(422, 1245)
-scale = Vector2(0.0755095, 0.0755095)
-texture = ExtResource("12_2077r")
 
 [node name="LabelCoins2" type="Label" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = 334.0
-offset_top = 650.0
-offset_right = 383.0
-offset_bottom = 712.0
+offset_left = 503.0
+offset_top = 662.0
+offset_right = 869.0
+offset_bottom = 724.0
 theme = ExtResource("11_os3rs")
 theme_override_colors/font_color = Color(0.81, 0, 0, 1)
 theme_override_font_sizes/font_size = 50
 text = "-5"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Coin2" type="Sprite2D" parent="Label/Control/5/LabelMarcoA/Slide1"]
-position = Vector2(422, 681)
-scale = Vector2(0.0755095, 0.0755095)
+position = Vector2(766, 691.288)
+scale = Vector2(0.107624, 0.107624)
+texture = ExtResource("12_2077r")
+
+[node name="LabelCoins4" type="Label" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 503.0
+offset_top = 888.542
+offset_right = 869.0
+offset_bottom = 950.542
+theme = ExtResource("11_os3rs")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "-5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coin4" type="Sprite2D" parent="Label/Control/5/LabelMarcoA/Slide1"]
+position = Vector2(766, 917.83)
+scale = Vector2(0.107624, 0.107624)
+texture = ExtResource("12_2077r")
+
+[node name="LabelCoins5" type="Label" parent="Label/Control/5/LabelMarcoA/Slide1"]
+layout_mode = 0
+offset_left = 503.0
+offset_top = 1131.54
+offset_right = 869.0
+offset_bottom = 1193.54
+theme = ExtResource("11_os3rs")
+theme_override_colors/font_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "-5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coin5" type="Sprite2D" parent="Label/Control/5/LabelMarcoA/Slide1"]
+position = Vector2(766, 1160.83)
+scale = Vector2(0.107624, 0.107624)
 texture = ExtResource("12_2077r")
 
 [node name="RichTextLabel12" type="RichTextLabel" parent="Label/Control/5/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = -90.0
-offset_top = 847.0
-offset_right = 878.0
-offset_bottom = 909.0
+offset_left = 503.0
+offset_top = 810.0
+offset_right = 861.0
+offset_bottom = 872.0
 theme = SubResource("Theme_4yxwa")
 theme_override_colors/default_color = Color(0.81, 0, 0, 1)
-text = "-2.000 puntos"
-horizontal_alignment = 1
-
-[node name="LabelCoins3" type="Label" parent="Label/Control/5/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 334.0
-offset_top = 923.0
-offset_right = 383.0
-offset_bottom = 985.0
-theme = ExtResource("11_os3rs")
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
-text = "-5"
-vertical_alignment = 1
-
-[node name="Coin3" type="Sprite2D" parent="Label/Control/5/LabelMarcoA/Slide1"]
-position = Vector2(422, 954)
-scale = Vector2(0.0755095, 0.0755095)
-texture = ExtResource("12_2077r")
+text = "-2.000 points"
 
 [node name="ButtonLetters" type="Button" parent="Label/Control/5/LabelMarcoA"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 0
-offset_left = 358.0
+offset_left = -18.0
 offset_top = -16.0
-offset_right = 526.0
+offset_right = 150.0
 offset_bottom = 159.0
 size_flags_horizontal = 0
 theme = SubResource("Theme_55nle")
@@ -2190,13 +2170,43 @@ text = "LETTERS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LabelMarcoB" type="Label" parent="Label/Control/5"]
-layout_mode = 0
-offset_left = 66.0
-offset_top = 856.0
-offset_right = 962.0
-offset_bottom = 1480.0
-metadata/_edit_lock_ = true
+[node name="LabelScoreText3" type="Label" parent="Label/Control/5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 235.0
+offset_top = 184.0
+offset_right = 920.0
+offset_bottom = 304.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 80
+text = "Buy Letters"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelScoreText13" type="Label" parent="Label/Control/5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 664.0
+offset_right = 960.0
+offset_bottom = 724.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 50
+text = "Buying Cost"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="6" type="Control" parent="Label/Control"]
 visible = false
@@ -2218,45 +2228,6 @@ offset_top = 32.0
 offset_right = 48.0
 offset_bottom = 32.0
 
-[node name="Label" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 1476.0
-offset_top = 312.0
-offset_right = 1932.0
-offset_bottom = 368.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-theme_override_font_sizes/font_size = 40
-text = "3 minutes"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 1476.0
-offset_top = 672.0
-offset_right = 1932.0
-offset_bottom = 728.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-theme_override_font_sizes/font_size = 40
-text = "7 minutes"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label3" type="Label" parent="Label/Control/6/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 1470.0
-offset_top = 1100.0
-offset_right = 1926.0
-offset_bottom = 1156.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/font_color = Color(0.81, 0, 0, 1)
-theme_override_font_sizes/font_size = 40
-text = "25 minutes"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="RichTextLabel3" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
 visible = false
 layout_mode = 0
@@ -2269,88 +2240,23 @@ theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
 text = "1.99 €"
 horizontal_alignment = 1
 
-[node name="RichTextLabel6" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
+[node name="RichTextLabel13" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
 layout_mode = 0
-offset_left = 1436.0
-offset_top = 129.0
-offset_right = 1964.0
-offset_bottom = 250.0
+offset_left = 318.0
+offset_top = 1121.0
+offset_right = 702.0
+offset_bottom = 1192.0
 theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
+theme_override_colors/default_color = Color(0.81, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "Sentences of less than [font_size=40][color=034419]150[/color][/font_size] characters to discover."
-horizontal_alignment = 1
-
-[node name="RichTextLabel9" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 1436.0
-offset_top = 266.0
-offset_right = 1964.0
-offset_bottom = 318.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Estimated time"
-horizontal_alignment = 1
-
-[node name="RichTextLabel10" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 1436.0
-offset_top = 624.0
-offset_right = 1964.0
-offset_bottom = 676.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Estimated time"
-horizontal_alignment = 1
-
-[node name="RichTextLabel11" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 1436.0
-offset_top = 1048.0
-offset_right = 1964.0
-offset_bottom = 1100.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Estimated time"
-horizontal_alignment = 1
-
-[node name="RichTextLabel7" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 172.0
-offset_top = 682.0
-offset_right = 700.0
-offset_bottom = 753.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Lose one Live: [font_size=40][color=RED]-3.000[/color][/font_size]"
+text = "-1 point / sec"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RichTextLabel8" type="RichTextLabel" parent="Label/Control/6/LabelMarcoA/Slide1"]
-layout_mode = 0
-offset_left = 1430.0
-offset_top = 902.0
-offset_right = 1964.0
-offset_bottom = 1023.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Sentences of more than [font_size=40][color=034419]250[/color][/font_size] characters to be solved."
-horizontal_alignment = 1
-
 [node name="IconColorIconTimer" type="Sprite2D" parent="Label/Control/6/LabelMarcoA/Slide1"]
 modulate = Color(0.66, 0.3817, 0.297, 1)
-position = Vector2(46, 880)
+position = Vector2(197.595, 1128.83)
 scale = Vector2(1.11191, 1.11191)
 texture = ExtResource("24_55nle")
 
@@ -2381,82 +2287,160 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="RichTextLabel13" type="RichTextLabel" parent="Label/Control/6"]
-offset_left = 680.0
-offset_top = 344.0
-offset_right = 986.0
-offset_bottom = 479.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Level: [font_size=40][color=034419]+60.000[/color][/font_size] "
+[node name="LabelScoreText10" type="Label" parent="Label/Control/6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 528.0
+offset_right = 960.0
+offset_bottom = 587.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 50
+text = "Level Acomplished"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="RichTextLabel15" type="RichTextLabel" parent="Label/Control/6"]
-offset_left = 672.0
-offset_top = 468.0
-offset_right = 985.0
-offset_bottom = 603.0
-theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
-bbcode_enabled = true
-text = "Level: [font_size=40][color=034419]+50.000[/color][/font_size] "
+[node name="LabelScoreText12" type="Label" parent="Label/Control/6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 296.0
+offset_right = 960.0
+offset_bottom = 355.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 50
+text = "Starting POINTS"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="LabelScoreText11" type="Label" parent="Label/Control/6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 19.0
+offset_top = 1160.0
+offset_right = 955.0
+offset_bottom = 1219.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
+theme_override_fonts/font = ExtResource("5_mkqcm")
+theme_override_font_sizes/font_size = 50
+text = "Time Cost"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="RichTextLabel16" type="RichTextLabel" parent="Label/Control/6"]
-offset_left = 674.0
-offset_top = 595.0
-offset_right = 987.0
-offset_bottom = 730.0
+layout_mode = 0
+offset_left = 555.0
+offset_top = 840.0
+offset_right = 1001.0
+offset_bottom = 975.0
 theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
+theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
+theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "Level: [font_size=40][color=034419]+40.000[/color][/font_size] "
+text = "+40.000 points"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RichTextLabel17" type="RichTextLabel" parent="Label/Control/6"]
-offset_left = 664.0
-offset_top = 717.0
-offset_right = 989.0
-offset_bottom = 852.0
+[node name="RichTextLabel18" type="RichTextLabel" parent="Label/Control/6"]
+layout_mode = 0
+offset_left = 552.0
+offset_top = 728.0
+offset_right = 1001.0
+offset_bottom = 863.0
 theme = ExtResource("16_l6n8b")
-theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
-theme_override_font_sizes/normal_font_size = 35
+theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
+theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
-text = "Level: [font_size=40][color=034419]+30.000[/color][/font_size] "
+text = "+50.000 points"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel20" type="RichTextLabel" parent="Label/Control/6"]
+layout_mode = 0
+offset_left = 553.0
+offset_top = 633.0
+offset_right = 1001.0
+offset_bottom = 768.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "+60.000 points"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel19" type="RichTextLabel" parent="Label/Control/6"]
+layout_mode = 0
+offset_left = 555.0
+offset_top = 944.0
+offset_right = 1001.0
+offset_bottom = 1079.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "+30.000 points"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel21" type="RichTextLabel" parent="Label/Control/6"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 368.0
+offset_right = 999.0
+offset_bottom = 503.0
+theme = ExtResource("16_l6n8b")
+theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "+30.000 points"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextureRect5" type="TextureRect" parent="Label/Control/6"]
 modulate = Color(0.025859, 0.399018, 0.160759, 1)
-offset_left = 48.0
-offset_top = 760.5
-offset_right = 101.0
-offset_bottom = 808.5
+layout_mode = 0
+offset_left = 57.0
+offset_top = 982.894
+offset_right = 110.0
+offset_bottom = 1030.89
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
 [node name="TextureRect6" type="TextureRect" parent="Label/Control/6"]
 modulate = Color(0.025859, 0.399018, 0.160759, 1)
-offset_left = 112.0
-offset_top = 760.5
-offset_right = 165.0
-offset_bottom = 808.5
+layout_mode = 0
+offset_left = 121.0
+offset_top = 982.894
+offset_right = 174.0
+offset_bottom = 1030.89
 texture = ExtResource("24_88ncm")
 expand_mode = 1
 
 [node name="TextureRect7" type="TextureRect" parent="Label/Control/6"]
 modulate = Color(0.025859, 0.399018, 0.160759, 1)
-offset_left = 176.0
-offset_top = 760.5
-offset_right = 229.0
-offset_bottom = 808.5
+layout_mode = 0
+offset_left = 185.0
+offset_top = 982.894
+offset_right = 238.0
+offset_bottom = 1030.89
 texture = ExtResource("24_88ncm")
 expand_mode = 1
 
@@ -2466,42 +2450,44 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 264.0
-offset_top = 743.0
-offset_right = 616.0
-offset_bottom = 786.0
+offset_left = 281.0
+offset_top = 966.0
+offset_right = 550.0
+offset_bottom = 1064.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.025859, 0.399018, 0.160759, 1)
+theme_override_colors/font_color = Color(0.172549, 0.490196, 0.266667, 1)
 theme_override_font_sizes/font_size = 60
 text = "Easy"
-horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="TextureRect2" type="TextureRect" parent="Label/Control/6"]
 modulate = Color(0.977525, 0.467886, 1.73271e-06, 1)
-offset_left = 48.0
-offset_top = 640.0
-offset_right = 101.0
-offset_bottom = 688.0
+layout_mode = 0
+offset_left = 57.0
+offset_top = 883.394
+offset_right = 110.0
+offset_bottom = 931.394
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
 [node name="TextureRect3" type="TextureRect" parent="Label/Control/6"]
 modulate = Color(0.977525, 0.467886, 1.73271e-06, 1)
-offset_left = 112.0
-offset_top = 640.0
-offset_right = 165.0
-offset_bottom = 688.0
+layout_mode = 0
+offset_left = 121.0
+offset_top = 883.394
+offset_right = 174.0
+offset_bottom = 931.394
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
 [node name="TextureRect4" type="TextureRect" parent="Label/Control/6"]
 modulate = Color(0.977525, 0.467886, 1.73271e-06, 1)
-offset_left = 176.0
-offset_top = 640.0
-offset_right = 229.0
-offset_bottom = 688.0
+layout_mode = 0
+offset_left = 185.0
+offset_top = 883.394
+offset_right = 238.0
+offset_bottom = 931.394
 texture = ExtResource("24_88ncm")
 expand_mode = 1
 
@@ -2511,42 +2497,44 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 286.0
-offset_top = 618.798
-offset_right = 624.0
-offset_bottom = 661.798
+offset_left = 281.0
+offset_top = 859.0
+offset_right = 553.0
+offset_bottom = 950.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.834423, 0.623338, 1)
 theme_override_font_sizes/font_size = 60
 text = "Normal"
-horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="TextureRect8" type="TextureRect" parent="Label/Control/6"]
 modulate = Color(0.81, 0, 0, 1)
-offset_left = 48.0
-offset_top = 512.096
-offset_right = 101.0
-offset_bottom = 560.096
+layout_mode = 0
+offset_left = 56.0
+offset_top = 766.49
+offset_right = 109.0
+offset_bottom = 814.49
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
 [node name="TextureRect9" type="TextureRect" parent="Label/Control/6"]
 modulate = Color(0.81, 0, 0, 1)
-offset_left = 112.0
-offset_top = 512.096
-offset_right = 165.0
-offset_bottom = 560.096
+layout_mode = 0
+offset_left = 120.0
+offset_top = 766.49
+offset_right = 173.0
+offset_bottom = 814.49
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
 [node name="TextureRect10" type="TextureRect" parent="Label/Control/6"]
 modulate = Color(0.81, 0, 0, 1)
-offset_left = 176.0
-offset_top = 512.096
-offset_right = 229.0
-offset_bottom = 560.096
+layout_mode = 0
+offset_left = 184.0
+offset_top = 766.49
+offset_right = 237.0
+offset_bottom = 814.49
 texture = ExtResource("23_4xhfx")
 expand_mode = 1
 
@@ -2556,36 +2544,37 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 229.0
-offset_top = 494.596
-offset_right = 616.0
-offset_bottom = 537.596
+offset_left = 282.0
+offset_top = 751.0
+offset_right = 539.0
+offset_bottom = 848.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 60
 text = "Hard"
-horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="TextureRect11" type="TextureRect" parent="Label/Control/6"]
 modulate = Color(0.0562916, 0.0562916, 0.0562916, 1)
-offset_left = 128.0
-offset_top = 387.5
-offset_right = 181.0
-offset_bottom = 435.5
+layout_mode = 0
+offset_left = 137.0
+offset_top = 676.331
+offset_right = 190.0
+offset_bottom = 724.331
 texture = ExtResource("16_fpobj")
 expand_mode = 1
 
 [node name="RichTextLabel7" type="RichTextLabel" parent="Label/Control/6"]
-offset_left = 272.0
-offset_top = 1072.0
-offset_right = 800.0
-offset_bottom = 1143.0
+layout_mode = 0
+offset_left = 394.0
+offset_top = 1271.0
+offset_right = 802.0
+offset_bottom = 1342.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/normal_font_size = 35
 bbcode_enabled = true
-text = "Time: [font_size=40][color=RED]-1 points / sec[/color][/font_size]"
+text = "Time in secs"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -2595,52 +2584,16 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 272.0
-offset_top = 369.606
-offset_right = 596.0
-offset_bottom = 412.606
+offset_left = 281.0
+offset_top = 658.5
+offset_right = 547.0
+offset_bottom = 701.5
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 0.00216676
 theme_override_font_sizes/font_size = 60
 text = "PRO"
-horizontal_alignment = 1
 autowrap_mode = 2
-
-[node name="ItemiconHeart" type="Sprite2D" parent="Label/Control/6"]
-self_modulate = Color(1, 0.52, 0.52, 1)
-position = Vector2(152, 944)
-scale = Vector2(0.688933, 0.710526)
-texture = ExtResource("9_4xhfx")
-script = ExtResource("10_88ncm")
-scale_up = 1.3
-
-[node name="LivesNumber" type="Label" parent="Label/Control/6/ItemiconHeart"]
-visible = false
-offset_left = -21.5274
-offset_top = -26.375
-offset_right = 19.4726
-offset_bottom = 48.625
-theme = ExtResource("16_l6n8b")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 60
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Cambios" type="Label" parent="Label/Control/6/ItemiconHeart"]
-visible = false
-offset_left = -112.142
-offset_top = -63.375
-offset_right = 120.858
-offset_bottom = -7.375
-theme = ExtResource("16_l6n8b")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "LIVES"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="7" type="Control" parent="Label/Control"]
 visible = false
@@ -2689,7 +2642,7 @@ horizontal_alignment = 1
 [node name="RichTextLabel5" type="RichTextLabel" parent="Label/Control/7/LabelMarcoA/Slide1"]
 layout_mode = 0
 offset_left = 278.0
-offset_top = 910.0
+offset_top = 896.0
 offset_right = 524.0
 offset_bottom = 950.0
 theme = ExtResource("16_l6n8b")
@@ -2724,7 +2677,7 @@ layout_mode = 0
 offset_left = 278.0
 offset_top = 950.0
 offset_right = 524.0
-offset_bottom = 990.0
+offset_bottom = 1000.0
 theme = ExtResource("16_l6n8b")
 theme_override_colors/default_color = Color(0.1715, 0.49, 0.26705, 1)
 text = "0,99 €"
@@ -3006,6 +2959,20 @@ vertical_icon_alignment = 0
 expand_icon = true
 script = ExtResource("26_88ncm")
 metadata/_edit_use_anchors_ = true
+
+[node name="LivesNumber" type="Label" parent="."]
+offset_left = -21.5274
+offset_top = -26.375
+offset_right = 19.4726
+offset_bottom = 48.625
+theme = ExtResource("16_l6n8b")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 60
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="toggled" from="Label/Control/CheckBox" to="." method="_on_check_box_toggled"]
 [connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

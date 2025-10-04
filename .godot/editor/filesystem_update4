@@ -1,4 +1,4 @@
-res://scenes/MenuTutorial.tscn
+res://scenes/MenuResults.tscn
 res://GUI/ButtonMain.tres
 res://scenes/PlayBuoon.gdshader
 res://Label_Monserrat.tres
@@ -9,6 +9,9 @@ res://fonts/Letra_Titulo_1.tres
 res://GUI/Bandera.tres
 res://Botones.tres
 res://GUI/ButtonPista.tres
+res://scenes/PanelUP/panel_up.gd
+res://autoload/GameManager.gd
+res://data/frases_es.json
 res://scenes/MenuMain.tscn
 res://scenes/MenuSelectDifficulty.tscn
 res://scenes/MenuSelectCategory.tscn
@@ -16,10 +19,10 @@ res://scenes/PanelUP/panel_up.tscn
 res://scenes/game/PanelColors.tscn
 res://scenes/game/panel_letras.tscn
 res://scenes/Letra/Letra.tscn
-res://scenes/MenuResults.tscn
 res://scenes/Cuadro_Hints.tscn
 res://scenes/MenuSettingsGame.tscn
 res://scenes/main/MainPortrait.tscn
+res://scenes/MenuTutorial.tscn
 res://scenes/fondo_comprar_letra.tscn
 res://scenes/MenuStats.tscn
 res://scenes/MenuSettings.tscn
@@ -37,5 +40,8 @@ res://scenes/MenuSelectGame.tscn
 res://scenes/MenuSplash.tscn
 res://scenes/menu_game_over.tscn
 res://scenes/menu_game_over_fail.tscn
-res://scenes/Blink_Label.gd
-res://scenes/Blink_Panel.gd
+res://data/frases_de.json
+res://data/frases_eu.json
+res://scenes/cuadro_hints.gd
+res://scenes/cuadro_hints_init.gd
+res://scenes/menu_select_level_by_id.gd

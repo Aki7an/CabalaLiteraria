@@ -1,24 +1,163 @@
-[gd_scene load_steps=28 format=4 uid="uid://buwybneokavcx"]
+[gd_scene load_steps=41 format=4 uid="uid://buwybneokavcx"]
 
 [ext_resource type="Script" uid="uid://buqyyr7htufh2" path="res://scenes/menu_select_difficulty.gd" id="1_mnvl1"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_p00t6"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="4_1kbma"]
-[ext_resource type="Texture2D" uid="uid://c647iy0syogo0" path="res://images/Citas.png" id="5_a8wg7"]
-[ext_resource type="Texture2D" uid="uid://yimwuqsh68l8" path="res://images/CheckOK.png" id="6_6xln6"]
-[ext_resource type="Texture2D" uid="uid://3aogsd0ax8xo" path="res://images/Adivinanza.png" id="7_vcddi"]
-[ext_resource type="Texture2D" uid="uid://b75ntkmt7t0h6" path="res://images/Efemerides.png" id="8_4aytf"]
-[ext_resource type="Texture2D" uid="uid://d2i4uwg0joab6" path="res://images/FragmentosLiterarios.png" id="9_4ghod"]
+[ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="5_a8wg7"]
+[ext_resource type="Texture2D" uid="uid://b6nxfxre5njbj" path="res://images/CheckOK.png" id="6_6xln6"]
+[ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="7_vcddi"]
+[ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="8_4aytf"]
+[ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="9_4ghod"]
 [ext_resource type="Theme" uid="uid://lkfr6pageoc2" path="res://GUI/Button_difficulty.tres" id="10_1mwli"]
-[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="11_dh42w"]
-[ext_resource type="Texture2D" uid="uid://dfflig3f3g0c8" path="res://images/contorno_estrella_blanco.png" id="12_csp7b"]
-[ext_resource type="Texture2D" uid="uid://cdlae1n8vjt2m" path="res://images/simbolo-de-diamante.png" id="12_mnvl1"]
-[ext_resource type="FontFile" uid="uid://1oc1fewipk23" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="13_ea2mk"]
-[ext_resource type="Texture2D" uid="uid://dhy8jhoi1p1ej" path="res://images/Candado.png" id="14_1g7k0"]
-[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="22_bqqsn"]
-[ext_resource type="Texture2D" uid="uid://bwwm8eyqclx0m" path="res://images/Cruz.png" id="23_p2c0c"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="11_dh42w"]
+[ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="12_csp7b"]
+[ext_resource type="Texture2D" uid="uid://bpvbw33ckx2pq" path="res://images/simbolo-de-diamante.png" id="12_mnvl1"]
+[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="12_upnhn"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="13_ea2mk"]
+[ext_resource type="Texture2D" uid="uid://dy8ag74csllw2" path="res://images/Candado.png" id="14_1g7k0"]
+[ext_resource type="Texture2D" uid="uid://tg2iwyaqaye1" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_heart.png" id="18_qhtq5"]
+[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="22_bqqsn"]
+[ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="23_p2c0c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3flfr"]
 bg_color = Color(0.969932, 0.877508, 0.735374, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qhtq5"]
+texture = ExtResource("12_upnhn")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.338933, 0.246, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wt2ro"]
+texture = ExtResource("12_upnhn")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.97, 0.801867, 0.582, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rimuf"]
+texture = ExtResource("12_upnhn")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.68, 0.562133, 0.408, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_51egk"]
+texture = ExtResource("12_upnhn")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.88258, 0.730647, 0.528866, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b56ym"]
+texture = ExtResource("12_upnhn")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.338933, 0.246, 1)
+
+[sub_resource type="Theme" id="Theme_l1psc"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_qhtq5")
+Button/styles/focus = SubResource("StyleBoxTexture_wt2ro")
+Button/styles/hover = SubResource("StyleBoxTexture_rimuf")
+Button/styles/normal = SubResource("StyleBoxTexture_51egk")
+Button/styles/pressed = SubResource("StyleBoxTexture_b56ym")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vmd8q"]
+texture = ExtResource("12_upnhn")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.338933, 0.246, 1)
+
+[sub_resource type="Theme" id="Theme_0ll4q"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_vmd8q")
+Button/styles/focus = SubResource("StyleBoxTexture_wt2ro")
+Button/styles/hover = SubResource("StyleBoxTexture_rimuf")
+Button/styles/normal = SubResource("StyleBoxTexture_51egk")
+Button/styles/pressed = SubResource("StyleBoxTexture_b56ym")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m5o7t"]
+texture = ExtResource("12_upnhn")
+texture_margin_left = 76.3134
+texture_margin_top = 76.0722
+texture_margin_right = 75.9876
+texture_margin_bottom = 76.0
+modulate_color = Color(0.41, 0.338933, 0.246, 1)
+
+[sub_resource type="Theme" id="Theme_7764r"]
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 50
+Button/fonts/font = null
+Button/styles/disabled = SubResource("StyleBoxTexture_m5o7t")
+Button/styles/focus = SubResource("StyleBoxTexture_wt2ro")
+Button/styles/hover = SubResource("StyleBoxTexture_rimuf")
+Button/styles/normal = SubResource("StyleBoxTexture_51egk")
+Button/styles/pressed = SubResource("StyleBoxTexture_b56ym")
+
+[sub_resource type="Theme" id="Theme_vmd8q"]
+default_font_size = 40
 
 [sub_resource type="Image" id="Image_1o3l6"]
 data = {
@@ -470,7 +609,7 @@ offset_top = 1277.33
 offset_right = 392.0
 offset_bottom = 1495.33
 pivot_offset = Vector2(176, 111)
-theme = ExtResource("10_1mwli")
+theme = SubResource("Theme_l1psc")
 theme_override_font_sizes/font_size = 60
 icon_alignment = 1
 script = ExtResource("4_1kbma")
@@ -540,7 +679,7 @@ offset_top = 1002.67
 offset_right = 391.0
 offset_bottom = 1220.67
 pivot_offset = Vector2(151, 111)
-theme = ExtResource("10_1mwli")
+theme = SubResource("Theme_0ll4q")
 theme_override_font_sizes/font_size = 60
 icon_alignment = 1
 script = ExtResource("4_1kbma")
@@ -611,9 +750,10 @@ offset_top = 728.0
 offset_right = 391.0
 offset_bottom = 946.0
 pivot_offset = Vector2(151, 111)
-theme = ExtResource("10_1mwli")
+theme = SubResource("Theme_7764r")
 theme_override_font_sizes/font_size = 60
 icon_alignment = 1
+script = ExtResource("4_1kbma")
 
 [node name="TextureRect5" type="TextureRect" parent="Panel/ButtonDifficulty4"]
 modulate = Color(0.0562916, 0.0562916, 0.0562916, 1)
@@ -653,81 +793,53 @@ texture = ExtResource("6_6xln6")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Label4" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 480.0
-offset_top = 776.0
-offset_right = -48.0
-offset_bottom = -1031.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
-theme_override_font_sizes/font_size = 40
-text = "Frases de más de 300 caracteres.
-1 sola vida"
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 528.0
+offset_top = 736.0
+offset_right = 952.0
+offset_bottom = 944.0
+theme = SubResource("Theme_vmd8q")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+bbcode_enabled = true
+text = "Frases de más de [font_size=50][color=BLACK]300[/color][/font_size] caracteres."
 horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
 
-[node name="Label6" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 480.0
-offset_top = 1048.0
-offset_right = -48.0
-offset_bottom = -759.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
-theme_override_font_sizes/font_size = 40
-text = "Frases de unos 300 caracteres.
-2 vidas"
+[node name="RichTextLabel2" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 504.0
+offset_top = 1008.0
+offset_right = 928.0
+offset_bottom = 1216.0
+theme = SubResource("Theme_vmd8q")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+bbcode_enabled = true
+text = "Frases de unos [font_size=50][color=BLACK]300[/color][/font_size] caracteres."
 horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
 
-[node name="Label7" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="RichTextLabel3" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
 offset_left = 496.0
-offset_top = 1288.0
-offset_right = -32.0
-offset_bottom = -519.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
-theme_override_font_sizes/font_size = 40
-text = "Frases de menos unos 200 caracteres.
-3 vidas"
+offset_top = 1280.0
+offset_right = 920.0
+offset_bottom = 1488.0
+theme = SubResource("Theme_vmd8q")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+bbcode_enabled = true
+text = "Frases de unos [font_size=50][color=BLACK]200[/color][/font_size] caracteres."
 horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
 
-[node name="Label8" type="Label" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 488.0
-offset_top = 1616.0
-offset_right = -40.0
-offset_bottom = -191.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.59, 0.377403, 0.3127, 1)
-theme_override_font_sizes/font_size = 40
-text = "Frases de  unos 100 caracteres.
-4 vidas"
+[node name="RichTextLabel4" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 1560.0
+offset_right = 920.0
+offset_bottom = 1768.0
+theme = SubResource("Theme_vmd8q")
+theme_override_colors/default_color = Color(0.396138, 0.213814, 0.158467, 1)
+bbcode_enabled = true
+text = "Frases de unos [font_size=50][color=BLACK]100[/color][/font_size] caracteres."
 horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
 
 [node name="Label5" type="Label" parent="Panel"]
 layout_mode = 1
@@ -871,6 +983,56 @@ modulate = Color(0.945098, 0.854902, 0.690196, 1)
 position = Vector2(52, 50)
 scale = Vector2(0.117187, 0.117187)
 texture = ExtResource("23_p2c0c")
+
+[node name="ItemiconHeart" type="Sprite2D" parent="."]
+position = Vector2(720, 904)
+scale = Vector2(0.394737, 0.394737)
+texture = ExtResource("18_qhtq5")
+
+[node name="ItemiconHeart2" type="Sprite2D" parent="."]
+position = Vector2(680, 1176)
+scale = Vector2(0.394737, 0.394737)
+texture = ExtResource("18_qhtq5")
+
+[node name="ItemiconHeart3" type="Sprite2D" parent="."]
+position = Vector2(760, 1176)
+scale = Vector2(0.394737, 0.394737)
+texture = ExtResource("18_qhtq5")
+
+[node name="ItemiconHeart4" type="Sprite2D" parent="."]
+position = Vector2(722.145, 1454)
+scale = Vector2(0.394737, 0.394737)
+texture = ExtResource("18_qhtq5")
+
+[node name="ItemiconHeart9" type="Sprite2D" parent="."]
+position = Vector2(642.145, 1454)
+scale = Vector2(0.394737, 0.394737)
+texture = ExtResource("18_qhtq5")
+
+[node name="ItemiconHeart10" type="Sprite2D" parent="."]
+position = Vector2(802.145, 1454)
+scale = Vector2(0.394737, 0.394737)
+texture = ExtResource("18_qhtq5")
+
+[node name="ItemiconHeart5" type="Sprite2D" parent="."]
+position = Vector2(760, 1728)
+scale = Vector2(0.394737, 0.394737)
+texture = ExtResource("18_qhtq5")
+
+[node name="ItemiconHeart6" type="Sprite2D" parent="."]
+position = Vector2(840, 1728)
+scale = Vector2(0.394737, 0.394737)
+texture = ExtResource("18_qhtq5")
+
+[node name="ItemiconHeart7" type="Sprite2D" parent="."]
+position = Vector2(680, 1728)
+scale = Vector2(0.394737, 0.394737)
+texture = ExtResource("18_qhtq5")
+
+[node name="ItemiconHeart8" type="Sprite2D" parent="."]
+position = Vector2(600, 1728)
+scale = Vector2(0.394737, 0.394737)
+texture = ExtResource("18_qhtq5")
 
 [connection signal="pressed" from="Panel/ButtonDifficulty1" to="." method="_on_button_difficulty_1_pressed"]
 [connection signal="pressed" from="Panel/ButtonDifficulty2" to="." method="_on_button_difficulty_2_pressed"]

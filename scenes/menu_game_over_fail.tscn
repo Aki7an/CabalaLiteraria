@@ -1,12 +1,12 @@
 [gd_scene load_steps=22 format=3 uid="uid://cwsakfarlyt6b"]
 
 [ext_resource type="Script" uid="uid://cqkjxpk7ooyxd" path="res://scenes/menu_game_over_fail.gd" id="1_h7tbd"]
-[ext_resource type="Texture2D" uid="uid://rqajfwdgksgi" path="res://images/Captura de pantalla 2025-09-06 221159.png" id="2_t4ocq"]
+[ext_resource type="Texture2D" uid="uid://hggrdc2bwirm" path="res://images/Captura de pantalla 2025-09-06 221159.png" id="2_t4ocq"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="3_eq0y4"]
-[ext_resource type="FontFile" uid="uid://b3du85fkr63ov" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="4_kqx5s"]
-[ext_resource type="Texture2D" uid="uid://cw3e4op0sfc2o" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="5_1lsnr"]
-[ext_resource type="Texture2D" uid="uid://bsigp2ryvxqec" path="res://images/Info.png" id="7_81s0o"]
-[ext_resource type="Texture2D" uid="uid://ya2cxtoidnmc" path="res://images/SadFace.png" id="7_t4ocq"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="4_kqx5s"]
+[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="5_1lsnr"]
+[ext_resource type="Texture2D" uid="uid://64eqp4g8dwld" path="res://images/Info.png" id="7_81s0o"]
+[ext_resource type="Texture2D" uid="uid://bi1gjepfdc0s2" path="res://images/SadFace.png" id="7_t4ocq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eq0y4"]
 bg_color = Color(1, 0.603922, 0.568627, 1)

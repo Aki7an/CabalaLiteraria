@@ -22,6 +22,11 @@ var scene_select_level: PackedScene = null
 @onready var curiosidades = $Panel/Curiosidades
 @onready var fragmentos = $Panel/Fragmentos
 
+@onready var button_difficulty_2 = $Panel/ButtonDifficulty2
+@onready var button_difficulty_3 = $Panel/ButtonDifficulty3
+@onready var button_difficulty_4 = $Panel/ButtonDifficulty4
+
+
 func _ready():
 	efemerides.visible = false
 	citas.visible = false
@@ -37,7 +42,33 @@ func _ready():
 		curiosidades.visible = true
 	else:
 		fragmentos.visible = true
+	
+	if GameManager.level_normal_unlocked:
+		button_difficulty_2.disabled = false
+		button_difficulty_2.enable_intro_scale = true
+		button_difficulty_2.enable_intro_rotation = true
+	else:
+		button_difficulty_2.disabled = true	
+		button_difficulty_2.enable_intro_scale = false
+		button_difficulty_2.enable_intro_rotation = false
+	
+	if GameManager.level_dificil_unlocked:
+		button_difficulty_3.disabled = false
+		button_difficulty_3.enable_intro_scale = true
+		button_difficulty_3.enable_intro_rotation = true
+	else:
+		button_difficulty_3.disabled = true
+		button_difficulty_3.enable_intro_scale = false
+		button_difficulty_3.enable_intro_rotation = false
 		
+	if GameManager.level_pro_unlocked:
+		button_difficulty_4.disabled = false
+		button_difficulty_4.enable_intro_scale = true
+		button_difficulty_4.enable_intro_rotation = true
+	else:
+		button_difficulty_4.disabled = true
+		button_difficulty_4.enable_intro_scale = false
+		button_difficulty_4.enable_intro_rotation = false
 func _on_button_difficulty_1_pressed():
 	dificultad = 1
 	SoundManager.play("PlayAvailable")

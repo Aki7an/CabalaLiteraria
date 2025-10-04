@@ -129,9 +129,9 @@ func set_texture_from_index(texrect: TextureRect, index: int) -> void:
 
 
 func _load_image() -> void:
-	set_texture_from_index(imagen_viñeta, GameManager.id_frase)
-	set_texture_from_index(imagen_viñeta_big, GameManager.id_frase)
-	print("id image" , GameManager.id_frase)
+	set_texture_from_index(imagen_viñeta, GameManager.id_image)
+	set_texture_from_index(imagen_viñeta_big, GameManager.id_image)
+	print("id image" , GameManager.id_image)
 	
 func _process(delta):
 	score_2.text = GameManager.formatear_numero(GameManager.score)

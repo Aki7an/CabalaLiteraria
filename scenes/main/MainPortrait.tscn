@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://y1k8m1upqvmd" path="res://scenes/game/PanelColors.tscn" id="3_c53kp"]
 [ext_resource type="PackedScene" uid="uid://df2olneywrcjb" path="res://scenes/PanelUP/panel_up.tscn" id="4_6wj6l"]
 [ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="5_22c6s"]
-[ext_resource type="Texture2D" uid="uid://dpq6nevhlufn6" path="res://images/triangulo-hacia-arriba -blanco.png" id="8_j1ox2"]
+[ext_resource type="Texture2D" uid="uid://duvxnbfhhi6g" path="res://images/triangulo-hacia-arriba -blanco.png" id="8_j1ox2"]
 [ext_resource type="Script" uid="uid://llhs580ksxi7" path="res://scenes/main/page_up.gd" id="9_qtrpv"]
 [ext_resource type="Script" uid="uid://n8vtfkg80eut" path="res://scenes/main/page_down.gd" id="10_c53kp"]
 

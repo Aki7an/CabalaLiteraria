@@ -86,7 +86,7 @@ func _on_button_back_pressed():
 
 
 func _ready() -> void:
-	GameManager.calcula_score()
+	#GameManager.calcula_score()
 	label_score.text =  GameManager.formatear_numero(GameManager.score)
 	nombre_remarcar.visible = false
 	advertencia_hecha = false

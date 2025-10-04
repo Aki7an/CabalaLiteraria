@@ -124,6 +124,7 @@ func _inicializar_letra() -> void:
 func _inicializar_numero() -> void:
 	label_numero.text = str(numero)
 	label_numero.visible = true
+	label_numero.stop_blink()
 	
 	set_number_font_size()
 	
@@ -135,6 +136,11 @@ func _inicializar_numero() -> void:
 		label_letra.visible = true
 		
 
+func _blink() -> void:
+	label_numero.start_blink()
+
+func _blink_stop() -> void:
+	label_numero.stop_blink()
 
 func configurar_celda(letra_config: String, numero_config: int, orden_config:int , color_id_config: int) -> void:
 	color_id = color_id_config
