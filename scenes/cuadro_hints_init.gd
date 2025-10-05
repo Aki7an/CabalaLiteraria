@@ -498,4 +498,5 @@ func _on_play_button_fx_pressed():
 	#score_text.visible = false
 	#score_2.visible = false
 	SignalManager.game_start.emit()
+	SignalManager.intro_canvas_juego_tween.emit()
 	start_transition("Btn_pista", .8)

@@ -316,6 +316,7 @@ autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="Nombre" type="LineEdit" parent="Panel"]
+layout_mode = 0
 offset_left = 216.0
 offset_top = 1520.0
 offset_right = 792.0

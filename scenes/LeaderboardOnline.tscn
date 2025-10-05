@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bd8rs8q64mrb"]
+[gd_scene load_steps=25 format=3 uid="uid://bd8rs8q64mrb"]
 
 [ext_resource type="Script" uid="uid://hhs0tgd7tk4c" path="res://scenes/leaderboard_online.gd" id="1_jj2wu"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_p8761"]
@@ -7,11 +7,10 @@
 [ext_resource type="FontFile" uid="uid://bhfo1jcrwhcei" path="res://Font_titulos.tres" id="5_iq642"]
 [ext_resource type="Script" uid="uid://5mpdten05w3r" path="res://scenes/PanelUP/dificultad.gd" id="6_budu4"]
 [ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="7_ovhsf"]
-[ext_resource type="Texture2D" uid="uid://dfflig3f3g0c8" path="res://images/contorno_estrella_blanco.png" id="8_4nwc8"]
-[ext_resource type="FontFile" path="/Users/victorbarananourquijo/Documents/Godot/CabalaLiteraria/fonts/Fonts/Montserrat/static/Montserrat-BoldItalic.ttf" id="9_p8761"]
-[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="9_yvybq"]
+[ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="8_4nwc8"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="9_yvybq"]
 [ext_resource type="Theme" uid="uid://dfw7q1ctkms07" path="res://Desplegable.tres" id="10_v6xkl"]
-[ext_resource type="FontFile" uid="uid://btpckw1n0m1mv" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-ExtraBold.ttf" id="11_g8760"]
+[ext_resource type="FontFile" uid="uid://ys0y54nml84h" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-ExtraBold.ttf" id="11_g8760"]
 [ext_resource type="Script" uid="uid://dcjts4hrnhgsa" path="res://scenes/optionbutton.gd" id="12_4wnxq"]
 [ext_resource type="PackedScene" uid="uid://cffefknpxfylk" path="res://scenes/titulo_cifra_letra.tscn" id="13_cxgjc"]
 
@@ -241,7 +240,6 @@ theme = ExtResource("10_v6xkl")
 theme_type_variation = &"Test"
 theme_override_colors/font_hover_color = Color(0.233925, 0.233925, 0.233925, 1)
 theme_override_colors/font_color = Color(0.303233, 0.303233, 0.303233, 1)
-theme_override_fonts/font = ExtResource("9_p8761")
 theme_override_font_sizes/font_size = 50
 theme_override_styles/hover = SubResource("StyleBoxFlat_p8761")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_jj2pi")

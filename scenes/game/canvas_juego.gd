@@ -107,6 +107,7 @@ func _ready() -> void:
 	_añade_las_letras_iniciales()
 	
 	#move_canvas_juego(1420.0, -440.0, 0.9, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+	
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSFORM_CHANGED:

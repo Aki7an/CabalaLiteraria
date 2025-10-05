@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cue48v884sw43"]
+[gd_scene load_steps=19 format=3 uid="uid://cue48v884sw43"]
 
 [ext_resource type="Script" uid="uid://blst6ae0lwfec" path="res://scenes/LeaderboardLocal.gd" id="1_0tlxa"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_cnd66"]
@@ -8,10 +8,9 @@
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="6_6acgj"]
 [ext_resource type="Script" uid="uid://5mpdten05w3r" path="res://scenes/PanelUP/dificultad.gd" id="6_abj0w"]
 [ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="7_304n2"]
-[ext_resource type="Texture2D" uid="uid://dfflig3f3g0c8" path="res://images/contorno_estrella_blanco.png" id="8_jf6h7"]
+[ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="8_jf6h7"]
 [ext_resource type="PackedScene" uid="uid://cffefknpxfylk" path="res://scenes/titulo_cifra_letra.tscn" id="8_v0t17"]
-[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="9_yvntb"]
-[ext_resource type="FontFile" path="/Users/victorbarananourquijo/Documents/Godot/CabalaLiteraria/fonts/Fonts/Montserrat/static/Montserrat-BoldItalic.ttf" id="10_abj0w"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="9_yvntb"]
 [ext_resource type="Script" uid="uid://dcjts4hrnhgsa" path="res://scenes/optionbutton.gd" id="12_abj0w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvael"]
@@ -234,7 +233,6 @@ theme = ExtResource("5_kvael")
 theme_type_variation = &"Test"
 theme_override_colors/font_hover_color = Color(0.233925, 0.233925, 0.233925, 1)
 theme_override_colors/font_color = Color(0.303233, 0.303233, 0.303233, 1)
-theme_override_fonts/font = ExtResource("10_abj0w")
 theme_override_font_sizes/font_size = 50
 theme_override_styles/hover = SubResource("StyleBoxFlat_mh33s")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_r4qou")
@@ -258,7 +256,6 @@ pivot_offset = Vector2(224, 56)
 theme = ExtResource("5_kvael")
 theme_override_colors/font_hover_color = Color(0.252028, 0.252028, 0.252028, 1)
 theme_override_colors/font_color = Color(0.31802, 0.31802, 0.31802, 1)
-theme_override_fonts/font = ExtResource("10_abj0w")
 theme_override_font_sizes/font_size = 50
 theme_override_styles/hover = SubResource("StyleBoxFlat_mh33s")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_r4qou")

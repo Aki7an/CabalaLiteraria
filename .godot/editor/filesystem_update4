@@ -1,4 +1,4 @@
-res://scenes/Cuadro_Hints.tscn
+res://scenes/MenuMain.tscn
 res://GUI/ButtonMain.tres
 res://scenes/PlayBuoon.gdshader
 res://Label_Monserrat.tres
@@ -9,7 +9,7 @@ res://fonts/Letra_Titulo_1.tres
 res://GUI/Bandera.tres
 res://Botones.tres
 res://GUI/ButtonPista.tres
-res://scenes/MenuMain.tscn
+res://scenes/game/canvas_juego.gd
 res://scenes/MenuSelectDifficulty.tscn
 res://scenes/MenuSelectCategory.tscn
 res://scenes/PanelUP/panel_up.tscn
@@ -17,6 +17,7 @@ res://scenes/game/PanelColors.tscn
 res://scenes/game/panel_letras.tscn
 res://scenes/Letra/Letra.tscn
 res://scenes/MenuResults.tscn
+res://scenes/Cuadro_Hints.tscn
 res://scenes/MenuSettingsGame.tscn
 res://scenes/main/MainPortrait.tscn
 res://scenes/MenuTutorial.tscn
@@ -37,14 +38,14 @@ res://scenes/MenuSelectGame.tscn
 res://scenes/MenuSplash.tscn
 res://scenes/menu_game_over.tscn
 res://scenes/menu_game_over_fail.tscn
-res://data/Traducciones.es.translation
-res://data/Traducciones.en.translation
-res://data/Traducciones.de.translation
-res://data/Traducciones.fr.translation
-res://data/Traducciones.eu.translation
-res://data/Traducciones.it.translation
-res://data/Traducciones.pt.translation
-res://scenes/game/canvas_juego.gd
 res://scenes/game/color_rect_down.gd
-res://scenes/menu_settings.gd
-res://scenes/menu_settings_game.gd
+res://autoload/SignalManager.gd
+res://scenes/cuadro_hints_init.gd
+res://scenes/Leaderboard.tscn
+res://Desplegable.tres
+res://scenes/leaderboard_final.gd
+res://scenes/LeaderboardFINAL.tscn
+res://Stats_facil.tres
+res://stats_normal.tres
+res://stats_PRO.tres
+res://scenes/LeaderboardOnline.tscn

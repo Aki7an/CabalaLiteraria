@@ -658,14 +658,24 @@ scale = Vector2(0.5, 0.5)
 size_flags_horizontal = 0
 theme = SubResource("Theme_kmbax")
 theme_override_font_sizes/font_size = 80
-text = "GET"
-alignment = 2
 
 [node name="Candado" type="Sprite2D" parent="CuadroSalirPartida/CuadroHint3/ButtonHint3"]
 modulate = Color(0.980392, 0.941176, 0.87451, 1)
 position = Vector2(100, 112)
 scale = Vector2(0.675336, 0.675336)
 texture = ExtResource("6_waxq6")
+
+[node name="Label" type="Label" parent="CuadroSalirPartida/CuadroHint3/ButtonHint3"]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 84.0
+offset_right = 590.0
+offset_bottom = 183.0
+theme = ExtResource("3_mpm3g")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 80
+text = "GET"
+horizontal_alignment = 1
 
 [node name="Coin" type="Sprite2D" parent="CuadroSalirPartida/CuadroHint3"]
 position = Vector2(663, 376)
@@ -741,6 +751,7 @@ position = Vector2(140, 56)
 texture = ExtResource("9_017l8")
 
 [node name="CuadroImageBig" type="Label" parent="CuadroSalirPartida"]
+visible = false
 layout_mode = 0
 offset_left = 8.0
 offset_top = 168.0

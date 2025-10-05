@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=5 format=3 uid="uid://dfw7q1ctkms07"]
 
-[ext_resource type="Texture2D" uid="uid://b2km67albqyot" path="res://images/TrianguloAbajo.png" id="1_46dms"]
+[ext_resource type="Texture2D" uid="uid://c2d1r5c453job" path="res://images/TrianguloAbajo.png" id="1_46dms"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_46dms"]
 bg_color = Color(0.716296, 0.716296, 0.716296, 1)
