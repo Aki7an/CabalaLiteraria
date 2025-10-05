@@ -40,6 +40,28 @@ var _last_global_pos: Vector2
 # ------------------ Escenas / datos ------------------
 var escena_celda: PackedScene = preload("res://scenes/Celda/Celda.tscn")
 
+# MoverCanvasJuego.gd  (adjunta este script al nodo que tenga como hijo a canvasJuego)
+
+@onready var canvasJuego: = $"."  # ajusta la ruta si es distinta
+
+# Parámetros por defecto
+@export var from_y: float = 1420.0
+@export var to_y: float = -440.0
+@export var travel_time: float = 0.80
+
+# Easing estándar de Tween
+@export var trans_type: Tween.TransitionType = Tween.TRANS_SINE
+@export var ease_type: Tween.EaseType = Tween.EASE_IN_OUT
+
+# Si asignas una Curve aquí, se usará como curva de interpolación (0..1 → 0..1)
+@export var curve_override: Curve
+
+var _tween: Tween
+
+## Mueve canvasJuego de X=inicio a X=fin en 'duration' segundos.
+## Si 'start_from_current' es true, parte desde la X actual del nodo.
+## Si pasas una Curve (o asignas curve_override en el Inspector), se usará como curva de easing personalizada.
+
 # ----------------------------------------------------
 #                       READY
 # ----------------------------------------------------
@@ -83,6 +105,8 @@ func _ready() -> void:
 	position.y = GameManager.min_y_canvas
 	update_position_botton_red_line()
 	_añade_las_letras_iniciales()
+	
+	#move_canvas_juego(1420.0, -440.0, 0.9, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSFORM_CHANGED:
@@ -303,6 +327,7 @@ func _añade_las_letras_iniciales() -> void:
 # ----------------------------------------------------
 func _input(event: InputEvent) -> void:
 	var pos: Vector2 = _event_pos(event)
+	
 
 	# Desplazar solo si el puntero/gesto está sobre el canvas
 	if event is InputEventMouseButton and _is_over_canvas(_event_pos(event)):
@@ -428,6 +453,7 @@ func _clamp_canvas_y() -> void:
 
 		# Evita “temblores” por flotantes
 		canvas_juego.position.y = round(canvas_juego.position.y)
+		print("Position CanvasLJuego:" , canvas_juego.global_position.y)
 	else:
 		canvas_juego.position.y = GameManager.max_y_canvas
 
@@ -564,8 +590,46 @@ func pan_rows(delta_rows: int, duration: float = 0.35) -> void:
 	target_y = clamp(target_y, GameManager.max_y_canvas, GameManager.min_y_canvas)
 	pan_to_y(round(target_y), duration)
 	
+	
+func move_canvas_juego(
+		start_y: float = from_y,
+		end_y: float = to_y,
+		duration: float = travel_time,
+		trans: Tween.TransitionType = trans_type,
+		ease: Tween.EaseType = ease_type,
+		curve: Curve = curve_override,
+		start_from_current: bool = false
+	) -> void:
+	# Evita tweens solapados
+	if is_instance_valid(_tween):
+		_tween.kill()
 
+	# Punto de partida tipado explícito (float)
+	var s_y: float = (canvasJuego.position.y if start_from_current else start_y)
+	canvasJuego.position.x = s_y
 
+	var t: Tween = create_tween()
+	_tween = t
+
+	if curve != null:
+		# Usamos MethodTweener tipado para evitar Variant
+		var mt: MethodTweener = t.tween_method(
+			func(alpha: float) -> void:
+				var a: float = clamp(alpha, 0.0, 1.0)
+				var eased: float = clamp(curve.sample(a), 0.0, 1.0)
+				canvasJuego.position.y = lerp(s_y, end_y, eased),
+			0.0, 1.0, duration
+		)
+		mt.set_trans(trans)
+		mt.set_ease(ease)
+	else:
+		# Propiedad tipada a PropertyTweener
+		var pt: PropertyTweener = t.tween_property(canvasJuego, "position:y", end_y, duration)
+		pt.set_trans(trans)
+		pt.set_ease(ease)
+
+	# (Opcional) esperar fin:
+	# await _tween.finished
 
 
 

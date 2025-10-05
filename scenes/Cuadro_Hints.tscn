@@ -4,10 +4,10 @@
 [ext_resource type="Script" uid="uid://crbpumhhxvpx2" path="res://scenes/cuadro_hints.gd" id="1_mpm3g"]
 [ext_resource type="Theme" uid="uid://dosjgf8s5yv4o" path="res://fonts/Letra_letra_parrafo.tres" id="3_mpm3g"]
 [ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="4_dofcg"]
-[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="6_24n6l"]
 [ext_resource type="Texture2D" uid="uid://dy8ag74csllw2" path="res://images/Candado.png" id="6_waxq6"]
 [ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="7_017l8"]
 [ext_resource type="Texture2D" uid="uid://cc5fvr2p5neit" path="res://images/Coin.png" id="8_4yxy3"]
+[ext_resource type="Texture2D" uid="uid://wah85dic870v" path="res://GUI/Library/Button/Button_Custom/Btn_Rectangle03_White1.png" id="8_017l8"]
 [ext_resource type="Texture2D" uid="uid://dwt8pehcrrvvx" path="res://images/play-64.png" id="9_017l8"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="11_4yxy3"]
 [ext_resource type="Theme" uid="uid://k7hcs8goxg0c" path="res://Label_Nunito_font.tres" id="12_w8vuo"]
@@ -204,29 +204,44 @@ Button/styles/normal = SubResource("StyleBoxTexture_5evft")
 Button/styles/pressed = SubResource("StyleBoxTexture_u86xj")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4yxy3"]
-texture = ExtResource("6_24n6l")
-region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+texture = ExtResource("8_017l8")
+texture_margin_left = 38.183
+texture_margin_right = 37.8603
+texture_margin_bottom = 10.2632
+region_rect = Rect2(-0.26239, 0.0219212, 76.4755, 109.809)
 modulate_color = Color(1, 0.670588, 0.0705882, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w8vuo"]
-texture = ExtResource("6_24n6l")
-region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+texture = ExtResource("8_017l8")
+texture_margin_left = 38.183
+texture_margin_right = 37.8603
+texture_margin_bottom = 10.2632
+region_rect = Rect2(-0.26239, 0.0219212, 76.4755, 109.809)
 modulate_color = Color(1, 0.670588, 0.0705882, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nghln"]
-texture = ExtResource("6_24n6l")
-region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+texture = ExtResource("8_017l8")
+texture_margin_left = 38.183
+texture_margin_right = 37.8603
+texture_margin_bottom = 10.2632
+region_rect = Rect2(-0.26239, 0.0219212, 76.4755, 109.809)
 modulate_color = Color(1, 0.670588, 0.0705882, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_whjgw"]
-texture = ExtResource("6_24n6l")
-region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
+texture = ExtResource("8_017l8")
+texture_margin_left = 38.183
+texture_margin_right = 37.8603
+texture_margin_bottom = 10.2632
+region_rect = Rect2(-0.26239, 0.0219212, 76.4755, 109.809)
 modulate_color = Color(1, 0.670588, 0.0705882, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_isor6"]
-texture = ExtResource("6_24n6l")
-region_rect = Rect2(-0.26239, 0.0219212, 120.825, 120.365)
-modulate_color = Color(0.66, 0.44517, 0.0462, 1)
+texture = ExtResource("8_017l8")
+texture_margin_left = 38.183
+texture_margin_right = 37.8603
+texture_margin_bottom = 10.2632
+region_rect = Rect2(-0.26239, 0.0219212, 76.4755, 109.809)
+modulate_color = Color(1, 0.670588, 0.0705882, 1)
 
 [sub_resource type="Theme" id="Theme_ity34"]
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
@@ -722,7 +737,7 @@ speed_scale = 2.0
 
 [node name="Cruz" type="Sprite2D" parent="CuadroSalirPartida/ButtonCancel"]
 modulate = Color(0.945098, 0.854902, 0.690196, 1)
-position = Vector2(150, 53)
+position = Vector2(140, 56)
 texture = ExtResource("9_017l8")
 
 [node name="CuadroImageBig" type="Label" parent="CuadroSalirPartida"]

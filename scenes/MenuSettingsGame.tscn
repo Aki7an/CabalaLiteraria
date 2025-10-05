@@ -34,7 +34,7 @@ border_width_right = 7
 border_width_bottom = 7
 border_color = Color(0.866667, 0.619608, 0.196078, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_13p2l"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wr6ke"]
 texture = ExtResource("14_akf1u")
 texture_margin_left = 76.3134
 texture_margin_top = 76.0722
@@ -42,7 +42,7 @@ texture_margin_right = 75.9876
 texture_margin_bottom = 76.0
 modulate_color = Color(0.417204, 0.811498, 0.422634, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pk3fb"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_458mo"]
 texture = ExtResource("14_akf1u")
 texture_margin_left = 76.3134
 texture_margin_top = 76.0722
@@ -70,11 +70,11 @@ Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
 Button/font_sizes/font_size = 50
 Button/fonts/font = null
-Button/styles/disabled = SubResource("StyleBoxTexture_13p2l")
-Button/styles/focus = SubResource("StyleBoxTexture_13p2l")
-Button/styles/hover = SubResource("StyleBoxTexture_13p2l")
-Button/styles/normal = SubResource("StyleBoxTexture_pk3fb")
-Button/styles/pressed = SubResource("StyleBoxTexture_13p2l")
+Button/styles/disabled = SubResource("StyleBoxTexture_wr6ke")
+Button/styles/focus = SubResource("StyleBoxTexture_wr6ke")
+Button/styles/hover = SubResource("StyleBoxTexture_wr6ke")
+Button/styles/normal = SubResource("StyleBoxTexture_458mo")
+Button/styles/pressed = SubResource("StyleBoxTexture_wr6ke")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_md1y2"]
 texture_margin_left = 76.3134
@@ -175,12 +175,12 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="Gradient" id="Gradient_h4fpn"]
+[sub_resource type="Gradient" id="Gradient_6r1xw"]
 offsets = PackedFloat32Array(0)
 colors = PackedColorArray(0.854902, 0.592157, 0.141176, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_yl02v"]
-gradient = SubResource("Gradient_h4fpn")
+gradient = SubResource("Gradient_6r1xw")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qke6e"]
 texture = ExtResource("14_akf1u")
@@ -272,6 +272,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7e130")
 
 [node name="Fondo" parent="Panel" instance=ExtResource("2_6r1xw")]
 metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
 
 [node name="ButtonBack2" type="Button" parent="Panel"]
 layout_mode = 1
@@ -305,32 +306,32 @@ text = "Back"
 metadata/_edit_use_anchors_ = true
 
 [node name="Cols08" type="Sprite2D" parent="Panel"]
-position = Vector2(512, 1489.25)
+position = Vector2(512, 1185.25)
 scale = Vector2(2, 1.72549)
 texture = ExtResource("4_wr6ke")
 
 [node name="Cols09" type="Sprite2D" parent="Panel"]
-position = Vector2(512, 1489.25)
+position = Vector2(512, 1185.25)
 scale = Vector2(2, 1.72549)
 texture = ExtResource("5_458mo")
 
 [node name="Cols10" type="Sprite2D" parent="Panel"]
-position = Vector2(512, 1489.25)
+position = Vector2(512, 1185.25)
 scale = Vector2(2, 1.72549)
 texture = ExtResource("6_6r1xw")
 
 [node name="Cols11" type="Sprite2D" parent="Panel"]
-position = Vector2(512, 1489.25)
+position = Vector2(512, 1185.25)
 scale = Vector2(2, 1.72549)
 texture = ExtResource("7_if2lk")
 
 [node name="Cols12" type="Sprite2D" parent="Panel"]
-position = Vector2(512, 1489.25)
+position = Vector2(512, 1185.25)
 scale = Vector2(2, 1.72549)
 texture = ExtResource("8_p50gw")
 
 [node name="Cols13" type="Sprite2D" parent="Panel"]
-position = Vector2(512, 1489.25)
+position = Vector2(512, 1185.25)
 scale = Vector2(2, 1.72549)
 texture = ExtResource("9_cw4mi")
 
@@ -340,9 +341,9 @@ anchors_preset = -1
 anchor_left = -0.0703125
 anchor_right = -0.0703125
 offset_left = 288.0
-offset_top = 1160.0
+offset_top = 856.0
 offset_right = 456.0
-offset_bottom = 1338.0
+offset_bottom = 1034.0
 pivot_offset = Vector2(88, 89)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -364,9 +365,9 @@ anchors_preset = -1
 anchor_left = 0.0859375
 anchor_right = 0.0859375
 offset_left = 552.0
-offset_top = 1160.0
+offset_top = 856.0
 offset_right = 720.0
-offset_bottom = 1338.0
+offset_bottom = 1034.0
 pivot_offset = Vector2(84.3333, 84)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -398,9 +399,9 @@ metadata/_edit_use_anchors_ = true
 [node name="LabeColumns" type="Label" parent="Panel"]
 layout_mode = 1
 offset_left = 448.0
-offset_top = 1192.0
+offset_top = 888.0
 offset_right = 581.0
-offset_bottom = 1312.0
+offset_bottom = 1008.0
 theme = SubResource("Theme_yytc7")
 theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
 theme_override_fonts/font = ExtResource("12_qkxxw")
@@ -412,7 +413,10 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="ButtonFx" type="Button" parent="Panel"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.0708333
+anchor_bottom = -0.105208
 offset_left = 80.0
 offset_top = 640.0
 offset_right = 944.0
@@ -422,7 +426,12 @@ autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="CheckButtonFx" type="CheckButton" parent="Panel/ButtonFx"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.037037
+anchor_top = -0.121212
+anchor_right = 0.0370382
+anchor_bottom = -0.121211
 offset_left = 624.0
 offset_top = 24.0
 offset_right = 1208.3
@@ -448,9 +457,11 @@ metadata/_edit_use_anchors_ = true
 [node name="TextureRect4" type="TextureRect" parent="Panel/ButtonFx"]
 modulate = Color(0.1715, 0.49, 0.26705, 1)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = 0.037037
+anchor_top = -0.0808081
+anchor_right = 1.03704
+anchor_bottom = 1.13131
 offset_left = 40.0
 offset_top = 32.0
 offset_right = -670.0
@@ -475,14 +486,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.1715, 0.49, 0.26705, 1)
 theme_override_fonts/font = ExtResource("12_qkxxw")
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 50
 text = "FX"
 vertical_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="HSliderFx" type="HSlider" parent="Panel/ButtonFx"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.242424
+anchor_bottom = -0.242424
 offset_left = 80.0
 offset_top = 120.0
 offset_right = 616.0
@@ -514,7 +528,10 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="TextureRect3" type="TextureRect" parent="Panel"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.116667
+anchor_bottom = -0.1375
 offset_top = 968.0
 offset_right = 1025.0
 offset_bottom = 1104.0
@@ -523,9 +540,10 @@ metadata/_edit_use_anchors_ = true
 
 [node name="LabeLanguage" type="Label" parent="Panel/TextureRect3"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
+anchor_top = 0.0833333
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.958333
 offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -538,8 +556,39 @@ vertical_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
+[node name="TextureRect4" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.191667
+anchor_bottom = 0.191667
+offset_top = 968.0
+offset_right = 1025.0
+offset_bottom = 1104.0
+texture = SubResource("GradientTexture1D_yl02v")
+metadata/_edit_use_anchors_ = true
+
+[node name="LabeLanguage" type="Label" parent="Panel/TextureRect4"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.0588235
+anchor_right = 1.0
+anchor_bottom = 0.933823
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
+theme_override_fonts/font = ExtResource("12_qkxxw")
+theme_override_font_sizes/font_size = 70
+text = "ONLINE NAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
 [node name="TextureRect2" type="TextureRect" parent="Panel"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = -0.0208333
 offset_top = 160.0
 offset_right = 1025.0
 offset_bottom = 296.0
@@ -564,7 +613,10 @@ autowrap_mode = 2
 metadata/_edit_lock_ = true
 
 [node name="ButtonRefranesPopulares2" type="Button" parent="Panel"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.0291667
+anchor_bottom = -0.0625
 offset_left = 80.0
 offset_top = 344.0
 offset_right = 944.0
@@ -576,9 +628,11 @@ metadata/_edit_use_anchors_ = true
 [node name="TextureRect4" type="TextureRect" parent="Panel/ButtonRefranesPopulares2"]
 modulate = Color(0.0745098, 0.286275, 0.380392, 1)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = 0.037037
+anchor_top = -0.08
+anchor_right = 1.0162
+anchor_bottom = 1.09
 offset_left = 40.0
 offset_top = 32.0
 offset_right = -670.0
@@ -592,9 +646,11 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Label2" type="Label" parent="Panel/ButtonRefranesPopulares2"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = 0.00925926
+anchor_top = 0.28
+anchor_right = 0.87037
+anchor_bottom = 0.741539
 offset_left = 224.0
 offset_top = -40.0
 offset_right = -96.0
@@ -603,14 +659,19 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.0705882, 0.286275, 0.380392, 1)
 theme_override_fonts/font = ExtResource("12_qkxxw")
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 50
 text = "Music"
 vertical_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="CheckButtonMusic" type="CheckButton" parent="Panel/ButtonRefranesPopulares2"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.037037
+anchor_top = -0.148148
+anchor_right = 0.0370382
+anchor_bottom = -0.148147
 offset_left = 624.0
 offset_top = 32.0
 offset_right = 1208.3
@@ -634,7 +695,10 @@ flat = true
 metadata/_edit_use_anchors_ = true
 
 [node name="HSliderSound" type="HSlider" parent="Panel/ButtonRefranesPopulares2"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.269231
+anchor_bottom = -0.269231
 offset_left = 80.0
 offset_top = 128.0
 offset_right = 616.0
@@ -650,6 +714,20 @@ step = 0.01
 value = 0.8
 metadata/_edit_use_anchors_ = true
 
+[node name="Nombre" type="LineEdit" parent="Panel"]
+offset_left = 216.0
+offset_top = 1520.0
+offset_right = 792.0
+offset_bottom = 1640.0
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Enter Name..."
+alignment = 1
+max_length = 10
+clear_button_enabled = true
+select_all_on_focus = true
+caret_blink = true
+caret_force_displayed = true
+
 [connection signal="pressed" from="Panel/ButtonBack2" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="Panel/ButtonBack" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="Panel/ButtonColPlus" to="." method="_on_button_col_plus_pressed"]
@@ -658,3 +736,4 @@ metadata/_edit_use_anchors_ = true
 [connection signal="value_changed" from="Panel/ButtonFx/HSliderFx" to="." method="_on_h_slider_fx_value_changed"]
 [connection signal="pressed" from="Panel/ButtonRefranesPopulares2/CheckButtonMusic" to="." method="_on_check_button_music_pressed"]
 [connection signal="value_changed" from="Panel/ButtonRefranesPopulares2/HSliderSound" to="." method="_on_h_slider_sound_value_changed"]
+[connection signal="text_submitted" from="Panel/Nombre" to="." method="_on_nombre_text_submitted"]

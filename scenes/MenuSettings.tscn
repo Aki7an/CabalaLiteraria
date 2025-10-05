@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://bdbg1dv228x3n"]
+[gd_scene load_steps=52 format=3 uid="uid://bdbg1dv228x3n"]
 
 [ext_resource type="Script" uid="uid://bdisf5rywhk10" path="res://scenes/menu_settings.gd" id="1_yfsqs"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_ycu2r"]
@@ -29,8 +29,15 @@ bg_color = Color(0.889317, 0.843552, 0.693583, 1)
 offsets = PackedFloat32Array(0)
 colors = PackedColorArray(0.854902, 0.592157, 0.141176, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_yl02v"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_h4fpn"]
 gradient = SubResource("Gradient_h4fpn")
+
+[sub_resource type="Gradient" id="Gradient_yl02v"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.854902, 0.592157, 0.141176, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_yl02v"]
+gradient = SubResource("Gradient_yl02v")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qke6e"]
 texture = ExtResource("13_ndcfl")
@@ -264,6 +271,7 @@ metadata/_edit_lock_ = true
 
 [node name="Fondo" parent="Panel" instance=ExtResource("2_ycu2r")]
 metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
 
 [node name="ButtonBack" type="Button" parent="Panel"]
 visible = false
@@ -278,11 +286,54 @@ theme_override_font_sizes/font_size = 40
 text = "Back"
 metadata/_edit_use_anchors_ = true
 
+[node name="TextureRect4" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.191667
+anchor_bottom = 0.191667
+offset_top = 968.0
+offset_right = 1025.0
+offset_bottom = 1104.0
+texture = SubResource("GradientTexture1D_h4fpn")
+metadata/_edit_use_anchors_ = true
+
+[node name="LabeLanguage" type="Label" parent="Panel/TextureRect4"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.0588235
+anchor_right = 1.0
+anchor_bottom = 0.933823
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
+theme_override_fonts/font = ExtResource("12_ddp5h")
+theme_override_font_sizes/font_size = 70
+text = "ONLINE NAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Nombre" type="LineEdit" parent="Panel"]
+offset_left = 216.0
+offset_top = 1520.0
+offset_right = 792.0
+offset_bottom = 1640.0
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Enter Name..."
+alignment = 1
+max_length = 10
+clear_button_enabled = true
+select_all_on_focus = true
+caret_blink = true
+caret_force_displayed = true
+
 [node name="ButtonEspañol" type="Button" parent="."]
 offset_left = 112.0
-offset_top = 1160.0
+offset_top = 872.0
 offset_right = 280.0
-offset_bottom = 1338.0
+offset_bottom = 1050.0
 pivot_offset = Vector2(88, 89)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -296,9 +347,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="ButtonEuskera" type="Button" parent="."]
 offset_left = 322.667
-offset_top = 1160.0
+offset_top = 872.0
 offset_right = 490.667
-offset_bottom = 1338.0
+offset_bottom = 1050.0
 pivot_offset = Vector2(84.3333, 84)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -312,9 +363,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="ButtonIngles" type="Button" parent="."]
 offset_left = 533.333
-offset_top = 1160.0
+offset_top = 872.0
 offset_right = 701.333
-offset_bottom = 1338.0
+offset_bottom = 1050.0
 pivot_offset = Vector2(90.6667, 89)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -328,9 +379,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="ButtonFrances" type="Button" parent="."]
 offset_left = 426.0
-offset_top = 1382.0
+offset_top = 1094.0
 offset_right = 594.0
-offset_bottom = 1560.0
+offset_bottom = 1272.0
 pivot_offset = Vector2(86, 86)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -344,9 +395,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="ButtonAleman" type="Button" parent="."]
 offset_left = 637.0
-offset_top = 1382.0
+offset_top = 1094.0
 offset_right = 805.0
-offset_bottom = 1560.0
+offset_bottom = 1272.0
 pivot_offset = Vector2(91, 86)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -360,9 +411,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="ButtonPortugues" type="Button" parent="."]
 offset_left = 744.0
-offset_top = 1160.0
+offset_top = 872.0
 offset_right = 912.0
-offset_bottom = 1338.0
+offset_bottom = 1050.0
 pivot_offset = Vector2(96, 84)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -376,9 +427,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="ButtonItaliano" type="Button" parent="."]
 offset_left = 216.0
-offset_top = 1382.0
+offset_top = 1094.0
 offset_right = 384.0
-offset_bottom = 1560.0
+offset_bottom = 1272.0
 pivot_offset = Vector2(84, 86)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -393,9 +444,8 @@ metadata/_edit_use_anchors_ = true
 [node name="TextureRect2" type="TextureRect" parent="."]
 offset_top = 160.0
 offset_right = 1025.0
-offset_bottom = 296.0
+offset_bottom = 256.0
 texture = SubResource("GradientTexture1D_yl02v")
-metadata/_edit_use_anchors_ = true
 
 [node name="LabelSound" type="Label" parent="TextureRect2"]
 layout_mode = 1
@@ -415,11 +465,10 @@ autowrap_mode = 2
 metadata/_edit_lock_ = true
 
 [node name="TextureRect3" type="TextureRect" parent="."]
-offset_top = 968.0
+offset_top = 728.0
 offset_right = 1025.0
-offset_bottom = 1104.0
+offset_bottom = 824.0
 texture = SubResource("GradientTexture1D_yl02v")
-metadata/_edit_use_anchors_ = true
 
 [node name="LabeLanguage" type="Label" parent="TextureRect3"]
 layout_mode = 1
@@ -436,7 +485,6 @@ text = "LANGUAGE"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
 
 [node name="LabelSound2" type="Label" parent="."]
 anchors_preset = 15
@@ -458,20 +506,21 @@ metadata/_edit_use_anchors_ = true
 
 [node name="ButtonRefranesPopulares2" type="Button" parent="."]
 offset_left = 80.0
-offset_top = 344.0
+offset_top = 288.0
 offset_right = 944.0
-offset_bottom = 608.0
+offset_bottom = 480.0
 theme = SubResource("Theme_md1y2")
 autowrap_mode = 2
 script = ExtResource("6_yl02v")
-metadata/_edit_use_anchors_ = true
 
 [node name="TextureRect4" type="TextureRect" parent="ButtonRefranesPopulares2"]
 modulate = Color(0.0745098, 0.286275, 0.380392, 1)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = 0.0648148
+anchor_top = -0.0833333
+anchor_right = 0.981481
+anchor_bottom = 1.14583
 offset_left = 40.0
 offset_top = 32.0
 offset_right = -670.0
@@ -485,9 +534,11 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Label2" type="Label" parent="ButtonRefranesPopulares2"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = -0.0185185
+anchor_top = 0.333333
+anchor_right = 0.981481
+anchor_bottom = 0.729167
 offset_left = 224.0
 offset_top = -40.0
 offset_right = -96.0
@@ -496,14 +547,19 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.0705882, 0.286275, 0.380392, 1)
 theme_override_fonts/font = ExtResource("12_ddp5h")
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 50
 text = "Music"
 vertical_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="CheckButtonMusic" type="CheckButton" parent="ButtonRefranesPopulares2"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0277778
+anchor_top = -0.166667
+anchor_right = 0.0277789
+anchor_bottom = -0.166666
 offset_left = 624.0
 offset_top = 32.0
 offset_right = 1208.3
@@ -527,7 +583,12 @@ flat = true
 metadata/_edit_use_anchors_ = true
 
 [node name="HSliderSound" type="HSlider" parent="ButtonRefranesPopulares2"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0185185
+anchor_top = -0.333333
+anchor_right = -0.0185185
+anchor_bottom = -0.333333
 offset_left = 80.0
 offset_top = 128.0
 offset_right = 616.0
@@ -544,17 +605,21 @@ value = 0.8
 metadata/_edit_use_anchors_ = true
 
 [node name="ButtonFx" type="Button" parent="."]
-offset_left = 80.0
-offset_top = 640.0
-offset_right = 944.0
-offset_bottom = 904.0
+offset_left = 72.0
+offset_top = 504.0
+offset_right = 936.0
+offset_bottom = 696.0
 theme = SubResource("Theme_ph7et")
 autowrap_mode = 2
 script = ExtResource("6_yl02v")
-metadata/_edit_use_anchors_ = true
 
 [node name="CheckButtonFx" type="CheckButton" parent="ButtonFx"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.037037
+anchor_top = -0.0833333
+anchor_right = 0.0370382
+anchor_bottom = -0.0833322
 offset_left = 624.0
 offset_top = 24.0
 offset_right = 1208.3
@@ -580,9 +645,11 @@ metadata/_edit_use_anchors_ = true
 [node name="TextureRect4" type="TextureRect" parent="ButtonFx"]
 modulate = Color(0.1715, 0.49, 0.26705, 1)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = 0.0555556
+anchor_top = -0.0833333
+anchor_right = 1.05556
+anchor_bottom = 1.125
 offset_left = 40.0
 offset_top = 32.0
 offset_right = -670.0
@@ -607,14 +674,19 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.1715, 0.49, 0.26705, 1)
 theme_override_fonts/font = ExtResource("12_ddp5h")
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 50
 text = "FX"
 vertical_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="HSliderFx" type="HSlider" parent="ButtonFx"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0185185
+anchor_top = -0.291667
+anchor_right = -0.0185185
+anchor_bottom = -0.291667
 offset_left = 80.0
 offset_top = 120.0
 offset_right = 616.0
@@ -663,6 +735,7 @@ text = "OK"
 metadata/_edit_use_anchors_ = true
 
 [connection signal="pressed" from="Panel/ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="text_submitted" from="Panel/Nombre" to="." method="_on_nombre_text_submitted"]
 [connection signal="pressed" from="ButtonEspañol" to="." method="_on_button_español_pressed"]
 [connection signal="pressed" from="ButtonEuskera" to="." method="_on_button_euskera_pressed"]
 [connection signal="pressed" from="ButtonIngles" to="." method="_on_button_ingles_pressed"]

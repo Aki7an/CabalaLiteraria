@@ -7,6 +7,7 @@ extends Node2D
 @onready var h_slider_fx = $Panel/ButtonFx/HSliderFx
 
 @onready var labe_columns = $Panel/LabeColumns
+@onready var nombre = $Panel/Nombre
 
 @onready var cols_08 = $Panel/Cols08
 @onready var cols_09 = $Panel/Cols09
@@ -50,7 +51,11 @@ func _ready():
 		check_button_music.button_pressed = true
 	else:
 		check_button_music.button_pressed = false
-
+	
+	if GameManager.player_name != "":
+		nombre.placeholder_text = GameManager.player_name
+	else:
+		nombre.placeholder_text = "Enter Name ..."
 
 func _on_check_button_music_pressed():
 	SoundManager.play("ButtonClick")
@@ -115,3 +120,7 @@ func _set_image(cols: int) -> void:
 		cols_12.visible = true
 	else: 
 		cols_13.visible = true
+
+
+func _on_nombre_text_submitted(new_text):
+	GameManager.player_name = nombre.text

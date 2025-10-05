@@ -12,6 +12,7 @@ extends Node2D
 
 @onready var h_slider_sound = $ButtonRefranesPopulares2/HSliderSound
 @onready var h_slider_fx = $ButtonFx/HSliderFx
+@onready var nombre = $Panel/Nombre
 
 func _on_button_back_pressed():
 	TransitionScreen.transition_to_black()
@@ -105,6 +106,11 @@ func _ready():
 	#print("FX Volume:" , PlayerPrefs.volumen_fx)
 	#print("Music Volume:" , PlayerPrefs.volumen_musica)
 	
+	if GameManager.player_name != "":
+		nombre.placeholder_text = GameManager.player_name
+	else:
+		nombre.placeholder_text = "Enter Name ..."
+	
 	h_slider_fx.value = PlayerPrefs.volumen_fx
 	h_slider_sound.value = PlayerPrefs.volumen_musica
 	
@@ -142,3 +148,7 @@ func _on_h_slider_sound_value_changed(value):
 	PlayerPrefs.volumen_musica = h_slider_sound.value
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(h_slider_sound.value))
 	PlayerPrefs.save_prefs()
+
+
+func _on_nombre_text_submitted(new_text):
+	GameManager.player_name = nombre.text

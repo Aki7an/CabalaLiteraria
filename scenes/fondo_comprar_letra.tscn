@@ -357,18 +357,17 @@ vertical_alignment = 1
 
 [node name="RichTextLabel11" type="RichTextLabel" parent="CuadroSalirPartida"]
 layout_mode = 0
-offset_left = 583.0
+offset_left = 552.0
 offset_top = 391.0
 offset_right = 950.0
 offset_bottom = 453.0
 theme = SubResource("Theme_d275m")
 theme_override_colors/default_color = Color(0.81, 0, 0, 1)
-text = "-3.000 points
-"
+text = "-3.000 points"
 
 [node name="RichTextLabel10" type="RichTextLabel" parent="CuadroSalirPartida"]
 layout_mode = 0
-offset_left = 584.0
+offset_left = 552.0
 offset_top = 747.0
 offset_right = 950.0
 offset_bottom = 809.0
@@ -458,7 +457,7 @@ texture = ExtResource("7_0trrb")
 
 [node name="RichTextLabel12" type="RichTextLabel" parent="CuadroSalirPartida"]
 layout_mode = 0
-offset_left = 584.0
+offset_left = 552.0
 offset_top = 567.0
 offset_right = 942.0
 offset_bottom = 629.0
