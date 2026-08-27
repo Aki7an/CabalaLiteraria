@@ -166,10 +166,10 @@ func _passes_filters(item: Dictionary) -> bool:
 	if typeof(GameManager) == TYPE_NIL:
 		return true
 	var ok: bool = true
-	var target_cat: String = str(GameManager.categoria_actual).strip_edges().to_lower()
+	var target_cat: String = str(GameManager.categoria_actual).strip_edges()
 	if target_cat != "":
-		var item_cat: String = str(item.get("category", "")).strip_edges().to_lower()
-		ok = ok and (item_cat == target_cat)
+		var item_cat: String = str(item.get("category", ""))
+		ok = ok and GameManager.categories_match(item_cat, target_cat)
 	var target_diff: int = int(GameManager.dificultad_actual)
 	if target_diff != -1:
 		var item_diff: int = int(item.get("difficulty", -9999))

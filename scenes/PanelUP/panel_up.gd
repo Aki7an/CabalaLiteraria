@@ -132,7 +132,7 @@ func update_coins() -> void:
 	
 
 func _update_categoria() -> void:
-	categoria.text = GameManager.categoria_actual
+	categoria.text = GameManager.category_display_name()
 	
 	
 func _update_dificultad() -> void:

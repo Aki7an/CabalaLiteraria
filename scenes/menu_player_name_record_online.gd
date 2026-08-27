@@ -19,31 +19,8 @@ func _on_button_back_pressed():
 	get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
 
 func _ready():
-	if GameManager.dificultad_actual == 1:
-		label_2.text = "FÁCIL - " + GameManager.categoria_actual
-	elif GameManager.dificultad_actual == 2:
-		label_2.text = "NORMAL - " + GameManager.categoria_actual
-	elif GameManager.dificultad_actual == 3:
-		label_2.text = "DIFÍCIL - " + GameManager.categoria_actual
-	else:
-		label_2.text = "PRO - " + GameManager.categoria_actual
-		
-
-	if GameManager.categoria_actual == "Efeméride":
-		#label_cat_diff.text = dificultad_actual + " - Efemérides"
-		set_label_bg_only(cuadro_salir_borrado, color_cat_efemerides)
-
-	if GameManager.categoria_actual == "Fragmento":
-		#label_cat_diff.text = dificultad_actual + " - Fragmento"
-		set_label_bg_only(cuadro_salir_borrado, color_cat_fragmentos_literarios)
-
-	if GameManager.categoria_actual == "Cita":
-		#label_cat_diff.text = dificultad_actual + " - Citas Célebres"
-		set_label_bg_only(cuadro_salir_borrado, color_cat_citas_celebres)
-		
-	if GameManager.categoria_actual == "Curiosidades":
-		#label_cat_diff.text = dificultad_actual + " - Citas Bíblicas"
-		set_label_bg_only(cuadro_salir_borrado, color_cat_curiosidades)
+	label_2.text = GameManager.difficulty_display_name().to_upper() + " - " + GameManager.category_display_name()
+	set_label_bg_only(cuadro_salir_borrado, GameManager.category_color())
 
 	label_3.text = "Posición Online Nº " + str(await PlayFabTools.get_player_rank_in_current_difficulty())
 	label_5.text = GameManager.player_name

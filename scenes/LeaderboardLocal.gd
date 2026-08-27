@@ -166,22 +166,19 @@ func _get_categorias_desde_history() -> Array:
 func _poblar_optionbuttons() -> void:
 	# Dificultad
 	ob_dificultad.clear()
-	for i in DIFF_LABELS.size():
-		ob_dificultad.add_item(DIFF_LABELS[i])
+	var diff_keys := ["Easy", "Normal", "Hard", "PRO"]
+	for i in DIFF_CODES.size():
+		ob_dificultad.add_item(tr(diff_keys[i]))
 		ob_dificultad.set_item_metadata(i, DIFF_CODES[i])
 	ob_dificultad.selected = 0
 
 	# Categorías
-	var cats := _get_categorias_desde_history()
-	if cats.is_empty():
-		cats = [
-			"Efeméride","Fragmento",
-			"Cita","Curiosidades"
-		]
-	cats.sort_custom(func(a,b): return a.naturalnocasecmp_to(b) < 0)
 	ob_categoria.clear()
-	for c in cats:
-		ob_categoria.add_item(c)
+	var cat_ids := GameManager.all_category_ids()
+	for i in cat_ids.size():
+		var cat_id := String(cat_ids[i])
+		ob_categoria.add_item(GameManager.category_display_name(cat_id))
+		ob_categoria.set_item_metadata(i, cat_id)
 	ob_categoria.selected = 0
 
 func _conectar_signals() -> void:
@@ -206,9 +203,11 @@ func _aplicar_filtros_de_ultima_partida() -> void:
 	if cat_val != null:
 		cat_last = str(cat_val)
 	if cat_last != "":
-		var target := cat_last.to_lower()
+		var target := GameManager.normalize_category(cat_last)
 		for i in ob_categoria.item_count:
-			if ob_categoria.get_item_text(i).to_lower() == target:
+			var meta: Variant = ob_categoria.get_item_metadata(i)
+			var id := GameManager.normalize_category(str(meta) if meta != null else ob_categoria.get_item_text(i))
+			if id == target:
 				ob_categoria.select(i)
 				break
 
@@ -231,8 +230,11 @@ func _refrescar_lista() -> void:
 	var diff_code: int = ob_dificultad.get_item_metadata(ob_dificultad.selected)
 	var cat_label: String = ob_categoria.get_item_text(ob_categoria.selected)
 
+	var cat_meta: Variant = ob_categoria.get_item_metadata(ob_categoria.selected)
+	var cat_id: String = GameManager.normalize_category(str(cat_meta) if cat_meta != null else cat_label)
+
 	var results: Array = (_history_provider.call(
-		"get_results_filtered", cat_label, diff_code
+		"get_results_filtered", cat_id, diff_code
 	) as Array)
 
 	var row_index: int = 0
@@ -251,21 +253,8 @@ func _refrescar_lista() -> void:
 		_add_placeholder_row(i)
 
 	titulo_dificultad_categoria.text = str(ob_dificultad.get_item_text(ob_dificultad.selected)) + " - " + str(ob_categoria.get_item_text(ob_categoria.selected))
-
-	# (tu lógica de color de cabecera se mantiene)
-
-	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Efeméride":
-		set_label_bg_only(titulo_dificultad_categoria, color_cat_efemerides)
-		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_efemerides)
-	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Fragmento":
-		set_label_bg_only(titulo_dificultad_categoria, color_cat_fragmentos_literarios)
-		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_fragmentos_literarios)
-	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Cita":
-		set_label_bg_only(titulo_dificultad_categoria, color_cat_citas_celebres)
-		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_citas_celebres)
-	if str(ob_categoria.get_item_text(ob_categoria.selected)) == "Curiosidades":
-		set_label_bg_only(titulo_dificultad_categoria, color_cat_curiosidades)
-		set_label_bg_only(titulo_dificultad_categoria_2, color_cat_curiosidades)
+	set_label_bg_only(titulo_dificultad_categoria, GameManager.category_color(cat_id))
+	set_label_bg_only(titulo_dificultad_categoria_2, GameManager.category_color(cat_id))
 
 # === NUEVO: comprobar si una fila es la de la última partida (score + fecha de hoy) ===
 func _es_fila_resaltada(puntos: int, fecha_iso: String) -> bool:

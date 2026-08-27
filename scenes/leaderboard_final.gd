@@ -102,9 +102,11 @@ func _aplicar_filtros_de_ultima_partida() -> void:
 	if cat_val != null:
 		cat_last = str(cat_val)
 	if cat_last != "":
-		var target := cat_last.to_lower()
+		var target := GameManager.normalize_category(cat_last)
 		for i in ob_categoria.item_count:
-			if ob_categoria.get_item_text(i).to_lower() == target:
+			var meta: Variant = ob_categoria.get_item_metadata(i)
+			var id := GameManager.normalize_category(str(meta) if meta != null else ob_categoria.get_item_text(i))
+			if id == target:
 				ob_categoria.select(i)
 				break
 
@@ -113,3 +115,35 @@ func _on_button_back_pressed():
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
 	SoundManager.play("ButtonClick")
+
+
+func _on_button_online_pressed():
+	print("PRESSED")
+
+
+func _on_button_offline_pressed():
+	print("PRESSED")
+
+
+func _on_button_difficult_easy_pressed():
+	print("PRESSED")
+
+
+func _on_button_difficult_normal_pressed():
+	print("PRESSED")
+
+
+func _on_button_top_10_pressed():
+	print("PRESSED")
+
+
+func _on_button_player_pressed():
+	print("PRESSED")
+
+
+func _on_button_difficult_difficult_pressed():
+	print("PRESSED")
+
+
+func _on_button_difficult_pro_pressed():
+	print("PRESSED")

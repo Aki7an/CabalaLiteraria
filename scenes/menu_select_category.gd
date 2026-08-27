@@ -23,27 +23,27 @@ func _ready():
 
 
 func _on_button_citas_celebres_pressed():
-	categoria = "Cita"
+	categoria = GameManager.CAT_CITA
 	GameManager.button_blink(button_citas_celebres)
 	SoundManager.play("ButtonClick")
 	_go_to_select_difficulty()
 	
 
 func _on_button_fragmentos_literarios_pressed():
-	categoria = "Fragmento"
+	categoria = GameManager.CAT_FRAGMENTO
 	GameManager.button_blink(button_fragmentos_literarios)
 	SoundManager.play("ButtonClick")
 	_go_to_select_difficulty()
 
 
 func _on_button_efemerides_pressed():
-	categoria = "Efeméride"
+	categoria = GameManager.CAT_EFEMERIDE
 	GameManager.button_blink(button_efemerides)
 	SoundManager.play("ButtonClick")
 	_go_to_select_difficulty()
 
 func _on_button_curiosidades_pressed() -> void:
-	categoria = "Curiosidades"
+	categoria = GameManager.CAT_CURIOSIDADES
 	GameManager.button_blink(button_curiosidades)
 	SoundManager.play("ButtonClick")
 	_go_to_select_difficulty()

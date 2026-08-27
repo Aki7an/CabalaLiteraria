@@ -34,11 +34,11 @@ func _ready():
 	fragmentos.visible = false
 	
 	dificultad = 0
-	if GameManager.categoria_actual == "Efeméride":
+	if GameManager.is_category(GameManager.CAT_EFEMERIDE):
 		efemerides.visible = true
-	elif GameManager.categoria_actual == "Cita":
+	elif GameManager.is_category(GameManager.CAT_CITA):
 		citas.visible = true
-	elif GameManager.categoria_actual == "Curiosidades":
+	elif GameManager.is_category(GameManager.CAT_CURIOSIDADES):
 		curiosidades.visible = true
 	else:
 		fragmentos.visible = true

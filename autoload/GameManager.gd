@@ -154,16 +154,104 @@ var pistas_actuales: Array[String] = []
 @export var frase_usuario: String
 #export var letras_reveladas: String = ""
 
+const CAT_EFEMERIDE := "efemeride"
+const CAT_CITA := "cita"
+const CAT_CURIOSIDADES := "curiosidades"
+const CAT_FRAGMENTO := "fragmento"
+
+func locale_code() -> String:
+	var loc := TranslationServer.get_locale().strip_edges()
+	if loc.is_empty():
+		return "es"
+	var base := loc.replace("-", "_")
+	var parts := base.split("_")
+	return String(parts[0]).to_lower()
+
+func apply_language(code: String) -> void:
+	var locale := code.strip_edges()
+	if locale.is_empty():
+		locale = "es"
+	TranslationServer.set_locale(locale)
+	if typeof(PlayerPrefs) != TYPE_NIL:
+		PlayerPrefs.idioma = locale
+		PlayerPrefs.save_prefs()
+	change_letters_aphabet_array()
+	cargar_frases_desde_json()
+	SignalManager.fit_text.emit()
+
+func normalize_category(raw: String) -> String:
+	var key := raw.strip_edges().to_lower()
+	key = key.replace("á", "a").replace("é", "e").replace("è", "e").replace("ë", "e")
+	match key:
+		"efemeride", "efemerides", "event", "events", "ereignis", "gertaera", "evenement", "evento":
+			return CAT_EFEMERIDE
+		"cita", "citas", "appointment":
+			return CAT_CITA
+		"curiosidades", "curiosities":
+			return CAT_CURIOSIDADES
+		"fragmento", "fragment", "fragmentos":
+			return CAT_FRAGMENTO
+		_:
+			return key
+
+func categories_match(a: String, b: String) -> bool:
+	return normalize_category(a) == normalize_category(b)
+
+func is_category(cat_id: String, raw: String = "") -> bool:
+	var value := raw if raw != "" else categoria_actual
+	return normalize_category(value) == cat_id
+
+func category_tr_key(cat: String = "") -> String:
+	var id := normalize_category(cat if cat != "" else categoria_actual)
+	match id:
+		CAT_EFEMERIDE:
+			return "Ephemerides"
+		CAT_CITA:
+			return "Famous Quotes"
+		CAT_CURIOSIDADES:
+			return "Curiosities"
+		CAT_FRAGMENTO:
+			return "Literary Fragments"
+		_:
+			return cat if cat != "" else categoria_actual
+
+func category_display_name(cat: String = "") -> String:
+	return tr(category_tr_key(cat))
+
+func category_color(cat: String = "") -> Color:
+	match normalize_category(cat if cat != "" else categoria_actual):
+		CAT_CITA:
+			return Color(0.106, 0.541, 0.812)
+		CAT_EFEMERIDE:
+			return Color(0.812, 0.408, 0.38)
+		CAT_FRAGMENTO:
+			return Color(0.4, 0.824, 0.698)
+		CAT_CURIOSIDADES:
+			return Color(0.812, 0.463, 0.176)
+		_:
+			return Color(0.5, 0.5, 0.5)
+
+func all_category_ids() -> PackedStringArray:
+	return PackedStringArray([CAT_EFEMERIDE, CAT_FRAGMENTO, CAT_CITA, CAT_CURIOSIDADES])
+
+func difficulty_display_name(diff: int = -1) -> String:
+	var d := diff if diff >= 0 else dificultad_actual
+	match d:
+		1:
+			return tr("Easy")
+		2:
+			return tr("Normal")
+		3:
+			return tr("Hard")
+		4:
+			return tr("PRO")
+		_:
+			return "?"
+
 func _ready():
 	partida_terminada = false
-	
-	
-	
-	
-#	letras_reveladas = ""
-	TranslationServer.set_locale("es")
 	randomize()
-	#cargar_frases_desde_xml(frases_xml_path)
+	change_letters_aphabet_array()
 	cargar_frases_desde_json()
 	if frases_db.size() >= 1:
 		seleccionar_frase_aleatoria()
@@ -251,7 +339,7 @@ func set_hints_based_on_difficulty() -> void:
 		set_pista1()
 		
 func set_categoria_actual(categoria: String) -> void:
-	categoria_actual = categoria
+	categoria_actual = normalize_category(categoria)
 
 func set_dificultad_actual(dificultad: int) -> void:
 	dificultad_actual = dificultad
@@ -590,22 +678,22 @@ func set_selected_letter_user(letra: String) -> void:
 
 
 func cargar_frases_desde_json() -> void:
-	
-	# select json by language
-	if  TranslationServer.get_locale() == "es":
-		frases_json_path =  frases_json_path_es
-	elif TranslationServer.get_locale() == "en":
-		frases_json_path = frases_json_path_en
-	elif TranslationServer.get_locale() == "eu":
-		frases_json_path = frases_json_path_eu
-	elif TranslationServer.get_locale() == "fr":
-		frases_json_path = frases_json_path_fr
-	elif TranslationServer.get_locale() == "de":
-		frases_json_path = frases_json_path_de
-	elif TranslationServer.get_locale() == "it":
-		frases_json_path = frases_json_path_it
-	else:
-		frases_json_path = frases_json_path_pt
+	var loc := locale_code()
+	match loc:
+		"en":
+			frases_json_path = frases_json_path_en
+		"eu":
+			frases_json_path = frases_json_path_eu
+		"fr":
+			frases_json_path = frases_json_path_fr
+		"de":
+			frases_json_path = frases_json_path_de
+		"it":
+			frases_json_path = frases_json_path_it
+		"pt":
+			frases_json_path = frases_json_path_pt
+		_:
+			frases_json_path = frases_json_path_es
 	
 	frases_db.clear()
 
@@ -663,8 +751,8 @@ func cargar_frases_desde_json() -> void:
 		#d.letters_discover  = int(dict.get("letters_discover", 0))
 		#d.description_init  = String(dict.get("description", ""))
 		d.description_end   = String(dict.get("description_end", ""))
-		d.category          = String(dict.get("category", ""))
-		d.language          = String(dict.get("language", "es"))
+		d.category          = normalize_category(String(dict.get("category", "")))
+		d.language          = String(dict.get("language", loc)).to_lower()
 		d.difficulty        = int(dict.get("difficulty", 1))
 		d.image_number      = int(dict.get("image_number", -1))
 		d.hint_1            = String(dict.get("hint_1", ""))
@@ -681,7 +769,7 @@ func cargar_frases_desde_json() -> void:
 			#hints_typed.append("")
 		#d.hints = hints_typed
 		
-		if d.language == TranslationServer.get_locale():
+		if d.language.is_empty() or d.language == loc or String(d.language).begins_with(loc):
 			frases_db.append(d)
 
 	print("Frases JSON cargadas: ", frases_db.size())
@@ -723,7 +811,7 @@ func _aplicar_frase_desde_db(pos: int) -> void:
 	id_frase           = int(item.index)
 	frase_original_til = String(item.text)
 	descripcion_final_actual  = String(item.description_end)
-	categoria_actual   = String(item.category)
+	categoria_actual   = normalize_category(String(item.category))
 	dificultad_actual  = int(item.difficulty)
 	id_image           = int(item.image_number)
 	letras_iniciales   = String(item.letters_init)
@@ -731,7 +819,7 @@ func _aplicar_frase_desde_db(pos: int) -> void:
 	hint_2             = String(item.hint_2)
 	hint_3             = String(item.hint_3)
 	
-	frase_original = normalizar_frase_idioma(frase_original_til, "es")
+	frase_original = normalizar_frase_idioma(frase_original_til, locale_code())
 	#descripcion_final_actual = descripcion_final
 	
 	# Reinicia tus estructuras como ya haces
@@ -752,7 +840,8 @@ func seleccionar_por_categoria_y_dificultad(cat: String, diff: int) -> void:
 	# Buscar frases que cumplan los dos criterios
 	for i in frases_db.size():
 		var item: Dictionary = frases_db[i]
-		if (String(item.category) == cat and int(item.difficulty) == diff) or (cat=="" and int(item.difficulty == diff)):
+		var same_cat := cat == "" or categories_match(String(item.category), cat)
+		if same_cat and int(item.difficulty) == diff:
 			candidatos.append(i)
 
 	if candidatos.is_empty():
@@ -843,7 +932,7 @@ func formatear_numero(n: int) -> String:
 	return resultado
 	
 func change_letters_aphabet_array() -> void:
-	letters_aphabet_array = get_letters_for_lang(TranslationServer.get_locale())
+	letters_aphabet_array = get_letters_for_lang(locale_code())
 
 # Devuelve un Array[String] con las letras (MAYÚSCULAS) del idioma pedido,
 # sin tildes/diacríticos. Puedes ajustar opciones en 'opts'.
@@ -1048,7 +1137,7 @@ func set_score_ultima_partida(score_ultima: int) -> void:
 	score_ultima_partida = score_ultima 
 		
 func set_categoria_ultima_partida(categoria_ultima: String) -> void:
-	categoria_ultima_partida = categoria_ultima 
+	categoria_ultima_partida = normalize_category(categoria_ultima) 
 
 func set_dificultad_ultima_partida(dificultad_ultima: int) -> void:
 	dificultad_ultima_partida = dificultad_ultima 
@@ -1074,16 +1163,16 @@ func playfab_table() -> String:
 	
 func codifica_score(score_to_codi: int) -> int:
 	var score_final: int = score_to_codi * 10
-	if GameManager.categoria_actual == "Fragmento":
+	if is_category(CAT_FRAGMENTO):
 		score_final += 1
 		return score_final
-	elif GameManager.categoria_actual == "Efeméride":
+	elif is_category(CAT_EFEMERIDE):
 		score_final += 2
 		return score_final
-	elif GameManager.categoria_actual == "Curiosidades":
+	elif is_category(CAT_CURIOSIDADES):
 		score_final += 3
 		return score_final
-	elif GameManager.categoria_actual == "Cita":
+	elif is_category(CAT_CITA):
 		score_final += 4
 		return score_final
 	else:

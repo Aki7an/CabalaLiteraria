@@ -126,7 +126,7 @@ func _on_button_difficulty_3_pressed():
 	GameManager.button_blink(button_difficulty_3)
 
 func _on_button_citas_celebres_pressed():
-	categoria = "Cita"
+	categoria = GameManager.CAT_CITA
 	category_selected = true
 	if difficulty_selected and category_selected:
 		button_play.disabled = false
@@ -141,7 +141,7 @@ func _on_button_citas_celebres_pressed():
 	
 
 func _on_button_fragmentos_literarios_pressed():
-	categoria = "Fragmento"
+	categoria = GameManager.CAT_FRAGMENTO
 	category_selected = true
 	if difficulty_selected and category_selected:
 		button_play.disabled = false
@@ -156,7 +156,7 @@ func _on_button_fragmentos_literarios_pressed():
 
 
 func _on_button_efemerides_pressed():
-	categoria = "Efeméride"
+	categoria = GameManager.CAT_EFEMERIDE
 	category_selected = true
 	if difficulty_selected and category_selected:
 		button_play.disabled = false
@@ -170,7 +170,7 @@ func _on_button_efemerides_pressed():
 	SoundManager.play("ButtonClick")
 
 func _on_button_curiosidades_pressed() -> void:
-	categoria = "Curiosidades"
+	categoria = GameManager.CAT_CURIOSIDADES
 	category_selected = true
 	if difficulty_selected and category_selected:
 		button_play.disabled = false

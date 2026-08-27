@@ -21,74 +21,39 @@ func _on_button_back_pressed():
 	SoundManager.play("ButtonClick")
 
 func _on_button_español_pressed():
-	TranslationServer.set_locale("es")
 	GameManager.button_blink(button_español)
-	PlayerPrefs.idioma = "es"
-	PlayerPrefs.save_prefs()
 	SoundManager.play("ButtonClick")
-	SignalManager.fit_text.emit()
-	GameManager.change_letters_aphabet_array()
-	GameManager.cargar_frases_desde_json()
+	GameManager.apply_language("es")
 	
 func _on_button_ingles_pressed():
-	TranslationServer.set_locale("en")
 	GameManager.button_blink(button_ingles)
-	PlayerPrefs.idioma = "en"
-	PlayerPrefs.save_prefs()
 	SoundManager.play("ButtonClick")
-	SignalManager.fit_text.emit()
-	GameManager.change_letters_aphabet_array()
-	GameManager.cargar_frases_desde_json()
+	GameManager.apply_language("en")
 
 func _on_button_euskera_pressed():
-	TranslationServer.set_locale("eu")
 	GameManager.button_blink(button_euskera)
-	PlayerPrefs.idioma = "eu"
-	PlayerPrefs.save_prefs()
 	SoundManager.play("ButtonClick")
-	SignalManager.fit_text.emit()
-	GameManager.change_letters_aphabet_array()
-	GameManager.cargar_frases_desde_json()
+	GameManager.apply_language("eu")
 
 func _on_button_aleman_pressed():
-	TranslationServer.set_locale("de")
 	GameManager.button_blink(button_aleman)
-	PlayerPrefs.idioma = "de"
-	PlayerPrefs.save_prefs()
 	SoundManager.play("ButtonClick")
-	SignalManager.fit_text.emit()
-	GameManager.change_letters_aphabet_array()
-	GameManager.cargar_frases_desde_json()
+	GameManager.apply_language("de")
 
 func _on_button_portugues_pressed():
-	TranslationServer.set_locale("pt")
 	GameManager.button_blink(button_portugues)
-	PlayerPrefs.idioma = "pt"
-	PlayerPrefs.save_prefs()
 	SoundManager.play("ButtonClick")
-	SignalManager.fit_text.emit()
-	GameManager.change_letters_aphabet_array()
-	GameManager.cargar_frases_desde_json()
+	GameManager.apply_language("pt")
 
 func _on_button_italiano_pressed():
-	TranslationServer.set_locale("it")
 	GameManager.button_blink(button_italiano)
-	PlayerPrefs.idioma = "it"
-	PlayerPrefs.save_prefs()
 	SoundManager.play("ButtonClick")
-	SignalManager.fit_text.emit()
-	GameManager.change_letters_aphabet_array()
-	GameManager.cargar_frases_desde_json()
+	GameManager.apply_language("it")
 
 func _on_button_frances_pressed():
-	TranslationServer.set_locale("fr")
 	GameManager.button_blink(button_frances)
-	PlayerPrefs.idioma = "fr"
-	PlayerPrefs.save_prefs()
 	SoundManager.play("ButtonClick")
-	SignalManager.fit_text.emit()
-	GameManager.change_letters_aphabet_array()
-	GameManager.cargar_frases_desde_json()
+	GameManager.apply_language("fr")
 
 func _on_check_button_2_pressed():
 	SoundManager.play("ButtonClick")

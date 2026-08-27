@@ -146,7 +146,7 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 		"id": GameManager.id_frase,
 		"fecha": fecha,
 		"jugador_nombre": GameManager.player_name,
-		"categoria": GameManager.categoria_actual,
+		"categoria": GameManager.normalize_category(GameManager.categoria_actual),
 		"score": int(score),
 		"partida_ganada": bool(resultado),
 		"tiempo_partida": int(GameManager.tiempo_partida), # segundos
@@ -240,8 +240,10 @@ func _derive_from_score(score: int) -> Dictionary:
 
 func get_results_filtered(category: String = "Todas", difficulty: int = -1) -> Array:
 	var filtrados: Array = []
+	var filter_all := category.strip_edges() == "" or category == "Todas" or category.to_lower() == "all"
+	var filter_id := GameManager.normalize_category(category)
 	for entry in _historial:
-		if category != "Todas" and entry.get("categoria", "") != category:
+		if not filter_all and not GameManager.categories_match(str(entry.get("categoria", "")), filter_id):
 			continue
 		if difficulty != -1 and int(entry.get("dificultad", -1)) != difficulty:
 			continue

@@ -59,4 +59,10 @@ func load_prefs() -> void:
 			GameManager.set_mostrar_tuto_antes_partida_enable()
 		else:
 			GameManager.set_mostrar_tuto_antes_partida_disable()
-		
+
+	var locale := idioma.strip_edges()
+	if locale.is_empty():
+		locale = "es"
+		idioma = locale
+	TranslationServer.set_locale(locale)
+
