@@ -1,7 +1,7 @@
 extends Control
 
 @onready var button_settings: Button = %ButtonSettings
-@onready var button_play: TextureButton = %ButtonPlay
+@onready var button_play: Button = %ButtonPlay
 @onready var button_ranking: Button = %ButtonRanking
 @onready var button_stats: Button = %ButtonStats
 @onready var button_tutorial: Button = %ButtonTutorial

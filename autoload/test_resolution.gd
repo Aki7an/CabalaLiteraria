@@ -1,8 +1,8 @@
 extends Node
 
-# Porcentaje deseado para la ventana en modo reproducción en PC (50 %)
+# Tamaño máximo solicitado y porcentaje de pantalla que puede ocupar F5.
 var WINDOW_SCALE := 0.5
-#const WINDOW_SCALE := 0.5
+const SCREEN_USAGE := 0.88
 const DESKTOP_PLATFORMS := ["Windows", "Linux", "macOS"]
 
 func _ready() -> void:
@@ -18,12 +18,27 @@ func _ready() -> void:
 	if vw <= 0 or vh <= 0:
 		return
 
-	var target := Vector2i(roundi(vw * WINDOW_SCALE), roundi(vh * WINDOW_SCALE))
+	_resize_window_to_fit(vw, vh, WINDOW_SCALE)
+
+func _resize_window_to_fit(vw: int, vh: int, requested_scale: float) -> void:
+	var screen := DisplayServer.window_get_current_screen()
+	var usable_rect := DisplayServer.screen_get_usable_rect(screen)
+	var usable_size := Vector2(usable_rect.size) * SCREEN_USAGE
+
+	var fit_scale := minf(
+		usable_size.x / float(vw),
+		usable_size.y / float(vh)
+	)
+	var final_scale := clampf(minf(requested_scale, fit_scale), 0.1, 1.0)
+	var target := Vector2i(
+		roundi(float(vw) * final_scale),
+		roundi(float(vh) * final_scale)
+	)
+
 	DisplayServer.window_set_size(target)
 
-	# (Opcional) Centrar la ventana en la pantalla actual
-	var screen_size := DisplayServer.screen_get_size()
-	var pos := (screen_size - target) / 2
+	# Solo se centra al iniciar o pulsar F1/F2; después puede moverse normalmente.
+	var pos := usable_rect.position + (usable_rect.size - target) / 2
 	DisplayServer.window_set_position(pos)
 
 func _input(event: InputEvent) -> void:
@@ -35,11 +50,11 @@ func _input(event: InputEvent) -> void:
 				_accion_F2()
 
 func _accion_F1() -> void:
-	print("Se pulsó la tecla A. Tamaño para PC")
+	print("Vista F5 ajustada al monitor")
 	WINDOW_SCALE = 0.5
 	_ready()
 
 func _accion_F2() -> void:
-	print("Se pulsó la tecla W. Tamaño real para MAC")
-	WINDOW_SCALE = 0.68
+	print("Vista F5 grande ajustada al monitor")
+	WINDOW_SCALE = 1.0
 	_ready()

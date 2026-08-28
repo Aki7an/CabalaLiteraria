@@ -19,11 +19,11 @@ const TIP_KEYS: PackedStringArray = [
 var _idx := 0
 var _advancing := false
 var _progress_tween: Tween
-var _dot_nodes: Array[ColorRect] = []
+var _dot_nodes: Array[Panel] = []
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	tip_title.text = "• %s •" % tr("Consejo").to_upper()
+	tip_title.text = tr("Consejo").to_upper()
 	tip_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	dots.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -94,8 +94,10 @@ func _build_dots() -> void:
 		child.queue_free()
 	_dot_nodes.clear()
 	for i in TIP_KEYS.size():
-		var dot := ColorRect.new()
-		dot.custom_minimum_size = Vector2(12, 12)
+		var dot := Panel.new()
+		dot.custom_minimum_size = Vector2(11, 11)
+		dot.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		dot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		dots.add_child(dot)
 		_dot_nodes.append(dot)
@@ -105,4 +107,18 @@ func _refresh_dots() -> void:
 	var active := Color(0.364706, 0.25098, 0.215686, 1)
 	var idle := Color(0.364706, 0.25098, 0.215686, 0.25)
 	for i in _dot_nodes.size():
-		_dot_nodes[i].color = active if i == _idx else idle
+		_dot_nodes[i].add_theme_stylebox_override(
+			"panel",
+			_make_dot_style(active if i == _idx else idle)
+		)
+
+func _make_dot_style(color: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = color
+	style.corner_radius_top_left = 6
+	style.corner_radius_top_right = 6
+	style.corner_radius_bottom_right = 6
+	style.corner_radius_bottom_left = 6
+	style.anti_aliasing = true
+	style.anti_aliasing_size = 0.5
+	return style

@@ -35,8 +35,8 @@ EventLoggerAutoload="*res://autoload/EventLogger.gd"
 
 [display]
 
-window/size/viewport_width=1024
-window/size/viewport_height=1920
+window/size/viewport_width=1206
+window/size/viewport_height=2622
 window/size/initial_position_type=4
 window/size/initial_position=Vector2i(0, 100)
 window/size/always_on_top=true

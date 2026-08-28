@@ -151,9 +151,12 @@ func _create_sheen() -> void:
 	_sheen.texture = gtex
 
 func _resize_sheen() -> void:
-	clip_contents = true
 	if _sheen == null:
+		# Sin reflejo no hay nada que recortar. Mantenerlo activo corta las
+		# sombras de los StyleBoxFlat únicamente durante la ejecución.
+		clip_contents = false
 		return
+	clip_contents = true
 	var diag: float = size.length() * 1.6
 	_sheen.size = Vector2(diag, diag)
 	_sheen.rotation_degrees = sheen_angle_deg
