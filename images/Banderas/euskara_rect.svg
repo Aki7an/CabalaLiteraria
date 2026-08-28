@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="260" viewBox="0 0 360 260">
+  <defs>
+    <clipPath id="rounded">
+      <rect width="360" height="260" rx="34" ry="34"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#rounded)">
+    <rect width="360" height="260" fill="#D81736"/>
+    <path d="M-22 0 L18 -28 L382 260 L342 288 Z" fill="#159447"/>
+    <path d="M342 -28 L382 0 L18 288 L-22 260 Z" fill="#159447"/>
+    <rect x="0" y="103" width="360" height="54" fill="#FFFFFF"/>
+    <rect x="153" y="0" width="54" height="260" fill="#FFFFFF"/>
+  </g>
+</svg>

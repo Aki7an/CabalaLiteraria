@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="260" viewBox="0 0 360 260">
+  <defs>
+    <clipPath id="rounded">
+      <rect width="360" height="260" rx="34" ry="34"/>
+    </clipPath>
+    <pattern id="stars" width="28" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="8" cy="8" r="4" fill="#FFFFFF"/>
+      <circle cx="22" cy="20" r="4" fill="#FFFFFF"/>
+    </pattern>
+  </defs>
+  <g clip-path="url(#rounded)">
+    <rect width="360" height="260" fill="#FFFFFF"/>
+    <g fill="#D7193F">
+      <rect y="0" width="360" height="20"/>
+      <rect y="40" width="360" height="20"/>
+      <rect y="80" width="360" height="20"/>
+      <rect y="120" width="360" height="20"/>
+      <rect y="160" width="360" height="20"/>
+      <rect y="200" width="360" height="20"/>
+      <rect y="240" width="360" height="20"/>
+    </g>
+    <rect width="158" height="140" fill="#245A9B"/>
+    <rect width="158" height="140" fill="url(#stars)"/>
+  </g>
+</svg>
