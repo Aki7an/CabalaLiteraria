@@ -32,9 +32,9 @@ corner_radius_top_left = 25
 corner_radius_top_right = 25
 corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
-shadow_color = Color(0.364706, 0.25098, 0.215686, 0.38)
-shadow_size = 4
-shadow_offset = Vector2(0, 7)
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
 anti_aliasing_size = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings_pressed"]
@@ -48,9 +48,9 @@ corner_radius_top_left = 25
 corner_radius_top_right = 25
 corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
-shadow_color = Color(0.364706, 0.25098, 0.215686, 0.24)
-shadow_size = 2
-shadow_offset = Vector2(0, 3)
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.11)
+shadow_size = 5
+shadow_offset = Vector2(0, 4)
 
 [sub_resource type="Theme" id="Theme_settings"]
 Button/styles/disabled = SubResource("StyleBoxFlat_settings")
@@ -70,9 +70,9 @@ corner_radius_top_left = 25
 corner_radius_top_right = 25
 corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
-shadow_color = Color(0.364706, 0.25098, 0.215686, 0.38)
-shadow_size = 4
-shadow_offset = Vector2(0, 7)
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
 anti_aliasing_size = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings_inset"]
@@ -119,52 +119,52 @@ anti_aliasing_size = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play"]
 bg_color = Color(1, 0.505882, 0, 1)
-border_width_left = 12
-border_width_top = 12
-border_width_right = 12
-border_width_bottom = 12
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
 border_color = Color(1, 0.694118, 0.0784314, 1)
-corner_radius_top_left = 42
-corner_radius_top_right = 42
-corner_radius_bottom_right = 42
-corner_radius_bottom_left = 42
+corner_radius_top_left = 130
+corner_radius_top_right = 130
+corner_radius_bottom_right = 130
+corner_radius_bottom_left = 130
 corner_detail = 12
-shadow_color = Color(0.364706, 0.25098, 0.215686, 0.35)
-shadow_size = 10
-shadow_offset = Vector2(0, 10)
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.1)
+shadow_size = 18
+shadow_offset = Vector2(0, 14)
 anti_aliasing_size = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play_hover"]
 bg_color = Color(1, 0.552941, 0.0196078, 1)
-border_width_left = 12
-border_width_top = 12
-border_width_right = 12
-border_width_bottom = 12
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
 border_color = Color(1, 0.733333, 0.117647, 1)
-corner_radius_top_left = 42
-corner_radius_top_right = 42
-corner_radius_bottom_right = 42
-corner_radius_bottom_left = 42
+corner_radius_top_left = 130
+corner_radius_top_right = 130
+corner_radius_bottom_right = 130
+corner_radius_bottom_left = 130
 corner_detail = 12
-shadow_color = Color(0.364706, 0.25098, 0.215686, 0.35)
-shadow_size = 10
-shadow_offset = Vector2(0, 10)
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.1)
+shadow_size = 18
+shadow_offset = Vector2(0, 14)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play_pressed"]
 bg_color = Color(0.917647, 0.419608, 0, 1)
-border_width_left = 12
-border_width_top = 12
-border_width_right = 12
-border_width_bottom = 12
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
 border_color = Color(1, 0.635294, 0.0392157, 1)
-corner_radius_top_left = 42
-corner_radius_top_right = 42
-corner_radius_bottom_right = 42
-corner_radius_bottom_left = 42
+corner_radius_top_left = 130
+corner_radius_top_right = 130
+corner_radius_bottom_right = 130
+corner_radius_bottom_left = 130
 corner_detail = 12
-shadow_color = Color(0.364706, 0.25098, 0.215686, 0.25)
-shadow_size = 5
-shadow_offset = Vector2(0, 5)
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.08)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
 
 [sub_resource type="Theme" id="Theme_play"]
 Button/styles/disabled = SubResource("StyleBoxFlat_play")
@@ -172,6 +172,18 @@ Button/styles/focus = SubResource("StyleBoxFlat_play")
 Button/styles/hover = SubResource("StyleBoxFlat_play_hover")
 Button/styles/normal = SubResource("StyleBoxFlat_play")
 Button/styles/pressed = SubResource("StyleBoxFlat_play_pressed")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play_depth"]
+bg_color = Color(0.807843, 0.341176, 0.00392157, 1)
+corner_radius_top_left = 130
+corner_radius_top_right = 130
+corner_radius_bottom_right = 130
+corner_radius_bottom_left = 130
+corner_detail = 12
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.13)
+shadow_size = 20
+shadow_offset = Vector2(0, 14)
+anti_aliasing_size = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_play_inset"]
 bg_color = Color(1, 1, 1, 0)
@@ -181,10 +193,10 @@ border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.721569, 0.286275, 0, 0.72)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
+corner_radius_top_left = 105
+corner_radius_top_right = 105
+corner_radius_bottom_right = 105
+corner_radius_bottom_left = 105
 anti_aliasing_size = 0.5
 
 [sub_resource type="FontVariation" id="FontVariation_play"]
@@ -205,9 +217,9 @@ corner_radius_top_left = 26
 corner_radius_top_right = 26
 corner_radius_bottom_right = 26
 corner_radius_bottom_left = 26
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.26)
-shadow_size = 7
-shadow_offset = Vector2(0, 6)
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
+shadow_size = 14
+shadow_offset = Vector2(0, 10)
 anti_aliasing_size = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip_inset"]
@@ -249,8 +261,8 @@ corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
 corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.28)
-shadow_size = 4
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
+shadow_size = 10
 shadow_offset = Vector2(0, 8)
 anti_aliasing_size = 0.5
 
@@ -265,9 +277,9 @@ corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
 corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.2)
-shadow_size = 2
-shadow_offset = Vector2(0, 3)
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
+shadow_size = 5
+shadow_offset = Vector2(0, 4)
 
 [sub_resource type="Theme" id="Theme_btn_blue"]
 Button/styles/disabled = SubResource("StyleBoxFlat_btn_blue")
@@ -301,8 +313,8 @@ corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
 corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.28)
-shadow_size = 4
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
+shadow_size = 10
 shadow_offset = Vector2(0, 8)
 anti_aliasing_size = 0.5
 
@@ -317,9 +329,9 @@ corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
 corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.2)
-shadow_size = 2
-shadow_offset = Vector2(0, 3)
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
+shadow_size = 5
+shadow_offset = Vector2(0, 4)
 
 [sub_resource type="Theme" id="Theme_btn_salmon"]
 Button/styles/disabled = SubResource("StyleBoxFlat_btn_salmon")
@@ -339,8 +351,8 @@ corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
 corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.28)
-shadow_size = 4
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
+shadow_size = 10
 shadow_offset = Vector2(0, 8)
 anti_aliasing_size = 0.5
 
@@ -355,9 +367,9 @@ corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
 corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.2)
-shadow_size = 2
-shadow_offset = Vector2(0, 3)
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
+shadow_size = 5
+shadow_offset = Vector2(0, 4)
 
 [sub_resource type="Theme" id="Theme_btn_mint"]
 Button/styles/disabled = SubResource("StyleBoxFlat_btn_mint")
@@ -802,10 +814,23 @@ grow_vertical = 2
 
 [node name="ButtonPlay" type="Button" parent="Panel/PlayWrap" unique_id=910780092]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(820, 230)
+custom_minimum_size = Vector2(900, 380)
 layout_mode = 2
 focus_mode = 0
 theme = SubResource("Theme_play")
+
+[node name="Depth" type="Panel" parent="Panel/PlayWrap/ButtonPlay" unique_id=1189239900]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 22.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_play_depth")
 
 [node name="Inset" type="Panel" parent="Panel/PlayWrap/ButtonPlay" unique_id=60408640]
 layout_mode = 1
@@ -826,9 +851,9 @@ modulate = Color(0.364706, 0.25098, 0.215686, 0.3)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.09
-anchor_top = 0.26
-anchor_right = 0.24
-anchor_bottom = 0.74
+anchor_top = 0.22
+anchor_right = 0.27
+anchor_bottom = 0.78
 offset_left = 4.0
 offset_top = 6.0
 offset_right = 4.0
@@ -844,9 +869,9 @@ stretch_mode = 5
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.09
-anchor_top = 0.26
-anchor_right = 0.24
-anchor_bottom = 0.74
+anchor_top = 0.22
+anchor_right = 0.27
+anchor_bottom = 0.78
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -857,8 +882,8 @@ stretch_mode = 5
 [node name="Play" type="Label" parent="Panel/PlayWrap/ButtonPlay" unique_id=594824019]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.24
-anchor_right = 0.9
+anchor_left = 0.27
+anchor_right = 0.94
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -867,14 +892,14 @@ theme_override_colors/font_shadow_color = Color(0.364706, 0.25098, 0.215686, 0.2
 theme_override_constants/shadow_offset_x = 0
 theme_override_constants/shadow_offset_y = 4
 theme_override_fonts/font = SubResource("FontVariation_play")
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 130
 text = "PLAY"
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("11_11y0k")
-min_font_size = 56
-max_font_size = 110
-available_x = 460
+min_font_size = 72
+max_font_size = 145
+available_x = 540
 
 [node name="LastGame" type="Label" parent="Panel" unique_id=56618810]
 unique_name_in_owner = true
@@ -896,7 +921,6 @@ vertical_alignment = 1
 clip_text = true
 
 [node name="TipsBox" type="Panel" parent="Panel" unique_id=1780924533]
-clip_contents = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.14
@@ -937,7 +961,7 @@ mouse_filter = 2
 theme_override_constants/separation = 18
 
 [node name="Bulb" type="TextureRect" parent="Panel/TipsBox/TipRow" unique_id=1933859135]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(166, 166)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
@@ -1075,6 +1099,25 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 
+[node name="IconShadow" type="TextureRect" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=1613554999]
+modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.1
+anchor_right = 0.83
+anchor_bottom = 0.62
+offset_left = 5.0
+offset_top = 7.0
+offset_right = 5.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_t01w5")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Icon" type="TextureRect" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=1835116931]
 layout_mode = 1
 anchors_preset = -1
@@ -1100,7 +1143,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 42
 text = "Leaderboard"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -1135,6 +1178,25 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 
+[node name="IconShadow" type="TextureRect" parent="Panel/Actions/ColStats/ButtonStats" unique_id=2069856542]
+modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.1
+anchor_right = 0.83
+anchor_bottom = 0.62
+offset_left = 5.0
+offset_top = 7.0
+offset_right = 5.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("9_8myay")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Icon" type="TextureRect" parent="Panel/Actions/ColStats/ButtonStats" unique_id=1290548388]
 layout_mode = 1
 anchors_preset = -1
@@ -1160,7 +1222,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 42
 text = "Stats"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -1195,6 +1257,25 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 
+[node name="IconShadow" type="TextureRect" parent="Panel/Actions/ColTutorial/ButtonTutorial" unique_id=1089735586]
+modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.1
+anchor_right = 0.83
+anchor_bottom = 0.62
+offset_left = 5.0
+offset_top = 7.0
+offset_right = 5.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_ittxv")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Icon" type="TextureRect" parent="Panel/Actions/ColTutorial/ButtonTutorial" unique_id=743024439]
 layout_mode = 1
 anchors_preset = -1
@@ -1220,7 +1301,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 42
 text = "Tutorial"
 horizontal_alignment = 1
 vertical_alignment = 1
