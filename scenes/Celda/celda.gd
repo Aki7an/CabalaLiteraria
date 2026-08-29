@@ -2,6 +2,8 @@ extends Control
 class_name Celda
 
 @export var celda_mostrada: bool  = false
+## Locked cells (initial gifts or verified-correct) cannot be selected or changed.
+@export var bloqueada: bool = false
 
 # Letra que contiene la celda (puede estar vacía inicialmente)
 @export var letra: String = ""
@@ -46,6 +48,8 @@ class_name Celda
 
 @onready var color_init: Color = Color(0.975, 0.965, 0.945)
 @onready var color_rellena: Color = Color(0.78, 0.76, 0.74)
+@onready var color_fondo_blanco: Color = Color(1.0, 1.0, 1.0)
+@onready var color_letra_correcta: Color = Color(0.22, 0.62, 0.28)
 
 func _ready():
 	add_to_group("Celda")
@@ -102,6 +106,7 @@ func _inicializar_letra() -> void:
 	set_letter_font_size()
 		
 	celda_mostrada = false
+	bloqueada = false
 	label_numero.add_theme_font_size_override("font_size",font_size_inicial )
 	if letra == " ":
 		espacio_blanco.visible = true
@@ -153,7 +158,7 @@ func asignar_letra(order:int) -> void:
 	label_numero.add_theme_font_size_override("font_size",font_size_asignada)
 
 func _on_button_pressed() -> void:
-	if celda_mostrada:
+	if bloqueada:
 		return
 	print("Tocada CELDA con letra:", letra, " y número:", numero, " orden:" , orden)
 		
@@ -185,11 +190,21 @@ func _on_button_pressed() -> void:
 				GameManager.set_selected_letter_user("")
 	
 func cambia_color(color_a_cambiar: int) -> void:
-	if panel_celda!=null:
-		var style = StyleBoxFlat.new()
-		style.bg_color = GameManager.lista_tonos_colores[color_a_cambiar]
-		#style.bg_color = Color(0.795, 0.295, 0.482)
-		panel_celda.add_theme_stylebox_override("panel", style)
+	color_id = color_a_cambiar
+	_set_fondo_color(GameManager.lista_tonos_colores[color_a_cambiar])
+
+
+func _set_fondo_color(color: Color) -> void:
+	if panel_celda == null:
+		return
+	var current := panel_celda.get_theme_stylebox("panel")
+	var style: StyleBoxFlat
+	if current is StyleBoxFlat:
+		style = current.duplicate() as StyleBoxFlat
+	else:
+		style = StyleBoxFlat.new()
+	style.bg_color = color
+	panel_celda.add_theme_stylebox_override("panel", style)
 
 func deselect_all_cels() -> void:
 	for celda:Celda in get_tree().get_nodes_in_group("Celda"):
@@ -205,20 +220,39 @@ func _gui_input(event: InputEvent) -> void:
 	elif event is InputEventScreenTouch and event.pressed:
 		_on_button_pressed()
 		accept_event()
-		
+
+## Player assignment: visible letter, still editable.
+func mostrar_letra_jugador() -> void:
+	label_letra.text = letter_user
+	label_letra.visible = letter_user != ""
+	label_letra.add_theme_color_override("font_color", color_font_default)
+	celda_mostrada = letter_user != ""
+	bloqueada = false
+
+## Verified correct: white background, green letter, locked.
 func mostrar_letra() -> void:
-	#label_numero.add_theme_font_size_override("font_size",font_size_asignada )
 	label_letra.text = letter_user
 	label_letra.visible = true
-	label_letra.add_theme_color_override("font_color", color_font_default)
+	label_letra.add_theme_color_override("font_color", color_letra_correcta)
+	color_id = 0
+	_set_fondo_color(color_fondo_blanco)
 	celda_mostrada = true
+	bloqueada = true
+
+func limpiar_letra_usuario() -> void:
+	letter_user = ""
+	label_letra.text = ""
+	label_letra.visible = false
+	label_letra.add_theme_color_override("font_color", color_font_default)
+	celda_mostrada = false
+	bloqueada = false
 
 func mostrar_letra_errada() -> void:
-	#label_numero.add_theme_font_size_override("font_size",font_size_asignada )
 	label_letra.text = letter_user
 	label_letra.add_theme_color_override("font_color", color_error)
 	label_letra.visible = true
 	celda_mostrada = false
+	bloqueada = false
 
 	
 func mostrar_letra_especifica(letra_a_mostrar: String) -> void:
@@ -227,8 +261,8 @@ func mostrar_letra_especifica(letra_a_mostrar: String) -> void:
 	label_letra.text = letra_a_mostrar
 	label_letra.visible = true
 	celda_mostrada = true
+	bloqueada = true
 	var style = StyleBoxFlat.new()
 	style.bg_color = color_rellena
 	#style.bg_color = Color(0.795, 0.295, 0.482)
 	panel_celda.add_theme_stylebox_override("panel", style)
-	

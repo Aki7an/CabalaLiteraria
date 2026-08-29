@@ -5,11 +5,15 @@ const OVERLAY_RESULTS := preload("res://scenes/menu_game_over.tscn")
 const OVERLAY_GAME_OVER := preload("res://scenes/menu_game_over_fail.tscn")
 const OVERLAY_ERASE := preload("res://scenes/fondo_aviso_borrado.tscn")
 const OVERLAY_HINTS := preload("res://scenes/Cuadro_Hints.tscn")
+const OVERLAY_BOARD_FILL := preload("res://scenes/fondo_tablero_completo.tscn")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 
 @onready var category_button: Button = $ButtonCategory
 @onready var category_label: Label = $ButtonCategory/Category
 @onready var category_icon: TextureRect = $ButtonCategory/Icon
+@onready var letters_label: Label = $PuzzleInfo/LettersFilled
+@onready var mode_icon: TextureRect = $PuzzleInfo/ModeRow/ModeIcon
+@onready var mode_label: Label = $PuzzleInfo/ModeRow/ModeLabel
 @onready var stars: Array[TextureRect] = [
 	$PuzzleInfo/Stars/Star1,
 	$PuzzleInfo/Stars/Star2,
@@ -17,6 +21,9 @@ const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 	$PuzzleInfo/Stars/Star4,
 	$PuzzleInfo/Stars/Star5
 ]
+
+const MODE_ICON_QUICK := preload("res://images/mode_quick.svg")
+const MODE_ICON_CRYPTO := preload("res://images/mode_scroll.svg")
 
 var _start_ms: int
 
@@ -26,8 +33,12 @@ func _ready() -> void:
 	category_label.text = GameManager.category_display_name()
 	_apply_category_color()
 	_update_stars()
+	_update_letters_filled()
+	_update_game_mode()
 
 	SignalManager.update_puzzle_stars.connect(_update_stars)
+	SignalManager.update_resting_characters.connect(_update_letters_filled)
+	SignalManager.board_filled.connect(_on_board_filled)
 	SignalManager.game_finished.connect(_on_game_finished)
 	SignalManager.game_finished_lost.connect(_on_game_lost)
 	SignalManager.erase_letter.connect(_erase_selected_letter)
@@ -47,6 +58,26 @@ func _update_stars(_value: int = -1) -> void:
 			if index < filled
 			else Color(0.72, 0.68, 0.6, 0.32)
 		)
+
+
+func _update_letters_filled() -> void:
+	letters_label.text = "%d / %d" % [
+		GameManager.numero_letras_reveladas,
+		GameManager.numero_letras_a_revelar_originales
+	]
+
+
+func _update_game_mode() -> void:
+	var is_crypto := GameManager.game_mode_actual == GameManager.MODE_CRYPTOGRAM
+	mode_icon.texture = MODE_ICON_CRYPTO if is_crypto else MODE_ICON_QUICK
+	mode_label.text = "Criptograma" if is_crypto else "Partida rápida"
+
+
+func _on_board_filled() -> void:
+	if not get_tree().get_nodes_in_group("BoardFillPrompt").is_empty():
+		return
+	SoundManager.play("ButtonClick")
+	_add_overlay(OVERLAY_BOARD_FILL)
 
 
 func _on_hint_pressed() -> void:

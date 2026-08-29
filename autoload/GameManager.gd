@@ -147,6 +147,7 @@ var pistas_actuales: Array[String] = []
 
 @export var numero_letras_a_revelar_originales :int =0
 @export var numero_letras_reveladas :int =0
+var board_fill_prompt_shown: bool = false
 
 # SENTENCE
 @export var frase_original :String = ""
@@ -498,6 +499,9 @@ func reveal_assignment_errors() -> int:
 		else:
 			keyboard_letter.mark_as_unassigned()
 
+	# Clear fill-color slots that pointed at now-verified cipher numbers.
+	_clear_fill_color_slots_for_numbers(correct_numbers)
+
 	for number: Variant in correct_numbers:
 		_penalized_reveal_errors.erase(number)
 	for number: Variant in wrong_numbers:
@@ -510,6 +514,19 @@ func reveal_assignment_errors() -> int:
 	subtract_puzzle_stars(new_errors)
 	update_numero_letras_reveladas(true)
 	return wrong_numbers.size()
+
+
+func _clear_fill_color_slots_for_numbers(correct_numbers: Dictionary) -> void:
+	if correct_numbers.has(number_1):
+		number_1 = 0
+	if correct_numbers.has(number_2):
+		number_2 = 0
+	if correct_numbers.has(number_3):
+		number_3 = 0
+	if correct_numbers.has(number_4):
+		number_4 = 0
+	if correct_numbers.has(number_5):
+		number_5 = 0
 
 func set_mostrar_tuto_antes_partida_enable() -> void:
 	mostrar_tuto_antes_partida = true
@@ -684,9 +701,15 @@ func update_numero_letras_reveladas(check_solution: bool = false) -> void:
 
 	
 	SignalManager.update_resting_characters.emit()
+
+	if numero_letras_reveladas < numero_letras_a_revelar_originales:
+		board_fill_prompt_shown = false
 	
-	if not check_solution and numero_letras_a_revelar_originales == numero_letras_reveladas:
-		reveal_assignment_errors()
+	if not check_solution and numero_letras_a_revelar_originales > 0 \
+			and numero_letras_a_revelar_originales == numero_letras_reveladas:
+		if not board_fill_prompt_shown:
+			board_fill_prompt_shown = true
+			SignalManager.board_filled.emit()
 		return
 
 	if check_solution and numero_letras_a_revelar_originales == numero_letras_reveladas:
@@ -970,6 +993,7 @@ func button_blink_texture(button: TextureButton):
 
 func reset_numero_letras_reveladas() -> void:
 	numero_letras_reveladas = 0
+	board_fill_prompt_shown = false
 
 func play_pop_animation(node: Node):
 	var tween = create_tween()
@@ -1222,13 +1246,74 @@ func set_categoria_ultima_partida(categoria_ultima: String) -> void:
 func set_dificultad_ultima_partida(dificultad_ultima: int) -> void:
 	dificultad_ultima_partida = dificultad_ultima 
 
-## Devuelve true si hay al menos una celda del tablero con letra puesta.
+## Devuelve true si hay al menos una celda editable con letra puesta.
 func hay_letra_que_borrar() -> bool:
 	for c in get_tree().get_nodes_in_group("Celda"):
-		# 1) Si la celda expone un método explícito
-		if c.letter_user != "":
+		if c.letter_user != "" and not c.bloqueada:
 			return true
 	return false
+
+
+## True si la selección actual es una letra ya verificada en verde (correcta).
+func seleccion_es_letra_verificada_correcta() -> bool:
+	var selected := selected_letra.strip_edges().to_upper()
+	if selected == "":
+		# Empty cell selected: still block if the cipher number is locked.
+		if celda_seleccionada_numero > 0 and celda_seleccionada_numero < 100:
+			for node: Node in get_tree().get_nodes_in_group("Celda"):
+				if not node is Celda:
+					continue
+				var cell := node as Celda
+				if cell.numero == celda_seleccionada_numero and cell.bloqueada:
+					return true
+		return false
+	for node: Node in get_tree().get_nodes_in_group("Letra"):
+		if not node is Letra:
+			continue
+		var keyboard_letter := node as Letra
+		if keyboard_letter.letra.to_upper() == selected and keyboard_letter.verificada_correcta:
+			return true
+	if celda_seleccionada_numero > 0 and celda_seleccionada_numero < 100:
+		for node: Node in get_tree().get_nodes_in_group("Celda"):
+			if not node is Celda:
+				continue
+			var cell := node as Celda
+			if cell.numero != celda_seleccionada_numero:
+				continue
+			if cell.bloqueada:
+				return true
+	return false
+
+
+## Frees an unverified keyboard letter so it can be assigned again.
+func liberar_letra_teclado(letra_a_liberar: String) -> void:
+	var key := letra_a_liberar.strip_edges().to_upper()
+	if key == "":
+		return
+	for node: Node in get_tree().get_nodes_in_group("Letra"):
+		if not node is Letra:
+			continue
+		var keyboard_letter := node as Letra
+		if keyboard_letter.letra.to_upper() == key:
+			keyboard_letter.liberar_para_reuso()
+
+
+## Clears an unverified letter from every matching cell on the board.
+func borrar_letra_en_tablero(letra_a_borrar: String) -> void:
+	var key := letra_a_borrar.strip_edges().to_upper()
+	if key == "":
+		return
+	for node: Node in get_tree().get_nodes_in_group("Celda"):
+		if not node is Celda:
+			continue
+		var cell := node as Celda
+		if cell.bloqueada:
+			continue
+		if cell.letter_user.strip_edges().to_upper() == key:
+			cell.limpiar_letra_usuario()
+	update_numero_letras_reveladas()
+	SignalManager.deselect_all_cells_in_canvas.emit()
+
 
 func set_player_name(nombre: String) -> void:
 	player_name = nombre

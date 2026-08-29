@@ -86,12 +86,22 @@ func _on_button_5_pressed() -> void:
 
 
 func _on_btn_erase_pressed() -> void:
-	print("ERASE PRESSED")
-	if GameManager.celda_seleccionada_numero>=100 or GameManager.celda_seleccionada_numero == 0 or GameManager.selected_letra=="":
-		print("no hay celda seleccionada, no hace nada")
-	else:
-		SignalManager.erase_letter_open_dialog.emit()
-		print("hay celda seleccionada ", GameManager.selected_letra)
+	if GameManager.celda_seleccionada_numero >= 100 \
+			or GameManager.celda_seleccionada_numero == 0 \
+			or GameManager.selected_letra == "":
+		return
+	if GameManager.seleccion_es_letra_verificada_correcta():
+		# Verified green letters cannot be erased.
+		return
+
+	var letra := GameManager.selected_letra
+	var celda := GameManager.selected_celda_number
+	GameManager.cambios_increase()
+	SignalManager.erase_letter.emit(letra)
+	SignalManager.update_rubber.emit()
+	SignalManager.update_cambios.emit()
+	SignalManager.añade_las_letras_iniciales.emit()
+	SignalManager.borrar_letra.emit(GameManager.tiempo_partida, celda, letra)
 
 
 

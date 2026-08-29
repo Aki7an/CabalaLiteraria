@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scenes/game/puzzle_theme_preview.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="3_star"]
 
 [sub_resource type="StyleBoxFlat" id="Style_card"]
 bg_color = Color(1, 0.949, 0.804, 1)
@@ -147,7 +148,7 @@ layout_mode = 0
 offset_left = 47.0
 offset_top = 234.0
 offset_right = 993.0
-offset_bottom = 1662.0
+offset_bottom = 1580.0
 theme_override_styles/panel = SubResource("Style_image")
 
 [node name="Image" type="TextureRect" parent="Card/ImageFrame"]
@@ -168,9 +169,9 @@ stretch_mode = 6
 [node name="WaitText" type="Label" parent="Card"]
 layout_mode = 0
 offset_left = 80.0
-offset_top = 1692.0
+offset_top = 1600.0
 offset_right = 960.0
-offset_bottom = 1774.0
+offset_bottom = 1660.0
 theme_override_colors/font_color = Color(0.46, 0.33, 0.18, 0.8)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 31
@@ -178,12 +179,56 @@ text = "Observa la imagen del tema"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="DifficultyStars" type="HBoxContainer" parent="Card"]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 1670.0
+offset_right = 760.0
+offset_bottom = 1754.0
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="Card/DifficultyStars"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="Card/DifficultyStars"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="Card/DifficultyStars"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="Card/DifficultyStars"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star5" type="TextureRect" parent="Card/DifficultyStars"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="ButtonStart" type="Button" parent="Card"]
 layout_mode = 0
 offset_left = 224.0
-offset_top = 1811.0
+offset_top = 1790.0
 offset_right = 816.0
-offset_bottom = 2057.0
+offset_bottom = 2000.0
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 0.94, 1)
 theme_override_colors/font_shadow_color = Color(0.4, 0.16, 0, 0.5)

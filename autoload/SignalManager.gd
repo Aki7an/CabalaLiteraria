@@ -9,6 +9,8 @@ signal insert_letter_in_number (letter: String, number: int)
 
 signal update_resting_characters
 
+signal board_filled
+
 signal move_canvas(wide: int)
 
 signal update_cambios

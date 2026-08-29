@@ -501,19 +501,17 @@ func crear_linea_horizontal() -> void:
 # ----------------------------------------------------
 
 func _insert_letter_in_number(letter2: String, number: int) -> void:
-	#CORREGIR, he de dar letra y numero y poner la letra que me da, no la que tiene realmente...
-	#print("numero seleccionado a comprobar: " + str(number))
 	for celda: Celda in get_tree().get_nodes_in_group("Celda"):
-		if celda.numero == number:
+		if celda.numero != number:
+			continue
+		if celda.bloqueada:
+			continue
+		if letter2 == "":
+			celda.limpiar_letra_usuario()
+		else:
 			celda.set_letter_user(letter2)
-			#print(" letter2: " + letter2)
-			#print(" number: " + str(number))
-			celda.mostrar_letra()
-			if celda.letter_user != "":
-				GameManager.update_numero_letras_reveladas()
-			else:
-				GameManager.disminuye_numero_letras_reveladas()
-	# deselect Celda
+			celda.mostrar_letra_jugador()
+	GameManager.update_numero_letras_reveladas()
 	SignalManager.deselect_all_cells_in_canvas.emit()
 	
 	

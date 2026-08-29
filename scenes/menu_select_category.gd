@@ -252,6 +252,7 @@ func _make_mode_selected_style() -> StyleBoxFlat:
 func _update_localized_copy() -> void:
 	var locale := TranslationServer.get_locale().left(2).to_lower()
 	var copy: Dictionary = LOCALIZED_COPY.get(locale, LOCALIZED_COPY["en"])
+	subtitle_label.visible = false
 	subtitle_label.text = copy["subtitle"]
 	category_title_label.text = copy["category"]
 	mode_title_label.text = copy["mode"]

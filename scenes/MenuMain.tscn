@@ -14,7 +14,7 @@
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="21_title"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="22_btnfx"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="23_mont"]
-[ext_resource type="Texture2D" uid="uid://c8ojqmp0xr658" path="res://images/Bombilla.png" id="24_bulb"]
+[ext_resource type="Texture2D" uid="uid://b224a7f08tbwq" path="res://images/Bombilla_1.png" id="24_bulb"]
 [ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="25_tip_font"]
 [ext_resource type="Script" uid="uid://tjdclh16sy1s" path="res://scenes/tapered_line.gd" id="26_taper"]
 
@@ -946,13 +946,68 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tip_inset")
 
+[node name="TitleRow" type="HBoxContainer" parent="Panel/TipsBox" unique_id=936111531]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 22.0
+offset_top = 14.0
+offset_right = -22.0
+offset_bottom = 54.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="LineL" type="Control" parent="Panel/TipsBox/TitleRow" unique_id=1897249387]
+custom_minimum_size = Vector2(64, 14)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("26_taper")
+line_color = Color(0.658824, 0.454902, 0.235294, 1)
+
+[node name="DotL" type="Panel" parent="Panel/TipsBox/TitleRow" unique_id=1904339012]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
+
+[node name="TipTitle" type="Label" parent="Panel/TipsBox/TitleRow" unique_id=898781458]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
+theme_override_fonts/font = ExtResource("21_title")
+theme_override_font_sizes/font_size = 30
+text = "CONSEJO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DotR" type="Panel" parent="Panel/TipsBox/TitleRow" unique_id=499348634]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
+
+[node name="LineR" type="Control" parent="Panel/TipsBox/TitleRow" unique_id=1046000871]
+custom_minimum_size = Vector2(64, 14)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("26_taper")
+flip_horizontal = true
+line_color = Color(0.658824, 0.454902, 0.235294, 1)
+
 [node name="TipRow" type="HBoxContainer" parent="Panel/TipsBox" unique_id=1216188759]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 22.0
-offset_top = 18.0
+offset_top = 58.0
 offset_right = -22.0
 offset_bottom = -18.0
 grow_horizontal = 2
@@ -961,7 +1016,7 @@ mouse_filter = 2
 theme_override_constants/separation = 18
 
 [node name="Bulb" type="TextureRect" parent="Panel/TipsBox/TipRow" unique_id=1933859135]
-custom_minimum_size = Vector2(166, 166)
+custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
@@ -974,54 +1029,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 10
-
-[node name="TitleRow" type="HBoxContainer" parent="Panel/TipsBox/TipRow/TipCol" unique_id=936111531]
-custom_minimum_size = Vector2(0, 36)
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 6
-alignment = 1
-
-[node name="LineL" type="Control" parent="Panel/TipsBox/TipRow/TipCol/TitleRow" unique_id=1897249387]
-custom_minimum_size = Vector2(64, 14)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-script = ExtResource("26_taper")
-line_color = Color(0.658824, 0.454902, 0.235294, 1)
-
-[node name="DotL" type="Panel" parent="Panel/TipsBox/TipRow/TipCol/TitleRow" unique_id=1904339012]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
-
-[node name="TipTitle" type="Label" parent="Panel/TipsBox/TipRow/TipCol/TitleRow" unique_id=898781458]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
-theme_override_fonts/font = ExtResource("21_title")
-theme_override_font_sizes/font_size = 30
-text = "CONSEJO"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="DotR" type="Panel" parent="Panel/TipsBox/TipRow/TipCol/TitleRow" unique_id=499348634]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
-
-[node name="LineR" type="Control" parent="Panel/TipsBox/TipRow/TipCol/TitleRow" unique_id=1046000871]
-custom_minimum_size = Vector2(64, 14)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-script = ExtResource("26_taper")
-flip_horizontal = true
-line_color = Color(0.658824, 0.454902, 0.235294, 1)
 
 [node name="TipText" type="RichTextLabel" parent="Panel/TipsBox/TipRow/TipCol" unique_id=2057266084]
 unique_name_in_owner = true
