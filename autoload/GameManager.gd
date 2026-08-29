@@ -24,6 +24,7 @@ extends Node
 
 var _penalized_reveal_errors: Dictionary = {}
 var _penalized_hints: Dictionary = {}
+var reveal_errors_count: int = 0
 
 @export var player_name: String = "Aki"
 @export var score: int
@@ -448,6 +449,7 @@ func reset_puzzle_stars() -> void:
 	puzzle_stars = 5
 	_penalized_reveal_errors.clear()
 	_penalized_hints.clear()
+	reveal_errors_count = 0
 	SignalManager.update_puzzle_stars.emit(puzzle_stars)
 
 
@@ -507,6 +509,7 @@ func reveal_assignment_errors() -> int:
 		_penalized_reveal_errors[number] = assigned_letter
 		new_errors += 1
 
+	reveal_errors_count += new_errors
 	subtract_puzzle_stars(new_errors)
 	update_numero_letras_reveladas(true)
 	return wrong_numbers.size()
