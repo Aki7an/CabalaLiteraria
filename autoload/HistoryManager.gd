@@ -151,11 +151,14 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 		"partida_ganada": bool(resultado),
 		"tiempo_partida": int(GameManager.tiempo_partida), # segundos
 		"dificultad": int(GameManager.dificultad_actual),   # 1,2,3,4
+		"game_mode": str(GameManager.game_mode_actual),
+		"estrellas": int(GameManager.puzzle_stars),
 		"consonantes_compradas": GameManager.consonantes_compradas,
 		"vocales_compradas_AE": GameManager.vocalesAE_compradas,
 		"vocales_compradas_IOU": GameManager.vocalesIOU_compradas,
 		"pistas_consumidas_1": GameManager.pistas_utilizadas_1,
 		"pistas_consumidas_2": GameManager.pistas_utilizadas_2,
+		"revelaciones_falladas": int(GameManager.reveal_errors_count),
 		"vidas_perdidas": _calcula_vidas_perdidas()
 	}
 	_historial.append(entry)
@@ -455,6 +458,212 @@ func _recompute_stats() -> void:
 	emit_signal("stats_updated")  # añade el cálculo de las vidas perdidas por dificultad (ya integrado arriba)
 
 
+func _entry_game_mode(entry: Dictionary) -> String:
+	var mode := str(entry.get("game_mode", "")).strip_edges().to_lower()
+	if mode == GameManager.MODE_CRYPTOGRAM or mode == GameManager.MODE_QUICK:
+		return mode
+	var difficulty := int(entry.get("dificultad", 0))
+	return GameManager.MODE_CRYPTOGRAM if difficulty >= 3 else GameManager.MODE_QUICK
+
+
+func _format_duration_friendly(total_sec: int) -> String:
+	total_sec = maxi(total_sec, 0)
+	var hours := int(total_sec / 3600)
+	var minutes := int((total_sec % 3600) / 60)
+	var seconds := int(total_sec % 60)
+	if hours > 0:
+		if minutes == 0 and seconds == 0:
+			return "%d h" % hours
+		return "%d h %d min" % [hours, minutes]
+	if minutes > 0:
+		return "%d min %d s" % [minutes, seconds]
+	return "%d s" % seconds
+
+
+func _format_date_short(fecha: Dictionary) -> String:
+	if fecha.is_empty():
+		return "—"
+	var day := int(fecha.get("dia", 0))
+	var month := int(fecha.get("mes", 0))
+	var year := int(fecha.get("anio", 0))
+	if day <= 0 or month <= 0:
+		var iso := str(fecha.get("iso", ""))
+		return iso if iso != "" else "—"
+	var months: Array[String] = ["", "ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
+	var month_name: String = months[month] if month < months.size() else str(month)
+	if year > 0:
+		return "%d %s %d" % [day, month_name, year]
+	return "%d %s" % [day, month_name]
+
+
+func _phrase_title_for_id(phrase_id: int) -> String:
+	if typeof(GameManager) == TYPE_NIL:
+		return "Nivel %d" % phrase_id
+	for item in GameManager.frases_db:
+		if int(item.get("index", -1)) != phrase_id:
+			continue
+		var init := str(item.get("description_init", "")).strip_edges()
+		if init != "" and init.to_lower() != "frase final":
+			return init
+		var hint := str(item.get("hint_1", "")).strip_edges()
+		if hint != "":
+			return hint
+		return "Nivel %d" % phrase_id
+	return "Nivel %d" % phrase_id
+
+
+func _count_levels_for(category_id: String, mode: String) -> int:
+	var total := 0
+	if typeof(GameManager) == TYPE_NIL:
+		return 0
+	for item in GameManager.frases_db:
+		if not GameManager.categories_match(str(item.get("category", "")), category_id):
+			continue
+		var difficulty := int(item.get("difficulty", 1))
+		var is_crypto := difficulty >= 3
+		if mode == GameManager.MODE_CRYPTOGRAM and not is_crypto:
+			continue
+		if mode == GameManager.MODE_QUICK and is_crypto:
+			continue
+		total += 1
+	return total
+
+
+func get_stats_dashboard() -> Dictionary:
+	var matches := _historial.size()
+	var wins := 0
+	var total_play_sec := 0
+	var hints_used := 0
+	var letters_revealed := 0
+	var letters_failed := 0
+	var searches := 0
+	var best_entry: Dictionary = {}
+	var best_stars := -1
+	var best_score := -1
+	var recent_times: Array[int] = []
+	var completed_by_mode: Dictionary = {
+		GameManager.MODE_QUICK: {},
+		GameManager.MODE_CRYPTOGRAM: {},
+	}
+
+	for category_id in GameManager.all_category_ids():
+		completed_by_mode[GameManager.MODE_QUICK][category_id] = {}
+		completed_by_mode[GameManager.MODE_CRYPTOGRAM][category_id] = {}
+
+	for entry in _historial:
+		if not (entry is Dictionary):
+			continue
+		var e: Dictionary = entry
+		var won := bool(e.get("partida_ganada", false))
+		if won:
+			wins += 1
+		var secs := int(e.get("tiempo_partida", 0))
+		total_play_sec += secs
+		recent_times.append(secs)
+
+		hints_used += int(e.get("pistas_consumidas_1", 0))
+		searches += int(e.get("pistas_consumidas_2", 0))
+		letters_revealed += (
+			int(e.get("consonantes_compradas", 0))
+			+ int(e.get("vocales_compradas_AE", 0))
+			+ int(e.get("vocales_compradas_IOU", 0))
+		)
+		letters_failed += int(e.get("revelaciones_falladas", 0))
+
+		var stars := int(e.get("estrellas", -1))
+		var score_val := int(e.get("score", 0))
+		if stars > best_stars or (stars == best_stars and score_val > best_score):
+			best_stars = stars
+			best_score = score_val
+			best_entry = e
+		elif best_stars < 0 and score_val > best_score and won:
+			best_score = score_val
+			best_entry = e
+
+		if won:
+			var mode := _entry_game_mode(e)
+			var category := GameManager.normalize_category(str(e.get("categoria", "")))
+			if completed_by_mode.has(mode) and completed_by_mode[mode].has(category):
+				var phrase_id := int(e.get("id", -1))
+				if phrase_id >= 0:
+					completed_by_mode[mode][category][phrase_id] = true
+
+	var avg_sec := int(total_play_sec / matches) if matches > 0 else 0
+	var win_rate := (100.0 * float(wins) / float(matches)) if matches > 0 else 0.0
+
+	var series: Array[float] = []
+	var series_source := recent_times
+	if series_source.size() > 12:
+		series_source = series_source.slice(series_source.size() - 12, series_source.size())
+	for value in series_source:
+		series.append(float(value) / 60.0)
+
+	var progress := {}
+	for mode in [GameManager.MODE_QUICK, GameManager.MODE_CRYPTOGRAM]:
+		progress[mode] = []
+		for category_id in [
+			GameManager.CAT_CITA,
+			GameManager.CAT_EFEMERIDE,
+			GameManager.CAT_CURIOSIDADES,
+			GameManager.CAT_FRAGMENTO,
+		]:
+			var done: int = completed_by_mode[mode][category_id].size()
+			var total: int = _count_levels_for(category_id, mode)
+			var pct := 0
+			if total > 0:
+				pct = int(round((100.0 * float(done)) / float(total)))
+			progress[mode].append({
+				"category": category_id,
+				"done": done,
+				"total": total,
+				"percent": pct,
+			})
+
+	var best := {
+		"stars": maxi(best_stars, 0),
+		"has_data": not best_entry.is_empty(),
+		"title": "",
+		"level": "",
+		"date": "",
+		"category": "",
+	}
+	if not best_entry.is_empty():
+		var phrase_id := int(best_entry.get("id", -1))
+		var category := GameManager.normalize_category(str(best_entry.get("categoria", "")))
+		best["category"] = category
+		best["title"] = _phrase_title_for_id(phrase_id)
+		best["level"] = "Nivel %d" % phrase_id if phrase_id >= 0 else ""
+		best["date"] = _format_date_short(best_entry.get("fecha", {}))
+		if int(best_entry.get("estrellas", -1)) < 0:
+			# Legacy entries without stars: estimate from score band.
+			var score_est := int(best_entry.get("score", 0))
+			if score_est >= 25000:
+				best["stars"] = 5
+			elif score_est >= 20000:
+				best["stars"] = 4
+			elif score_est >= 15000:
+				best["stars"] = 3
+			elif score_est >= 10000:
+				best["stars"] = 2
+			elif score_est > 0:
+				best["stars"] = 1
+
+	return {
+		"matches": matches,
+		"wins": wins,
+		"win_rate": win_rate,
+		"total_play_sec": total_play_sec,
+		"total_play_label": _format_duration_friendly(total_play_sec),
+		"avg_play_sec": avg_sec,
+		"avg_play_label": _format_duration_friendly(avg_sec),
+		"hints_used": hints_used,
+		"letters_revealed": letters_revealed,
+		"letters_failed": letters_failed,
+		"searches": searches,
+		"avg_series_minutes": series,
+		"progress": progress,
+		"best": best,
+	}
 
 
 ## res://autoload/HistoryManager.gd
@@ -481,7 +690,7 @@ func _recompute_stats() -> void:
 #var stat_vowelsAE_bought_by_difficulty_str: String = ""
 #var stat_vowelsIOU_bought_by_difficulty_str: String = ""
 #var stat_hints2_used_by_difficulty_str: String = ""
-#
+
 ## Por dificultad (1 Fácil, 2 Normal, 3 Difícil, 4 PRO)
 #var stat_letters_bought_facil_str: String = ""
 #var stat_letters_bought_normal_str: String = ""
