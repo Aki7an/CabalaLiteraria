@@ -6,8 +6,6 @@ var letra_scene: PackedScene = preload("res://scenes/Letra/Letra.tscn")
 @export var ALTO_CELDA: int = 100
 @export var SEPARACION: int = 2
 
-@onready var contenedor_vertical: VBoxContainer = $VBoxContainer
-
 const LAYOUT_MODE_CONTAINER := 1
 
 @onready var grid: GridContainer = $GridContainer
