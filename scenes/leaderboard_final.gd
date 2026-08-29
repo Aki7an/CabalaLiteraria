@@ -20,6 +20,7 @@ const TEX_EFEM := preload("res://images/Efemerides.png")
 const TEX_CURIO := preload("res://images/Adivinanza.png")
 const TEX_FRAG := preload("res://images/FragmentosLiterarios.png")
 const TEX_COIN := preload("res://images/Coin.png")
+const TEX_PIN := preload("res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_map_pin.png")
 const FONT_TITLE := preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
 const FONT_BODY := preload("res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf")
 const FONT_REGULAR := preload("res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf")
@@ -80,7 +81,6 @@ var _tab_online: Button
 var _diff_buttons: Dictionary = {}
 var _podium_slots: Array[Dictionary] = []
 var _list: VBoxContainer
-var _list_scroll: ScrollContainer
 var _status_label: Label
 var _title_label: Label
 var _top_label: Label
@@ -88,6 +88,7 @@ var _my_pos_button: Button
 var _my_pos_label: Label
 var _http: HTTPRequest
 var _row_nodes: Array[Control] = []
+var _load_token := 0
 
 
 func _ready() -> void:
@@ -135,6 +136,8 @@ func _on_button_back_pressed() -> void:
 
 func _on_mode_local() -> void:
 	_mode = MODE_LOCAL
+	_loading = false
+	_http.cancel_request()
 	SoundManager.play("ButtonClick")
 	_update_mode_tabs()
 	_refresh()
@@ -142,6 +145,8 @@ func _on_mode_local() -> void:
 
 func _on_mode_online() -> void:
 	_mode = MODE_ONLINE
+	_loading = false
+	_http.cancel_request()
 	SoundManager.play("ButtonClick")
 	_update_mode_tabs()
 	_refresh()
@@ -149,6 +154,8 @@ func _on_mode_online() -> void:
 
 func _on_diff(diff: int) -> void:
 	_difficulty = diff
+	_loading = false
+	_http.cancel_request()
 	SoundManager.play("ButtonClick")
 	_update_diff_tabs()
 	_refresh()
@@ -165,13 +172,13 @@ func _on_my_position() -> void:
 	if list_index < 0 or list_index >= _row_nodes.size():
 		return
 	var row := _row_nodes[list_index]
-	_list_scroll.ensure_control_visible(row)
+	var scroll := get_node_or_null("Panel/Scroll") as ScrollContainer
+	if scroll:
+		scroll.ensure_control_visible(row)
 	_pulse_row(row)
 
 
 func _refresh() -> void:
-	if _loading:
-		return
 	_status_label.visible = true
 	_status_label.text = _copy("loading")
 	if _mode == MODE_LOCAL:
@@ -190,27 +197,38 @@ func _load_local() -> void:
 
 
 func _load_online() -> void:
+	_load_token += 1
+	var token := _load_token
 	_loading = true
 	_entries.clear()
+	_player_rank = -1
+	_status_label.visible = true
+	_status_label.text = _copy("loading")
 	_render()
 	if typeof(PlayFabTools) != TYPE_NIL and not PlayFabTools.is_logged_in():
 		var custom_id: String = PlayFabTools._get_device_custom_id()
 		var ok: bool = await PlayFabTools.login_with_custom_id(custom_id, true)
+		if token != _load_token:
+			return
 		if not ok:
 			_loading = false
 			_status_label.visible = true
 			_status_label.text = _copy("online_error")
 			return
 	var ticket := ""
+	var title_id := ""
 	if typeof(PlayFabTools) != TYPE_NIL:
 		ticket = str(PlayFabTools.session_ticket)
-	if ticket == "":
+		title_id = str(PlayFabTools.TITLE_ID)
+	if ticket == "" or title_id == "":
 		_loading = false
 		_status_label.visible = true
 		_status_label.text = _copy("online_error")
 		return
 	var stat := _stat_name_for_diff(_difficulty)
-	var ok_lb := await _fetch_playfab(stat, ticket)
+	var ok_lb := await _fetch_playfab(stat, ticket, title_id)
+	if token != _load_token:
+		return
 	_loading = false
 	if not ok_lb:
 		_status_label.visible = true
@@ -235,8 +253,8 @@ func _stat_name_for_diff(diff: int) -> String:
 			return "Score_Facil"
 
 
-func _fetch_playfab(stat_name: String, ticket: String) -> bool:
-	var url := "https://%s.playfabapi.com/Client/GetLeaderboard" % PlayFabTools.TITLE_ID
+func _fetch_playfab(stat_name: String, ticket: String, title_id: String) -> bool:
+	var url := "https://%s.playfabapi.com/Client/GetLeaderboard" % title_id
 	var body := {
 		"StatisticName": stat_name,
 		"StartPosition": 0,
@@ -245,20 +263,26 @@ func _fetch_playfab(stat_name: String, ticket: String) -> bool:
 	var headers := PackedStringArray([
 		"Content-Type: application/json",
 		"Accept: application/json",
+		"Accept-Encoding: identity",
 		"X-Authorization: " + ticket,
 		"X-ReportErrorAsSuccess: true",
 	])
+	_http.cancel_request()
 	var err := _http.request(url, headers, HTTPClient.METHOD_POST, JSON.stringify(body))
 	if err != OK:
+		push_warning("Leaderboard request failed to start: %s" % err)
 		return false
 	var r: Array = await _http.request_completed
 	var response_code: int = int(r[1])
 	var text: String = (r[3] as PackedByteArray).get_string_from_utf8()
 	var parsed: Variant = JSON.parse_string(text)
 	if not (parsed is Dictionary):
+		push_warning("Leaderboard bad JSON (%s): %s" % [response_code, text.left(240)])
 		return false
 	var json: Dictionary = parsed
-	if int(json.get("code", response_code)) != 200:
+	var code := int(json.get("code", response_code))
+	if code != 200:
+		push_warning("Leaderboard API error %s: %s" % [code, str(json.get("errorMessage", text.left(240)))])
 		return false
 	var data: Dictionary = json.get("data", {})
 	var entries: Array = data.get("Leaderboard", [])
@@ -380,7 +404,8 @@ func _make_list_row(rank: int, entry: Dictionary, alt: bool) -> PanelContainer:
 	box.add_child(name_l)
 
 	var cat_wrap := HBoxContainer.new()
-	cat_wrap.custom_minimum_size = Vector2(280, 0)
+	cat_wrap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cat_wrap.size_flags_stretch_ratio = 1.35
 	cat_wrap.add_theme_constant_override("separation", 8)
 	box.add_child(cat_wrap)
 
@@ -524,14 +549,25 @@ func _pulse_row(row: Control) -> void:
 
 func _play_intro_motion() -> void:
 	var content := get_node_or_null("Panel/Scroll/Content") as Control
-	if content == null:
-		return
-	content.modulate.a = 0.0
-	content.position.y = 24.0
+	var filters := get_node_or_null("Panel/Filters") as Control
+	for node in [filters, content]:
+		if node == null:
+			continue
+		node.modulate.a = 0.0
 	var tween := create_tween()
 	tween.set_parallel(true)
-	tween.tween_property(content, "modulate:a", 1.0, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(content, "position:y", 0.0, 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if filters:
+		tween.tween_property(filters, "modulate:a", 1.0, 0.35).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	if content:
+		tween.tween_property(content, "modulate:a", 1.0, 0.45).set_delay(0.08).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	var podium := get_node_or_null("Panel/Scroll/Content") as Control
+	if podium:
+		for slot in _podium_slots:
+			var block: Control = slot.get("block")
+			if block == null:
+				continue
+			block.scale = Vector2(0.92, 0.92)
+			tween.tween_property(block, "scale", Vector2.ONE, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
 # ---------------------------------------------------------------------------
@@ -552,15 +588,17 @@ func _build_ui() -> void:
 	panel.add_child(fondo)
 
 	panel.add_child(_build_header())
+	panel.add_child(_build_filters())
 
 	var scroll := ScrollContainer.new()
 	scroll.name = "Scroll"
 	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	scroll.offset_left = 36
-	scroll.offset_top = 250
+	scroll.offset_top = 470
 	scroll.offset_right = -36
 	scroll.offset_bottom = -150
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS
 	panel.add_child(scroll)
 
 	var content := VBoxContainer.new()
@@ -568,12 +606,7 @@ func _build_ui() -> void:
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	content.add_theme_constant_override("separation", 24)
 	scroll.add_child(content)
-	var sync_width := func() -> void:
-		content.custom_minimum_size.x = maxf(scroll.size.x, 1.0)
-	scroll.resized.connect(sync_width)
 
-	content.add_child(_build_mode_tabs())
-	content.add_child(_build_diff_tabs())
 	content.add_child(_build_podium())
 	content.add_child(_build_top_header())
 	content.add_child(_build_list_card())
@@ -585,14 +618,27 @@ func _build_ui() -> void:
 	content.add_child(_status_label)
 
 	panel.add_child(_build_footer())
-	sync_width.call_deferred()
+	# Width sync once after layout — avoid resized↔minimum_size feedback loops.
+	call_deferred("_sync_content_width")
+	get_tree().create_timer(0.05).timeout.connect(_sync_content_width)
+
+
+func _sync_content_width() -> void:
+	var scroll := get_node_or_null("Panel/Scroll") as ScrollContainer
+	var content := get_node_or_null("Panel/Scroll/Content") as Control
+	if scroll == null or content == null:
+		return
+	var target := maxf(scroll.size.x, 1.0)
+	if not is_equal_approx(content.custom_minimum_size.x, target):
+		content.custom_minimum_size.x = target
 
 
 func _build_header() -> Control:
 	var header := Control.new()
 	header.name = "Header"
 	header.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	header.offset_bottom = 240
+	header.offset_bottom = 230
+	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	var back := Button.new()
 	back.position = Vector2(36, 48)
@@ -623,6 +669,7 @@ func _build_header() -> Control:
 	brand.offset_top = 40
 	brand.offset_bottom = 110
 	brand.alignment = BoxContainer.ALIGNMENT_CENTER
+	brand.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	header.add_child(brand)
 
 	var cifra := Label.new()
@@ -648,6 +695,20 @@ func _build_header() -> Control:
 	_title_label.add_theme_color_override("font_color", COLOR_INK)
 	header.add_child(_title_label)
 	return header
+
+
+func _build_filters() -> Control:
+	var filters := VBoxContainer.new()
+	filters.name = "Filters"
+	filters.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	filters.offset_left = 36
+	filters.offset_right = -36
+	filters.offset_top = 220
+	filters.offset_bottom = 450
+	filters.add_theme_constant_override("separation", 16)
+	filters.add_child(_build_mode_tabs())
+	filters.add_child(_build_diff_tabs())
+	return filters
 
 
 func _build_mode_tabs() -> HBoxContainer:
@@ -718,19 +779,26 @@ func _build_podium() -> PanelContainer:
 		col.add_theme_constant_override("separation", 8)
 		row.add_child(col)
 
-		var medal := PanelContainer.new()
-		medal.custom_minimum_size = Vector2(84, 84)
+		var medal := Control.new()
+		medal.custom_minimum_size = Vector2(96, 96)
 		medal.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		medal.add_theme_stylebox_override("panel", _flat(colors[rank_index].darkened(0.05), 42))
 		col.add_child(medal)
-		var medal_box := CenterContainer.new()
-		medal.add_child(medal_box)
+		var coin := TextureRect.new()
+		coin.texture = TEX_COIN
+		coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		coin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		coin.modulate = colors[rank_index]
+		medal.add_child(coin)
 		var medal_l := Label.new()
+		medal_l.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		medal_l.text = str(rank_index + 1)
+		medal_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		medal_l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		medal_l.add_theme_font_override("font", FONT_TITLE)
-		medal_l.add_theme_font_size_override("font_size", 36)
+		medal_l.add_theme_font_size_override("font_size", 34)
 		medal_l.add_theme_color_override("font_color", Color.WHITE)
-		medal_box.add_child(medal_l)
+		medal.add_child(medal_l)
 
 		var name_l := Label.new()
 		name_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -783,17 +851,11 @@ func _build_top_header() -> Control:
 func _build_list_card() -> PanelContainer:
 	var card := PanelContainer.new()
 	card.add_theme_stylebox_override("panel", _soft_card(COLOR_CARD, 28))
-	_list_scroll = ScrollContainer.new()
-	_list_scroll.custom_minimum_size = Vector2(0, 420)
-	_list_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	card.add_child(_list_scroll)
 	_list = VBoxContainer.new()
+	_list.name = "List"
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_list.add_theme_constant_override("separation", 8)
-	_list_scroll.add_child(_list)
-	_list_scroll.resized.connect(func() -> void:
-		_list.custom_minimum_size.x = maxf(_list_scroll.size.x, 1.0)
-	)
+	card.add_child(_list)
 	return card
 
 
@@ -823,9 +885,12 @@ func _build_footer() -> Control:
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_my_pos_button.add_child(row)
 
-	var pin := PanelContainer.new()
-	pin.custom_minimum_size = Vector2(36, 36)
-	pin.add_theme_stylebox_override("panel", _flat(COLOR_TEAL, 18))
+	var pin := TextureRect.new()
+	pin.texture = TEX_PIN
+	pin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	pin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	pin.custom_minimum_size = Vector2(40, 40)
+	pin.modulate = COLOR_TEAL
 	row.add_child(pin)
 	_my_pos_label = Label.new()
 	_my_pos_label.add_theme_font_override("font", FONT_BODY)
