@@ -1,0 +1,506 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://scenes/PanelUP/panel_up_portrait.gd" id="1_script"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="3_star"]
+[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_bulb.png" id="4_bulb"]
+[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_eye.png" id="5_eye"]
+[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Pause.png" id="6_pause"]
+[ext_resource type="Texture2D" path="res://images/theme_picture_icon.svg" id="7_theme"]
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(1, 0.949, 0.804, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.77, 0.59, 0.31, 0.58)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.35, 0.22, 0.08, 0.2)
+shadow_size = 13
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_bg"]
+bg_color = Color(0.76, 0.62, 0.4, 0.38)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.57, 0.4, 0.19, 0.46)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_fill"]
+bg_color = Color(0.98, 0.48, 0.035, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="Style_pause"]
+bg_color = Color(1, 0.56, 0.02, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 9
+border_color = Color(0.72, 0.32, 0.02, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_color = Color(0.4, 0.2, 0.03, 0.25)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_pause_pressed"]
+bg_color = Color(0.9, 0.4, 0.015, 1)
+border_width_left = 5
+border_width_top = 9
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.65, 0.25, 0.01, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="Style_hint"]
+bg_color = Color(0.035, 0.64, 0.61, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 9
+border_color = Color(0.02, 0.38, 0.37, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.03, 0.24, 0.23, 0.24)
+shadow_size = 9
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_hint_pressed"]
+bg_color = Color(0.025, 0.5, 0.48, 1)
+border_width_left = 4
+border_width_top = 9
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.015, 0.31, 0.3, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="Style_theme"]
+bg_color = Color(0.63, 0.87, 0.82, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 9
+border_color = Color(0.29, 0.59, 0.56, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.08, 0.31, 0.29, 0.2)
+shadow_size = 9
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_theme_pressed"]
+bg_color = Color(0.5, 0.76, 0.71, 1)
+border_width_left = 4
+border_width_top = 9
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.22, 0.49, 0.46, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="Style_reveal"]
+bg_color = Color(0.38, 0.25, 0.72, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 9
+border_color = Color(0.22, 0.13, 0.49, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.17, 0.09, 0.35, 0.26)
+shadow_size = 9
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_reveal_pressed"]
+bg_color = Color(0.29, 0.18, 0.58, 1)
+border_width_left = 4
+border_width_top = 9
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.18, 0.1, 0.41, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="Style_category"]
+bg_color = Color(0.98, 0.43, 0.27, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 8
+border_color = Color(0.7, 0.25, 0.14, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0.39, 0.18, 0.08, 0.24)
+shadow_size = 8
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_category_pressed"]
+bg_color = Color(0.85, 0.33, 0.2, 1)
+border_width_left = 4
+border_width_top = 8
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.62, 0.2, 0.1, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[node name="PanelUPPortrait" type="Panel"]
+offset_right = 1174.0
+offset_bottom = 548.0
+theme_override_styles/panel = SubResource("Style_card")
+script = ExtResource("1_script")
+
+[node name="ButtonCategory" type="Button" parent="."]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 37.0
+offset_right = 302.0
+offset_bottom = 196.0
+focus_mode = 0
+mouse_filter = 2
+theme_override_styles/normal = SubResource("Style_category")
+theme_override_styles/hover = SubResource("Style_category")
+theme_override_styles/pressed = SubResource("Style_category_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Icon" type="TextureRect" parent="ButtonCategory"]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 20.0
+offset_right = 175.0
+offset_bottom = 128.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Category" type="Label" parent="ButtonCategory"]
+layout_mode = 0
+offset_left = -35.0
+offset_top = 163.0
+offset_right = 272.0
+offset_bottom = 225.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.25, 0.18, 0.12, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 31
+text = "Efemérides"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SeparatorLeft" type="VSeparator" parent="."]
+layout_mode = 0
+offset_left = 371.0
+offset_top = 40.0
+offset_right = 384.0
+offset_bottom = 287.0
+theme_override_colors/separator = Color(0.6, 0.45, 0.25, 0.42)
+
+[node name="PuzzleInfo" type="Control" parent="."]
+layout_mode = 0
+offset_left = 405.0
+offset_top = 31.0
+offset_right = 945.0
+offset_bottom = 290.0
+
+[node name="Title" type="Label" parent="PuzzleInfo"]
+layout_mode = 0
+offset_right = 540.0
+offset_bottom = 53.0
+theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "ESTRELLAS DEL PUZLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stars" type="HBoxContainer" parent="PuzzleInfo"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 55.0
+offset_right = 440.0
+offset_bottom = 137.0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="PuzzleInfo/Stars"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="PuzzleInfo/Stars"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="PuzzleInfo/Stars"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="PuzzleInfo/Stars"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star5" type="TextureRect" parent="PuzzleInfo/Stars"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ProgressBar" type="ProgressBar" parent="PuzzleInfo"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 157.0
+offset_right = 505.0
+offset_bottom = 190.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Style_progress_bg")
+theme_override_styles/fill = SubResource("Style_progress_fill")
+show_percentage = false
+
+[node name="Uses" type="Label" parent="PuzzleInfo"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 196.0
+offset_right = 505.0
+offset_bottom = 251.0
+theme_override_colors/font_color = Color(0.29, 0.21, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 31
+text = "Progreso: 0 de 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonPause" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1004.0
+offset_top = 54.0
+offset_right = 1126.0
+offset_bottom = 187.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_pause")
+theme_override_styles/hover = SubResource("Style_pause")
+theme_override_styles/pressed = SubResource("Style_pause_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Icon" type="TextureRect" parent="ButtonPause"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = 36.0
+offset_right = -34.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_pause")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Divider" type="HSeparator" parent="."]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 304.0
+offset_right = 1144.0
+offset_bottom = 315.0
+theme_override_colors/separator = Color(0.62, 0.45, 0.24, 0.38)
+
+[node name="ButtonTheme" type="Button" parent="."]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 337.0
+offset_right = 374.0
+offset_bottom = 505.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_theme")
+theme_override_styles/hover = SubResource("Style_theme")
+theme_override_styles/pressed = SubResource("Style_theme_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Icon" type="TextureRect" parent="ButtonTheme"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 31.0
+offset_right = 111.0
+offset_bottom = 131.0
+mouse_filter = 2
+texture = ExtResource("7_theme")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="ButtonTheme"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 24.0
+offset_right = 333.0
+offset_bottom = 82.0
+theme_override_colors/font_color = Color(0.08, 0.31, 0.29, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "TEMA DEL PUZLE"
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="ButtonTheme"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 79.0
+offset_right = 333.0
+offset_bottom = 138.0
+theme_override_colors/font_color = Color(0.1, 0.35, 0.32, 0.9)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Ver imagen del tema"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonHint" type="Button" parent="."]
+layout_mode = 0
+offset_left = 401.0
+offset_top = 337.0
+offset_right = 746.0
+offset_bottom = 505.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_hint")
+theme_override_styles/hover = SubResource("Style_hint")
+theme_override_styles/pressed = SubResource("Style_hint_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Icon" type="TextureRect" parent="ButtonHint"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 31.0
+offset_right = 111.0
+offset_bottom = 131.0
+mouse_filter = 2
+texture = ExtResource("4_bulb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="ButtonHint"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 22.0
+offset_right = 333.0
+offset_bottom = 88.0
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_colors/font_shadow_color = Color(0.01, 0.16, 0.16, 0.52)
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 38
+text = "PISTA"
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="ButtonHint"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 84.0
+offset_right = 333.0
+offset_bottom = 131.0
+theme_override_colors/font_color = Color(1, 1, 0.94, 0.92)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "Ayuda contextual"
+vertical_alignment = 1
+
+[node name="ButtonReveal" type="Button" parent="."]
+layout_mode = 0
+offset_left = 773.0
+offset_top = 337.0
+offset_right = 1145.0
+offset_bottom = 505.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_reveal")
+theme_override_styles/hover = SubResource("Style_reveal")
+theme_override_styles/pressed = SubResource("Style_reveal_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Icon" type="TextureRect" parent="ButtonReveal"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 34.0
+offset_right = 109.0
+offset_bottom = 128.0
+mouse_filter = 2
+texture = ExtResource("5_eye")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="ButtonReveal"]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 22.0
+offset_right = 360.0
+offset_bottom = 88.0
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_colors/font_shadow_color = Color(0.12, 0.06, 0.27, 0.58)
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+text = "REVELAR"
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="ButtonReveal"]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 84.0
+offset_right = 360.0
+offset_bottom = 132.0
+theme_override_colors/font_color = Color(1, 1, 0.94, 0.92)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 19
+text = "Comprueba tus respuestas"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[connection signal="pressed" from="ButtonPause" to="." method="_on_pause_pressed"]
+[connection signal="pressed" from="ButtonTheme" to="." method="_on_theme_pressed"]
+[connection signal="pressed" from="ButtonHint" to="." method="_on_hint_pressed"]
+[connection signal="pressed" from="ButtonReveal" to="." method="_on_reveal_pressed"]

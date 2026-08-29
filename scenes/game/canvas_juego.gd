@@ -24,13 +24,15 @@ var _move_tween: Tween
 # ------------------ Config ------------------
 const DRAG_THRESHOLD := 8.0  # píxeles para considerar que es drag
 const SCROLL_STEP := 80.0  # píxeles por “tic” de rueda (ajústalo a gusto)
-const STRIPE_WIDTH := 80.0   # ancho de las columnas laterales
+const STRIPE_WIDTH := 18.0
+const CELL_HEIGHT_RATIO := 1.5
 
 # ------------------ Estado input ------------------
 var tocando: bool = false
 var dragging: bool = false
 var start_pos: Vector2 = Vector2.ZERO
 var ultima_posicion: Vector2 = Vector2.ZERO
+var _rest_y: float = 0.0
 
 
 signal global_position_changed(new_global_pos: Vector2)
@@ -66,6 +68,7 @@ var _tween: Tween
 #                       READY
 # ----------------------------------------------------
 func _ready() -> void:
+	_rest_y = position.y
 	SignalManager.deselect_all_cells_in_canvas.connect(deselect_all_cels)
 	SignalManager.insert_letter_in_number.connect(_insert_letter_in_number)
 	SignalManager.move_canvas.connect(_move_canvas)
@@ -77,14 +80,9 @@ func _ready() -> void:
 	reset_zoom_scale()
 	reset_grid()
 
-	# Crear columnas laterales
-	_create_side_stripes()
-
 	# Recalcular alturas cuando cambie el tamaño del grid y clamping
 	grid_container.resized.connect(func ():
 		_update_cell_min_heights()
-		_rebuild_side_stripes()
-		_rebuild_side_stripes()
 		_clamp_canvas_y()
 	)
 
@@ -100,9 +98,8 @@ func _ready() -> void:
 
 	await get_tree().process_frame
 	_update_cell_min_heights()
-	_rebuild_side_stripes()
+	_update_scroll_bounds()
 	_clamp_canvas_y()
-	position.y = GameManager.min_y_canvas
 	update_position_botton_red_line()
 	_añade_las_letras_iniciales()
 	
@@ -181,7 +178,7 @@ func _rebuild_side_stripes() -> void:
 	if usable_w <= 0.0:
 		return
 	var cell_w: float = usable_w / float(cols)
-	var cell_h: float = cell_w * 2.0  # mismo ratio 1:2 que tus celdas
+	var cell_h: float = cell_w * CELL_HEIGHT_RATIO
 
 	# Número de filas actuales
 	var filas: int = int(ceil(float(GameManager.TOTAL_CELDAS) / float(cols)))
@@ -221,19 +218,17 @@ func _rebuild_side_stripes() -> void:
 func change_grid(step: int) -> void:
 	grid_container.columns = max(1, grid_container.columns + step)
 	_update_cell_min_heights()
-	_rebuild_side_stripes()
 	_clamp_canvas_y()
 	var filas := int(ceil(GameManager.TOTAL_CELDAS / grid_container.columns))
 	GameManager.set_columns_and_rows(grid_container.columns, filas)
 	await get_tree().process_frame
 	update_position_botton_red_line()
-	GameManager.max_y_canvas = grid_container.position.y - grid_container.size.y + 40
+	_update_scroll_bounds()
 	SignalManager.update_size_celdas.emit()
 
 func reset_grid() -> void:
 	grid_container.columns = max(1, GameManager.NUM_COLUMNAS)
 	_update_cell_min_heights()
-	_rebuild_side_stripes()
 	_clamp_canvas_y()
 
 func _update_cell_min_heights() -> void:
@@ -244,7 +239,7 @@ func _update_cell_min_heights() -> void:
 	if usable_w <= 0.0:
 		return
 	var cell_w: float = usable_w / float(cols)
-	var cell_h: float = cell_w * 2.0
+	var cell_h: float = cell_w * CELL_HEIGHT_RATIO
 
 	for child in grid_container.get_children():
 		if child is AspectRatioContainer:
@@ -254,8 +249,6 @@ func _update_cell_min_heights() -> void:
 			var c := child as Control
 			c.custom_minimum_size.y = cell_h
 
-	# reconstruye laterales con el nuevo alto de fila
-	_rebuild_side_stripes()
 	_clamp_canvas_y()
 
 	
@@ -384,7 +377,6 @@ func _input(event: InputEvent) -> void:
 		nuevo_escala = nuevo_escala.clamp(Vector2(0.5, 0.5), Vector2(3, 3))
 		canvas_juego.scale = nuevo_escala
 		_update_cell_min_heights() # por si el layout depende visualmente del zoom
-		_rebuild_side_stripes()
 		_clamp_canvas_y()
 
 
@@ -440,23 +432,45 @@ func _grid_vsep() -> int:
 #  - Primera fila quede arriba (y = 0)
 #  - Última fila quede abajo (y = viewport_h - content_h), considerando zoom
 func _clamp_canvas_y() -> void:
-	var parent_ctrl := get_parent() as Control
-	#print("Y:" + str(canvas_juego.position.y))
-	#print("Y Global:" + str(canvas_juego.global_position.y))
-	#print("Linea abajo Global:" + str(color_rect_down.global_position.y))
-	#print("Grid Container Size:" + str(grid_container.size))
-	
-	#GameManager.calculate_max_y_canvas()
-	
-	if GameManager.max_y_canvas <= canvas_juego.position.y:
-		#canvas_juego.position.y = clamp(canvas_juego.position.y, min_y, max_y)
-		canvas_juego.position.y = clamp(canvas_juego.position.y, GameManager.max_y_canvas, GameManager.min_y_canvas)
+	canvas_juego.position.y = clamp(
+		canvas_juego.position.y,
+		float(GameManager.max_y_canvas),
+		float(GameManager.min_y_canvas)
+	)
+	canvas_juego.position.y = round(canvas_juego.position.y)
 
-		# Evita “temblores” por flotantes
-		canvas_juego.position.y = round(canvas_juego.position.y)
-		print("Position CanvasLJuego:" , canvas_juego.global_position.y)
-	else:
-		canvas_juego.position.y = GameManager.max_y_canvas
+
+func set_scroll_normalized(value: float) -> void:
+	if _move_tween and _move_tween.is_running():
+		_move_tween.kill()
+	var normalized := clampf(value, 0.0, 1.0)
+	position.y = lerpf(
+		float(GameManager.min_y_canvas),
+		float(GameManager.max_y_canvas),
+		normalized
+	)
+	_clamp_canvas_y()
+
+
+func get_scroll_normalized() -> float:
+	var travel := float(GameManager.min_y_canvas - GameManager.max_y_canvas)
+	if travel <= 0.0:
+		return 0.0
+	return clampf(
+		(float(GameManager.min_y_canvas) - position.y) / travel,
+		0.0,
+		1.0
+	)
+
+
+func _update_scroll_bounds() -> void:
+	GameManager.min_y_canvas = int(round(_rest_y))
+	var content_height: float = grid_container.position.y + grid_container.size.y
+	var overflow: float = max(0.0, content_height - size.y + 20.0)
+	GameManager.max_y_canvas = int(round(_rest_y - overflow))
+	var scroll_rail := get_parent().get_node_or_null("ScrollRail") as Control
+	if scroll_rail != null:
+		scroll_rail.visible = overflow > 1.0
 
 
 # ----------------------------------------------------
@@ -465,7 +479,7 @@ func _clamp_canvas_y() -> void:
 func crear_linea_horizontal() -> void:
 	for i in range(GameManager.lista_letras_frase_original.size()):
 		var aspect_container := AspectRatioContainer.new()
-		aspect_container.ratio = 0.5  # 1:2 (ancho:alto)
+		aspect_container.ratio = 1.0 / CELL_HEIGHT_RATIO
 		aspect_container.stretch_mode = AspectRatioContainer.STRETCH_WIDTH_CONTROLS_HEIGHT
 		aspect_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		aspect_container.size_flags_vertical   = Control.SIZE_EXPAND_FILL
@@ -491,7 +505,6 @@ func _insert_letter_in_number(letter2: String, number: int) -> void:
 	#print("numero seleccionado a comprobar: " + str(number))
 	for celda: Celda in get_tree().get_nodes_in_group("Celda"):
 		if celda.numero == number:
-			celda.set_letter(letter2)
 			celda.set_letter_user(letter2)
 			#print(" letter2: " + letter2)
 			#print(" number: " + str(number))
@@ -572,17 +585,11 @@ func _row_height() -> float:
 	if usable_w <= 0.0:
 		return 0.0
 	var cell_w: float = usable_w / float(cols)
-	var cell_h: float = cell_w * 2.0  # mismo ratio 1:2 que usas en las celdas
+	var cell_h: float = cell_w * CELL_HEIGHT_RATIO
 	return cell_h + float(_grid_vsep())
 
 # --- Mueve el canvas N filas (positivas hacia abajo, negativas hacia arriba) con tween ---
 func pan_rows(delta_rows: int, duration: float = 0.35) -> void:
-	#print(color_rect_down.global_position.y)
-	if delta_rows<0 and color_rect_down.global_position.y <= 1420:
-		return
-	#if delta_rows < 0 and position.y <= (GameManager.max_y_canvas + .5) :
-		#return
-	
 	var step_px: float = _row_height() * float(delta_rows)
 	if step_px == 0.0:
 		return
@@ -660,7 +667,7 @@ func _cell_height_only() -> float:
 	if usable_w <= 0.0:
 		return 0.0
 	var cell_w: float = usable_w / float(cols)
-	return cell_w * 2.0  # ratio 1:2 (ancho:alto) => alto = 2*ancho
+	return cell_w * CELL_HEIGHT_RATIO
 
 # Rango de filas potenciales
 func _rows_count() -> int:

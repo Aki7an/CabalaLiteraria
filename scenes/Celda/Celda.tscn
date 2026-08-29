@@ -1,10 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bf1rpdqdbbj1g"]
+[gd_scene format=3 uid="uid://bf1rpdqdbbj1g"]
 
 [ext_resource type="Script" uid="uid://c35i4wdcl1b5f" path="res://scenes/Celda/celda.gd" id="1_omubc"]
 [ext_resource type="Script" uid="uid://der44llrh0ywt" path="res://scenes/Blink_Label.gd" id="2_of430"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d3qfr"]
-bg_color = Color(0.955319, 0.950491, 0.94895, 1)
+bg_color = Color(0.984, 0.944, 0.842, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ewu8p"]
 bg_color = Color(0.168627, 0.180392, 0.188235, 1)
@@ -17,13 +17,13 @@ border_width_right = 10
 border_width_bottom = 10
 border_color = Color(0.992157, 0.827451, 0.329412, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_of430"]
-bg_color = Color(0.769222, 0.769996, 0.302051, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omubc"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[node name="Celda" type="Control" groups=["Celda"]]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_of430"]
+bg_color = Color(0.769222, 0.769996, 0.302051, 1)
+
+[node name="Celda" type="Control" unique_id=945296634 groups=["Celda"]]
 custom_minimum_size = Vector2(60, 120)
 layout_mode = 3
 anchor_right = 0.078125
@@ -35,7 +35,7 @@ size_flags_vertical = 3
 script = ExtResource("1_omubc")
 metadata/_edit_use_anchors_ = true
 
-[node name="Fondo" type="Panel" parent="."]
+[node name="Fondo" type="Panel" parent="." unique_id=752395006]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,7 +44,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_d3qfr")
 
-[node name="LabelNumero" type="Label" parent="Fondo"]
+[node name="LabelNumero" type="Label" parent="Fondo" unique_id=467077680]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -54,7 +54,7 @@ offset_right = 34.5
 offset_bottom = 83.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.168627, 0.180392, 0.188235, 1)
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 40
 text = "22"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -62,7 +62,7 @@ justification_flags = 160
 script = ExtResource("2_of430")
 scale_up = 1.3
 
-[node name="LabelLetra" type="Label" parent="Fondo"]
+[node name="LabelLetra" type="Label" parent="Fondo" unique_id=1704826905]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -72,12 +72,12 @@ offset_bottom = 26.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.168627, 0.180392, 0.188235, 1)
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 74
 text = "A"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LabelPuntuacionPunto" type="Label" parent="Fondo"]
+[node name="LabelPuntuacionPunto" type="Label" parent="Fondo" unique_id=1773462704]
 visible = false
 layout_mode = 0
 offset_left = 17.0
@@ -89,7 +89,7 @@ text = "."
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="LabelPuntuacionComa" type="Label" parent="Fondo"]
+[node name="LabelPuntuacionComa" type="Label" parent="Fondo" unique_id=1217193965]
 visible = false
 layout_mode = 0
 offset_left = 17.0
@@ -101,7 +101,7 @@ text = ","
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="LabelPuntuacionPuntoComa" type="Label" parent="Fondo"]
+[node name="LabelPuntuacionPuntoComa" type="Label" parent="Fondo" unique_id=1425863166]
 visible = false
 layout_mode = 0
 offset_left = 17.0
@@ -113,7 +113,7 @@ text = ";"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="LabelPuntuacionDosPuntos" type="Label" parent="Fondo"]
+[node name="LabelPuntuacionDosPuntos" type="Label" parent="Fondo" unique_id=608405707]
 visible = false
 layout_mode = 0
 offset_left = 17.0
@@ -125,7 +125,7 @@ text = ":"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="LabelPuntuacionComillasInicio" type="Label" parent="Fondo"]
+[node name="LabelPuntuacionComillasInicio" type="Label" parent="Fondo" unique_id=1368776446]
 visible = false
 layout_mode = 0
 offset_left = -24.0
@@ -137,7 +137,7 @@ text = "\""
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="LabelPuntuacionComillasFin" type="Label" parent="Fondo"]
+[node name="LabelPuntuacionComillasFin" type="Label" parent="Fondo" unique_id=1653997640]
 visible = false
 layout_mode = 0
 offset_left = 15.0
@@ -149,7 +149,7 @@ text = "\""
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="LabelPuntuacionExclamaciónInicio" type="Label" parent="Fondo"]
+[node name="LabelPuntuacionExclamaciónInicio" type="Label" parent="Fondo" unique_id=1933644118]
 visible = false
 layout_mode = 0
 offset_left = -33.0
@@ -161,7 +161,7 @@ text = "¡"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="LabelPuntuacionExclamaciónFin" type="Label" parent="Fondo"]
+[node name="LabelPuntuacionExclamaciónFin" type="Label" parent="Fondo" unique_id=1602981377]
 visible = false
 layout_mode = 0
 offset_left = 15.0
@@ -173,7 +173,7 @@ text = "!"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="LabelPuntuacionEInterrogacionInicio" type="Label" parent="Fondo"]
+[node name="LabelPuntuacionEInterrogacionInicio" type="Label" parent="Fondo" unique_id=659104325]
 visible = false
 layout_mode = 0
 offset_left = -23.0
@@ -185,7 +185,7 @@ text = "¿"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="LabelPuntuacionEInterrogacionFin" type="Label" parent="Fondo"]
+[node name="LabelPuntuacionEInterrogacionFin" type="Label" parent="Fondo" unique_id=1110298163]
 visible = false
 layout_mode = 0
 offset_left = 15.0
@@ -197,7 +197,7 @@ text = "?"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="EspacioBlanco" type="Panel" parent="Fondo"]
+[node name="EspacioBlanco" type="Panel" parent="Fondo" unique_id=1049918320]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -207,7 +207,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
 
-[node name="Marco1" type="Panel" parent="Fondo"]
+[node name="Marco1" type="Panel" parent="Fondo" unique_id=1007444382]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 1
 anchors_preset = 10
@@ -215,7 +215,7 @@ anchor_right = 1.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
 
-[node name="Marco2" type="Panel" parent="Fondo"]
+[node name="Marco2" type="Panel" parent="Fondo" unique_id=413674520]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 1
 anchors_preset = 9
@@ -223,7 +223,7 @@ anchor_bottom = 1.0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
 
-[node name="Marco3" type="Panel" parent="Fondo"]
+[node name="Marco3" type="Panel" parent="Fondo" unique_id=749290508]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 1
 anchors_preset = 11
@@ -234,7 +234,7 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
 
-[node name="Marco4" type="Panel" parent="Fondo"]
+[node name="Marco4" type="Panel" parent="Fondo" unique_id=1065574743]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.986
@@ -245,7 +245,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ewu8p")
 
-[node name="CeldaSelected" type="Panel" parent="Fondo"]
+[node name="CeldaSelected" type="Panel" parent="Fondo" unique_id=283529916]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -256,7 +256,7 @@ grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_7lda0")
 
-[node name="Button" type="Button" parent="Fondo"]
+[node name="Button" type="Button" parent="Fondo" unique_id=1230408252]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.002
@@ -264,8 +264,8 @@ anchor_bottom = 1.0
 offset_right = -0.128006
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/pressed = SubResource("StyleBoxFlat_of430")
 theme_override_styles/normal = SubResource("StyleBoxFlat_omubc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_of430")
 metadata/_edit_lock_ = true
 
 [connection signal="pressed" from="Fondo/Button" to="." method="_on_button_pressed"]

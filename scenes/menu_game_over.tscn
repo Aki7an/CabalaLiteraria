@@ -1,234 +1,669 @@
-[gd_scene load_steps=16 format=3 uid="uid://dpat6e5e2i47l"]
+[gd_scene load_steps=17 format=3]
 
-[ext_resource type="Script" uid="uid://dp8350faic2ec" path="res://scenes/menu_game_over.gd" id="1_4ja6d"]
-[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="2_4rb3m"]
-[ext_resource type="Texture2D" uid="uid://hggrdc2bwirm" path="res://images/Captura de pantalla 2025-09-06 221159.png" id="2_67j2n"]
-[ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="3_f7b2p"]
-[ext_resource type="Texture2D" uid="uid://b6nxfxre5njbj" path="res://images/CheckOK.png" id="4_4rb3m"]
-[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="4_yd5qk"]
-[ext_resource type="Texture2D" uid="uid://64eqp4g8dwld" path="res://images/Info.png" id="6_f7b2p"]
+[ext_resource type="Script" path="res://scenes/menu_game_over.gd" id="1_script"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="3_star"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t8ghf"]
-bg_color = Color(0.984314, 0.976471, 0.933333, 1)
+[sub_resource type="StyleBoxFlat" id="Style_backdrop"]
+bg_color = Color(0.12, 0.085, 0.045, 0.72)
 
-[sub_resource type="FontVariation" id="FontVariation_0cr37"]
-base_font = ExtResource("4_yd5qk")
+[sub_resource type="StyleBoxFlat" id="Style_main"]
+bg_color = Color(1, 0.955, 0.82, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 9
+border_color = Color(0.8, 0.62, 0.34, 0.62)
+corner_radius_top_left = 42
+corner_radius_top_right = 42
+corner_radius_bottom_right = 42
+corner_radius_bottom_left = 42
+shadow_color = Color(0.19, 0.11, 0.04, 0.34)
+shadow_size = 24
+shadow_offset = Vector2(0, 16)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_op5qx"]
-texture = ExtResource("3_f7b2p")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.417204, 0.811498, 0.422634, 1)
+[sub_resource type="StyleBoxFlat" id="Style_banner"]
+bg_color = Color(0.08, 0.62, 0.64, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 11
+border_color = Color(0.035, 0.36, 0.39, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0.02, 0.22, 0.24, 0.28)
+shadow_size = 11
+shadow_offset = Vector2(0, 9)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q6gwn"]
-texture = ExtResource("3_f7b2p")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.32549, 0.74902, 0.356863, 1)
+[sub_resource type="StyleBoxFlat" id="Style_banner_tail"]
+bg_color = Color(0.045, 0.48, 0.51, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 7
+border_color = Color(0.025, 0.31, 0.34, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
 
-[sub_resource type="Theme" id="Theme_i3j8r"]
-Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
-Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
-Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
-Button/colors/icon_focus_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_normal_color = Color(1, 1, 1, 1)
-Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
-Button/constants/align_to_largest_stylebox = 0
-Button/constants/h_separation = 4
-Button/constants/icon_max_width = 0
-Button/constants/outline_size = 0
-Button/font_sizes/font_size = 50
-Button/fonts/font = null
-Button/styles/disabled = SubResource("StyleBoxTexture_op5qx")
-Button/styles/focus = SubResource("StyleBoxTexture_q6gwn")
-Button/styles/hover = SubResource("StyleBoxTexture_q6gwn")
-Button/styles/normal = SubResource("StyleBoxTexture_q6gwn")
-Button/styles/pressed = SubResource("StyleBoxTexture_op5qx")
+[sub_resource type="StyleBoxFlat" id="Style_phrase"]
+bg_color = Color(1, 0.972, 0.88, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.78, 0.58, 0.3, 0.52)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.35, 0.21, 0.08, 0.14)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p42y5"]
-bg_color = Color(0.97794, 0.966852, 0.911845, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
+[sub_resource type="StyleBoxFlat" id="Style_stars"]
+bg_color = Color(1, 0.968, 0.86, 0.96)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.79, 0.61, 0.36, 0.4)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.31, 0.18, 0.06, 0.12)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xnqa"]
-texture = ExtResource("3_f7b2p")
-texture_margin_left = 76.0
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(1, 0.670588, 0.0705882, 1)
+[sub_resource type="StyleBoxFlat" id="Style_info"]
+bg_color = Color(1, 0.982, 0.91, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.73, 0.53, 0.26, 0.46)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
 
-[sub_resource type="Theme" id="Theme_f7b2p"]
-Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
-Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
-Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
-Button/colors/icon_focus_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_normal_color = Color(1, 1, 1, 1)
-Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
-Button/constants/align_to_largest_stylebox = 0
-Button/constants/h_separation = 4
-Button/constants/icon_max_width = 0
-Button/constants/outline_size = 0
-Button/font_sizes/font_size = 50
-Button/fonts/font = null
-Button/styles/disabled = SubResource("StyleBoxTexture_1xnqa")
-Button/styles/focus = SubResource("StyleBoxTexture_1xnqa")
-Button/styles/hover = SubResource("StyleBoxTexture_1xnqa")
-Button/styles/normal = SubResource("StyleBoxTexture_1xnqa")
-Button/styles/pressed = SubResource("StyleBoxTexture_1xnqa")
+[sub_resource type="StyleBoxFlat" id="Style_info_badge"]
+bg_color = Color(0.12, 0.63, 0.64, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 5
+border_color = Color(0.04, 0.38, 0.4, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="Style_unlock"]
+bg_color = Color(1, 0.968, 0.86, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.79, 0.61, 0.36, 0.34)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_color = Color(0.31, 0.18, 0.06, 0.11)
+shadow_size = 9
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_pill"]
+bg_color = Color(0.96, 0.88, 0.67, 0.72)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 3
+border_color = Color(0.77, 0.57, 0.28, 0.38)
+corner_radius_top_left = 27
+corner_radius_top_right = 27
+corner_radius_bottom_right = 27
+corner_radius_bottom_left = 27
+
+[sub_resource type="StyleBoxFlat" id="Style_continue"]
+bg_color = Color(1, 0.53, 0.08, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.74, 0.3, 0.025, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.39, 0.18, 0.025, 0.3)
+shadow_size = 14
+shadow_offset = Vector2(0, 11)
+
+[sub_resource type="StyleBoxFlat" id="Style_continue_pressed"]
+bg_color = Color(0.9, 0.4, 0.045, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.64, 0.23, 0.015, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
 
 [node name="MenuGameOver" type="ColorRect"]
-offset_right = 1024.0
-offset_bottom = 1920.0
-color = Color(1, 1, 1, 0.803922)
-script = ExtResource("1_4ja6d")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.12, 0.085, 0.045, 0.72)
+script = ExtResource("1_script")
 
-[node name="GameOver" type="Label" parent="."]
+[node name="MainCard" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 25.0
+offset_right = -30.0
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_main")
+
+[node name="ConfettiLeft" type="Label" parent="MainCard"]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 45.0
+offset_right = 268.0
+offset_bottom = 137.0
+theme_override_colors/font_color = Color(0.77, 0.52, 0.23, 0.55)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 43
+text = "◆  ·  ◆"
+horizontal_alignment = 1
+
+[node name="ConfettiRight" type="Label" parent="MainCard"]
+layout_mode = 0
+offset_left = 878.0
+offset_top = 45.0
+offset_right = 1104.0
+offset_bottom = 137.0
+theme_override_colors/font_color = Color(0.08, 0.49, 0.51, 0.55)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 43
+text = "◆  ·  ◆"
+horizontal_alignment = 1
+
+[node name="BannerLeft" type="Panel" parent="MainCard"]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 105.0
+offset_right = 282.0
+offset_bottom = 254.0
+rotation = -0.18
+theme_override_styles/panel = SubResource("Style_banner_tail")
+
+[node name="BannerRight" type="Panel" parent="MainCard"]
+layout_mode = 0
+offset_left = 864.0
+offset_top = 105.0
+offset_right = 1041.0
+offset_bottom = 254.0
+rotation = 0.18
+theme_override_styles/panel = SubResource("Style_banner_tail")
+
+[node name="Banner" type="Panel" parent="MainCard"]
+layout_mode = 0
+offset_left = 183.0
+offset_top = 70.0
+offset_right = 963.0
+offset_bottom = 245.0
+theme_override_styles/panel = SubResource("Style_banner")
+
+[node name="Title" type="Label" parent="MainCard/Banner"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(422, 564)
-theme_override_styles/normal = SubResource("StyleBoxFlat_t8ghf")
-
-[node name="CapturaDePantalla2025-09-06221159" type="Sprite2D" parent="GameOver"]
-position = Vector2(512, 112)
-scale = Vector2(0.75572, 0.667715)
-texture = ExtResource("2_67j2n")
-
-[node name="RichTextLabel1" type="RichTextLabel" parent="GameOver"]
-layout_mode = 1
-offset_left = 40.0
-offset_top = 57.0
-offset_right = 936.0
-offset_bottom = 265.0
-theme = ExtResource("2_4rb3m")
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_fonts/normal_font = SubResource("FontVariation_0cr37")
-theme_override_font_sizes/normal_font_size = 60
-text = "You've solved the sentence"
-scroll_active = false
+theme_override_colors/font_color = Color(1, 1, 0.93, 1)
+theme_override_colors/font_shadow_color = Color(0.015, 0.22, 0.24, 0.62)
+theme_override_constants/shadow_offset_y = 6
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 71
+text = "¡FELICIDADES!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="GameOver"]
-layout_mode = 1
-offset_left = 32.0
-offset_top = -15.0
-offset_right = 928.0
-offset_bottom = 193.0
-theme = ExtResource("2_4rb3m")
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_fonts/normal_font = SubResource("FontVariation_0cr37")
-theme_override_font_sizes/normal_font_size = 60
-text = "CONGRATULATIONS!!!!"
-scroll_active = false
+[node name="Solved" type="Label" parent="MainCard"]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 255.0
+offset_right = 1006.0
+offset_bottom = 337.0
+theme_override_colors/font_color = Color(0.29, 0.2, 0.13, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+text = "Has resuelto la frase"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonFx" type="Button" parent="GameOver"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0234375
-anchor_top = -0.216667
-anchor_right = 0.015625
-anchor_bottom = 0.425
+[node name="PhraseCard" type="Panel" parent="MainCard"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 344.0
+offset_right = 1071.0
+offset_bottom = 765.0
+theme_override_styles/panel = SubResource("Style_phrase")
+
+[node name="QuoteOpen" type="Label" parent="MainCard/PhraseCard"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 12.0
+offset_right = 133.0
+offset_bottom = 132.0
+theme_override_colors/font_color = Color(0.94, 0.43, 0.06, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 98
+text = "“"
+horizontal_alignment = 1
+
+[node name="QuoteClose" type="Label" parent="MainCard/PhraseCard"]
+layout_mode = 0
+offset_left = 855.0
+offset_top = 277.0
+offset_right = 965.0
+offset_bottom = 397.0
+theme_override_colors/font_color = Color(0.94, 0.43, 0.06, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 98
+text = "”"
+horizontal_alignment = 1
+
+[node name="Phrase" type="RichTextLabel" parent="MainCard/PhraseCard"]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 66.0
+offset_right = 891.0
+offset_bottom = 326.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.22, 0.16, 0.12, 1)
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 39
+bbcode_enabled = true
+text = "[center]La frase resuelta aparecerá aquí[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="Category" type="Label" parent="MainCard/PhraseCard"]
+layout_mode = 0
+offset_left = 220.0
+offset_top = 327.0
+offset_right = 776.0
+offset_bottom = 398.0
+theme_override_colors/font_color = Color(0.84, 0.38, 0.07, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 31
+text = "— Categoría —"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StarsCard" type="Panel" parent="MainCard"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 795.0
+offset_right = 1071.0
+offset_bottom = 1504.0
+theme_override_styles/panel = SubResource("Style_stars")
+
+[node name="Title" type="Label" parent="MainCard/StarsCard"]
+layout_mode = 0
 offset_left = 80.0
-offset_top = 640.0
-offset_right = 944.0
-offset_bottom = 904.0
-theme = SubResource("Theme_i3j8r")
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
+offset_top = 23.0
+offset_right = 916.0
+offset_bottom = 83.0
+theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+text = "ESTRELLAS DEL PUZLE"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="BlancoRefranesPopulares" type="TextureRect" parent="GameOver/ButtonFx"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 728.0
-offset_top = 880.0
-offset_right = 104.0
-offset_bottom = 525.325
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("4_4rb3m")
+[node name="Stars" type="HBoxContainer" parent="MainCard/StarsCard"]
+layout_mode = 0
+offset_left = 178.0
+offset_top = 94.0
+offset_right = 818.0
+offset_bottom = 224.0
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="MainCard/StarsCard/Stars"]
+custom_minimum_size = Vector2(105, 105)
+layout_mode = 2
+texture = ExtResource("3_star")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="GameOver"]
+[node name="Star2" type="TextureRect" parent="MainCard/StarsCard/Stars"]
+custom_minimum_size = Vector2(105, 105)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="MainCard/StarsCard/Stars"]
+custom_minimum_size = Vector2(105, 105)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="MainCard/StarsCard/Stars"]
+custom_minimum_size = Vector2(105, 105)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star5" type="TextureRect" parent="MainCard/StarsCard/Stars"]
+custom_minimum_size = Vector2(105, 105)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StarsPill" type="Panel" parent="MainCard/StarsCard"]
 layout_mode = 0
-offset_left = 96.0
-offset_top = 880.0
-offset_right = 928.0
-offset_bottom = 1688.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_p42y5")
+offset_left = 278.0
+offset_top = 231.0
+offset_right = 718.0
+offset_bottom = 298.0
+theme_override_styles/panel = SubResource("Style_pill")
 
-[node name="Info" type="Sprite2D" parent="GameOver/Label"]
-modulate = Color(0.0117647, 0.266667, 0.0980392, 1)
-position = Vector2(412.875, 67.8749)
-scale = Vector2(0.111004, 0.111004)
-texture = ExtResource("6_f7b2p")
-
-[node name="RichTextFraseInfoExtra" type="RichTextLabel" parent="GameOver/Label"]
+[node name="StarsText" type="Label" parent="MainCard/StarsCard/StarsPill"]
 layout_mode = 1
-offset_left = 32.0
-offset_top = 127.999
-offset_right = 800.0
-offset_bottom = 791.999
-theme_override_colors/default_color = Color(0.0117647, 0.266667, 0.0980392, 1)
-theme_override_font_sizes/normal_font_size = 40
-text = "Cristóbal Colón llegó a tierras americanas, desembarcando en una isla del Caribe a la que llamó San Salvador. 
-Este hecho marcó el encuentro entre Europa y América, iniciando la exploración y conquista del Nuevo Mundo. Se considera el comienzo de la Edad Moderna en la historia universal."
-horizontal_alignment = 1
-
-[node name="RichTextFraseOriginal" type="RichTextLabel" parent="GameOver/Label"]
-layout_mode = 1
-offset_left = 32.0
-offset_top = -616.0
-offset_right = 808.0
-offset_bottom = -32.0
-theme_override_font_sizes/normal_font_size = 50
-bbcode_enabled = true
-text = "[img=120x100]res://images/comillas_abre.png[/img]  El 12 de octubre de       1492 Colón llegó a América, iniciando el encuentro histórico entre Europa y el Nuevo Mundo    [img=120x100]res://images/comillas_cierra.png[/img]
-"
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 29
+text = "Resultado: 5 de 5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonBack" type="Button" parent="."]
-layout_mode = 1
-offset_left = 312.0
-offset_top = 1704.0
-offset_right = 760.0
-offset_bottom = 1944.07
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = SubResource("Theme_f7b2p")
-theme_override_font_sizes/font_size = 80
-text = "OK"
+[node name="InfoCard" type="Panel" parent="MainCard/StarsCard"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 329.0
+offset_right = 956.0
+offset_bottom = 669.0
+theme_override_styles/panel = SubResource("Style_info")
 
-[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]
+[node name="InfoBadge" type="Panel" parent="MainCard/StarsCard/InfoCard"]
+layout_mode = 0
+offset_left = 421.0
+offset_top = -30.0
+offset_right = 495.0
+offset_bottom = 48.0
+theme_override_styles/panel = SubResource("Style_info_badge")
+
+[node name="Text" type="Label" parent="MainCard/StarsCard/InfoCard/InfoBadge"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 43
+text = "i"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="MainCard/StarsCard/InfoCard"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 53.0
+offset_right = 871.0
+offset_bottom = 306.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.22, 0.17, 0.12, 1)
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 29
+text = "Información adicional sobre la frase."
+fit_content = true
+scroll_active = false
+
+[node name="UnlockCard" type="Panel" parent="MainCard"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 1534.0
+offset_right = 1071.0
+offset_bottom = 2179.0
+theme_override_styles/panel = SubResource("Style_unlock")
+
+[node name="LineLeft" type="HSeparator" parent="MainCard/UnlockCard"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 72.0
+offset_right = 345.0
+offset_bottom = 78.0
+theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.52)
+
+[node name="Title" type="Label" parent="MainCard/UnlockCard"]
+layout_mode = 0
+offset_left = 343.0
+offset_top = 31.0
+offset_right = 653.0
+offset_bottom = 112.0
+theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 35
+text = "HAS DESBLOQUEADO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LineRight" type="HSeparator" parent="MainCard/UnlockCard"]
+layout_mode = 0
+offset_left = 651.0
+offset_top = 72.0
+offset_right = 940.0
+offset_bottom = 78.0
+theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.52)
+
+[node name="Divider1" type="VSeparator" parent="MainCard/UnlockCard"]
+layout_mode = 0
+offset_left = 330.0
+offset_top = 145.0
+offset_right = 336.0
+offset_bottom = 570.0
+theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.33)
+
+[node name="Divider2" type="VSeparator" parent="MainCard/UnlockCard"]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 145.0
+offset_right = 666.0
+offset_bottom = 570.0
+theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.33)
+
+[node name="RewardXP" type="Control" parent="MainCard/UnlockCard"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 133.0
+offset_right = 326.0
+offset_bottom = 590.0
+
+[node name="Icon" type="Label" parent="MainCard/UnlockCard/RewardXP"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 25.0
+offset_right = 271.0
+offset_bottom = 249.0
+theme_override_colors/font_color = Color(1, 0.64, 0.04, 1)
+theme_override_colors/font_outline_color = Color(0.72, 0.34, 0.02, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 152
+text = "★"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="MainCard/UnlockCard/RewardXP"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 261.0
+offset_right = 291.0
+offset_bottom = 332.0
+theme_override_colors/font_color = Color(0.91, 0.39, 0.06, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+text = "+20 XP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MainCard/UnlockCard/RewardXP"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 335.0
+offset_right = 291.0
+offset_bottom = 418.0
+theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 0.85)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 25
+text = "Experiencia"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RewardMap" type="Control" parent="MainCard/UnlockCard"]
+layout_mode = 0
+offset_left = 340.0
+offset_top = 133.0
+offset_right = 656.0
+offset_bottom = 590.0
+
+[node name="Icon" type="Label" parent="MainCard/UnlockCard/RewardMap"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 29.0
+offset_right = 276.0
+offset_bottom = 249.0
+theme_override_colors/font_color = Color(0.28, 0.7, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.12, 0.45, 0.36, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 138
+text = "◇"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="MainCard/UnlockCard/RewardMap"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 267.0
+offset_right = 301.0
+offset_bottom = 382.0
+theme_override_colors/font_color = Color(0.26, 0.2, 0.15, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 29
+text = "Progreso
+del mapa"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MainCard/UnlockCard/RewardMap"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 383.0
+offset_right = 301.0
+offset_bottom = 431.0
+theme_override_colors/font_color = Color(0.12, 0.53, 0.42, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 23
+text = "Completado"
+horizontal_alignment = 1
+
+[node name="RewardSound" type="Control" parent="MainCard/UnlockCard"]
+layout_mode = 0
+offset_left = 670.0
+offset_top = 133.0
+offset_right = 976.0
+offset_bottom = 590.0
+
+[node name="Icon" type="Label" parent="MainCard/UnlockCard/RewardSound"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 32.0
+offset_right = 271.0
+offset_bottom = 249.0
+theme_override_colors/font_color = Color(0.57, 0.36, 0.2, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 136
+text = "♫"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="MainCard/UnlockCard/RewardSound"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 267.0
+offset_right = 297.0
+offset_bottom = 382.0
+theme_override_colors/font_color = Color(0.26, 0.2, 0.15, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "Nuevo sonido
+descubierto"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MainCard/UnlockCard/RewardSound"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 383.0
+offset_right = 291.0
+offset_bottom = 431.0
+theme_override_colors/font_color = Color(0.71, 0.39, 0.15, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 23
+text = "Colección"
+horizontal_alignment = 1
+
+[node name="ButtonBack" type="Button" parent="MainCard"]
+layout_mode = 0
+offset_left = 238.0
+offset_top = 2223.0
+offset_right = 908.0
+offset_bottom = 2482.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_colors/font_shadow_color = Color(0.42, 0.17, 0.01, 0.52)
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 66
+theme_override_styles/normal = SubResource("Style_continue")
+theme_override_styles/hover = SubResource("Style_continue")
+theme_override_styles/pressed = SubResource("Style_continue_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "CONTINUAR"
+
+[connection signal="pressed" from="MainCard/ButtonBack" to="." method="_on_button_back_pressed"]

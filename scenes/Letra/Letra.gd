@@ -35,9 +35,11 @@ class_name Letra
 
 #@onready var tween := get_tree().create_tween()
 
-@onready var color_normal: Color = Color(1.0, 0.792, 0.51)
-@onready var color_selected: Color = Color(0.8, 0.621, 0.416)
-@onready var color_selected_por_inicio: Color = Color(0.57, 0.449, 0.291)
+@onready var color_normal: Color = Color(0.985, 0.91, 0.73)
+@onready var color_selected: Color = Color(0.91, 0.72, 0.42)
+@onready var color_selected_por_inicio: Color = Color(0.69, 0.65, 0.56)
+@onready var color_correct: Color = Color(0.66, 0.84, 0.5)
+@onready var color_error: Color = Color(0.96, 0.48, 0.42)
 
 func _ready():
 	SignalManager.erase_selected_letter.connect(_erase_letter)
@@ -45,18 +47,7 @@ func _ready():
 	_inicializar_letra()
 	_inicializar_numero()
 	letra_selected.visible = false
-		## Crear un StyleBoxFlat para el estado "normal"
-	#var style_normal := StyleBoxFlat.new()
-	#style_normal.bg_color = color_normal 
-	#
-	#button.add_theme_stylebox_override("normal", style_normal)
-	
-		# Crear un nuevo StyleBoxFlat
-	var style := StyleBoxFlat.new()
-	style.bg_color = color_normal
-
-	# Asignar como fondo normal
-	panel_letra.add_theme_stylebox_override("panel", style)
+	_apply_panel_color(color_normal)
 	
 func _inicializar_letra() -> void:
 	label_letra.text = letra
@@ -135,31 +126,26 @@ func _on_button_pressed() -> void:
 		# not in buy screen
 			print("Tocada LETRA con letra:", letra)
 			GameManager.set_selected_letter_user(letra)
-			#  check if letter is correct
-			if GameManager.letra_corresponde_a_numero(letra,GameManager.celda_seleccionada_numero):
-			#yes
-				SoundManager.play("ClickLetra")
-				# Crear un nuevo StyleBoxFlat
-				var style_selected := StyleBoxFlat.new()
-				style_selected.bg_color = color_selected
-				# Asignar como fondo normal
-				panel_letra.add_theme_stylebox_override("panel", style_selected)
-				
-				letra_mostrada = true
-				SignalManager.insert_letter_in_number.emit(letra,GameManager.celda_seleccionada_numero)
-				print("Seleccionada Celda:",  GameManager.selected_celda_number)
-
-				GameManager.reset_cell_select()
-				SignalManager.update_resting_characters.emit()
-				if GameManager.hay_letra_que_borrar():
-					SignalManager.update_rubber.emit()
-				SignalManager.asignar_letra.emit(GameManager.tiempo_partida, GameManager.selected_letra)
-				SignalManager.update_difficulty.emit(GameManager.frase_original, GameManager.recoger_letras_mostradas()) 
-			else:
-			# No correcta
-				SignalManager.decrease_live.emit()
-				SoundManager.play("LoseLive")
-				GameManager.show_letter_error(GameManager.celda_seleccionada_numero)
+			SoundManager.play("ClickLetra")
+			_apply_panel_color(color_selected)
+			letra_mostrada = true
+			SignalManager.insert_letter_in_number.emit(
+				letra,
+				GameManager.celda_seleccionada_numero
+			)
+			print("Seleccionada Celda:", GameManager.selected_celda_number)
+			GameManager.reset_cell_select()
+			SignalManager.update_resting_characters.emit()
+			if GameManager.hay_letra_que_borrar():
+				SignalManager.update_rubber.emit()
+			SignalManager.asignar_letra.emit(
+				GameManager.tiempo_partida,
+				GameManager.selected_letra
+			)
+			SignalManager.update_difficulty.emit(
+				GameManager.frase_original,
+				GameManager.recoger_letras_mostradas()
+			)
 	
 func _erase_letter() -> void:
 	#ERASE selection and enable letter again
@@ -172,11 +158,7 @@ func _erase_letter() -> void:
 	_inicializar_letra()
 	SignalManager.update_difficulty.emit(GameManager.frase_original, GameManager.recoger_letras_mostradas()) 
 	# change color of the CELL
-	var style_normal := StyleBoxFlat.new()
-	style_normal.bg_color = color_normal
-	# Asignar como fondo normal
-	
-	panel_letra.add_theme_stylebox_override("panel", style_normal)
+	_apply_panel_color(color_normal)
 	
 	SoundManager.play("LoseLive")
 	
@@ -184,10 +166,7 @@ func _erase_letter() -> void:
 			
 			
 func cambia_color(color_a_cambiar: int) -> void:
-	var style = StyleBoxFlat.new()
-	style.bg_color = GameManager.lista_tonos_colores[color_a_cambiar]
-	#style.bg_color = Color(0.795, 0.295, 0.482)
-	panel_letra.add_theme_stylebox_override("panel", style)
+	_apply_panel_color(GameManager.lista_tonos_colores[color_a_cambiar])
 	
 func deselect_all_letters() -> void:
 	for letra in get_tree().get_nodes_in_group("Letra"):
@@ -196,8 +175,33 @@ func deselect_all_letters() -> void:
 func muestra_letra() -> void:
 	letra_mostrada = true
 	letra_selected.visible = false
-	#cambia el color de fondo
-	var style = StyleBoxFlat.new()
-	style.bg_color = color_selected_por_inicio
-	#style.bg_color = Color(0.795, 0.295, 0.482)
+	_apply_panel_color(color_selected_por_inicio)
+
+
+func mark_as_correct() -> void:
+	letra_mostrada = true
+	letra_selected.visible = false
+	_apply_panel_color(color_correct)
+
+
+func mark_as_wrong_deselected() -> void:
+	letra_mostrada = false
+	letra_selected.visible = false
+	_apply_panel_color(color_error)
+
+
+func mark_as_unassigned() -> void:
+	letra_mostrada = false
+	letra_selected.visible = false
+	_apply_panel_color(color_normal)
+
+
+func _apply_panel_color(color: Color) -> void:
+	var current := panel_letra.get_theme_stylebox("panel")
+	var style: StyleBoxFlat
+	if current is StyleBoxFlat:
+		style = current.duplicate() as StyleBoxFlat
+	else:
+		style = StyleBoxFlat.new()
+	style.bg_color = color
 	panel_letra.add_theme_stylebox_override("panel", style)

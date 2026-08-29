@@ -1,78 +1,364 @@
-[gd_scene load_steps=7 format=3 uid="uid://du2hnjcxrr54b"]
+[gd_scene load_steps=21 format=3 uid="uid://du2hnjcxrr54b"]
 
-[ext_resource type="Script" uid="uid://dgn8v4ma2syyf" path="res://scenes/menu_select_level_by_id.gd" id="1_w3ub2"]
-[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_sum86"]
-[ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="3_6ejtj"]
+[ext_resource type="Script" uid="uid://dgn8v4ma2syyf" path="res://scenes/menu_select_level_by_id.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/fondo.tscn" id="2_bg"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
+[ext_resource type="Script" path="res://scenes/editable_back_arrow.gd" id="4_back"]
+[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_dice_white.png" id="5_dice"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jxwg"]
-bg_color = Color(0.889317, 0.843552, 0.693583, 1)
+[sub_resource type="StyleBoxFlat" id="Style_background"]
+bg_color = Color(0.969, 0.888, 0.655, 1)
 
-[sub_resource type="Gradient" id="Gradient_h4fpn"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0.854902, 0.592157, 0.141176, 1)
+[sub_resource type="StyleBoxFlat" id="Style_back"]
+bg_color = Color(0.973, 0.82, 0.482, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 7
+border_color = Color(0.729, 0.475, 0.188, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.36, 0.22, 0.08, 0.25)
+shadow_size = 12
+shadow_offset = Vector2(0, 12)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_c607x"]
-gradient = SubResource("Gradient_h4fpn")
+[sub_resource type="StyleBoxFlat" id="Style_back_pressed"]
+bg_color = Color(0.93, 0.718, 0.337, 1)
+border_width_left = 4
+border_width_top = 6
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.69, 0.42, 0.14, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_card"]
+bg_color = Color(1, 0.947, 0.79, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 6
+border_color = Color(0.827, 0.651, 0.337, 0.58)
+corner_radius_top_left = 52
+corner_radius_top_right = 52
+corner_radius_bottom_right = 52
+corner_radius_bottom_left = 52
+shadow_color = Color(0.43, 0.28, 0.1, 0.16)
+shadow_size = 14
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_bg"]
+bg_color = Color(0.89, 0.753, 0.478, 0.52)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_fill"]
+bg_color = Color(0.071, 0.625, 0.635, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="Style_scroll"]
+bg_color = Color(1, 0.956, 0.825, 0.2)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.62, 0.32, 0.18)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+
+[sub_resource type="StyleBoxFlat" id="Style_random"]
+bg_color = Color(0.996, 0.941, 0.776, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 8
+border_color = Color(0.878, 0.443, 0.102, 1)
+corner_radius_top_left = 42
+corner_radius_top_right = 42
+corner_radius_bottom_right = 42
+corner_radius_bottom_left = 42
+shadow_color = Color(0.41, 0.22, 0.05, 0.24)
+shadow_size = 14
+shadow_offset = Vector2(0, 12)
+
+[sub_resource type="StyleBoxFlat" id="Style_random_hover"]
+bg_color = Color(1, 0.968, 0.84, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 9
+border_color = Color(0.941, 0.53, 0.123, 1)
+corner_radius_top_left = 42
+corner_radius_top_right = 42
+corner_radius_bottom_right = 42
+corner_radius_bottom_left = 42
+shadow_color = Color(0.41, 0.22, 0.05, 0.27)
+shadow_size = 16
+shadow_offset = Vector2(0, 13)
+
+[sub_resource type="StyleBoxFlat" id="Style_random_pressed"]
+bg_color = Color(0.956, 0.837, 0.615, 1)
+border_width_left = 5
+border_width_top = 8
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.78, 0.36, 0.075, 1)
+corner_radius_top_left = 42
+corner_radius_top_right = 42
+corner_radius_bottom_right = 42
+corner_radius_bottom_left = 42
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[sub_resource type="StyleBoxFlat" id="Style_line"]
+bg_color = Color(0.66, 0.49, 0.26, 0.55)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="MenuSelectLevel" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-script = ExtResource("1_w3ub2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 1024.0
-offset_bottom = 1920.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_1jxwg")
-
-[node name="TextureRect2" type="TextureRect" parent="Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.493164
-anchor_top = -0.479167
-anchor_right = -0.493164
-anchor_bottom = -0.4625
-offset_left = 505.0
-offset_top = 920.0
-offset_right = 1530.0
-offset_bottom = 1056.0
-texture = SubResource("GradientTexture1D_c607x")
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreText" type="Label" parent="Panel/TextureRect2"]
+[node name="Background" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.898039, 0.854902, 0.713726, 1)
-theme_override_fonts/font = ExtResource("2_sum86")
-theme_override_font_sizes/font_size = 120
-text = "SELECT"
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_background")
+
+[node name="Pattern" parent="Background" instance=ExtResource("2_bg")]
+modulate = Color(1, 1, 1, 0.32)
+
+[node name="Header" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 452.0
+grow_horizontal = 2
+
+[node name="ButtonBack" type="Button" parent="Header"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 62.0
+offset_right = 208.0
+offset_bottom = 212.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_back")
+theme_override_styles/hover = SubResource("Style_back")
+theme_override_styles/pressed = SubResource("Style_back_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Arrow" type="Control" parent="Header/ButtonBack"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 26.0
+offset_top = 26.0
+offset_right = -26.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_back")
+line_color = Color(0.29, 0.22, 0.14, 1)
+stroke_width = 11.0
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 0
+offset_left = 248.0
+offset_top = 48.0
+offset_right = 1138.0
+offset_bottom = 187.0
+theme_override_colors/font_color = Color(0.267, 0.184, 0.102, 1)
+theme_override_colors/font_shadow_color = Color(1, 0.923, 0.709, 0.72)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 102
+text = "Colección"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SubtitleRow" type="HBoxContainer" parent="Header"]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 180.0
+offset_right = 1110.0
+offset_bottom = 260.0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="DotLeft" type="Label" parent="Header/SubtitleRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.51, 0.29, 0.62)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 38
+text = "•"
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Header/SubtitleRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.53, 0.38, 0.23, 0.78)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 46
+text = "Curiosidades · Rápido"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LineRight" type="Panel" parent="Header/SubtitleRow"]
+custom_minimum_size = Vector2(120, 7)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("Style_line")
+
+[node name="ProgressCard" type="Panel" parent="Header"]
+layout_mode = 0
+offset_left = 258.0
+offset_top = 273.0
+offset_right = 948.0
+offset_bottom = 433.0
+theme_override_styles/panel = SubResource("Style_progress_card")
+
+[node name="ProgressLabel" type="Label" parent="Header/ProgressCard"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 15.0
+offset_right = 646.0
+offset_bottom = 83.0
+theme_override_colors/font_color = Color(0.28, 0.2, 0.13, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 40
+text = "0 de 0 descubiertas"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="Header/ProgressCard"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 91.0
+offset_right = 646.0
+offset_bottom = 126.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Style_progress_bg")
+theme_override_styles/fill = SubResource("Style_progress_fill")
+show_percentage = false
+
+[node name="ContentFrame" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 38.0
+offset_top = 462.0
+offset_right = 1168.0
+offset_bottom = 2272.0
+theme_override_styles/panel = SubResource("Style_scroll")
+
+[node name="Scroll" type="ScrollContainer" parent="ContentFrame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 20.0
+offset_right = -18.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="GridWrapper" type="MarginContainer" parent="ContentFrame/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 16
+
+[node name="Grid" type="GridContainer" parent="ContentFrame/Scroll/GridWrapper"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 22
+theme_override_constants/v_separation = 20
+columns = 3
+
+[node name="EmptyState" type="Label" parent="ContentFrame"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.45, 0.31, 0.18, 0.76)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 48
+text = "No hay niveles disponibles"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="ButtonRandom" type="Button" parent="."]
+layout_mode = 0
+offset_left = 310.0
+offset_top = 2322.0
+offset_right = 896.0
+offset_bottom = 2507.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_random")
+theme_override_styles/hover = SubResource("Style_random_hover")
+theme_override_styles/pressed = SubResource("Style_random_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Row" type="HBoxContainer" parent="ButtonRandom"]
 layout_mode = 1
-offset_left = 280.0
-offset_top = 1696.0
-offset_right = 793.988
-offset_bottom = 1958.07
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("3_6ejtj")
-theme_override_font_sizes/font_size = 80
-text = "RANDOM"
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 72.0
+offset_top = 30.0
+offset_right = -72.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 24
+alignment = 1
 
-[node name="MenuShop" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(512, 928)
+[node name="Dice" type="TextureRect" parent="ButtonRandom/Row"]
+custom_minimum_size = Vector2(86, 86)
+layout_mode = 2
+self_modulate = Color(0.86, 0.38, 0.07, 1)
+texture = ExtResource("5_dice")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="MenuShop2" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(505, 920)
+[node name="Text" type="Label" parent="ButtonRandom/Row"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.69, 0.31, 0.075, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 51
+text = "Elegir al azar"
+vertical_alignment = 1
 
+[connection signal="pressed" from="Header/ButtonBack" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="ButtonRandom" to="." method="_on_button_random_pressed"]

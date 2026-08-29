@@ -20,6 +20,7 @@ signal game_finished
 signal game_finished_to_results
 
 signal update_stars(diff:int)
+signal update_puzzle_stars(stars:int)
 
 signal fit_text
 

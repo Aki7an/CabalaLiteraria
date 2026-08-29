@@ -299,7 +299,6 @@ func _insert_letter_in_number(letter2: String, number: int) -> void:
 	#print("numero seleccionado a comprobar: " + str(number))
 	for celda: Celda in get_tree().get_nodes_in_group("Celda"):
 		if celda.numero == number:
-			celda.set_letter(letter2)
 			celda.set_letter_user(letter2)
 			#print(" letter2: " + letter2)
 			#print(" number: " + str(number))

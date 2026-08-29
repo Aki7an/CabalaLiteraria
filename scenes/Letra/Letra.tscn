@@ -3,18 +3,34 @@
 [ext_resource type="Script" uid="uid://1gggswfp2io1" path="res://scenes/Letra/Letra.gd" id="1_jcy3o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jcy3o"]
-bg_color = Color(0.92, 0.9131, 0.9108, 1)
+bg_color = Color(0.985, 0.91, 0.73, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 6
+border_color = Color(0.72, 0.54, 0.29, 0.52)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0.35, 0.22, 0.08, 0.16)
+shadow_size = 5
+shadow_offset = Vector2(0, 5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ewu8p"]
 bg_color = Color(0.270588, 0.270588, 0.270588, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lda0"]
-bg_color = Color(0.768627, 0.768627, 0, 0.4)
-border_width_left = 10
-border_width_top = 10
-border_width_right = 10
-border_width_bottom = 10
-border_color = Color(0.769222, 0.769996, 0.302051, 1)
+bg_color = Color(1, 0.74, 0.19, 0.2)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.94, 0.55, 0.06, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_of430"]
 bg_color = Color(0.769222, 0.769996, 0.302051, 1)
@@ -53,7 +69,7 @@ offset_top = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 52
 text = "A"
 horizontal_alignment = 1
 vertical_alignment = 1

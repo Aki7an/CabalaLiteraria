@@ -1,353 +1,496 @@
-# res://ui/ImageGrid.gd
 extends Control
 
-const PATH_TUTORIAL := "res://scenes/MenuTutorial.tscn"
-const PATH_APP := "res://scenes/App.tscn"
-var scene_to_tutorial: PackedScene
-var scene_to_load_App: PackedScene
-@onready var texture_rect_2 = $Panel/TextureRect2
+const PATH_CATEGORY := "res://scenes/MenuSelectCategory.tscn"
+const MODE_QUICK := "quick"
+const MODE_CRYPTOGRAM := "cryptogram"
+const STAR_TEXTURE: Texture2D = preload("res://images/estrella_plano.png")
+const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 
 @export_dir var IMAGES_DIR: String = "res://data/images/"
-@export var COLUMNS: int = 3
 @export var FILE_EXTS: PackedStringArray = [".png", ".jpg", ".jpeg", ".webp"]
-@export var H_SEP: int = 8
-@export var V_SEP: int = 8
 @export_file("*.json") var JSON_PATH: String = "res://data/frases.json"
-
 @export var LOAD_BATCH_SIZE: int = 12
 @export var PLACEHOLDER_TEX: Texture2D
 
-var _grid: GridContainer = null
+@onready var _grid: GridContainer = $ContentFrame/Scroll/GridWrapper/Grid
+@onready var _scroll: ScrollContainer = $ContentFrame/Scroll
+@onready var _empty_state: Label = $ContentFrame/EmptyState
+@onready var _title_label: Label = $Header/Title
+@onready var _subtitle_label: Label = $Header/SubtitleRow/Subtitle
+@onready var _progress_label: Label = $Header/ProgressCard/ProgressLabel
+@onready var _progress_bar: ProgressBar = $Header/ProgressCard/ProgressBar
+@onready var _random_text: Label = $ButtonRandom/Row/Text
+@onready var _random_button: Button = $ButtonRandom
+
 var _pending_textures: Array[Button] = []
-var _image_path_cache: Dictionary = {}   # {int: String}
+var _image_path_cache: Dictionary = {}
+var _visible_items: Array[Dictionary] = []
+var _completed_ids: Dictionary = {}
+
+var _scene_to_category: PackedScene
+
+const LOCALIZED_COPY := {
+	"es": {
+		"title": "Colección",
+		"quick": "Rápido",
+		"cryptogram": "Criptograma",
+		"progress": "%d de %d descubiertos",
+		"random": "Elegir al azar",
+		"empty": "No hay niveles disponibles",
+		"level": "Nivel"
+	},
+	"en": {
+		"title": "Collection",
+		"quick": "Quick",
+		"cryptogram": "Cryptogram",
+		"progress": "%d of %d discovered",
+		"random": "Choose at random",
+		"empty": "No levels available",
+		"level": "Level"
+	},
+	"eu": {
+		"title": "Bilduma",
+		"quick": "Azkarra",
+		"cryptogram": "Kriptograma",
+		"progress": "%d / %d aurkituta",
+		"random": "Ausaz aukeratu",
+		"empty": "Ez dago mailarik",
+		"level": "Maila"
+	},
+	"fr": {
+		"title": "Collection",
+		"quick": "Rapide",
+		"cryptogram": "Cryptogramme",
+		"progress": "%d sur %d découverts",
+		"random": "Choisir au hasard",
+		"empty": "Aucun niveau disponible",
+		"level": "Niveau"
+	},
+	"de": {
+		"title": "Sammlung",
+		"quick": "Schnell",
+		"cryptogram": "Kryptogramm",
+		"progress": "%d von %d entdeckt",
+		"random": "Zufällig wählen",
+		"empty": "Keine Level verfügbar",
+		"level": "Level"
+	},
+	"it": {
+		"title": "Collezione",
+		"quick": "Rapida",
+		"cryptogram": "Crittogramma",
+		"progress": "%d di %d scoperti",
+		"random": "Scegli a caso",
+		"empty": "Nessun livello disponibile",
+		"level": "Livello"
+	},
+	"pt": {
+		"title": "Coleção",
+		"quick": "Rápido",
+		"cryptogram": "Criptograma",
+		"progress": "%d de %d descobertos",
+		"random": "Escolher ao acaso",
+		"empty": "Nenhum nível disponível",
+		"level": "Nível"
+	}
+}
+
 
 func _ready() -> void:
-	texture_rect_2.z_as_relative = false
-	texture_rect_2.z_index = 1000      # o el valor alto que prefieras
 	set_anchors_preset(Control.PRESET_FULL_RECT)
-	offset_left = 0; offset_top = 0; offset_right = 0; offset_bottom = 0
-
-	var scroll: ScrollContainer = ScrollContainer.new()
-	scroll.name = "Scroll"
-	scroll.set_anchors_preset(Control.PRESET_FULL_RECT)
-	scroll.offset_bottom = -300
-	add_child(scroll)
-
-	_grid = GridContainer.new()
-	_grid.name = "Grid"
-	_grid.columns = max(1, COLUMNS)
-	_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_grid.add_theme_constant_override("h_separation", H_SEP)
-	_grid.add_theme_constant_override("v_separation", V_SEP)
-
-	var wrapper: MarginContainer = MarginContainer.new()
-	wrapper.name = "GridWrapper"
-	wrapper.add_theme_constant_override("margin_top", 200)
-	wrapper.add_theme_constant_override("margin_bottom", 300)
-	wrapper.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	wrapper.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.add_child(wrapper)
-	wrapper.add_child(_grid)
-
-	resized.connect(_update_cell_sizes)
-	_grid.resized.connect(_update_cell_sizes)
-
-	# Espera 1 frame para que GameManager termine su _ready() y cargue frases_db
+	_random_button.disabled = true
+	_load_completed_ids()
+	_update_localized_copy()
 	await get_tree().process_frame
 
-	if not _populate_from_gamemanager():
-		if JSON_PATH != "":
-			_load_and_populate_from_path(JSON_PATH)
-
+	if not _populate_from_gamemanager() and JSON_PATH != "":
+		_load_and_populate_from_path(JSON_PATH)
 	set_process(true)
 
-func _process(_dt: float) -> void:
-	var pending_size: int = _pending_textures.size()
-	var n: int = min(LOAD_BATCH_SIZE, pending_size)
-	for i in range(n):
-		var btn: Button = _pending_textures.pop_front()
-		_assign_real_texture(btn)
 
-# === API ===
+func _process(_delta: float) -> void:
+	var amount: int = min(LOAD_BATCH_SIZE, _pending_textures.size())
+	for _i in range(amount):
+		var button: Button = _pending_textures.pop_front()
+		_assign_real_texture(button)
+	if _pending_textures.is_empty():
+		set_process(false)
+
+
 func refresh_from_gamemanager() -> void:
 	_pending_textures.clear()
 	_image_path_cache.clear()
+	_load_completed_ids()
 	_populate_from_gamemanager()
+
 
 func populate_from_json_text(json_text: String) -> void:
 	var parsed: Variant = JSON.parse_string(json_text)
 	if parsed == null:
 		push_error("JSON inválido.")
 		return
-	_pending_textures.clear()
-	_image_path_cache.clear()
 	_populate_from_parsed(parsed)
 
+
 func populate_from_array(data: Array) -> void:
-	_pending_textures.clear()
-	_image_path_cache.clear()
 	_populate_from_parsed(data)
 
-# === Fuente en memoria (GameManager) ===
+
 func _populate_from_gamemanager() -> bool:
 	if typeof(GameManager) == TYPE_NIL:
 		return false
-	var arr: Array = GameManager.frases_db
-	if arr is Array and arr.size() > 0:
-		_populate_from_parsed(arr)
-		return true
-	return false
+	var data: Array = GameManager.frases_db
+	if data.is_empty():
+		return false
+	_populate_from_parsed(data)
+	return true
 
-# === Lógica ===
+
 func _populate_from_parsed(parsed: Variant) -> void:
-	if _grid == null:
-		push_error("Grid no inicializado.")
-		return
-
-	# Bloquea señales durante el poblado para evitar relayouts intermedios
-	_grid.set_block_signals(true)
+	_pending_textures.clear()
+	_visible_items.clear()
 	_clear_grid_children()
 
-	var items: Array
+	var items: Array = []
 	if typeof(parsed) == TYPE_ARRAY:
 		items = parsed
 	elif typeof(parsed) == TYPE_DICTIONARY:
 		items = [parsed]
 	else:
-		_grid.set_block_signals(false)
 		push_error("El JSON debe ser Array o Dictionary.")
 		return
 
-	# Calcular tamaño de celda una vez
-	var cols: int = max(1, _grid.columns)
-	var hsep: int = _grid.get_theme_constant("h_separation")
-	var total_w: int = int(_grid.size.x)
-	var usable_w: int = max(0, total_w - (cols - 1) * hsep)
-	var cell_w: int = int(floor(float(usable_w) / float(cols))) if cols > 0 else 0
+	var filtered_items: Array[Dictionary] = []
+	for value in items:
+		if value is Dictionary:
+			var item: Dictionary = value
+			if _passes_filters(item):
+				filtered_items.append(item)
 
-	var creados: int = 0
-	var descartados: int = 0
+	_visible_items = filtered_items
 
-	for item in items:
-		if typeof(item) != TYPE_DICTIONARY:
-			continue
-		if not _passes_filters(item):
-			descartados += 1
-			continue
+	_visible_items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		var image_a: int = int(a.get("image_number", 0))
+		var image_b: int = int(b.get("image_number", 0))
+		if image_a == image_b:
+			return int(a.get("difficulty", 1)) < int(b.get("difficulty", 1))
+		return image_a < image_b
+	)
 
-		var img_num: int = int(item.get("image_number", -1))
-		if img_num < 0:
-			continue
-		
-		var index_num: int = int(item.get("index", -1))
-		if index_num < 0:
-			continue
+	for item in _visible_items:
+		_grid.add_child(_create_level_card(item))
 
-		var path: String = _find_image_path(img_num)
-		var btn: Button = _create_image_button_node(index_num, img_num, path)
-		btn.custom_minimum_size = Vector2(cell_w, cell_w)
+	_empty_state.visible = _visible_items.is_empty()
+	_scroll.visible = not _visible_items.is_empty()
+	_random_button.disabled = _visible_items.is_empty()
+	_update_header_progress()
+	set_process(not _pending_textures.is_empty())
 
-		var tt: PackedStringArray = []
-		if item.has("category"): tt.append(str(item["category"]))
-		if item.has("difficulty"): tt.append("Dif: %s" % str(item["difficulty"]))
-		btn.tooltip_text = "\n".join(tt)
-
-		_grid.add_child(btn)
-		creados += 1
-
-	# Desbloquea señales y ajusta layout una sola vez
-	_grid.set_block_signals(false)
-	_update_cell_sizes()
-	print("ImageGrid: creados=%d | descartados_por_filtro=%d | columnas=%d" %
-		[creados, descartados, _grid.columns])
 
 func _passes_filters(item: Dictionary) -> bool:
-	if typeof(GameManager) == TYPE_NIL:
-		return true
-	var ok: bool = true
-	var target_cat: String = str(GameManager.categoria_actual).strip_edges()
-	if target_cat != "":
-		var item_cat: String = str(item.get("category", ""))
-		ok = ok and GameManager.categories_match(item_cat, target_cat)
-	var target_diff: int = int(GameManager.dificultad_actual)
-	if target_diff != -1:
-		var item_diff: int = int(item.get("difficulty", -9999))
-		ok = ok and (item_diff == target_diff)
-	return ok
+	var image_number: int = int(item.get("image_number", -1))
+	var index_number: int = int(item.get("index", -1))
+	if image_number < 0 or index_number < 0:
+		return false
 
-func _clear_grid_children() -> void:
-	if _grid == null: return
-	for child in _grid.get_children():
-		child.queue_free()
+	var target_category: String = str(GameManager.categoria_actual).strip_edges()
+	if target_category != "":
+		var item_category: String = str(item.get("category", ""))
+		if not GameManager.categories_match(item_category, target_category):
+			return false
 
-# --- Celda ---
-func _create_image_button_node(index_num: int, image_number: int, image_path: String) -> Button:
-	var btn: Button = Button.new()
-	btn.name = "Image_%d" % image_number
-	btn.size_flags_horizontal = Control.SIZE_FILL
-	btn.size_flags_vertical = Control.SIZE_FILL
-	btn.text = ""
-	btn.auto_translate = false
+	var difficulty: int = int(item.get("difficulty", 1))
+	if GameManager.game_mode_actual == MODE_CRYPTOGRAM:
+		return difficulty >= 3
+	return difficulty <= 2
 
-	var texrect: TextureRect = TextureRect.new()
-	texrect.name = "BG"
-	texrect.set_anchors_preset(Control.PRESET_FULL_RECT)
-	texrect.offset_left = 0; texrect.offset_top = 0; texrect.offset_right = 0; texrect.offset_bottom = 0
-	texrect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	texrect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	texrect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if PLACEHOLDER_TEX:
-		texrect.texture = PLACEHOLDER_TEX
-	btn.add_child(texrect)
 
-	var lbl: Label = Label.new()
-	lbl.text = "ID %d" % index_num
-	lbl.set_anchors_preset(Control.PRESET_FULL_RECT)
-	lbl.offset_left = 0; lbl.offset_top = 0; lbl.offset_right = 0; lbl.offset_bottom = 0
-	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var base_sz: int = lbl.get_theme_font_size("font_size")
-	lbl.add_theme_font_size_override("font_size", int(base_sz * 3))
-	btn.add_child(lbl)
+func _create_level_card(item: Dictionary) -> Button:
+	var index_number: int = int(item.get("index", -1))
+	var image_number: int = int(item.get("image_number", -1))
+	var difficulty: int = int(item.get("difficulty", 1))
+	var completed: bool = _completed_ids.has(index_number)
 
-	btn.set_meta("index", index_num)
-	btn.set_meta("image_path", image_path)
-	btn.pressed.connect(func(): _on_image_button_pressed(index_num, image_number, image_path))
+	var button := Button.new()
+	button.name = "Level_%d" % index_number
+	button.custom_minimum_size = Vector2(330, 420)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.focus_mode = Control.FOCUS_NONE
+	button.text = ""
+	button.auto_translate = false
+	button.add_theme_stylebox_override("normal", _make_card_style(false, completed))
+	button.add_theme_stylebox_override("hover", _make_card_style(true, completed))
+	button.add_theme_stylebox_override("pressed", _make_card_pressed_style())
+	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	button.tooltip_text = str(item.get("hint_1", ""))
+	button.set_meta("item", item)
+	button.set_meta("image_path", _find_image_path(image_number, index_number))
+	button.pressed.connect(func() -> void: _on_level_pressed(item))
 
-	_pending_textures.append(btn)
-	return btn
+	var image_frame := Panel.new()
+	image_frame.name = "ImageFrame"
+	image_frame.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	image_frame.offset_left = 12.0
+	image_frame.offset_top = 12.0
+	image_frame.offset_right = -12.0
+	image_frame.offset_bottom = 286.0
+	image_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	image_frame.clip_contents = true
+	image_frame.add_theme_stylebox_override("panel", _make_image_frame_style())
+	button.add_child(image_frame)
 
-func _assign_real_texture(btn: Button) -> void:
-	if not is_instance_valid(btn): return
-	var texrect: TextureRect = btn.get_node_or_null("BG") as TextureRect
-	if texrect == null: return
-	var path: String = String(btn.get_meta("image_path", ""))
-	if path == "": return
-	var tex: Texture2D = load(path) as Texture2D
-	if tex:
-		texrect.texture = tex
+	var texture := TextureRect.new()
+	texture.name = "Image"
+	texture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	texture.offset_left = 5.0
+	texture.offset_top = 5.0
+	texture.offset_right = -5.0
+	texture.offset_bottom = -5.0
+	texture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	texture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if PLACEHOLDER_TEX != null:
+		texture.texture = PLACEHOLDER_TEX
+	image_frame.add_child(texture)
 
-func _on_image_button_pressed(index_num: int, image_number: int, _image_path: String) -> void:
-	if typeof(GameManager) != TYPE_NIL:
-		GameManager.id_frase = index_num
-	else:
-		push_warning("GameManager no encontrado como autoload. No se pudo asignar id_frase.")
-	print("Pulsado image_number=%d" % index_num)
+	var star_badge := Panel.new()
+	star_badge.name = "Difficulty"
+	star_badge.position = Vector2(23, 23)
+	star_badge.size = Vector2(122, 51)
+	star_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	star_badge.add_theme_stylebox_override("panel", _make_overlay_style(Color(0.16, 0.11, 0.07, 0.72), 20))
+	button.add_child(star_badge)
 
-	if typeof(GameManager) != TYPE_NIL and GameManager.mostrar_tuto_antes_partida:
-		GameManager.set_go_to_game_enable()
-		TransitionScreen.transition_to_black()
-		await TransitionScreen._on_animation_finished("fade_to_black", 1)
-		_go_tutorial()
-	else:
-		if typeof(GameManager) != TYPE_NIL:
-			GameManager.seleccionar_por_index(index_num)
-			GameManager.set_go_to_game_disable()
-		TransitionScreen.transition_to_black()
-		await TransitionScreen._on_animation_finished("fade_to_black", 1)
-		SignalManager.partida_iniciada.emit()
-		_go_app()
+	var stars := HBoxContainer.new()
+	stars.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	stars.offset_left = 13.0
+	stars.offset_top = 8.0
+	stars.offset_right = -13.0
+	stars.offset_bottom = -8.0
+	stars.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stars.add_theme_constant_override("separation", 5)
+	star_badge.add_child(stars)
+	for _star in range(_difficulty_to_stars(difficulty)):
+		var icon := TextureRect.new()
+		icon.custom_minimum_size = Vector2(27, 27)
+		icon.texture = STAR_TEXTURE
+		icon.self_modulate = Color(1, 0.73, 0.12, 1)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		stars.add_child(icon)
 
-# --- Redimensión ---
-func _update_cell_sizes() -> void:
-	if _grid == null: return
-	var cols: int = max(1, _grid.columns)
-	var hsep: int = _grid.get_theme_constant("h_separation")
-	var total_w: int = int(_grid.size.x)
-	var usable_w: int = max(0, total_w - (cols - 1) * hsep)
-	var cell_w: int = int(floor(float(usable_w) / float(cols))) if cols > 0 else 0
-	for child in _grid.get_children():
-		if child is Button:
-			(child as Button).custom_minimum_size = Vector2(cell_w, cell_w)
+	var id_badge := Panel.new()
+	id_badge.name = "IdBadge"
+	id_badge.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	id_badge.offset_left = 95.0
+	id_badge.offset_top = -87.0
+	id_badge.offset_right = -95.0
+	id_badge.offset_bottom = -28.0
+	id_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	id_badge.add_theme_stylebox_override("panel", _make_overlay_style(Color(0.08, 0.32, 0.34, 0.8), 20))
+	button.add_child(id_badge)
 
-# --- Utilidades ---
-func _find_image_path(image_number: int) -> String:
-	if _image_path_cache.has(image_number):
-		return String(_image_path_cache[image_number])
-	var base: String = "image%d" % image_number
-	var dir: String = _rstrip_slash(IMAGES_DIR)
-	for ext in FILE_EXTS:
-		var candidate: String = "%s/%s%s" % [dir, base, ext]
-		if ResourceLoader.exists(candidate):
-			_image_path_cache[image_number] = candidate
-			return candidate
-	_image_path_cache[image_number] = ""
+	var id_label := Label.new()
+	id_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	id_label.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	id_label.add_theme_font_size_override("font_size", 23)
+	id_label.add_theme_color_override("font_color", Color.WHITE)
+	id_label.text = "ID %d" % index_number
+	id_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	id_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	id_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	id_badge.add_child(id_label)
+
+	var status := Panel.new()
+	status.name = "Status"
+	status.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	status.position = Vector2(-61, -69)
+	status.size = Vector2(45, 45)
+	status.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var status_color := Color(0.08, 0.63, 0.64, 1) if completed else Color(0.92, 0.43, 0.035, 1)
+	status.add_theme_stylebox_override("panel", _make_overlay_style(status_color, 23))
+	button.add_child(status)
+
+	if completed:
+		var check := Label.new()
+		check.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		check.add_theme_font_override("font", _title_label.get_theme_font("font"))
+		check.add_theme_font_size_override("font_size", 29)
+		check.add_theme_color_override("font_color", Color.WHITE)
+		check.text = "✓"
+		check.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		check.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		check.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		status.add_child(check)
+
+	_pending_textures.append(button)
+	return button
+
+
+func _assign_real_texture(button: Button) -> void:
+	if not is_instance_valid(button):
+		return
+	var texture_rect := button.get_node_or_null("ImageFrame/Image") as TextureRect
+	if texture_rect == null:
+		return
+	var path: String = str(button.get_meta("image_path", ""))
+	if path == "":
+		return
+	var texture := load(path) as Texture2D
+	if texture != null:
+		texture_rect.texture = texture
+
+
+func _on_level_pressed(item: Dictionary) -> void:
+	var index_number: int = int(item.get("index", -1))
+	if index_number < 0:
+		return
+	if not get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty():
+		return
+	SoundManager.play("ButtonClick")
+	GameManager.id_frase = index_number
+	GameManager.set_dificultad_actual(int(item.get("difficulty", 1)))
+	GameManager.seleccionar_por_index(index_number)
+	GameManager.set_go_to_game_disable()
+	var preview := THEME_PREVIEW.instantiate()
+	preview.set("launch_game_on_start", true)
+	preview.set("image_path", _find_image_path(
+		int(item.get("image_number", -1)),
+		index_number
+	))
+	add_child(preview)
+
+
+func _on_button_random_pressed() -> void:
+	if _visible_items.is_empty():
+		return
+	var chosen: Dictionary = _visible_items.pick_random()
+	_on_level_pressed(chosen)
+
+
+func _on_button_back_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	TransitionScreen.transition_to_black()
+	await TransitionScreen._on_animation_finished("fade_to_black", 1)
+	if _scene_to_category == null:
+		_scene_to_category = load(PATH_CATEGORY)
+	get_tree().change_scene_to_packed(_scene_to_category)
+
+
+func _load_completed_ids() -> void:
+	_completed_ids.clear()
+	if typeof(HistoryManager) == TYPE_NIL:
+		return
+	for value in HistoryManager.get_history():
+		if value is Dictionary:
+			var entry: Dictionary = value
+			if bool(entry.get("partida_ganada", false)):
+				_completed_ids[int(entry.get("id", -1))] = true
+
+
+func _update_header_progress() -> void:
+	var total: int = _visible_items.size()
+	var completed: int = 0
+	for item in _visible_items:
+		if _completed_ids.has(int(item.get("index", -1))):
+			completed += 1
+	_progress_bar.max_value = max(total, 1)
+	_progress_bar.value = completed
+	_progress_label.text = _copy("progress") % [completed, total]
+
+
+func _update_localized_copy() -> void:
+	var category_name: String = GameManager.category_display_name()
+	var mode_key := "cryptogram" if GameManager.game_mode_actual == MODE_CRYPTOGRAM else "quick"
+	_title_label.text = _copy("title")
+	_subtitle_label.text = "%s · %s" % [category_name, _copy(mode_key)]
+	_random_text.text = _copy("random")
+	_empty_state.text = _copy("empty")
+
+
+func _copy(key: String) -> String:
+	var locale: String = TranslationServer.get_locale().left(2).to_lower()
+	var translations: Dictionary = LOCALIZED_COPY.get(locale, LOCALIZED_COPY["es"])
+	return str(translations.get(key, LOCALIZED_COPY["es"].get(key, key)))
+
+
+func _difficulty_to_stars(difficulty: int) -> int:
+	return clampi(difficulty, 1, 3)
+
+
+func _find_image_path(image_number: int, index_number: int) -> String:
+	var cache_key := "%d:%d" % [image_number, index_number]
+	if _image_path_cache.has(cache_key):
+		return str(_image_path_cache[cache_key])
+	var directory := IMAGES_DIR.trim_suffix("/")
+	var candidate_numbers: Array[int] = [image_number]
+	if index_number != image_number:
+		candidate_numbers.append(index_number)
+	for candidate_number in candidate_numbers:
+		var basename := "image%d" % candidate_number
+		if candidate_number == 1:
+			var uppercase_png := "%s/%s.PNG" % [directory, basename]
+			if ResourceLoader.exists(uppercase_png):
+				_image_path_cache[cache_key] = uppercase_png
+				return uppercase_png
+		for extension in FILE_EXTS:
+			var candidate := "%s/%s%s" % [directory, basename, extension]
+			if ResourceLoader.exists(candidate):
+				_image_path_cache[cache_key] = candidate
+				return candidate
+	_image_path_cache[cache_key] = ""
 	return ""
+
 
 func _load_and_populate_from_path(path: String) -> void:
 	if not ResourceLoader.exists(path):
 		push_error("No existe el JSON: %s" % path)
 		return
-	var json_text: String = FileAccess.get_file_as_string(path)
-	if json_text == "":
+	var text := FileAccess.get_file_as_string(path)
+	if text == "":
 		push_error("JSON vacío o no legible: %s" % path)
 		return
-	populate_from_json_text(json_text)
+	populate_from_json_text(text)
 
-func _rstrip_slash(p: String) -> String:
-	if p.ends_with("/"):
-		return p.substr(0, p.length() - 1)
-	return p
 
-func _go_tutorial() -> void:
-	if scene_to_tutorial == null:
-		scene_to_tutorial = load(PATH_TUTORIAL)
-	get_tree().change_scene_to_packed(scene_to_tutorial)
-
-func _go_app() -> void:
-	if scene_to_load_App == null:
-		scene_to_load_App = load(PATH_APP)
-	get_tree().change_scene_to_packed(scene_to_load_App)
-
-func _on_button_random_pressed() -> void:
-	# 1) Reunir botones clicables del grid
-	if _grid == null:
-		push_warning("Grid no inicializado: no se puede elegir aleatorio.")
-		return
-
-	var candidates: Array[Button] = []
+func _clear_grid_children() -> void:
 	for child in _grid.get_children():
-		if child is Button and child.visible and (child as Button).disabled == false:
-			candidates.append(child)
+		child.queue_free()
 
-	if candidates.is_empty():
-		push_warning("No hay botones visibles/habilitados para elegir al azar.")
-		return
 
-	# 2) Elegir uno al azar
-	var rng := RandomNumberGenerator.new()
-	rng.randomize()
-	var chosen: Button = candidates[rng.randi_range(0, candidates.size() - 1)]
+func _make_card_style(hovered: bool, completed: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(1, 0.942, 0.786, 1) if not hovered else Color(1, 0.969, 0.865, 1)
+	style.border_color = Color(0.75, 0.55, 0.28, 0.48) if not completed else Color(0.08, 0.63, 0.64, 0.72)
+	style.set_border_width_all(4 if not completed else 5)
+	style.set_corner_radius_all(28)
+	style.shadow_color = Color(0.38, 0.23, 0.08, 0.2 if not hovered else 0.27)
+	style.shadow_size = 11 if not hovered else 15
+	style.shadow_offset = Vector2(0, 9 if not hovered else 12)
+	return style
 
-	# 3) Obtener su 'index' y seguir el mismo flujo que un click normal
-	var image_number: int = int(chosen.get_meta("index", -1))
-	if image_number < 0:
-		push_warning("El botón aleatorio elegido no tiene meta 'index' válida.")
-		return
 
-	# (Opcional) pequeño feedback visual
-	if chosen.has_method("grab_focus"):
-		chosen.grab_focus()
+func _make_card_pressed_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.95, 0.85, 0.66, 1)
+	style.border_color = Color(0.75, 0.46, 0.15, 0.72)
+	style.set_border_width_all(5)
+	style.set_corner_radius_all(28)
+	return style
 
-	# 4) Flujo igual que pulsación normal
-	if typeof(GameManager) != TYPE_NIL:
-		GameManager.id_frase = image_number
-	else:
-		push_warning("GameManager no encontrado como autoload. No se pudo asignar id_frase.")
-	print("Aleatorio -> image_number=%d" % image_number)
 
-	if typeof(GameManager) != TYPE_NIL and GameManager.mostrar_tuto_antes_partida:
-		GameManager.set_go_to_game_enable()
-		TransitionScreen.transition_to_black()
-		await TransitionScreen._on_animation_finished("fade_to_black", 1)
-		_go_tutorial()
-	else:
-		if typeof(GameManager) != TYPE_NIL:
-			GameManager.seleccionar_por_index(image_number)
-			GameManager.set_go_to_game_disable()
-		TransitionScreen.transition_to_black()
-		await TransitionScreen._on_animation_finished("fade_to_black", 1)
-		SignalManager.partida_iniciada.emit()
-		_go_app()
+func _make_image_frame_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.91, 0.81, 0.61, 1)
+	style.border_color = Color(0.71, 0.49, 0.24, 0.62)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(22)
+	return style
+
+
+func _make_overlay_style(color: Color, radius: int) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = color
+	style.set_corner_radius_all(radius)
+	return style

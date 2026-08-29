@@ -1,0 +1,199 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scenes/game/puzzle_theme_preview.gd" id="1_script"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(1, 0.949, 0.804, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 10
+border_color = Color(0.76, 0.56, 0.28, 0.78)
+corner_radius_top_left = 42
+corner_radius_top_right = 42
+corner_radius_bottom_right = 42
+corner_radius_bottom_left = 42
+shadow_color = Color(0, 0, 0, 0.38)
+shadow_size = 24
+shadow_offset = Vector2(0, 18)
+
+[sub_resource type="StyleBoxFlat" id="Style_image"]
+bg_color = Color(0.17, 0.14, 0.1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 8
+border_color = Color(0.38, 0.27, 0.15, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="Style_start"]
+bg_color = Color(1, 0.56, 0.015, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 13
+border_color = Color(0.72, 0.31, 0.01, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0.34, 0.16, 0.02, 0.34)
+shadow_size = 15
+shadow_offset = Vector2(0, 12)
+
+[sub_resource type="StyleBoxFlat" id="Style_start_hover"]
+bg_color = Color(1, 0.65, 0.04, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 13
+border_color = Color(0.76, 0.34, 0.01, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0.34, 0.16, 0.02, 0.38)
+shadow_size = 18
+shadow_offset = Vector2(0, 14)
+
+[sub_resource type="StyleBoxFlat" id="Style_start_pressed"]
+bg_color = Color(0.88, 0.39, 0.01, 1)
+border_width_left = 7
+border_width_top = 13
+border_width_right = 7
+border_width_bottom = 7
+border_color = Color(0.63, 0.24, 0.005, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[node name="PuzzleThemePreview" type="Control"]
+z_index = 2000
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("1_script")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.07, 0.055, 0.04, 0.82)
+
+[node name="Card" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 83.0
+offset_top = 245.0
+offset_right = 1123.0
+offset_bottom = 2375.0
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Title" type="Label" parent="Card"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 43.0
+offset_right = 985.0
+offset_bottom = 137.0
+theme_override_colors/font_color = Color(0.27, 0.19, 0.11, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 57
+text = "TEMA DEL PUZLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Category" type="Label" parent="Card"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 141.0
+offset_right = 777.0
+offset_bottom = 208.0
+theme_override_colors/font_color = Color(0.5, 0.36, 0.2, 0.86)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+text = "Efemérides"
+vertical_alignment = 1
+
+[node name="Id" type="Label" parent="Card"]
+layout_mode = 0
+offset_left = 790.0
+offset_top = 141.0
+offset_right = 985.0
+offset_bottom = 208.0
+theme_override_colors/font_color = Color(0.5, 0.36, 0.2, 0.86)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 30
+text = "ID 1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ImageFrame" type="Panel" parent="Card"]
+clip_contents = true
+layout_mode = 0
+offset_left = 47.0
+offset_top = 234.0
+offset_right = 993.0
+offset_bottom = 1662.0
+theme_override_styles/panel = SubResource("Style_image")
+
+[node name="Image" type="TextureRect" parent="Card/ImageFrame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="WaitText" type="Label" parent="Card"]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 1692.0
+offset_right = 960.0
+offset_bottom = 1774.0
+theme_override_colors/font_color = Color(0.46, 0.33, 0.18, 0.8)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 31
+text = "Observa la imagen del tema"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonStart" type="Button" parent="Card"]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 1811.0
+offset_right = 816.0
+offset_bottom = 2057.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_colors/font_shadow_color = Color(0.4, 0.16, 0, 0.5)
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 70
+theme_override_styles/normal = SubResource("Style_start")
+theme_override_styles/hover = SubResource("Style_start_hover")
+theme_override_styles/pressed = SubResource("Style_start_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "EMPEZAR"
+
+[connection signal="pressed" from="Card/ButtonStart" to="." method="_on_start_pressed"]

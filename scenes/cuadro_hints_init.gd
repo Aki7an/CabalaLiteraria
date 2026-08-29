@@ -373,6 +373,7 @@ func _get_scene_center_global(scene_node: Node) -> Vector2:
 func _on_button_hint_2_pressed():
 		
 	GameManager.set_pistas_utilizadas(1)
+	GameManager.register_hint_used("hint_2")
 	rich_text_label_hint_2.text = GameManager.hint_1
 	rich_text_label_hint_3.text = pasa_a_asteriscos(GameManager.hint_2)
 	GameManager.set_pista2()
@@ -449,6 +450,7 @@ func _on_button_hint_3_pressed():
 		var coins:int = GameManager.coins
 		GameManager.set_coins(coins - 5)
 		SignalManager.update_coins.emit()
+		GameManager.register_hint_used("hint_3")
 		GameManager.set_pista3()
 	else:
 		return

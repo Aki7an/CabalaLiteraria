@@ -19,10 +19,14 @@ extends Panel
 
 func _ready() -> void:
 	for i in GameManager.lista_colores.size():
-		var style = StyleBoxFlat.new()
+		var button: Button = $HBoxContainer.get_node("Button" + str(i))
+		var current := button.get_theme_stylebox("normal")
+		var style: StyleBoxFlat
+		if current is StyleBoxFlat:
+			style = current.duplicate() as StyleBoxFlat
+		else:
+			style = StyleBoxFlat.new()
 		style.bg_color = GameManager.lista_tonos_colores[i]
-
-		var button = $HBoxContainer.get_node("Button" + str(i ))
 		button.add_theme_stylebox_override("normal", style)
 
 func _on_button_0_pressed():

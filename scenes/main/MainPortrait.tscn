@@ -1,164 +1,216 @@
-[gd_scene load_steps=16 format=3 uid="uid://e5wl5e0vlqnu"]
+[gd_scene format=3 uid="uid://e5wl5e0vlqnu"]
 
-[ext_resource type="PackedScene" uid="uid://csvvjjmaptuc4" path="res://scenes/game/CanvasJuego.tscn" id="1_j1ox2"]
-[ext_resource type="Script" uid="uid://bk8npk8rjf1wj" path="res://scenes/main/main_portrait.gd" id="1_qtrpv"]
-[ext_resource type="Script" uid="uid://cgf78xtxi5uo5" path="res://scenes/main/ErrorFeedback.gd" id="2_c53kp"]
-[ext_resource type="PackedScene" uid="uid://qdxg6ofjqkq5" path="res://scenes/game/panel_letras.tscn" id="2_qtrpv"]
-[ext_resource type="PackedScene" uid="uid://y1k8m1upqvmd" path="res://scenes/game/PanelColors.tscn" id="3_c53kp"]
-[ext_resource type="PackedScene" uid="uid://df2olneywrcjb" path="res://scenes/PanelUP/panel_up.tscn" id="4_6wj6l"]
-[ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="5_22c6s"]
-[ext_resource type="Texture2D" uid="uid://duvxnbfhhi6g" path="res://images/triangulo-hacia-arriba -blanco.png" id="8_j1ox2"]
-[ext_resource type="Script" uid="uid://llhs580ksxi7" path="res://scenes/main/page_up.gd" id="9_qtrpv"]
-[ext_resource type="Script" uid="uid://n8vtfkg80eut" path="res://scenes/main/page_down.gd" id="10_c53kp"]
+[ext_resource type="Script" uid="uid://bk8npk8rjf1wj" path="res://scenes/main/main_portrait.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cgf78xtxi5uo5" path="res://scenes/main/ErrorFeedback.gd" id="2_error"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="3_bg"]
+[ext_resource type="PackedScene" uid="uid://csvvjjmaptuc4" path="res://scenes/game/CanvasJuego.tscn" id="4_board"]
+[ext_resource type="PackedScene" path="res://scenes/PanelUP/panel_up_portrait.tscn" id="5_hud"]
+[ext_resource type="PackedScene" path="res://scenes/game/PanelColorsPortrait.tscn" id="6_colors"]
+[ext_resource type="PackedScene" path="res://scenes/game/panel_letras_portrait.tscn" id="7_letters"]
+[ext_resource type="Texture2D" uid="uid://duvxnbfhhi6g" path="res://images/triangulo-hacia-arriba -blanco.png" id="8_arrow"]
+[ext_resource type="Script" uid="uid://llhs580ksxi7" path="res://scenes/main/page_up.gd" id="9_up"]
+[ext_resource type="Script" uid="uid://n8vtfkg80eut" path="res://scenes/main/page_down.gd" id="10_down"]
+[ext_resource type="Script" path="res://scenes/main/puzzle_scrollbar.gd" id="11_scroll"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qtrpv"]
-bg_color = Color(0.632114, 0.365523, 0.284578, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
+[sub_resource type="StyleBoxFlat" id="Style_background"]
+bg_color = Color(0.971, 0.895, 0.696, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j1ox2"]
-bg_color = Color(0.52, 0.300733, 0.234, 1)
+[sub_resource type="StyleBoxFlat" id="Style_board_frame"]
+bg_color = Color(0.095, 0.16, 0.17, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 12
+border_color = Color(0.025, 0.075, 0.08, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.21, 0.14, 0.06, 0.34)
+shadow_size = 14
+shadow_offset = Vector2(0, 11)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sjxhf"]
-bg_color = Color(0.34, 0.196633, 0.153, 1)
+[sub_resource type="StyleBoxFlat" id="Style_board_inner"]
+bg_color = Color(0.965, 0.912, 0.788, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.23, 0.3, 0.3, 1)
+corner_radius_top_left = 13
+corner_radius_top_right = 13
+corner_radius_bottom_right = 13
+corner_radius_bottom_left = 13
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ko0rf"]
-content_margin_left = 20.0
-content_margin_right = 20.0
-bg_color = Color(0.632114, 0.365523, 0.284578, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+[sub_resource type="StyleBoxFlat" id="Style_rail"]
+bg_color = Color(0.035, 0.09, 0.1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.21, 0.31, 0.31, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rhdn"]
-bg_color = Color(0.53, 0.306517, 0.2385, 1)
+[sub_resource type="StyleBoxFlat" id="Style_scroll_button"]
+bg_color = Color(0.07, 0.14, 0.15, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="Style_thumb"]
+bg_color = Color(1, 0.78, 0.4, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 5
+border_color = Color(0.72, 0.46, 0.17, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.22)
+shadow_size = 5
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
 
 [node name="MainPortrait" type="Node2D"]
-script = ExtResource("1_qtrpv")
+script = ExtResource("1_script")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-script = ExtResource("2_c53kp")
+script = ExtResource("2_error")
 shake_duration = 1.0
 flash_cycles = 4
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-offset_right = 1024.0
-offset_bottom = 1920.0
-color = Color(0.92, 0.9131, 0.9108, 1)
+[node name="Background" type="Panel" parent="CanvasLayer"]
+offset_right = 1206.0
+offset_bottom = 2622.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_background")
 
-[node name="CanvasJuego" parent="CanvasLayer" instance=ExtResource("1_j1ox2")]
+[node name="Pattern" parent="CanvasLayer/Background" instance=ExtResource("3_bg")]
+modulate = Color(1, 1, 1, 0.38)
+
+[node name="PanelUP" parent="CanvasLayer" instance=ExtResource("5_hud")]
+offset_left = 16.0
+offset_top = 17.0
+offset_right = 1190.0
+offset_bottom = 565.0
+
+[node name="BoardFrame" type="Panel" parent="CanvasLayer"]
+clip_contents = true
+offset_left = 18.0
+offset_top = 590.0
+offset_right = 1188.0
+offset_bottom = 1730.0
+theme_override_styles/panel = SubResource("Style_board_frame")
+
+[node name="CanvasJuego" parent="CanvasLayer/BoardFrame" instance=ExtResource("4_board")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 8.0
-offset_top = 440.0
-offset_right = 1016.0
-offset_bottom = 1440.0
+offset_left = 27.0
+offset_top = 45.0
+offset_right = 1083.0
+offset_bottom = 1110.0
 grow_horizontal = 1
 grow_vertical = 1
-size_flags_horizontal = 1
+theme_override_styles/panel = SubResource("Style_board_inner")
 
-[node name="Panel" type="Panel" parent="CanvasLayer"]
-offset_top = 1440.0
-offset_right = 1024.0
-offset_bottom = 1920.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_qtrpv")
-
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
-visible = false
-offset_top = 1456.0
-offset_right = 1024.0
-offset_bottom = 1920.0
-color = Color(0.632114, 0.365523, 0.284578, 1)
-
-[node name="PanelLetras" parent="CanvasLayer" instance=ExtResource("2_qtrpv")]
-offset_left = 8.0
-offset_top = 1608.0
-offset_right = -8.0
-offset_bottom = 1296.0
-
-[node name="PanelColors" parent="CanvasLayer" instance=ExtResource("3_c53kp")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 8.0
-offset_top = 1464.0
-offset_right = 1016.0
-offset_bottom = 1588.0
-grow_horizontal = 1
-grow_vertical = 1
-size_flags_vertical = 1
-
-[node name="PanelMap" type="Panel" parent="CanvasLayer"]
-visible = false
-offset_left = 1056.0
-offset_top = 1464.0
-offset_right = 1224.0
-offset_bottom = 1912.0
-
-[node name="PageUp" type="Button" parent="CanvasLayer/PanelMap"]
-custom_minimum_size = Vector2(100, 0)
+[node name="ScrollRail" type="Panel" parent="CanvasLayer/BoardFrame"]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 560.0
-offset_bottom = 903.0
-scale = Vector2(0.269724, 0.10445)
-size_flags_horizontal = 0
-theme = ExtResource("5_22c6s")
-theme_override_styles/hover = SubResource("StyleBoxFlat_j1ox2")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
-theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
-text = "-"
-icon_alignment = 1
-script = ExtResource("9_qtrpv")
+offset_left = 1093.0
+offset_top = 31.0
+offset_right = 1150.0
+offset_bottom = 1101.0
+theme_override_styles/panel = SubResource("Style_rail")
+script = ExtResource("11_scroll")
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/PanelMap/PageUp"]
-modulate = Color(0.835294, 0.635294, 0.576471, 1)
+[node name="PageUp" type="Button" parent="CanvasLayer/BoardFrame/ScrollRail"]
 layout_mode = 0
-offset_left = 118.64
-offset_top = 0.000366211
-offset_right = 452.64
-offset_bottom = 924.0
-texture = ExtResource("8_j1ox2")
+offset_left = 5.0
+offset_top = 6.0
+offset_right = 52.0
+offset_bottom = 84.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_scroll_button")
+theme_override_styles/hover = SubResource("Style_scroll_button")
+theme_override_styles/pressed = SubResource("Style_scroll_button")
+theme_override_styles/focus = SubResource("Style_empty")
+script = ExtResource("9_up")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/BoardFrame/ScrollRail/PageUp"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 19.0
+offset_right = -9.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("8_arrow")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="PageDown" type="Button" parent="CanvasLayer/PanelMap"]
-custom_minimum_size = Vector2(100, 0)
+[node name="Thumb" type="Panel" parent="CanvasLayer/BoardFrame/ScrollRail"]
 layout_mode = 0
-offset_left = 157.0
-offset_top = 440.0
-offset_right = 709.0
-offset_bottom = 1364.0
+offset_left = 10.0
+offset_top = 298.0
+offset_right = 47.0
+offset_bottom = 477.0
+mouse_filter = 0
+mouse_default_cursor_shape = 6
+theme_override_styles/panel = SubResource("Style_thumb")
+
+[node name="PageDown" type="Button" parent="CanvasLayer/BoardFrame/ScrollRail"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 986.0
+offset_right = 52.0
+offset_bottom = 1064.0
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_scroll_button")
+theme_override_styles/hover = SubResource("Style_scroll_button")
+theme_override_styles/pressed = SubResource("Style_scroll_button")
+theme_override_styles/focus = SubResource("Style_empty")
+script = ExtResource("10_down")
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/BoardFrame/ScrollRail/PageDown"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 19.0
+offset_right = -9.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 2
 rotation = 3.14159
-scale = Vector2(0.269724, 0.10445)
-size_flags_horizontal = 0
-theme = ExtResource("5_22c6s")
-theme_override_styles/hover = SubResource("StyleBoxFlat_1rhdn")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sjxhf")
-theme_override_styles/normal = SubResource("StyleBoxFlat_ko0rf")
-text = "-"
-icon_alignment = 1
-script = ExtResource("10_c53kp")
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/PanelMap/PageDown"]
-modulate = Color(0.835294, 0.635294, 0.576471, 1)
-layout_mode = 0
-offset_left = 107.517
-offset_top = 0.00070388
-offset_right = 441.517
-offset_bottom = 924.001
-texture = ExtResource("8_j1ox2")
+pivot_offset = Vector2(14.5, 20)
+mouse_filter = 2
+texture = ExtResource("8_arrow")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="PanelUP" parent="CanvasLayer" instance=ExtResource("4_6wj6l")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_bottom = 0.0
+[node name="PanelColors" parent="CanvasLayer" instance=ExtResource("6_colors")]
+offset_left = 18.0
+offset_top = 1752.0
+offset_right = 1188.0
+offset_bottom = 2038.0
 
-[connection signal="pressed" from="CanvasLayer/PanelMap/PageUp" to="CanvasLayer/PanelMap/PageUp" method="_on_pressed"]
-[connection signal="pressed" from="CanvasLayer/PanelMap/PageDown" to="CanvasLayer/PanelMap/PageDown" method="_on_pressed"]
+[node name="PanelLetras" parent="CanvasLayer" instance=ExtResource("7_letters")]
+offset_left = 18.0
+offset_top = 2066.0
+offset_right = 1188.0
+offset_bottom = 2598.0
+
+[connection signal="pressed" from="CanvasLayer/BoardFrame/ScrollRail/PageUp" to="CanvasLayer/BoardFrame/ScrollRail/PageUp" method="_on_pressed"]
+[connection signal="pressed" from="CanvasLayer/BoardFrame/ScrollRail/PageDown" to="CanvasLayer/BoardFrame/ScrollRail/PageDown" method="_on_pressed"]

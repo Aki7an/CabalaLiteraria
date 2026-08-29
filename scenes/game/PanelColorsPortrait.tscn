@@ -1,0 +1,199 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" uid="uid://7fpd4dm3ml4u" path="res://scenes/game/panel_colors.gd" id="1_script"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="Style_panel"]
+bg_color = Color(1, 0.949, 0.804, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.76, 0.57, 0.29, 0.52)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_color = Color(0.34, 0.21, 0.07, 0.19)
+shadow_size = 11
+shadow_offset = Vector2(0, 9)
+
+[sub_resource type="StyleBoxFlat" id="Style_key"]
+bg_color = Color(0.96, 0.78, 0.59, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.59, 0.4, 0.21, 0.7)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.29, 0.17, 0.06, 0.18)
+shadow_size = 7
+shadow_offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxFlat" id="Style_key_hover"]
+bg_color = Color(1, 0.87, 0.67, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 8
+border_color = Color(0.64, 0.43, 0.19, 0.8)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.29, 0.17, 0.06, 0.22)
+shadow_size = 8
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_key_pressed"]
+bg_color = Color(0.83, 0.65, 0.47, 1)
+border_width_left = 3
+border_width_top = 7
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.53, 0.34, 0.15, 0.8)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="Style_erase"]
+bg_color = Color(0.89, 0.77, 0.59, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.56, 0.4, 0.23, 0.72)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.29, 0.17, 0.06, 0.18)
+shadow_size = 7
+shadow_offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[node name="PanelColors" type="Panel"]
+offset_right = 1170.0
+offset_bottom = 286.0
+theme_override_styles/panel = SubResource("Style_panel")
+script = ExtResource("1_script")
+
+[node name="ButtonPortugues" type="Button" parent="."]
+visible = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 28.0
+offset_top = 28.0
+offset_right = -28.0
+offset_bottom = 157.0
+grow_horizontal = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Button1" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.17, 0.16, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("Style_key")
+theme_override_styles/hover = SubResource("Style_key_hover")
+theme_override_styles/pressed = SubResource("Style_key_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "1"
+
+[node name="Button2" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.17, 0.16, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("Style_key")
+theme_override_styles/hover = SubResource("Style_key_hover")
+theme_override_styles/pressed = SubResource("Style_key_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "2"
+
+[node name="Button3" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.17, 0.16, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("Style_key")
+theme_override_styles/hover = SubResource("Style_key_hover")
+theme_override_styles/pressed = SubResource("Style_key_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "3"
+
+[node name="Button4" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.17, 0.16, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("Style_key")
+theme_override_styles/hover = SubResource("Style_key_hover")
+theme_override_styles/pressed = SubResource("Style_key_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "4"
+
+[node name="Button5" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.17, 0.16, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("Style_key")
+theme_override_styles/hover = SubResource("Style_key_hover")
+theme_override_styles/pressed = SubResource("Style_key_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "5"
+
+[node name="Button0" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.55
+theme_override_colors/font_color = Color(0.22, 0.18, 0.13, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("Style_erase")
+theme_override_styles/hover = SubResource("Style_key_hover")
+theme_override_styles/pressed = SubResource("Style_key_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "⌫  BORRAR"
+
+[node name="ButtonDown" type="Button" parent="HBoxContainer"]
+visible = false
+
+[node name="PaginasAbajo" type="Label" parent="HBoxContainer/ButtonDown"]
+visible = false
+
+[node name="Instruction" type="Label" parent="."]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 174.0
+offset_right = 1138.0
+offset_bottom = 252.0
+theme_override_colors/font_color = Color(0.3, 0.22, 0.15, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 31
+text = "Marca números iguales para encontrar patrones."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="HBoxContainer/Button0" to="." method="_on_btn_erase_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button1" to="." method="_on_button_1_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="HBoxContainer/Button5" to="." method="_on_button_5_pressed"]
+[connection signal="pressed" from="HBoxContainer/ButtonDown" to="." method="_on_button_down_pressed"]

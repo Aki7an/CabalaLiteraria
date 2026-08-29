@@ -20,6 +20,10 @@ extends Node
 @export var pistas_utilizadas_2: int = 0 
 @export var pistas_utilizadas: int = 0 
 @export var pistas: int = 0 
+@export var puzzle_stars: int = 5
+
+var _penalized_reveal_errors: Dictionary = {}
+var _penalized_hints: Dictionary = {}
 
 @export var player_name: String = "Aki"
 @export var score: int
@@ -52,6 +56,7 @@ var frase_index_actual: int = -1
 var idioma_actual: String = ""
 var categoria_actual: String = ""
 var dificultad_actual: int = 1
+var game_mode_actual: String = "quick"
 #var descripcion_actual: String = ""
 var descripcion_final: String = ""
 var letras_iniciales: String = ""
@@ -158,6 +163,8 @@ const CAT_EFEMERIDE := "efemeride"
 const CAT_CITA := "cita"
 const CAT_CURIOSIDADES := "curiosidades"
 const CAT_FRAGMENTO := "fragmento"
+const MODE_QUICK := "quick"
+const MODE_CRYPTOGRAM := "cryptogram"
 
 func locale_code() -> String:
 	var loc := TranslationServer.get_locale().strip_edges()
@@ -288,8 +295,6 @@ func set_lives_init() -> void:
 		lives = 1
 	
 func letra_corresponde_a_numero(letra: String, celda_seleccionada_numero: int) -> bool:
-	print ("celda_seleccionada_numero: ", str(celda_seleccionada_numero))
-	print (busca_posicion_letra_en_array(letra))
 	if celda_seleccionada_numero == busca_posicion_letra_en_array(letra):
 		return true
 	else:
@@ -341,6 +346,9 @@ func set_hints_based_on_difficulty() -> void:
 func set_categoria_actual(categoria: String) -> void:
 	categoria_actual = normalize_category(categoria)
 
+func set_game_mode_actual(mode: String) -> void:
+	game_mode_actual = MODE_CRYPTOGRAM if mode == MODE_CRYPTOGRAM else MODE_QUICK
+
 func set_dificultad_actual(dificultad: int) -> void:
 	dificultad_actual = dificultad
 	set_lives_init()
@@ -363,6 +371,7 @@ func reset_game_paremeters() -> void:
 	cambios_hechos = 0
 	pistas_utilizadas_2 = 0 
 	tiempo_partida = 0	
+	reset_puzzle_stars()
 
 func _game_finished() -> void:
 	partida_terminada = true
@@ -433,6 +442,74 @@ func set_pista3() -> void:
 	
 func set_pistas_utilizadas(pistas:int) -> void:
 	pistas_utilizadas = pistas
+
+
+func reset_puzzle_stars() -> void:
+	puzzle_stars = 5
+	_penalized_reveal_errors.clear()
+	_penalized_hints.clear()
+	SignalManager.update_puzzle_stars.emit(puzzle_stars)
+
+
+func subtract_puzzle_stars(amount: int) -> void:
+	if amount <= 0:
+		return
+	puzzle_stars = maxi(0, puzzle_stars - amount)
+	SignalManager.update_puzzle_stars.emit(puzzle_stars)
+
+
+func register_hint_used(hint_id: String) -> void:
+	if hint_id == "" or _penalized_hints.has(hint_id):
+		return
+	_penalized_hints[hint_id] = true
+	subtract_puzzle_stars(1)
+
+
+func reveal_assignment_errors() -> int:
+	var new_errors := 0
+	var wrong_numbers: Dictionary = {}
+	var correct_numbers: Dictionary = {}
+	var wrong_letters: Dictionary = {}
+	var correct_letters: Dictionary = {}
+	for node: Node in get_tree().get_nodes_in_group("Celda"):
+		if not node is Celda:
+			continue
+		var cell := node as Celda
+		if cell.numero >= 100 or cell.letter_user == "":
+			continue
+		if letra_corresponde_a_numero(cell.letter_user, cell.numero):
+			correct_numbers[cell.numero] = true
+			correct_letters[cell.letter_user.to_upper()] = true
+			cell.mostrar_letra()
+		else:
+			wrong_numbers[cell.numero] = cell.letter_user
+			wrong_letters[cell.letter_user.to_upper()] = true
+			cell.mostrar_letra_errada()
+
+	for node: Node in get_tree().get_nodes_in_group("Letra"):
+		if not node is Letra:
+			continue
+		var keyboard_letter := node as Letra
+		var letter_key := keyboard_letter.letra.to_upper()
+		if correct_letters.has(letter_key):
+			keyboard_letter.mark_as_correct()
+		elif wrong_letters.has(letter_key):
+			keyboard_letter.mark_as_wrong_deselected()
+		else:
+			keyboard_letter.mark_as_unassigned()
+
+	for number: Variant in correct_numbers:
+		_penalized_reveal_errors.erase(number)
+	for number: Variant in wrong_numbers:
+		var assigned_letter: String = str(wrong_numbers[number])
+		if str(_penalized_reveal_errors.get(number, "")) == assigned_letter:
+			continue
+		_penalized_reveal_errors[number] = assigned_letter
+		new_errors += 1
+
+	subtract_puzzle_stars(new_errors)
+	update_numero_letras_reveladas(true)
+	return wrong_numbers.size()
 
 func set_mostrar_tuto_antes_partida_enable() -> void:
 	mostrar_tuto_antes_partida = true
@@ -594,7 +671,7 @@ func calculate_max_y_canvas() -> void:
 
 
 
-func update_numero_letras_reveladas() -> void:
+func update_numero_letras_reveladas(check_solution: bool = false) -> void:
 	#numero_letras_reveladas = numero_letras_reveladas + 1
 	# I have to count it by hand because I will use the initial sequence of adding letters for the buying routine
 	
@@ -608,7 +685,11 @@ func update_numero_letras_reveladas() -> void:
 	
 	SignalManager.update_resting_characters.emit()
 	
-	if numero_letras_a_revelar_originales == numero_letras_reveladas:
+	if not check_solution and numero_letras_a_revelar_originales == numero_letras_reveladas:
+		reveal_assignment_errors()
+		return
+
+	if check_solution and numero_letras_a_revelar_originales == numero_letras_reveladas:
 		print("GAME END")
 		calcula_lista_letras_frase_usuario()
 		
@@ -656,7 +737,7 @@ func calcula_lista_letras_frase_usuario() -> void:
 	lista_letras_frase_usuario.clear()
 
 	for celda: Celda in get_tree().get_nodes_in_group("Celda"):
-		var ch :String= celda.letra
+		var ch: String = celda.letter_user
 		if celda.numero >= 100:
 			# space and ,.: etc not inserted in list
 			continue
@@ -853,8 +934,7 @@ func seleccionar_por_categoria_y_dificultad(cat: String, diff: int) -> void:
 	_aplicar_frase_desde_db(pos)
 
 func seleccionar_por_index(index: int) -> void:
-	
-
+	reset_puzzle_stars()
 	# Buscar frases que cumplan el criterio
 	for i in frases_db.size():
 		var item: Dictionary = frases_db[i]
