@@ -18,7 +18,7 @@ extends Panel
 @onready var paginas_abajo = $HBoxContainer/ButtonDown/PaginasAbajo
 
 func _ready() -> void:
-	for i in GameManager.lista_colores.size():
+	for i in range(1, GameManager.lista_colores.size()):
 		var button: Button = $HBoxContainer.get_node("Button" + str(i))
 		var current := button.get_theme_stylebox("normal")
 		var style: StyleBoxFlat

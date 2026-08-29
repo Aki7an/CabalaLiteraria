@@ -44,8 +44,8 @@ class_name Celda
 
 @onready var tween := get_tree().create_tween()
 
-@onready var color_init: Color = Color(1.0, 1.0, 1.0)
-@onready var color_rellena: Color = Color(0.723, 0.698, 0.69)
+@onready var color_init: Color = Color(0.975, 0.965, 0.945)
+@onready var color_rellena: Color = Color(0.78, 0.76, 0.74)
 
 func _ready():
 	add_to_group("Celda")
