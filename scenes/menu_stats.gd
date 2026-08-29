@@ -206,8 +206,11 @@ func _apply_best() -> void:
 	var best: Dictionary = _dashboard.get("best", {})
 	var stars := clampi(int(best.get("stars", 0)), 0, 5)
 	for i in range(_best_stars.size()):
-		_best_stars[i].texture = TEX_STAR if i < stars else TEX_STAR_OFF
-		_best_stars[i].modulate = Color(1, 1, 1, 1) if i < stars else Color(0.55, 0.42, 0.3, 0.45)
+		var filled := i < stars
+		_best_stars[i].texture = TEX_STAR if filled else TEX_STAR_OFF
+		_best_stars[i].modulate = (
+			Color(1.0, 0.82, 0.18, 1.0) if filled else Color(0.55, 0.42, 0.3, 0.4)
+		)
 	_best_score.text = "%d / 5" % stars
 	if bool(best.get("has_data", false)):
 		var title := str(best.get("title", "")).strip_edges()
