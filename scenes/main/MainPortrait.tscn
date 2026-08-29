@@ -208,9 +208,9 @@ offset_bottom = 2038.0
 
 [node name="PanelLetras" parent="CanvasLayer" instance=ExtResource("7_letters")]
 offset_left = 18.0
-offset_top = 2054.0
+offset_top = 2040.0
 offset_right = 1188.0
-offset_bottom = 2618.0
+offset_bottom = 2622.0
 
 [connection signal="pressed" from="CanvasLayer/BoardFrame/ScrollRail/PageUp" to="CanvasLayer/BoardFrame/ScrollRail/PageUp" method="_on_pressed"]
 [connection signal="pressed" from="CanvasLayer/BoardFrame/ScrollRail/PageDown" to="CanvasLayer/BoardFrame/ScrollRail/PageDown" method="_on_pressed"]

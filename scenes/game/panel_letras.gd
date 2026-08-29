@@ -44,3 +44,22 @@ func _ready() -> void:
 		celda.custom_minimum_size = Vector2(0, ALTO_CELDA)
 
 		grid.add_child(celda)
+
+	resized.connect(_fit_key_heights)
+	grid.resized.connect(_fit_key_heights)
+	call_deferred("_fit_key_heights")
+
+
+func _fit_key_heights() -> void:
+	if grid == null or grid.get_child_count() == 0:
+		return
+	var rows := int(ceil(float(grid.get_child_count()) / float(max(COLUMNAS_POR_FILA, 1))))
+	if rows <= 0:
+		return
+	var available := grid.size.y - float(SEPARACION * max(rows - 1, 0))
+	if available <= 1.0:
+		return
+	var row_h := maxi(floori(available / float(rows)), 1)
+	for child in grid.get_children():
+		if child is Control:
+			(child as Control).custom_minimum_size = Vector2(0, row_h)
