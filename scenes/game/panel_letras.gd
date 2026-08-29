@@ -8,7 +8,6 @@ var letra_scene: PackedScene = preload("res://scenes/Letra/Letra.tscn")
 
 @onready var contenedor_vertical: VBoxContainer = $VBoxContainer
 
-# 0 = Anchors/Uncontrolled, 1 = Container
 const LAYOUT_MODE_CONTAINER := 1
 
 @onready var grid: GridContainer = $GridContainer
@@ -48,6 +47,8 @@ func _ready() -> void:
 	resized.connect(_fit_key_heights)
 	grid.resized.connect(_fit_key_heights)
 	call_deferred("_fit_key_heights")
+	# Second pass after one frame so container sizes are final.
+	get_tree().process_frame.connect(_fit_key_heights, CONNECT_ONE_SHOT)
 
 
 func _fit_key_heights() -> void:
@@ -56,10 +57,16 @@ func _fit_key_heights() -> void:
 	var rows := int(ceil(float(grid.get_child_count()) / float(max(COLUMNAS_POR_FILA, 1))))
 	if rows <= 0:
 		return
-	var available := grid.size.y - float(SEPARACION * max(rows - 1, 0))
+	# Prefer the panel's allocated height so keys consume the full keyboard area.
+	var target_h := grid.size.y
+	if target_h <= 1.0:
+		target_h = size.y - 18.0
+	var available := target_h - float(SEPARACION * max(rows - 1, 0))
 	if available <= 1.0:
 		return
 	var row_h := maxi(floori(available / float(rows)), 1)
 	for child in grid.get_children():
 		if child is Control:
-			(child as Control).custom_minimum_size = Vector2(0, row_h)
+			var control := child as Control
+			control.custom_minimum_size = Vector2(0, row_h)
+			control.size_flags_vertical = Control.SIZE_EXPAND_FILL
