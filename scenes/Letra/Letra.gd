@@ -35,9 +35,9 @@ class_name Letra
 
 #@onready var tween := get_tree().create_tween()
 
-@onready var color_normal: Color = Color(0.985, 0.91, 0.73)
-@onready var color_selected: Color = Color(0.91, 0.72, 0.42)
-@onready var color_selected_por_inicio: Color = Color(0.69, 0.65, 0.56)
+@onready var color_normal: Color = Color(0.975, 0.965, 0.945)
+@onready var color_selected: Color = Color(0.78, 0.76, 0.74)
+@onready var color_selected_por_inicio: Color = Color(0.72, 0.7, 0.68)
 @onready var color_correct: Color = Color(0.66, 0.84, 0.5)
 @onready var color_error: Color = Color(0.96, 0.48, 0.42)
 

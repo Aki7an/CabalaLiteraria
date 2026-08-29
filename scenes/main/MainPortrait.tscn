@@ -16,27 +16,27 @@
 bg_color = Color(0.971, 0.895, 0.696, 1)
 
 [sub_resource type="StyleBoxFlat" id="Style_board_frame"]
-bg_color = Color(0.095, 0.16, 0.17, 1)
+bg_color = Color(0.11, 0.12, 0.13, 1)
 border_width_left = 8
 border_width_top = 8
 border_width_right = 8
 border_width_bottom = 12
-border_color = Color(0.025, 0.075, 0.08, 1)
+border_color = Color(0.05, 0.055, 0.06, 1)
 corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
 corner_radius_bottom_left = 34
-shadow_color = Color(0.21, 0.14, 0.06, 0.34)
+shadow_color = Color(0.05, 0.05, 0.06, 0.4)
 shadow_size = 14
 shadow_offset = Vector2(0, 11)
 
 [sub_resource type="StyleBoxFlat" id="Style_board_inner"]
-bg_color = Color(0.965, 0.912, 0.788, 1)
+bg_color = Color(0.14, 0.145, 0.155, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color(0.23, 0.3, 0.3, 1)
+border_color = Color(0.08, 0.085, 0.09, 1)
 corner_radius_top_left = 13
 corner_radius_top_right = 13
 corner_radius_bottom_right = 13
@@ -208,9 +208,9 @@ offset_bottom = 2038.0
 
 [node name="PanelLetras" parent="CanvasLayer" instance=ExtResource("7_letters")]
 offset_left = 18.0
-offset_top = 2066.0
+offset_top = 2040.0
 offset_right = 1188.0
-offset_bottom = 2598.0
+offset_bottom = 2622.0
 
 [connection signal="pressed" from="CanvasLayer/BoardFrame/ScrollRail/PageUp" to="CanvasLayer/BoardFrame/ScrollRail/PageUp" method="_on_pressed"]
 [connection signal="pressed" from="CanvasLayer/BoardFrame/ScrollRail/PageDown" to="CanvasLayer/BoardFrame/ScrollRail/PageDown" method="_on_pressed"]

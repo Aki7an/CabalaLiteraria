@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" uid="uid://7fpd4dm3ml4u" path="res://scenes/game/panel_colors.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_eraser.svg" id="3_eraser"]
 
 [sub_resource type="StyleBoxFlat" id="Style_panel"]
 bg_color = Color(1, 0.949, 0.804, 0.98)
@@ -61,12 +62,12 @@ corner_radius_bottom_right = 18
 corner_radius_bottom_left = 18
 
 [sub_resource type="StyleBoxFlat" id="Style_erase"]
-bg_color = Color(0.89, 0.77, 0.59, 1)
+bg_color = Color(0.96, 0.93, 0.88, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 7
-border_color = Color(0.56, 0.4, 0.23, 0.72)
+border_color = Color(0.56, 0.4, 0.23, 0.55)
 corner_radius_top_left = 18
 corner_radius_top_right = 18
 corner_radius_bottom_right = 18
@@ -169,7 +170,40 @@ theme_override_styles/normal = SubResource("Style_erase")
 theme_override_styles/hover = SubResource("Style_key_hover")
 theme_override_styles/pressed = SubResource("Style_key_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
-text = "⌫  BORRAR"
+text = ""
+
+[node name="Content" type="HBoxContainer" parent="HBoxContainer/Button0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 18.0
+offset_right = -14.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/Button0/Content"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("3_eraser")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="HBoxContainer/Button0/Content"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.22, 0.18, 0.13, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 30
+text = "BORRAR"
+vertical_alignment = 1
 
 [node name="ButtonDown" type="Button" parent="HBoxContainer"]
 visible = false

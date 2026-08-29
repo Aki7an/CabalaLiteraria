@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://ca5lyu8e63yj" path="res://scenes/game/color_rect_down.gd" id="2_ht4c5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ht4c5"]
-bg_color = Color(0.92, 0.9131, 0.9108, 1)
+bg_color = Color(0.14, 0.145, 0.155, 1)
 
 [node name="CanvasJuego" type="Panel"]
 anchors_preset = -1

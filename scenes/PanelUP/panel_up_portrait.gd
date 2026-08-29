@@ -6,18 +6,10 @@ const OVERLAY_GAME_OVER := preload("res://scenes/menu_game_over_fail.tscn")
 const OVERLAY_ERASE := preload("res://scenes/fondo_aviso_borrado.tscn")
 const OVERLAY_HINTS := preload("res://scenes/Cuadro_Hints.tscn")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
-const CATEGORY_ICONS := {
-	"efemeride": preload("res://images/Efemerides.png"),
-	"cita": preload("res://images/Citas.png"),
-	"curiosidades": preload("res://images/Adivinanza.png"),
-	"fragmento": preload("res://images/FragmentosLiterarios.png")
-}
 
 @onready var category_button: Button = $ButtonCategory
 @onready var category_label: Label = $ButtonCategory/Category
 @onready var category_icon: TextureRect = $ButtonCategory/Icon
-@onready var progress_bar: ProgressBar = $PuzzleInfo/ProgressBar
-@onready var uses_label: Label = $PuzzleInfo/Uses
 @onready var stars: Array[TextureRect] = [
 	$PuzzleInfo/Stars/Star1,
 	$PuzzleInfo/Stars/Star2,
@@ -32,13 +24,9 @@ var _start_ms: int
 func _ready() -> void:
 	_start_ms = Time.get_ticks_msec()
 	category_label.text = GameManager.category_display_name()
-	var category_id: String = GameManager.normalize_category(GameManager.categoria_actual)
-	category_icon.texture = CATEGORY_ICONS.get(category_id, CATEGORY_ICONS["efemeride"])
 	_apply_category_color()
 	_update_stars()
-	_update_progress()
 
-	SignalManager.update_resting_characters.connect(_update_progress)
 	SignalManager.update_puzzle_stars.connect(_update_stars)
 	SignalManager.game_finished.connect(_on_game_finished)
 	SignalManager.game_finished_lost.connect(_on_game_lost)
@@ -55,18 +43,10 @@ func _update_stars(_value: int = -1) -> void:
 	var filled: int = clampi(GameManager.puzzle_stars, 0, stars.size())
 	for index in range(stars.size()):
 		stars[index].self_modulate = (
-			Color(1.0, 0.62, 0.08, 1.0)
+			Color(1.0, 0.72, 0.12, 1.0)
 			if index < filled
-			else Color(0.73, 0.62, 0.42, 0.28)
+			else Color(0.72, 0.68, 0.6, 0.32)
 		)
-
-
-func _update_progress() -> void:
-	var total: int = max(GameManager.numero_letras_a_revelar_originales, 0)
-	var revealed: int = clampi(GameManager.numero_letras_reveladas, 0, total)
-	progress_bar.max_value = max(total, 1)
-	progress_bar.value = revealed
-	uses_label.text = "Progreso: %d de %d" % [revealed, total]
 
 
 func _on_hint_pressed() -> void:
@@ -134,10 +114,11 @@ func _apply_category_color() -> void:
 		normal.border_color = category_color.darkened(0.28)
 		category_button.add_theme_stylebox_override("normal", normal)
 	if hover != null:
-		hover.bg_color = category_color.lightened(0.1)
+		hover.bg_color = category_color.lightened(0.08)
 		hover.border_color = category_color.darkened(0.24)
 		category_button.add_theme_stylebox_override("hover", hover)
 	if pressed != null:
 		pressed.bg_color = category_color.darkened(0.12)
 		pressed.border_color = category_color.darkened(0.35)
 		category_button.add_theme_stylebox_override("pressed", pressed)
+	category_label.add_theme_color_override("font_color", Color(1, 1, 1, 1))
