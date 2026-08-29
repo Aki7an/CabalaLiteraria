@@ -6,7 +6,6 @@ const OVERLAY_GAME_OVER := preload("res://scenes/menu_game_over_fail.tscn")
 const OVERLAY_ERASE := preload("res://scenes/fondo_aviso_borrado.tscn")
 const OVERLAY_HINTS := preload("res://scenes/Cuadro_Hints.tscn")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
-const QUOTES_ICON := preload("res://images/ui_icon_quotes_white.svg")
 
 @onready var category_button: Button = $ButtonCategory
 @onready var category_label: Label = $ButtonCategory/Category
@@ -25,7 +24,6 @@ var _start_ms: int
 func _ready() -> void:
 	_start_ms = Time.get_ticks_msec()
 	category_label.text = GameManager.category_display_name()
-	category_icon.texture = QUOTES_ICON
 	_apply_category_color()
 	_update_stars()
 

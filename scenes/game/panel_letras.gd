@@ -57,11 +57,11 @@ func _fit_key_heights() -> void:
 	var rows := int(ceil(float(grid.get_child_count()) / float(max(COLUMNAS_POR_FILA, 1))))
 	if rows <= 0:
 		return
-	# Prefer the panel's allocated height so keys consume the full keyboard area.
-	var target_h := grid.size.y
-	if target_h <= 1.0:
-		target_h = size.y - 18.0
-	var available := target_h - float(SEPARACION * max(rows - 1, 0))
+	# Use the panel height directly. GridContainer often reports only its
+	# children height, which would leave a permanent gap at the bottom.
+	var top_pad := absf(grid.offset_top)
+	var bottom_pad := absf(grid.offset_bottom)
+	var available := size.y - top_pad - bottom_pad - float(SEPARACION * max(rows - 1, 0))
 	if available <= 1.0:
 		return
 	var row_h := maxi(floori(available / float(rows)), 1)
