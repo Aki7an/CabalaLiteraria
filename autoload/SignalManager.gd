@@ -26,6 +26,8 @@ signal update_puzzle_stars(stars:int)
 
 signal fit_text
 
+signal app_version_changed(version_text: String)
+
 signal update_score
 
 signal erase_letter

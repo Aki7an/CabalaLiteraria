@@ -6,10 +6,13 @@ extends Control
 @onready var button_stats: Button = %ButtonStats
 @onready var button_tutorial: Button = %ButtonTutorial
 @onready var last_game: Label = %LastGame
+@onready var version_label: Label = %VersionLabel
 
 func _ready() -> void:
 	_apply_audio()
 	_apply_labels()
+	_update_version_label()
+	SignalManager.app_version_changed.connect(_on_app_version_changed)
 	SignalManager.fit_text.emit()
 	GameManager.reset_game_paremeters()
 	GameManager.resetear_partida_terminada()
@@ -19,6 +22,14 @@ func _apply_labels() -> void:
 	var tagline := get_node_or_null("Panel/TaglineRow/Tagline") as Label
 	if tagline:
 		tagline.text = tr("Tagline")
+
+func _update_version_label() -> void:
+	if version_label == null:
+		return
+	version_label.text = "VERSION\n%s" % PlayerPrefs.version_display()
+
+func _on_app_version_changed(_version_text: String) -> void:
+	_update_version_label()
 
 func _apply_audio() -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"),

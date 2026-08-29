@@ -24,6 +24,7 @@ extends Node
 
 var _penalized_reveal_errors: Dictionary = {}
 var _penalized_hints: Dictionary = {}
+var reveal_errors_count: int = 0
 
 @export var player_name: String = "Aki"
 @export var score: int
@@ -276,6 +277,14 @@ func _ready():
 	SignalManager.decrease_live.connect(decrease_live)
 	SignalManager.game_finished.connect(_game_finished)
 
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_F2:
+			PlayerPrefs.bump_app_version()
+			get_viewport().set_input_as_handled()
+
+
 func set_level_normal_unlocked(state: bool) -> void:
 	level_normal_unlocked = state
 	
@@ -449,6 +458,7 @@ func reset_puzzle_stars() -> void:
 	puzzle_stars = 5
 	_penalized_reveal_errors.clear()
 	_penalized_hints.clear()
+	reveal_errors_count = 0
 	SignalManager.update_puzzle_stars.emit(puzzle_stars)
 
 
@@ -511,6 +521,7 @@ func reveal_assignment_errors() -> int:
 		_penalized_reveal_errors[number] = assigned_letter
 		new_errors += 1
 
+	reveal_errors_count += new_errors
 	subtract_puzzle_stars(new_errors)
 	update_numero_letras_reveladas(true)
 	return wrong_numbers.size()
