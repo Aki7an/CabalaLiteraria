@@ -13,6 +13,7 @@ const MEDAL_TEXTURES := [
 @onready var button_back: Button = %ButtonBack
 @onready var online_rows: VBoxContainer = %OnlineRows
 @onready var around_rows: VBoxContainer = %AroundRows
+@onready var around_frame: PanelContainer = %AroundFrame
 @onready var online_status: Label = %OnlineStatus
 @onready var category_buttons: Array[Button] = [
 	%FilterGlobal,
@@ -78,20 +79,38 @@ func _update_filter_styles() -> void:
 	for i in category_buttons.size():
 		_apply_category_style(
 			category_buttons[i],
+			categories[i],
 			categories[i] == _category_filter
 		)
 	var modes := [GameManager.MODE_QUICK, GameManager.MODE_CRYPTOGRAM]
 	for i in mode_buttons.size():
 		_apply_mode_style(mode_buttons[i], modes[i] == _mode_filter)
+	_apply_around_frame_style()
 
 
-func _apply_category_style(button: Button, selected: bool) -> void:
-	var style := _make_button_style(
-		Color(1.0, 0.982, 0.94, 1.0) if selected else Color(1.0, 0.968, 0.9, 1.0),
-		Color(0.96, 0.43, 0.12, 1.0) if selected else Color(0.76, 0.63, 0.43, 0.42),
-		34,
-		5 if selected else 2
+func _category_icon_box_color(category_id: String) -> Color:
+	match category_id:
+		GameManager.CAT_CITA:
+			return Color("a4b5f4")
+		GameManager.CAT_EFEMERIDE:
+			return Color("f0b0aa")
+		GameManager.CAT_CURIOSIDADES:
+			return Color("f6e07a")
+		GameManager.CAT_FRAGMENTO:
+			return Color("9ed8dc")
+		_:
+			return Color("fff0d6")
+
+
+func _apply_category_style(button: Button, category_id: String, selected: bool) -> void:
+	var icon_box := _category_icon_box_color(category_id)
+	var background := icon_box.lerp(Color.WHITE, 0.42)
+	var border := (
+		icon_box.darkened(0.12)
+		if selected
+		else Color(icon_box.r, icon_box.g, icon_box.b, 0.55)
 	)
+	var style := _make_button_style(background, border, 34, 5 if selected else 2)
 	button.add_theme_stylebox_override("normal", style)
 	button.add_theme_stylebox_override("hover", style)
 	button.add_theme_stylebox_override("disabled", style)
@@ -103,6 +122,49 @@ func _apply_category_style(button: Button, selected: bool) -> void:
 			"font_color",
 			COLOR_ORANGE if selected else COLOR_INK
 		)
+
+
+func _around_frame_colors() -> Dictionary:
+	match _category_filter:
+		GameManager.CAT_CITA:
+			return {
+				"bg": Color(0.90, 0.84, 0.96, 1.0),
+				"border": Color(0.62, 0.42, 0.78, 0.42),
+			}
+		GameManager.CAT_EFEMERIDE:
+			return {
+				"bg": Color(0.98, 0.84, 0.84, 1.0),
+				"border": Color(0.82, 0.40, 0.40, 0.42),
+			}
+		GameManager.CAT_CURIOSIDADES:
+			return {
+				"bg": Color(0.99, 0.95, 0.76, 1.0),
+				"border": Color(0.82, 0.68, 0.22, 0.42),
+			}
+		GameManager.CAT_FRAGMENTO:
+			return {
+				"bg": Color(0.76, 0.93, 0.91, 1.0),
+				"border": Color(0.22, 0.66, 0.62, 0.42),
+			}
+		_:
+			return {
+				"bg": Color(1.0, 0.965, 0.91, 1.0),
+				"border": Color(0.82, 0.62, 0.38, 0.40),
+			}
+
+
+func _apply_around_frame_style() -> void:
+	var colors: Dictionary = _around_frame_colors()
+	var style := StyleBoxFlat.new()
+	style.bg_color = colors.bg
+	style.border_color = colors.border
+	style.set_border_width_all(3)
+	style.set_corner_radius_all(36)
+	style.content_margin_left = 14
+	style.content_margin_top = 14
+	style.content_margin_right = 14
+	style.content_margin_bottom = 14
+	around_frame.add_theme_stylebox_override("panel", style)
 
 
 func _apply_mode_style(button: Button, selected: bool) -> void:
@@ -209,7 +271,7 @@ func _load_online_ranking() -> void:
 			var is_player := (
 				str(entry.get("PlayFabId", "")) == str(PlayFabTools.playfab_id)
 			)
-			_add_competitive_row(around_rows, entry, is_player)
+			_add_competitive_row(around_rows, entry, is_player, true)
 	_loading = false
 	_set_filters_disabled(false)
 
@@ -262,7 +324,8 @@ func _fetch_leaderboard(
 func _add_competitive_row(
 	container: VBoxContainer,
 	entry: Dictionary,
-	is_player: bool
+	is_player: bool,
+	around_player := false
 ) -> void:
 	var decoded: Dictionary = PlayFabTools.decode_competitive_value(
 		int(entry.get("StatValue", 0))
@@ -270,7 +333,7 @@ func _add_competitive_row(
 	_add_row(
 		container,
 		int(entry.get("Position", -1)) + 1,
-		"TÚ" if is_player else str(entry.get("DisplayName", "Anónimo")),
+		_row_display_name(entry, is_player, around_player),
 		int(decoded.get("stars_earned", 0)),
 		int(decoded.get("completed", 0)),
 		int(decoded.get("stars_per_puzzle_hundredths", 0)),
@@ -278,6 +341,25 @@ func _add_competitive_row(
 		int(decoded.get("failed_letters", 0)),
 		is_player
 	)
+
+
+func _has_online_name() -> bool:
+	var local_name := str(GameManager.player_name).strip_edges()
+	return local_name != "" and local_name != "---" and local_name != "BAD"
+
+
+func _row_display_name(
+	entry: Dictionary,
+	is_player: bool,
+	around_player: bool
+) -> String:
+	var local_name := str(GameManager.player_name).strip_edges()
+	if is_player:
+		return local_name if _has_online_name() else "TÚ"
+	if around_player and not _has_online_name():
+		return "-"
+	var remote_name := str(entry.get("DisplayName", "")).strip_edges()
+	return remote_name if remote_name != "" else "-"
 
 
 func _add_placeholder_row(
@@ -340,17 +422,40 @@ func _add_row(
 	))
 
 
-func _make_medal(rank: int) -> CenterContainer:
-	var wrap := CenterContainer.new()
+func _make_medal(rank: int) -> Control:
+	var wrap := Control.new()
 	wrap.custom_minimum_size = Vector2(92, 118)
+	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	var medal := TextureRect.new()
-	medal.custom_minimum_size = Vector2(88, 106)
+	medal.set_anchors_preset(Control.PRESET_FULL_RECT)
 	medal.texture = MEDAL_TEXTURES[rank - 1]
 	medal.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	medal.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	medal.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	wrap.add_child(medal)
+
+	var number := Label.new()
+	number.text = str(rank)
+	number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	number.set_anchors_preset(Control.PRESET_FULL_RECT)
+	number.offset_bottom = -28
+	number.add_theme_font_size_override("font_size", 36)
+	number.add_theme_color_override("font_color", _medal_number_color(rank))
+	number.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	wrap.add_child(number)
 	return wrap
+
+
+func _medal_number_color(rank: int) -> Color:
+	match rank:
+		1:
+			return Color("8c4b08")
+		2:
+			return Color("626a70")
+		_:
+			return Color("693416")
 
 
 func _make_stars_value(stars: int) -> HBoxContainer:
@@ -370,22 +475,32 @@ func _make_stars_value(stars: int) -> HBoxContainer:
 	return value
 
 
+func _player_row_colors() -> Dictionary:
+	var accent := _category_icon_box_color(_category_filter)
+	if _category_filter == "global":
+		return {
+			"bg": Color(1.0, 0.86, 0.64, 1.0),
+			"border": Color(0.94, 0.45, 0.12, 0.9),
+		}
+	return {
+		"bg": accent.darkened(0.08),
+		"border": accent.darkened(0.32),
+	}
+
+
 func _make_row_style(is_player: bool) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
-	style.bg_color = (
-		Color(1.0, 0.941, 0.839, 1.0)
-		if is_player
-		else Color(1.0, 0.985, 0.94, 0.1)
-	)
+	if is_player:
+		var colors: Dictionary = _player_row_colors()
+		style.bg_color = colors.bg
+		style.border_color = colors.border
+	else:
+		style.bg_color = Color(1.0, 0.985, 0.94, 0.1)
+		style.border_color = Color(0.72, 0.6, 0.42, 0.18)
 	style.border_width_left = 2 if is_player else 0
 	style.border_width_top = 2 if is_player else 0
 	style.border_width_right = 2 if is_player else 0
 	style.border_width_bottom = 2 if is_player else 1
-	style.border_color = (
-		Color(0.94, 0.45, 0.12, 0.82)
-		if is_player
-		else Color(0.72, 0.6, 0.42, 0.18)
-	)
 	style.corner_radius_top_left = 24 if is_player else 0
 	style.corner_radius_top_right = 24 if is_player else 0
 	style.corner_radius_bottom_left = 24 if is_player else 0

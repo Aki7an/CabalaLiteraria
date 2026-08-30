@@ -1,47 +1,20 @@
-[gd_scene load_steps=19 format=3 uid="uid://ba0qpxrfmqw3r"]
+[gd_scene format=3 uid="uid://ba0qpxrfmqw3r"]
 
-[ext_resource type="Script" path="res://scenes/leaderboard_final.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/fondo.tscn" id="2_background"]
-[ext_resource type="FontVariation" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
-[ext_resource type="FontFile" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="4_title"]
-[ext_resource type="Texture2D" path="res://images/Citas.png" id="5_quotes"]
-[ext_resource type="Texture2D" path="res://images/Efemerides.png" id="6_events"]
-[ext_resource type="Texture2D" path="res://images/Adivinanza.png" id="7_curiosities"]
-[ext_resource type="Texture2D" path="res://images/FragmentosLiterarios.png" id="8_fragments"]
+[ext_resource type="Script" uid="uid://yl7tg82yn0iu" path="res://scenes/leaderboard_final.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_background"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="4_title"]
+[ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="5_quotes"]
+[ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="6_events"]
+[ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="7_curiosities"]
+[ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="8_fragments"]
 [ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="9_back"]
-[ext_resource type="Texture2D" path="res://images/leaderboard_global.svg" id="10_global"]
-[ext_resource type="Texture2D" path="res://images/mode_quick.svg" id="11_quick"]
-[ext_resource type="Texture2D" path="res://images/mode_scroll.svg" id="12_cryptogram"]
+[ext_resource type="Texture2D" uid="uid://t0gcgg5c52mq" path="res://images/leaderboard_global.svg" id="10_global"]
+[ext_resource type="Texture2D" uid="uid://duj5gi84s5bqf" path="res://images/mode_quick.svg" id="11_quick"]
+[ext_resource type="Texture2D" uid="uid://cxcb17n88b3b3" path="res://images/mode_scroll.svg" id="12_cryptogram"]
 
 [sub_resource type="StyleBoxFlat" id="Style_background"]
 bg_color = Color(0.984, 0.949, 0.865, 1)
-
-[sub_resource type="StyleBoxFlat" id="Style_back"]
-bg_color = Color(1, 0.973, 0.9, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 5
-border_color = Color(0.58, 0.39, 0.19, 0.38)
-corner_radius_top_left = 22
-corner_radius_top_right = 22
-corner_radius_bottom_right = 22
-corner_radius_bottom_left = 22
-shadow_color = Color(0.28, 0.17, 0.07, 0.16)
-shadow_size = 7
-shadow_offset = Vector2(0, 6)
-
-[sub_resource type="StyleBoxFlat" id="Style_back_pressed"]
-bg_color = Color(0.96, 0.89, 0.75, 1)
-border_width_left = 2
-border_width_top = 4
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.58, 0.39, 0.19, 0.42)
-corner_radius_top_left = 22
-corner_radius_top_right = 22
-corner_radius_bottom_right = 22
-corner_radius_bottom_left = 22
 
 [sub_resource type="StyleBoxFlat" id="Style_mode"]
 bg_color = Color(1, 0.96, 0.87, 1)
@@ -54,6 +27,8 @@ corner_radius_top_left = 28
 corner_radius_top_right = 28
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
 
 [sub_resource type="StyleBoxFlat" id="Style_card"]
 bg_color = Color(1, 0.976, 0.925, 1)
@@ -94,9 +69,23 @@ corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+[sub_resource type="StyleBoxFlat" id="Style_around_frame"]
+content_margin_left = 14.0
+content_margin_top = 14.0
+content_margin_right = 14.0
+content_margin_bottom = 14.0
+bg_color = Color(1, 0.965, 0.91, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.82, 0.62, 0.38, 0.4)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
 
-[node name="LeaderBoard" type="Control"]
+[node name="LeaderBoard" type="Control" unique_id=2002514090]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -105,7 +94,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="Panel" parent="."]
+[node name="Background" type="Panel" parent="." unique_id=1485483437]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -115,21 +104,23 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_background")
 
-[node name="Pattern" parent="Background" instance=ExtResource("2_background")]
+[node name="Pattern" parent="Background" unique_id=167697658 instance=ExtResource("2_background")]
 modulate = Color(1, 1, 1, 0.12)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Header" type="Control" parent="."]
-layout_mode = 0
+[node name="Header" type="Control" parent="." unique_id=562795727]
+anchors_preset = 0
 offset_right = 1206.0
 offset_bottom = 220.0
 
-[node name="ButtonBack" parent="Header" instance=ExtResource("9_back")]
+[node name="ButtonBack" parent="Header" unique_id=2142967141 instance=ExtResource("9_back")]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 42.0
@@ -137,20 +128,7 @@ offset_top = 36.0
 offset_right = 188.0
 offset_bottom = 182.0
 
-[node name="LeftOrnament" type="Label" parent="Header"]
-layout_mode = 0
-offset_left = 260.0
-offset_top = 42.0
-offset_right = 390.0
-offset_bottom = 158.0
-theme_override_colors/font_color = Color(0.91, 0.55, 0.16, 0.68)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 54
-text = "❧  ✦"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Title" type="Label" parent="Header"]
+[node name="Title" type="Label" parent="Header" unique_id=960502261]
 layout_mode = 0
 offset_left = 360.0
 offset_top = 32.0
@@ -163,20 +141,7 @@ text = "RÉCORDS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RightOrnament" type="Label" parent="Header"]
-layout_mode = 0
-offset_left = 816.0
-offset_top = 42.0
-offset_right = 946.0
-offset_bottom = 158.0
-theme_override_colors/font_color = Color(0.91, 0.55, 0.16, 0.68)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 54
-text = "✦  ❧"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ModeTabs" type="HBoxContainer" parent="."]
+[node name="ModeTabs" type="HBoxContainer" parent="." unique_id=1874981241]
 layout_mode = 0
 offset_left = 32.0
 offset_top = 202.0
@@ -184,66 +149,69 @@ offset_right = 1174.0
 offset_bottom = 380.0
 theme_override_constants/separation = 0
 
-[node name="FilterQuick" type="Button" parent="ModeTabs"]
+[node name="FilterQuick" type="Button" parent="ModeTabs" unique_id=683418167]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 38
-theme_override_constants/icon_max_width = 94
+theme_override_font_sizes/font_size = 44
 theme_override_styles/normal = SubResource("Style_mode")
 theme_override_styles/focus = SubResource("Style_empty")
 text = "RÁPIDO"
-icon = ExtResource("11_quick")
-expand_icon = true
 
-[node name="FilterCryptogram" type="Button" parent="ModeTabs"]
+[node name="Icon" type="TextureRect" parent="ModeTabs/FilterQuick" unique_id=2057069721]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 42.0
+offset_right = 190.0
+offset_bottom = 136.0
+mouse_filter = 2
+texture = ExtResource("11_quick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FilterCryptogram" type="Button" parent="ModeTabs" unique_id=836680143]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 38
-theme_override_constants/icon_max_width = 94
+theme_override_font_sizes/font_size = 44
 theme_override_styles/normal = SubResource("Style_mode")
 theme_override_styles/focus = SubResource("Style_empty")
 text = "CRIPTOGRAMA"
-icon = ExtResource("12_cryptogram")
-expand_icon = true
 
-[node name="MainCard" type="Panel" parent="."]
+[node name="Icon" type="TextureRect" parent="ModeTabs/FilterCryptogram" unique_id=1909880904]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 38.0
+offset_right = 109.0
+offset_bottom = 132.0
+mouse_filter = 2
+texture = ExtResource("12_cryptogram")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MainCard" type="Panel" parent="." unique_id=1232219028]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 350.0
 offset_right = 1178.0
-offset_bottom = 2510.0
+offset_bottom = 2584.0
 theme_override_styles/panel = SubResource("Style_card")
 
-[node name="CategoryTitle" type="Label" parent="MainCard"]
-layout_mode = 0
-offset_left = 330.0
-offset_top = 42.0
-offset_right = 816.0
-offset_bottom = 112.0
-theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 31
-text = "✧   ELIGE UNA CATEGORÍA   ✧"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CategoryFilters" type="HBoxContainer" parent="MainCard"]
+[node name="CategoryFilters" type="HBoxContainer" parent="MainCard" unique_id=928681907]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 126.0
+offset_top = 56.0
 offset_right = 1120.0
-offset_bottom = 390.0
+offset_bottom = 320.0
 theme_override_constants/separation = 14
 
-[node name="FilterGlobal" type="Button" parent="MainCard/CategoryFilters"]
+[node name="FilterGlobal" type="Button" parent="MainCard/CategoryFilters" unique_id=996994361]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -252,31 +220,30 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_filter")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterGlobal"]
+[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterGlobal" unique_id=670234752]
 layout_mode = 0
-offset_left = 49.0
+offset_left = 22.0
 offset_top = 8.0
-offset_right = 161.0
-offset_bottom = 120.0
+offset_right = 182.0
+offset_bottom = 175.94327
 mouse_filter = 2
 texture = ExtResource("10_global")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterGlobal"]
+[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterGlobal" unique_id=496189157]
 layout_mode = 0
 offset_top = 132.0
 offset_right = 210.0
 offset_bottom = 246.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.91, 0.35, 0.08, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 26
 text = "GLOBAL"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FilterQuotes" type="Button" parent="MainCard/CategoryFilters"]
+[node name="FilterQuotes" type="Button" parent="MainCard/CategoryFilters" unique_id=879911942]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -285,31 +252,32 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_filter")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterQuotes"]
+[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterQuotes" unique_id=543587960]
 layout_mode = 0
-offset_left = 49.0
-offset_top = 8.0
-offset_right = 161.0
-offset_bottom = 120.0
+offset_left = 34.0
+offset_top = 12.0
+offset_right = 178.0
+offset_bottom = 152.0
 mouse_filter = 2
 texture = ExtResource("5_quotes")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterQuotes"]
+[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterQuotes" unique_id=470719880]
 layout_mode = 0
-offset_top = 132.0
-offset_right = 210.0
-offset_bottom = 246.0
-mouse_filter = 2
+offset_left = 2.0
+offset_top = 140.0
+offset_right = 212.0
+offset_bottom = 254.0
 theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 21
-text = "CITAS\nCÉLEBRES"
+theme_override_font_sizes/font_size = 26
+text = "CITAS
+CÉLEBRES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FilterEvents" type="Button" parent="MainCard/CategoryFilters"]
+[node name="FilterEvents" type="Button" parent="MainCard/CategoryFilters" unique_id=1625054350]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -318,31 +286,30 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_filter")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterEvents"]
+[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterEvents" unique_id=1421581089]
 layout_mode = 0
-offset_left = 49.0
-offset_top = 8.0
-offset_right = 161.0
-offset_bottom = 120.0
+offset_left = 29.0
+offset_top = 12.0
+offset_right = 169.0
+offset_bottom = 152.0
 mouse_filter = 2
 texture = ExtResource("6_events")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterEvents"]
+[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterEvents" unique_id=1164003861]
 layout_mode = 0
 offset_top = 132.0
 offset_right = 210.0
 offset_bottom = 246.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 21
+theme_override_font_sizes/font_size = 26
 text = "EFEMÉRIDES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FilterCuriosities" type="Button" parent="MainCard/CategoryFilters"]
+[node name="FilterCuriosities" type="Button" parent="MainCard/CategoryFilters" unique_id=635915692]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -351,31 +318,30 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_filter")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterCuriosities"]
+[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterCuriosities" unique_id=1065082903]
 layout_mode = 0
-offset_left = 49.0
-offset_top = 8.0
-offset_right = 161.0
-offset_bottom = 120.0
+offset_left = 40.0
+offset_top = 12.0
+offset_right = 177.0
+offset_bottom = 149.0
 mouse_filter = 2
 texture = ExtResource("7_curiosities")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterCuriosities"]
+[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterCuriosities" unique_id=2048505469]
 layout_mode = 0
 offset_top = 132.0
 offset_right = 210.0
 offset_bottom = 246.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 19
+theme_override_font_sizes/font_size = 26
 text = "CURIOSIDADES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FilterFragments" type="Button" parent="MainCard/CategoryFilters"]
+[node name="FilterFragments" type="Button" parent="MainCard/CategoryFilters" unique_id=911568405]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -384,159 +350,170 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_filter")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterFragments"]
+[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterFragments" unique_id=2098893374]
 layout_mode = 0
-offset_left = 49.0
-offset_top = 8.0
-offset_right = 161.0
-offset_bottom = 120.0
+offset_left = 27.0
+offset_top = 12.0
+offset_right = 169.0
+offset_bottom = 154.0
 mouse_filter = 2
 texture = ExtResource("8_fragments")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterFragments"]
+[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterFragments" unique_id=1685461882]
 layout_mode = 0
-offset_top = 132.0
-offset_right = 210.0
-offset_bottom = 246.0
-mouse_filter = 2
+offset_left = -5.0
+offset_top = 140.0
+offset_right = 205.0
+offset_bottom = 254.0
 theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 18
-text = "FRAGMENTOS\nLITERARIOS"
+theme_override_font_sizes/font_size = 26
+text = "FRAGMENTOS
+LITERARIOS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RulesCard" type="Panel" parent="MainCard"]
+[node name="RulesCard" type="Panel" parent="MainCard" unique_id=75970903]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 420.0
+offset_top = 352.0
 offset_right = 1120.0
-offset_bottom = 812.0
+offset_bottom = 802.0
 theme_override_styles/panel = SubResource("Style_info")
 
-[node name="InfoIcon" type="Label" parent="MainCard/RulesCard"]
+[node name="InfoIcon" type="Label" parent="MainCard/RulesCard" unique_id=183643930]
 layout_mode = 0
-offset_left = 26.0
-offset_top = 30.0
-offset_right = 104.0
-offset_bottom = 108.0
+offset_left = 6.0
+offset_top = -2.0
+offset_right = 92.0
+offset_bottom = 132.0
 theme_override_colors/font_color = Color(0.62, 0.4, 0.15, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 58
+theme_override_font_sizes/font_size = 100
 text = "ⓘ"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Rules" type="RichTextLabel" parent="MainCard/RulesCard"]
+[node name="Rules" type="RichTextLabel" parent="MainCard/RulesCard" unique_id=1264415301]
 layout_mode = 0
 offset_left = 118.0
 offset_top = 34.0
 offset_right = 1055.0
 offset_bottom = 358.0
 theme_override_colors/default_color = Color(0.24, 0.14, 0.08, 1)
+theme_override_constants/line_separation = 8
 theme_override_fonts/normal_font = ExtResource("3_font")
 theme_override_fonts/bold_font = ExtResource("3_font")
 theme_override_font_sizes/normal_font_size = 34
 theme_override_font_sizes/bold_font_size = 34
-theme_override_constants/line_separation = 8
 bbcode_enabled = true
-text = "La clasificación se basa en [color=#e55816]ESTRELLAS TOTALES[/color] obtenidas.\n\nDesempates (en este orden):\n1.  Más estrellas en menos número de puzles hechos (estrellas/puzle)\n2.  Menor número de ayudas utilizadas\n3.  Menor número de letras reveladas falladas"
+text = "La clasificación se basa en [color=#e55816]ESTRELLAS TOTALES[/color] obtenidas.
+
+Desempates (en este orden):
+1.  Más estrellas en menos número de puzles hechos (estrellas/puzle)
+2.  Menor número de ayudas utilizadas
+3.  Menor número de letras reveladas falladas"
 fit_content = true
 
-[node name="TableHeader" type="HBoxContainer" parent="MainCard"]
+[node name="AroundFrame" type="PanelContainer" parent="MainCard" unique_id=390431496]
+unique_name_in_owner = true
 layout_mode = 0
-offset_left = 30.0
-offset_top = 842.0
-offset_right = 1120.0
-offset_bottom = 940.0
+offset_left = 18.0
+offset_top = 828.0
+offset_right = 1132.0
+offset_bottom = 2194.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_around_frame")
+
+[node name="TableBody" type="VBoxContainer" parent="MainCard/AroundFrame" unique_id=390431497]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TableHeader" type="HBoxContainer" parent="MainCard/AroundFrame/TableBody" unique_id=804256437]
+custom_minimum_size = Vector2(0, 98)
+layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Position" type="Label" parent="MainCard/TableHeader"]
+[node name="Position" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=309134559]
 custom_minimum_size = Vector2(92, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "POS."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Player" type="Label" parent="MainCard/TableHeader"]
+[node name="Player" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=1111298564]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "JUGADOR"
 vertical_alignment = 1
 
-[node name="Stars" type="Label" parent="MainCard/TableHeader"]
+[node name="Stars" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=2124534108]
 custom_minimum_size = Vector2(142, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 28
 text = "ESTRELLAS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Puzzles" type="Label" parent="MainCard/TableHeader"]
+[node name="Puzzles" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=832039678]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 28
 text = "PUZLES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Average" type="Label" parent="MainCard/TableHeader"]
+[node name="Average" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=980667571]
 custom_minimum_size = Vector2(146, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 28
 text = "★/PUZLE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Aids" type="Label" parent="MainCard/TableHeader"]
+[node name="Aids" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=885789561]
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 28
 text = "AYUDAS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Failed" type="Label" parent="MainCard/TableHeader"]
+[node name="Failed" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=734486508]
 custom_minimum_size = Vector2(126, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 21
+theme_override_font_sizes/font_size = 28
 text = "FALLADAS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OnlineRows" type="VBoxContainer" parent="MainCard"]
+[node name="OnlineRows" type="VBoxContainer" parent="MainCard/AroundFrame/TableBody" unique_id=1837482115]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 30.0
-offset_top = 940.0
-offset_right = 1120.0
-offset_bottom = 1588.0
+custom_minimum_size = Vector2(0, 644)
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="Ellipsis" type="Label" parent="MainCard"]
-layout_mode = 0
-offset_left = 500.0
-offset_top = 1602.0
-offset_right = 646.0
-offset_bottom = 1680.0
+[node name="Ellipsis" type="Label" parent="MainCard/AroundFrame/TableBody" unique_id=1074324666]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
 theme_override_colors/font_color = Color(0.38, 0.24, 0.13, 0.8)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 46
@@ -544,16 +521,12 @@ text = "•••"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AroundRows" type="VBoxContainer" parent="MainCard"]
+[node name="AroundRows" type="VBoxContainer" parent="MainCard/AroundFrame/TableBody" unique_id=390431495]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 30.0
-offset_top = 1690.0
-offset_right = 1120.0
-offset_bottom = 2078.0
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="OnlineStatus" type="Label" parent="MainCard"]
+[node name="OnlineStatus" type="Label" parent="MainCard" unique_id=948527625]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 250.0
@@ -562,12 +535,12 @@ offset_right = 896.0
 offset_bottom = 1270.0
 theme_override_colors/font_color = Color(0.43, 0.34, 0.24, 0.82)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 34
 text = "Cargando clasificación online…"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="UpdateNote" type="Label" parent="MainCard"]
+[node name="UpdateNote" type="Label" parent="MainCard" unique_id=372431628]
 layout_mode = 0
 offset_left = 170.0
 offset_top = 2240.0

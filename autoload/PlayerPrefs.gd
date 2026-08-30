@@ -39,6 +39,7 @@ func save_prefs() -> void:
 		
 	var cfg := ConfigFile.new()
 	cfg.set_value("general", "idioma", idioma)
+	cfg.set_value("general", "player_name", GameManager.player_name)
 	cfg.set_value("general", "mostrar_tutorial_antes_de_partida", mostrar_tuto_antes_partida)
 	cfg.set_value("general", "app_version_code", app_version_code)
 	cfg.set_value("audio", "volumen_musica", volumen_musica)
@@ -57,6 +58,7 @@ func load_prefs() -> void:
 	var err = cfg.load(SAVE_PATH)
 	if err == OK:
 		idioma = cfg.get_value("general", "idioma", idioma)
+		GameManager.player_name = str(cfg.get_value("general", "player_name", GameManager.player_name))
 		mostrar_tuto_antes_partida = cfg.get_value("general", "mostrar_tutorial_antes_de_partida", mostrar_tuto_antes_partida)
 		app_version_code = int(cfg.get_value("general", "app_version_code", app_version_code))
 		volumen_musica = cfg.get_value("audio", "volumen_musica", volumen_musica)
