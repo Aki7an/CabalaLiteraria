@@ -4,6 +4,11 @@ const TOP_ROWS := 5
 const COLOR_INK := Color(0.24, 0.14, 0.08, 1.0)
 const COLOR_ORANGE := Color(0.96, 0.47, 0.13, 1.0)
 const COLOR_CREAM := Color(1.0, 0.97, 0.89, 1.0)
+const MEDAL_TEXTURES := [
+	preload("res://images/leaderboard_medal_gold.svg"),
+	preload("res://images/leaderboard_medal_silver.svg"),
+	preload("res://images/leaderboard_medal_bronze.svg"),
+]
 
 @onready var button_back: Button = %ButtonBack
 @onready var online_rows: VBoxContainer = %OnlineRows
@@ -82,27 +87,45 @@ func _update_filter_styles() -> void:
 
 func _apply_category_style(button: Button, selected: bool) -> void:
 	var style := _make_button_style(
-		Color(1.0, 0.96, 0.87, 0.92),
-		COLOR_ORANGE if selected else Color(0.64, 0.48, 0.3, 0.25),
-		24,
-		3 if selected else 2
+		Color(1.0, 0.982, 0.94, 1.0) if selected else Color(1.0, 0.968, 0.9, 1.0),
+		Color(0.96, 0.43, 0.12, 1.0) if selected else Color(0.76, 0.63, 0.43, 0.42),
+		34,
+		5 if selected else 2
 	)
 	button.add_theme_stylebox_override("normal", style)
 	button.add_theme_stylebox_override("hover", style)
 	button.add_theme_stylebox_override("disabled", style)
 	button.add_theme_color_override("font_color", COLOR_ORANGE if selected else COLOR_INK)
 	button.add_theme_color_override("font_disabled_color", COLOR_ORANGE if selected else COLOR_INK)
+	var text_label := button.get_node_or_null("Text") as Label
+	if text_label != null:
+		text_label.add_theme_color_override(
+			"font_color",
+			COLOR_ORANGE if selected else COLOR_INK
+		)
 
 
 func _apply_mode_style(button: Button, selected: bool) -> void:
-	var style := _make_button_style(
-		Color(1.0, 0.67, 0.3, 1.0) if selected else Color(1.0, 0.96, 0.87, 0.96),
-		Color(0.76, 0.36, 0.11, 0.9) if selected else Color(0.64, 0.48, 0.3, 0.3),
-		28,
-		2
+	var style := StyleBoxFlat.new()
+	style.bg_color = (
+		Color(1.0, 0.69, 0.31, 1.0)
+		if selected
+		else Color(1.0, 0.976, 0.925, 1.0)
 	)
+	style.border_color = (
+		Color(0.91, 0.42, 0.1, 1.0)
+		if selected
+		else Color(0.78, 0.66, 0.48, 0.62)
+	)
+	style.set_border_width_all(3)
+	var is_quick := button == mode_buttons[0]
+	style.corner_radius_top_left = 34 if is_quick else 5
+	style.corner_radius_bottom_left = 18 if is_quick else 5
+	style.corner_radius_top_right = 5 if is_quick else 34
+	style.corner_radius_bottom_right = 5 if is_quick else 18
 	button.add_theme_stylebox_override("normal", style)
 	button.add_theme_stylebox_override("hover", style)
+	button.add_theme_stylebox_override("pressed", style)
 	button.add_theme_stylebox_override("disabled", style)
 	button.add_theme_color_override("font_color", COLOR_INK)
 	button.add_theme_color_override("font_disabled_color", COLOR_INK)
@@ -277,39 +300,34 @@ func _add_row(
 	is_player: bool
 ) -> void:
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(0, 106)
+	panel.custom_minimum_size = Vector2(0, 124)
 	panel.add_theme_stylebox_override("panel", _make_row_style(is_player))
 	container.add_child(panel)
 
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 9)
+	row.add_theme_constant_override("separation", 8)
 	panel.add_child(row)
 
-	var rank_label := _make_label(
-		"—" if rank <= 0 else _format_rank(rank),
-		27,
-		HORIZONTAL_ALIGNMENT_CENTER
-	)
-	rank_label.custom_minimum_size.x = 92
-	if rank in [1, 2, 3]:
-		rank_label.add_theme_color_override(
-			"font_color",
-			[Color(0.95, 0.59, 0.13), Color(0.55, 0.55, 0.55), Color(0.68, 0.36, 0.14)][rank - 1]
+	if rank in [1, 2, 3] and stars >= 0:
+		row.add_child(_make_medal(rank))
+	else:
+		var rank_label := _make_label(
+			"—" if rank <= 0 else _format_rank(rank),
+			34,
+			HORIZONTAL_ALIGNMENT_CENTER
 		)
-	row.add_child(rank_label)
-	row.add_child(_make_avatar(player_name, rank))
+		rank_label.custom_minimum_size.x = 92
+		if is_player:
+			rank_label.add_theme_color_override("font_color", COLOR_ORANGE)
+		row.add_child(rank_label)
 
-	var name_label := _make_label(player_name, 27, HORIZONTAL_ALIGNMENT_LEFT)
+	var name_label := _make_label(player_name, 34, HORIZONTAL_ALIGNMENT_LEFT)
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if is_player:
 		name_label.add_theme_color_override("font_color", COLOR_ORANGE)
 	row.add_child(name_label)
 
-	row.add_child(_make_value_label(
-		"—" if stars < 0 else "%d ★" % stars,
-		142,
-		COLOR_ORANGE if stars >= 0 else COLOR_INK
-	))
+	row.add_child(_make_stars_value(stars))
 	row.add_child(_make_value_label("—" if puzzles < 0 else str(puzzles), 105))
 	row.add_child(_make_value_label(
 		"—" if average_hundredths < 0 else _format_average(average_hundredths),
@@ -322,56 +340,56 @@ func _add_row(
 	))
 
 
-func _make_avatar(player_name: String, rank: int) -> PanelContainer:
-	var avatar := PanelContainer.new()
-	avatar.custom_minimum_size = Vector2(62, 62)
-	var style := StyleBoxFlat.new()
-	var colors := [
-		Color(0.93, 0.48, 0.23),
-		Color(0.46, 0.56, 0.79),
-		Color(0.3, 0.66, 0.52),
-		Color(0.83, 0.57, 0.23),
-	]
-	style.bg_color = colors[absi(rank) % colors.size()]
-	style.border_width_left = 2
-	style.border_width_top = 2
-	style.border_width_right = 2
-	style.border_width_bottom = 2
-	style.border_color = Color(0.31, 0.18, 0.08, 0.32)
-	style.corner_radius_top_left = 31
-	style.corner_radius_top_right = 31
-	style.corner_radius_bottom_left = 31
-	style.corner_radius_bottom_right = 31
-	avatar.add_theme_stylebox_override("panel", style)
-	var initial := _make_label(
-		player_name.left(1).to_upper() if player_name != "" else "?",
-		29,
-		HORIZONTAL_ALIGNMENT_CENTER
-	)
-	avatar.add_child(initial)
-	return avatar
+func _make_medal(rank: int) -> CenterContainer:
+	var wrap := CenterContainer.new()
+	wrap.custom_minimum_size = Vector2(92, 118)
+	var medal := TextureRect.new()
+	medal.custom_minimum_size = Vector2(88, 106)
+	medal.texture = MEDAL_TEXTURES[rank - 1]
+	medal.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	medal.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	medal.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	wrap.add_child(medal)
+	return wrap
+
+
+func _make_stars_value(stars: int) -> HBoxContainer:
+	var value := HBoxContainer.new()
+	value.custom_minimum_size.x = 142
+	value.alignment = BoxContainer.ALIGNMENT_CENTER
+	value.add_theme_constant_override("separation", 5)
+	if stars < 0:
+		value.add_child(_make_label("—", 32, HORIZONTAL_ALIGNMENT_CENTER))
+		return value
+	var number := _make_label(str(stars), 35, HORIZONTAL_ALIGNMENT_RIGHT)
+	number.add_theme_color_override("font_color", COLOR_ORANGE)
+	value.add_child(number)
+	var star := _make_label("★", 49, HORIZONTAL_ALIGNMENT_LEFT)
+	star.add_theme_color_override("font_color", Color(1.0, 0.68, 0.08, 1.0))
+	value.add_child(star)
+	return value
 
 
 func _make_row_style(is_player: bool) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = (
-		Color(1.0, 0.87, 0.67, 0.7)
+		Color(1.0, 0.941, 0.839, 1.0)
 		if is_player
-		else Color(1.0, 0.985, 0.94, 0.16)
+		else Color(1.0, 0.985, 0.94, 0.1)
 	)
 	style.border_width_left = 2 if is_player else 0
 	style.border_width_top = 2 if is_player else 0
 	style.border_width_right = 2 if is_player else 0
 	style.border_width_bottom = 2 if is_player else 1
 	style.border_color = (
-		Color(0.86, 0.42, 0.13, 0.65)
+		Color(0.94, 0.45, 0.12, 0.82)
 		if is_player
-		else Color(0.64, 0.48, 0.3, 0.16)
+		else Color(0.72, 0.6, 0.42, 0.18)
 	)
-	style.corner_radius_top_left = 20 if is_player else 0
-	style.corner_radius_top_right = 20 if is_player else 0
-	style.corner_radius_bottom_left = 20 if is_player else 0
-	style.corner_radius_bottom_right = 20 if is_player else 0
+	style.corner_radius_top_left = 24 if is_player else 0
+	style.corner_radius_top_right = 24 if is_player else 0
+	style.corner_radius_bottom_left = 24 if is_player else 0
+	style.corner_radius_bottom_right = 24 if is_player else 0
 	style.content_margin_left = 8
 	style.content_margin_right = 8
 	return style
@@ -382,7 +400,7 @@ func _make_value_label(
 	width: float,
 	color: Color = COLOR_INK
 ) -> Label:
-	var label := _make_label(value, 25, HORIZONTAL_ALIGNMENT_CENTER)
+	var label := _make_label(value, 32, HORIZONTAL_ALIGNMENT_CENTER)
 	label.custom_minimum_size.x = width
 	label.add_theme_color_override("font_color", color)
 	return label
