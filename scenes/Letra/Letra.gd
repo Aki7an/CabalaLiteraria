@@ -140,6 +140,7 @@ func _on_button_pressed() -> void:
 		GameManager.frase_original,
 		GameManager.recoger_letras_mostradas()
 	)
+	PuzzleSaveManager.request_autosave()
 
 
 func _erase_letter() -> void:
@@ -164,6 +165,7 @@ func _erase_letter() -> void:
 	SoundManager.play("LoseLive")
 	SignalManager.update_cambios.emit()
 	SignalManager.update_rubber.emit()
+	PuzzleSaveManager.request_autosave()
 
 
 func liberar_para_reuso() -> void:
@@ -173,6 +175,13 @@ func liberar_para_reuso() -> void:
 	verificada_correcta = false
 	letra_selected.visible = false
 	_apply_panel_color(color_normal)
+
+
+func restore_as_assigned() -> void:
+	letra_mostrada = true
+	verificada_correcta = false
+	letra_selected.visible = false
+	_apply_panel_color(color_selected)
 
 
 func cambia_color(color_a_cambiar: int) -> void:

@@ -334,21 +334,24 @@ theme_override_styles/hover = SubResource("Style_pause")
 theme_override_styles/pressed = SubResource("Style_pause_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Icon" type="TextureRect" parent="ButtonPause"]
+[node name="Icon" type="Label" parent="ButtonPause"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 34.0
-offset_top = 36.0
-offset_right = -34.0
-offset_bottom = -40.0
+offset_left = 14.0
+offset_top = 10.0
+offset_right = -14.0
+offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("6_pause")
-expand_mode = 1
-stretch_mode = 5
+theme_override_colors/font_color = Color(1, 0.976471, 0.909804, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 68
+text = "☰"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Divider" type="HSeparator" parent="."]
 layout_mode = 0

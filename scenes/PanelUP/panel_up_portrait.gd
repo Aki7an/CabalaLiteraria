@@ -50,9 +50,14 @@ func _process(_delta: float) -> void:
 	GameManager.set_tiempo_partida(elapsed_seconds)
 
 
+func resume_saved_time() -> void:
+	_start_ms = Time.get_ticks_msec() - GameManager.tiempo_partida * 1000
+
+
 func _update_stars(_value: int = -1) -> void:
 	var filled: int = clampi(GameManager.puzzle_stars, 0, stars.size())
 	for index in range(stars.size()):
+		stars[index].visible = true
 		stars[index].self_modulate = (
 			Color(1.0, 0.72, 0.12, 1.0)
 			if index < filled
@@ -101,11 +106,17 @@ func _on_reveal_pressed() -> void:
 
 
 func _on_pause_pressed() -> void:
+	if not get_tree().get_nodes_in_group("GameMenu").is_empty():
+		return
 	SoundManager.play("ButtonClick")
 	_add_overlay(OVERLAY_EXIT)
 
 
 func _on_game_finished() -> void:
+	if not GameManager.partida_terminada:
+		GameManager._game_finished()
+		HistoryManager.add_result(GameManager.player_name, GameManager.score)
+		PlayFabTools.submit_competitive_rankings(GameManager.player_name)
 	SoundManager.play("ButtonClick")
 	_add_overlay(OVERLAY_RESULTS)
 

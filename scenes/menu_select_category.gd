@@ -35,8 +35,8 @@ var _mode_normal_styles: Dictionary = {}
 const LOCALIZED_COPY := {
 	"es": {
 		"subtitle": "Elige tu partida",
-		"category": "Elige tu temática",
-		"mode": "Elige cómo quieres jugar",
+		"category": "Elige temática",
+		"mode": "Tipo de partida",
 		"quick": "Rápido",
 		"quick_description": "Descifra frases cortas y directas.",
 		"cryptogram": "Criptograma",
@@ -121,6 +121,7 @@ func _ready() -> void:
 	_update_category_selection()
 	_update_mode_selection()
 	_update_localized_copy()
+	_update_category_progress()
 
 
 func _on_button_citas_celebres_pressed() -> void:
@@ -211,6 +212,17 @@ func _update_mode_selection() -> void:
 			"normal",
 			_make_mode_selected_style() if is_selected else _mode_normal_styles[mode_id]
 		)
+
+
+func _update_category_progress() -> void:
+	for category_id in _category_buttons:
+		var record := HistoryManager.get_competitive_record(category_id, "all")
+		var stars_earned := int(record.get("stars_earned", 0))
+		var stars_available := int(record.get("stars_available", 0))
+		var button: Button = _category_buttons[category_id]
+		var progress_label := button.get_node_or_null("Progress") as Label
+		if progress_label != null:
+			progress_label.text = "★ %d / %d" % [stars_earned, stars_available]
 
 
 func _make_selected_style() -> StyleBoxFlat:

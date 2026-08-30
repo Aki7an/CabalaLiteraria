@@ -29,6 +29,15 @@ func _ready() -> void:
 	_update_difficulty_stars()
 	_load_image()
 	start_button.visible = true
+	if launch_game_on_start:
+		var saved := PuzzleSaveManager.get_puzzle_summary(GameManager.id_frase)
+		start_button.text = (
+			"CONTINUAR"
+			if str(saved.get("status", "new")) == "in_progress"
+			else "EMPEZAR"
+		)
+	else:
+		start_button.text = "EMPEZAR"
 
 
 func _update_difficulty_stars() -> void:
@@ -65,6 +74,11 @@ func _on_start_pressed() -> void:
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	SignalManager.partida_iniciada.emit()
 	get_tree().change_scene_to_file(PATH_APP)
+
+
+func _on_back_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	queue_free()
 
 
 static func find_image_path(image_number: int, index_number: int) -> String:

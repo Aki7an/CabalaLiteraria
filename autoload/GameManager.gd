@@ -462,11 +462,88 @@ func reset_puzzle_stars() -> void:
 	SignalManager.update_puzzle_stars.emit(puzzle_stars)
 
 
+func get_puzzle_difficulty_stars(difficulty: int = -1) -> int:
+	var value := dificultad_actual if difficulty < 0 else difficulty
+	return clampi(value, 1, 3)
+
+
+func export_attempt_state() -> Dictionary:
+	return {
+		"puzzle_stars": puzzle_stars,
+		"pista_1": pista_1,
+		"pista_2": pista_2,
+		"pista_3": pista_3,
+		"pistas_utilizadas": pistas_utilizadas,
+		"pistas_utilizadas_1": pistas_utilizadas_1,
+		"pistas_utilizadas_2": pistas_utilizadas_2,
+		"consonantes_compradas": consonantes_compradas,
+		"vocalesAE_compradas": vocalesAE_compradas,
+		"vocalesIOU_compradas": vocalesIOU_compradas,
+		"reveal_errors_count": reveal_errors_count,
+		"penalized_hints": _penalized_hints.duplicate(true),
+		"penalized_reveal_errors": _penalized_reveal_errors.duplicate(true),
+		"tiempo_partida": tiempo_partida,
+		"lives": lives,
+		"score": score,
+		"cambios_hechos": cambios_hechos,
+		"board_fill_prompt_shown": board_fill_prompt_shown,
+	}
+
+
+func export_cipher_state() -> Dictionary:
+	return {
+		"numbers": lista_numeros.duplicate(),
+		"alphabet": letters_aphabet_array.duplicate(),
+		"locale": locale_code(),
+	}
+
+
+func import_cipher_state(state: Dictionary) -> bool:
+	var saved_numbers: Array = state.get("numbers", [])
+	var saved_alphabet: Array = state.get("alphabet", [])
+	if saved_numbers.is_empty() or saved_numbers.size() != letters_aphabet_array.size():
+		return false
+	if not saved_alphabet.is_empty() and saved_alphabet != letters_aphabet_array:
+		return false
+	lista_numeros = saved_numbers.duplicate()
+	_inicializar_lista_numeros_original()
+	return true
+
+
+func import_attempt_state(state: Dictionary) -> void:
+	if state.is_empty():
+		return
+	puzzle_stars = clampi(int(state.get("puzzle_stars", 5)), 0, 5)
+	pista_1 = bool(state.get("pista_1", false))
+	pista_2 = bool(state.get("pista_2", false))
+	pista_3 = bool(state.get("pista_3", false))
+	pistas_utilizadas = int(state.get("pistas_utilizadas", 0))
+	pistas_utilizadas_1 = int(state.get("pistas_utilizadas_1", 0))
+	pistas_utilizadas_2 = int(state.get("pistas_utilizadas_2", 0))
+	consonantes_compradas = int(state.get("consonantes_compradas", 0))
+	vocalesAE_compradas = int(state.get("vocalesAE_compradas", 0))
+	vocalesIOU_compradas = int(state.get("vocalesIOU_compradas", 0))
+	reveal_errors_count = int(state.get("reveal_errors_count", 0))
+	tiempo_partida = int(state.get("tiempo_partida", 0))
+	lives = int(state.get("lives", lives))
+	score = int(state.get("score", score_init))
+	cambios_hechos = int(state.get("cambios_hechos", 0))
+	board_fill_prompt_shown = bool(state.get("board_fill_prompt_shown", false))
+	_penalized_hints = (
+		state.get("penalized_hints", {}) as Dictionary
+	).duplicate(true)
+	_penalized_reveal_errors.clear()
+	var saved_errors: Dictionary = state.get("penalized_reveal_errors", {})
+	for key in saved_errors:
+		_penalized_reveal_errors[int(key)] = str(saved_errors[key])
+
+
 func subtract_puzzle_stars(amount: int) -> void:
 	if amount <= 0:
 		return
 	puzzle_stars = maxi(0, puzzle_stars - amount)
 	SignalManager.update_puzzle_stars.emit(puzzle_stars)
+	PuzzleSaveManager.request_autosave()
 
 
 func register_hint_used(hint_id: String) -> void:
@@ -524,6 +601,7 @@ func reveal_assignment_errors() -> int:
 	reveal_errors_count += new_errors
 	subtract_puzzle_stars(new_errors)
 	update_numero_letras_reveladas(true)
+	PuzzleSaveManager.request_autosave()
 	return wrong_numbers.size()
 
 
@@ -662,6 +740,7 @@ func pinta_celdas(numero_en_celda: int, color_a_pintar: int) -> void:
 		#print("numero en celda " + str(numero_en_celda))
 		if lista_celdas[i].numero == numero_en_celda:
 			lista_celdas[i].cambia_color(color_a_pintar)
+	PuzzleSaveManager.request_autosave()
 			
 func set_number1(numero_a_guardar: int) -> void:
 	number_1 = numero_a_guardar
@@ -677,6 +756,17 @@ func set_number4(numero_a_guardar: int) -> void:
 
 func set_number5(numero_a_guardar: int) -> void:
 	number_5 = numero_a_guardar
+
+func clear_resolution_runtime_state() -> void:
+	number_1 = 0
+	number_2 = 0
+	number_3 = 0
+	number_4 = 0
+	number_5 = 0
+	selected_celda_number = 0
+	celda_seleccionada_numero = 0
+	selected_letra = ""
+	reset_numero_letras_reveladas()
 
 func set_zoom_scale(scale:float) -> void:
 	game_scale *= scale
@@ -928,6 +1018,7 @@ func _aplicar_frase_desde_db(pos: int) -> void:
 	descripcion_final_actual  = String(item.description_end)
 	categoria_actual   = normalize_category(String(item.category))
 	dificultad_actual  = int(item.difficulty)
+	reset_puzzle_stars()
 	id_image           = int(item.image_number)
 	letras_iniciales   = String(item.letters_init)
 	hint_1             = String(item.hint_1)

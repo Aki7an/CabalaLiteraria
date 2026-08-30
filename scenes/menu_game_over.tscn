@@ -340,7 +340,7 @@ offset_bottom = 83.0
 theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 34
-text = "ESTRELLAS DEL PUZLE"
+text = "ESTRELLAS CONSEGUIDAS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -591,7 +591,7 @@ offset_bottom = 150.0
 theme_override_colors/font_color = Color(0.12, 0.53, 0.42, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 26
-text = "Completado"
+text = "0 % por completar"
 horizontal_alignment = 1
 
 [node name="ButtonBack" type="Button" parent="MainCard"]

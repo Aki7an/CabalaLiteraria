@@ -4,8 +4,6 @@ const SCENE_MENU_MAIN := preload("res://scenes/MenuMain.tscn")
 const STAR_YELLOW := Color(1.0, 0.82, 0.12, 1.0)
 const STAR_EMPTY := Color(0.62, 0.51, 0.34, 0.28)
 const GAP := 24.0
-const BOTTOM_PAD := 28.0
-const STARS_MIN_HEIGHT := 420.0
 
 @onready var main_card: Panel = $MainCard
 @onready var phrase_card: Panel = $MainCard/PhraseCard
@@ -19,6 +17,7 @@ const STARS_MIN_HEIGHT := 420.0
 @onready var description_label: RichTextLabel = $MainCard/StarsCard/InfoCard/Description
 @onready var stars_text: Label = $MainCard/StarsCard/StarsPill/StarsText
 @onready var xp_label: Label = $MainCard/UnlockCard/RewardXP/Title
+@onready var map_progress_label: Label = $MainCard/UnlockCard/RewardMap/Subtitle
 @onready var stars: Array[TextureRect] = [
 	$MainCard/StarsCard/Stars/Star1,
 	$MainCard/StarsCard/Stars/Star2,
@@ -39,16 +38,22 @@ func _ready() -> void:
 		description_label.text = "Has completado correctamente este puzle."
 
 	var earned: int = clampi(GameManager.puzzle_stars, 0, stars.size())
-	stars_text.text = "Resultado: %d de 5" % earned
+	var difficulty_multiplier := GameManager.get_puzzle_difficulty_stars()
+	var earned_total := earned * difficulty_multiplier
+	var maximum_total := stars.size() * difficulty_multiplier
+	stars_text.text = "Resultado: %d de %d" % [earned_total, maximum_total]
 	xp_label.text = "+%d XP" % (earned * 10)
+	_update_map_progress()
 
 	for star in stars:
+		star.visible = true
 		star.self_modulate = STAR_EMPTY
 		star.scale = Vector2.ONE
 
 	await get_tree().process_frame
-	_fit_phrase_card()
-	_layout_bottom_stack()
+	await _fit_phrase_card()
+	await _fit_stars_card()
+	_layout_top_down()
 	for star in stars:
 		star.pivot_offset = star.size * 0.5
 	await _animate_stars(earned)
@@ -67,40 +72,46 @@ func _fit_phrase_card() -> void:
 	phrase_card.size.y = maxf(card_bottom, 320.0)
 
 
-func _layout_bottom_stack() -> void:
-	var card_h := main_card.size.y
-	var button_h := continue_button.size.y
-	var unlock_h := unlock_card.size.y
-	var stars_h := stars_card.size.y
+func _fit_stars_card() -> void:
+	description_label.fit_content = true
+	description_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	await get_tree().process_frame
 
-	# Anchor Continuar near the bottom; stack Unlock + Stars above it.
-	continue_button.position.y = card_h - BOTTOM_PAD - button_h
-	unlock_card.position.y = continue_button.position.y - GAP - unlock_h
-	stars_card.position.y = unlock_card.position.y - GAP - stars_h
-
-	var min_stars_y := phrase_card.position.y + phrase_card.size.y + GAP
-	if stars_card.position.y >= min_stars_y:
-		return
-
-	# Phrase grew: shrink StarsCard so the stack still fits above Continuar.
-	var available := unlock_card.position.y - GAP - min_stars_y
-	stars_h = maxf(available, STARS_MIN_HEIGHT)
-	stars_card.size.y = stars_h
-	_fit_info_card_to_stars(stars_h)
-	stars_card.position.y = unlock_card.position.y - GAP - stars_h
-	if stars_card.position.y < min_stars_y:
-		stars_card.position.y = min_stars_y
-		unlock_card.position.y = stars_card.position.y + stars_h + GAP
-		continue_button.position.y = unlock_card.position.y + unlock_h + GAP
+	var description_height := maxf(
+		float(description_label.get_content_height()),
+		100.0
+	)
+	description_label.size.y = description_height
+	info_card.size.y = description_label.position.y + description_height + 32.0
+	stars_card.size.y = info_card.position.y + info_card.size.y + 28.0
 
 
-func _fit_info_card_to_stars(stars_h: float) -> void:
-	var info_top := info_card.position.y
-	var info_bottom := stars_h - 28.0
-	if info_bottom <= info_top + 120.0:
-		return
-	info_card.size.y = info_bottom - info_top
-	description_label.size.y = maxf(info_card.size.y - description_label.position.y - 24.0, 80.0)
+func _layout_top_down() -> void:
+	stars_card.position.y = phrase_card.position.y + phrase_card.size.y + GAP
+	unlock_card.position.y = stars_card.position.y + stars_card.size.y + GAP
+
+
+func _update_map_progress() -> void:
+	var available_ids := {}
+	for item_value in GameManager.frases_db:
+		if item_value is Dictionary:
+			var puzzle_id := int((item_value as Dictionary).get("index", -1))
+			if puzzle_id >= 0:
+				available_ids[puzzle_id] = true
+
+	var completed_ids := {}
+	for entry_value in HistoryManager.get_history():
+		if entry_value is Dictionary:
+			var entry: Dictionary = entry_value
+			if bool(entry.get("partida_ganada", false)):
+				completed_ids[int(entry.get("id", -1))] = true
+
+	var total := available_ids.size()
+	var remaining := maxi(total - completed_ids.size(), 0)
+	var remaining_percent := 0
+	if total > 0:
+		remaining_percent = int(round(100.0 * float(remaining) / float(total)))
+	map_progress_label.text = "%d %% por completar" % remaining_percent
 
 
 func _animate_stars(earned: int) -> void:

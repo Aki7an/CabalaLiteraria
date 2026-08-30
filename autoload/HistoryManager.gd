@@ -164,6 +164,8 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 	_historial.append(entry)
 	_save_history(_historial)
 	_recompute_stats()
+	if resultado:
+		PuzzleSaveManager.mark_completed(int(GameManager.id_frase))
 
 func _calcula_vidas_perdidas() -> int:
 	if GameManager.dificultad_actual == 1:
@@ -664,6 +666,146 @@ func get_stats_dashboard() -> Dictionary:
 		"progress": progress,
 		"best": best,
 	}
+
+
+func get_competitive_record(
+	category_filter: String = "global",
+	mode_filter: String = "all"
+) -> Dictionary:
+	var normalized_category := category_filter.strip_edges().to_lower()
+	var normalized_mode := mode_filter.strip_edges().to_lower()
+	var filter_all_categories := normalized_category in ["", "global", "todas", "all"]
+	var filter_all_modes := normalized_mode in ["", "todos", "all"]
+	if not filter_all_categories:
+		normalized_category = GameManager.normalize_category(normalized_category)
+
+	var available_puzzles := {}
+	for item_value in GameManager.frases_db:
+		if not (item_value is Dictionary):
+			continue
+		var item: Dictionary = item_value
+		var category := GameManager.normalize_category(str(item.get("category", "")))
+		var difficulty := int(item.get("difficulty", 1))
+		var mode := (
+			GameManager.MODE_CRYPTOGRAM
+			if difficulty >= 3
+			else GameManager.MODE_QUICK
+		)
+		if not filter_all_categories and category != normalized_category:
+			continue
+		if not filter_all_modes and mode != normalized_mode:
+			continue
+		var phrase_id := int(item.get("index", -1))
+		if phrase_id >= 0:
+			available_puzzles["%s|%s|%d" % [category, mode, phrase_id]] = (
+				GameManager.get_puzzle_difficulty_stars(difficulty) * 5
+			)
+
+	var best_by_puzzle := {}
+	for entry_value in _historial:
+		if not (entry_value is Dictionary):
+			continue
+		var entry: Dictionary = entry_value
+		if not bool(entry.get("partida_ganada", false)):
+			continue
+		var category := GameManager.normalize_category(str(entry.get("categoria", "")))
+		var mode := _entry_game_mode(entry)
+		if not filter_all_categories and category != normalized_category:
+			continue
+		if not filter_all_modes and mode != normalized_mode:
+			continue
+		var phrase_id := int(entry.get("id", -1))
+		if phrase_id < 0:
+			continue
+		var key := "%s|%s|%d" % [category, mode, phrase_id]
+		var difficulty := int(entry.get("dificultad", 1))
+		var difficulty_stars := GameManager.get_puzzle_difficulty_stars(difficulty)
+		var performance_stars := int(entry.get("estrellas", -1))
+		if performance_stars < 0:
+			var legacy_score := int(entry.get("score", 0))
+			performance_stars = clampi(
+				int(ceil(float(legacy_score) / 5000.0)),
+				1,
+				5
+			)
+		performance_stars = clampi(performance_stars, 0, 5)
+		var stars := performance_stars * difficulty_stars
+		var aids := _competitive_help_count(entry)
+		var failed_letters := int(entry.get("revelaciones_falladas", 0))
+		if not best_by_puzzle.has(key):
+			best_by_puzzle[key] = {
+				"stars": stars,
+				"aids": aids,
+				"failed_letters": failed_letters,
+				"difficulty": difficulty,
+			}
+			continue
+		var previous: Dictionary = best_by_puzzle[key]
+		if stars > int(previous.get("stars", 0)) or (
+			stars == int(previous.get("stars", 0))
+			and (
+				aids < int(previous.get("aids", 0))
+				or (
+					aids == int(previous.get("aids", 0))
+					and failed_letters < int(previous.get("failed_letters", 0))
+				)
+			)
+		):
+			best_by_puzzle[key] = {
+				"stars": stars,
+				"aids": aids,
+				"failed_letters": failed_letters,
+				"difficulty": difficulty,
+			}
+
+	var stars_earned := 0
+	var aids_used := 0
+	var failed_letters := 0
+	var hard_completed := 0
+	for result_value in best_by_puzzle.values():
+		var result: Dictionary = result_value
+		stars_earned += int(result.get("stars", 0))
+		aids_used += int(result.get("aids", 0))
+		failed_letters += int(result.get("failed_letters", 0))
+		if int(result.get("difficulty", 0)) >= 3:
+			hard_completed += 1
+
+	var completed := best_by_puzzle.size()
+	var stars_available := 0
+	for maximum_value in available_puzzles.values():
+		stars_available += int(maximum_value)
+	var percentage := 0.0
+	if stars_available > 0:
+		percentage = 100.0 * float(stars_earned) / float(stars_available)
+	var stars_per_puzzle := 0.0
+	if completed > 0:
+		stars_per_puzzle = float(stars_earned) / float(completed)
+
+	return {
+		"category": "global" if filter_all_categories else normalized_category,
+		"mode": "all" if filter_all_modes else normalized_mode,
+		"stars_earned": stars_earned,
+		"stars_available": stars_available,
+		"percentage": percentage,
+		"percentage_tenths": clampi(int(round(percentage * 10.0)), 0, 1000),
+		"completed": completed,
+		"hard_completed": hard_completed,
+		"aids_used": aids_used,
+		"failed_letters": failed_letters,
+		"stars_per_puzzle": stars_per_puzzle,
+		"stars_per_puzzle_hundredths": int(round(stars_per_puzzle * 100.0)),
+		"stars_per_puzzle_tenths": int(round(stars_per_puzzle * 10.0)),
+	}
+
+
+func _competitive_help_count(entry: Dictionary) -> int:
+	return (
+		int(entry.get("pistas_consumidas_1", 0))
+		+ int(entry.get("pistas_consumidas_2", 0))
+		+ int(entry.get("consonantes_compradas", 0))
+		+ int(entry.get("vocales_compradas_AE", 0))
+		+ int(entry.get("vocales_compradas_IOU", 0))
+	)
 
 
 ## res://autoload/HistoryManager.gd
