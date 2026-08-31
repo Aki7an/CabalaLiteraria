@@ -69,6 +69,18 @@ corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
+[sub_resource type="StyleBoxFlat" id="Style_info_badge"]
+bg_color = Color(0.9, 0.35, 0.09, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 5
+border_color = Color(0.62, 0.22, 0.05, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
 [sub_resource type="StyleBoxFlat" id="Style_around_frame"]
 content_margin_left = 14.0
 content_margin_top = 14.0
@@ -383,22 +395,33 @@ offset_right = 1120.0
 offset_bottom = 802.0
 theme_override_styles/panel = SubResource("Style_info")
 
-[node name="InfoIcon" type="Label" parent="MainCard/RulesCard" unique_id=183643930]
+[node name="InfoIcon" type="Panel" parent="MainCard/RulesCard" unique_id=183643930]
 layout_mode = 0
-offset_left = 6.0
-offset_top = -2.0
-offset_right = 92.0
-offset_bottom = 132.0
-theme_override_colors/font_color = Color(0.62, 0.4, 0.15, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 100
-text = "ⓘ"
+offset_left = 28.0
+offset_top = 36.0
+offset_right = 108.0
+offset_bottom = 116.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_info_badge")
+
+[node name="Text" type="Label" parent="MainCard/RulesCard/InfoIcon" unique_id=183643931]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 52
+text = "i"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Rules" type="RichTextLabel" parent="MainCard/RulesCard" unique_id=1264415301]
 layout_mode = 0
-offset_left = 118.0
+offset_left = 132.0
 offset_top = 34.0
 offset_right = 1055.0
 offset_bottom = 358.0
