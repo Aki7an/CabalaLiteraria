@@ -296,18 +296,19 @@ horizontal_alignment = 1
 
 [node name="Phrase" type="RichTextLabel" parent="MainCard/PhraseCard"]
 layout_mode = 0
-offset_left = 105.0
-offset_top = 66.0
-offset_right = 891.0
-offset_bottom = 326.0
+offset_left = 70.0
+offset_top = 56.0
+offset_right = 926.0
+offset_bottom = 300.0
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.22, 0.16, 0.12, 1)
 theme_override_fonts/normal_font = ExtResource("2_font")
-theme_override_font_sizes/normal_font_size = 39
+theme_override_font_sizes/normal_font_size = 44
 bbcode_enabled = true
 text = "[center]La frase resuelta aparecerá aquí[/center]"
 fit_content = true
 scroll_active = false
+autowrap_mode = 3
 
 [node name="Category" type="Label" parent="MainCard/PhraseCard"]
 layout_mode = 0
@@ -325,9 +326,9 @@ vertical_alignment = 1
 [node name="StarsCard" type="Panel" parent="MainCard"]
 layout_mode = 0
 offset_left = 75.0
-offset_top = 795.0
+offset_top = 1220.0
 offset_right = 1071.0
-offset_bottom = 1504.0
+offset_bottom = 1929.0
 theme_override_styles/panel = SubResource("Style_stars")
 
 [node name="Title" type="Label" parent="MainCard/StarsCard"]
@@ -339,7 +340,7 @@ offset_bottom = 83.0
 theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 34
-text = "ESTRELLAS DEL PUZLE"
+text = "ESTRELLAS CONSEGUIDAS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -456,28 +457,28 @@ scroll_active = false
 [node name="UnlockCard" type="Panel" parent="MainCard"]
 layout_mode = 0
 offset_left = 75.0
-offset_top = 1534.0
+offset_top = 1953.0
 offset_right = 1071.0
-offset_bottom = 2179.0
+offset_bottom = 2239.0
 theme_override_styles/panel = SubResource("Style_unlock")
 
 [node name="LineLeft" type="HSeparator" parent="MainCard/UnlockCard"]
 layout_mode = 0
 offset_left = 56.0
-offset_top = 72.0
+offset_top = 56.0
 offset_right = 345.0
-offset_bottom = 78.0
+offset_bottom = 62.0
 theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.52)
 
 [node name="Title" type="Label" parent="MainCard/UnlockCard"]
 layout_mode = 0
 offset_left = 343.0
-offset_top = 31.0
+offset_top = 18.0
 offset_right = 653.0
-offset_bottom = 112.0
+offset_bottom = 90.0
 theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 32
 text = "HAS DESBLOQUEADO"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -485,175 +486,120 @@ vertical_alignment = 1
 [node name="LineRight" type="HSeparator" parent="MainCard/UnlockCard"]
 layout_mode = 0
 offset_left = 651.0
-offset_top = 72.0
+offset_top = 56.0
 offset_right = 940.0
-offset_bottom = 78.0
+offset_bottom = 62.0
 theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.52)
 
 [node name="Divider1" type="VSeparator" parent="MainCard/UnlockCard"]
 layout_mode = 0
-offset_left = 330.0
-offset_top = 145.0
-offset_right = 336.0
-offset_bottom = 570.0
-theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.33)
-
-[node name="Divider2" type="VSeparator" parent="MainCard/UnlockCard"]
-layout_mode = 0
-offset_left = 660.0
-offset_top = 145.0
-offset_right = 666.0
-offset_bottom = 570.0
+offset_left = 498.0
+offset_top = 100.0
+offset_right = 504.0
+offset_bottom = 260.0
 theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.33)
 
 [node name="RewardXP" type="Control" parent="MainCard/UnlockCard"]
 layout_mode = 0
-offset_left = 20.0
-offset_top = 133.0
-offset_right = 326.0
-offset_bottom = 590.0
+offset_left = 40.0
+offset_top = 96.0
+offset_right = 490.0
+offset_bottom = 270.0
 
 [node name="Icon" type="Label" parent="MainCard/UnlockCard/RewardXP"]
 layout_mode = 0
-offset_left = 35.0
-offset_top = 25.0
-offset_right = 271.0
-offset_bottom = 249.0
-theme_override_colors/font_color = Color(1, 0.64, 0.04, 1)
+offset_left = 20.0
+offset_top = 8.0
+offset_right = 160.0
+offset_bottom = 150.0
+theme_override_colors/font_color = Color(1, 0.82, 0.12, 1)
 theme_override_colors/font_outline_color = Color(0.72, 0.34, 0.02, 1)
-theme_override_constants/outline_size = 7
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 152
+theme_override_font_sizes/font_size = 110
 text = "★"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Title" type="Label" parent="MainCard/UnlockCard/RewardXP"]
 layout_mode = 0
-offset_left = 15.0
-offset_top = 261.0
-offset_right = 291.0
-offset_bottom = 332.0
+offset_left = 160.0
+offset_top = 30.0
+offset_right = 430.0
+offset_bottom = 100.0
 theme_override_colors/font_color = Color(0.91, 0.39, 0.06, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 36
-text = "+20 XP"
+theme_override_font_sizes/font_size = 48
+text = "+50 XP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Subtitle" type="Label" parent="MainCard/UnlockCard/RewardXP"]
 layout_mode = 0
-offset_left = 15.0
-offset_top = 335.0
-offset_right = 291.0
-offset_bottom = 418.0
+offset_left = 160.0
+offset_top = 100.0
+offset_right = 430.0
+offset_bottom = 150.0
 theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 0.85)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 28
 text = "Experiencia"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="RewardMap" type="Control" parent="MainCard/UnlockCard"]
 layout_mode = 0
-offset_left = 340.0
-offset_top = 133.0
-offset_right = 656.0
-offset_bottom = 590.0
+offset_left = 510.0
+offset_top = 96.0
+offset_right = 960.0
+offset_bottom = 270.0
 
 [node name="Icon" type="Label" parent="MainCard/UnlockCard/RewardMap"]
 layout_mode = 0
-offset_left = 40.0
-offset_top = 29.0
-offset_right = 276.0
-offset_bottom = 249.0
+offset_left = 20.0
+offset_top = 8.0
+offset_right = 160.0
+offset_bottom = 150.0
 theme_override_colors/font_color = Color(0.28, 0.7, 0.55, 1)
 theme_override_colors/font_outline_color = Color(0.12, 0.45, 0.36, 1)
-theme_override_constants/outline_size = 5
+theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 138
+theme_override_font_sizes/font_size = 100
 text = "◇"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Title" type="Label" parent="MainCard/UnlockCard/RewardMap"]
 layout_mode = 0
-offset_left = 15.0
-offset_top = 267.0
-offset_right = 301.0
-offset_bottom = 382.0
+offset_left = 160.0
+offset_top = 30.0
+offset_right = 430.0
+offset_bottom = 100.0
 theme_override_colors/font_color = Color(0.26, 0.2, 0.15, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 29
-text = "Progreso
-del mapa"
+theme_override_font_sizes/font_size = 34
+text = "Progreso del mapa"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Subtitle" type="Label" parent="MainCard/UnlockCard/RewardMap"]
 layout_mode = 0
-offset_left = 15.0
-offset_top = 383.0
-offset_right = 301.0
-offset_bottom = 431.0
+offset_left = 160.0
+offset_top = 100.0
+offset_right = 430.0
+offset_bottom = 150.0
 theme_override_colors/font_color = Color(0.12, 0.53, 0.42, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 23
-text = "Completado"
-horizontal_alignment = 1
-
-[node name="RewardSound" type="Control" parent="MainCard/UnlockCard"]
-layout_mode = 0
-offset_left = 670.0
-offset_top = 133.0
-offset_right = 976.0
-offset_bottom = 590.0
-
-[node name="Icon" type="Label" parent="MainCard/UnlockCard/RewardSound"]
-layout_mode = 0
-offset_left = 35.0
-offset_top = 32.0
-offset_right = 271.0
-offset_bottom = 249.0
-theme_override_colors/font_color = Color(0.57, 0.36, 0.2, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 136
-text = "♫"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Title" type="Label" parent="MainCard/UnlockCard/RewardSound"]
-layout_mode = 0
-offset_left = 9.0
-offset_top = 267.0
-offset_right = 297.0
-offset_bottom = 382.0
-theme_override_colors/font_color = Color(0.26, 0.2, 0.15, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 28
-text = "Nuevo sonido
-descubierto"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Subtitle" type="Label" parent="MainCard/UnlockCard/RewardSound"]
-layout_mode = 0
-offset_left = 15.0
-offset_top = 383.0
-offset_right = 291.0
-offset_bottom = 431.0
-theme_override_colors/font_color = Color(0.71, 0.39, 0.15, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 23
-text = "Colección"
+theme_override_font_sizes/font_size = 26
+text = "0 % por completar"
 horizontal_alignment = 1
 
 [node name="ButtonBack" type="Button" parent="MainCard"]
 layout_mode = 0
 offset_left = 238.0
-offset_top = 2223.0
+offset_top = 2263.0
 offset_right = 908.0
-offset_bottom = 2482.0
+offset_bottom = 2483.0
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 0.94, 1)
 theme_override_colors/font_shadow_color = Color(0.42, 0.17, 0.01, 0.52)

@@ -10,6 +10,7 @@ extends Panel
 @onready var OverlaySceneCuadroHints := preload("res://scenes/Cuadro_Hints.tscn") # working
 @onready var OverlaySceneCuadroComprarLetra := preload("res://scenes/fondo_comprar_letra.tscn")
 @onready var OverlaySceneSettingsGame := preload("res://scenes/MenuSettingsGame.tscn")
+@onready var OverlaySceneBoardFill := preload("res://scenes/fondo_tablero_completo.tscn")
 
 @onready var score = %Score2
 
@@ -64,6 +65,7 @@ func _ready() -> void:
 	
 	SignalManager.game_start.connect(start_time)
 	SignalManager.update_resting_characters.connect(_update_resting_characters)
+	SignalManager.board_filled.connect(_on_board_filled)
 	SignalManager.game_finished.connect(_game_finished_to_results)
 	SignalManager.game_finished_lost.connect(_game_finished_fail)
 	SignalManager.update_score.connect(_update_score)
@@ -169,6 +171,15 @@ func _update_resting_characters() -> void:
 	if (GameManager.numero_letras_a_revelar_originales - GameManager.numero_letras_reveladas) <=5:
 		await get_tree().process_frame
 		GameManager.blink_resting_cells()
+
+
+func _on_board_filled() -> void:
+	if not get_tree().get_nodes_in_group("BoardFillPrompt").is_empty():
+		return
+	var overlay := OverlaySceneBoardFill.instantiate()
+	add_child(overlay)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	
 
 #func calcula_pistas_utilizadas() -> int:

@@ -210,10 +210,29 @@ func _create_level_card(item: Dictionary) -> Button:
 	var image_number: int = int(item.get("image_number", -1))
 	var difficulty: int = int(item.get("difficulty", 1))
 	var completed: bool = _completed_ids.has(index_number)
+	var saved_summary: Dictionary = PuzzleSaveManager.get_puzzle_summary(index_number)
+	var puzzle_status := (
+		"completed"
+		if completed
+		else str(saved_summary.get("status", "new"))
+	)
+	var stars_remaining := clampi(
+		int(saved_summary.get("stars_remaining", 5)),
+		0,
+		5
+	)
+	var letters_total := int(saved_summary.get("letters_total", 0))
+	if letters_total <= 0:
+		letters_total = _count_puzzle_letters(str(item.get("text", "")))
+	var letters_filled := (
+		letters_total
+		if completed
+		else int(saved_summary.get("letters_filled", 0))
+	)
 
 	var button := Button.new()
 	button.name = "Level_%d" % index_number
-	button.custom_minimum_size = Vector2(330, 420)
+	button.custom_minimum_size = Vector2(330, 450)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.focus_mode = Control.FOCUS_NONE
 	button.text = ""
@@ -282,11 +301,8 @@ func _create_level_card(item: Dictionary) -> Button:
 
 	var id_badge := Panel.new()
 	id_badge.name = "IdBadge"
-	id_badge.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	id_badge.offset_left = 95.0
-	id_badge.offset_top = -87.0
-	id_badge.offset_right = -95.0
-	id_badge.offset_bottom = -28.0
+	id_badge.position = Vector2(188, 228)
+	id_badge.size = Vector2(118, 44)
 	id_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	id_badge.add_theme_stylebox_override("panel", _make_overlay_style(Color(0.08, 0.32, 0.34, 0.8), 20))
 	button.add_child(id_badge)
@@ -294,7 +310,7 @@ func _create_level_card(item: Dictionary) -> Button:
 	var id_label := Label.new()
 	id_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	id_label.add_theme_font_override("font", _title_label.get_theme_font("font"))
-	id_label.add_theme_font_size_override("font_size", 23)
+	id_label.add_theme_font_size_override("font_size", 20)
 	id_label.add_theme_color_override("font_color", Color.WHITE)
 	id_label.text = "ID %d" % index_number
 	id_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -304,25 +320,57 @@ func _create_level_card(item: Dictionary) -> Button:
 
 	var status := Panel.new()
 	status.name = "Status"
-	status.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	status.position = Vector2(-61, -69)
-	status.size = Vector2(45, 45)
+	status.position = Vector2(22, 300)
+	status.size = Vector2(286, 48)
 	status.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var status_color := Color(0.08, 0.63, 0.64, 1) if completed else Color(0.92, 0.43, 0.035, 1)
+	var status_color := Color(0.92, 0.43, 0.035, 1)
+	if puzzle_status == "completed":
+		status_color = Color(0.08, 0.63, 0.64, 1)
+	elif puzzle_status == "in_progress":
+		status_color = Color(0.25, 0.58, 0.78, 1)
 	status.add_theme_stylebox_override("panel", _make_overlay_style(status_color, 23))
 	button.add_child(status)
 
-	if completed:
-		var check := Label.new()
-		check.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		check.add_theme_font_override("font", _title_label.get_theme_font("font"))
-		check.add_theme_font_size_override("font_size", 29)
-		check.add_theme_color_override("font_color", Color.WHITE)
-		check.text = "✓"
-		check.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		check.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		check.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		status.add_child(check)
+	var status_label := Label.new()
+	status_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	status_label.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	status_label.add_theme_font_size_override("font_size", 22)
+	status_label.add_theme_color_override("font_color", Color.WHITE)
+	status_label.text = {
+		"completed": "✓  COMPLETADO",
+		"in_progress": "▶  CONTINUAR",
+	}.get(puzzle_status, "NUEVO")
+	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	status_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	status.add_child(status_label)
+
+	var stars_available := Label.new()
+	stars_available.position = Vector2(18, 350)
+	stars_available.size = Vector2(294, 42)
+	stars_available.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	stars_available.add_theme_font_size_override("font_size", 25)
+	stars_available.add_theme_color_override("font_color", Color(0.83, 0.49, 0.08))
+	stars_available.text = "%s%s disponibles" % [
+		"★".repeat(stars_remaining),
+		"☆".repeat(5 - stars_remaining),
+	]
+	stars_available.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	stars_available.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	stars_available.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.add_child(stars_available)
+
+	var letters_progress := Label.new()
+	letters_progress.position = Vector2(18, 394)
+	letters_progress.size = Vector2(294, 42)
+	letters_progress.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	letters_progress.add_theme_font_size_override("font_size", 23)
+	letters_progress.add_theme_color_override("font_color", Color(0.25, 0.16, 0.11, 0.82))
+	letters_progress.text = "%d / %d letras" % [letters_filled, letters_total]
+	letters_progress.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	letters_progress.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	letters_progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.add_child(letters_progress)
 
 	_pending_textures.append(button)
 	return button
@@ -352,6 +400,7 @@ func _on_level_pressed(item: Dictionary) -> void:
 	GameManager.id_frase = index_number
 	GameManager.set_dificultad_actual(int(item.get("difficulty", 1)))
 	GameManager.seleccionar_por_index(index_number)
+	PuzzleSaveManager.prepare_current_puzzle_cipher()
 	GameManager.set_go_to_game_disable()
 	var preview := THEME_PREVIEW.instantiate()
 	preview.set("launch_game_on_start", true)
@@ -417,6 +466,17 @@ func _copy(key: String) -> String:
 
 func _difficulty_to_stars(difficulty: int) -> int:
 	return clampi(difficulty, 1, 3)
+
+
+func _count_puzzle_letters(text: String) -> int:
+	var count := 0
+	for character in GameManager.normalizar_frase_idioma(
+		text,
+		GameManager.locale_code()
+	):
+		if not GameManager.EXCLUIR.has(character):
+			count += 1
+	return count
 
 
 func _find_image_path(image_number: int, index_number: int) -> String:

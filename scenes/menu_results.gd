@@ -50,6 +50,7 @@ func _on_button_back_pressed():
 			GameManager.set_player_name("---")
 			print("cambia el nombre...")
 			HistoryManager.add_result(GameManager.player_name,GameManager.score)
+			PlayFabTools.submit_competitive_rankings(GameManager.player_name)
 			# check if record is number one to go to menu NAME for online record
 			if HistoryManager.numero_de_record_de_partida_dentro_de_record(GameManager.categoria_actual, GameManager.dificultad_actual, GameManager.score) == 1:
 				var ok : bool = await PlayFabTools.submit_player_score(GameManager.codifica_score(GameManager.score), GameManager.player_name, GameManager.playfab_table())
@@ -67,6 +68,7 @@ func _on_button_back_pressed():
 			
 		GameManager.set_player_name(nombre.text)
 		HistoryManager.add_result(GameManager.player_name,GameManager.score)
+		PlayFabTools.submit_competitive_rankings(GameManager.player_name)
 		# check if record is number one to go to menu NAME for online record
 		if HistoryManager.numero_de_record_de_partida_dentro_de_record(GameManager.categoria_actual, GameManager.dificultad_actual, GameManager.score) == 1:
 			var ok : bool = await PlayFabTools.submit_player_score(GameManager.codifica_score(GameManager.score), GameManager.player_name, GameManager.playfab_table())

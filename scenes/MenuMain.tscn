@@ -10,11 +10,13 @@
 [ext_resource type="Texture2D" uid="uid://bidxfrqctyknx" path="res://images/Tutorial.png" id="10_ittxv"]
 [ext_resource type="Texture2D" uid="uid://bfbujo1eiyth7" path="res://images/Leaderboard2.png" id="10_t01w5"]
 [ext_resource type="Script" uid="uid://bt4vf7weivebq" path="res://scenes/AdjustSize.gd" id="11_11y0k"]
+[ext_resource type="Texture2D" uid="uid://djgesm36twvkd" path="res://images/Leaderboard2Shadow.png" id="15_1f17j"]
+[ext_resource type="Texture2D" uid="uid://bc5r1ladqsipe" path="res://images/TutorialShadow.png" id="18_8myay"]
 [ext_resource type="Script" uid="uid://brd14tiskdrxk" path="res://scenes/tips_box.gd" id="20_1hsi3"]
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="21_title"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="22_btnfx"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="23_mont"]
-[ext_resource type="Texture2D" uid="uid://c8ojqmp0xr658" path="res://images/Bombilla.png" id="24_bulb"]
+[ext_resource type="Texture2D" uid="uid://b224a7f08tbwq" path="res://images/Bombilla_1.png" id="24_bulb"]
 [ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="25_tip_font"]
 [ext_resource type="Script" uid="uid://tjdclh16sy1s" path="res://scenes/tapered_line.gd" id="26_taper"]
 
@@ -236,6 +238,33 @@ corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 anti_aliasing_size = 0.5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip_pause"]
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 3
+border_color = Color(0.705882, 0.376471, 0.0705882, 1)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.2)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip_pause_pressed"]
+bg_color = Color(0.364706, 0.25098, 0.215686, 0.1)
+border_width_left = 2
+border_width_top = 3
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.580392, 0.290196, 0.0470588, 1)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
 bg_color = Color(0.364706, 0.25098, 0.215686, 0.14)
 corner_radius_top_left = 4
@@ -415,10 +444,10 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -149.0
+offset_left = -182.0
 offset_top = 48.0
 offset_right = -49.0
-offset_bottom = 160.0
+offset_bottom = 196.96
 grow_horizontal = 0
 focus_mode = 0
 theme = SubResource("Theme_settings")
@@ -946,43 +975,31 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tip_inset")
 
-[node name="TipRow" type="HBoxContainer" parent="Panel/TipsBox" unique_id=1216188759]
+[node name="Content" type="VBoxContainer" parent="Panel/TipsBox" unique_id=1293669384]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 22.0
-offset_top = 18.0
 offset_right = -22.0
-offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/separation = 18
+theme_override_constants/separation = 0
 
-[node name="Bulb" type="TextureRect" parent="Panel/TipsBox/TipRow" unique_id=1933859135]
-custom_minimum_size = Vector2(166, 166)
+[node name="SpacerTop" type="Control" parent="Panel/TipsBox/Content" unique_id=1418852292]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-size_flags_vertical = 4
 mouse_filter = 2
-texture = ExtResource("24_bulb")
-expand_mode = 1
-stretch_mode = 5
 
-[node name="TipCol" type="VBoxContainer" parent="Panel/TipsBox/TipRow" unique_id=1100373877]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-theme_override_constants/separation = 10
-
-[node name="TitleRow" type="HBoxContainer" parent="Panel/TipsBox/TipRow/TipCol" unique_id=936111531]
-custom_minimum_size = Vector2(0, 36)
+[node name="TitleRow" type="HBoxContainer" parent="Panel/TipsBox/Content" unique_id=936111531]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="LineL" type="Control" parent="Panel/TipsBox/TipRow/TipCol/TitleRow" unique_id=1897249387]
+[node name="LineL" type="Control" parent="Panel/TipsBox/Content/TitleRow" unique_id=1897249387]
 custom_minimum_size = Vector2(64, 14)
 layout_mode = 2
 size_flags_vertical = 4
@@ -990,14 +1007,14 @@ mouse_filter = 2
 script = ExtResource("26_taper")
 line_color = Color(0.658824, 0.454902, 0.235294, 1)
 
-[node name="DotL" type="Panel" parent="Panel/TipsBox/TipRow/TipCol/TitleRow" unique_id=1904339012]
+[node name="DotL" type="Panel" parent="Panel/TipsBox/Content/TitleRow" unique_id=1904339012]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
 
-[node name="TipTitle" type="Label" parent="Panel/TipsBox/TipRow/TipCol/TitleRow" unique_id=898781458]
+[node name="TipTitle" type="Label" parent="Panel/TipsBox/Content/TitleRow" unique_id=898781458]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
@@ -1007,14 +1024,14 @@ text = "CONSEJO"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DotR" type="Panel" parent="Panel/TipsBox/TipRow/TipCol/TitleRow" unique_id=499348634]
+[node name="DotR" type="Panel" parent="Panel/TipsBox/Content/TitleRow" unique_id=499348634]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
 
-[node name="LineR" type="Control" parent="Panel/TipsBox/TipRow/TipCol/TitleRow" unique_id=1046000871]
+[node name="LineR" type="Control" parent="Panel/TipsBox/Content/TitleRow" unique_id=1046000871]
 custom_minimum_size = Vector2(64, 14)
 layout_mode = 2
 size_flags_vertical = 4
@@ -1023,7 +1040,38 @@ script = ExtResource("26_taper")
 flip_horizontal = true
 line_color = Color(0.658824, 0.454902, 0.235294, 1)
 
-[node name="TipText" type="RichTextLabel" parent="Panel/TipsBox/TipRow/TipCol" unique_id=2057266084]
+[node name="SpacerAfterTitle" type="Control" parent="Panel/TipsBox/Content" unique_id=1914955916]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TipRow" type="HBoxContainer" parent="Panel/TipsBox/Content" unique_id=1216188759]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Bulb" type="TextureRect" parent="Panel/TipsBox/Content/TipRow" unique_id=1933859135]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("24_bulb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SpacerAfterBulb" type="Control" parent="Panel/TipsBox/Content/TipRow" unique_id=1717272811]
+custom_minimum_size = Vector2(18, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TipCol" type="VBoxContainer" parent="Panel/TipsBox/Content/TipRow" unique_id=1100373877]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="TipText" type="RichTextLabel" parent="Panel/TipsBox/Content/TipRow/TipCol" unique_id=2057266084]
 unique_name_in_owner = true
 auto_translate_mode = 2
 layout_mode = 2
@@ -1038,15 +1086,33 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Dots" type="HBoxContainer" parent="Panel/TipsBox/TipRow/TipCol" unique_id=432438741]
+[node name="Dots" type="HBoxContainer" parent="Panel/TipsBox/Content/TipRow/TipCol" unique_id=432438741]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 12
 alignment = 1
 
-[node name="Progress" type="ProgressBar" parent="Panel/TipsBox/TipRow/TipCol" unique_id=1369182899]
+[node name="PausePlay" type="Button" parent="Panel/TipsBox/Content/TipRow/TipCol/Dots" unique_id=655849331]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 28)
+layout_mode = 2
+tooltip_text = "Pausar consejos"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.42)
+theme_override_colors/font_pressed_color = Color(0.364706, 0.25098, 0.215686, 0.72)
+theme_override_colors/font_hover_color = Color(0.364706, 0.25098, 0.215686, 0.65)
+theme_override_fonts/font = ExtResource("21_title")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_tip_pause")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_tip_pause_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tip_pause")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tip_pause")
+text = "Ⅱ"
+
+[node name="Progress" type="ProgressBar" parent="Panel/TipsBox/Content/TipRow/TipCol" unique_id=1369182899]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
@@ -1054,6 +1120,16 @@ mouse_filter = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_progress_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
 show_percentage = false
+
+[node name="SpacerRight" type="Control" parent="Panel/TipsBox/Content/TipRow" unique_id=1417714517]
+custom_minimum_size = Vector2(18, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="SpacerBottom" type="Control" parent="Panel/TipsBox/Content" unique_id=1998292624]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+mouse_filter = 2
 
 [node name="Timer" type="Timer" parent="Panel/TipsBox" unique_id=1217258070]
 unique_name_in_owner = true
@@ -1107,14 +1183,14 @@ anchor_left = 0.17
 anchor_top = 0.1
 anchor_right = 0.83
 anchor_bottom = 0.62
-offset_left = 5.0
-offset_top = 7.0
+offset_left = 4.999996
+offset_top = 6.0
 offset_right = 5.0
-offset_bottom = 7.0
+offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("10_t01w5")
+texture = ExtResource("15_1f17j")
 expand_mode = 1
 stretch_mode = 5
 
@@ -1265,14 +1341,14 @@ anchor_left = 0.17
 anchor_top = 0.1
 anchor_right = 0.83
 anchor_bottom = 0.62
-offset_left = 5.0
-offset_top = 7.0
+offset_left = 4.999996
+offset_top = 10.0
 offset_right = 5.0
-offset_bottom = 7.0
+offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("10_ittxv")
+texture = ExtResource("18_8myay")
 expand_mode = 1
 stretch_mode = 5
 
@@ -1306,6 +1382,24 @@ text = "Tutorial"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="VersionLabel" type="Label" parent="Panel" unique_id=1050956595]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.68
+anchor_top = 0.952
+anchor_right = 0.94
+anchor_bottom = 0.995
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 0.85)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 28
+text = "VERSION
+Beta 0.01"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="Panel/ButtonSettings" to="." method="_on_button_settings_pressed"]
 [connection signal="pressed" from="Panel/PlayWrap/ButtonPlay" to="." method="_on_button_play_pressed"]

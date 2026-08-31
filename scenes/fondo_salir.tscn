@@ -1,226 +1,208 @@
-[gd_scene load_steps=17 format=3 uid="uid://d0r0jasc1534n"]
+[gd_scene load_steps=9 format=3 uid="uid://d0r0jasc1534n"]
 
-[ext_resource type="Script" uid="uid://cy7mnudxbmpvm" path="res://scenes/fondo_salir.gd" id="1_fh7xo"]
-[ext_resource type="Texture2D" uid="uid://deats6tuwfwfa" path="res://images/peligro.png" id="1_iraa2"]
-[ext_resource type="Texture2D" uid="uid://cdth2qh5cdowu" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="3_qdksk"]
+[ext_resource type="Script" path="res://scenes/fondo_salir.gd" id="1_script"]
+[ext_resource type="FontVariation" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
+[ext_resource type="FontFile" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="3_title"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dnf3t"]
-bg_color = Color(0.835294, 0.635294, 0.576471, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(1, 0.965, 0.86, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 8
+border_color = Color(0.62, 0.4, 0.16, 0.42)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.14, 0.08, 0.03, 0.32)
+shadow_size = 24
+shadow_offset = Vector2(0, 16)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dj36u"]
-texture = ExtResource("3_qdksk")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.44, 0.335427, 0.3036, 0.65098)
+[sub_resource type="StyleBoxFlat" id="Style_continue"]
+bg_color = Color(0.28, 0.67, 0.54, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 9
+border_color = Color(0.12, 0.45, 0.35, 0.9)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.08, 0.25, 0.18, 0.2)
+shadow_size = 8
+shadow_offset = Vector2(0, 7)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dlt0r"]
-texture = ExtResource("3_qdksk")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(1, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="Style_continue_pressed"]
+bg_color = Color(0.2, 0.56, 0.44, 1)
+border_width_left = 3
+border_width_top = 8
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.12, 0.4, 0.31, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i3j8r"]
-texture = ExtResource("3_qdksk")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.6, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="Style_restart"]
+bg_color = Color(1, 0.69, 0.3, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 9
+border_color = Color(0.77, 0.38, 0.1, 0.9)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.35, 0.16, 0.04, 0.2)
+shadow_size = 8
+shadow_offset = Vector2(0, 7)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5evft"]
-texture = ExtResource("3_qdksk")
-texture_margin_left = 76.0
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(0.691854, 0.278293, 0.208589, 1)
+[sub_resource type="StyleBoxFlat" id="Style_exit"]
+bg_color = Color(1, 0.982, 0.92, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.66, 0.44, 0.2, 0.48)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u86xj"]
-texture = ExtResource("3_qdksk")
-texture_margin_left = 76.3134
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-modulate_color = Color(0.41, 0, 0, 1)
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
 
-[sub_resource type="Theme" id="Theme_kmbax"]
-Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
-Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
-Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
-Button/colors/icon_focus_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_normal_color = Color(1, 1, 1, 1)
-Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
-Button/constants/align_to_largest_stylebox = 0
-Button/constants/h_separation = 4
-Button/constants/icon_max_width = 0
-Button/constants/outline_size = 0
-Button/font_sizes/font_size = 50
-Button/fonts/font = null
-Button/styles/disabled = SubResource("StyleBoxTexture_dj36u")
-Button/styles/focus = SubResource("StyleBoxTexture_dlt0r")
-Button/styles/hover = SubResource("StyleBoxTexture_i3j8r")
-Button/styles/normal = SubResource("StyleBoxTexture_5evft")
-Button/styles/pressed = SubResource("StyleBoxTexture_u86xj")
+[node name="GameMenu" type="ColorRect" groups=["GameMenu"]]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0.08, 0.055, 0.035, 0.72)
+script = ExtResource("1_script")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vg763"]
-texture = ExtResource("3_qdksk")
-texture_margin_left = 76.0
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(8.90419e-07, 0.720339, 5.77569e-07, 1)
+[node name="Card" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -680.0
+offset_right = 480.0
+offset_bottom = 680.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_card")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcnqu"]
-texture = ExtResource("3_qdksk")
-texture_margin_left = 76.0
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(8.90419e-07, 0.720339, 5.77569e-07, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_plsrp"]
-texture = ExtResource("3_qdksk")
-texture_margin_left = 76.0
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(0, 0.88, 0, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_310ny"]
-texture = ExtResource("3_qdksk")
-texture_margin_left = 76.0
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(0.131346, 0.708587, 0.30976, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dnf3t"]
-texture = ExtResource("3_qdksk")
-texture_margin_left = 76.0
-texture_margin_top = 76.0722
-texture_margin_right = 75.9876
-texture_margin_bottom = 76.0
-region_rect = Rect2(0, 0, 154, 294)
-modulate_color = Color(0, 0.34, 0, 1)
-
-[sub_resource type="Theme" id="Theme_4sjrv"]
-Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
-Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
-Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
-Button/colors/icon_focus_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_normal_color = Color(1, 1, 1, 1)
-Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
-Button/constants/align_to_largest_stylebox = 0
-Button/constants/h_separation = 4
-Button/constants/icon_max_width = 0
-Button/constants/outline_size = 0
-Button/font_sizes/font_size = 50
-Button/fonts/font = null
-Button/styles/disabled = SubResource("StyleBoxTexture_vg763")
-Button/styles/focus = SubResource("StyleBoxTexture_tcnqu")
-Button/styles/hover = SubResource("StyleBoxTexture_plsrp")
-Button/styles/normal = SubResource("StyleBoxTexture_310ny")
-Button/styles/pressed = SubResource("StyleBoxTexture_dnf3t")
-
-[node name="FondoSalir" type="ColorRect"]
-offset_right = 1024.0
-offset_bottom = 1920.0
-pivot_offset = Vector2(482, 856)
-color = Color(1, 1, 1, 0.803922)
-script = ExtResource("1_fh7xo")
-
-[node name="CuadroSalirPartida" type="Label" parent="."]
+[node name="MenuIcon" type="Label" parent="Card"]
 layout_mode = 0
-offset_left = 62.0
-offset_top = 512.0
-offset_right = 958.0
-offset_bottom = 1232.0
-pivot_offset = Vector2(440, 168)
-theme_override_styles/normal = SubResource("StyleBoxFlat_dnf3t")
-
-[node name="ImagenViñeta" type="TextureRect" parent="CuadroSalirPartida"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 327.0
-offset_top = 48.0
-offset_right = -383.0
-offset_bottom = -475.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_iraa2")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="RichTextLabel0" type="RichTextLabel" parent="CuadroSalirPartida"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 38.0
-offset_top = 240.0
-offset_right = -60.0
-offset_bottom = -184.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 40
-text = "Are you sure you want to leave the game? (if you abandon it, you won’t be able to score on it later)"
+offset_left = 350.0
+offset_top = 72.0
+offset_right = 610.0
+offset_bottom = 200.0
+theme_override_colors/font_color = Color(0.89, 0.39, 0.08, 1)
+theme_override_fonts/font = ExtResource("3_title")
+theme_override_font_sizes/font_size = 86
+text = "☰"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonSalir" type="Button" parent="CuadroSalirPartida"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-offset_left = 194.0
-offset_top = 560.0
-offset_right = 578.0
-offset_bottom = 800.072
-scale = Vector2(0.5, 0.5)
-size_flags_horizontal = 0
-theme = SubResource("Theme_kmbax")
-theme_override_font_sizes/font_size = 80
-text = "EXIT"
+[node name="Title" type="Label" parent="Card"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 210.0
+offset_right = 860.0
+offset_bottom = 320.0
+theme_override_colors/font_color = Color(0.25, 0.15, 0.08, 1)
+theme_override_fonts/font = ExtResource("3_title")
+theme_override_font_sizes/font_size = 58
+text = "MENÚ DE PARTIDA"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="ButtonSeguir" type="Button" parent="CuadroSalirPartida"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-offset_left = 450.0
-offset_top = 560.0
-offset_right = 842.988
-offset_bottom = 800.072
-scale = Vector2(0.5, 0.5)
-size_flags_horizontal = 0
-theme = SubResource("Theme_4sjrv")
-theme_override_font_sizes/font_size = 80
-text = "CONTINUE"
+[node name="Subtitle" type="Label" parent="Card"]
+layout_mode = 0
+offset_left = 110.0
+offset_top = 326.0
+offset_right = 850.0
+offset_bottom = 400.0
+theme_override_colors/font_color = Color(0.44, 0.32, 0.2, 0.82)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 27
+text = "Tu partida queda guardada mientras juegas"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[connection signal="pressed" from="CuadroSalirPartida/ButtonSalir" to="." method="_on_button_salir_pressed"]
-[connection signal="pressed" from="CuadroSalirPartida/ButtonSeguir" to="." method="_on_button_seguir_pressed"]
+[node name="Actions" type="VBoxContainer" parent="Card"]
+layout_mode = 0
+offset_left = 110.0
+offset_top = 470.0
+offset_right = 850.0
+offset_bottom = 1030.0
+theme_override_constants/separation = 42
+
+[node name="ButtonContinue" type="Button" parent="Card/Actions"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 0.96, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("Style_continue")
+theme_override_styles/hover = SubResource("Style_continue")
+theme_override_styles/pressed = SubResource("Style_continue_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "▶   SEGUIR JUGANDO"
+
+[node name="ButtonRestart" type="Button" parent="Card/Actions"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.27, 0.15, 0.07, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("Style_restart")
+theme_override_styles/hover = SubResource("Style_restart")
+theme_override_styles/pressed = SubResource("Style_continue_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "↻   REINICIAR PUZLE"
+
+[node name="ButtonExit" type="Button" parent="Card/Actions"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.42, 0.26, 0.13, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("Style_exit")
+theme_override_styles/hover = SubResource("Style_exit")
+theme_override_styles/pressed = SubResource("Style_continue_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "⌂   SALIR AL MENÚ"
+
+[node name="SaveNote" type="Label" parent="Card"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 1110.0
+offset_right = 840.0
+offset_bottom = 1220.0
+theme_override_colors/font_color = Color(0.44, 0.32, 0.2, 0.82)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "✓  Tu progreso se guarda automáticamente."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Card/Actions/ButtonContinue" to="." method="_on_button_seguir_pressed"]
+[connection signal="pressed" from="Card/Actions/ButtonRestart" to="." method="_on_button_reiniciar_pressed"]
+[connection signal="pressed" from="Card/Actions/ButtonExit" to="." method="_on_button_salir_pressed"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scenes/game/puzzle_theme_preview.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="3_star"]
 
 [sub_resource type="StyleBoxFlat" id="Style_card"]
 bg_color = Color(1, 0.949, 0.804, 1)
@@ -72,6 +73,33 @@ corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
+[sub_resource type="StyleBoxFlat" id="Style_back"]
+bg_color = Color(1, 0.98, 0.91, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.62, 0.42, 0.2, 0.5)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0.25, 0.14, 0.04, 0.18)
+shadow_size = 6
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="Style_back_pressed"]
+bg_color = Color(0.94, 0.86, 0.7, 1)
+border_width_left = 3
+border_width_top = 7
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.62, 0.42, 0.2, 0.62)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
 [sub_resource type="StyleBoxEmpty" id="Style_empty"]
 
 [node name="PuzzleThemePreview" type="Control"]
@@ -103,9 +131,26 @@ offset_right = 1123.0
 offset_bottom = 2375.0
 theme_override_styles/panel = SubResource("Style_card")
 
+[node name="ButtonBack" type="Button" parent="Card"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 37.0
+offset_right = 157.0
+offset_bottom = 143.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.27, 0.19, 0.11, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = SubResource("Style_back")
+theme_override_styles/hover = SubResource("Style_back")
+theme_override_styles/pressed = SubResource("Style_back_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "←"
+
 [node name="Title" type="Label" parent="Card"]
 layout_mode = 0
-offset_left = 55.0
+offset_left = 170.0
 offset_top = 43.0
 offset_right = 985.0
 offset_bottom = 137.0
@@ -147,7 +192,7 @@ layout_mode = 0
 offset_left = 47.0
 offset_top = 234.0
 offset_right = 993.0
-offset_bottom = 1662.0
+offset_bottom = 1580.0
 theme_override_styles/panel = SubResource("Style_image")
 
 [node name="Image" type="TextureRect" parent="Card/ImageFrame"]
@@ -168,9 +213,9 @@ stretch_mode = 6
 [node name="WaitText" type="Label" parent="Card"]
 layout_mode = 0
 offset_left = 80.0
-offset_top = 1692.0
+offset_top = 1600.0
 offset_right = 960.0
-offset_bottom = 1774.0
+offset_bottom = 1660.0
 theme_override_colors/font_color = Color(0.46, 0.33, 0.18, 0.8)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 31
@@ -178,12 +223,56 @@ text = "Observa la imagen del tema"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="DifficultyStars" type="HBoxContainer" parent="Card"]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 1670.0
+offset_right = 760.0
+offset_bottom = 1754.0
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="Card/DifficultyStars"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="Card/DifficultyStars"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="Card/DifficultyStars"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="Card/DifficultyStars"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star5" type="TextureRect" parent="Card/DifficultyStars"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="ButtonStart" type="Button" parent="Card"]
 layout_mode = 0
 offset_left = 224.0
-offset_top = 1811.0
+offset_top = 1790.0
 offset_right = 816.0
-offset_bottom = 2057.0
+offset_bottom = 2000.0
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 0.94, 1)
 theme_override_colors/font_shadow_color = Color(0.4, 0.16, 0, 0.5)
@@ -197,3 +286,4 @@ theme_override_styles/focus = SubResource("Style_empty")
 text = "EMPEZAR"
 
 [connection signal="pressed" from="Card/ButtonStart" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Card/ButtonBack" to="." method="_on_back_pressed"]

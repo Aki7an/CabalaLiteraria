@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scenes/PanelUP/panel_up_portrait.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Pause.png" id="6_pause"]
 [ext_resource type="Texture2D" path="res://images/ui_icon_theme_white.svg" id="7_theme"]
 [ext_resource type="Texture2D" path="res://images/ui_icon_quotes_white.svg" id="8_quotes"]
+[ext_resource type="Texture2D" path="res://images/mode_quick.svg" id="9_mode_quick"]
+[ext_resource type="Texture2D" path="res://images/mode_scroll.svg" id="10_mode_crypto"]
 
 [sub_resource type="StyleBoxFlat" id="Style_card"]
 bg_color = Color(1, 0.949, 0.804, 0.98)
@@ -183,9 +185,9 @@ theme_override_styles/focus = SubResource("Style_empty")
 [node name="Icon" type="TextureRect" parent="ButtonCategory"]
 layout_mode = 0
 offset_left = 48.0
-offset_top = 36.0
+offset_top = 28.0
 offset_right = 182.0
-offset_bottom = 150.0
+offset_bottom = 118.0
 mouse_filter = 2
 texture = ExtResource("8_quotes")
 expand_mode = 1
@@ -193,14 +195,14 @@ stretch_mode = 5
 
 [node name="Category" type="Label" parent="ButtonCategory"]
 layout_mode = 0
-offset_left = 12.0
-offset_top = 148.0
-offset_right = 218.0
-offset_bottom = 236.0
+offset_left = 8.0
+offset_top = 118.0
+offset_right = 222.0
+offset_bottom = 248.0
 mouse_filter = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 32
 text = "Citas Célebres"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -209,17 +211,17 @@ autowrap_mode = 2
 [node name="PuzzleInfo" type="Control" parent="."]
 layout_mode = 0
 offset_left = 320.0
-offset_top = 36.0
+offset_top = 28.0
 offset_right = 940.0
-offset_bottom = 250.0
+offset_bottom = 268.0
 
 [node name="Title" type="Label" parent="PuzzleInfo"]
 layout_mode = 0
 offset_right = 620.0
-offset_bottom = 53.0
+offset_bottom = 36.0
 theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 26
 text = "ESTRELLAS DEL PUZLE"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -227,46 +229,98 @@ vertical_alignment = 1
 [node name="Stars" type="HBoxContainer" parent="PuzzleInfo"]
 layout_mode = 0
 offset_left = 95.0
-offset_top = 78.0
+offset_top = 40.0
 offset_right = 525.0
-offset_bottom = 178.0
+offset_bottom = 108.0
 theme_override_constants/separation = 16
 alignment = 1
 
 [node name="Star1" type="TextureRect" parent="PuzzleInfo/Stars"]
-custom_minimum_size = Vector2(72, 72)
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 texture = ExtResource("3_star")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Star2" type="TextureRect" parent="PuzzleInfo/Stars"]
-custom_minimum_size = Vector2(72, 72)
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 texture = ExtResource("3_star")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Star3" type="TextureRect" parent="PuzzleInfo/Stars"]
-custom_minimum_size = Vector2(72, 72)
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 texture = ExtResource("3_star")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Star4" type="TextureRect" parent="PuzzleInfo/Stars"]
-custom_minimum_size = Vector2(72, 72)
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 texture = ExtResource("3_star")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="Star5" type="TextureRect" parent="PuzzleInfo/Stars"]
-custom_minimum_size = Vector2(72, 72)
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 texture = ExtResource("3_star")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="LettersCaption" type="Label" parent="PuzzleInfo"]
+layout_mode = 0
+offset_top = 112.0
+offset_right = 300.0
+offset_bottom = 156.0
+theme_override_colors/font_color = Color(0.42, 0.3, 0.18, 0.9)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 22
+text = "LETRAS"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LettersFilled" type="Label" parent="PuzzleInfo"]
+layout_mode = 0
+offset_left = 310.0
+offset_top = 108.0
+offset_right = 520.0
+offset_bottom = 160.0
+theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+text = "0 / 0"
+horizontal_alignment = 0
+vertical_alignment = 1
+
+[node name="ModeRow" type="HBoxContainer" parent="PuzzleInfo"]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 162.0
+offset_right = 550.0
+offset_bottom = 240.0
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ModeIcon" type="TextureRect" parent="PuzzleInfo/ModeRow"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("9_mode_quick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ModeLabel" type="Label" parent="PuzzleInfo/ModeRow"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+text = "Partida rápida"
+vertical_alignment = 1
 
 [node name="ButtonPause" type="Button" parent="."]
 layout_mode = 0
@@ -280,21 +334,24 @@ theme_override_styles/hover = SubResource("Style_pause")
 theme_override_styles/pressed = SubResource("Style_pause_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Icon" type="TextureRect" parent="ButtonPause"]
+[node name="Icon" type="Label" parent="ButtonPause"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 34.0
-offset_top = 36.0
-offset_right = -34.0
-offset_bottom = -40.0
+offset_left = 14.0
+offset_top = 10.0
+offset_right = -14.0
+offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("6_pause")
-expand_mode = 1
-stretch_mode = 5
+theme_override_colors/font_color = Color(1, 0.976471, 0.909804, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 68
+text = "☰"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Divider" type="HSeparator" parent="."]
 layout_mode = 0
@@ -330,16 +387,17 @@ stretch_mode = 5
 [node name="Title" type="Label" parent="ButtonTheme"]
 layout_mode = 0
 offset_left = 118.0
-offset_top = 36.0
+offset_top = 48.0
 offset_right = 350.0
-offset_bottom = 94.0
+offset_bottom = 140.0
 theme_override_colors/font_color = Color(1, 1, 0.96, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 28
-text = "TEMA DEL PUZLE"
+theme_override_font_sizes/font_size = 52
+text = "TEMA"
 vertical_alignment = 1
 
 [node name="Subtitle" type="Label" parent="ButtonTheme"]
+visible = false
 layout_mode = 0
 offset_left = 118.0
 offset_top = 92.0
@@ -347,7 +405,7 @@ offset_right = 350.0
 offset_bottom = 151.0
 theme_override_colors/font_color = Color(1, 1, 0.96, 0.92)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 34
 text = "Ver imagen del tema"
 vertical_alignment = 1
 autowrap_mode = 2
@@ -378,28 +436,30 @@ stretch_mode = 5
 [node name="Title" type="Label" parent="ButtonHint"]
 layout_mode = 0
 offset_left = 118.0
-offset_top = 36.0
+offset_top = 48.0
 offset_right = 333.0
-offset_bottom = 102.0
+offset_bottom = 140.0
 theme_override_colors/font_color = Color(1, 1, 0.96, 1)
 theme_override_colors/font_shadow_color = Color(0.45, 0.2, 0.02, 0.45)
 theme_override_constants/shadow_offset_y = 3
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 38
+theme_override_font_sizes/font_size = 52
 text = "PISTA"
 vertical_alignment = 1
 
 [node name="Subtitle" type="Label" parent="ButtonHint"]
+visible = false
 layout_mode = 0
 offset_left = 118.0
-offset_top = 100.0
+offset_top = 96.0
 offset_right = 333.0
-offset_bottom = 147.0
+offset_bottom = 160.0
 theme_override_colors/font_color = Color(1, 1, 0.96, 0.94)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 34
 text = "Ayuda contextual"
 vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="ButtonReveal" type="Button" parent="."]
 layout_mode = 0
@@ -427,27 +487,27 @@ stretch_mode = 5
 [node name="Title" type="Label" parent="ButtonReveal"]
 layout_mode = 0
 offset_left = 118.0
-offset_top = 36.0
+offset_top = 28.0
 offset_right = 360.0
-offset_bottom = 102.0
+offset_bottom = 96.0
 theme_override_colors/font_color = Color(1, 1, 0.94, 1)
 theme_override_colors/font_shadow_color = Color(0.12, 0.06, 0.27, 0.58)
 theme_override_constants/shadow_offset_y = 4
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 52
 text = "REVELAR"
 vertical_alignment = 1
 
 [node name="Subtitle" type="Label" parent="ButtonReveal"]
 layout_mode = 0
-offset_left = 118.0
-offset_top = 100.0
+offset_left = 110.0
+offset_top = 96.0
 offset_right = 360.0
-offset_bottom = 148.0
+offset_bottom = 160.0
 theme_override_colors/font_color = Color(1, 1, 0.94, 0.92)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 19
-text = "Comprueba tus respuestas"
+theme_override_font_sizes/font_size = 26
+text = "Comprueba letras marcadas"
 vertical_alignment = 1
 autowrap_mode = 2
 

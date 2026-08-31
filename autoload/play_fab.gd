@@ -252,6 +252,123 @@ func submit_player_score(score: int, player_name: String = "", stat_name: String
 	return true
 
 
+const COMPETITIVE_AVERAGE_BASE := 151
+const COMPETITIVE_AID_BASE := 50
+const COMPETITIVE_FAILED_BASE := 50
+
+
+func competitive_stat_name(category_filter: String, mode_filter: String) -> String:
+	var category := category_filter.strip_edges().to_lower()
+	if category in ["", "global", "all", "todas"]:
+		category = "Global"
+	else:
+		category = GameManager.normalize_category(category).capitalize()
+	var mode := mode_filter.strip_edges().to_lower()
+	match mode:
+		GameManager.MODE_QUICK:
+			mode = "Quick"
+		GameManager.MODE_CRYPTOGRAM:
+			mode = "Cryptogram"
+		_:
+			mode = "All"
+	return "CompetitiveV2_%s_%s" % [category, mode]
+
+
+func encode_competitive_record(record: Dictionary) -> int:
+	var total_stars := clampi(int(record.get("stars_earned", 0)), 0, 4999)
+	var average_tenths := clampi(
+		int(record.get("stars_per_puzzle_tenths", 0)),
+		0,
+		COMPETITIVE_AVERAGE_BASE - 1
+	)
+	var aids := clampi(int(record.get("aids_used", 0)), 0, COMPETITIVE_AID_BASE - 1)
+	var failed := clampi(int(record.get("failed_letters", 0)), 0, COMPETITIVE_FAILED_BASE - 1)
+	var fewer_aids_rank := COMPETITIVE_AID_BASE - 1 - aids
+	var fewer_failed_rank := COMPETITIVE_FAILED_BASE - 1 - failed
+	return (
+		(
+			(total_stars * COMPETITIVE_AVERAGE_BASE + average_tenths)
+			* COMPETITIVE_AID_BASE
+			+ fewer_aids_rank
+		)
+		* COMPETITIVE_FAILED_BASE
+		+ fewer_failed_rank
+	)
+
+
+func decode_competitive_value(value: int) -> Dictionary:
+	var remaining := maxi(value, 0)
+	var fewer_failed_rank := remaining % COMPETITIVE_FAILED_BASE
+	remaining = int(remaining / COMPETITIVE_FAILED_BASE)
+	var fewer_aids_rank := remaining % COMPETITIVE_AID_BASE
+	remaining = int(remaining / COMPETITIVE_AID_BASE)
+	var average_tenths := remaining % COMPETITIVE_AVERAGE_BASE
+	var total_stars := int(remaining / COMPETITIVE_AVERAGE_BASE)
+	var completed := 0
+	if average_tenths > 0:
+		completed = int(round(float(total_stars * 10) / float(average_tenths)))
+	return {
+		"stars_earned": total_stars,
+		"stars_per_puzzle_hundredths": average_tenths * 10,
+		"completed": completed,
+		"aids_used": COMPETITIVE_AID_BASE - 1 - fewer_aids_rank,
+		"failed_letters": COMPETITIVE_FAILED_BASE - 1 - fewer_failed_rank,
+	}
+
+
+func submit_competitive_rankings(player_name: String = "") -> bool:
+	if not is_logged_in():
+		return false
+	if player_name.strip_edges() != "":
+		await _update_player_display_name(player_name)
+
+	var categories := [
+		"global",
+		GameManager.CAT_CITA,
+		GameManager.CAT_EFEMERIDE,
+		GameManager.CAT_CURIOSIDADES,
+		GameManager.CAT_FRAGMENTO,
+	]
+	var modes := ["all", GameManager.MODE_QUICK, GameManager.MODE_CRYPTOGRAM]
+	var statistics: Array[Dictionary] = []
+	for category in categories:
+		for mode in modes:
+			var record: Dictionary = HistoryManager.get_competitive_record(category, mode)
+			statistics.append({
+				"StatisticName": competitive_stat_name(category, mode),
+				"Value": encode_competitive_record(record),
+			})
+
+	var request := HTTPRequest.new()
+	add_child(request)
+	request.timeout = 30
+	var headers := PackedStringArray([
+		"Content-Type: application/json",
+		"Accept: application/json",
+		"Accept-Encoding: identity",
+		"X-Authorization: " + session_ticket,
+		"X-ReportErrorAsSuccess: true",
+	])
+	var url := "https://%s.playfabapi.com/Client/UpdatePlayerStatistics" % TITLE_ID
+	var error := request.request(
+		url,
+		headers,
+		HTTPClient.METHOD_POST,
+		JSON.stringify({"Statistics": statistics})
+	)
+	if error != OK:
+		request.queue_free()
+		return false
+	var response: Array = await request.request_completed
+	var http_code := int(response[1])
+	var response_text := (response[3] as PackedByteArray).get_string_from_utf8()
+	request.queue_free()
+	var parsed: Variant = JSON.parse_string(response_text)
+	if not (parsed is Dictionary):
+		return false
+	return int((parsed as Dictionary).get("code", http_code)) == 200
+
+
 # ----- Helper: fija el DisplayName del jugador en este título -----
 func _update_player_display_name(player_name: String) -> bool:
 	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():

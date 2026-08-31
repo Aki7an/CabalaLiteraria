@@ -9,6 +9,8 @@ signal insert_letter_in_number (letter: String, number: int)
 
 signal update_resting_characters
 
+signal board_filled
+
 signal move_canvas(wide: int)
 
 signal update_cambios
@@ -23,6 +25,8 @@ signal update_stars(diff:int)
 signal update_puzzle_stars(stars:int)
 
 signal fit_text
+
+signal app_version_changed(version_text: String)
 
 signal update_score
 

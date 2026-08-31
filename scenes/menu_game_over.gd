@@ -1,13 +1,23 @@
 extends ColorRect
 
-const SCENE_MENU_RESULTS := preload("res://scenes/MenuResults.tscn")
-const SCENE_MENU_FEEDBACK := preload("res://scenes/MenuFeedback.tscn")
+const SCENE_MENU_MAIN := preload("res://scenes/MenuMain.tscn")
+const STAR_YELLOW := Color(1.0, 0.82, 0.12, 1.0)
+const STAR_EMPTY := Color(0.62, 0.51, 0.34, 0.28)
+const GAP := 24.0
 
+@onready var main_card: Panel = $MainCard
+@onready var phrase_card: Panel = $MainCard/PhraseCard
 @onready var phrase_label: RichTextLabel = $MainCard/PhraseCard/Phrase
 @onready var category_label: Label = $MainCard/PhraseCard/Category
+@onready var quote_close: Label = $MainCard/PhraseCard/QuoteClose
+@onready var stars_card: Panel = $MainCard/StarsCard
+@onready var info_card: Panel = $MainCard/StarsCard/InfoCard
+@onready var unlock_card: Panel = $MainCard/UnlockCard
+@onready var continue_button: Button = $MainCard/ButtonBack
 @onready var description_label: RichTextLabel = $MainCard/StarsCard/InfoCard/Description
 @onready var stars_text: Label = $MainCard/StarsCard/StarsPill/StarsText
 @onready var xp_label: Label = $MainCard/UnlockCard/RewardXP/Title
+@onready var map_progress_label: Label = $MainCard/UnlockCard/RewardMap/Subtitle
 @onready var stars: Array[TextureRect] = [
 	$MainCard/StarsCard/Stars/Star1,
 	$MainCard/StarsCard/Stars/Star2,
@@ -26,30 +36,100 @@ func _ready() -> void:
 	description_label.text = GameManager.descripcion_final_actual
 	if description_label.text.strip_edges() == "":
 		description_label.text = "Has completado correctamente este puzle."
-	_update_stars()
 
-
-func _update_stars() -> void:
 	var earned: int = clampi(GameManager.puzzle_stars, 0, stars.size())
-	for index in range(stars.size()):
-		stars[index].self_modulate = (
-			Color(1, 1, 1, 1)
-			if index < earned
-			else Color(0.62, 0.51, 0.34, 0.22)
-		)
-	stars_text.text = "Resultado: %d de 5" % earned
+	var difficulty_multiplier := GameManager.get_puzzle_difficulty_stars()
+	var earned_total := earned * difficulty_multiplier
+	var maximum_total := stars.size() * difficulty_multiplier
+	stars_text.text = "Resultado: %d de %d" % [earned_total, maximum_total]
 	xp_label.text = "+%d XP" % (earned * 10)
+	_update_map_progress()
+
+	for star in stars:
+		star.visible = true
+		star.self_modulate = STAR_EMPTY
+		star.scale = Vector2.ONE
+
+	await get_tree().process_frame
+	await _fit_phrase_card()
+	await _fit_stars_card()
+	_layout_top_down()
+	for star in stars:
+		star.pivot_offset = star.size * 0.5
+	await _animate_stars(earned)
 
 
-func _on_button_game_over_pressed() -> void:
-	TransitionScreen.transition_to_black()
-	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_packed(SCENE_MENU_RESULTS)
-	SoundManager.play("ButtonClick")
+func _fit_phrase_card() -> void:
+	phrase_label.fit_content = true
+	phrase_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	await get_tree().process_frame
+
+	var phrase_height := maxf(float(phrase_label.get_content_height()), 160.0)
+	phrase_label.size.y = phrase_height
+	category_label.position.y = phrase_label.position.y + phrase_height + 10.0
+	quote_close.position.y = maxf(phrase_label.position.y + phrase_height - 100.0, 100.0)
+	var card_bottom := category_label.position.y + category_label.size.y + 24.0
+	phrase_card.size.y = maxf(card_bottom, 320.0)
+
+
+func _fit_stars_card() -> void:
+	description_label.fit_content = true
+	description_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	await get_tree().process_frame
+
+	var description_height := maxf(
+		float(description_label.get_content_height()),
+		100.0
+	)
+	description_label.size.y = description_height
+	info_card.size.y = description_label.position.y + description_height + 32.0
+	stars_card.size.y = info_card.position.y + info_card.size.y + 28.0
+
+
+func _layout_top_down() -> void:
+	stars_card.position.y = phrase_card.position.y + phrase_card.size.y + GAP
+	unlock_card.position.y = stars_card.position.y + stars_card.size.y + GAP
+
+
+func _update_map_progress() -> void:
+	var available_ids := {}
+	for item_value in GameManager.frases_db:
+		if item_value is Dictionary:
+			var puzzle_id := int((item_value as Dictionary).get("index", -1))
+			if puzzle_id >= 0:
+				available_ids[puzzle_id] = true
+
+	var completed_ids := {}
+	for entry_value in HistoryManager.get_history():
+		if entry_value is Dictionary:
+			var entry: Dictionary = entry_value
+			if bool(entry.get("partida_ganada", false)):
+				completed_ids[int(entry.get("id", -1))] = true
+
+	var total := available_ids.size()
+	var remaining := maxi(total - completed_ids.size(), 0)
+	var remaining_percent := 0
+	if total > 0:
+		remaining_percent = int(round(100.0 * float(remaining) / float(total)))
+	map_progress_label.text = "%d %% por completar" % remaining_percent
+
+
+func _animate_stars(earned: int) -> void:
+	for index in range(earned):
+		var star := stars[index]
+		star.self_modulate = STAR_YELLOW
+		var tween := create_tween()
+		tween.set_trans(Tween.TRANS_SINE)
+		tween.tween_property(star, "scale", Vector2(1.4, 1.4), 0.12).set_ease(Tween.EASE_OUT)
+		tween.tween_property(star, "scale", Vector2(0.88, 0.88), 0.1).set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(star, "scale", Vector2(1.22, 1.22), 0.09).set_ease(Tween.EASE_OUT)
+		tween.tween_property(star, "scale", Vector2.ONE, 0.1).set_ease(Tween.EASE_IN)
+		await tween.finished
+		await get_tree().create_timer(0.06).timeout
 
 
 func _on_button_back_pressed() -> void:
-	TransitionScreen.transition_to_black()
-	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_packed(SCENE_MENU_FEEDBACK)
 	SoundManager.play("ButtonClick")
+	TransitionScreen.transition_to_black()
+	await SignalManager.on_transition_finished
+	get_tree().change_scene_to_packed(SCENE_MENU_MAIN)

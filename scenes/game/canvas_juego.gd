@@ -68,6 +68,7 @@ var _tween: Tween
 #                       READY
 # ----------------------------------------------------
 func _ready() -> void:
+	add_to_group("PuzzleCanvas")
 	_rest_y = position.y
 	SignalManager.deselect_all_cells_in_canvas.connect(deselect_all_cels)
 	SignalManager.insert_letter_in_number.connect(_insert_letter_in_number)
@@ -330,11 +331,13 @@ func _input(event: InputEvent) -> void:
 			# rueda arriba -> mover contenido hacia arriba (Y menor)
 			canvas_juego.position.y -= SCROLL_STEP
 			_clamp_canvas_y()
+			PuzzleSaveManager.request_autosave()
 			accept_event()
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			# rueda abajo -> mover contenido hacia abajo (Y mayor)
 			canvas_juego.position.y += SCROLL_STEP
 			_clamp_canvas_y()
+			PuzzleSaveManager.request_autosave()
 			accept_event()
 
 	if event is InputEventScreenTouch:
@@ -369,6 +372,7 @@ func _input(event: InputEvent) -> void:
 			# Pan SOLO en eje Y
 			canvas_juego.position.y += delta.y
 			_clamp_canvas_y()
+			PuzzleSaveManager.request_autosave()
 			ultima_posicion = drag.position
 
 	elif event is InputEventMagnifyGesture and _is_over_canvas(pos):
@@ -450,6 +454,7 @@ func set_scroll_normalized(value: float) -> void:
 		normalized
 	)
 	_clamp_canvas_y()
+	PuzzleSaveManager.request_autosave()
 
 
 func get_scroll_normalized() -> float:
@@ -501,19 +506,17 @@ func crear_linea_horizontal() -> void:
 # ----------------------------------------------------
 
 func _insert_letter_in_number(letter2: String, number: int) -> void:
-	#CORREGIR, he de dar letra y numero y poner la letra que me da, no la que tiene realmente...
-	#print("numero seleccionado a comprobar: " + str(number))
 	for celda: Celda in get_tree().get_nodes_in_group("Celda"):
-		if celda.numero == number:
+		if celda.numero != number:
+			continue
+		if celda.bloqueada:
+			continue
+		if letter2 == "":
+			celda.limpiar_letra_usuario()
+		else:
 			celda.set_letter_user(letter2)
-			#print(" letter2: " + letter2)
-			#print(" number: " + str(number))
-			celda.mostrar_letra()
-			if celda.letter_user != "":
-				GameManager.update_numero_letras_reveladas()
-			else:
-				GameManager.disminuye_numero_letras_reveladas()
-	# deselect Celda
+			celda.mostrar_letra_jugador()
+	GameManager.update_numero_letras_reveladas()
 	SignalManager.deselect_all_cells_in_canvas.emit()
 	
 	
@@ -575,6 +578,7 @@ func pan_to_y(target_y: float, duration: float = 0.5) -> void:
 	_move_tween = create_tween()
 	_move_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_move_tween.tween_property(self, "position:y", target_y, duration)
+	_move_tween.finished.connect(PuzzleSaveManager.request_autosave)
 
 # --- Cálculo de alto de una fila (celda + separación vertical) ---
 func _row_height() -> float:

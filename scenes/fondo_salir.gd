@@ -1,13 +1,36 @@
 extends ColorRect
 
-const scene_to_load_MainMenu = preload("res://scenes/MenuMain.tscn")
+const PUZZLE_SELECTION := "res://scenes/MenuSelectLevelByID.tscn"
 
-func _on_button_seguir_pressed():
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+	get_tree().paused = true
+
+
+func _exit_tree() -> void:
+	if get_tree() != null:
+		get_tree().paused = false
+
+
+func _on_button_seguir_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	get_tree().paused = false
 	queue_free()
 
 
-func _on_button_salir_pressed():
+func _on_button_reiniciar_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	PuzzleSaveManager.reset_resolution_keep_attempt()
+	get_tree().paused = false
+	queue_free()
+	get_tree().reload_current_scene()
+
+
+func _on_button_salir_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	PuzzleSaveManager.save_current_now()
+	get_tree().paused = false
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_packed(scene_to_load_MainMenu)
-	SoundManager.play("ButtonClick")
+	get_tree().change_scene_to_file(PUZZLE_SELECTION)

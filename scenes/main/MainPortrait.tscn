@@ -115,7 +115,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 offset_left = 27.0
 offset_top = 45.0
-offset_right = 1083.0
+offset_right = 1028.0
 offset_bottom = 1110.0
 grow_horizontal = 1
 grow_vertical = 1
@@ -123,19 +123,19 @@ theme_override_styles/panel = SubResource("Style_board_inner")
 
 [node name="ScrollRail" type="Panel" parent="CanvasLayer/BoardFrame"]
 layout_mode = 0
-offset_left = 1093.0
+offset_left = 1038.0
 offset_top = 31.0
-offset_right = 1150.0
+offset_right = 1155.0
 offset_bottom = 1101.0
 theme_override_styles/panel = SubResource("Style_rail")
 script = ExtResource("11_scroll")
 
 [node name="PageUp" type="Button" parent="CanvasLayer/BoardFrame/ScrollRail"]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 6.0
-offset_right = 52.0
-offset_bottom = 84.0
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 107.0
+offset_bottom = 100.0
 focus_mode = 0
 theme_override_styles/normal = SubResource("Style_scroll_button")
 theme_override_styles/hover = SubResource("Style_scroll_button")
@@ -148,10 +148,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 9.0
-offset_top = 19.0
-offset_right = -9.0
-offset_bottom = -19.0
+offset_left = 22.0
+offset_top = 24.0
+offset_right = -22.0
+offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -159,22 +159,31 @@ texture = ExtResource("8_arrow")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Thumb" type="Panel" parent="CanvasLayer/BoardFrame/ScrollRail"]
+[node name="Thumb" type="Control" parent="CanvasLayer/BoardFrame/ScrollRail"]
+custom_minimum_size = Vector2(90, 240)
 layout_mode = 0
-offset_left = 10.0
-offset_top = 298.0
-offset_right = 47.0
-offset_bottom = 477.0
+offset_left = 8.0
+offset_top = 280.0
+offset_right = 109.0
+offset_bottom = 520.0
 mouse_filter = 0
 mouse_default_cursor_shape = 6
+
+[node name="Visual" type="Panel" parent="CanvasLayer/BoardFrame/ScrollRail/Thumb"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 0.0
+offset_right = 68.0
+offset_bottom = 240.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_thumb")
 
 [node name="PageDown" type="Button" parent="CanvasLayer/BoardFrame/ScrollRail"]
 layout_mode = 0
-offset_left = 5.0
-offset_top = 986.0
-offset_right = 52.0
-offset_bottom = 1064.0
+offset_left = 10.0
+offset_top = 970.0
+offset_right = 107.0
+offset_bottom = 1062.0
 focus_mode = 0
 theme_override_styles/normal = SubResource("Style_scroll_button")
 theme_override_styles/hover = SubResource("Style_scroll_button")
@@ -187,14 +196,14 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 9.0
-offset_top = 19.0
-offset_right = -9.0
-offset_bottom = -19.0
+offset_left = 22.0
+offset_top = 24.0
+offset_right = -22.0
+offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
 rotation = 3.14159
-pivot_offset = Vector2(14.5, 20)
+pivot_offset = Vector2(26.5, 22)
 mouse_filter = 2
 texture = ExtResource("8_arrow")
 expand_mode = 1

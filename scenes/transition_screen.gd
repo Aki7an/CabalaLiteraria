@@ -7,7 +7,7 @@ func _ready() -> void:
 	color_rect.visible = false
 	animation_player.animation_finished.connect(_on_animation_finished)
 	
-func _on_animation_finished(anim_name: String, anim_speed:float) -> void:
+func _on_animation_finished(anim_name: String, anim_speed: float = 1.0) -> void:
 	if anim_name == "fade_to_black":
 		SignalManager.on_transition_finished.emit()
 		animation_player.speed_scale = anim_speed

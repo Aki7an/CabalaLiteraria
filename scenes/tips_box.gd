@@ -13,11 +13,13 @@ const TIP_KEYS: PackedStringArray = [
 @onready var tip_title: Label = %TipTitle
 @onready var tip_text: RichTextLabel = %TipText
 @onready var dots: HBoxContainer = %Dots
+@onready var pause_play_button: Button = %PausePlay
 @onready var progress: ProgressBar = %Progress
 @onready var timer: Timer = %Timer
 
 var _idx := 0
 var _advancing := false
+var _is_paused := false
 var _progress_tween: Tween
 var _dot_nodes: Array[Panel] = []
 
@@ -27,6 +29,8 @@ func _ready() -> void:
 	tip_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	dots.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if not pause_play_button.pressed.is_connected(_on_pause_play_pressed):
+		pause_play_button.pressed.connect(_on_pause_play_pressed)
 	_build_dots()
 	_show_tip(_idx, false)
 	timer.wait_time = interval_seconds
@@ -88,9 +92,14 @@ func _restart_progress() -> void:
 	_progress_tween = create_tween()
 	_progress_tween.set_trans(Tween.TRANS_LINEAR)
 	_progress_tween.tween_property(progress, "value", 100.0, interval_seconds)
+	if _is_paused:
+		_progress_tween.pause()
 
 func _build_dots() -> void:
 	for child in dots.get_children():
+		if child == pause_play_button:
+			continue
+		dots.remove_child(child)
 		child.queue_free()
 	_dot_nodes.clear()
 	for i in TIP_KEYS.size():
@@ -100,8 +109,20 @@ func _build_dots() -> void:
 		dot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		dots.add_child(dot)
+		dots.move_child(dot, pause_play_button.get_index())
 		_dot_nodes.append(dot)
 	_refresh_dots()
+
+func _on_pause_play_pressed() -> void:
+	_is_paused = not _is_paused
+	timer.paused = _is_paused
+	if is_instance_valid(_progress_tween):
+		if _is_paused:
+			_progress_tween.pause()
+		else:
+			_progress_tween.play()
+	pause_play_button.text = "▶" if _is_paused else "Ⅱ"
+	pause_play_button.tooltip_text = "Reanudar consejos" if _is_paused else "Pausar consejos"
 
 func _refresh_dots() -> void:
 	var active := Color(0.364706, 0.25098, 0.215686, 1)

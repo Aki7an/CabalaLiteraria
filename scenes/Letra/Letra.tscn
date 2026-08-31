@@ -3,18 +3,18 @@
 [ext_resource type="Script" uid="uid://1gggswfp2io1" path="res://scenes/Letra/Letra.gd" id="1_jcy3o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jcy3o"]
-bg_color = Color(0.975, 0.965, 0.945, 1)
+bg_color = Color(0.97, 0.91, 0.8, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 6
-border_color = Color(0.45, 0.42, 0.38, 0.4)
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-shadow_color = Color(0.2, 0.18, 0.15, 0.14)
-shadow_size = 5
+border_color = Color(0.7, 0.55, 0.35, 0.55)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.4, 0.28, 0.12, 0.18)
+shadow_size = 6
 shadow_offset = Vector2(0, 5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ewu8p"]
@@ -68,7 +68,7 @@ anchor_bottom = 1.0
 offset_top = 16.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.22, 0.18, 0.13, 1)
 theme_override_font_sizes/font_size = 52
 text = "A"
 horizontal_alignment = 1

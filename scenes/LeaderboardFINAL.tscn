@@ -1,1787 +1,554 @@
-[gd_scene load_steps=29 format=3 uid="uid://ba0qpxrfmqw3r"]
+[gd_scene format=3 uid="uid://ba0qpxrfmqw3r"]
 
-[ext_resource type="Script" uid="uid://yl7tg82yn0iu" path="res://scenes/leaderboard_final.gd" id="1_rav72"]
-[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_8uxnf"]
-[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_fymwg"]
-[ext_resource type="FontFile" uid="uid://bhfo1jcrwhcei" path="res://Font_titulos.tres" id="4_d7fne"]
-[ext_resource type="Script" uid="uid://5mpdten05w3r" path="res://scenes/PanelUP/dificultad.gd" id="5_rav72"]
-[ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="6_r1r3f"]
-[ext_resource type="Texture2D" uid="uid://c5ei881vtojkn" path="res://images/contorno_estrella_blanco.png" id="7_c8u75"]
-[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="8_vahk4"]
-[ext_resource type="Theme" uid="uid://dfw7q1ctkms07" path="res://Desplegable.tres" id="9_fticv"]
-[ext_resource type="StyleBox" uid="uid://l71ya3wtvk34" path="res://Stats_facil.tres" id="9_r1r3f"]
-[ext_resource type="StyleBox" uid="uid://dwwhfd3vhu5up" path="res://stats_normal.tres" id="10_c8u75"]
-[ext_resource type="Script" uid="uid://dcjts4hrnhgsa" path="res://scenes/optionbutton.gd" id="10_un1mr"]
-[ext_resource type="PackedScene" uid="uid://cffefknpxfylk" path="res://scenes/titulo_cifra_letra.tscn" id="11_ot1u2"]
-[ext_resource type="StyleBox" uid="uid://bpi354xg3v5n" path="res://stats_PRO.tres" id="11_vahk4"]
-[ext_resource type="StyleBox" uid="uid://cljax6i143yw3" path="res://stats_Difficult.tres" id="12_fticv"]
-[ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="12_vxkw5"]
+[ext_resource type="Script" uid="uid://yl7tg82yn0iu" path="res://scenes/leaderboard_final.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_background"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="4_title"]
+[ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="5_quotes"]
+[ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="6_events"]
+[ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="7_curiosities"]
+[ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="8_fragments"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="9_back"]
+[ext_resource type="Texture2D" uid="uid://t0gcgg5c52mq" path="res://images/leaderboard_global.svg" id="10_global"]
+[ext_resource type="Texture2D" uid="uid://duj5gi84s5bqf" path="res://images/mode_quick.svg" id="11_quick"]
+[ext_resource type="Texture2D" uid="uid://cxcb17n88b3b3" path="res://images/mode_scroll.svg" id="12_cryptogram"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvael"]
-bg_color = Color(0.910231, 0.585808, 0.604078, 1)
-border_color = Color(0.708888, 0.509112, 0.517275, 1)
+[sub_resource type="StyleBoxFlat" id="Style_background"]
+bg_color = Color(0.984, 0.949, 0.865, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_mode"]
+bg_color = Color(1, 0.96, 0.87, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.64, 0.48, 0.3, 0.3)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(1, 0.976, 0.925, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.902, 0.788, 0.588, 0.82)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+shadow_color = Color(0.31, 0.2, 0.09, 0.14)
+shadow_size = 16
+shadow_offset = Vector2(0, 11)
+
+[sub_resource type="StyleBoxFlat" id="Style_filter"]
+bg_color = Color(1, 0.976, 0.925, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.82, 0.7, 0.51, 0.48)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+
+[sub_resource type="StyleBoxFlat" id="Style_info"]
+bg_color = Color(0.996, 0.956, 0.875, 0.82)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.64, 0.43, 0.3)
 corner_radius_top_left = 30
 corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[sub_resource type="Theme" id="Theme_x67n3"]
+[sub_resource type="StyleBoxFlat" id="Style_around_frame"]
+content_margin_left = 14.0
+content_margin_top = 14.0
+content_margin_right = 14.0
+content_margin_bottom = 14.0
+bg_color = Color(1, 0.965, 0.91, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.82, 0.62, 0.38, 0.4)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0i7u8"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_un1mr"]
-bg_color = Color(0.713726, 0.654902, 0.768627, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.65098, 0.811765, 0.713726, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ot1u2"]
-bg_color = Color(0.980392, 0.788235, 0.529412, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.65098, 0.811765, 0.713726, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxkw5"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.65098, 0.811765, 0.713726, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7hvqv"]
-bg_color = Color(1, 0.960784, 0.862745, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.65098, 0.811765, 0.713726, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i8mtr"]
-bg_color = Color(1, 0.960784, 0.862745, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.65098, 0.811765, 0.713726, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vgatv"]
-bg_color = Color(0.636907, 0.6336, 0.64, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.65098, 0.811765, 0.713726, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mh33s"]
-bg_color = Color(0.821179, 0.815132, 0.824131, 1)
-border_width_bottom = 10
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r4qou"]
-bg_color = Color(0.768323, 0.738395, 0.755696, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_25sjv"]
-bg_color = Color(0.907942, 0.907942, 0.907942, 1)
-border_color = Color(0.455731, 0.446657, 0.422096, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
-
-[node name="LeaderBoard" type="Control"]
+[node name="LeaderBoard" type="Control" unique_id=2002514090]
 layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="Panel" parent="." unique_id=1485483437]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_background")
+
+[node name="Pattern" parent="Background" unique_id=167697658 instance=ExtResource("2_background")]
+modulate = Color(1, 1, 1, 0.12)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="Control" parent="." unique_id=562795727]
 anchors_preset = 0
-script = ExtResource("1_rav72")
+offset_right = 1206.0
+offset_bottom = 220.0
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ButtonBack" parent="Header" unique_id=2142967141 instance=ExtResource("9_back")]
+unique_name_in_owner = true
 layout_mode = 0
-offset_right = 1024.0
-offset_bottom = 1912.0
-color = Color(0.980392, 0.886275, 0.709804, 1)
+offset_left = 42.0
+offset_top = 36.0
+offset_right = 188.0
+offset_bottom = 182.0
 
-[node name="Fondo" parent="ColorRect" instance=ExtResource("2_8uxnf")]
-metadata/_edit_lock_ = true
-
-[node name="TituloDificultadCategoria2" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.172
-anchor_top = -0.112887
-anchor_right = 2.094
-anchor_bottom = 0.016427
-offset_left = -0.128002
-offset_top = 679.84
-offset_right = -0.256042
-offset_bottom = 680.592
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 50
-theme_override_styles/normal = SubResource("StyleBoxFlat_kvael")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="TituloDificultadCategoria" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.281375
-anchor_top = 0.192552
-anchor_right = 0.969
-anchor_bottom = 0.246552
-offset_left = 1087.87
-offset_top = 431.841
-offset_right = 1087.74
-offset_bottom = 432.593
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 50
-theme_override_styles/normal = SubResource("StyleBoxFlat_kvael")
-text = "Fácil - Efermérides"
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Dificultad" type="PanelContainer" parent="ColorRect/TituloDificultadCategoria"]
+[node name="Title" type="Label" parent="Header" unique_id=960502261]
 layout_mode = 0
-offset_left = -224.0
-offset_top = 26.0
-offset_right = -16.0
-offset_bottom = 80.0
-theme = SubResource("Theme_x67n3")
-theme_override_styles/panel = SubResource("StyleBoxFlat_0i7u8")
-metadata/_edit_use_anchors_ = true
+offset_left = 360.0
+offset_top = 32.0
+offset_right = 846.0
+offset_bottom = 166.0
+theme_override_colors/font_color = Color(0.22, 0.13, 0.07, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 76
+text = "RÉCORDS"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/TituloDificultadCategoria/Dificultad"]
+[node name="ModeTabs" type="HBoxContainer" parent="." unique_id=1874981241]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 202.0
+offset_right = 1174.0
+offset_bottom = 380.0
+theme_override_constants/separation = 0
+
+[node name="FilterQuick" type="Button" parent="ModeTabs" unique_id=683418167]
+unique_name_in_owner = true
 layout_mode = 2
-alignment = 1
-metadata/_edit_lock_ = true
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 44
+theme_override_styles/normal = SubResource("Style_mode")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "RÁPIDO"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer"]
+[node name="Icon" type="TextureRect" parent="ModeTabs/FilterQuick" unique_id=2057069721]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 42.0
+offset_right = 190.0
+offset_bottom = 136.0
+mouse_filter = 2
+texture = ExtResource("11_quick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FilterCryptogram" type="Button" parent="ModeTabs" unique_id=836680143]
+unique_name_in_owner = true
 layout_mode = 2
-alignment = 1
-metadata/_edit_lock_ = true
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 44
+theme_override_styles/normal = SubResource("Style_mode")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "CRIPTOGRAMA"
 
-[node name="Dificultad" type="Label" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer/HBoxContainer"]
-visible = false
+[node name="Icon" type="TextureRect" parent="ModeTabs/FilterCryptogram" unique_id=1909880904]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 38.0
+offset_right = 109.0
+offset_bottom = 132.0
+mouse_filter = 2
+texture = ExtResource("12_cryptogram")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MainCard" type="Panel" parent="." unique_id=1232219028]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 350.0
+offset_right = 1178.0
+offset_bottom = 2584.0
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="CategoryFilters" type="HBoxContainer" parent="MainCard" unique_id=928681907]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 56.0
+offset_right = 1120.0
+offset_bottom = 320.0
+theme_override_constants/separation = 14
+
+[node name="FilterGlobal" type="Button" parent="MainCard/CategoryFilters" unique_id=996994361]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_fonts/font = ExtResource("4_d7fne")
-theme_override_font_sizes/font_size = 36
-text = "Dificultad :"
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_filter")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterGlobal" unique_id=670234752]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 8.0
+offset_right = 182.0
+offset_bottom = 175.94327
+mouse_filter = 2
+texture = ExtResource("10_global")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterGlobal" unique_id=496189157]
+layout_mode = 0
+offset_top = 132.0
+offset_right = 210.0
+offset_bottom = 246.0
+theme_override_colors/font_color = Color(0.91, 0.35, 0.08, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+text = "GLOBAL"
 horizontal_alignment = 1
 vertical_alignment = 1
-script = ExtResource("5_rav72")
 
-[node name="VSeparator" type="VSeparator" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer/HBoxContainer"]
-visible = false
-modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(20, 0)
+[node name="FilterQuotes" type="Button" parent="MainCard/CategoryFilters" unique_id=879911942]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_filter")
+theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Dificultad2" type="Label" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer/HBoxContainer"]
-visible = false
+[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterQuotes" unique_id=543587960]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 12.0
+offset_right = 178.0
+offset_bottom = 152.0
+mouse_filter = 2
+texture = ExtResource("5_quotes")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterQuotes" unique_id=470719880]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 140.0
+offset_right = 212.0
+offset_bottom = 254.0
+theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+text = "CITAS
+CÉLEBRES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FilterEvents" type="Button" parent="MainCard/CategoryFilters" unique_id=1625054350]
+unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("6_r1r3f")
-theme_override_colors/font_color = Color(1, 1, 0, 1)
-text = "3"
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_filter")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterEvents" unique_id=1421581089]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 12.0
+offset_right = 169.0
+offset_bottom = 152.0
+mouse_filter = 2
+texture = ExtResource("6_events")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterEvents" unique_id=1164003861]
+layout_mode = 0
+offset_top = 132.0
+offset_right = 210.0
+offset_bottom = 246.0
+theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+text = "EFEMÉRIDES"
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_lock_ = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+[node name="FilterCuriosities" type="Button" parent="MainCard/CategoryFilters" unique_id=635915692]
+unique_name_in_owner = true
 layout_mode = 2
-alignment = 1
-metadata/_edit_lock_ = true
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_filter")
+theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Label" type="Label" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer/HBoxContainer2"]
+[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterCuriosities" unique_id=1065082903]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 12.0
+offset_right = 177.0
+offset_bottom = 149.0
+mouse_filter = 2
+texture = ExtResource("7_curiosities")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterCuriosities" unique_id=2048505469]
+layout_mode = 0
+offset_top = 132.0
+offset_right = 210.0
+offset_bottom = 246.0
+theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+text = "CURIOSIDADES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FilterFragments" type="Button" parent="MainCard/CategoryFilters" unique_id=911568405]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_filter")
+theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="EstrellaContorno1" type="Sprite2D" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer/HBoxContainer2/Label"]
+[node name="Icon" type="TextureRect" parent="MainCard/CategoryFilters/FilterFragments" unique_id=2098893374]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 12.0
+offset_right = 169.0
+offset_bottom = 154.0
+mouse_filter = 2
+texture = ExtResource("8_fragments")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="MainCard/CategoryFilters/FilterFragments" unique_id=1685461882]
+layout_mode = 0
+offset_left = -5.0
+offset_top = 140.0
+offset_right = 205.0
+offset_bottom = 254.0
+theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+text = "FRAGMENTOS
+LITERARIOS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RulesCard" type="Panel" parent="MainCard" unique_id=75970903]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 352.0
+offset_right = 1120.0
+offset_bottom = 802.0
+theme_override_styles/panel = SubResource("Style_info")
+
+[node name="InfoIcon" type="Label" parent="MainCard/RulesCard" unique_id=183643930]
+layout_mode = 0
+offset_left = 6.0
+offset_top = -2.0
+offset_right = 92.0
+offset_bottom = 132.0
+theme_override_colors/font_color = Color(0.62, 0.4, 0.15, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 100
+text = "ⓘ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Rules" type="RichTextLabel" parent="MainCard/RulesCard" unique_id=1264415301]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 34.0
+offset_right = 1055.0
+offset_bottom = 358.0
+theme_override_colors/default_color = Color(0.24, 0.14, 0.08, 1)
+theme_override_constants/line_separation = 8
+theme_override_fonts/normal_font = ExtResource("3_font")
+theme_override_fonts/bold_font = ExtResource("3_font")
+theme_override_font_sizes/normal_font_size = 34
+theme_override_font_sizes/bold_font_size = 34
+bbcode_enabled = true
+text = "La clasificación se basa en [color=#e55816]ESTRELLAS TOTALES[/color] obtenidas.
+
+Desempates (en este orden):
+1.  Más estrellas en menos número de puzles hechos (estrellas/puzle)
+2.  Menor número de ayudas utilizadas
+3.  Menor número de letras reveladas falladas"
+fit_content = true
+
+[node name="AroundFrame" type="PanelContainer" parent="MainCard" unique_id=390431496]
 unique_name_in_owner = true
-position = Vector2(-54.4541, 7.50012)
-scale = Vector2(0.123037, 0.123037)
-texture = ExtResource("7_c8u75")
-metadata/_edit_lock_ = true
+layout_mode = 0
+offset_left = 18.0
+offset_top = 828.0
+offset_right = 1132.0
+offset_bottom = 2194.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_around_frame")
 
-[node name="EstrellaContorno2" type="Sprite2D" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer/HBoxContainer2/Label"]
+[node name="TableBody" type="VBoxContainer" parent="MainCard/AroundFrame" unique_id=390431497]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TableHeader" type="HBoxContainer" parent="MainCard/AroundFrame/TableBody" unique_id=804256437]
+custom_minimum_size = Vector2(0, 98)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Position" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=309134559]
+custom_minimum_size = Vector2(92, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 28
+text = "POS."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=1111298564]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 28
+text = "JUGADOR"
+vertical_alignment = 1
+
+[node name="Stars" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=2124534108]
+custom_minimum_size = Vector2(142, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 28
+text = "ESTRELLAS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Puzzles" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=832039678]
+custom_minimum_size = Vector2(105, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 28
+text = "PUZLES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Average" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=980667571]
+custom_minimum_size = Vector2(146, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 28
+text = "★/PUZLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Aids" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=885789561]
+custom_minimum_size = Vector2(105, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 28
+text = "AYUDAS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Failed" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=734486508]
+custom_minimum_size = Vector2(126, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 28
+text = "FALLADAS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OnlineRows" type="VBoxContainer" parent="MainCard/AroundFrame/TableBody" unique_id=1837482115]
 unique_name_in_owner = true
-position = Vector2(1.5459, 7.50012)
-scale = Vector2(0.123037, 0.123037)
-texture = ExtResource("7_c8u75")
-metadata/_edit_lock_ = true
+custom_minimum_size = Vector2(0, 644)
+layout_mode = 2
+theme_override_constants/separation = 6
 
-[node name="EstrellaContorno3" type="Sprite2D" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer/HBoxContainer2/Label"]
+[node name="Ellipsis" type="Label" parent="MainCard/AroundFrame/TableBody" unique_id=1074324666]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.38, 0.24, 0.13, 0.8)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 46
+text = "•••"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AroundRows" type="VBoxContainer" parent="MainCard/AroundFrame/TableBody" unique_id=390431495]
 unique_name_in_owner = true
-position = Vector2(57.5459, 7.50012)
-scale = Vector2(0.123037, 0.123037)
-texture = ExtResource("7_c8u75")
-metadata/_edit_lock_ = true
+layout_mode = 2
+theme_override_constants/separation = 6
 
-[node name="Estrella3" type="Sprite2D" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer/HBoxContainer2/Label"]
+[node name="OnlineStatus" type="Label" parent="MainCard" unique_id=948527625]
 unique_name_in_owner = true
-position = Vector2(57.5459, 7.50012)
-scale = Vector2(0.123037, 0.123037)
-texture = ExtResource("8_vahk4")
-metadata/_edit_lock_ = true
-
-[node name="Estrella2" type="Sprite2D" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer/HBoxContainer2/Label"]
-unique_name_in_owner = true
-position = Vector2(1.5459, 7.50012)
-scale = Vector2(0.123037, 0.123037)
-texture = ExtResource("8_vahk4")
-metadata/_edit_lock_ = true
-
-[node name="Estrella1" type="Sprite2D" parent="ColorRect/TituloDificultadCategoria/Dificultad/VBoxContainer/HBoxContainer2/Label"]
-unique_name_in_owner = true
-position = Vector2(-54.4541, 7.50012)
-scale = Vector2(0.123037, 0.123037)
-texture = ExtResource("8_vahk4")
-metadata/_edit_lock_ = true
-
-[node name="Label32" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -3.07676
-anchor_right = 1.02429
-anchor_bottom = -3.02155
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_un1mr")
-text = "SCORE"
+layout_mode = 0
+offset_left = 250.0
+offset_top = 1190.0
+offset_right = 896.0
+offset_bottom = 1270.0
+theme_override_colors/font_color = Color(0.43, 0.34, 0.24, 0.82)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 34
+text = "Cargando clasificación online…"
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
 
-[node name="Label28" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.0321035
-anchor_top = -3.07676
-anchor_right = 0.110229
-anchor_bottom = -3.02132
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_ot1u2")
-text = "Nº"
+[node name="UpdateNote" type="Label" parent="MainCard" unique_id=372431628]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 2240.0
+offset_right = 980.0
+offset_bottom = 2345.0
+theme_override_colors/font_color = Color(0.35, 0.22, 0.12, 0.82)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 25
+text = "✦   La clasificación se actualiza al completar un puzle."
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Label33" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -3.07676
-anchor_right = 0.485229
-anchor_bottom = -3.02132
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_ot1u2")
-text = "NAME"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Label34" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -3.07676
-anchor_right = 0.664916
-anchor_bottom = -3.02132
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_ot1u2")
-text = "CATEGORY"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Label35" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -3.07676
-anchor_right = 0.844604
-anchor_bottom = -3.02132
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_ot1u2")
-text = "DATE"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelPosN01" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0222558
-anchor_top = -1.76676
-anchor_right = 0.0558692
-anchor_bottom = -1.71968
-offset_left = 30.7899
-offset_top = 4242.04
-offset_right = 22.7899
-offset_bottom = 4232.03
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_vxkw5")
-text = "1"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelNameP01" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -3.02655
-anchor_right = 0.485229
-anchor_bottom = -2.97948
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("9_r1r3f")
-text = "ASDFGHJKLA"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelCategoryP01" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -3.02655
-anchor_right = 0.664916
-anchor_bottom = -2.97948
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("10_c8u75")
-text = "Efemerides"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelDateP01" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -3.02655
-anchor_right = 0.844604
-anchor_bottom = -2.97948
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("11_vahk4")
-text = "05/12/25"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreP01" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -3.02655
-anchor_right = 1.02429
-anchor_bottom = -2.97948
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("12_fticv")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelPosN02" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0222558
-anchor_top = -1.72492
-anchor_right = 0.0558692
-anchor_bottom = -1.67784
-offset_left = 30.7899
-offset_top = 4242.04
-offset_right = 22.7899
-offset_bottom = 4232.03
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_7hvqv")
-text = "2"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelNameP02" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -2.98471
-anchor_right = 0.485229
-anchor_bottom = -2.93764
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "0123456789"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelCategoryP02" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -2.98497
-anchor_right = 0.664916
-anchor_bottom = -2.93737
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "Fragmentos Literarios	"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelDateP02" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -2.98471
-anchor_right = 0.844604
-anchor_bottom = -2.93764
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "12/12/25"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreP02" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -2.98471
-anchor_right = 1.02429
-anchor_bottom = -2.93764
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = SubResource("StyleBoxFlat_vgatv")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelPosN03" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0222558
-anchor_top = -1.68308
-anchor_right = 0.0558692
-anchor_bottom = -1.636
-offset_left = 30.7899
-offset_top = 4242.04
-offset_right = 22.7899
-offset_bottom = 4232.03
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_vxkw5")
-text = "3"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelNameP03" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -2.94287
-anchor_right = 0.485229
-anchor_bottom = -2.89579
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("9_r1r3f")
-text = "ASDFGHJKLA"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelCategoryP03" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -2.94287
-anchor_right = 0.664916
-anchor_bottom = -2.89579
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("10_c8u75")
-text = "Efemerides"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelDateP03" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -2.94287
-anchor_right = 0.844604
-anchor_bottom = -2.89579
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("11_vahk4")
-text = "05/12/25"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreP03" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -2.94287
-anchor_right = 1.02429
-anchor_bottom = -2.89579
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("12_fticv")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelPosN04" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0222558
-anchor_top = -1.64123
-anchor_right = 0.0558692
-anchor_bottom = -1.59416
-offset_left = 30.7899
-offset_top = 4242.04
-offset_right = 22.7899
-offset_bottom = 4232.03
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_7hvqv")
-text = "4"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelNameP04" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -2.90103
-anchor_right = 0.485229
-anchor_bottom = -2.85395
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "0123456789"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelCategoryP04" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -2.90129
-anchor_right = 0.664916
-anchor_bottom = -2.85369
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "Fragmentos Literarios	"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelDateP04" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -2.90103
-anchor_right = 0.844604
-anchor_bottom = -2.85395
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "12/12/25"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreP04" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -2.90103
-anchor_right = 1.02429
-anchor_bottom = -2.85395
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = SubResource("StyleBoxFlat_vgatv")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelPosN05" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0222558
-anchor_top = -1.59939
-anchor_right = 0.0558692
-anchor_bottom = -1.55232
-offset_left = 30.7899
-offset_top = 4242.04
-offset_right = 22.7899
-offset_bottom = 4232.03
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_vxkw5")
-text = "5"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelNameP05" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -2.85919
-anchor_right = 0.485229
-anchor_bottom = -2.81211
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("9_r1r3f")
-text = "ASDFGHJKLA"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelCategoryP05" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -2.85919
-anchor_right = 0.664916
-anchor_bottom = -2.81211
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("10_c8u75")
-text = "Efemerides"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelDateP05" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -2.85919
-anchor_right = 0.844604
-anchor_bottom = -2.81211
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("11_vahk4")
-text = "05/12/25"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreP05" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -2.85919
-anchor_right = 1.02429
-anchor_bottom = -2.81211
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("12_fticv")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelPosN06" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0222558
-anchor_top = -1.55755
-anchor_right = 0.0558692
-anchor_bottom = -1.51048
-offset_left = 30.7899
-offset_top = 4242.04
-offset_right = 22.7899
-offset_bottom = 4232.03
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_7hvqv")
-text = "6"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelNameP06" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -2.81735
-anchor_right = 0.485229
-anchor_bottom = -2.77027
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "0123456789"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelCategoryP06" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -2.81761
-anchor_right = 0.664916
-anchor_bottom = -2.77001
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "Fragmentos Literarios	"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelDateP06" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -2.81735
-anchor_right = 0.844604
-anchor_bottom = -2.77027
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "12/12/25"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreP06" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -2.81735
-anchor_right = 1.02429
-anchor_bottom = -2.77027
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = SubResource("StyleBoxFlat_vgatv")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelPosN07" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0222558
-anchor_top = -1.51571
-anchor_right = 0.0558692
-anchor_bottom = -1.46863
-offset_left = 30.7899
-offset_top = 4242.04
-offset_right = 22.7899
-offset_bottom = 4232.03
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_vxkw5")
-text = "7"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelNameP07" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -2.77551
-anchor_right = 0.485229
-anchor_bottom = -2.72843
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("9_r1r3f")
-text = "ASDFGHJKLA"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelCategoryP07" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -2.77551
-anchor_right = 0.664916
-anchor_bottom = -2.72843
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("10_c8u75")
-text = "Efemerides"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelDateP07" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -2.77551
-anchor_right = 0.844604
-anchor_bottom = -2.72843
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("11_vahk4")
-text = "05/12/25"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreP07" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -2.77551
-anchor_right = 1.02429
-anchor_bottom = -2.72843
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("12_fticv")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelPosN08" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0222558
-anchor_top = -1.47387
-anchor_right = 0.0558692
-anchor_bottom = -1.42679
-offset_left = 30.7899
-offset_top = 4242.04
-offset_right = 22.7899
-offset_bottom = 4232.03
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_7hvqv")
-text = "8"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelNameP08" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -2.73367
-anchor_right = 0.485229
-anchor_bottom = -2.68659
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "0123456789"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelCategoryP08" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -2.73393
-anchor_right = 0.664916
-anchor_bottom = -2.68633
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "Fragmentos Literarios	"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelDateP08" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -2.73367
-anchor_right = 0.844604
-anchor_bottom = -2.68659
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "12/12/25"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreP08" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -2.73367
-anchor_right = 1.02429
-anchor_bottom = -2.68659
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = SubResource("StyleBoxFlat_vgatv")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelPosN09" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0222558
-anchor_top = -1.43203
-anchor_right = 0.0558692
-anchor_bottom = -1.38495
-offset_left = 30.7899
-offset_top = 4242.04
-offset_right = 22.7899
-offset_bottom = 4232.03
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_vxkw5")
-text = "9"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelNameP09" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -2.69183
-anchor_right = 0.485229
-anchor_bottom = -2.64475
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("9_r1r3f")
-text = "ASDFGHJKLA"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelCategoryP09" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -2.69183
-anchor_right = 0.664916
-anchor_bottom = -2.64475
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("10_c8u75")
-text = "Efemerides"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelDateP09" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -2.69183
-anchor_right = 0.844604
-anchor_bottom = -2.64475
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("11_vahk4")
-text = "05/12/25"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreP09" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -2.69183
-anchor_right = 1.02429
-anchor_bottom = -2.64475
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("12_fticv")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelPosN10" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.0222558
-anchor_top = -1.39019
-anchor_right = 0.0558692
-anchor_bottom = -1.34311
-offset_left = 30.7899
-offset_top = 4242.04
-offset_right = 22.7899
-offset_bottom = 4232.03
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_7hvqv")
-text = "10"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelNameP10" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.102416
-anchor_top = -2.64998
-anchor_right = 0.485229
-anchor_bottom = -2.60291
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "0123456789"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelCategoryP10" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.477416
-anchor_top = -2.65025
-anchor_right = 0.664916
-anchor_bottom = -2.60265
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "Fragmentos Literarios	"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelDateP10" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.657104
-anchor_top = -2.64998
-anchor_right = 0.844604
-anchor_bottom = -2.60291
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_i8mtr")
-text = "12/12/25"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelScoreP10" type="Label" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.836791
-anchor_top = -2.64998
-anchor_right = 1.02429
-anchor_bottom = -2.60291
-offset_left = -24.874
-offset_top = 6650.77
-offset_right = -32.874
-offset_bottom = 6640.76
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.0705882, 0.262745, 0.278431, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = SubResource("StyleBoxFlat_vgatv")
-text = "99.999"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="LabelSound2" type="Label" parent="."]
-layout_mode = 1
-offset_top = 624.0
-offset_right = 1024.0
-offset_bottom = 760.0
-theme_override_colors/font_color = Color(0.37994, 0.229879, 0.184244, 1)
-theme_override_fonts/font = ExtResource("3_fymwg")
-theme_override_font_sizes/font_size = 90
-text = "LOCAL RECORDS"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="Filtros" type="Node" parent="."]
-
-[node name="Dificultad" type="OptionButton" parent="Filtros"]
-unique_name_in_owner = true
-offset_left = 1152.0
-offset_top = 912.001
-offset_right = 1504.0
-offset_bottom = 1008.0
-pivot_offset = Vector2(168, 48)
-theme = ExtResource("9_fticv")
-theme_type_variation = &"Test"
-theme_override_colors/font_hover_color = Color(0.233925, 0.233925, 0.233925, 1)
-theme_override_colors/font_color = Color(0.303233, 0.303233, 0.303233, 1)
-theme_override_font_sizes/font_size = 50
-theme_override_styles/hover = SubResource("StyleBoxFlat_mh33s")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_r4qou")
-theme_override_styles/normal = SubResource("StyleBoxFlat_25sjv")
-alignment = 1
-selected = 0
-item_count = 1
-popup/item_0/text = "Text"
-popup/item_0/id = 0
-script = ExtResource("10_un1mr")
-enable_sheen = false
-enable_rotation = false
-
-[node name="Categoria" type="OptionButton" parent="Filtros"]
-unique_name_in_owner = true
-offset_left = 1528.0
-offset_top = 912.001
-offset_right = 2064.0
-offset_bottom = 1008.0
-pivot_offset = Vector2(224, 56)
-theme = ExtResource("9_fticv")
-theme_override_colors/font_hover_color = Color(0.252028, 0.252028, 0.252028, 1)
-theme_override_colors/font_color = Color(0.31802, 0.31802, 0.31802, 1)
-theme_override_font_sizes/font_size = 50
-theme_override_styles/hover = SubResource("StyleBoxFlat_mh33s")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_r4qou")
-theme_override_styles/normal = SubResource("StyleBoxFlat_25sjv")
-alignment = 1
-text_overrun_behavior = 1
-selected = 0
-item_count = 1
-popup/item_0/text = "Adivinanzas"
-popup/item_0/id = 0
-script = ExtResource("10_un1mr")
-enable_sheen = false
-enable_rotation = false
-
-[node name="Lista" type="Node" parent="."]
-
-[node name="Contenido" type="VBoxContainer" parent="Lista"]
-unique_name_in_owner = true
-offset_left = 1120.0
-offset_top = 1072.0
-offset_right = 2088.0
-offset_bottom = 1112.0
-alignment = 1
-
-[node name="Titulo CifraLetra" parent="." instance=ExtResource("11_ot1u2")]
-anchors_preset = 0
-anchor_left = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 24.0
-offset_top = -8.0
-offset_right = 984.0
-offset_bottom = 192.0
-
-[node name="ButtonBack" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 30.2
-anchor_top = -0.2
-anchor_right = 30.2
-anchor_bottom = 0.875058
-offset_left = 288.0
-offset_top = 1672.0
-offset_right = 736.0
-offset_bottom = 1912.07
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("12_vxkw5")
-theme_override_font_sizes/font_size = 80
-text = "OK"
-metadata/_edit_use_anchors_ = true
-
-[node name="ButtonONLINE" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 30.2
-anchor_top = -0.2
-anchor_right = 30.2
-anchor_bottom = 0.875058
-offset_left = 408.0
-offset_top = 144.0
-offset_right = 860.988
-offset_bottom = 406.072
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("12_vxkw5")
-theme_override_font_sizes/font_size = 80
-text = "ONLINE"
-
-[node name="ButtonOFFLINE" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 30.2
-anchor_top = -0.2
-anchor_right = 30.2
-anchor_bottom = 0.875058
-offset_left = 152.0
-offset_top = 144.0
-offset_right = 626.988
-offset_bottom = 406.072
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("12_vxkw5")
-theme_override_font_sizes/font_size = 80
-text = "OFFLINE"
-
-[node name="Button_Difficult_Easy" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 30.2
-anchor_top = -0.2
-anchor_right = 30.2
-anchor_bottom = 0.875058
-offset_left = -96.0
-offset_top = 284.0
-offset_right = 379.0
-offset_bottom = 546.072
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("12_vxkw5")
-theme_override_font_sizes/font_size = 80
-text = "Easy"
-
-[node name="Button_Difficult_Normal" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 30.2
-anchor_top = -0.2
-anchor_right = 30.2
-anchor_bottom = 0.875058
-offset_left = 155.0
-offset_top = 284.0
-offset_right = 630.0
-offset_bottom = 546.072
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("12_vxkw5")
-theme_override_font_sizes/font_size = 80
-text = "Normal"
-
-[node name="Button_TOP_10" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 30.2
-anchor_top = -0.2
-anchor_right = 30.2
-anchor_bottom = 0.875058
-offset_left = 152.0
-offset_top = 424.0
-offset_right = 626.988
-offset_bottom = 686.072
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("12_vxkw5")
-theme_override_font_sizes/font_size = 80
-text = "TOP 10"
-
-[node name="Button_Player" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 30.2
-anchor_top = -0.2
-anchor_right = 30.2
-anchor_bottom = 0.875058
-offset_left = 408.0
-offset_top = 424.0
-offset_right = 882.988
-offset_bottom = 686.072
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("12_vxkw5")
-theme_override_font_sizes/font_size = 80
-text = "Player"
-
-[node name="Button_Difficult_Difficult" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 30.2
-anchor_top = -0.2
-anchor_right = 30.2
-anchor_bottom = 0.875058
-offset_left = 405.333
-offset_top = 284.0
-offset_right = 880.321
-offset_bottom = 546.072
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("12_vxkw5")
-theme_override_font_sizes/font_size = 80
-text = "Difficult"
-
-[node name="Button_Difficult_PRO" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 30.2
-anchor_top = -0.2
-anchor_right = 30.2
-anchor_bottom = 0.875058
-offset_left = 656.0
-offset_top = 284.0
-offset_right = 1131.0
-offset_bottom = 546.072
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("12_vxkw5")
-theme_override_font_sizes/font_size = 80
-text = "PRO
-"
-
-[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

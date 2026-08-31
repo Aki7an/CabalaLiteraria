@@ -10,14 +10,40 @@ const PATH_APP := "res://scenes/App.tscn"
 @onready var category_label: Label = $Card/Category
 @onready var id_label: Label = $Card/Id
 @onready var start_button: Button = $Card/ButtonStart
+@onready var difficulty_stars: Array[TextureRect] = [
+	$Card/DifficultyStars/Star1,
+	$Card/DifficultyStars/Star2,
+	$Card/DifficultyStars/Star3,
+	$Card/DifficultyStars/Star4,
+	$Card/DifficultyStars/Star5
+]
+
+const STAR_ON := Color(1.0, 0.82, 0.12, 1.0)
+const STAR_OFF := Color(0.7, 0.62, 0.5, 0.32)
 
 
 func _ready() -> void:
 	add_to_group("PuzzleThemePreview")
 	category_label.text = GameManager.category_display_name()
 	id_label.text = "ID %d" % GameManager.id_frase
+	_update_difficulty_stars()
 	_load_image()
 	start_button.visible = true
+	if launch_game_on_start:
+		var saved := PuzzleSaveManager.get_puzzle_summary(GameManager.id_frase)
+		start_button.text = (
+			"CONTINUAR"
+			if str(saved.get("status", "new")) == "in_progress"
+			else "EMPEZAR"
+		)
+	else:
+		start_button.text = "EMPEZAR"
+
+
+func _update_difficulty_stars() -> void:
+	var filled: int = clampi(GameManager.dificultad_actual, 1, difficulty_stars.size())
+	for index in range(difficulty_stars.size()):
+		difficulty_stars[index].self_modulate = STAR_ON if index < filled else STAR_OFF
 
 
 func setup(should_launch_game: bool, path: String = "") -> void:
@@ -48,6 +74,11 @@ func _on_start_pressed() -> void:
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	SignalManager.partida_iniciada.emit()
 	get_tree().change_scene_to_file(PATH_APP)
+
+
+func _on_back_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	queue_free()
 
 
 static func find_image_path(image_number: int, index_number: int) -> String:

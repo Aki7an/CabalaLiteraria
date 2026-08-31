@@ -3,17 +3,17 @@
 [ext_resource type="Script" uid="uid://cfrl3ayqqet8p" path="res://scenes/game/panel_letras.gd" id="1_script"]
 
 [sub_resource type="StyleBoxFlat" id="Style_panel"]
-bg_color = Color(1, 0.949, 0.804, 0.98)
+bg_color = Color(0.94, 0.86, 0.72, 0.98)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 7
-border_color = Color(0.76, 0.57, 0.29, 0.48)
+border_color = Color(0.76, 0.57, 0.29, 0.42)
 corner_radius_top_left = 30
 corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
-shadow_color = Color(0.34, 0.21, 0.07, 0.18)
+shadow_color = Color(0.34, 0.21, 0.07, 0.16)
 shadow_size = 10
 shadow_offset = Vector2(0, 8)
 
