@@ -16,7 +16,9 @@ const COLOR_GREEN := Color(0.78, 0.91, 0.78, 1)
 const COLOR_ORANGE := Color(0.98, 0.84, 0.72, 1)
 const COLOR_FAIL := Color(0.86, 0.27, 0.27, 1)
 
-const TEX_TROPHY := preload("res://GUI/Library/Demo/Demo_Icon/Icon_ColorIcon_Trophy01.png")
+const TEX_TROPHY := preload("res://images/stats_icon_trophy.svg")
+const TEX_WREATH := preload("res://images/stats_icon_wreath.svg")
+const TEX_CLOCK := preload("res://images/stats_icon_clock.svg")
 const TEX_STAR := preload("res://images/estrella_plano.png")
 const TEX_STAR_OFF := preload("res://images/contorno_estrella.png")
 const TEX_TIMER := preload("res://GUI/Library/Demo/Demo_Icon/Icon_ColorIcon_Timer.png")
@@ -40,21 +42,24 @@ const LOCALIZED := {
 	"es": {
 		"title": "ESTADÍSTICAS",
 		"subtitle": "Tu progreso en CifraLetra",
-		"games": "PARTIDAS JUGADAS",
+		"games": "Partidas",
 		"games_sub": "",
-		"wins": "PUZLES COMPLETADOS",
-		"wins_sub": "%d%% del total",
-		"time": "TIEMPO JUGADO",
-		"time_sub": "Promedio por partida %s",
-		"progress_title": "PROGRESO POR TEMÁTICA Y TIPO",
-		"quick": "RÁPIDO",
-		"cryptogram": "CRIPTOGRAMA",
+		"wins": "Tiempo medio rápida",
+		"wins_sub": "",
+		"time": "Tiempo medio criptograma",
+		"time_sub": "",
+		"perfect_title": "Puzles perfectos",
+		"fastest_title": "Puzle más rápido",
+		"fastest_sub": "Puzzle #%d",
+		"progress_title": "PROGRESO",
+		"quick": "Rápido",
+		"cryptogram": "Criptograma",
 		"hints_title": "USO DE AYUDAS",
 		"hints_used": "PISTAS USADAS",
 		"letters_revealed": "LETRAS REVELADAS",
 		"letters_failed": "LETRAS REVELADAS FALLADAS",
 		"avg_title": "TIEMPO MEDIO POR PARTIDA",
-		"results_title": "RESUMEN DE ESTRELLAS OBTENIDAS",
+		"results_title": "MARCAS PERSONALES",
 		"results_total": "%d / %d ★",
 		"results_percent": "%s%% del total",
 		"results_average": "%s ★ / puzle",
@@ -64,21 +69,24 @@ const LOCALIZED := {
 	"en": {
 		"title": "STATISTICS",
 		"subtitle": "Your progress in CifraLetra",
-		"games": "GAMES PLAYED",
+		"games": "Games",
 		"games_sub": "",
-		"wins": "PUZZLES COMPLETED",
-		"wins_sub": "%d%% of total",
-		"time": "TIME PLAYED",
-		"time_sub": "Average per game %s",
-		"progress_title": "PROGRESS BY THEME AND TYPE",
-		"quick": "QUICK",
-		"cryptogram": "CRYPTOGRAM",
+		"wins": "Average time quick",
+		"wins_sub": "",
+		"time": "Average time cryptogram",
+		"time_sub": "",
+		"perfect_title": "Perfect puzzles",
+		"fastest_title": "Fastest puzzle",
+		"fastest_sub": "Puzzle #%d",
+		"progress_title": "PROGRESS",
+		"quick": "Quick",
+		"cryptogram": "Cryptogram",
 		"hints_title": "HINTS USED",
 		"hints_used": "HINTS USED",
 		"letters_revealed": "LETTERS REVEALED",
 		"letters_failed": "FAILED LETTER REVEALS",
 		"avg_title": "AVERAGE TIME PER GAME",
-		"results_title": "EARNED STAR SUMMARY",
+		"results_title": "PERSONAL MARKS",
 		"results_total": "%d / %d ★",
 		"results_percent": "%s%% of total",
 		"results_average": "%s ★ / puzzle",
@@ -88,21 +96,24 @@ const LOCALIZED := {
 	"eu": {
 		"title": "ESTATISTIKAK",
 		"subtitle": "Zure aurrerapena CifraLetra-n",
-		"games": "JOKATUTAKO PARTIDAK",
+		"games": "Partidak",
 		"games_sub": "",
-		"wins": "OSATUTAKO PUZZLEAK",
-		"wins_sub": "Guztizkoaren %% %d",
-		"time": "JOKATUTAKO DENBORA",
-		"time_sub": "Batez bestekoa partidan %s",
-		"progress_title": "GAIA ETA MOTAREN ARABERAKO AURRERAPENA",
-		"quick": "AZKARRA",
-		"cryptogram": "KRIPTOGRAMA",
+		"wins": "Batez besteko azkarra",
+		"wins_sub": "",
+		"time": "Batez besteko kriptograma",
+		"time_sub": "",
+		"perfect_title": "Puzzle perfectuak",
+		"fastest_title": "Puzzle azkarrena",
+		"fastest_sub": "Puzzle #%d",
+		"progress_title": "AURRERAPENA",
+		"quick": "Azkarra",
+		"cryptogram": "Kriptograma",
 		"hints_title": "LAGUNTZEN ERABILERA",
 		"hints_used": "PISTAK",
 		"letters_revealed": "AGERTUTAKO LETRAK",
 		"letters_failed": "HUTS EGINDAKO LETRAK",
 		"avg_title": "PARTIDAKO BATEZ BESTEKO DENBORA",
-		"results_title": "LORTUTAKO IZARREN LABURPENA",
+		"results_title": "MARKA PERTSONALAK",
 		"results_total": "%d / %d ★",
 		"results_percent": "Guztizkoaren %s%%",
 		"results_average": "%s ★ / puzzle",
@@ -170,7 +181,8 @@ func _refresh() -> void:
 
 func _apply_localized_static() -> void:
 	_title_label.text = _copy("title")
-	_subtitle_label.text = _copy("subtitle")
+	if _subtitle_label:
+		_subtitle_label.visible = false
 	_section_labels["progress"].text = _copy("progress_title")
 	_section_labels["hints"].text = _copy("hints_title")
 	_section_labels["results"].text = _copy("results_title")
@@ -184,13 +196,11 @@ func _apply_localized_static() -> void:
 
 func _apply_kpis() -> void:
 	_kpi_games.text = str(int(_dashboard.get("matches", 0)))
-	_kpi_games_sub.text = _copy("games_sub")
-	_kpi_wins.text = str(int(_dashboard.get("completed_puzzles", 0)))
-	_kpi_wins_sub.text = _copy("wins_sub") % int(
-		round(float(_dashboard.get("completed_percent", 0.0)))
-	)
-	_kpi_time.text = str(_dashboard.get("total_play_label", "0 s"))
-	_kpi_time_sub.text = _copy("time_sub") % str(_dashboard.get("avg_play_label", "0 s"))
+	_kpi_games_sub.text = ""
+	_kpi_wins.text = str(_dashboard.get("avg_quick_label", "0 s"))
+	_kpi_wins_sub.text = ""
+	_kpi_time.text = str(_dashboard.get("avg_cryptogram_label", "0 s"))
+	_kpi_time_sub.text = ""
 
 
 func _apply_hints() -> void:
@@ -205,47 +215,34 @@ func _apply_avg_times() -> void:
 
 
 func _apply_results() -> void:
-	var summary: Dictionary = _dashboard.get("star_summary", {})
-	var earned := int(summary.get("earned", 0))
-	var available := int(summary.get("available", 0))
-	var percentage := float(summary.get("percentage", 0.0))
-	var completed := int(_dashboard.get("completed_puzzles", 0))
-	var average := float(earned) / float(completed) if completed > 0 else 0.0
-	_results_total.text = _copy("results_total") % [earned, available]
-	_results_percent.text = _copy("results_percent") % (
-		("%.1f" % percentage).replace(".", ",")
-	)
-	_results_average.text = _copy("results_average") % (
-		("%.2f" % average).replace(".", ",")
-	)
-	var rounded_average := clampi(int(round(average)), 0, 5)
-	for index in range(_average_stars.size()):
-		var average_star := _average_stars[index]
-		average_star.texture = TEX_STAR if index < rounded_average else TEX_STAR_OFF
-		average_star.modulate = (
-			GameManager.star_fill_color(_selected_mode)
-			if index < rounded_average
-			else Color(0.55, 0.42, 0.3, 0.5)
+	if _results_total:
+		_results_total.text = str(int(_dashboard.get("perfect_puzzles", 0)))
+	if _results_percent:
+		_results_percent.text = str(_dashboard.get("fastest_label", "—"))
+	if _results_average:
+		var fastest_id := int(_dashboard.get("fastest_id", -1))
+		_results_average.text = (
+			_copy("fastest_sub") % fastest_id if fastest_id >= 0 else "—"
 		)
-	var distribution: Dictionary = summary.get("distribution", {})
-	var maximum_count := 1
-	for star_value in range(1, 6):
-		maximum_count = maxi(maximum_count, int(distribution.get(star_value, 0)))
-	for stars in range(1, 6):
-		if _result_counts.has(stars):
-			var count := int(distribution.get(stars, 0))
-			(_result_counts[stars] as Label).text = _copy("puzzles_count") % count
-			if _result_bars.has(stars):
-				var bar := _result_bars[stars] as ProgressBar
-				bar.max_value = maximum_count
-				bar.value = count
+
+
+func _progress_row_for(rows: Variant, category: String) -> Dictionary:
+	if not (rows is Array):
+		return {}
+	for row_value in rows:
+		if row_value is Dictionary and str(row_value.get("category", "")) == category:
+			return row_value
+	return {}
 
 
 func _rebuild_progress_rows() -> void:
 	for child in _progress_list.get_children():
 		child.queue_free()
-	var progress: Dictionary = _dashboard.get("progress", {})
-	var rows: Array = progress.get(_selected_mode, [])
+	var progress: Variant = _dashboard.get("progress", {})
+	if not (progress is Dictionary):
+		return
+	var quick_rows: Variant = progress.get(MODE_QUICK, [])
+	var crypto_rows: Variant = progress.get(MODE_CRYPTOGRAM, [])
 	var colors := {
 		GameManager.CAT_CITA: Color(0.22, 0.67, 0.55, 1),
 		GameManager.CAT_EFEMERIDE: Color(0.55, 0.42, 0.78, 1),
@@ -258,49 +255,41 @@ func _rebuild_progress_rows() -> void:
 		GameManager.CAT_CURIOSIDADES: TEX_CURIO,
 		GameManager.CAT_FRAGMENTO: TEX_FRAG,
 	}
-	for row in rows:
-		var category := str(row.get("category", ""))
+	for category in [
+		GameManager.CAT_CITA,
+		GameManager.CAT_EFEMERIDE,
+		GameManager.CAT_CURIOSIDADES,
+		GameManager.CAT_FRAGMENTO,
+	]:
+		var quick_row := _progress_row_for(quick_rows, category)
+		var crypto_row := _progress_row_for(crypto_rows, category)
 		_progress_list.add_child(
-			_make_progress_row(
+			_make_table_progress_row(
 				GameManager.category_display_name(category),
 				icons.get(category, TEX_CITAS),
 				colors.get(category, COLOR_TEAL),
-				int(row.get("stars_earned", 0)),
-				int(row.get("stars_available", 0)),
-				int(row.get("percent", 0))
+				quick_row,
+				crypto_row
 			)
 		)
 
 
 func _update_tabs() -> void:
-	_style_tab(_tab_quick, _selected_mode == MODE_QUICK)
-	_style_tab(_tab_crypto, _selected_mode == MODE_CRYPTOGRAM)
+	_style_tab(_tab_quick, true)
+	_style_tab(_tab_crypto, true)
 
 
-func _style_tab(button: Button, active: bool) -> void:
-	var style := StyleBoxFlat.new()
-	style.set_corner_radius_all(22)
-	style.content_margin_left = 18
-	style.content_margin_right = 18
-	style.content_margin_top = 14
-	style.content_margin_bottom = 14
-	if active:
-		style.bg_color = Color(1.0, 0.69, 0.31, 1.0)
-		style.border_color = Color(0.91, 0.45, 0.12, 1.0)
-		button.add_theme_color_override("font_color", Color.WHITE)
-		button.add_theme_color_override("font_hover_color", Color.WHITE)
-		button.add_theme_color_override("font_pressed_color", Color.WHITE)
-	else:
-		style.bg_color = Color(0.97, 0.93, 0.86, 1)
-		style.border_color = Color(0.78, 0.66, 0.48, 0.55)
-		button.add_theme_color_override("font_color", COLOR_INK)
-		button.add_theme_color_override("font_hover_color", COLOR_INK)
-		button.add_theme_color_override("font_pressed_color", COLOR_INK)
-	style.set_border_width_all(2)
+func _style_tab(button: Button, _active: bool) -> void:
+	var style := StyleBoxEmpty.new()
 	button.add_theme_stylebox_override("normal", style)
 	button.add_theme_stylebox_override("hover", style)
 	button.add_theme_stylebox_override("pressed", style)
+	button.add_theme_stylebox_override("disabled", style)
 	button.add_theme_stylebox_override("focus", style)
+	button.add_theme_color_override("font_color", COLOR_INK)
+	button.add_theme_color_override("font_hover_color", COLOR_INK)
+	button.add_theme_color_override("font_pressed_color", COLOR_INK)
+	button.add_theme_color_override("font_disabled_color", COLOR_INK)
 
 
 func _on_tab_quick_pressed() -> void:
@@ -449,6 +438,7 @@ func _build_header() -> Control:
 	_subtitle_label.add_theme_font_size_override("font_size", 28)
 	_subtitle_label.add_theme_color_override("font_color", COLOR_MUTED)
 	header.add_child(_subtitle_label)
+	_subtitle_label.visible = false
 
 	return header
 
@@ -464,12 +454,12 @@ func _build_kpi_row() -> HBoxContainer:
 	_kpi_games_sub = games.get_node("Box/Sub")
 	row.add_child(games)
 
-	var wins := _make_kpi_card(COLOR_GREEN, TEX_STAR, _copy("wins"), "0", _copy("wins_sub"))
+	var wins := _make_kpi_card(COLOR_GREEN, TEX_CLOCK, _copy("wins"), "0 s", "")
 	_kpi_wins = wins.get_node("Box/Value")
 	_kpi_wins_sub = wins.get_node("Box/Sub")
 	row.add_child(wins)
 
-	var time_card := _make_kpi_card(COLOR_ORANGE, TEX_TIMER, _copy("time"), "0 s", _copy("time_sub") % "0 s")
+	var time_card := _make_kpi_card(COLOR_ORANGE, TEX_CLOCK, _copy("time"), "0 s", "")
 	_kpi_time = time_card.get_node("Box/Value")
 	_kpi_time_sub = time_card.get_node("Box/Sub")
 	row.add_child(time_card)
@@ -479,36 +469,31 @@ func _build_kpi_row() -> HBoxContainer:
 func _make_kpi_card(bg: Color, icon_tex: Texture2D, title: String, value: String, sub: String) -> PanelContainer:
 	var card := PanelContainer.new()
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	card.custom_minimum_size = Vector2(0, 250)
+	card.custom_minimum_size = Vector2(0, 280)
 	card.add_theme_stylebox_override("panel", _soft_card(bg, 28))
 
 	var box := VBoxContainer.new()
 	box.name = "Box"
-	box.add_theme_constant_override("separation", 8)
+	box.add_theme_constant_override("separation", 10)
 	box.alignment = BoxContainer.ALIGNMENT_CENTER
 	card.add_child(box)
-
-	var icon_wrap := PanelContainer.new()
-	icon_wrap.custom_minimum_size = Vector2(72, 72)
-	icon_wrap.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	var icon_bg := _flat(Color(1, 1, 1, 0.55), 18)
-	icon_wrap.add_theme_stylebox_override("panel", icon_bg)
-	box.add_child(icon_wrap)
 
 	var icon := TextureRect.new()
 	icon.texture = icon_tex
 	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.custom_minimum_size = Vector2(48, 48)
-	icon_wrap.add_child(icon)
+	icon.custom_minimum_size = Vector2(72, 72)
+	icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	box.add_child(icon)
 
 	var title_l := Label.new()
 	title_l.name = "Title"
 	title_l.text = title
 	title_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title_l.add_theme_font_override("font", FONT_BODY)
-	title_l.add_theme_font_size_override("font_size", 22)
-	title_l.add_theme_color_override("font_color", COLOR_MUTED)
+	title_l.add_theme_font_size_override("font_size", 30)
+	title_l.add_theme_color_override("font_color", COLOR_INK)
 	box.add_child(title_l)
 
 	var value_l := Label.new()
@@ -516,7 +501,7 @@ func _make_kpi_card(bg: Color, icon_tex: Texture2D, title: String, value: String
 	value_l.text = value
 	value_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	value_l.add_theme_font_override("font", FONT_TITLE)
-	value_l.add_theme_font_size_override("font_size", 54)
+	value_l.add_theme_font_size_override("font_size", 64)
 	value_l.add_theme_color_override("font_color", COLOR_INK)
 	box.add_child(value_l)
 
@@ -548,27 +533,30 @@ func _build_progress_card() -> PanelContainer:
 	var tabs := HBoxContainer.new()
 	tabs.add_theme_constant_override("separation", 14)
 	box.add_child(tabs)
+	var tab_spacer := Control.new()
+	tab_spacer.custom_minimum_size.x = 300
+	tabs.add_child(tab_spacer)
 
 	_tab_quick = Button.new()
 	_tab_quick.focus_mode = Control.FOCUS_NONE
 	_tab_quick.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_tab_quick.custom_minimum_size = Vector2(0, 78)
+	_tab_quick.custom_minimum_size = Vector2(0, 96)
 	_tab_quick.add_theme_font_override("font", FONT_BODY)
-	_tab_quick.add_theme_font_size_override("font_size", 28)
+	_tab_quick.add_theme_font_size_override("font_size", 42)
 	_tab_quick.icon = TEX_QUICK
 	_tab_quick.expand_icon = true
-	_tab_quick.pressed.connect(_on_tab_quick_pressed)
+	_tab_quick.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tabs.add_child(_tab_quick)
 
 	_tab_crypto = Button.new()
 	_tab_crypto.focus_mode = Control.FOCUS_NONE
 	_tab_crypto.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_tab_crypto.custom_minimum_size = Vector2(0, 78)
+	_tab_crypto.custom_minimum_size = Vector2(0, 96)
 	_tab_crypto.add_theme_font_override("font", FONT_BODY)
-	_tab_crypto.add_theme_font_size_override("font_size", 28)
+	_tab_crypto.add_theme_font_size_override("font_size", 42)
 	_tab_crypto.icon = TEX_CRYPTO
 	_tab_crypto.expand_icon = true
-	_tab_crypto.pressed.connect(_on_tab_crypto_pressed)
+	_tab_crypto.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tabs.add_child(_tab_crypto)
 
 	_progress_list = VBoxContainer.new()
@@ -576,6 +564,69 @@ func _build_progress_card() -> PanelContainer:
 	_progress_list.add_theme_constant_override("separation", 16)
 	box.add_child(_progress_list)
 	return card
+
+
+func _make_table_progress_row(
+	name_text: String,
+	icon_tex: Texture2D,
+	bar_color: Color,
+	quick_row: Dictionary,
+	crypto_row: Dictionary
+) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 12)
+	row.custom_minimum_size = Vector2(0, 120)
+	var identity := HBoxContainer.new()
+	identity.custom_minimum_size.x = 300
+	identity.add_theme_constant_override("separation", 10)
+	row.add_child(identity)
+	var icon_wrap := PanelContainer.new()
+	icon_wrap.custom_minimum_size = Vector2(96, 96)
+	icon_wrap.add_theme_stylebox_override("panel", _flat(bar_color.lightened(0.55), 20))
+	identity.add_child(icon_wrap)
+	var icon := TextureRect.new()
+	icon.texture = icon_tex
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.custom_minimum_size = Vector2(72, 72)
+	icon_wrap.add_child(icon)
+	var name_l := Label.new()
+	name_l.text = name_text
+	name_l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	name_l.add_theme_font_override("font", FONT_BODY)
+	name_l.add_theme_font_size_override("font_size", 30)
+	name_l.add_theme_color_override("font_color", COLOR_INK)
+	identity.add_child(name_l)
+	row.add_child(_make_progress_cell(quick_row, bar_color))
+	row.add_child(_make_progress_cell(crypto_row, bar_color))
+	return row
+
+
+func _make_progress_cell(data: Dictionary, bar_color: Color) -> VBoxContainer:
+	var earned := int(data.get("stars_earned", 0))
+	var available := int(data.get("stars_available", 0))
+	var percent := int(data.get("percent", 0))
+	var cell := VBoxContainer.new()
+	cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cell.add_theme_constant_override("separation", 6)
+	var bar := ProgressBar.new()
+	bar.min_value = 0
+	bar.max_value = maxi(available, 1)
+	bar.value = earned
+	bar.show_percentage = false
+	bar.custom_minimum_size = Vector2(0, 18)
+	bar.add_theme_stylebox_override("background", _flat(Color(0.93, 0.88, 0.8, 1), 10))
+	bar.add_theme_stylebox_override("fill", _flat(bar_color, 10))
+	cell.add_child(bar)
+	var meta := Label.new()
+	meta.text = "%d / %d ★   %d%%" % [earned, available, percent]
+	meta.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	meta.add_theme_font_override("font", FONT_BODY)
+	meta.add_theme_font_size_override("font_size", 28)
+	meta.add_theme_color_override("font_color", COLOR_INK)
+	cell.add_child(meta)
+	return cell
 
 
 func _make_progress_row(name_text: String, icon_tex: Texture2D, bar_color: Color, done: int, total: int, percent: int) -> HBoxContainer:
@@ -819,156 +870,15 @@ func _build_results_card() -> PanelContainer:
 	body.add_theme_constant_override("separation", 18)
 	box.add_child(body)
 
-	var summary := PanelContainer.new()
-	summary.custom_minimum_size.x = 360
-	summary.add_theme_stylebox_override(
-		"panel",
-		_flat(Color(1.0, 0.965, 0.875, 0.75), 24)
-	)
-	body.add_child(summary)
+	var perfect := _make_kpi_card(COLOR_GREEN, TEX_WREATH, _copy("perfect_title"), "0", "")
+	_results_total = perfect.get_node("Box/Value")
+	body.add_child(perfect)
 
-	var summary_box := VBoxContainer.new()
-	summary_box.alignment = BoxContainer.ALIGNMENT_CENTER
-	summary_box.add_theme_constant_override("separation", 8)
-	summary.add_child(summary_box)
-
-	var total_row := HBoxContainer.new()
-	total_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	total_row.add_theme_constant_override("separation", 10)
-	summary_box.add_child(total_row)
-
-	var total_icon := TextureRect.new()
-	total_icon.texture = TEX_STAR
-	total_icon.custom_minimum_size = Vector2(76, 76)
-	total_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	total_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	total_icon.modulate = Color(1.0, 0.62, 0.08, 1.0)
-	total_row.add_child(total_icon)
-
-	_results_total = Label.new()
-	_results_total.text = "0 / 0 ★"
-	_results_total.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_results_total.add_theme_font_override("font", FONT_TITLE)
-	_results_total.add_theme_font_size_override("font_size", 39)
-	_results_total.add_theme_color_override("font_color", COLOR_INK)
-	total_row.add_child(_results_total)
-
-	_results_percent = Label.new()
-	_results_percent.text = "0,0% del total"
-	_results_percent.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_results_percent.add_theme_font_override("font", FONT_BODY)
-	_results_percent.add_theme_font_size_override("font_size", 22)
-	_results_percent.add_theme_color_override("font_color", COLOR_INK)
-	summary_box.add_child(_results_percent)
-
-	var separator := HSeparator.new()
-	separator.add_theme_stylebox_override(
-		"separator",
-		_flat(Color(0.79, 0.65, 0.42, 0.35), 1)
-	)
-	summary_box.add_child(separator)
-
-	var average_title := Label.new()
-	average_title.text = "Promedio general"
-	average_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	average_title.add_theme_font_override("font", FONT_REGULAR)
-	average_title.add_theme_font_size_override("font_size", 18)
-	average_title.add_theme_color_override("font_color", COLOR_MUTED)
-	summary_box.add_child(average_title)
-
-	var average_stars := HBoxContainer.new()
-	average_stars.alignment = BoxContainer.ALIGNMENT_CENTER
-	average_stars.add_theme_constant_override("separation", 3)
-	summary_box.add_child(average_stars)
-	_average_stars.clear()
-	for _index in range(5):
-		var star := TextureRect.new()
-		star.texture = TEX_STAR_OFF
-		star.custom_minimum_size = Vector2(32, 32)
-		star.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		star.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		star.modulate = Color(0.55, 0.42, 0.3, 0.5)
-		average_stars.add_child(star)
-		_average_stars.append(star)
-
-	_results_average = Label.new()
-	_results_average.text = "0,00 ★ / puzle"
-	_results_average.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_results_average.add_theme_font_override("font", FONT_BODY)
-	_results_average.add_theme_font_size_override("font_size", 21)
-	_results_average.add_theme_color_override("font_color", COLOR_MUTED)
-	summary_box.add_child(_results_average)
-
-	var distribution := VBoxContainer.new()
-	distribution.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	distribution.add_theme_constant_override("separation", 6)
-	body.add_child(distribution)
-
-	_result_counts.clear()
-	_result_bars.clear()
-	for stars in range(5, 0, -1):
-		distribution.add_child(_make_result_row(stars))
+	var fastest := _make_kpi_card(COLOR_ORANGE, TEX_CLOCK, _copy("fastest_title"), "—", "—")
+	_results_percent = fastest.get_node("Box/Value")
+	_results_average = fastest.get_node("Box/Sub")
+	body.add_child(fastest)
 	return card
-
-
-func _make_result_row(stars: int) -> HBoxContainer:
-	var row := HBoxContainer.new()
-	row.custom_minimum_size = Vector2(0, 54)
-	row.add_theme_constant_override("separation", 8)
-
-	var star_group := HBoxContainer.new()
-	star_group.custom_minimum_size.x = 170
-	star_group.add_theme_constant_override("separation", 2)
-	row.add_child(star_group)
-	for index in range(5):
-		var star := TextureRect.new()
-		star.texture = TEX_STAR if index < stars else TEX_STAR_OFF
-		star.custom_minimum_size = Vector2(32, 32)
-		star.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		star.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		star.modulate = (
-			GameManager.star_fill_color(_selected_mode)
-			if index < stars
-			else Color(0.55, 0.42, 0.3, 0.5)
-		)
-		star_group.add_child(star)
-
-	var description := Label.new()
-	description.custom_minimum_size.x = 115
-	description.text = "%d %s" % [stars, "estrella" if stars == 1 else "estrellas"]
-	description.add_theme_font_override("font", FONT_REGULAR)
-	description.add_theme_font_size_override("font_size", 17)
-	description.add_theme_color_override("font_color", COLOR_INK)
-	row.add_child(description)
-
-	var count := Label.new()
-	count.custom_minimum_size.x = 130
-	count.text = "0 puzles"
-	count.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	count.add_theme_font_override("font", FONT_BODY)
-	count.add_theme_font_size_override("font_size", 18)
-	count.add_theme_color_override("font_color", COLOR_INK)
-	row.add_child(count)
-	_result_counts[stars] = count
-
-	var bar := ProgressBar.new()
-	bar.min_value = 0
-	bar.max_value = 1
-	bar.value = 0
-	bar.show_percentage = false
-	bar.custom_minimum_size = Vector2(105, 13)
-	bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	bar.add_theme_stylebox_override(
-		"background",
-		_flat(Color(0.93, 0.88, 0.79, 1.0), 8)
-	)
-	bar.add_theme_stylebox_override(
-		"fill",
-		_flat(Color(1.0, 0.65, 0.16, 1.0), 8)
-	)
-	row.add_child(bar)
-	_result_bars[stars] = bar
-	return row
 
 
 func _build_update_note() -> PanelContainer:

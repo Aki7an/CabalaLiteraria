@@ -543,6 +543,9 @@ func get_stats_dashboard() -> Dictionary:
 	var recent_times: Array[int] = []
 	var completed_puzzles := {}
 	var best_stars_by_puzzle := {}
+	var perfect_ids := {}
+	var fastest_sec := 0
+	var fastest_id := -1
 	var time_by_mode := {
 		GameManager.MODE_QUICK: 0,
 		GameManager.MODE_CRYPTOGRAM: 0,
@@ -613,6 +616,17 @@ func get_stats_dashboard() -> Dictionary:
 				var phrase_id := int(e.get("id", -1))
 				if phrase_id >= 0:
 					completed_by_mode[mode][category][phrase_id] = true
+			var max_stars := GameManager.get_puzzle_difficulty_stars(int(e.get("dificultad", 1)))
+			if (
+				completed_id >= 0
+				and int(e.get("estrellas", 0)) >= max_stars
+				and _competitive_help_count(e) <= 0
+				and int(e.get("revelaciones_falladas", 0)) <= 0
+			):
+				perfect_ids[str(completed_id)] = true
+			if secs > 0 and (fastest_sec <= 0 or secs < fastest_sec):
+				fastest_sec = secs
+				fastest_id = completed_id
 
 	var avg_sec := int(total_play_sec / matches) if matches > 0 else 0
 	var win_rate := (100.0 * float(wins) / float(matches)) if matches > 0 else 0.0
@@ -708,6 +722,11 @@ func get_stats_dashboard() -> Dictionary:
 		"avg_play_label": _format_duration_friendly(avg_sec),
 		"avg_quick_label": _format_duration_friendly(avg_quick_sec),
 		"avg_cryptogram_label": _format_duration_friendly(avg_crypto_sec),
+		"perfect_puzzles": perfect_ids.size(),
+		"fastest_label": (
+			_format_duration_friendly(fastest_sec) if fastest_sec > 0 else "—"
+		),
+		"fastest_id": fastest_id,
 		"hints_used": hints_used,
 		"letters_revealed": letters_revealed,
 		"letters_failed": letters_failed,

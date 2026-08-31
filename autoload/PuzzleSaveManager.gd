@@ -143,6 +143,15 @@ func get_puzzle_state(puzzle_id: int) -> Dictionary:
 	return (value as Dictionary).duplicate(true) if value is Dictionary else {}
 
 
+func in_progress_ids() -> Dictionary:
+	var result := {}
+	for key in _states.keys():
+		var state: Variant = _states[key]
+		if state is Dictionary and str((state as Dictionary).get("status", "")) == "in_progress":
+			result[int(str(key))] = true
+	return result
+
+
 func get_puzzle_summary(puzzle_id: int) -> Dictionary:
 	var state := get_puzzle_state(puzzle_id)
 	var maximum := _maximum_stars_for_puzzle(puzzle_id)

@@ -11,12 +11,9 @@ const GAP := 24.0
 @onready var quote_close: Label = $MainCard/PhraseCard/QuoteClose
 @onready var stars_card: Panel = $MainCard/StarsCard
 @onready var info_card: Panel = $MainCard/StarsCard/InfoCard
-@onready var unlock_card: Panel = $MainCard/UnlockCard
 @onready var continue_button: Button = $MainCard/ButtonBack
 @onready var description_label: RichTextLabel = $MainCard/StarsCard/InfoCard/Description
 @onready var stars_text: Label = $MainCard/StarsCard/StarsPill/StarsText
-@onready var xp_label: Label = $MainCard/UnlockCard/RewardXP/Title
-@onready var map_progress_label: Label = $MainCard/UnlockCard/RewardMap/Subtitle
 @onready var stars: Array[TextureRect] = [
 	$MainCard/StarsCard/Stars/Star1,
 	$MainCard/StarsCard/Stars/Star2,
@@ -39,8 +36,6 @@ func _ready() -> void:
 	var maximum := GameManager.get_puzzle_difficulty_stars()
 	var earned: int = clampi(GameManager.puzzle_stars, 0, maximum)
 	stars_text.text = "Resultado: %d de %d" % [earned, maximum]
-	xp_label.text = "+%d XP" % (earned * 10)
-	_update_map_progress()
 
 	for index in range(stars.size()):
 		var star := stars[index]
@@ -81,11 +76,8 @@ func _fit_stars_card() -> void:
 	)
 	var stars_y := phrase_card.position.y + phrase_card.size.y + GAP
 	stars_card.position.y = stars_y
-	var unlock_height := unlock_card.size.y
 	var maximum_stars_height := (
 		continue_button.position.y
-		- GAP
-		- unlock_height
 		- GAP
 		- stars_y
 	)
@@ -119,30 +111,6 @@ func _fit_stars_card() -> void:
 
 func _layout_top_down() -> void:
 	stars_card.position.y = phrase_card.position.y + phrase_card.size.y + GAP
-	unlock_card.position.y = stars_card.position.y + stars_card.size.y + GAP
-
-
-func _update_map_progress() -> void:
-	var available_ids := {}
-	for item_value in GameManager.frases_db:
-		if item_value is Dictionary:
-			var puzzle_id := int((item_value as Dictionary).get("index", -1))
-			if puzzle_id >= 0:
-				available_ids[puzzle_id] = true
-
-	var completed_ids := {}
-	for entry_value in HistoryManager.get_history():
-		if entry_value is Dictionary:
-			var entry: Dictionary = entry_value
-			if bool(entry.get("partida_ganada", false)):
-				completed_ids[int(entry.get("id", -1))] = true
-
-	var total := available_ids.size()
-	var remaining := maxi(total - completed_ids.size(), 0)
-	var remaining_percent := 0
-	if total > 0:
-		remaining_percent = int(round(100.0 * float(remaining) / float(total)))
-	map_progress_label.text = "%d %% por completar" % remaining_percent
 
 
 func _animate_stars(earned: int) -> void:
