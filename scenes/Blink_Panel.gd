@@ -39,6 +39,7 @@ func _exit_tree() -> void:
 func start_blink() -> void:
 	if _running:
 		return
+	_update_pivot_center()
 	_running = true
 	_run_cycle()
 

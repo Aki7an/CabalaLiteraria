@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://c3fsjx2ci160j"]
+[gd_resource type="Theme" format=3 uid="uid://c3fsjx2ci160j"]
 
 [ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="2_j8b67"]
 

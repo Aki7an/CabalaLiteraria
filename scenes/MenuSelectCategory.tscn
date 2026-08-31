@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://clypxdctucwq6"]
+[gd_scene load_steps=35 format=3 uid="uid://clypxdctucwq6"]
 
 [ext_resource type="Script" uid="uid://dq8u7wb0v23qa" path="res://scenes/menu_select_category.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_background"]
@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Arrow_Play.png" id="10_play"]
 [ext_resource type="Texture2D" path="res://images/mode_quick.svg" id="11_quick"]
 [ext_resource type="Texture2D" path="res://images/mode_scroll.svg" id="12_scroll"]
-[ext_resource type="Script" path="res://scenes/editable_back_arrow.gd" id="13_back_arrow"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="13_back_arrow"]
 
 [sub_resource type="StyleBoxFlat" id="Style_bg"]
 bg_color = Color(0.992157, 0.929412, 0.745098, 1)
@@ -181,6 +181,46 @@ corner_radius_top_right = 95
 corner_radius_bottom_right = 95
 corner_radius_bottom_left = 95
 
+[sub_resource type="StyleBoxFlat" id="Style_progress_background"]
+bg_color = Color(0.270588, 0.196078, 0.121569, 0.16)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.984314, 0.929412, 0.72)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_blue"]
+bg_color = Color(0.105882, 0.443137, 0.65098, 0.9)
+corner_radius_top_left = 23
+corner_radius_top_right = 23
+corner_radius_bottom_right = 23
+corner_radius_bottom_left = 23
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_orange"]
+bg_color = Color(0.760784, 0.388235, 0.117647, 0.9)
+corner_radius_top_left = 23
+corner_radius_top_right = 23
+corner_radius_bottom_right = 23
+corner_radius_bottom_left = 23
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_coral"]
+bg_color = Color(0.721569, 0.309804, 0.286275, 0.9)
+corner_radius_top_left = 23
+corner_radius_top_right = 23
+corner_radius_bottom_right = 23
+corner_radius_bottom_left = 23
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_mint"]
+bg_color = Color(0.25098, 0.65098, 0.533333, 0.9)
+corner_radius_top_left = 23
+corner_radius_top_right = 23
+corner_radius_bottom_right = 23
+corner_radius_bottom_left = 23
+
 [sub_resource type="StyleBoxFlat" id="Style_top_mint"]
 bg_color = Color(0.607843, 0.835294, 0.65098, 1)
 corner_radius_top_left = 95
@@ -308,27 +348,11 @@ offset_top = 55.0
 offset_right = 1151.0
 offset_bottom = 360.0
 
-[node name="ButtonBack" type="Button" parent="Panel/Header"]
+[node name="ButtonBack" parent="Panel/Header" instance=ExtResource("13_back_arrow")]
 layout_mode = 0
 offset_top = 24.0
 offset_right = 146.0
 offset_bottom = 170.0
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("Style_round_cream")
-theme_override_styles/hover = SubResource("Style_round_cream")
-theme_override_styles/pressed = SubResource("Style_round_cream_pressed")
-theme_override_styles/focus = SubResource("Style_empty")
-
-[node name="ArrowIcon" type="Control" parent="Panel/Header/ButtonBack"]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 29.0
-offset_right = 120.0
-offset_bottom = 117.0
-mouse_filter = 2
-script = ExtResource("13_back_arrow")
-line_color = Color(0.321569, 0.196078, 0.117647, 1)
 
 [node name="Brand" type="Control" parent="Panel/Header"]
 layout_mode = 0
@@ -543,17 +567,44 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="Progress" type="Label" parent="Panel/CategoryCard/ButtonCitasCelebres"]
+[node name="ProgressTitle" type="Label" parent="Panel/CategoryCard/ButtonCitasCelebres"]
 layout_mode = 0
 offset_left = 25.0
-offset_top = 300.0
+offset_top = 286.0
 offset_right = 395.0
-offset_bottom = 382.0
+offset_bottom = 330.0
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.105882, 0.443137, 0.65098, 0.9)
+theme_override_colors/font_color = Color(0.25098, 0.160784, 0.109804, 0.82)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 31
-text = "★ 0 / 0"
+theme_override_font_sizes/font_size = 24
+text = "Estrellas conseguidas"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Progress" type="ProgressBar" parent="Panel/CategoryCard/ButtonCitasCelebres"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 349.0
+offset_right = 295.0
+offset_bottom = 359.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Style_progress_background")
+theme_override_styles/fill = SubResource("Style_progress_blue")
+show_percentage = false
+
+[node name="ProgressValue" type="Label" parent="Panel/CategoryCard/ButtonCitasCelebres"]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 324.0
+offset_right = 405.0
+offset_bottom = 384.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.25098, 0.160784, 0.109804, 1)
+theme_override_colors/font_outline_color = Color(1, 0.972549, 0.882353, 0.85)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+text = "0 / 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -644,17 +695,44 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="Progress" type="Label" parent="Panel/CategoryCard/ButtonCuriosidades"]
+[node name="ProgressTitle" type="Label" parent="Panel/CategoryCard/ButtonCuriosidades"]
 layout_mode = 0
 offset_left = 25.0
-offset_top = 300.0
+offset_top = 286.0
 offset_right = 395.0
-offset_bottom = 382.0
+offset_bottom = 330.0
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.760784, 0.388235, 0.117647, 0.9)
+theme_override_colors/font_color = Color(0.25098, 0.160784, 0.109804, 0.82)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 31
-text = "★ 0 / 0"
+theme_override_font_sizes/font_size = 24
+text = "Estrellas conseguidas"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Progress" type="ProgressBar" parent="Panel/CategoryCard/ButtonCuriosidades"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 349.0
+offset_right = 295.0
+offset_bottom = 359.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Style_progress_background")
+theme_override_styles/fill = SubResource("Style_progress_orange")
+show_percentage = false
+
+[node name="ProgressValue" type="Label" parent="Panel/CategoryCard/ButtonCuriosidades"]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 324.0
+offset_right = 405.0
+offset_bottom = 384.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.25098, 0.160784, 0.109804, 1)
+theme_override_colors/font_outline_color = Color(1, 0.972549, 0.882353, 0.85)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+text = "0 / 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -746,17 +824,44 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="Progress" type="Label" parent="Panel/CategoryCard/ButtonEfemerides"]
+[node name="ProgressTitle" type="Label" parent="Panel/CategoryCard/ButtonEfemerides"]
 layout_mode = 0
 offset_left = 25.0
-offset_top = 300.0
+offset_top = 286.0
 offset_right = 395.0
-offset_bottom = 382.0
+offset_bottom = 330.0
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.721569, 0.309804, 0.286275, 0.9)
+theme_override_colors/font_color = Color(0.25098, 0.160784, 0.109804, 0.82)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 31
-text = "★ 0 / 0"
+theme_override_font_sizes/font_size = 24
+text = "Estrellas conseguidas"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Progress" type="ProgressBar" parent="Panel/CategoryCard/ButtonEfemerides"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 349.0
+offset_right = 295.0
+offset_bottom = 359.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Style_progress_background")
+theme_override_styles/fill = SubResource("Style_progress_coral")
+show_percentage = false
+
+[node name="ProgressValue" type="Label" parent="Panel/CategoryCard/ButtonEfemerides"]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 324.0
+offset_right = 405.0
+offset_bottom = 384.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.25098, 0.160784, 0.109804, 1)
+theme_override_colors/font_outline_color = Color(1, 0.972549, 0.882353, 0.85)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+text = "0 / 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -848,17 +953,44 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="Progress" type="Label" parent="Panel/CategoryCard/ButtonFragmentosLiterarios"]
+[node name="ProgressTitle" type="Label" parent="Panel/CategoryCard/ButtonFragmentosLiterarios"]
 layout_mode = 0
 offset_left = 25.0
-offset_top = 300.0
+offset_top = 286.0
 offset_right = 395.0
-offset_bottom = 382.0
+offset_bottom = 330.0
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.25098, 0.65098, 0.533333, 0.9)
+theme_override_colors/font_color = Color(0.25098, 0.160784, 0.109804, 0.82)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 31
-text = "★ 0 / 0"
+theme_override_font_sizes/font_size = 24
+text = "Estrellas conseguidas"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Progress" type="ProgressBar" parent="Panel/CategoryCard/ButtonFragmentosLiterarios"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 349.0
+offset_right = 295.0
+offset_bottom = 359.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Style_progress_background")
+theme_override_styles/fill = SubResource("Style_progress_mint")
+show_percentage = false
+
+[node name="ProgressValue" type="Label" parent="Panel/CategoryCard/ButtonFragmentosLiterarios"]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 324.0
+offset_right = 405.0
+offset_bottom = 384.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.25098, 0.160784, 0.109804, 1)
+theme_override_colors/font_outline_color = Color(1, 0.972549, 0.882353, 0.85)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+text = "0 / 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 

@@ -5,7 +5,6 @@ extends Control
 @onready var button_ranking: Button = %ButtonRanking
 @onready var button_stats: Button = %ButtonStats
 @onready var button_tutorial: Button = %ButtonTutorial
-@onready var last_game: Label = %LastGame
 @onready var version_label: Label = %VersionLabel
 
 func _ready() -> void:
@@ -16,7 +15,6 @@ func _ready() -> void:
 	SignalManager.fit_text.emit()
 	GameManager.reset_game_paremeters()
 	GameManager.resetear_partida_terminada()
-	_update_last_game()
 
 func _apply_labels() -> void:
 	var tagline := get_node_or_null("Panel/TaglineRow/Tagline") as Label
@@ -38,20 +36,6 @@ func _apply_audio() -> void:
 		linear_to_db(PlayerPrefs.volumen_fx))
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Music"), not PlayerPrefs.mute_musica)
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundFx"), not PlayerPrefs.mute_fx)
-
-func _update_last_game() -> void:
-	var cat := str(GameManager.categoria_ultima_partida).strip_edges()
-	var diff := int(GameManager.dificultad_ultima_partida)
-	var history: Array = HistoryManager.get_history()
-	if cat.is_empty() or diff <= 0 or history.is_empty():
-		last_game.visible = false
-		return
-	last_game.visible = true
-	last_game.text = "%s: %s · %s" % [
-		tr("LastGame"),
-		GameManager.category_display_name(cat),
-		GameManager.difficulty_display_name(diff),
-	]
 
 func _go_to(path: String, blink_node: Control = null) -> void:
 	TransitionScreen.transition_to_black()

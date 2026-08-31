@@ -160,6 +160,7 @@ func _select_mode(mode_id: String, button: Button) -> void:
 	GameManager.button_blink(button)
 	SoundManager.play("ButtonClick")
 	_update_mode_selection()
+	_update_category_progress()
 
 
 func _on_button_play_pressed() -> void:
@@ -196,7 +197,7 @@ func _update_category_selection() -> void:
 	for category_id in _category_buttons:
 		var button: Button = _category_buttons[category_id]
 		var is_selected: bool = category_id == categoria
-		button.get_node("Selected").visible = is_selected
+		_set_check_blink(button, is_selected)
 		button.add_theme_stylebox_override(
 			"normal",
 			_make_category_style(category_id, is_selected)
@@ -207,22 +208,55 @@ func _update_mode_selection() -> void:
 	for mode_id in _mode_buttons:
 		var button: Button = _mode_buttons[mode_id]
 		var is_selected: bool = mode_id == selected_mode
-		button.get_node("Selected").visible = is_selected
+		_set_check_blink(button, is_selected)
 		button.add_theme_stylebox_override(
 			"normal",
 			_make_mode_selected_style() if is_selected else _mode_normal_styles[mode_id]
 		)
 
 
+func _set_check_blink(button: Button, is_selected: bool) -> void:
+	var badge := button.get_node_or_null("Selected") as Control
+	if badge == null:
+		return
+	if badge.has_meta("check_tween"):
+		var previous: Variant = badge.get_meta("check_tween")
+		if previous is Tween:
+			(previous as Tween).kill()
+	badge.visible = is_selected
+	if badge.size == Vector2.ZERO:
+		badge.pivot_offset = Vector2(30, 30)
+	else:
+		badge.pivot_offset = badge.size * 0.5
+	badge.scale = Vector2.ONE
+	if not is_selected:
+		return
+	var tween := create_tween()
+	tween.set_loops()
+	tween.tween_property(badge, "scale", Vector2(1.22, 1.22), 0.42).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(badge, "scale", Vector2.ONE, 0.42).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	badge.set_meta("check_tween", tween)
+
+
 func _update_category_progress() -> void:
 	for category_id in _category_buttons:
-		var record := HistoryManager.get_competitive_record(category_id, "all")
+		var record := HistoryManager.get_competitive_record(
+			category_id,
+			selected_mode
+		)
 		var stars_earned := int(record.get("stars_earned", 0))
 		var stars_available := int(record.get("stars_available", 0))
 		var button: Button = _category_buttons[category_id]
-		var progress_label := button.get_node_or_null("Progress") as Label
-		if progress_label != null:
-			progress_label.text = "★ %d / %d" % [stars_earned, stars_available]
+		var progress_bar := button.get_node_or_null("Progress") as ProgressBar
+		if progress_bar != null:
+			progress_bar.max_value = maxf(float(stars_available), 1.0)
+			progress_bar.value = float(stars_earned)
+			var value_label := button.get_node_or_null("ProgressValue") as Label
+			if value_label != null:
+				value_label.text = "%d / %d" % [
+					stars_earned,
+					stars_available,
+				]
 
 
 func _make_selected_style() -> StyleBoxFlat:

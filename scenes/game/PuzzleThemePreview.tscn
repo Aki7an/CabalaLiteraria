@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scenes/game/puzzle_theme_preview.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
 [ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="3_star"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="4_back"]
 
 [sub_resource type="StyleBoxFlat" id="Style_card"]
 bg_color = Color(1, 0.949, 0.804, 1)
@@ -131,26 +132,16 @@ offset_right = 1123.0
 offset_bottom = 2375.0
 theme_override_styles/panel = SubResource("Style_card")
 
-[node name="ButtonBack" type="Button" parent="Card"]
+[node name="ButtonBack" parent="Card" instance=ExtResource("4_back")]
 layout_mode = 0
 offset_left = 40.0
-offset_top = 37.0
-offset_right = 157.0
-offset_bottom = 143.0
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0.27, 0.19, 0.11, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 60
-theme_override_styles/normal = SubResource("Style_back")
-theme_override_styles/hover = SubResource("Style_back")
-theme_override_styles/pressed = SubResource("Style_back_pressed")
-theme_override_styles/focus = SubResource("Style_empty")
-text = "←"
+offset_top = 30.0
+offset_right = 186.0
+offset_bottom = 176.0
 
 [node name="Title" type="Label" parent="Card"]
 layout_mode = 0
-offset_left = 170.0
+offset_left = 210.0
 offset_top = 43.0
 offset_right = 985.0
 offset_bottom = 137.0
@@ -164,9 +155,9 @@ vertical_alignment = 1
 [node name="Category" type="Label" parent="Card"]
 layout_mode = 0
 offset_left = 55.0
-offset_top = 141.0
+offset_top = 196.0
 offset_right = 777.0
-offset_bottom = 208.0
+offset_bottom = 253.0
 theme_override_colors/font_color = Color(0.5, 0.36, 0.2, 0.86)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 34
@@ -176,9 +167,9 @@ vertical_alignment = 1
 [node name="Id" type="Label" parent="Card"]
 layout_mode = 0
 offset_left = 790.0
-offset_top = 141.0
+offset_top = 196.0
 offset_right = 985.0
-offset_bottom = 208.0
+offset_bottom = 253.0
 theme_override_colors/font_color = Color(0.5, 0.36, 0.2, 0.86)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 30
@@ -190,9 +181,9 @@ vertical_alignment = 1
 clip_contents = true
 layout_mode = 0
 offset_left = 47.0
-offset_top = 234.0
+offset_top = 270.0
 offset_right = 993.0
-offset_bottom = 1580.0
+offset_bottom = 1616.0
 theme_override_styles/panel = SubResource("Style_image")
 
 [node name="Image" type="TextureRect" parent="Card/ImageFrame"]
@@ -213,9 +204,9 @@ stretch_mode = 6
 [node name="WaitText" type="Label" parent="Card"]
 layout_mode = 0
 offset_left = 80.0
-offset_top = 1600.0
+offset_top = 1636.0
 offset_right = 960.0
-offset_bottom = 1660.0
+offset_bottom = 1696.0
 theme_override_colors/font_color = Color(0.46, 0.33, 0.18, 0.8)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 31
@@ -226,9 +217,9 @@ vertical_alignment = 1
 [node name="DifficultyStars" type="HBoxContainer" parent="Card"]
 layout_mode = 0
 offset_left = 280.0
-offset_top = 1670.0
+offset_top = 1706.0
 offset_right = 760.0
-offset_bottom = 1754.0
+offset_bottom = 1790.0
 theme_override_constants/separation = 18
 alignment = 1
 
@@ -261,6 +252,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Star5" type="TextureRect" parent="Card/DifficultyStars"]
+visible = false
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 texture = ExtResource("3_star")
@@ -270,9 +262,9 @@ stretch_mode = 5
 [node name="ButtonStart" type="Button" parent="Card"]
 layout_mode = 0
 offset_left = 224.0
-offset_top = 1790.0
+offset_top = 1826.0
 offset_right = 816.0
-offset_bottom = 2000.0
+offset_bottom = 2036.0
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 0.94, 1)
 theme_override_colors/font_shadow_color = Color(0.4, 0.16, 0, 0.5)

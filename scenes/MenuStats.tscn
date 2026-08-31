@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0owvmwtubnyu"]
+[gd_scene format=3 uid="uid://c0owvmwtubnyu"]
 
 [ext_resource type="Script" uid="uid://7s17g0rp0lms" path="res://scenes/menu_stats.gd" id="1_ppt63"]
 
-[node name="MenuStats" type="Control"]
+[node name="MenuStats" type="Control" unique_id=1734152391]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

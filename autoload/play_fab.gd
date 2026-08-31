@@ -318,7 +318,13 @@ func decode_competitive_value(value: int) -> Dictionary:
 
 func submit_competitive_rankings(player_name: String = "") -> bool:
 	if not is_logged_in():
-		return false
+		for _attempt in range(50):
+			await get_tree().create_timer(0.1).timeout
+			if is_logged_in():
+				break
+		if not is_logged_in():
+			push_warning("No se pudo enviar la clasificación: PlayFab no inició sesión.")
+			return false
 	if player_name.strip_edges() != "":
 		await _update_player_display_name(player_name)
 

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dgn8v4ma2syyf" path="res://scenes/menu_select_level_by_id.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/fondo.tscn" id="2_bg"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
-[ext_resource type="Script" path="res://scenes/editable_back_arrow.gd" id="4_back"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="4_back"]
 [ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_dice_white.png" id="5_dice"]
 
 [sub_resource type="StyleBoxFlat" id="Style_background"]
@@ -157,33 +157,12 @@ anchor_right = 1.0
 offset_bottom = 452.0
 grow_horizontal = 2
 
-[node name="ButtonBack" type="Button" parent="Header"]
+[node name="ButtonBack" parent="Header" instance=ExtResource("4_back")]
 layout_mode = 0
 offset_left = 58.0
 offset_top = 62.0
-offset_right = 208.0
-offset_bottom = 212.0
-focus_mode = 0
-theme_override_styles/normal = SubResource("Style_back")
-theme_override_styles/hover = SubResource("Style_back")
-theme_override_styles/pressed = SubResource("Style_back_pressed")
-theme_override_styles/focus = SubResource("Style_empty")
-
-[node name="Arrow" type="Control" parent="Header/ButtonBack"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 26.0
-offset_top = 26.0
-offset_right = -26.0
-offset_bottom = -26.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("4_back")
-line_color = Color(0.29, 0.22, 0.14, 1)
-stroke_width = 11.0
+offset_right = 204.0
+offset_bottom = 208.0
 
 [node name="Title" type="Label" parent="Header"]
 layout_mode = 0

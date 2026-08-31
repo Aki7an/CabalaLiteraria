@@ -4,7 +4,11 @@ const PATH_CATEGORY := "res://scenes/MenuSelectCategory.tscn"
 const MODE_QUICK := "quick"
 const MODE_CRYPTOGRAM := "cryptogram"
 const STAR_TEXTURE: Texture2D = preload("res://images/estrella_plano.png")
+const STAR_OFF_TEXTURE: Texture2D = preload("res://images/contorno_estrella.png")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
+const COLOR_STAR_YELLOW := Color(1.0, 0.78, 0.12, 1)
+const COLOR_STAR_EMPTY := Color(0.50, 0.38, 0.24, 0.55)
+const DRAG_THRESHOLD := 14.0
 
 @export_dir var IMAGES_DIR: String = "res://data/images/"
 @export var FILE_EXTS: PackedStringArray = [".png", ".jpg", ".jpeg", ".webp"]
@@ -26,6 +30,10 @@ var _pending_textures: Array[Button] = []
 var _image_path_cache: Dictionary = {}
 var _visible_items: Array[Dictionary] = []
 var _completed_ids: Dictionary = {}
+var _drag_held := false
+var _drag_active := false
+var _drag_origin := Vector2.ZERO
+var _drag_scroll_origin := 0
 
 var _scene_to_category: PackedScene
 
@@ -103,9 +111,52 @@ func _ready() -> void:
 	_update_localized_copy()
 	await get_tree().process_frame
 
+	_scroll.scroll_deadzone = 16
 	if not _populate_from_gamemanager() and JSON_PATH != "":
 		_load_and_populate_from_path(JSON_PATH)
 	set_process(true)
+
+
+func _input(event: InputEvent) -> void:
+	if not is_instance_valid(_scroll) or not _scroll.visible:
+		return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		_handle_drag_press(event.pressed, event.position)
+	elif event is InputEventMouseMotion and _drag_held:
+		_handle_drag_motion(event.position)
+	elif event is InputEventScreenTouch:
+		_handle_drag_press(event.pressed, event.position)
+	elif event is InputEventScreenDrag and _drag_held:
+		_handle_drag_motion(event.position)
+
+
+func _handle_drag_press(pressed: bool, position: Vector2) -> void:
+	if pressed:
+		if not _scroll.get_global_rect().has_point(position):
+			return
+		_drag_held = true
+		_drag_active = false
+		_drag_origin = position
+		_drag_scroll_origin = _scroll.scroll_vertical
+		return
+	if _drag_active:
+		get_viewport().set_input_as_handled()
+	call_deferred("_end_drag")
+
+
+func _handle_drag_motion(position: Vector2) -> void:
+	var delta := position.y - _drag_origin.y
+	if not _drag_active and absf(delta) >= DRAG_THRESHOLD:
+		_drag_active = true
+	if not _drag_active:
+		return
+	_scroll.scroll_vertical = _drag_scroll_origin - int(delta)
+	get_viewport().set_input_as_handled()
+
+
+func _end_drag() -> void:
+	_drag_held = false
+	_drag_active = false
 
 
 func _process(_delta: float) -> void:
@@ -192,6 +243,8 @@ func _passes_filters(item: Dictionary) -> bool:
 	var index_number: int = int(item.get("index", -1))
 	if image_number < 0 or index_number < 0:
 		return false
+	if not GameManager.level_has_image(item):
+		return false
 
 	var target_category: String = str(GameManager.categoria_actual).strip_edges()
 	if target_category != "":
@@ -199,10 +252,7 @@ func _passes_filters(item: Dictionary) -> bool:
 		if not GameManager.categories_match(item_category, target_category):
 			return false
 
-	var difficulty: int = int(item.get("difficulty", 1))
-	if GameManager.game_mode_actual == MODE_CRYPTOGRAM:
-		return difficulty >= 3
-	return difficulty <= 2
+	return GameManager.level_game_mode(item) == GameManager.game_mode_actual
 
 
 func _create_level_card(item: Dictionary) -> Button:
@@ -216,10 +266,11 @@ func _create_level_card(item: Dictionary) -> Button:
 		if completed
 		else str(saved_summary.get("status", "new"))
 	)
+	var stars_max := _difficulty_to_stars(difficulty)
 	var stars_remaining := clampi(
-		int(saved_summary.get("stars_remaining", 5)),
+		int(saved_summary.get("stars_remaining", stars_max)),
 		0,
-		5
+		stars_max
 	)
 	var letters_total := int(saved_summary.get("letters_total", 0))
 	if letters_total <= 0:
@@ -232,7 +283,7 @@ func _create_level_card(item: Dictionary) -> Button:
 
 	var button := Button.new()
 	button.name = "Level_%d" % index_number
-	button.custom_minimum_size = Vector2(330, 450)
+	button.custom_minimum_size = Vector2(330, 490)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.focus_mode = Control.FOCUS_NONE
 	button.text = ""
@@ -271,33 +322,6 @@ func _create_level_card(item: Dictionary) -> Button:
 	if PLACEHOLDER_TEX != null:
 		texture.texture = PLACEHOLDER_TEX
 	image_frame.add_child(texture)
-
-	var star_badge := Panel.new()
-	star_badge.name = "Difficulty"
-	star_badge.position = Vector2(23, 23)
-	star_badge.size = Vector2(122, 51)
-	star_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	star_badge.add_theme_stylebox_override("panel", _make_overlay_style(Color(0.16, 0.11, 0.07, 0.72), 20))
-	button.add_child(star_badge)
-
-	var stars := HBoxContainer.new()
-	stars.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	stars.offset_left = 13.0
-	stars.offset_top = 8.0
-	stars.offset_right = -13.0
-	stars.offset_bottom = -8.0
-	stars.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	stars.add_theme_constant_override("separation", 5)
-	star_badge.add_child(stars)
-	for _star in range(_difficulty_to_stars(difficulty)):
-		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(27, 27)
-		icon.texture = STAR_TEXTURE
-		icon.self_modulate = Color(1, 0.73, 0.12, 1)
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		stars.add_child(icon)
 
 	var id_badge := Panel.new()
 	id_badge.name = "IdBadge"
@@ -345,23 +369,24 @@ func _create_level_card(item: Dictionary) -> Button:
 	status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	status.add_child(status_label)
 
-	var stars_available := Label.new()
-	stars_available.position = Vector2(18, 350)
-	stars_available.size = Vector2(294, 42)
-	stars_available.add_theme_font_override("font", _title_label.get_theme_font("font"))
-	stars_available.add_theme_font_size_override("font_size", 25)
-	stars_available.add_theme_color_override("font_color", Color(0.83, 0.49, 0.08))
-	stars_available.text = "%s%s disponibles" % [
-		"★".repeat(stars_remaining),
-		"☆".repeat(5 - stars_remaining),
-	]
-	stars_available.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	stars_available.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	stars_available.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	button.add_child(stars_available)
+	var status_star_size := 54 if puzzle_status == "completed" else 27
+	var status_star_color := (
+		COLOR_STAR_YELLOW
+		if puzzle_status == "completed"
+		else Color(0.12, 0.09, 0.06, 1)
+	)
+	var status_stars := _star_icons(
+		stars_remaining if puzzle_status != "new" else stars_max,
+		stars_max,
+		status_star_size,
+		status_star_color
+	)
+	status_stars.position = Vector2(18, 348)
+	status_stars.size = Vector2(294, 64 if puzzle_status == "completed" else 42)
+	button.add_child(status_stars)
 
 	var letters_progress := Label.new()
-	letters_progress.position = Vector2(18, 394)
+	letters_progress.position = Vector2(18, 418)
 	letters_progress.size = Vector2(294, 42)
 	letters_progress.add_theme_font_override("font", _title_label.get_theme_font("font"))
 	letters_progress.add_theme_font_size_override("font_size", 23)
@@ -391,6 +416,8 @@ func _assign_real_texture(button: Button) -> void:
 
 
 func _on_level_pressed(item: Dictionary) -> void:
+	if _drag_active:
+		return
 	var index_number: int = int(item.get("index", -1))
 	if index_number < 0:
 		return
@@ -465,7 +492,25 @@ func _copy(key: String) -> String:
 
 
 func _difficulty_to_stars(difficulty: int) -> int:
-	return clampi(difficulty, 1, 3)
+	return clampi(difficulty, 1, 4)
+
+
+func _star_icons(filled: int, total: int, size: int, color: Color) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override("separation", 6)
+	for index in range(total):
+		var icon := TextureRect.new()
+		var is_filled := index < filled
+		icon.custom_minimum_size = Vector2(size, size)
+		icon.texture = STAR_TEXTURE if is_filled else STAR_OFF_TEXTURE
+		icon.self_modulate = color if is_filled else COLOR_STAR_EMPTY
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(icon)
+	return row
 
 
 func _count_puzzle_letters(text: String) -> int:

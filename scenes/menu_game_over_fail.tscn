@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cwsakfarlyt6b"]
+[gd_scene load_steps=23 format=3 uid="uid://cwsakfarlyt6b"]
 
 [ext_resource type="Script" uid="uid://cqkjxpk7ooyxd" path="res://scenes/menu_game_over_fail.gd" id="1_h7tbd"]
 [ext_resource type="Texture2D" uid="uid://hggrdc2bwirm" path="res://images/Captura de pantalla 2025-09-06 221159.png" id="2_t4ocq"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://xj2gw1xc0067" path="res://GUI/Library/Button/Button_Custom/Btn_MenuButton_Rectangle03_White1.png" id="5_1lsnr"]
 [ext_resource type="Texture2D" uid="uid://64eqp4g8dwld" path="res://images/Info.png" id="7_81s0o"]
 [ext_resource type="Texture2D" uid="uid://bi1gjepfdc0s2" path="res://images/SadFace.png" id="7_t4ocq"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="8_back"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eq0y4"]
 bg_color = Color(1, 0.603922, 0.568627, 1)
@@ -267,17 +268,11 @@ texture = ExtResource("7_t4ocq")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ButtonBack" type="Button" parent="."]
-layout_mode = 1
-offset_left = 256.0
-offset_top = 1704.0
-offset_right = 842.988
-offset_bottom = 1966.07
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = SubResource("Theme_mweim")
-theme_override_colors/font_color = Color(0.380392, 0.635294, 0.807843, 1)
-theme_override_font_sizes/font_size = 80
-text = "Main Menu"
+[node name="ButtonBack" parent="." instance=ExtResource("8_back")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 196.0
+offset_bottom = 196.0
 
 [connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

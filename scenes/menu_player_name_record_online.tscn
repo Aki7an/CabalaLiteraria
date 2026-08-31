@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://b34imw6fcdojr"]
+[gd_scene load_steps=7 format=3 uid="uid://b34imw6fcdojr"]
 
 [ext_resource type="Script" uid="uid://dsth7j5dasb6e" path="res://scenes/menu_player_name_record_online.gd" id="1_ed5lp"]
 [ext_resource type="Texture2D" uid="uid://blfms7sixe668" path="res://images/Felicitacion.png" id="1_ff1wu"]
 [ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="3_3npoo"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="3_mxkpq"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="4_back"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hyvrp"]
 bg_color = Color(0.835294, 0.635294, 0.576471, 1)
@@ -93,16 +94,11 @@ theme_override_colors/font_color = Color(0.396138, 0.213814, 0.158467, 1)
 theme_override_font_sizes/font_size = 40
 horizontal_alignment = 1
 
-[node name="ButtonBack" type="Button" parent="."]
-layout_mode = 1
-offset_left = 288.0
-offset_top = 1712.0
-offset_right = 736.0
-offset_bottom = 1952.07
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("3_mxkpq")
-theme_override_font_sizes/font_size = 80
-text = "OK"
+[node name="ButtonBack" parent="." instance=ExtResource("4_back")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 196.0
+offset_bottom = 196.0
 
 [connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

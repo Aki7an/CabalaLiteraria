@@ -931,9 +931,8 @@ max_font_size = 145
 available_x = 540
 
 [node name="LastGame" type="Label" parent="Panel" unique_id=56618810]
-unique_name_in_owner = true
-auto_translate_mode = 2
 visible = false
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -941,13 +940,9 @@ anchor_top = 0.575
 anchor_right = 0.9
 anchor_bottom = 0.605
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.85)
-theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 26
-text = "LastGame"
-horizontal_alignment = 1
-vertical_alignment = 1
-clip_text = true
+mouse_filter = 2
+theme_override_font_sizes/font_size = 1
+text = ""
 
 [node name="TipsBox" type="Panel" parent="Panel" unique_id=1780924533]
 layout_mode = 1

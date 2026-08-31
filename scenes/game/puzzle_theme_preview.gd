@@ -41,9 +41,18 @@ func _ready() -> void:
 
 
 func _update_difficulty_stars() -> void:
-	var filled: int = clampi(GameManager.dificultad_actual, 1, difficulty_stars.size())
+	var maximum := GameManager.get_puzzle_difficulty_stars()
+	var saved := PuzzleSaveManager.get_puzzle_summary(GameManager.id_frase)
+	var remaining := clampi(
+		int(saved.get("stars_remaining", maximum)),
+		0,
+		maximum
+	)
 	for index in range(difficulty_stars.size()):
-		difficulty_stars[index].self_modulate = STAR_ON if index < filled else STAR_OFF
+		difficulty_stars[index].visible = index < maximum
+		difficulty_stars[index].self_modulate = (
+			STAR_ON if index < remaining else STAR_OFF
+		)
 
 
 func setup(should_launch_game: bool, path: String = "") -> void:

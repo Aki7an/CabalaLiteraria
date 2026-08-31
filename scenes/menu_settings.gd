@@ -14,7 +14,6 @@ extends Control
 @onready var h_slider_fx: HSlider = $Panel/SoundCard/SoundRows/HSliderFx
 @onready var nombre: LineEdit = $Panel/OnlineCard/Nombre
 @onready var title_label: Label = $Panel/Header/Title
-@onready var sound_tip_label: Label = $Panel/SoundCard/SoundTip/Text
 @onready var online_title_label: Label = $Panel/OnlineCard/Title
 @onready var online_help_label: Label = $Panel/OnlineCard/Info/Text
 @onready var reset_label: Label = $Panel/Footer/ButtonReset/Text
@@ -25,49 +24,42 @@ var _normal_language_styles: Dictionary = {}
 const LOCALIZED_COPY := {
 	"es": {
 		"title": "Opciones",
-		"sound_tip": "Ajusta el volumen o desactiva los sonidos.",
 		"online_title": "NOMBRE ONLINE",
 		"online_help": "Este nombre se mostrará en las clasificaciones y retos online.",
 		"reset": "RESTABLECER VALORES",
 	},
 	"en": {
 		"title": "Options",
-		"sound_tip": "Adjust the volume or disable sounds.",
 		"online_title": "ONLINE NAME",
 		"online_help": "This name will be shown in online leaderboards and challenges.",
 		"reset": "RESET VALUES",
 	},
 	"eu": {
 		"title": "Aukerak",
-		"sound_tip": "Doitu bolumena edo desaktibatu soinuak.",
 		"online_title": "LINEAKO IZENA",
 		"online_help": "Izen hau lineako sailkapenetan eta erronketan agertuko da.",
 		"reset": "BERREZARRI BALIOAK",
 	},
 	"de": {
 		"title": "Optionen",
-		"sound_tip": "Passe die Lautstärke an oder deaktiviere die Töne.",
 		"online_title": "ONLINE-NAME",
 		"online_help": "Dieser Name wird in Online-Ranglisten und Herausforderungen angezeigt.",
 		"reset": "WERTE ZURÜCKSETZEN",
 	},
 	"fr": {
 		"title": "Options",
-		"sound_tip": "Réglez le volume ou désactivez les sons.",
 		"online_title": "NOM EN LIGNE",
 		"online_help": "Ce nom apparaîtra dans les classements et défis en ligne.",
 		"reset": "RÉINITIALISER",
 	},
 	"it": {
 		"title": "Opzioni",
-		"sound_tip": "Regola il volume o disattiva i suoni.",
 		"online_title": "NOME ONLINE",
 		"online_help": "Questo nome apparirà nelle classifiche e nelle sfide online.",
 		"reset": "RIPRISTINA VALORI",
 	},
 	"pt": {
 		"title": "Opções",
-		"sound_tip": "Ajuste o volume ou desative os sons.",
 		"online_title": "NOME ONLINE",
 		"online_help": "Este nome aparecerá nas classificações e desafios online.",
 		"reset": "REPOR VALORES",
@@ -202,9 +194,8 @@ func _on_button_reset_pressed() -> void:
 
 
 func _save_online_name() -> void:
-	var clean_name := nombre.text.strip_edges()
-	if not clean_name.is_empty():
-		GameManager.player_name = clean_name
+	GameManager.player_name = nombre.text.strip_edges()
+	PlayerPrefs.save_prefs()
 
 
 func _update_language_selection() -> void:
@@ -223,7 +214,6 @@ func _update_language_selection() -> void:
 func _update_localized_copy(locale: String) -> void:
 	var copy: Dictionary = LOCALIZED_COPY.get(locale, LOCALIZED_COPY["en"])
 	title_label.text = copy["title"]
-	sound_tip_label.text = copy["sound_tip"]
 	online_title_label.text = copy["online_title"]
 	online_help_label.text = copy["online_help"]
 	reset_label.text = copy["reset"]

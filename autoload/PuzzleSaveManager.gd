@@ -22,7 +22,8 @@ func begin_current_puzzle() -> void:
 	if puzzle_id < 0:
 		return
 	var key := str(puzzle_id)
-	if not _states.has(key):
+	var existing: Dictionary = get_puzzle_state(puzzle_id)
+	if existing.is_empty() or str(existing.get("status", "")) == "completed":
 		_states[key] = {
 			"status": "in_progress",
 			"resolution": {},
@@ -84,6 +85,9 @@ func save_current_now() -> void:
 	var puzzle_id := int(GameManager.id_frase)
 	if puzzle_id < 0:
 		return
+	var existing := get_puzzle_state(puzzle_id)
+	if str(existing.get("status", "")) == "completed":
+		return
 	_states[str(puzzle_id)] = {
 		"status": "in_progress",
 		"resolution": _capture_resolution(),
@@ -118,7 +122,7 @@ func mark_completed(puzzle_id: int) -> void:
 	var state: Dictionary = get_puzzle_state(puzzle_id)
 	state["status"] = "completed"
 	state["resolution"] = {}
-	if not state.has("attempt"):
+	if puzzle_id == int(GameManager.id_frase):
 		state["attempt"] = GameManager.export_attempt_state()
 	var meta: Dictionary = state.get("meta", {})
 	meta["letters_filled"] = int(meta.get("letters_total", 0))
@@ -134,10 +138,12 @@ func get_puzzle_state(puzzle_id: int) -> Dictionary:
 
 func get_puzzle_summary(puzzle_id: int) -> Dictionary:
 	var state := get_puzzle_state(puzzle_id)
+	var maximum := _maximum_stars_for_puzzle(puzzle_id)
 	if state.is_empty():
 		return {
 			"status": "new",
-			"stars_remaining": 5,
+			"stars_remaining": maximum,
+			"stars_max": maximum,
 			"letters_filled": 0,
 			"letters_total": 0,
 		}
@@ -145,10 +151,28 @@ func get_puzzle_summary(puzzle_id: int) -> Dictionary:
 	var meta: Dictionary = state.get("meta", {})
 	return {
 		"status": str(state.get("status", "in_progress")),
-		"stars_remaining": int(attempt.get("puzzle_stars", 5)),
+		"stars_remaining": clampi(
+			int(attempt.get("puzzle_stars", maximum)),
+			0,
+			maximum
+		),
+		"stars_max": maximum,
 		"letters_filled": int(meta.get("letters_filled", 0)),
 		"letters_total": int(meta.get("letters_total", 0)),
 	}
+
+
+func _maximum_stars_for_puzzle(puzzle_id: int) -> int:
+	if puzzle_id == int(GameManager.id_frase):
+		return GameManager.get_puzzle_difficulty_stars()
+	for item_value in GameManager.frases_db:
+		if item_value is Dictionary:
+			var item: Dictionary = item_value
+			if int(item.get("index", -1)) == puzzle_id:
+				return GameManager.get_puzzle_difficulty_stars(
+					int(item.get("difficulty", 1))
+				)
+	return 1
 
 
 func _capture_resolution() -> Dictionary:
@@ -161,9 +185,15 @@ func _capture_resolution() -> Dictionary:
 			continue
 		var visual_state := "empty"
 		if cell.letter_user != "":
-			if GameManager.letras_iniciales.to_upper().contains(cell.letter_user.to_upper()):
+			var is_correct := GameManager.letra_corresponde_a_numero(
+				cell.letter_user,
+				cell.numero
+			)
+			if is_correct and GameManager.letras_iniciales.to_upper().contains(
+				cell.letter_user.to_upper()
+			):
 				visual_state = "initial"
-			elif cell.bloqueada:
+			elif cell.bloqueada and is_correct:
 				visual_state = "correct"
 			elif cell.celda_mostrada:
 				visual_state = "player"
@@ -206,7 +236,15 @@ func _apply_resolution(resolution: Dictionary) -> void:
 		var saved: Dictionary = saved_value
 		var visual_state := str(saved.get("visual_state", "empty"))
 		if visual_state == "initial":
-			continue
+			var saved_initial_letter := str(saved.get("letter", ""))
+			if GameManager.letra_corresponde_a_numero(
+				saved_initial_letter,
+				cell.numero
+			):
+				continue
+			# Repair saves created when an incorrect use of an initial letter
+			# was mistakenly stored as a locked initial cell.
+			visual_state = "wrong"
 		var letter := str(saved.get("letter", ""))
 		cell.set_letter_user(letter)
 		match visual_state:

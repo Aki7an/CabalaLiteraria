@@ -20,13 +20,13 @@ extends Node
 @export var pistas_utilizadas_2: int = 0 
 @export var pistas_utilizadas: int = 0 
 @export var pistas: int = 0 
-@export var puzzle_stars: int = 5
+@export var puzzle_stars: int = 1
 
 var _penalized_reveal_errors: Dictionary = {}
 var _penalized_hints: Dictionary = {}
 var reveal_errors_count: int = 0
 
-@export var player_name: String = "Aki"
+@export var player_name: String = ""
 @export var score: int
 @export var score_init: int = 30000
 
@@ -142,6 +142,7 @@ var pistas_actuales: Array[String] = []
 @export var hint_1 : String = ""
 @export var hint_2 : String = ""
 @export var hint_3 : String = ""
+@export var hint_4 : String = ""
 
 @export var lista_letras_frase_original := [] # Sentence LETTERs
 @export var lista_letras_frase_original_sin_espacios_ni_puntuacion :=[]
@@ -359,6 +360,37 @@ func set_categoria_actual(categoria: String) -> void:
 func set_game_mode_actual(mode: String) -> void:
 	game_mode_actual = MODE_CRYPTOGRAM if mode == MODE_CRYPTOGRAM else MODE_QUICK
 
+
+func level_game_mode(item: Dictionary) -> String:
+	var raw := str(item.get("game_mode", "")).strip_edges().to_lower()
+	raw = raw.replace("á", "a").replace("é", "e")
+	if raw in ["cryptogram", "criptograma", "crypto"]:
+		return MODE_CRYPTOGRAM
+	if raw in ["quick", "rapido", "fast"]:
+		return MODE_QUICK
+	return MODE_CRYPTOGRAM if int(item.get("difficulty", 1)) >= 3 else MODE_QUICK
+
+
+func find_level_image_path(image_number: int) -> String:
+	if image_number < 0:
+		return ""
+	var basename := "res://data/images/image%d" % image_number
+	var extensions := (
+		[".PNG", ".png", ".jpg", ".jpeg", ".webp"]
+		if image_number == 1
+		else [".png", ".PNG", ".jpg", ".jpeg", ".webp"]
+	)
+	for extension in extensions:
+		var path: String = basename + str(extension)
+		if ResourceLoader.exists(path):
+			return path
+	return ""
+
+
+func level_has_image(item: Dictionary) -> bool:
+	return find_level_image_path(int(item.get("image_number", -1))) != ""
+
+
 func set_dificultad_actual(dificultad: int) -> void:
 	dificultad_actual = dificultad
 	set_lives_init()
@@ -455,7 +487,7 @@ func set_pistas_utilizadas(pistas:int) -> void:
 
 
 func reset_puzzle_stars() -> void:
-	puzzle_stars = 5
+	puzzle_stars = get_puzzle_difficulty_stars()
 	_penalized_reveal_errors.clear()
 	_penalized_hints.clear()
 	reveal_errors_count = 0
@@ -464,12 +496,13 @@ func reset_puzzle_stars() -> void:
 
 func get_puzzle_difficulty_stars(difficulty: int = -1) -> int:
 	var value := dificultad_actual if difficulty < 0 else difficulty
-	return clampi(value, 1, 3)
+	return clampi(value, 1, 4)
 
 
 func export_attempt_state() -> Dictionary:
 	return {
 		"puzzle_stars": puzzle_stars,
+		"puzzle_max_stars": get_puzzle_difficulty_stars(),
 		"pista_1": pista_1,
 		"pista_2": pista_2,
 		"pista_3": pista_3,
@@ -513,7 +546,12 @@ func import_cipher_state(state: Dictionary) -> bool:
 func import_attempt_state(state: Dictionary) -> void:
 	if state.is_empty():
 		return
-	puzzle_stars = clampi(int(state.get("puzzle_stars", 5)), 0, 5)
+	var maximum := get_puzzle_difficulty_stars()
+	puzzle_stars = clampi(
+		int(state.get("puzzle_stars", maximum)),
+		0,
+		maximum
+	)
 	pista_1 = bool(state.get("pista_1", false))
 	pista_2 = bool(state.get("pista_2", false))
 	pista_3 = bool(state.get("pista_3", false))
@@ -559,19 +597,25 @@ func reveal_assignment_errors() -> int:
 	var correct_numbers: Dictionary = {}
 	var wrong_letters: Dictionary = {}
 	var correct_letters: Dictionary = {}
+	var initial_letters: Dictionary = {}
+	for character in letras_iniciales.to_upper():
+		if not EXCLUIR.has(character):
+			initial_letters[character] = true
+			correct_letters[character] = true
 	for node: Node in get_tree().get_nodes_in_group("Celda"):
 		if not node is Celda:
 			continue
 		var cell := node as Celda
 		if cell.numero >= 100 or cell.letter_user == "":
 			continue
+		var player_letter := cell.letter_user.to_upper()
 		if letra_corresponde_a_numero(cell.letter_user, cell.numero):
 			correct_numbers[cell.numero] = true
-			correct_letters[cell.letter_user.to_upper()] = true
+			correct_letters[player_letter] = true
 			cell.mostrar_letra()
 		else:
 			wrong_numbers[cell.numero] = cell.letter_user
-			wrong_letters[cell.letter_user.to_upper()] = true
+			wrong_letters[player_letter] = true
 			cell.mostrar_letra_errada()
 
 	for node: Node in get_tree().get_nodes_in_group("Letra"):
@@ -741,7 +785,36 @@ func pinta_celdas(numero_en_celda: int, color_a_pintar: int) -> void:
 		if lista_celdas[i].numero == numero_en_celda:
 			lista_celdas[i].cambia_color(color_a_pintar)
 	PuzzleSaveManager.request_autosave()
-			
+
+
+## Removes the annotation color from every cell sharing the cipher number.
+## Returns true only when that number actually had a color assigned.
+func borrar_color_de_numero(numero_en_celda: int) -> bool:
+	if numero_en_celda <= 0 or numero_en_celda >= 100:
+		return false
+	var tenia_color := false
+	for cell in lista_celdas:
+		if cell is Celda and cell.numero == numero_en_celda and cell.color_id != 0:
+			tenia_color = true
+			break
+	if not tenia_color:
+		return false
+
+	pinta_celdas(numero_en_celda, 0)
+	if number_1 == numero_en_celda:
+		number_1 = 0
+	if number_2 == numero_en_celda:
+		number_2 = 0
+	if number_3 == numero_en_celda:
+		number_3 = 0
+	if number_4 == numero_en_celda:
+		number_4 = 0
+	if number_5 == numero_en_celda:
+		number_5 = 0
+	PuzzleSaveManager.request_autosave()
+	return true
+
+
 func set_number1(numero_a_guardar: int) -> void:
 	number_1 = numero_a_guardar
 
@@ -959,10 +1032,12 @@ func cargar_frases_desde_json() -> void:
 		d.category          = normalize_category(String(dict.get("category", "")))
 		d.language          = String(dict.get("language", loc)).to_lower()
 		d.difficulty        = int(dict.get("difficulty", 1))
+		d.game_mode         = level_game_mode(dict)
 		d.image_number      = int(dict.get("image_number", -1))
 		d.hint_1            = String(dict.get("hint_1", ""))
 		d.hint_2            = String(dict.get("hint_2", ""))
 		d.hint_3            = String(dict.get("hint_3", ""))
+		d.hint_4            = String(dict.get("hint_4", ""))
 
 		## ---- TIPADO SEGURO DE HINTS ----
 		#var hints_variant = dict.get("hints", [])
@@ -974,6 +1049,8 @@ func cargar_frases_desde_json() -> void:
 			#hints_typed.append("")
 		#d.hints = hints_typed
 		
+		if not level_has_image(d):
+			continue
 		if d.language.is_empty() or d.language == loc or String(d.language).begins_with(loc):
 			frases_db.append(d)
 
@@ -1024,6 +1101,7 @@ func _aplicar_frase_desde_db(pos: int) -> void:
 	hint_1             = String(item.hint_1)
 	hint_2             = String(item.hint_2)
 	hint_3             = String(item.hint_3)
+	hint_4             = String(item.hint_4)
 	
 	frase_original = normalizar_frase_idioma(frase_original_til, locale_code())
 	#descripcion_final_actual = descripcion_final
@@ -1069,7 +1147,10 @@ func seleccionar_por_index(index: int) -> void:
 
 
 
-func button_blink(button: Button):
+func button_blink(button: Button) -> void:
+	if not is_instance_valid(button):
+		return
+	button.pivot_offset = button.size * 0.5
 	var t := create_tween()
 	# Escala original
 	var original_scale := button.scale
@@ -1081,7 +1162,10 @@ func button_blink(button: Button):
 	# Luego vuelve al tamaño original en otros 0.25 segundos
 	t.tween_property(button, "scale", original_scale, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
-func button_blink_texture(button: TextureButton):
+func button_blink_texture(button: TextureButton) -> void:
+	if not is_instance_valid(button):
+		return
+	button.pivot_offset = button.size * 0.5
 	var t := create_tween()
 	# Escala original
 	var original_scale := button.scale
@@ -1351,7 +1435,7 @@ func set_dificultad_ultima_partida(dificultad_ultima: int) -> void:
 ## Devuelve true si hay al menos una celda editable con letra puesta.
 func hay_letra_que_borrar() -> bool:
 	for c in get_tree().get_nodes_in_group("Celda"):
-		if c.letter_user != "" and not c.bloqueada:
+		if (c.letter_user != "" or c.color_id != 0) and not c.bloqueada:
 			return true
 	return false
 

@@ -1,0 +1,853 @@
+[gd_scene format=3 uid="uid://ryhkqo12rpwp"]
+
+[ext_resource type="Script" uid="uid://d4c1imh5jfh8n" path="res://scenes/editor_niveles.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_background"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="3_back"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="4_title"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="5_body"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="6_star"]
+[ext_resource type="Texture2D" uid="uid://bmxb0omorndri" path="res://images/contorno_estrella.png" id="7_star_off"]
+
+[sub_resource type="Theme" id="Theme_editor"]
+default_font = ExtResource("5_body")
+default_font_size = 28
+
+[sub_resource type="StyleBoxFlat" id="Style_background"]
+bg_color = Color(0.984, 0.949, 0.865, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_button_secondary"]
+bg_color = Color(1, 0.965, 0.88, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 4
+border_color = Color(0.71, 0.57, 0.39, 0.58)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[sub_resource type="StyleBoxFlat" id="Style_toolbar"]
+content_margin_left = 18.0
+content_margin_top = 14.0
+content_margin_right = 18.0
+content_margin_bottom = 18.0
+bg_color = Color(1, 0.976, 0.925, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 4
+border_color = Color(0.8, 0.66, 0.45, 0.55)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.25, 0.14, 0.06, 0.13)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_button_pressed"]
+bg_color = Color(0.9, 0.54, 0.2, 1)
+border_width_left = 2
+border_width_top = 5
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7, 0.31, 0.07, 0.9)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="Style_button_save"]
+bg_color = Color(0.16, 0.62, 0.53, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 6
+border_color = Color(0.06, 0.42, 0.37, 0.9)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.05, 0.25, 0.2, 0.18)
+shadow_size = 7
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+content_margin_left = 24.0
+content_margin_top = 22.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+bg_color = Color(1, 0.985, 0.947, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 3
+border_color = Color(0.82, 0.69, 0.49, 0.48)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_color = Color(0.25, 0.14, 0.06, 0.11)
+shadow_size = 9
+shadow_offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxFlat" id="Style_image"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.93, 0.87, 0.75, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.69, 0.51, 0.29, 0.58)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="Style_field"]
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 0.997, 0.975, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.73, 0.61, 0.45, 0.55)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[node name="EditorNiveles" type="Control" unique_id=728604510]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_editor")
+script = ExtResource("1_script")
+
+[node name="Background" type="Panel" parent="." unique_id=2038167855]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_background")
+
+[node name="Pattern" parent="Background" unique_id=2029080662 instance=ExtResource("2_background")]
+modulate = Color(1, 1, 1, 0.13)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="Control" parent="." unique_id=1744665220]
+anchors_preset = 0
+offset_right = 2412.0
+offset_bottom = 190.0
+
+[node name="ButtonBack" parent="Header" unique_id=1045148653 instance=ExtResource("3_back")]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 174.0
+offset_bottom = 170.0
+
+[node name="Title" type="Label" parent="Header" unique_id=1416969624]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 24.0
+offset_right = 2002.0
+offset_bottom = 112.0
+theme_override_colors/font_color = Color(0.27, 0.15, 0.08, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 68
+text = "EDITOR DE NIVELES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Header" unique_id=1712095949]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 110.0
+offset_right = 1932.0
+offset_bottom = 164.0
+theme_override_colors/font_color = Color(0.43, 0.31, 0.21, 0.82)
+theme_override_font_sizes/font_size = 27
+text = "Consulta, crea y valida los puzles del juego"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LanguageSelector" type="OptionButton" parent="Header" unique_id=2026719191]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 2100.0
+offset_top = 52.0
+offset_right = 2372.0
+offset_bottom = 126.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("Style_button_secondary")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Toolbar" type="PanelContainer" parent="." unique_id=1335871243]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 186.0
+offset_right = 2376.0
+offset_bottom = 336.0
+theme_override_styles/panel = SubResource("Style_toolbar")
+
+[node name="Row" type="HBoxContainer" parent="Toolbar" unique_id=1846986357]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PreviousButton" type="Button" parent="Toolbar/Row" unique_id=327697264]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 92)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.3, 0.18, 0.1, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_button_secondary")
+theme_override_styles/pressed = SubResource("Style_button_pressed")
+theme_override_styles/hover = SubResource("Style_button_secondary")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "‹"
+
+[node name="PositionLabel" type="Label" parent="Toolbar/Row" unique_id=639798536]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.27, 0.15, 0.08, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 34
+text = "0 / 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NextButton" type="Button" parent="Toolbar/Row" unique_id=1281484512]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 92)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.3, 0.18, 0.1, 1)
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_button_secondary")
+theme_override_styles/pressed = SubResource("Style_button_pressed")
+theme_override_styles/hover = SubResource("Style_button_secondary")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "›"
+
+[node name="JumpText" type="Label" parent="Toolbar/Row" unique_id=809821628]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.31, 0.21, 0.82)
+theme_override_font_sizes/font_size = 23
+text = "IR AL ID"
+vertical_alignment = 1
+
+[node name="JumpId" type="SpinBox" parent="Toolbar/Row" unique_id=963927160]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 82)
+layout_mode = 2
+min_value = 1.0
+max_value = 99999.0
+value = 1.0
+rounded = true
+
+[node name="JumpButton" type="Button" parent="Toolbar/Row" unique_id=1080566077]
+custom_minimum_size = Vector2(90, 86)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.3, 0.18, 0.1, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("Style_button_secondary")
+theme_override_styles/pressed = SubResource("Style_button_pressed")
+theme_override_styles/hover = SubResource("Style_button_secondary")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "IR"
+
+[node name="NewButton" type="Button" parent="Toolbar/Row" unique_id=1310041459]
+custom_minimum_size = Vector2(165, 90)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.3, 0.18, 0.1, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("Style_button_secondary")
+theme_override_styles/pressed = SubResource("Style_button_pressed")
+theme_override_styles/hover = SubResource("Style_button_secondary")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "+ NUEVO"
+
+[node name="DuplicateButton" type="Button" parent="Toolbar/Row" unique_id=1551163236]
+custom_minimum_size = Vector2(175, 90)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.3, 0.18, 0.1, 1)
+theme_override_font_sizes/font_size = 23
+theme_override_styles/normal = SubResource("Style_button_secondary")
+theme_override_styles/pressed = SubResource("Style_button_pressed")
+theme_override_styles/hover = SubResource("Style_button_secondary")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "DUPLICAR"
+
+[node name="DeleteButton" type="Button" parent="Toolbar/Row" unique_id=491441163]
+custom_minimum_size = Vector2(165, 90)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.67, 0.16, 0.12, 1)
+theme_override_font_sizes/font_size = 23
+theme_override_styles/normal = SubResource("Style_button_secondary")
+theme_override_styles/pressed = SubResource("Style_button_pressed")
+theme_override_styles/hover = SubResource("Style_button_secondary")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "ELIMINAR"
+
+[node name="SaveButton" type="Button" parent="Toolbar/Row" unique_id=540432478]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(310, 94)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("Style_button_save")
+theme_override_styles/pressed = SubResource("Style_button_pressed")
+theme_override_styles/hover = SubResource("Style_button_save")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "GUARDAR CAMBIOS"
+
+[node name="FilterBar" type="PanelContainer" parent="." unique_id=1888442101]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 348.0
+offset_right = 2376.0
+offset_bottom = 450.0
+theme_override_styles/panel = SubResource("Style_toolbar")
+
+[node name="FilterRow" type="HBoxContainer" parent="FilterBar" unique_id=1888442102]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="FilterModeLabel" type="Label" parent="FilterBar/FilterRow" unique_id=1888442103]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.31, 0.21, 0.82)
+theme_override_font_sizes/font_size = 24
+text = "TIPO"
+vertical_alignment = 1
+
+[node name="FilterMode" type="OptionButton" parent="FilterBar/FilterRow" unique_id=1888442104]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 72)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("Style_field")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="FilterCategoryLabel" type="Label" parent="FilterBar/FilterRow" unique_id=1888442105]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.31, 0.21, 0.82)
+theme_override_font_sizes/font_size = 24
+text = "TEMÁTICA"
+vertical_alignment = 1
+
+[node name="FilterCategory" type="OptionButton" parent="FilterBar/FilterRow" unique_id=1888442106]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 72)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("Style_field")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="FilterCount" type="Label" parent="FilterBar/FilterRow" unique_id=1888442107]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.27, 0.15, 0.08, 1)
+theme_override_font_sizes/font_size = 24
+text = "Todos los niveles"
+vertical_alignment = 1
+horizontal_alignment = 2
+
+[node name="Scroll" type="ScrollContainer" parent="." unique_id=2042198992]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 466.0
+offset_right = 2376.0
+offset_bottom = 1360.0
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="Scroll" unique_id=994203572]
+custom_minimum_size = Vector2(2310, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 24
+
+[node name="SummaryCard" type="PanelContainer" parent="Scroll/Content" unique_id=432296679]
+custom_minimum_size = Vector2(0, 700)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Summary" type="HBoxContainer" parent="Scroll/Content/SummaryCard" unique_id=1344451389]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="ImageColumn" type="VBoxContainer" parent="Scroll/Content/SummaryCard/Summary" unique_id=627281408]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SectionTitle" type="Label" parent="Scroll/Content/SummaryCard/Summary/ImageColumn" unique_id=1660503785]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.27, 0.15, 0.08, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 38
+text = "IMAGEN DEL PUZLE"
+horizontal_alignment = 1
+
+[node name="ImageFrame" type="PanelContainer" parent="Scroll/Content/SummaryCard/Summary/ImageColumn" unique_id=1513120081]
+custom_minimum_size = Vector2(780, 500)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_image")
+
+[node name="ImagePreview" type="TextureRect" parent="Scroll/Content/SummaryCard/Summary/ImageColumn/ImageFrame" unique_id=1276782896]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="ImagePathLabel" type="Label" parent="Scroll/Content/SummaryCard/Summary/ImageColumn" unique_id=1608388034]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.31, 0.21, 0.8)
+theme_override_font_sizes/font_size = 20
+text = "Sin imagen"
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[node name="AssignImageButton" type="Button" parent="Scroll/Content/SummaryCard/Summary/ImageColumn" unique_id=2138182725]
+custom_minimum_size = Vector2(0, 76)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.3, 0.18, 0.1, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("Style_button_secondary")
+theme_override_styles/pressed = SubResource("Style_button_pressed")
+theme_override_styles/hover = SubResource("Style_button_secondary")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "ASIGNAR IMAGEN…"
+
+[node name="MetaColumn" type="VBoxContainer" parent="Scroll/Content/SummaryCard/Summary" unique_id=419989007]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="SectionTitle" type="Label" parent="Scroll/Content/SummaryCard/Summary/MetaColumn" unique_id=1047247347]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.27, 0.15, 0.08, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 38
+text = "DATOS DEL NIVEL"
+horizontal_alignment = 1
+
+[node name="MetaGrid" type="GridContainer" parent="Scroll/Content/SummaryCard/Summary/MetaColumn" unique_id=680321181]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 14
+columns = 4
+
+[node name="IdLabel" type="Label" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=2106505532]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14406255, 0.14406255, 0.14406255, 1)
+text = "ID"
+
+[node name="IdField" type="SpinBox" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=554092697]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 82)
+layout_mode = 2
+min_value = 1.0
+max_value = 99999.0
+value = 1.0
+rounded = true
+
+[node name="ImageLabel" type="Label" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=1077244212]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14406255, 0.14406255, 0.14406255, 1)
+text = "Imagen"
+
+[node name="ImageField" type="SpinBox" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=1092346787]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 82)
+layout_mode = 2
+min_value = -1.0
+max_value = 99999.0
+value = -1.0
+rounded = true
+
+[node name="CategoryLabel" type="Label" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=699759129]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14406255, 0.14406255, 0.14406255, 1)
+text = "Categoría"
+
+[node name="CategoryField" type="OptionButton" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=1326355583]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 82)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("Style_field")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="DifficultyLabel" type="Label" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=117397705]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14406255, 0.14406255, 0.14406255, 1)
+text = "Dificultad"
+
+[node name="DifficultyField" type="SpinBox" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=392384031]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 82)
+layout_mode = 2
+min_value = 1.0
+max_value = 4.0
+value = 1.0
+rounded = true
+
+[node name="ModeLabel" type="Label" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=920511334]
+layout_mode = 2
+text = "Modo"
+
+[node name="ModeField" type="OptionButton" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=911137711]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 82)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(0.08, 0.55, 0.5, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("Style_field")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="LengthLabel" type="Label" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=1379025169]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14406255, 0.14406255, 0.14406255, 1)
+text = "Letras"
+
+[node name="LengthValue" type="Label" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=940979637]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.27, 0.15, 0.08, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 34
+text = "0"
+vertical_alignment = 1
+
+[node name="StarsLabel" type="Label" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=274083805]
+layout_mode = 2
+text = "Estrellas"
+
+[node name="StarsRow" type="HBoxContainer" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid" unique_id=785440308]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Star1" type="TextureRect" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid/StarsRow" unique_id=661298245]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("6_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid/StarsRow" unique_id=1464310247]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("7_star_off")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid/StarsRow" unique_id=1418974413]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("7_star_off")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid/StarsRow" unique_id=217386436]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("7_star_off")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star5" type="TextureRect" parent="Scroll/Content/SummaryCard/Summary/MetaColumn/MetaGrid/StarsRow" unique_id=1777511327]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("7_star_off")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PhraseCard" type="PanelContainer" parent="Scroll/Content" unique_id=821359111]
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="Scroll/Content/PhraseCard" unique_id=763890595]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Scroll/Content/PhraseCard/Box" unique_id=1358639779]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.27, 0.15, 0.08, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 40
+text = "FRASE DEL NIVEL"
+
+[node name="PhraseField" type="TextEdit" parent="Scroll/Content/PhraseCard/Box" unique_id=1144455232]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 190)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("Style_field")
+wrap_mode = 1
+
+[node name="SecondaryFields" type="HBoxContainer" parent="Scroll/Content/PhraseCard/Box" unique_id=237798002]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="InitialColumn" type="VBoxContainer" parent="Scroll/Content/PhraseCard/Box/SecondaryFields" unique_id=1242590269]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Scroll/Content/PhraseCard/Box/SecondaryFields/InitialColumn" unique_id=1016064560]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.31, 0.21, 0.88)
+theme_override_font_sizes/font_size = 27
+text = "LETRAS INICIALES"
+
+[node name="InitialLettersField" type="TextEdit" parent="Scroll/Content/PhraseCard/Box/SecondaryFields/InitialColumn" unique_id=1130239812]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 115)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("Style_field")
+wrap_mode = 1
+
+[node name="IntroColumn" type="VBoxContainer" parent="Scroll/Content/PhraseCard/Box/SecondaryFields" unique_id=988594806]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Scroll/Content/PhraseCard/Box/SecondaryFields/IntroColumn" unique_id=742045594]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.31, 0.21, 0.88)
+theme_override_font_sizes/font_size = 27
+text = "DESCRIPCIÓN INICIAL"
+
+[node name="DescriptionInitField" type="TextEdit" parent="Scroll/Content/PhraseCard/Box/SecondaryFields/IntroColumn" unique_id=1937270826]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 115)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("Style_field")
+wrap_mode = 1
+
+[node name="CompletionCard" type="PanelContainer" parent="Scroll/Content" unique_id=11402408]
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="Scroll/Content/CompletionCard" unique_id=1395379399]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Scroll/Content/CompletionCard/Box" unique_id=92211971]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.27, 0.15, 0.08, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 40
+text = "TEXTO DE LA PANTALLA DE FELICITACIÓN"
+
+[node name="Help" type="Label" parent="Scroll/Content/CompletionCard/Box" unique_id=685235057]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.31, 0.21, 0.78)
+theme_override_font_sizes/font_size = 26
+text = "Este texto se muestra al completar correctamente el puzle."
+
+[node name="CompletionField" type="TextEdit" parent="Scroll/Content/CompletionCard/Box" unique_id=349636888]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 230)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("Style_field")
+wrap_mode = 1
+
+[node name="HintsCard" type="PanelContainer" parent="Scroll/Content" unique_id=1106525572]
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="Scroll/Content/HintsCard" unique_id=1563898240]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Scroll/Content/HintsCard/Box" unique_id=1155313151]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.27, 0.15, 0.08, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 40
+text = "PISTAS DEL NIVEL"
+
+[node name="Grid" type="GridContainer" parent="Scroll/Content/HintsCard/Box" unique_id=1901756392]
+layout_mode = 2
+theme_override_constants/h_separation = 18
+theme_override_constants/v_separation = 14
+columns = 2
+
+[node name="Hint1Column" type="VBoxContainer" parent="Scroll/Content/HintsCard/Box/Grid" unique_id=1543670150]
+custom_minimum_size = Vector2(1100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Scroll/Content/HintsCard/Box/Grid/Hint1Column" unique_id=229072232]
+layout_mode = 2
+text = "PISTA 1"
+
+[node name="Hint1Field" type="TextEdit" parent="Scroll/Content/HintsCard/Box/Grid/Hint1Column" unique_id=900651699]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 145)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("Style_field")
+wrap_mode = 1
+
+[node name="Hint2Column" type="VBoxContainer" parent="Scroll/Content/HintsCard/Box/Grid" unique_id=1552048820]
+custom_minimum_size = Vector2(1100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Scroll/Content/HintsCard/Box/Grid/Hint2Column" unique_id=1531009232]
+layout_mode = 2
+text = "PISTA 2"
+
+[node name="Hint2Field" type="TextEdit" parent="Scroll/Content/HintsCard/Box/Grid/Hint2Column" unique_id=1701442123]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 145)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("Style_field")
+wrap_mode = 1
+
+[node name="Hint3Column" type="VBoxContainer" parent="Scroll/Content/HintsCard/Box/Grid" unique_id=1862296681]
+custom_minimum_size = Vector2(1100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Scroll/Content/HintsCard/Box/Grid/Hint3Column" unique_id=2113615591]
+layout_mode = 2
+text = "PISTA 3"
+
+[node name="Hint3Field" type="TextEdit" parent="Scroll/Content/HintsCard/Box/Grid/Hint3Column" unique_id=1482848281]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 145)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("Style_field")
+wrap_mode = 1
+
+[node name="Hint4Column" type="VBoxContainer" parent="Scroll/Content/HintsCard/Box/Grid" unique_id=155212308]
+custom_minimum_size = Vector2(1100, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Scroll/Content/HintsCard/Box/Grid/Hint4Column" unique_id=1873702757]
+layout_mode = 2
+text = "PISTA 4"
+
+[node name="Hint4Field" type="TextEdit" parent="Scroll/Content/HintsCard/Box/Grid/Hint4Column" unique_id=184902060]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 145)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("Style_field")
+wrap_mode = 1
+
+[node name="StatusCard" type="PanelContainer" parent="Scroll/Content" unique_id=1251017821]
+custom_minimum_size = Vector2(0, 95)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_toolbar")
+
+[node name="Row" type="HBoxContainer" parent="Scroll/Content/StatusCard" unique_id=1884286167]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ValidationLabel" type="Label" parent="Scroll/Content/StatusCard/Row" unique_id=1343847947]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.5, 0.34, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 27
+text = "✓ Nivel válido"
+vertical_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="Scroll/Content/StatusCard/Row" unique_id=620134277]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.16, 0.45, 0.34, 1)
+theme_override_font_sizes/font_size = 25
+text = "Preparado"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="BottomSpacer" type="Control" parent="Scroll/Content" unique_id=1678422718]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="ImageDialog" type="FileDialog" parent="." unique_id=1329978336]
+unique_name_in_owner = true
+title = "Asignar imagen al nivel"
+initial_position = 2
+size = Vector2i(1200, 800)
+access = 2
+filters = PackedStringArray("*.png, *.jpg, *.jpeg, *.webp ; Imágenes compatibles")
+use_native_dialog = true
+
+[node name="DeleteDialog" type="ConfirmationDialog" parent="." unique_id=1766861277]
+unique_name_in_owner = true
+title = "Eliminar nivel"
+initial_position = 2
+size = Vector2i(760, 300)
+ok_button_text = "ELIMINAR"
+dialog_text = "¿Eliminar este nivel?"
+
+[connection signal="pressed" from="Header/ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="item_selected" from="Header/LanguageSelector" to="." method="_on_language_selector_item_selected"]
+[connection signal="item_selected" from="FilterBar/FilterRow/FilterMode" to="." method="_on_filter_changed"]
+[connection signal="item_selected" from="FilterBar/FilterRow/FilterCategory" to="." method="_on_filter_changed"]
+[connection signal="pressed" from="Toolbar/Row/PreviousButton" to="." method="_on_previous_button_pressed"]
+[connection signal="pressed" from="Toolbar/Row/NextButton" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="Toolbar/Row/JumpButton" to="." method="_on_jump_button_pressed"]
+[connection signal="pressed" from="Toolbar/Row/NewButton" to="." method="_on_new_button_pressed"]
+[connection signal="pressed" from="Toolbar/Row/DuplicateButton" to="." method="_on_duplicate_button_pressed"]
+[connection signal="pressed" from="Toolbar/Row/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="Toolbar/Row/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="Scroll/Content/SummaryCard/Summary/ImageColumn/AssignImageButton" to="." method="_on_assign_image_button_pressed"]
+[connection signal="file_selected" from="ImageDialog" to="." method="_on_image_dialog_file_selected"]
+[connection signal="confirmed" from="DeleteDialog" to="." method="_on_delete_dialog_confirmed"]
