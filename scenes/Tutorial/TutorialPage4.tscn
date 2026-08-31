@@ -1,0 +1,297 @@
+[gd_scene format=3 uid="uid://cka7g8u3g3b84"]
+
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="1_title"]
+[ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="2_regular"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="3_body"]
+[ext_resource type="Texture2D" uid="uid://duj5gi84s5bqf" path="res://images/mode_quick.svg" id="4_quick"]
+[ext_resource type="Texture2D" uid="uid://cxcb17n88b3b3" path="res://images/mode_scroll.svg" id="5_crypto"]
+[ext_resource type="Texture2D" uid="uid://cw4dqgcsmvh2y" path="res://images/tutorial_cloud.svg" id="6_cloud"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="7_star"]
+
+[sub_resource type="StyleBoxFlat" id="Style_quick"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+bg_color = Color(0.9, 0.96, 0.91, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.1, 0.58, 0.5, 1)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_crypto"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+bg_color = Color(0.99, 0.94, 0.84, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78, 0.38, 0.05, 1)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_save"]
+content_margin_left = 24.0
+content_margin_top = 22.0
+content_margin_right = 24.0
+content_margin_bottom = 22.0
+bg_color = Color(0.9, 0.96, 0.91, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.1, 0.58, 0.5, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_stars"]
+content_margin_left = 24.0
+content_margin_top = 22.0
+content_margin_right = 24.0
+content_margin_bottom = 22.0
+bg_color = Color(0.99, 0.94, 0.84, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.9, 0.5, 0.13, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
+
+[node name="TutorialPage4" type="VBoxContainer" unique_id=889712238]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 28
+
+[node name="TitleRow" type="HBoxContainer" parent="." unique_id=730092900]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="LeftMark" type="Label" parent="TitleRow" unique_id=1303153134]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.58, 0.16, 0.82)
+theme_override_fonts/font = ExtResource("1_title")
+theme_override_font_sizes/font_size = 28
+text = "✦"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="TitleRow" unique_id=365776950]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.15, 0.09, 1)
+theme_override_fonts/font = ExtResource("1_title")
+theme_override_font_sizes/font_size = 56
+text = "JUEGA A TU RITMO"
+horizontal_alignment = 1
+
+[node name="RightMark" type="Label" parent="TitleRow" unique_id=232003891]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.58, 0.16, 0.82)
+theme_override_fonts/font = ExtResource("1_title")
+theme_override_font_sizes/font_size = 28
+text = "✦"
+horizontal_alignment = 1
+
+[node name="Control2" type="Control" parent="." unique_id=292276221]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Intro" type="Label" parent="." unique_id=2037589418]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("2_regular")
+theme_override_font_sizes/font_size = 36
+text = "Elige una temática y juega en modo Rápido o Criptograma."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control3" type="Control" parent="." unique_id=1839337302]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Modes" type="HBoxContainer" parent="." unique_id=765947539]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="QuickCard" type="PanelContainer" parent="Modes" unique_id=628204525]
+custom_minimum_size = Vector2(0, 380)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_quick")
+
+[node name="QuickBox" type="VBoxContainer" parent="Modes/QuickCard" unique_id=1603186650]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Modes/QuickCard/QuickBox" unique_id=1478337073]
+modulate = Color(0.1, 0.58, 0.5, 1)
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("4_quick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Modes/QuickCard/QuickBox" unique_id=1809610376]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.58, 0.5, 1)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 36
+text = "RÁPIDO"
+horizontal_alignment = 1
+
+[node name="Text" type="Label" parent="Modes/QuickCard/QuickBox" unique_id=256360314]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("2_regular")
+theme_override_font_sizes/font_size = 32
+text = "Puzles más cortos para partidas rápidas."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="CryptoCard" type="PanelContainer" parent="Modes" unique_id=1551889150]
+custom_minimum_size = Vector2(0, 380)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_crypto")
+
+[node name="CryptoBox" type="VBoxContainer" parent="Modes/CryptoCard" unique_id=807569167]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Modes/CryptoCard/CryptoBox" unique_id=328035172]
+modulate = Color(0.78, 0.38, 0.05, 1)
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_crypto")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Modes/CryptoCard/CryptoBox" unique_id=1368603596]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.38, 0.05, 1)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 36
+text = "CRIPTOGRAMA"
+horizontal_alignment = 1
+
+[node name="Text" type="Label" parent="Modes/CryptoCard/CryptoBox" unique_id=2061914149]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("2_regular")
+theme_override_font_sizes/font_size = 32
+text = "Puzles más largos para los amantes del desafío."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control4" type="Control" parent="." unique_id=66078075]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="SaveCard" type="PanelContainer" parent="." unique_id=1120039001]
+custom_minimum_size = Vector2(0, 168)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_save")
+
+[node name="SaveRow" type="HBoxContainer" parent="SaveCard" unique_id=292077740]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Icon" type="TextureRect" parent="SaveCard/SaveRow" unique_id=641875292]
+modulate = Color(0.1, 0.58, 0.5, 1)
+custom_minimum_size = Vector2(92, 92)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_cloud")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Texts" type="VBoxContainer" parent="SaveCard/SaveRow" unique_id=90776781]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Title" type="Label" parent="SaveCard/SaveRow/Texts" unique_id=1099878429]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.58, 0.5, 1)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 34
+text = "Tu progreso se guarda automáticamente"
+autowrap_mode = 3
+
+[node name="Text" type="Label" parent="SaveCard/SaveRow/Texts" unique_id=1479972468]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 32
+text = "Puedes continuar un puzle más adelante."
+autowrap_mode = 3
+
+[node name="Control5" type="Control" parent="." unique_id=3627131]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="StarsCard" type="PanelContainer" parent="." unique_id=2140453480]
+custom_minimum_size = Vector2(0, 168)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_stars")
+
+[node name="StarsRow" type="HBoxContainer" parent="StarsCard" unique_id=553648724]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Icon" type="TextureRect" parent="StarsCard/StarsRow" unique_id=699190040]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(92, 92)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("7_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="StarsCard/StarsRow" unique_id=979274545]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 32
+text = "Intenta completar cada puzle conservando el mayor número de estrellas posible."
+vertical_alignment = 1
+autowrap_mode = 3
