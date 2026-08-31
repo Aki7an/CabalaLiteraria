@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://oo035jntfv4p"]
+
+[ext_resource type="Script" uid="uid://c4eyh3i4bh202" path="res://scenes/cuadro_pistas.gd" id="1_script"]
+
+[node name="CuadroPistas" type="ColorRect" unique_id=1847030013]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.04, 0.02, 0.58)
+script = ExtResource("1_script")

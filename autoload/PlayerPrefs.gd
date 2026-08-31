@@ -12,6 +12,8 @@ var app_version_code: int = 1
 var level_normal_unlocked: bool = false
 var level_dificil_unlocked: bool = false
 var level_pro_unlocked: bool = false
+var last_completed_replay_date: String = ""
+var skip_reveal_dialog: bool = false
 
 
 const SAVE_PATH := "user://prefs.cfg"
@@ -49,6 +51,8 @@ func save_prefs() -> void:
 	cfg.set_value("levels","levelNormalUnlocked", GameManager.level_normal_unlocked )
 	cfg.set_value("levels","levelDificilUnlocked", GameManager.level_dificil_unlocked )
 	cfg.set_value("levels","levelProUnlocked", GameManager.level_pro_unlocked)
+	cfg.set_value("levels", "last_completed_replay_date", last_completed_replay_date)
+	cfg.set_value("general", "skip_reveal_dialog", skip_reveal_dialog)
 	cfg.save(SAVE_PATH)
 	
 
@@ -71,6 +75,12 @@ func load_prefs() -> void:
 		GameManager.set_level_dificil_unlocked(level_dificil_unlocked)
 		level_pro_unlocked = cfg.get_value("levels","levelProUnlocked", level_pro_unlocked )
 		GameManager.set_level_pro_unlocked(level_pro_unlocked)
+		last_completed_replay_date = str(cfg.get_value(
+			"levels",
+			"last_completed_replay_date",
+			last_completed_replay_date
+		))
+		skip_reveal_dialog = bool(cfg.get_value("general", "skip_reveal_dialog", skip_reveal_dialog))
 		
 		if mostrar_tuto_antes_partida:
 			GameManager.set_mostrar_tuto_antes_partida_enable()
@@ -82,3 +92,36 @@ func load_prefs() -> void:
 		locale = "es"
 		idioma = locale
 	TranslationServer.set_locale(locale)
+
+
+func today_date_key() -> String:
+	var date := Time.get_date_dict_from_system()
+	return "%04d-%02d-%02d" % [int(date.year), int(date.month), int(date.day)]
+
+
+func can_replay_completed_today() -> bool:
+	return last_completed_replay_date != today_date_key()
+
+
+func mark_completed_replay_today() -> void:
+	last_completed_replay_date = today_date_key()
+	save_prefs()
+
+
+func reset_completed_replay_today() -> void:
+	last_completed_replay_date = ""
+	save_prefs()
+
+
+func set_mostrar_tutorial(enabled: bool) -> void:
+	mostrar_tuto_antes_partida = enabled
+	if enabled:
+		GameManager.set_mostrar_tuto_antes_partida_enable()
+	else:
+		GameManager.set_mostrar_tuto_antes_partida_disable()
+	save_prefs()
+
+
+func set_show_reveal_explanation(enabled: bool) -> void:
+	skip_reveal_dialog = not enabled
+	save_prefs()

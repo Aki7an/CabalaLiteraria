@@ -167,10 +167,6 @@ func _update_resting_characters() -> void:
 		progress_bar.value = 0
 	else:
 		progress_bar.value = 100 * GameManager.numero_letras_reveladas / GameManager.numero_letras_a_revelar_originales
-		
-	if (GameManager.numero_letras_a_revelar_originales - GameManager.numero_letras_reveladas) <=5:
-		await get_tree().process_frame
-		GameManager.blink_resting_cells()
 
 
 func _on_board_filled() -> void:

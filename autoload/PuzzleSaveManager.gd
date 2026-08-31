@@ -23,7 +23,10 @@ func begin_current_puzzle() -> void:
 		return
 	var key := str(puzzle_id)
 	var existing: Dictionary = get_puzzle_state(puzzle_id)
-	if existing.is_empty() or str(existing.get("status", "")) == "completed":
+	var was_completed := str(existing.get("status", "")) == "completed"
+	if was_completed and not GameManager.allow_completed_replay:
+		return
+	if existing.is_empty() or was_completed:
 		_states[key] = {
 			"status": "in_progress",
 			"resolution": {},
@@ -31,6 +34,7 @@ func begin_current_puzzle() -> void:
 			"cipher": GameManager.export_cipher_state(),
 			"meta": _current_meta(),
 		}
+		GameManager.allow_completed_replay = false
 		_write_to_disk()
 
 
@@ -125,7 +129,10 @@ func mark_completed(puzzle_id: int) -> void:
 	if puzzle_id == int(GameManager.id_frase):
 		state["attempt"] = GameManager.export_attempt_state()
 	var meta: Dictionary = state.get("meta", {})
+	if meta.is_empty():
+		meta = _current_meta()
 	meta["letters_filled"] = int(meta.get("letters_total", 0))
+	meta["completed_at"] = int(Time.get_unix_time_from_system())
 	state["meta"] = meta
 	_states[str(puzzle_id)] = state
 	_write_to_disk()
@@ -139,27 +146,175 @@ func get_puzzle_state(puzzle_id: int) -> Dictionary:
 func get_puzzle_summary(puzzle_id: int) -> Dictionary:
 	var state := get_puzzle_state(puzzle_id)
 	var maximum := _maximum_stars_for_puzzle(puzzle_id)
+	var history := _history_completion(puzzle_id)
 	if state.is_empty():
-		return {
-			"status": "new",
-			"stars_remaining": maximum,
-			"stars_max": maximum,
-			"letters_filled": 0,
-			"letters_total": 0,
-		}
+		if history.is_empty():
+			return {
+				"status": "new",
+				"stars_remaining": maximum,
+				"stars_max": maximum,
+				"letters_filled": 0,
+				"letters_total": 0,
+				"completed_at": 0,
+				"hours_since_completed": -1,
+				"aids_used": 0,
+				"failed_letters": 0,
+				"is_perfect": false,
+			}
+		return _summary_from_history(puzzle_id, history, maximum)
 	var attempt: Dictionary = state.get("attempt", {})
 	var meta: Dictionary = state.get("meta", {})
+	var status := str(state.get("status", "in_progress"))
+	if status != "in_progress" and status != "completed" and not history.is_empty():
+		return _summary_from_history(puzzle_id, history, maximum)
+	var stars_remaining := clampi(
+		int(attempt.get("puzzle_stars", maximum)),
+		0,
+		maximum
+	)
+	if not attempt.has("puzzle_stars") and not history.is_empty():
+		stars_remaining = clampi(int(history.get("estrellas", maximum)), 0, maximum)
+	var completed_at := completed_unix(puzzle_id)
+	var completed := status == "completed"
 	return {
-		"status": str(state.get("status", "in_progress")),
-		"stars_remaining": clampi(
-			int(attempt.get("puzzle_stars", maximum)),
-			0,
-			maximum
-		),
+		"status": status,
+		"stars_remaining": stars_remaining,
 		"stars_max": maximum,
 		"letters_filled": int(meta.get("letters_filled", 0)),
 		"letters_total": int(meta.get("letters_total", 0)),
+		"completed_at": completed_at,
+		"hours_since_completed": hours_since_completed(puzzle_id),
+		"aids_used": _attempt_aids(attempt) if _attempt_aids(attempt) > 0 else _history_aids(history),
+		"failed_letters": int(attempt.get("reveal_errors_count", history.get("revelaciones_falladas", 0))),
+		"is_perfect": completed and stars_remaining >= maximum,
 	}
+
+
+func completed_unix(puzzle_id: int) -> int:
+	var state := get_puzzle_state(puzzle_id)
+	var stored := int(state.get("meta", {}).get("completed_at", 0))
+	if stored > 0:
+		return stored
+	if typeof(HistoryManager) == TYPE_NIL:
+		return 0
+	var latest := 0
+	for value in HistoryManager.get_history():
+		if not (value is Dictionary):
+			continue
+		var entry: Dictionary = value
+		if int(entry.get("id", -1)) != puzzle_id:
+			continue
+		if not bool(entry.get("partida_ganada", false)):
+			continue
+		var unix := int(entry.get("completed_unix", 0))
+		if unix <= 0:
+			unix = _unix_from_history_fecha(entry.get("fecha", {}))
+		latest = maxi(latest, unix)
+	return latest
+
+
+func hours_since_completed(puzzle_id: int) -> int:
+	var unix := completed_unix(puzzle_id)
+	if unix > 0:
+		var elapsed := int(Time.get_unix_time_from_system()) - unix
+		return maxi(int(elapsed / 3600.0), 0)
+	if str(get_puzzle_state(puzzle_id).get("status", "")) == "completed":
+		return 48
+	if not _history_completion(puzzle_id).is_empty():
+		return 48
+	return -1
+
+
+func can_replay_completed(puzzle_id: int) -> bool:
+	var summary := get_puzzle_summary(puzzle_id)
+	if str(summary.get("status", "")) != "completed":
+		return false
+	return int(summary.get("hours_since_completed", -1)) >= 48
+
+
+func _attempt_aids(attempt: Dictionary) -> int:
+	return (
+		int(attempt.get("pistas_utilizadas_1", 0))
+		+ int(attempt.get("pistas_utilizadas_2", 0))
+		+ int(attempt.get("consonantes_compradas", 0))
+		+ int(attempt.get("vocalesAE_compradas", 0))
+		+ int(attempt.get("vocalesIOU_compradas", 0))
+	)
+
+
+func _history_aids(entry: Dictionary) -> int:
+	if entry.is_empty():
+		return 0
+	return (
+		int(entry.get("pistas_consumidas_1", 0))
+		+ int(entry.get("pistas_consumidas_2", 0))
+		+ int(entry.get("consonantes_compradas", 0))
+		+ int(entry.get("vocales_compradas_AE", 0))
+		+ int(entry.get("vocales_compradas_IOU", 0))
+	)
+
+
+func _history_completion(puzzle_id: int) -> Dictionary:
+	if typeof(HistoryManager) == TYPE_NIL:
+		return {}
+	var latest := {}
+	var latest_unix := -1
+	for value in HistoryManager.get_history():
+		if not (value is Dictionary):
+			continue
+		var entry: Dictionary = value
+		if int(entry.get("id", -1)) != puzzle_id:
+			continue
+		if not bool(entry.get("partida_ganada", false)):
+			continue
+		var unix := int(entry.get("completed_unix", 0))
+		if unix <= 0:
+			unix = _unix_from_history_fecha(entry.get("fecha", {}))
+		if unix >= latest_unix:
+			latest = entry
+			latest_unix = unix
+	return latest
+
+
+func _summary_from_history(puzzle_id: int, history: Dictionary, maximum: int) -> Dictionary:
+	var stars_remaining := clampi(int(history.get("estrellas", maximum)), 0, maximum)
+	return {
+		"status": "completed",
+		"stars_remaining": stars_remaining,
+		"stars_max": maximum,
+		"letters_filled": 0,
+		"letters_total": 0,
+		"completed_at": completed_unix(puzzle_id),
+		"hours_since_completed": hours_since_completed(puzzle_id),
+		"aids_used": _history_aids(history),
+		"failed_letters": int(history.get("revelaciones_falladas", 0)),
+		"is_perfect": stars_remaining >= maximum,
+	}
+
+
+func _unix_from_history_fecha(fecha: Variant) -> int:
+	if not (fecha is Dictionary):
+		return 0
+	var date: Dictionary = fecha
+	var year := int(date.get("anio", 0))
+	var month := int(date.get("mes", 0))
+	var day := int(date.get("dia", 0))
+	if year <= 0 or month <= 0 or day <= 0:
+		var iso := str(date.get("iso", ""))
+		if iso.length() >= 10:
+			year = int(iso.substr(0, 4))
+			month = int(iso.substr(5, 2))
+			day = int(iso.substr(8, 2))
+	if year <= 0 or month <= 0 or day <= 0:
+		return 0
+	return int(Time.get_unix_time_from_datetime_dict({
+		"year": year,
+		"month": month,
+		"day": day,
+		"hour": 12,
+		"minute": 0,
+		"second": 0,
+	}))
 
 
 func _maximum_stars_for_puzzle(puzzle_id: int) -> int:

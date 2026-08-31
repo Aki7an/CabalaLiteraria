@@ -730,11 +730,12 @@ func _update_mode_style() -> void:
 func _update_difficulty() -> void:
 	var difficulty := clampi(int(difficulty_field.value), 1, 4)
 	var maximum_stars := GameManager.get_puzzle_difficulty_stars(difficulty)
+	var mode := _selected_metadata(mode_field)
 	for index in range(_star_nodes.size()):
 		var star := _star_nodes[index]
 		star.texture = STAR_ON if index < maximum_stars else STAR_OFF
 		star.modulate = (
-			Color(1.0, 0.67, 0.1, 1)
+			GameManager.star_fill_color(mode)
 			if index < maximum_stars
 			else Color(0.45, 0.35, 0.26, 0.42)
 		)

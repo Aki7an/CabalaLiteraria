@@ -160,7 +160,8 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 		"pistas_consumidas_1": GameManager.pistas_utilizadas_1,
 		"pistas_consumidas_2": GameManager.pistas_utilizadas_2,
 		"revelaciones_falladas": int(GameManager.reveal_errors_count),
-		"vidas_perdidas": _calcula_vidas_perdidas()
+		"vidas_perdidas": _calcula_vidas_perdidas(),
+		"completed_unix": int(Time.get_unix_time_from_system()),
 	}
 	_historial.append(entry)
 	_save_history(_historial)

@@ -223,7 +223,7 @@ func _apply_results() -> void:
 		var average_star := _average_stars[index]
 		average_star.texture = TEX_STAR if index < rounded_average else TEX_STAR_OFF
 		average_star.modulate = (
-			Color(1.0, 0.65, 0.12, 1.0)
+			GameManager.star_fill_color(_selected_mode)
 			if index < rounded_average
 			else Color(0.55, 0.42, 0.3, 0.5)
 		)
@@ -616,7 +616,7 @@ func _make_progress_row(name_text: String, icon_tex: Texture2D, bar_color: Color
 		star.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		star.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		star.modulate = (
-			Color(1.0, 0.63, 0.12, 1.0)
+			GameManager.star_fill_color(_selected_mode)
 			if index < filled_stars
 			else Color(0.55, 0.42, 0.3, 0.5)
 		)
@@ -927,7 +927,7 @@ func _make_result_row(stars: int) -> HBoxContainer:
 		star.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		star.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		star.modulate = (
-			Color(1.0, 0.78, 0.08, 1.0)
+			GameManager.star_fill_color(_selected_mode)
 			if index < stars
 			else Color(0.55, 0.42, 0.3, 0.5)
 		)
