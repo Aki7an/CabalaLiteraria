@@ -26,6 +26,7 @@ const MODE_ICON_QUICK := preload("res://images/mode_quick.svg")
 const MODE_ICON_CRYPTO := preload("res://images/mode_scroll.svg")
 
 var _start_ms: int
+var _completion_recorded := false
 
 
 func _ready() -> void:
@@ -55,9 +56,10 @@ func resume_saved_time() -> void:
 
 
 func _update_stars(_value: int = -1) -> void:
-	var filled: int = clampi(GameManager.puzzle_stars, 0, stars.size())
+	var maximum := GameManager.get_puzzle_difficulty_stars()
+	var filled: int = clampi(GameManager.puzzle_stars, 0, maximum)
 	for index in range(stars.size()):
-		stars[index].visible = true
+		stars[index].visible = index < maximum
 		stars[index].self_modulate = (
 			Color(1.0, 0.72, 0.12, 1.0)
 			if index < filled
@@ -113,10 +115,13 @@ func _on_pause_pressed() -> void:
 
 
 func _on_game_finished() -> void:
+	if _completion_recorded:
+		return
+	_completion_recorded = true
 	if not GameManager.partida_terminada:
 		GameManager._game_finished()
-		HistoryManager.add_result(GameManager.player_name, GameManager.score)
-		PlayFabTools.submit_competitive_rankings(GameManager.player_name)
+	HistoryManager.add_result(GameManager.player_name, GameManager.score)
+	PlayFabTools.submit_competitive_rankings(GameManager.player_name)
 	SoundManager.play("ButtonClick")
 	_add_overlay(OVERLAY_RESULTS)
 

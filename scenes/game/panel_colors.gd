@@ -87,8 +87,21 @@ func _on_button_5_pressed() -> void:
 
 func _on_btn_erase_pressed() -> void:
 	if GameManager.celda_seleccionada_numero >= 100 \
-			or GameManager.celda_seleccionada_numero == 0 \
-			or GameManager.selected_letra == "":
+			or GameManager.celda_seleccionada_numero == 0:
+		return
+
+	# A colored cell uses the eraser to remove that annotation first.
+	# The color is shared by cipher number, so all matching cells are cleared.
+	if GameManager.borrar_color_de_numero(GameManager.celda_seleccionada_numero):
+		color1_usado = GameManager.number_1 != 0
+		color2_usado = GameManager.number_2 != 0
+		color3_usado = GameManager.number_3 != 0
+		color4_usado = GameManager.number_4 != 0
+		color5_usado = GameManager.number_5 != 0
+		SignalManager.update_rubber.emit()
+		return
+
+	if GameManager.selected_letra == "":
 		return
 	if GameManager.seleccion_es_letra_verificada_correcta():
 		# Verified green letters cannot be erased.

@@ -19,8 +19,10 @@ var _base_modulate := Color(1,1,1,1)
 func _ready() -> void:
 	_base_scale = scale
 	_base_modulate = modulate
-	# Para que escale desde el centro
-	pivot_offset = size * 0.5
+	_update_pivot_center()
+	resized.connect(_update_pivot_center)
+	await get_tree().process_frame
+	_update_pivot_center()
 	_running = false
 	
 
@@ -31,6 +33,7 @@ func _exit_tree() -> void:
 func start_blink() -> void:
 	if _running:
 		return
+	_update_pivot_center()
 	_running = true
 	_run_cycle()
 
@@ -79,3 +82,7 @@ func _run_cycle() -> void:
 		if loop and _running:
 			_run_cycle()
 	)
+
+
+func _update_pivot_center() -> void:
+	pivot_offset = size * 0.5

@@ -522,11 +522,7 @@ func _count_levels_for(category_id: String, mode: String) -> int:
 	for item in GameManager.frases_db:
 		if not GameManager.categories_match(str(item.get("category", "")), category_id):
 			continue
-		var difficulty := int(item.get("difficulty", 1))
-		var is_crypto := difficulty >= 3
-		if mode == GameManager.MODE_CRYPTOGRAM and not is_crypto:
-			continue
-		if mode == GameManager.MODE_QUICK and is_crypto:
+		if GameManager.level_game_mode(item) != mode:
 			continue
 		total += 1
 	return total
@@ -745,11 +741,7 @@ func get_competitive_record(
 		var item: Dictionary = item_value
 		var category := GameManager.normalize_category(str(item.get("category", "")))
 		var difficulty := int(item.get("difficulty", 1))
-		var mode := (
-			GameManager.MODE_CRYPTOGRAM
-			if difficulty >= 3
-			else GameManager.MODE_QUICK
-		)
+		var mode := GameManager.level_game_mode(item)
 		if not filter_all_categories and category != normalized_category:
 			continue
 		if not filter_all_modes and mode != normalized_mode:

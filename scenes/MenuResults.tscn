@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dy1qd7mww4u6w"]
+[gd_scene load_steps=25 format=3 uid="uid://dy1qd7mww4u6w"]
 
 [ext_resource type="Script" uid="uid://catwixw28tr0" path="res://scenes/menu_results.gd" id="1_22d8p"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_g0hrh"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://blfms7sixe668" path="res://images/Felicitacion.png" id="5_pih6d"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="7_6oi1c"]
 [ext_resource type="Texture2D" uid="uid://dqj2swh281hjf" path="res://images/iconosResultados.png" id="24_5poqe"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="25_back"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fvb13"]
 bg_color = Color(0.889317, 0.843552, 0.693583, 1)
@@ -560,22 +561,12 @@ autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 metadata/_edit_lock_ = true
 
-[node name="ButtonBack" type="Button" parent="."]
-anchors_preset = -1
-anchor_left = 30.6
-anchor_top = -0.1
-anchor_right = 30.6
-anchor_bottom = 0.498251
-offset_left = 288.0
-offset_top = 1688.0
-offset_right = 736.0
-offset_bottom = 1928.07
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("7_6oi1c")
-theme_override_font_sizes/font_size = 80
-text = "OK"
-metadata/_edit_use_anchors_ = true
+[node name="ButtonBack" parent="." instance=ExtResource("25_back")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 196.0
+offset_bottom = 196.0
 
 [node name="IconosResultados" type="Sprite2D" parent="."]
 position = Vector2(96, 1264)

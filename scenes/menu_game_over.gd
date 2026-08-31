@@ -37,16 +37,15 @@ func _ready() -> void:
 	if description_label.text.strip_edges() == "":
 		description_label.text = "Has completado correctamente este puzle."
 
-	var earned: int = clampi(GameManager.puzzle_stars, 0, stars.size())
-	var difficulty_multiplier := GameManager.get_puzzle_difficulty_stars()
-	var earned_total := earned * difficulty_multiplier
-	var maximum_total := stars.size() * difficulty_multiplier
-	stars_text.text = "Resultado: %d de %d" % [earned_total, maximum_total]
+	var maximum := GameManager.get_puzzle_difficulty_stars()
+	var earned: int = clampi(GameManager.puzzle_stars, 0, maximum)
+	stars_text.text = "Resultado: %d de %d" % [earned, maximum]
 	xp_label.text = "+%d XP" % (earned * 10)
 	_update_map_progress()
 
-	for star in stars:
-		star.visible = true
+	for index in range(stars.size()):
+		var star := stars[index]
+		star.visible = index < maximum
 		star.self_modulate = STAR_EMPTY
 		star.scale = Vector2.ONE
 
@@ -77,12 +76,45 @@ func _fit_stars_card() -> void:
 	description_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	await get_tree().process_frame
 
-	var description_height := maxf(
+	var desired_description_height := maxf(
 		float(description_label.get_content_height()),
 		100.0
 	)
-	description_label.size.y = description_height
-	info_card.size.y = description_label.position.y + description_height + 32.0
+	var stars_y := phrase_card.position.y + phrase_card.size.y + GAP
+	stars_card.position.y = stars_y
+	var unlock_height := unlock_card.size.y
+	var maximum_stars_height := (
+		continue_button.position.y
+		- GAP
+		- unlock_height
+		- GAP
+		- stars_y
+	)
+	var fixed_height := (
+		info_card.position.y
+		+ description_label.position.y
+		+ 32.0
+		+ 28.0
+	)
+	var maximum_description_height := maxf(
+		maximum_stars_height - fixed_height,
+		60.0
+	)
+	var actual_description_height := minf(
+		desired_description_height,
+		maximum_description_height
+	)
+
+	description_label.fit_content = false
+	description_label.size.y = actual_description_height
+	description_label.scroll_active = (
+		desired_description_height > actual_description_height + 1.0
+	)
+	info_card.size.y = (
+		description_label.position.y
+		+ actual_description_height
+		+ 32.0
+	)
 	stars_card.size.y = info_card.position.y + info_card.size.y + 28.0
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://bam2caihapi4m"]
+[gd_scene load_steps=52 format=3 uid="uid://bam2caihapi4m"]
 
 [ext_resource type="Script" uid="uid://bk4vllnl42st8" path="res://scenes/menu_settings_game.gd" id="1_yytc7"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_6r1xw"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://ccw8ctoqdfe68" path="res://images/NotaMusical.png" id="15_sq3f1"]
 [ext_resource type="Texture2D" uid="uid://bnqqdvtauk5fv" path="res://images/ButtonCheckOK.png" id="16_glfws"]
 [ext_resource type="Texture2D" uid="uid://br0p7hp3nqjvu" path="res://images/ButtonCheckNOOK.png.png" id="17_eql01"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="18_back"]
 [ext_resource type="Texture2D" uid="uid://bsljpeg6roq0l" path="res://GUI/Library/Frame/Frame_Demo_Light/BasicFrame_Circle_60.png" id="18_4aem6"]
 [ext_resource type="Texture2D" uid="uid://vmyg7opkn11t" path="res://GUI/Library/Frame/Frame_Demo_Light/BasicFrame_Circle_60_White.png" id="19_isy87"]
 [ext_resource type="Texture2D" uid="uid://c0owiuhriuqua" path="res://images/campana.png" id="20_06m4o"]
@@ -274,23 +275,12 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7e130")
 metadata/_edit_use_anchors_ = true
 metadata/_edit_lock_ = true
 
-[node name="ButtonBack2" type="Button" parent="Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 30.6
-anchor_top = -0.1
-anchor_right = 30.6
-anchor_bottom = -0.098996
-offset_left = -31046.4
-offset_top = 1880.0
-offset_right = -30598.4
-offset_bottom = 2142.07
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(224, 104)
-theme = ExtResource("3_if2lk")
-theme_override_font_sizes/font_size = 80
-text = "OK"
-metadata/_edit_use_anchors_ = true
+[node name="ButtonBack2" parent="Panel" instance=ExtResource("18_back")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 196.0
+offset_bottom = 196.0
 
 [node name="ButtonBack" type="Button" parent="Panel"]
 visible = false
