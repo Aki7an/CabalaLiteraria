@@ -1,8 +1,163 @@
-[gd_scene load_steps=2 format=3 uid="uid://fwvrs81xpbno"]
+[gd_scene format=3 uid="uid://fwvrs81xpbno"]
 
-[ext_resource type="Script" uid="uid://djfuwgey5l4bd" path="res://scenes/menu_tutorial.gd" id="1_tutorial"]
+[ext_resource type="Script" uid="uid://dljh1fsfpnfnj" path="res://scenes/menu_tutorial.gd" id="1_tutorial"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_fondo"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="3_back"]
+[ext_resource type="PackedScene" uid="uid://5oqtmnkkrdjl" path="res://scenes/Tutorial/TutorialPage1.tscn" id="4_page1"]
+[ext_resource type="PackedScene" uid="uid://bqswxq0n8ghiy" path="res://scenes/Tutorial/TutorialPage2.tscn" id="5_page2"]
+[ext_resource type="PackedScene" path="res://scenes/Tutorial/TutorialPage3.tscn" id="6_page3"]
+[ext_resource type="PackedScene" path="res://scenes/Tutorial/TutorialPage4.tscn" id="7_page4"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="8_title"]
 
-[node name="MenuTutorial" type="Control"]
+[sub_resource type="StyleBoxFlat" id="Style_next"]
+bg_color = Color(0.9, 0.5, 0.13, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.65, 0.36, 0.09, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_next_hover"]
+bg_color = Color(0.93, 0.58, 0.22, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.65, 0.36, 0.09, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_next_pressed"]
+bg_color = Color(0.78, 0.38, 0.05, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.56, 0.27, 0.04, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="Style_play"]
+bg_color = Color(0.1, 0.58, 0.5, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.07, 0.42, 0.36, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_play_hover"]
+bg_color = Color(0.18, 0.64, 0.56, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.07, 0.42, 0.36, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_play_pressed"]
+bg_color = Color(0.08, 0.48, 0.42, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.05, 0.32, 0.28, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="Style_dot_on"]
+bg_color = Color(0.9, 0.5, 0.13, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.9, 0.5, 0.13, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_dot_off"]
+bg_color = Color(1, 0.98, 0.92, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.72, 0.52, 0.28, 0.85)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_bg"]
+bg_color = Color(0.984, 0.949, 0.865, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.996, 0.973, 0.906, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78, 0.61, 0.36, 0.48)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_badge"]
+content_margin_left = 18.0
+content_margin_right = 18.0
+bg_color = Color(0.9, 0.5, 0.13, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.38, 0.05, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxEmpty" id="Style_focus"]
+
+[node name="MenuTutorial" type="Control" unique_id=1166697130]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,3 +165,184 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_tutorial")
+style_next = SubResource("Style_next")
+style_next_hover = SubResource("Style_next_hover")
+style_next_pressed = SubResource("Style_next_pressed")
+style_play = SubResource("Style_play")
+style_play_hover = SubResource("Style_play_hover")
+style_play_pressed = SubResource("Style_play_pressed")
+style_dot_on = SubResource("Style_dot_on")
+style_dot_off = SubResource("Style_dot_off")
+
+[node name="Background" type="Panel" parent="." unique_id=1024663669]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_bg")
+
+[node name="Pattern" parent="Background" unique_id=116905076 instance=ExtResource("2_fondo")]
+modulate = Color(1, 1, 1, 0.16)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TutorialCard" type="Panel" parent="." unique_id=1552545345]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 42.0
+offset_top = 96.0
+offset_right = -42.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="StepBadge" type="Label" parent="TutorialCard" unique_id=1293579146]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -78.0
+offset_top = -22.0
+offset_right = 78.0
+offset_bottom = 46.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("8_title")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("Style_badge")
+text = "1 / 4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Pages" type="Control" parent="TutorialCard" unique_id=1100684292]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 74.0
+offset_right = -40.0
+offset_bottom = -292.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Page1" parent="TutorialCard/Pages" unique_id=848034149 instance=ExtResource("4_page1")]
+layout_mode = 1
+
+[node name="Page2" parent="TutorialCard/Pages" unique_id=1436571205 instance=ExtResource("5_page2")]
+layout_mode = 1
+
+[node name="Page3" parent="TutorialCard/Pages" unique_id=1106081513 instance=ExtResource("6_page3")]
+layout_mode = 1
+
+[node name="Page4" parent="TutorialCard/Pages" unique_id=2044710075 instance=ExtResource("7_page4")]
+layout_mode = 1
+
+[node name="ButtonNext" type="Button" parent="TutorialCard" unique_id=412518111]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = -236.0
+offset_right = 240.0
+offset_bottom = -108.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("8_title")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("Style_next")
+theme_override_styles/pressed = SubResource("Style_next_pressed")
+theme_override_styles/hover = SubResource("Style_next_hover")
+theme_override_styles/focus = SubResource("Style_focus")
+text = "SIGUIENTE"
+
+[node name="Dots" type="HBoxContainer" parent="TutorialCard" unique_id=1759962257]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -84.0
+offset_right = 110.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Dot1" type="Button" parent="TutorialCard/Dots" unique_id=390491893]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_dot_on")
+theme_override_styles/pressed = SubResource("Style_dot_on")
+theme_override_styles/hover = SubResource("Style_dot_on")
+theme_override_styles/focus = SubResource("Style_focus")
+
+[node name="Dot2" type="Button" parent="TutorialCard/Dots" unique_id=780868783]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_dot_off")
+theme_override_styles/pressed = SubResource("Style_dot_off")
+theme_override_styles/hover = SubResource("Style_dot_off")
+theme_override_styles/focus = SubResource("Style_focus")
+
+[node name="Dot3" type="Button" parent="TutorialCard/Dots" unique_id=1121138208]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_dot_off")
+theme_override_styles/pressed = SubResource("Style_dot_off")
+theme_override_styles/hover = SubResource("Style_dot_off")
+theme_override_styles/focus = SubResource("Style_focus")
+
+[node name="Dot4" type="Button" parent="TutorialCard/Dots" unique_id=122306298]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_dot_off")
+theme_override_styles/pressed = SubResource("Style_dot_off")
+theme_override_styles/hover = SubResource("Style_dot_off")
+theme_override_styles/focus = SubResource("Style_focus")
+
+[node name="ButtonBack" parent="." unique_id=1819014362 instance=ExtResource("3_back")]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 28.0
+offset_right = 174.0
+offset_bottom = 174.0
+
+[connection signal="pressed" from="TutorialCard/ButtonNext" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="TutorialCard/Dots/Dot1" to="." method="_on_dot_pressed" binds= [0]]
+[connection signal="pressed" from="TutorialCard/Dots/Dot2" to="." method="_on_dot_pressed" binds= [1]]
+[connection signal="pressed" from="TutorialCard/Dots/Dot3" to="." method="_on_dot_pressed" binds= [2]]
+[connection signal="pressed" from="TutorialCard/Dots/Dot4" to="." method="_on_dot_pressed" binds= [3]]
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

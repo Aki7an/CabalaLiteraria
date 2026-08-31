@@ -470,7 +470,7 @@ func _make_stars_value(stars: int) -> HBoxContainer:
 	number.add_theme_color_override("font_color", COLOR_ORANGE)
 	value.add_child(number)
 	var star := _make_label("★", 49, HORIZONTAL_ALIGNMENT_LEFT)
-	star.add_theme_color_override("font_color", Color(1.0, 0.68, 0.08, 1.0))
+	star.add_theme_color_override("font_color", GameManager.star_fill_color(_mode_filter))
 	value.add_child(star)
 	return value
 

@@ -18,8 +18,7 @@ const PATH_APP := "res://scenes/App.tscn"
 	$Card/DifficultyStars/Star5
 ]
 
-const STAR_ON := Color(1.0, 0.82, 0.12, 1.0)
-const STAR_OFF := Color(0.7, 0.62, 0.5, 0.32)
+const STAR_EMPTY := Color(0.7, 0.62, 0.5, 0.32)
 
 
 func _ready() -> void:
@@ -37,7 +36,7 @@ func _ready() -> void:
 			else "EMPEZAR"
 		)
 	else:
-		start_button.text = "EMPEZAR"
+		start_button.text = "CONTINUAR"
 
 
 func _update_difficulty_stars() -> void:
@@ -51,7 +50,7 @@ func _update_difficulty_stars() -> void:
 	for index in range(difficulty_stars.size()):
 		difficulty_stars[index].visible = index < maximum
 		difficulty_stars[index].self_modulate = (
-			STAR_ON if index < remaining else STAR_OFF
+			GameManager.star_fill_color() if index < remaining else STAR_EMPTY
 		)
 
 

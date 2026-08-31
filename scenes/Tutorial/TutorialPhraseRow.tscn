@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://mjwufgbf1530"]
+
+[ext_resource type="PackedScene" path="res://scenes/Tutorial/TutorialCipherTile.tscn" id="1_tile"]
+
+[sub_resource type="StyleBoxFlat" id="Style_row"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.99, 0.93, 0.74, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.6, 0.32, 0.55)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[node name="TutorialPhraseRow" type="PanelContainer" unique_id=827713958]
+offset_right = 980.0
+offset_bottom = 120.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_row")
+
+[node name="Row" type="HBoxContainer" parent="." unique_id=1684348690]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="N6" parent="Row" unique_id=1337627857 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "6"
+
+[node name="N17a" parent="Row" unique_id=1055794788 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "17"
+letter_text = "E"
+
+[node name="N2a" parent="Row" unique_id=1843356627 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "2"
+
+[node name="N19a" parent="Row" unique_id=1132213510 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "19"
+
+[node name="N17b" parent="Row" unique_id=2072587603 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "17"
+letter_text = "E"
+
+[node name="N2b" parent="Row" unique_id=44872117 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "2"
+
+[node name="Gap" type="Control" parent="Row" unique_id=1326886865]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="N15" parent="Row" unique_id=966823841 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "15"
+
+[node name="N19b" parent="Row" unique_id=1809163728 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "19"
+
+[node name="N13" parent="Row" unique_id=649901204 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "13"
+
+[node name="N2c" parent="Row" unique_id=710090545 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "2"
+
+[node name="N1" parent="Row" unique_id=1873715454 instance=ExtResource("1_tile")]
+layout_mode = 2
+number_text = "1"

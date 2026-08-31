@@ -1,0 +1,375 @@
+[gd_scene format=3 uid="uid://1qdx5fhcwtxu"]
+
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="1_title"]
+[ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="2_regular"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="3_body"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="4_star"]
+[ext_resource type="Texture2D" uid="uid://bmxb0omorndri" path="res://images/contorno_estrella.png" id="5_star_off"]
+[ext_resource type="Texture2D" uid="uid://cbbcrfwtuwu31" path="res://images/ui_icon_bulb_white.svg" id="6_hint"]
+[ext_resource type="Texture2D" uid="uid://8akietbdjjg2" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_eye.png" id="7_reveal"]
+[ext_resource type="PackedScene" path="res://scenes/Tutorial/TutorialDashedLine.tscn" id="8_dash"]
+
+[sub_resource type="StyleBoxFlat" id="Style_pista"]
+content_margin_left = 16.0
+content_margin_top = 20.0
+content_margin_right = 16.0
+content_margin_bottom = 20.0
+bg_color = Color(0.9, 0.5, 0.13, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.65, 0.36, 0.09, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_revelar"]
+content_margin_left = 16.0
+content_margin_top = 20.0
+content_margin_right = 16.0
+content_margin_bottom = 20.0
+bg_color = Color(0.4, 0.28, 0.68, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.29, 0.2, 0.49, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_penalty"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.99, 0.94, 0.82, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.84, 0.68, 0.4, 0.45)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[node name="TutorialPage3" type="VBoxContainer" unique_id=277073646]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+
+[node name="TitleRow" type="HBoxContainer" parent="." unique_id=240560188]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="LeftMark" type="Label" parent="TitleRow" unique_id=840675120]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.58, 0.16, 0.82)
+theme_override_fonts/font = ExtResource("1_title")
+theme_override_font_sizes/font_size = 28
+text = "✦"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="TitleRow" unique_id=48933538]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.15, 0.09, 1)
+theme_override_fonts/font = ExtResource("1_title")
+theme_override_font_sizes/font_size = 50
+text = "ESTRELLAS DE PUNTUACIÓN"
+horizontal_alignment = 1
+
+[node name="RightMark" type="Label" parent="TitleRow" unique_id=2121697202]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.58, 0.16, 0.82)
+theme_override_fonts/font = ExtResource("1_title")
+theme_override_font_sizes/font_size = 28
+text = "✦"
+horizontal_alignment = 1
+
+[node name="Stars" type="HBoxContainer" parent="." unique_id=1800545905]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="Stars" unique_id=1847799084]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(88, 88)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="Stars" unique_id=321663412]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(88, 88)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="Stars" unique_id=27939380]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(88, 88)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="Stars" unique_id=310809539]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(88, 88)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star5" type="TextureRect" parent="Stars" unique_id=1371986459]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(88, 88)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Intro" type="Label" parent="." unique_id=236215887]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("2_regular")
+theme_override_font_sizes/font_size = 36
+text = "Puedes pedir ayuda, pero perderás estrellas."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control2" type="Control" parent="." unique_id=306406559]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="." unique_id=957330749]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 36
+alignment = 1
+
+[node name="PistaCol" type="VBoxContainer" parent="Actions" unique_id=78674270]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 18
+
+[node name="PistaCard" type="PanelContainer" parent="Actions/PistaCol" unique_id=1026013343]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_pista")
+
+[node name="PistaBox" type="VBoxContainer" parent="Actions/PistaCol/PistaCard" unique_id=244683499]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Actions/PistaCol/PistaCard/PistaBox" unique_id=1171259553]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_hint")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Actions/PistaCol/PistaCard/PistaBox" unique_id=1260602847]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 36
+text = "PISTA"
+horizontal_alignment = 1
+
+[node name="Control2" type="Control" parent="Actions/PistaCol" unique_id=684072459]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="PistaText" type="Label" parent="Actions/PistaCol" unique_id=1232669498]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("2_regular")
+theme_override_font_sizes/font_size = 32
+text = "Te permite comprar por el precio de una estrella varias ayudas."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="RevelarCol" type="VBoxContainer" parent="Actions" unique_id=1164733665]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 18
+
+[node name="RevelarCard" type="PanelContainer" parent="Actions/RevelarCol" unique_id=517358544]
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_revelar")
+
+[node name="RevelarBox" type="VBoxContainer" parent="Actions/RevelarCol/RevelarCard" unique_id=1677157805]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Actions/RevelarCol/RevelarCard/RevelarBox" unique_id=1445836191]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("7_reveal")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Actions/RevelarCol/RevelarCard/RevelarBox" unique_id=154317146]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 36
+text = "REVELAR"
+horizontal_alignment = 1
+
+[node name="Control2" type="Control" parent="Actions/RevelarCol" unique_id=1960281191]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="RevelarText" type="Label" parent="Actions/RevelarCol" unique_id=462681106]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("2_regular")
+theme_override_font_sizes/font_size = 32
+text = "Te permite comprobar si las letras que has asignado están bien. Si todas las letras están bien no hay penalización, pero perderás una estrella por cada letra fallada."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Divider" parent="." unique_id=1772646976 instance=ExtResource("8_dash")]
+layout_mode = 2
+
+[node name="Summary" type="Label" parent="." unique_id=1346457100]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("2_regular")
+theme_override_font_sizes/font_size = 34
+text = "Cada ayuda que uses te costará estrellas."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Penalty" type="PanelContainer" parent="." unique_id=699641804]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_penalty")
+
+[node name="PenaltyRow" type="HBoxContainer" parent="Penalty" unique_id=540785304]
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Before" type="HBoxContainer" parent="Penalty/PenaltyRow" unique_id=1746296971]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="S1" type="TextureRect" parent="Penalty/PenaltyRow/Before" unique_id=554669495]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="S2" type="TextureRect" parent="Penalty/PenaltyRow/Before" unique_id=1456157523]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="S3" type="TextureRect" parent="Penalty/PenaltyRow/Before" unique_id=1094105795]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="S4" type="TextureRect" parent="Penalty/PenaltyRow/Before" unique_id=465079828]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="S5" type="TextureRect" parent="Penalty/PenaltyRow/Before" unique_id=2065668636]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Arrow" type="Label" parent="Penalty/PenaltyRow" unique_id=1700142336]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 42
+text = "→"
+horizontal_alignment = 1
+
+[node name="After" type="HBoxContainer" parent="Penalty/PenaltyRow" unique_id=75956333]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="S1" type="TextureRect" parent="Penalty/PenaltyRow/After" unique_id=696502622]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="S2" type="TextureRect" parent="Penalty/PenaltyRow/After" unique_id=1172285798]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="S3" type="TextureRect" parent="Penalty/PenaltyRow/After" unique_id=1376689401]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="S4" type="TextureRect" parent="Penalty/PenaltyRow/After" unique_id=762714390]
+modulate = Color(1, 0.64, 0.1, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("4_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="S5" type="TextureRect" parent="Penalty/PenaltyRow/After" unique_id=1719515553]
+modulate = Color(0.5, 0.38, 0.26, 0.55)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("5_star_off")
+expand_mode = 1
+stretch_mode = 5

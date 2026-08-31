@@ -4,7 +4,8 @@ const OVERLAY_EXIT := preload("res://scenes/fondo_salir.tscn")
 const OVERLAY_RESULTS := preload("res://scenes/menu_game_over.tscn")
 const OVERLAY_GAME_OVER := preload("res://scenes/menu_game_over_fail.tscn")
 const OVERLAY_ERASE := preload("res://scenes/fondo_aviso_borrado.tscn")
-const OVERLAY_HINTS := preload("res://scenes/Cuadro_Hints.tscn")
+const OVERLAY_HINTS := preload("res://scenes/CuadroPistas.tscn")
+const OVERLAY_REVEAL := preload("res://scenes/CuadroRevelar.tscn")
 const OVERLAY_BOARD_FILL := preload("res://scenes/fondo_tablero_completo.tscn")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 
@@ -61,7 +62,7 @@ func _update_stars(_value: int = -1) -> void:
 	for index in range(stars.size()):
 		stars[index].visible = index < maximum
 		stars[index].self_modulate = (
-			Color(1.0, 0.72, 0.12, 1.0)
+			GameManager.star_fill_color()
 			if index < filled
 			else Color(0.72, 0.68, 0.6, 0.32)
 		)
@@ -88,8 +89,9 @@ func _on_board_filled() -> void:
 
 
 func _on_hint_pressed() -> void:
+	if not get_tree().get_nodes_in_group("HintsOverlay").is_empty():
+		return
 	SoundManager.play("ButtonClick")
-	GameManager.register_hint_used("hint_1")
 	_add_overlay(OVERLAY_HINTS)
 
 
@@ -103,8 +105,13 @@ func _on_theme_pressed() -> void:
 
 
 func _on_reveal_pressed() -> void:
+	if not get_tree().get_nodes_in_group("RevealOverlay").is_empty():
+		return
 	SoundManager.play("ButtonClick")
-	GameManager.reveal_assignment_errors()
+	if PlayerPrefs.skip_reveal_dialog:
+		GameManager.reveal_assignment_errors()
+		return
+	_add_overlay(OVERLAY_REVEAL)
 
 
 func _on_pause_pressed() -> void:

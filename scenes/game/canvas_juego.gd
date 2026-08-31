@@ -282,7 +282,7 @@ func _añade_las_letras_iniciales() -> void:
 	var s : String = GameManager.letras_iniciales.to_upper()
 	for i in s.length():
 		var ch := s[i]
-		if not GameManager.EXCLUIR.has(ch):
+		if not GameManager.is_excluded_character(ch):
 			letras_set[ch] = true
 
 	# Para cada letra inicial, calcula su número (mapeo dinámico actual)

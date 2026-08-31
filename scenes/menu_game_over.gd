@@ -1,7 +1,6 @@
 extends ColorRect
 
 const SCENE_MENU_MAIN := preload("res://scenes/MenuMain.tscn")
-const STAR_YELLOW := Color(1.0, 0.82, 0.12, 1.0)
 const STAR_EMPTY := Color(0.62, 0.51, 0.34, 0.28)
 const GAP := 24.0
 
@@ -149,7 +148,7 @@ func _update_map_progress() -> void:
 func _animate_stars(earned: int) -> void:
 	for index in range(earned):
 		var star := stars[index]
-		star.self_modulate = STAR_YELLOW
+		star.self_modulate = GameManager.star_fill_color()
 		var tween := create_tween()
 		tween.set_trans(Tween.TRANS_SINE)
 		tween.tween_property(star, "scale", Vector2(1.4, 1.4), 0.12).set_ease(Tween.EASE_OUT)

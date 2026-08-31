@@ -17,6 +17,11 @@ extends Control
 @onready var online_title_label: Label = $Panel/OnlineCard/Title
 @onready var online_help_label: Label = $Panel/OnlineCard/Info/Text
 @onready var reset_label: Label = $Panel/Footer/ButtonReset/Text
+@onready var game_title_label: Label = $Panel/GameCard/Title
+@onready var tutorial_label: Label = $Panel/GameCard/GameRows/TutorialLabel
+@onready var reveal_label: Label = $Panel/GameCard/GameRows/RevealLabel
+@onready var check_button_tutorial: Button = $Panel/GameCard/GameRows/CheckButtonTutorial
+@onready var check_button_reveal: Button = $Panel/GameCard/GameRows/CheckButtonReveal
 
 var _language_buttons: Dictionary = {}
 var _normal_language_styles: Dictionary = {}
@@ -27,42 +32,63 @@ const LOCALIZED_COPY := {
 		"online_title": "NOMBRE ONLINE",
 		"online_help": "Este nombre se mostrará en las clasificaciones y retos online.",
 		"reset": "RESTABLECER VALORES",
+		"game_title": "JUEGO",
+		"tutorial": "Mostrar tutorial antes de jugar.",
+		"reveal": "Mostrar explicación botón REVELAR.",
 	},
 	"en": {
 		"title": "Options",
 		"online_title": "ONLINE NAME",
 		"online_help": "This name will be shown in online leaderboards and challenges.",
 		"reset": "RESET VALUES",
+		"game_title": "GAME",
+		"tutorial": "Show tutorial before playing.",
+		"reveal": "Show REVEAL button explanation.",
 	},
 	"eu": {
 		"title": "Aukerak",
 		"online_title": "LINEAKO IZENA",
 		"online_help": "Izen hau lineako sailkapenetan eta erronketan agertuko da.",
 		"reset": "BERREZARRI BALIOAK",
+		"game_title": "JOKOA",
+		"tutorial": "Erakutsi tutoriala jokatu aurretik.",
+		"reveal": "Erakutsi REVELAR botoiaren azalpena.",
 	},
 	"de": {
 		"title": "Optionen",
 		"online_title": "ONLINE-NAME",
 		"online_help": "Dieser Name wird in Online-Ranglisten und Herausforderungen angezeigt.",
 		"reset": "WERTE ZURÜCKSETZEN",
+		"game_title": "SPIEL",
+		"tutorial": "Tutorial vor dem Spielen anzeigen.",
+		"reveal": "Erklärung der REVELAR-Taste anzeigen.",
 	},
 	"fr": {
 		"title": "Options",
 		"online_title": "NOM EN LIGNE",
 		"online_help": "Ce nom apparaîtra dans les classements et défis en ligne.",
 		"reset": "RÉINITIALISER",
+		"game_title": "JEU",
+		"tutorial": "Afficher le tutoriel avant de jouer.",
+		"reveal": "Afficher l'explication du bouton REVELAR.",
 	},
 	"it": {
 		"title": "Opzioni",
 		"online_title": "NOME ONLINE",
 		"online_help": "Questo nome apparirà nelle classifiche e nelle sfide online.",
 		"reset": "RIPRISTINA VALORI",
+		"game_title": "GIOCO",
+		"tutorial": "Mostra il tutorial prima di giocare.",
+		"reveal": "Mostra la spiegazione del pulsante REVELAR.",
 	},
 	"pt": {
 		"title": "Opções",
 		"online_title": "NOME ONLINE",
 		"online_help": "Este nome aparecerá nas classificações e desafios online.",
 		"reset": "REPOR VALORES",
+		"game_title": "JOGO",
+		"tutorial": "Mostrar tutorial antes de jogar.",
+		"reveal": "Mostrar explicação do botão REVELAR.",
 	},
 }
 
@@ -87,6 +113,8 @@ func _ready() -> void:
 	h_slider_sound.value = PlayerPrefs.volumen_musica
 	check_button_fx.button_pressed = PlayerPrefs.mute_fx
 	check_button_music.button_pressed = PlayerPrefs.mute_musica
+	check_button_tutorial.button_pressed = PlayerPrefs.mostrar_tuto_antes_partida
+	check_button_reveal.button_pressed = not PlayerPrefs.skip_reveal_dialog
 	_update_language_selection()
 
 
@@ -190,7 +218,21 @@ func _on_button_reset_pressed() -> void:
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundFx"), false)
 	PlayerPrefs.save_prefs()
 	GameManager.apply_language("es")
+	check_button_tutorial.button_pressed = true
+	check_button_reveal.button_pressed = true
+	PlayerPrefs.set_mostrar_tutorial(true)
+	PlayerPrefs.set_show_reveal_explanation(true)
 	_update_language_selection()
+
+
+func _on_check_button_tutorial_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	PlayerPrefs.set_mostrar_tutorial(check_button_tutorial.button_pressed)
+
+
+func _on_check_button_reveal_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	PlayerPrefs.set_show_reveal_explanation(check_button_reveal.button_pressed)
 
 
 func _save_online_name() -> void:
@@ -217,6 +259,9 @@ func _update_localized_copy(locale: String) -> void:
 	online_title_label.text = copy["online_title"]
 	online_help_label.text = copy["online_help"]
 	reset_label.text = copy["reset"]
+	game_title_label.text = copy["game_title"]
+	tutorial_label.text = copy["tutorial"]
+	reveal_label.text = copy["reveal"]
 
 
 func _make_selected_language_style() -> StyleBoxFlat:

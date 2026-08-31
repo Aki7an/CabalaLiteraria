@@ -1,0 +1,151 @@
+[gd_scene format=3 uid="uid://5oqtmnkkrdjl"]
+
+[ext_resource type="PackedScene" path="res://scenes/Tutorial/TutorialPhraseRow.tscn" id="1_row"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="2_title"]
+[ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="3_regular"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="4_body"]
+
+[node name="TutorialPage1" type="VBoxContainer" unique_id=222286254]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 18
+
+[node name="TitleRow" type="HBoxContainer" parent="." unique_id=713001460]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="LeftMark" type="Label" parent="TitleRow" unique_id=545087560]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.58, 0.16, 0.82)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 34
+text = "✦"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="TitleRow" unique_id=1741944168]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.15, 0.09, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 56
+text = "DESCIFRA LA FRASE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightMark" type="Label" parent="TitleRow" unique_id=311107807]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.92, 0.58, 0.16, 0.82)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 34
+text = "✦"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="." unique_id=1975686952]
+layout_mode = 2
+
+[node name="Body1" type="Label" parent="." unique_id=1488268851]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("3_regular")
+theme_override_font_sizes/font_size = 36
+text = "Cada número representa siempre a la misma letra."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Body2" type="Label" parent="." unique_id=1643106512]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/font = ExtResource("3_regular")
+theme_override_font_sizes/font_size = 36
+text = "Descubre las correspondencias para completar la frase."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Step1" parent="." unique_id=1558353802 instance=ExtResource("1_row")]
+layout_mode = 2
+
+[node name="Caption1" type="RichTextLabel" parent="." unique_id=1306197808]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/normal_font = ExtResource("3_regular")
+theme_override_fonts/bold_font = ExtResource("4_body")
+theme_override_font_sizes/normal_font_size = 36
+theme_override_font_sizes/bold_font_size = 36
+bbcode_enabled = true
+text = "[center]Deduce que el [color=#E68021][b]17[/b][/color] es la [color=#E68021][b]E[/b][/color].[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="Arrow1" type="Label" parent="." unique_id=760734456]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.5, 0.13, 1)
+theme_override_fonts/font = ExtResource("4_body")
+theme_override_font_sizes/font_size = 34
+text = "▼"
+horizontal_alignment = 1
+
+[node name="Step2" parent="." unique_id=1099873925 instance=ExtResource("1_row")]
+layout_mode = 2
+
+[node name="Caption2" type="RichTextLabel" parent="." unique_id=1258424385]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/normal_font = ExtResource("3_regular")
+theme_override_fonts/bold_font = ExtResource("4_body")
+theme_override_font_sizes/normal_font_size = 36
+theme_override_font_sizes/bold_font_size = 36
+bbcode_enabled = true
+text = "[center]Sigue deduciendo que el [color=#E68021][b]19[/b][/color] es la [color=#E68021][b]D[/b][/color].[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="Arrow2" type="Label" parent="." unique_id=676120978]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.5, 0.13, 1)
+theme_override_fonts/font = ExtResource("4_body")
+theme_override_font_sizes/font_size = 34
+text = "▼"
+horizontal_alignment = 1
+
+[node name="Step3" parent="." unique_id=1284601204 instance=ExtResource("1_row")]
+layout_mode = 2
+
+[node name="Caption3" type="RichTextLabel" parent="." unique_id=167901130]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/normal_font = ExtResource("3_regular")
+theme_override_fonts/bold_font = ExtResource("4_body")
+theme_override_font_sizes/normal_font_size = 36
+theme_override_font_sizes/bold_font_size = 36
+bbcode_enabled = true
+text = "[center]Sigue deduciendo que el [color=#E68021][b]2[/b][/color] es la [color=#E68021][b]R[/b][/color].[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="Arrow3" type="Label" parent="." unique_id=948132659]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.5, 0.13, 1)
+theme_override_fonts/font = ExtResource("4_body")
+theme_override_font_sizes/font_size = 34
+text = "▼"
+horizontal_alignment = 1
+
+[node name="Step4" parent="." unique_id=1145549885 instance=ExtResource("1_row")]
+layout_mode = 2
+
+[node name="Caption4" type="RichTextLabel" parent="." unique_id=1770135463]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.36, 0.26, 0.18, 0.92)
+theme_override_fonts/normal_font = ExtResource("3_regular")
+theme_override_fonts/bold_font = ExtResource("4_body")
+theme_override_font_sizes/normal_font_size = 36
+theme_override_font_sizes/bold_font_size = 36
+bbcode_enabled = true
+text = "[center]Sigue deduciendo que el [color=#E68021][b]15[/b][/color] es la [color=#E68021][b]A[/b][/color].[/center]"
+fit_content = true
+scroll_active = false

@@ -50,6 +50,10 @@ class_name Celda
 @onready var color_rellena: Color = Color(0.78, 0.76, 0.74)
 @onready var color_fondo_blanco: Color = Color(1.0, 1.0, 1.0)
 @onready var color_letra_correcta: Color = Color(0.22, 0.62, 0.28)
+const COLOR_HINT_YELLOW := Color(1.0, 0.86, 0.18, 1.0)
+
+var _remaining_hint_tween: Tween
+var _remaining_hint_active := false
 
 func _ready():
 	add_to_group("Celda")
@@ -79,21 +83,25 @@ func _inicializar_puntuacion() -> void:
 	celda_selected.visible = false
 	
 func set_letter_font_size() -> void:
-	
+	var size := 85
 	if GameManager.NUM_COLUMNAS == 8:
-	# 8 is the min
-		label_letra.add_theme_font_size_override("font_size", 120)
+		size = 120
 	elif GameManager.NUM_COLUMNAS == 9:
-		label_letra.add_theme_font_size_override("font_size", 110)
+		size = 110
 	elif GameManager.NUM_COLUMNAS == 10:
-		label_letra.add_theme_font_size_override("font_size", 100)
+		size = 100
 	elif GameManager.NUM_COLUMNAS == 11:
-		label_letra.add_theme_font_size_override("font_size", 95)
+		size = 95
 	elif GameManager.NUM_COLUMNAS == 12:
-		label_letra.add_theme_font_size_override("font_size", 90)
-	else:
-	# 13 is the max
-		label_letra.add_theme_font_size_override("font_size", 85) 
+		size = 90
+	if _displayed_board_letter() == "J":
+		size = maxi(roundi(float(size) * 0.78), 1)
+	label_letra.add_theme_font_size_override("font_size", size)
+
+
+func _displayed_board_letter() -> String:
+	var shown := letter_user if letter_user != "" else letra
+	return shown.strip_edges().to_upper() 
 		
 func set_number_font_size() -> void:
 	label_numero.add_theme_font_size_override("font_size", font_size_inicial)
@@ -108,8 +116,13 @@ func _inicializar_letra() -> void:
 	celda_mostrada = false
 	bloqueada = false
 	label_numero.add_theme_font_size_override("font_size",font_size_inicial )
-	if letra == " ":
+	if _is_blank_mark(letra):
 		espacio_blanco.visible = true
+
+
+func _is_blank_mark(character: String) -> bool:
+	return character == " " or character == "\n" or character == "\t" \
+		or character == "\u00a0" or character == "\u200b"
 
 
 func _inicializar_numero() -> void:
@@ -119,19 +132,66 @@ func _inicializar_numero() -> void:
 	
 	set_number_font_size()
 	
-	#for the forbiden characters, assign 101 number or higher and dont show number
-	if GameManager.EXCLUIR.has(letra):
+	# Punctuation and other non-letters start solved: visible mark, no cipher number.
+	if GameManager.is_excluded_character(letra):
 		label_numero.visible = false
 		label_numero.text = "101"
 		numero = 101
-		label_letra.visible = true
+		celda_mostrada = true
+		bloqueada = true
+		if _is_blank_mark(letra):
+			espacio_blanco.visible = true
+			label_letra.visible = false
+		else:
+			label_letra.visible = true
+			label_letra.text = letra
+			set_letter_font_size()
 		
 
 func _blink() -> void:
-	label_numero.start_blink()
+	start_remaining_hint()
 
 func _blink_stop() -> void:
-	label_numero.stop_blink()
+	stop_remaining_hint()
+
+
+func start_remaining_hint() -> void:
+	if _remaining_hint_active or panel_celda == null or numero >= 100:
+		return
+	_remaining_hint_active = true
+	var style := _ensure_fondo_style()
+	style.bg_color = color_fondo_blanco
+	if is_instance_valid(_remaining_hint_tween):
+		_remaining_hint_tween.kill()
+	_remaining_hint_tween = create_tween()
+	_remaining_hint_tween.set_loops()
+	_remaining_hint_tween.tween_property(style, "bg_color", COLOR_HINT_YELLOW, 0.45)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_remaining_hint_tween.tween_property(style, "bg_color", color_fondo_blanco, 0.45)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+
+func stop_remaining_hint() -> void:
+	if not _remaining_hint_active:
+		return
+	_remaining_hint_active = false
+	if is_instance_valid(_remaining_hint_tween):
+		_remaining_hint_tween.kill()
+	_remaining_hint_tween = null
+	_set_fondo_color(_idle_fondo_color())
+
+
+func _idle_fondo_color() -> Color:
+	if color_id > 0 and color_id < GameManager.lista_tonos_colores.size():
+		return GameManager.lista_tonos_colores[color_id]
+	if bloqueada and celda_mostrada:
+		return color_fondo_blanco
+	return color_init
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(_remaining_hint_tween):
+		_remaining_hint_tween.kill()
 
 func configurar_celda(letra_config: String, numero_config: int, orden_config:int , color_id_config: int) -> void:
 	color_id = color_id_config
@@ -191,20 +251,27 @@ func _on_button_pressed() -> void:
 	
 func cambia_color(color_a_cambiar: int) -> void:
 	color_id = color_a_cambiar
+	if _remaining_hint_active:
+		return
 	_set_fondo_color(GameManager.lista_tonos_colores[color_a_cambiar])
 
 
 func _set_fondo_color(color: Color) -> void:
 	if panel_celda == null:
 		return
+	var style := _ensure_fondo_style()
+	style.bg_color = color
+
+
+func _ensure_fondo_style() -> StyleBoxFlat:
 	var current := panel_celda.get_theme_stylebox("panel")
 	var style: StyleBoxFlat
 	if current is StyleBoxFlat:
 		style = current.duplicate() as StyleBoxFlat
 	else:
 		style = StyleBoxFlat.new()
-	style.bg_color = color
 	panel_celda.add_theme_stylebox_override("panel", style)
+	return style
 
 func deselect_all_cels() -> void:
 	for celda:Celda in get_tree().get_nodes_in_group("Celda"):
@@ -224,14 +291,19 @@ func _gui_input(event: InputEvent) -> void:
 ## Player assignment: visible letter, still editable.
 func mostrar_letra_jugador() -> void:
 	label_letra.text = letter_user
+	set_letter_font_size()
 	label_letra.visible = letter_user != ""
 	label_letra.add_theme_color_override("font_color", color_font_default)
 	celda_mostrada = letter_user != ""
 	bloqueada = false
+	if celda_mostrada:
+		stop_remaining_hint()
 
 ## Verified correct: white background, green letter, locked.
 func mostrar_letra() -> void:
+	stop_remaining_hint()
 	label_letra.text = letter_user
+	set_letter_font_size()
 	label_letra.visible = true
 	label_letra.add_theme_color_override("font_color", color_letra_correcta)
 	color_id = 0
@@ -242,6 +314,7 @@ func mostrar_letra() -> void:
 func limpiar_letra_usuario() -> void:
 	letter_user = ""
 	label_letra.text = ""
+	set_letter_font_size()
 	label_letra.visible = false
 	label_letra.add_theme_color_override("font_color", color_font_default)
 	celda_mostrada = false
@@ -249,6 +322,7 @@ func limpiar_letra_usuario() -> void:
 
 func mostrar_letra_errada() -> void:
 	label_letra.text = letter_user
+	set_letter_font_size()
 	label_letra.add_theme_color_override("font_color", color_error)
 	label_letra.visible = true
 	celda_mostrada = false
@@ -259,6 +333,7 @@ func mostrar_letra_especifica(letra_a_mostrar: String) -> void:
 	#solo se usa para las letras que regalo al principio de la partida que así se diferencian de las del jugador
 	letter_user = letra_a_mostrar
 	label_letra.text = letra_a_mostrar
+	set_letter_font_size()
 	label_letra.visible = true
 	celda_mostrada = true
 	bloqueada = true
