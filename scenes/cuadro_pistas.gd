@@ -328,7 +328,7 @@ func _buy_hint(index: int) -> void:
 		3:
 			GameManager.register_hint_used("hint_3")
 			GameManager.set_pista3()
-			GameManager.ensure_hint_extra_word()
+			GameManager.ensure_hint_vowel_numbers()
 			SignalManager.compra_pista_3.emit(GameManager.tiempo_partida)
 	GameManager.set_pistas_utilizadas(
 		int(GameManager.pista_1) + int(GameManager.pista_2) + int(GameManager.pista_3)
@@ -396,7 +396,7 @@ func _prompt_text(index: int) -> String:
 		2:
 			return "Letra más repetida en la frase:"
 		_:
-			return "Otra palabra que está en la frase:"
+			return "Los siguientes números son las 5 vocales:"
 
 
 func _body_text(index: int) -> String:
@@ -410,10 +410,11 @@ func _body_text(index: int) -> String:
 				return letter.to_upper() if letter != "" else "—"
 			return "*"
 		_:
-			var extra := GameManager.ensure_hint_extra_word()
-			if extra == "":
-				return "—" if _is_unlocked(3) else "*"
-			return extra.to_upper() if _is_unlocked(3) else _asterisks(extra)
+			var tokens := GameManager.ensure_hint_vowel_numbers()
+			var values := "*, *, *, *, *"
+			if _is_unlocked(3) and tokens.size() == 5:
+				values = ", ".join(tokens)
+			return "%s\n(No tienen por qué estar en este orden)." % values
 
 
 func _asterisks(text: String) -> String:

@@ -83,21 +83,25 @@ func _inicializar_puntuacion() -> void:
 	celda_selected.visible = false
 	
 func set_letter_font_size() -> void:
-	
+	var size := 85
 	if GameManager.NUM_COLUMNAS == 8:
-	# 8 is the min
-		label_letra.add_theme_font_size_override("font_size", 120)
+		size = 120
 	elif GameManager.NUM_COLUMNAS == 9:
-		label_letra.add_theme_font_size_override("font_size", 110)
+		size = 110
 	elif GameManager.NUM_COLUMNAS == 10:
-		label_letra.add_theme_font_size_override("font_size", 100)
+		size = 100
 	elif GameManager.NUM_COLUMNAS == 11:
-		label_letra.add_theme_font_size_override("font_size", 95)
+		size = 95
 	elif GameManager.NUM_COLUMNAS == 12:
-		label_letra.add_theme_font_size_override("font_size", 90)
-	else:
-	# 13 is the max
-		label_letra.add_theme_font_size_override("font_size", 85) 
+		size = 90
+	if _displayed_board_letter() == "J":
+		size = maxi(roundi(float(size) * 0.78), 1)
+	label_letra.add_theme_font_size_override("font_size", size)
+
+
+func _displayed_board_letter() -> String:
+	var shown := letter_user if letter_user != "" else letra
+	return shown.strip_edges().to_upper() 
 		
 func set_number_font_size() -> void:
 	label_numero.add_theme_font_size_override("font_size", font_size_inicial)
@@ -112,8 +116,13 @@ func _inicializar_letra() -> void:
 	celda_mostrada = false
 	bloqueada = false
 	label_numero.add_theme_font_size_override("font_size",font_size_inicial )
-	if letra == " ":
+	if _is_blank_mark(letra):
 		espacio_blanco.visible = true
+
+
+func _is_blank_mark(character: String) -> bool:
+	return character == " " or character == "\n" or character == "\t" \
+		or character == "\u00a0" or character == "\u200b"
 
 
 func _inicializar_numero() -> void:
@@ -123,12 +132,20 @@ func _inicializar_numero() -> void:
 	
 	set_number_font_size()
 	
-	#for the forbiden characters, assign 101 number or higher and dont show number
-	if GameManager.EXCLUIR.has(letra):
+	# Punctuation and other non-letters start solved: visible mark, no cipher number.
+	if GameManager.is_excluded_character(letra):
 		label_numero.visible = false
 		label_numero.text = "101"
 		numero = 101
-		label_letra.visible = true
+		celda_mostrada = true
+		bloqueada = true
+		if _is_blank_mark(letra):
+			espacio_blanco.visible = true
+			label_letra.visible = false
+		else:
+			label_letra.visible = true
+			label_letra.text = letra
+			set_letter_font_size()
 		
 
 func _blink() -> void:
@@ -139,7 +156,7 @@ func _blink_stop() -> void:
 
 
 func start_remaining_hint() -> void:
-	if _remaining_hint_active or panel_celda == null:
+	if _remaining_hint_active or panel_celda == null or numero >= 100:
 		return
 	_remaining_hint_active = true
 	var style := _ensure_fondo_style()
@@ -274,6 +291,7 @@ func _gui_input(event: InputEvent) -> void:
 ## Player assignment: visible letter, still editable.
 func mostrar_letra_jugador() -> void:
 	label_letra.text = letter_user
+	set_letter_font_size()
 	label_letra.visible = letter_user != ""
 	label_letra.add_theme_color_override("font_color", color_font_default)
 	celda_mostrada = letter_user != ""
@@ -285,6 +303,7 @@ func mostrar_letra_jugador() -> void:
 func mostrar_letra() -> void:
 	stop_remaining_hint()
 	label_letra.text = letter_user
+	set_letter_font_size()
 	label_letra.visible = true
 	label_letra.add_theme_color_override("font_color", color_letra_correcta)
 	color_id = 0
@@ -295,6 +314,7 @@ func mostrar_letra() -> void:
 func limpiar_letra_usuario() -> void:
 	letter_user = ""
 	label_letra.text = ""
+	set_letter_font_size()
 	label_letra.visible = false
 	label_letra.add_theme_color_override("font_color", color_font_default)
 	celda_mostrada = false
@@ -302,6 +322,7 @@ func limpiar_letra_usuario() -> void:
 
 func mostrar_letra_errada() -> void:
 	label_letra.text = letter_user
+	set_letter_font_size()
 	label_letra.add_theme_color_override("font_color", color_error)
 	label_letra.visible = true
 	celda_mostrada = false
@@ -312,6 +333,7 @@ func mostrar_letra_especifica(letra_a_mostrar: String) -> void:
 	#solo se usa para las letras que regalo al principio de la partida que así se diferencian de las del jugador
 	letter_user = letra_a_mostrar
 	label_letra.text = letra_a_mostrar
+	set_letter_font_size()
 	label_letra.visible = true
 	celda_mostrada = true
 	bloqueada = true

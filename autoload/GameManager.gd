@@ -72,6 +72,7 @@ var pistas_actuales: Array[String] = []
 var hint_runtime_word := ""
 var hint_runtime_letter := ""
 var hint_runtime_extra_words: PackedStringArray = PackedStringArray()
+var hint_runtime_vowel_tokens: PackedStringArray = PackedStringArray()
 
 
 @export var canvas_wide:int = 1000
@@ -88,9 +89,14 @@ var hint_runtime_extra_words: PackedStringArray = PackedStringArray()
 ] # 27 letters
 
 @export var EXCLUIR: Array = [
-	"1", "2", "3","4", "5", "6", "7", "8", "9","0",",", ".", ";", ":", "-", "-", " ", "?", "¿", "¡", "!", "#", "@",
-	"$", "%", "&", "/", "(", ")", "=", "+", "*", "}", "{", "<",
-	">", "_", "\\", "º", "`", "´", "^", "«", "»"]
+	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+	",", ".", ";", ":", "-", "—", "–", " ", "\n", "\t",
+	"?", "¿", "¡", "!", "#", "@", "$", "%", "&", "/",
+	"(", ")", "[", "]", "=", "+", "*", "}", "{", "<", ">",
+	"_", "\\", "|", "~", "º", "°", "`", "´", "^", "«", "»",
+	"\"", "'", "“", "”", "„", "‘", "’", "…", "·", "•",
+	"\u00a0", "\u200b"
+]
 	
 @export var game_scale:Vector2 = Vector2(1,1)
 
@@ -469,6 +475,7 @@ func _inicializar_datos():
 	hint_runtime_word = ""
 	hint_runtime_letter = ""
 	hint_runtime_extra_words = PackedStringArray()
+	hint_runtime_vowel_tokens = PackedStringArray()
 	
 	vocalesAE_compradas = 0
 	vocalesIOU_compradas = 0
@@ -541,6 +548,7 @@ func export_attempt_state() -> Dictionary:
 		"hint_runtime_word": hint_runtime_word,
 		"hint_runtime_letter": hint_runtime_letter,
 		"hint_runtime_extra_words": Array(hint_runtime_extra_words),
+		"hint_runtime_vowel_tokens": Array(hint_runtime_vowel_tokens),
 	}
 
 
@@ -592,6 +600,9 @@ func import_attempt_state(state: Dictionary) -> void:
 	hint_runtime_letter = str(state.get("hint_runtime_letter", ""))
 	hint_runtime_extra_words = PackedStringArray(
 		state.get("hint_runtime_extra_words", [])
+	)
+	hint_runtime_vowel_tokens = PackedStringArray(
+		state.get("hint_runtime_vowel_tokens", [])
 	)
 	_penalized_hints = (
 		state.get("penalized_hints", {}) as Dictionary
@@ -648,19 +659,67 @@ func ensure_hint_extra_word() -> String:
 	return str(words[0]) if words.size() > 0 else ""
 
 
+func ensure_hint_vowel_numbers() -> PackedStringArray:
+	if hint_runtime_vowel_tokens.size() == 5:
+		return hint_runtime_vowel_tokens
+	hint_runtime_vowel_tokens = _pick_vowel_number_tokens()
+	return hint_runtime_vowel_tokens
+
+
+func _pick_vowel_number_tokens() -> PackedStringArray:
+	var present: Dictionary = {}
+	for character in frase_original:
+		var key := _hint_letter_key(character)
+		if key == "A" or key == "E" or key == "I" or key == "O" or key == "U":
+			present[key] = true
+	var tokens: PackedStringArray = []
+	for vowel in ["A", "E", "I", "O", "U"]:
+		if present.has(vowel):
+			tokens.append(str(letra_a_numero(vowel) + 1))
+		else:
+			tokens.append("-")
+	var order := [0, 1, 2, 3, 4]
+	order.shuffle()
+	var shuffled: PackedStringArray = []
+	for index in order:
+		shuffled.append(tokens[index])
+	return shuffled
+
+
+func is_excluded_character(character: String) -> bool:
+	if character.is_empty():
+		return true
+	if EXCLUIR.has(character):
+		return true
+	return not is_playable_letter(character)
+
+
+func is_playable_letter(character: String) -> bool:
+	var key := _hint_letter_key(character)
+	if key.is_empty():
+		return false
+	return letters_aphabet_array.has(key)
+
+
 func _hint_letter_key(character: String) -> String:
 	var letter := character.to_upper()
 	match letter:
-		"Á", "À", "Ä":
+		"Á", "À", "Ä", "Â", "Ã", "Å":
 			return "A"
-		"É", "È", "Ë":
+		"É", "È", "Ë", "Ê":
 			return "E"
-		"Í", "Ì", "Ï":
+		"Í", "Ì", "Ï", "Î":
 			return "I"
-		"Ó", "Ò", "Ö":
+		"Ó", "Ò", "Ö", "Ô", "Õ":
 			return "O"
-		"Ú", "Ù", "Ü":
+		"Ú", "Ù", "Ü", "Û":
 			return "U"
+		"Ç":
+			return "C"
+		"ß":
+			return "S"
+		"Ý", "Ÿ":
+			return "Y"
 		_:
 			return letter
 
@@ -671,7 +730,7 @@ func _phrase_words() -> Array[Dictionary]:
 	var indices: Array[int] = []
 	for index in frase_original.length():
 		var character := frase_original.substr(index, 1)
-		if EXCLUIR.has(character):
+		if is_excluded_character(character):
 			if current.length() > 0:
 				words.append({
 					"text": current,
@@ -722,7 +781,7 @@ func _pick_most_common_length_word() -> String:
 func _known_locked_letters() -> Dictionary:
 	var known := {}
 	for character in letras_iniciales.to_upper():
-		if EXCLUIR.has(character):
+		if is_excluded_character(character):
 			continue
 		known[_hint_letter_key(character)] = true
 	if not is_inside_tree():
@@ -741,7 +800,7 @@ func _pick_most_repeated_hidden_letter() -> String:
 	var known := _known_locked_letters()
 	var counts := {}
 	for character in frase_original:
-		if EXCLUIR.has(character) or character == " ":
+		if is_excluded_character(character):
 			continue
 		var key := _hint_letter_key(character)
 		if known.has(key):
@@ -820,7 +879,7 @@ func reveal_assignment_errors() -> int:
 	var correct_letters: Dictionary = {}
 	var initial_letters: Dictionary = {}
 	for character in letras_iniciales.to_upper():
-		if not EXCLUIR.has(character):
+		if not is_excluded_character(character):
 			initial_letters[character] = true
 			correct_letters[character] = true
 	for node: Node in get_tree().get_nodes_in_group("Celda"):
@@ -899,19 +958,8 @@ func _inicializar_lista_letras(frase: String) -> void:
 		lista_letras_frase_original.append(frase[i])
 		
 		var c := frase[i]
-		if not EXCLUIR.has(c):
-			if c=="Á":
-				lista_letras_frase_original_sin_espacios_ni_puntuacion.append("A")
-			elif c=="É":
-				lista_letras_frase_original_sin_espacios_ni_puntuacion.append("E")
-			elif c=="Í":
-				lista_letras_frase_original_sin_espacios_ni_puntuacion.append("I")
-			elif c=="Ó":
-				lista_letras_frase_original_sin_espacios_ni_puntuacion.append("O")
-			elif c=="Ú":
-				lista_letras_frase_original_sin_espacios_ni_puntuacion.append("U")
-			else: 
-				lista_letras_frase_original_sin_espacios_ni_puntuacion.append(c)
+		if not is_excluded_character(c):
+			lista_letras_frase_original_sin_espacios_ni_puntuacion.append(_hint_letter_key(c))
 			
 	numero_letras_a_revelar_originales = lista_letras_frase_original_sin_espacios_ni_puntuacion.size()
 	
@@ -961,22 +1009,14 @@ func get_comentario_color(id_color: int) -> String:
 func _inicializar_lista_numeros_original():
 	lista_numeros_frase_original.clear()
 	for i in lista_letras_frase_original.size():
-		lista_numeros_frase_original.append(letra_a_numero(lista_letras_frase_original[i])+1)
-		
+		var ch: String = lista_letras_frase_original[i]
+		if is_excluded_character(ch):
+			lista_numeros_frase_original.append(101)
+		else:
+			lista_numeros_frase_original.append(letra_a_numero(ch) + 1)
+
 func letra_a_numero(letra_input: String) -> int:
-	var letra_temp: String
-	letra_temp = letra_input
-	if letra_input == "Á":
-		letra_temp = "A"
-	elif letra_input == "É":
-		letra_temp = "E"
-	elif letra_input == "Í":
-		letra_temp = "I"
-	elif letra_input == "Ó":
-		letra_temp = "O"
-	elif letra_input == "Ú":
-		letra_temp = "U"
-	
+	var letra_temp := _hint_letter_key(letra_input)
 	for i in letters_aphabet_array.size():
 		if letters_aphabet_array[i] == letra_temp:
 			return lista_numeros[i]
@@ -1089,6 +1129,8 @@ func update_numero_letras_reveladas(check_solution: bool = false) -> void:
 	
 	var total := 0
 	for n in get_tree().get_nodes_in_group("Celda"):
+		if n.numero >= 100:
+			continue
 		if n.celda_mostrada:
 			total += 1
 	

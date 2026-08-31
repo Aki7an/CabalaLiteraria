@@ -919,7 +919,7 @@ func _phrase_letter_count(text: String) -> int:
 	var count := 0
 	var normalized := GameManager.normalizar_frase_idioma(text, _current_language)
 	for character in normalized:
-		if not GameManager.EXCLUIR.has(character):
+		if not GameManager.is_excluded_character(character):
 			count += 1
 	return count
 

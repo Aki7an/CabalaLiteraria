@@ -940,7 +940,7 @@ func _count_puzzle_letters(text: String) -> int:
 		text,
 		GameManager.locale_code()
 	):
-		if not GameManager.EXCLUIR.has(character):
+		if not GameManager.is_excluded_character(character):
 			count += 1
 	return count
 
