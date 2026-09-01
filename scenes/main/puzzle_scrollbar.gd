@@ -2,12 +2,11 @@ extends Panel
 
 @onready var thumb: Control = $Thumb
 @onready var thumb_visual: Panel = $Thumb/Visual
-@onready var page_up: Button = $PageUp
-@onready var page_down: Button = $PageDown
 @onready var canvas: Control = $"../CanvasJuego"
 
 const THUMB_MIN_HEIGHT := 240.0
 const VISUAL_WIDTH_RATIO := 0.5
+const EDGE_PADDING := 4.0
 
 var _dragging := false
 var _drag_offset_y := 0.0
@@ -37,15 +36,11 @@ func _on_rail_gui_input(event: InputEvent) -> void:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.button_index != MOUSE_BUTTON_LEFT or not mouse_event.pressed:
 			return
-		if _is_over_page_button(mouse_event.position):
-			return
 		_begin_drag_at(mouse_event.position.y)
 		accept_event()
 	elif event is InputEventScreenTouch:
 		var touch := event as InputEventScreenTouch
 		if not touch.pressed:
-			return
-		if _is_over_page_button(touch.position):
 			return
 		_active_touch_index = touch.index
 		_begin_drag_at(touch.position.y)
@@ -110,10 +105,6 @@ func _begin_drag_at(local_y: float) -> void:
 	_move_thumb_to(local_y - _drag_offset_y)
 
 
-func _is_over_page_button(local_pos: Vector2) -> bool:
-	return page_up.get_rect().has_point(local_pos) or page_down.get_rect().has_point(local_pos)
-
-
 func _ensure_thumb_size() -> void:
 	var hit_width := maxf(size.x - 16.0, 72.0)
 	var height := maxf(thumb.size.y, THUMB_MIN_HEIGHT)
@@ -144,6 +135,6 @@ func _sync_thumb_to_canvas() -> void:
 
 
 func _thumb_limits() -> Vector2:
-	var top := page_up.position.y + page_up.size.y + 12.0
-	var bottom := page_down.position.y - thumb.size.y - 12.0
+	var top := EDGE_PADDING
+	var bottom := size.y - thumb.size.y - EDGE_PADDING
 	return Vector2(top, maxf(top, bottom))
