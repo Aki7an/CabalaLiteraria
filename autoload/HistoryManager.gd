@@ -709,8 +709,21 @@ func get_stats_dashboard() -> Dictionary:
 			elif score_est > 0:
 				best["stars"] = 1
 
+	var stars_quick := 0
+	var stars_cryptogram := 0
+	for row_value in progress.get(GameManager.MODE_QUICK, []):
+		if row_value is Dictionary:
+			stars_quick += int(row_value.get("stars_earned", 0))
+	for row_value in progress.get(GameManager.MODE_CRYPTOGRAM, []):
+		if row_value is Dictionary:
+			stars_cryptogram += int(row_value.get("stars_earned", 0))
+
 	return {
 		"matches": matches,
+		"matches_quick": int(matches_by_mode[GameManager.MODE_QUICK]),
+		"matches_cryptogram": int(matches_by_mode[GameManager.MODE_CRYPTOGRAM]),
+		"stars_quick": stars_quick,
+		"stars_cryptogram": stars_cryptogram,
 		"wins": wins,
 		"completed_puzzles": int(global_record.get("completed", completed_puzzles.size())),
 		"total_puzzles": int(global_record.get("available_puzzles", 0)),

@@ -207,11 +207,11 @@ func normalize_category(raw: String) -> String:
 	match key:
 		"efemeride", "efemerides", "event", "events", "ereignis", "gertaera", "evenement", "evento":
 			return CAT_EFEMERIDE
-		"cita", "citas", "appointment":
+		"cita", "citas", "cita celebre", "appointment":
 			return CAT_CITA
 		"curiosidades", "curiosities":
 			return CAT_CURIOSIDADES
-		"fragmento", "fragment", "fragmentos":
+		"fragmento", "fragment", "fragmentos", "fragmento literario":
 			return CAT_FRAGMENTO
 		_:
 			return key
@@ -521,7 +521,7 @@ func reset_puzzle_stars() -> void:
 
 func get_puzzle_difficulty_stars(difficulty: int = -1) -> int:
 	var value := dificultad_actual if difficulty < 0 else difficulty
-	return clampi(value, 1, 4)
+	return clampi(value, 1, 5)
 
 
 func export_attempt_state() -> Dictionary:

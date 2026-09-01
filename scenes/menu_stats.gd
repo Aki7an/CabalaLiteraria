@@ -12,8 +12,8 @@ const COLOR_CARD := Color(1, 0.984, 0.953, 0.98)
 const COLOR_TEAL := Color(0.165, 0.655, 0.647, 1)
 const COLOR_TEAL_SOFT := Color(0.82, 0.93, 0.91, 1)
 const COLOR_BLUE := Color(0.72, 0.88, 0.95, 1)
-const COLOR_GREEN := Color(0.78, 0.91, 0.78, 1)
-const COLOR_ORANGE := Color(0.98, 0.84, 0.72, 1)
+const COLOR_YELLOW_PASTEL := Color(1.0, 0.95, 0.78, 1)
+const COLOR_ORANGE_PASTEL := Color(1.0, 0.90, 0.80, 1)
 const COLOR_FAIL := Color(0.86, 0.27, 0.27, 1)
 
 const TEX_TROPHY := preload("res://images/stats_icon_trophy.svg")
@@ -44,9 +44,9 @@ const LOCALIZED := {
 		"subtitle": "Tu progreso en CifraLetra",
 		"games": "Partidas",
 		"games_sub": "",
-		"wins": "Tiempo medio rápida",
+		"wins": "Partidas rápidas",
 		"wins_sub": "",
-		"time": "Tiempo medio criptograma",
+		"time": "Partidas criptograma",
 		"time_sub": "",
 		"perfect_title": "Puzles perfectos",
 		"fastest_title": "Puzle más rápido",
@@ -71,9 +71,9 @@ const LOCALIZED := {
 		"subtitle": "Your progress in CifraLetra",
 		"games": "Games",
 		"games_sub": "",
-		"wins": "Average time quick",
+		"wins": "Quick games",
 		"wins_sub": "",
-		"time": "Average time cryptogram",
+		"time": "Cryptogram games",
 		"time_sub": "",
 		"perfect_title": "Perfect puzzles",
 		"fastest_title": "Fastest puzzle",
@@ -98,9 +98,9 @@ const LOCALIZED := {
 		"subtitle": "Zure aurrerapena CifraLetra-n",
 		"games": "Partidak",
 		"games_sub": "",
-		"wins": "Batez besteko azkarra",
+		"wins": "Partida azkarrak",
 		"wins_sub": "",
-		"time": "Batez besteko kriptograma",
+		"time": "Kriptograma partidak",
 		"time_sub": "",
 		"perfect_title": "Puzzle perfectuak",
 		"fastest_title": "Puzzle azkarrena",
@@ -131,8 +131,12 @@ var _kpi_games: Label
 var _kpi_games_sub: Label
 var _kpi_wins: Label
 var _kpi_wins_sub: Label
+var _kpi_wins_title: Label
+var _kpi_wins_stars: Label
 var _kpi_time: Label
 var _kpi_time_sub: Label
+var _kpi_time_title: Label
+var _kpi_time_stars: Label
 var _hint_labels: Dictionary = {}
 var _avg_quick_value: Label
 var _avg_crypto_value: Label
@@ -192,15 +196,23 @@ func _apply_localized_static() -> void:
 	_hint_labels["hints_title"].text = _copy("hints_used")
 	_hint_labels["letters_title"].text = _copy("letters_revealed")
 	_hint_labels["failed_title"].text = _copy("letters_failed")
+	if _kpi_wins_title:
+		_kpi_wins_title.text = _copy("wins")
+	if _kpi_time_title:
+		_kpi_time_title.text = _copy("time")
 
 
 func _apply_kpis() -> void:
 	_kpi_games.text = str(int(_dashboard.get("matches", 0)))
 	_kpi_games_sub.text = ""
-	_kpi_wins.text = str(_dashboard.get("avg_quick_label", "0 s"))
+	_kpi_wins.text = str(int(_dashboard.get("matches_quick", 0)))
 	_kpi_wins_sub.text = ""
-	_kpi_time.text = str(_dashboard.get("avg_cryptogram_label", "0 s"))
+	_kpi_time.text = str(int(_dashboard.get("matches_cryptogram", 0)))
 	_kpi_time_sub.text = ""
+	if _kpi_wins_stars:
+		_kpi_wins_stars.text = str(int(_dashboard.get("stars_quick", 0)))
+	if _kpi_time_stars:
+		_kpi_time_stars.text = str(int(_dashboard.get("stars_cryptogram", 0)))
 
 
 func _apply_hints() -> void:
@@ -454,19 +466,44 @@ func _build_kpi_row() -> HBoxContainer:
 	_kpi_games_sub = games.get_node("Box/Sub")
 	row.add_child(games)
 
-	var wins := _make_kpi_card(COLOR_GREEN, TEX_CLOCK, _copy("wins"), "0 s", "")
+	var wins := _make_kpi_card(
+		COLOR_YELLOW_PASTEL,
+		TEX_QUICK,
+		_copy("wins"),
+		"0",
+		"",
+		GameManager.COLOR_STAR_QUICK
+	)
 	_kpi_wins = wins.get_node("Box/Value")
 	_kpi_wins_sub = wins.get_node("Box/Sub")
+	_kpi_wins_title = wins.get_node("Box/Title")
+	_kpi_wins_stars = wins.get_node("Box/StarLine/Count")
 	row.add_child(wins)
 
-	var time_card := _make_kpi_card(COLOR_ORANGE, TEX_CLOCK, _copy("time"), "0 s", "")
+	var time_card := _make_kpi_card(
+		COLOR_ORANGE_PASTEL,
+		TEX_CRYPTO,
+		_copy("time"),
+		"0",
+		"",
+		GameManager.COLOR_STAR_CRYPTOGRAM
+	)
 	_kpi_time = time_card.get_node("Box/Value")
 	_kpi_time_sub = time_card.get_node("Box/Sub")
+	_kpi_time_title = time_card.get_node("Box/Title")
+	_kpi_time_stars = time_card.get_node("Box/StarLine/Count")
 	row.add_child(time_card)
 	return row
 
 
-func _make_kpi_card(bg: Color, icon_tex: Texture2D, title: String, value: String, sub: String) -> PanelContainer:
+func _make_kpi_card(
+	bg: Color,
+	icon_tex: Texture2D,
+	title: String,
+	value: String,
+	sub: String,
+	star_color: Color = Color(0, 0, 0, 0)
+) -> PanelContainer:
 	var card := PanelContainer.new()
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	card.custom_minimum_size = Vector2(0, 280)
@@ -513,7 +550,32 @@ func _make_kpi_card(bg: Color, icon_tex: Texture2D, title: String, value: String
 	sub_l.add_theme_font_override("font", FONT_REGULAR)
 	sub_l.add_theme_font_size_override("font_size", 18)
 	sub_l.add_theme_color_override("font_color", COLOR_MUTED)
+	sub_l.visible = not sub.is_empty() and star_color.a <= 0.0
 	box.add_child(sub_l)
+
+	var star_line := HBoxContainer.new()
+	star_line.name = "StarLine"
+	star_line.alignment = BoxContainer.ALIGNMENT_CENTER
+	star_line.add_theme_constant_override("separation", 8)
+	star_line.visible = star_color.a > 0.0
+	box.add_child(star_line)
+
+	var star_icon := TextureRect.new()
+	star_icon.name = "Icon"
+	star_icon.texture = TEX_STAR
+	star_icon.custom_minimum_size = Vector2(40, 40)
+	star_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	star_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	star_icon.modulate = star_color if star_color.a > 0.0 else Color.WHITE
+	star_line.add_child(star_icon)
+
+	var star_count := Label.new()
+	star_count.name = "Count"
+	star_count.text = "0"
+	star_count.add_theme_font_override("font", FONT_TITLE)
+	star_count.add_theme_font_size_override("font_size", 36)
+	star_count.add_theme_color_override("font_color", COLOR_INK)
+	star_line.add_child(star_count)
 	return card
 
 
@@ -870,11 +932,11 @@ func _build_results_card() -> PanelContainer:
 	body.add_theme_constant_override("separation", 18)
 	box.add_child(body)
 
-	var perfect := _make_kpi_card(COLOR_GREEN, TEX_WREATH, _copy("perfect_title"), "0", "")
+	var perfect := _make_kpi_card(COLOR_CARD, TEX_WREATH, _copy("perfect_title"), "0", "")
 	_results_total = perfect.get_node("Box/Value")
 	body.add_child(perfect)
 
-	var fastest := _make_kpi_card(COLOR_ORANGE, TEX_CLOCK, _copy("fastest_title"), "—", "—")
+	var fastest := _make_kpi_card(COLOR_CARD, TEX_CLOCK, _copy("fastest_title"), "—", "—")
 	_results_percent = fastest.get_node("Box/Value")
 	_results_average = fastest.get_node("Box/Sub")
 	body.add_child(fastest)

@@ -913,7 +913,7 @@ func _copy(key: String) -> String:
 
 
 func _difficulty_to_stars(difficulty: int) -> int:
-	return clampi(difficulty, 1, 4)
+	return clampi(difficulty, 1, 5)
 
 
 func _star_icons(filled: int, total: int, size: int, color: Color) -> HBoxContainer:

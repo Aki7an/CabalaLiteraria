@@ -3,7 +3,7 @@ extends Control
 const PATH_MAIN := "res://scenes/MenuMain.tscn"
 const JSON_DIR := "res://data"
 const IMAGE_DIR := "res://data/images"
-const EDITOR_DESIGN_SIZE := Vector2i(2412, 1400)
+const EDITOR_DESIGN_SIZE := Vector2i(2412, 1620)
 const STAR_ON := preload("res://images/estrella_plano.png")
 const STAR_OFF := preload("res://images/contorno_estrella.png")
 
@@ -63,17 +63,19 @@ const FILTER_ALL := "all"
 
 @onready var id_field: SpinBox = %IdField
 @onready var image_field: SpinBox = %ImageField
-@onready var difficulty_field: SpinBox = %DifficultyField
+@onready var difficulty_buttons: HBoxContainer = %DifficultyButtons
 @onready var category_field: OptionButton = %CategoryField
 
 @onready var phrase_field: TextEdit = %PhraseField
+@onready var source_field: LineEdit = %SourceField
 @onready var initial_letters_field: TextEdit = %InitialLettersField
 @onready var description_init_field: TextEdit = %DescriptionInitField
 @onready var completion_field: TextEdit = %CompletionField
-@onready var hint_1_field: TextEdit = %Hint1Field
-@onready var hint_2_field: TextEdit = %Hint2Field
-@onready var hint_3_field: TextEdit = %Hint3Field
-@onready var hint_4_field: TextEdit = %Hint4Field
+@onready var estimated_difficulty_slider: HSlider = %EstimatedDifficultySlider
+@onready var estimated_difficulty_value: Label = %EstimatedDifficultyValue
+@onready var measured_difficulty_slider: HSlider = %MeasuredDifficultySlider
+@onready var measured_difficulty_value: Label = %MeasuredDifficultyValue
+@onready var test_users_field: SpinBox = %TestUsersField
 
 var _levels: Array[Dictionary] = []
 var _current_index := -1
@@ -121,7 +123,7 @@ func _configure_editor_window() -> void:
 	window.content_scale_size = EDITOR_DESIGN_SIZE
 	if DisplayServer.get_name() == "headless":
 		return
-	window.size = Vector2i(1500, 870)
+	window.size = Vector2i(1860, 1250)
 	var screen_size := DisplayServer.screen_get_size()
 	window.position = Vector2i(
 		maxi(0, int((screen_size.x - window.size.x) / 2)),
@@ -162,17 +164,19 @@ func _connect_field_changes() -> void:
 		initial_letters_field,
 		description_init_field,
 		completion_field,
-		hint_1_field,
-		hint_2_field,
-		hint_3_field,
-		hint_4_field,
 	]:
 		(text_field as TextEdit).text_changed.connect(_on_field_changed)
+	source_field.text_changed.connect(_on_source_changed)
 	id_field.value_changed.connect(_on_numeric_field_changed)
 	image_field.value_changed.connect(_on_image_number_changed)
-	difficulty_field.value_changed.connect(_on_difficulty_changed)
+	for child in difficulty_buttons.get_children():
+		if child is Button:
+			(child as Button).toggled.connect(_on_difficulty_toggled)
 	category_field.item_selected.connect(_on_category_changed)
 	mode_field.item_selected.connect(_on_mode_changed)
+	estimated_difficulty_slider.value_changed.connect(_on_estimated_difficulty_changed)
+	measured_difficulty_slider.value_changed.connect(_on_measured_difficulty_changed)
+	test_users_field.value_changed.connect(_on_numeric_field_changed)
 
 
 func _load_language(language_code: String) -> void:
@@ -213,17 +217,26 @@ func _populate_current_level() -> void:
 	id_field.value = int(level.get("index", _current_index + 1))
 	jump_id.value = id_field.value
 	image_field.value = int(level.get("image_number", -1))
-	difficulty_field.value = clampi(int(level.get("difficulty", 1)), 1, 4)
+	_set_difficulty(int(level.get("difficulty", 1)))
 	_select_category(str(level.get("category", "")))
 	_select_option_by_metadata(mode_field, GameManager.level_game_mode(level))
 	phrase_field.text = str(level.get("text", ""))
 	initial_letters_field.text = str(level.get("letters_init", ""))
 	description_init_field.text = str(level.get("description_init", ""))
 	completion_field.text = str(level.get("description_end", ""))
-	hint_1_field.text = str(level.get("hint_1", ""))
-	hint_2_field.text = str(level.get("hint_2", ""))
-	hint_3_field.text = str(level.get("hint_3", ""))
-	hint_4_field.text = str(level.get("hint_4", ""))
+	source_field.text = str(level.get("source", ""))
+	estimated_difficulty_slider.value = clampi(
+		int(level.get("difficulty_estimated", 0)),
+		0,
+		10
+	)
+	measured_difficulty_slider.value = clampi(
+		int(level.get("difficulty_measured", 0)),
+		0,
+		10
+	)
+	test_users_field.value = maxi(0, int(level.get("test_users", 0)))
+	_sync_slider_labels()
 	_loading_fields = false
 	_update_derived_fields()
 	_update_navigation()
@@ -242,12 +255,12 @@ func _capture_current_level() -> void:
 	level["description_end"] = completion_field.text.strip_edges()
 	level["category"] = _selected_metadata(category_field)
 	level["language"] = _current_language
-	level["difficulty"] = int(difficulty_field.value)
+	level["difficulty"] = _selected_difficulty()
 	level["game_mode"] = _selected_metadata(mode_field)
-	level["hint_1"] = hint_1_field.text.strip_edges()
-	level["hint_2"] = hint_2_field.text.strip_edges()
-	level["hint_3"] = hint_3_field.text.strip_edges()
-	level["hint_4"] = hint_4_field.text.strip_edges()
+	level["source"] = source_field.text.strip_edges()
+	level["difficulty_estimated"] = int(estimated_difficulty_slider.value)
+	level["difficulty_measured"] = int(measured_difficulty_slider.value)
+	level["test_users"] = int(test_users_field.value)
 	level["Longitud frase"] = _phrase_letter_count(phrase_field.text)
 	_levels[_current_index] = level
 
@@ -317,6 +330,10 @@ func _on_new_button_pressed() -> void:
 		"hint_2": "",
 		"hint_3": "",
 		"hint_4": "",
+		"source": "",
+		"difficulty_estimated": 0,
+		"difficulty_measured": 0,
+		"test_users": 0,
 		"Longitud frase": 0,
 	}
 	if _selected_metadata(filter_category) != FILTER_ALL:
@@ -695,7 +712,9 @@ func _on_image_number_changed(_value: float) -> void:
 	_update_image()
 
 
-func _on_difficulty_changed(_value: float) -> void:
+func _on_difficulty_toggled(pressed: bool) -> void:
+	if not pressed:
+		return
 	_on_field_changed()
 	_update_difficulty()
 
@@ -707,6 +726,25 @@ func _on_category_changed(_index: int) -> void:
 func _on_mode_changed(_index: int) -> void:
 	_on_field_changed()
 	_update_mode_style()
+
+
+func _on_source_changed(_new_text: String) -> void:
+	_on_field_changed()
+
+
+func _on_estimated_difficulty_changed(value: float) -> void:
+	estimated_difficulty_value.text = str(int(value))
+	_on_field_changed()
+
+
+func _on_measured_difficulty_changed(value: float) -> void:
+	measured_difficulty_value.text = str(int(value))
+	_on_field_changed()
+
+
+func _sync_slider_labels() -> void:
+	estimated_difficulty_value.text = str(int(estimated_difficulty_slider.value))
+	measured_difficulty_value.text = str(int(measured_difficulty_slider.value))
 
 
 func _update_derived_fields() -> void:
@@ -728,15 +766,14 @@ func _update_mode_style() -> void:
 
 
 func _update_difficulty() -> void:
-	var difficulty := clampi(int(difficulty_field.value), 1, 4)
-	var maximum_stars := GameManager.get_puzzle_difficulty_stars(difficulty)
+	var difficulty := _selected_difficulty()
 	var mode := _selected_metadata(mode_field)
 	for index in range(_star_nodes.size()):
 		var star := _star_nodes[index]
-		star.texture = STAR_ON if index < maximum_stars else STAR_OFF
+		star.texture = STAR_ON if index < difficulty else STAR_OFF
 		star.modulate = (
 			GameManager.star_fill_color(mode)
-			if index < maximum_stars
+			if index < difficulty
 			else Color(0.45, 0.35, 0.26, 0.42)
 		)
 
@@ -924,6 +961,22 @@ func _phrase_letter_count(text: String) -> int:
 	return count
 
 
+func _selected_difficulty() -> int:
+	for index in range(difficulty_buttons.get_child_count()):
+		var button := difficulty_buttons.get_child(index) as Button
+		if button != null and button.button_pressed:
+			return index + 1
+	return 1
+
+
+func _set_difficulty(value: int) -> void:
+	var selected := clampi(value, 1, 5)
+	for index in range(difficulty_buttons.get_child_count()):
+		var button := difficulty_buttons.get_child(index) as Button
+		if button != null:
+			button.set_pressed_no_signal(index + 1 == selected)
+
+
 func _select_category(category: String) -> void:
 	var normalized := GameManager.normalize_category(category)
 	for index in range(category_field.item_count):
@@ -951,7 +1004,13 @@ func _show_empty_state() -> void:
 	_loading_fields = true
 	position_label.text = "0 / 0"
 	phrase_field.text = ""
+	source_field.text = ""
 	completion_field.text = ""
+	estimated_difficulty_slider.value = 0
+	measured_difficulty_slider.value = 0
+	_set_difficulty(1)
+	test_users_field.value = 0
+	_sync_slider_labels()
 	image_preview.texture = null
 	_loading_fields = false
 	_update_filter_labels()
