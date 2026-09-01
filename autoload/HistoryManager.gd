@@ -160,6 +160,7 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 		"pistas_consumidas_1": GameManager.pistas_utilizadas_1,
 		"pistas_consumidas_2": GameManager.pistas_utilizadas_2,
 		"revelaciones_falladas": int(GameManager.reveal_errors_count),
+		"revelaciones_correctas": int(GameManager.reveal_success_count),
 		"vidas_perdidas": _calcula_vidas_perdidas(),
 		"completed_unix": int(Time.get_unix_time_from_system()),
 	}
@@ -583,11 +584,7 @@ func get_stats_dashboard() -> Dictionary:
 			+ int(e.get("pistas_consumidas_2", 0))
 		)
 		searches += int(e.get("pistas_consumidas_2", 0))
-		letters_revealed += (
-			int(e.get("consonantes_compradas", 0))
-			+ int(e.get("vocales_compradas_AE", 0))
-			+ int(e.get("vocales_compradas_IOU", 0))
-		)
+		letters_revealed += int(e.get("revelaciones_correctas", 0))
 		letters_failed += int(e.get("revelaciones_falladas", 0))
 
 		var stars := int(e.get("estrellas", -1))

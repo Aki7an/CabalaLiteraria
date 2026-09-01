@@ -25,6 +25,7 @@ extends Node
 var _penalized_reveal_errors: Dictionary = {}
 var _penalized_hints: Dictionary = {}
 var reveal_errors_count: int = 0
+var reveal_success_count: int = 0
 
 @export var player_name: String = ""
 var allow_completed_replay := false
@@ -516,6 +517,7 @@ func reset_puzzle_stars() -> void:
 	_penalized_reveal_errors.clear()
 	_penalized_hints.clear()
 	reveal_errors_count = 0
+	reveal_success_count = 0
 	SignalManager.update_puzzle_stars.emit(puzzle_stars)
 
 
@@ -538,6 +540,7 @@ func export_attempt_state() -> Dictionary:
 		"vocalesAE_compradas": vocalesAE_compradas,
 		"vocalesIOU_compradas": vocalesIOU_compradas,
 		"reveal_errors_count": reveal_errors_count,
+		"reveal_success_count": reveal_success_count,
 		"penalized_hints": _penalized_hints.duplicate(true),
 		"penalized_reveal_errors": _penalized_reveal_errors.duplicate(true),
 		"tiempo_partida": tiempo_partida,
@@ -591,6 +594,7 @@ func import_attempt_state(state: Dictionary) -> void:
 	vocalesAE_compradas = int(state.get("vocalesAE_compradas", 0))
 	vocalesIOU_compradas = int(state.get("vocalesIOU_compradas", 0))
 	reveal_errors_count = int(state.get("reveal_errors_count", 0))
+	reveal_success_count = int(state.get("reveal_success_count", 0))
 	tiempo_partida = int(state.get("tiempo_partida", 0))
 	lives = int(state.get("lives", lives))
 	score = int(state.get("score", score_init))
@@ -873,6 +877,7 @@ func _pick_remaining_hint_words() -> PackedStringArray:
 
 func reveal_assignment_errors() -> int:
 	var new_errors := 0
+	var new_successes := 0
 	var wrong_numbers: Dictionary = {}
 	var correct_numbers: Dictionary = {}
 	var wrong_letters: Dictionary = {}
@@ -890,6 +895,8 @@ func reveal_assignment_errors() -> int:
 			continue
 		var player_letter := cell.letter_user.to_upper()
 		if letra_corresponde_a_numero(cell.letter_user, cell.numero):
+			if not cell.bloqueada and not correct_numbers.has(cell.numero):
+				new_successes += 1
 			correct_numbers[cell.numero] = true
 			correct_letters[player_letter] = true
 			cell.mostrar_letra()
@@ -923,6 +930,7 @@ func reveal_assignment_errors() -> int:
 		new_errors += 1
 
 	reveal_errors_count += new_errors
+	reveal_success_count += new_successes
 	subtract_puzzle_stars(new_errors)
 	update_numero_letras_reveladas(true)
 	PuzzleSaveManager.request_autosave()

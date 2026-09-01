@@ -21,7 +21,6 @@ const TEX_WREATH := preload("res://images/stats_icon_wreath.svg")
 const TEX_CLOCK := preload("res://images/stats_icon_clock.svg")
 const TEX_STAR := preload("res://images/estrella_plano.png")
 const TEX_STAR_OFF := preload("res://images/contorno_estrella.png")
-const TEX_TIMER := preload("res://GUI/Library/Demo/Demo_Icon/Icon_ColorIcon_Timer.png")
 const TEX_BULB := preload("res://images/Bombilla.png")
 const TEX_SEARCH := preload("res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Search.png")
 const TEX_CROSS := preload("res://images/Cruz.png")
@@ -37,6 +36,7 @@ const TEX_FRAG := preload("res://images/FragmentosLiterarios.png")
 const FONT_TITLE := preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
 const FONT_BODY := preload("res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf")
 const FONT_REGULAR := preload("res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf")
+const SECTION_TITLE_SIZE := 48
 
 const LOCALIZED := {
 	"es": {
@@ -57,7 +57,7 @@ const LOCALIZED := {
 		"hints_title": "USO DE AYUDAS",
 		"hints_used": "PISTAS USADAS",
 		"letters_revealed": "LETRAS REVELADAS",
-		"letters_failed": "LETRAS REVELADAS FALLADAS",
+		"letters_failed": "LETRAS FALLADAS",
 		"avg_title": "TIEMPO MEDIO POR PARTIDA",
 		"results_title": "MARCAS PERSONALES",
 		"results_total": "%d / %d ★",
@@ -84,7 +84,7 @@ const LOCALIZED := {
 		"hints_title": "HINTS USED",
 		"hints_used": "HINTS USED",
 		"letters_revealed": "LETTERS REVEALED",
-		"letters_failed": "FAILED LETTER REVEALS",
+		"letters_failed": "FAILED LETTERS",
 		"avg_title": "AVERAGE TIME PER GAME",
 		"results_title": "PERSONAL MARKS",
 		"results_total": "%d / %d ★",
@@ -367,11 +367,12 @@ func _build_ui() -> void:
 	var scroll := ScrollContainer.new()
 	scroll.name = "Scroll"
 	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	scroll.offset_left = 36
-	scroll.offset_top = 280
-	scroll.offset_right = -36
-	scroll.offset_bottom = -36
+	scroll.offset_left = 28
+	scroll.offset_top = 204
+	scroll.offset_right = -28
+	scroll.offset_bottom = -28
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.clip_contents = true
 	panel.add_child(scroll)
 
 	var content := VBoxContainer.new()
@@ -380,7 +381,11 @@ func _build_ui() -> void:
 	content.add_theme_constant_override("separation", 28)
 	scroll.add_child(content)
 	var sync_width := func() -> void:
-		content.custom_minimum_size.x = maxf(scroll.size.x, 1.0)
+		var available := scroll.size.x
+		var vbar := scroll.get_v_scroll_bar()
+		if vbar != null and vbar.visible:
+			available -= vbar.size.x
+		content.custom_minimum_size.x = maxf(available - 2.0, 1.0)
 	scroll.resized.connect(sync_width)
 
 	content.add_child(_build_kpi_row())
@@ -388,10 +393,9 @@ func _build_ui() -> void:
 	content.add_child(_build_hints_card())
 	content.add_child(_build_avg_card())
 	content.add_child(_build_results_card())
-	content.add_child(_build_update_note())
 
 	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(0, 40)
+	spacer.custom_minimum_size = Vector2(0, 20)
 	content.add_child(spacer)
 	sync_width.call_deferred()
 
@@ -400,19 +404,19 @@ func _build_header() -> Control:
 	var header := Control.new()
 	header.name = "Header"
 	header.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	header.offset_bottom = 260
+	header.offset_bottom = 192
 
 	var back := STANDARD_BACK_BUTTON.instantiate() as Button
 	back.name = "ButtonBack"
-	back.position = Vector2(36, 48)
+	back.position = Vector2(28, 28)
 	back.pressed.connect(_on_button_back_pressed)
 	header.add_child(back)
 
 	_title_label = Label.new()
 	_title_label.name = "Title"
 	_title_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	_title_label.offset_top = 54
-	_title_label.offset_bottom = 140
+	_title_label.offset_top = 32
+	_title_label.offset_bottom = 118
 	_title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title_label.add_theme_font_override("font", FONT_TITLE)
 	_title_label.add_theme_font_size_override("font_size", 64)
@@ -424,7 +428,7 @@ func _build_header() -> Control:
 		{"text": "❧  ✦", "left": 866.0, "right": 1016.0},
 	]:
 		var ornament := Label.new()
-		ornament.position = Vector2(float(ornament_data["left"]), 64)
+		ornament.position = Vector2(float(ornament_data["left"]), 42)
 		ornament.size = Vector2(
 			float(ornament_data["right"]) - float(ornament_data["left"]),
 			72
@@ -461,13 +465,13 @@ func _build_kpi_row() -> HBoxContainer:
 	row.add_theme_constant_override("separation", 18)
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-	var games := _make_kpi_card(COLOR_BLUE, TEX_TROPHY, _copy("games"), "0", _copy("games_sub"))
+	var games := _make_kpi_card(COLOR_CARD, TEX_TROPHY, _copy("games"), "0", _copy("games_sub"))
 	_kpi_games = games.get_node("Box/Value")
 	_kpi_games_sub = games.get_node("Box/Sub")
 	row.add_child(games)
 
 	var wins := _make_kpi_card(
-		COLOR_YELLOW_PASTEL,
+		COLOR_CARD,
 		TEX_QUICK,
 		_copy("wins"),
 		"0",
@@ -481,7 +485,7 @@ func _build_kpi_row() -> HBoxContainer:
 	row.add_child(wins)
 
 	var time_card := _make_kpi_card(
-		COLOR_ORANGE_PASTEL,
+		COLOR_CARD,
 		TEX_CRYPTO,
 		_copy("time"),
 		"0",
@@ -502,11 +506,12 @@ func _make_kpi_card(
 	title: String,
 	value: String,
 	sub: String,
-	star_color: Color = Color(0, 0, 0, 0)
+	star_color: Color = Color(0, 0, 0, 0),
+	min_height: float = 240.0
 ) -> PanelContainer:
 	var card := PanelContainer.new()
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	card.custom_minimum_size = Vector2(0, 280)
+	card.custom_minimum_size = Vector2(0, min_height)
 	card.add_theme_stylebox_override("panel", _soft_card(bg, 28))
 
 	var box := VBoxContainer.new()
@@ -519,7 +524,7 @@ func _make_kpi_card(
 	icon.texture = icon_tex
 	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.custom_minimum_size = Vector2(72, 72)
+	icon.custom_minimum_size = Vector2(56 if min_height < 250.0 else 72, 56 if min_height < 250.0 else 72)
 	icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	box.add_child(icon)
 
@@ -538,7 +543,7 @@ func _make_kpi_card(
 	value_l.text = value
 	value_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	value_l.add_theme_font_override("font", FONT_TITLE)
-	value_l.add_theme_font_size_override("font_size", 64)
+	value_l.add_theme_font_size_override("font_size", 48 if min_height < 250.0 else 64)
 	value_l.add_theme_color_override("font_color", COLOR_INK)
 	box.add_child(value_l)
 
@@ -560,6 +565,14 @@ func _make_kpi_card(
 	star_line.visible = star_color.a > 0.0
 	box.add_child(star_line)
 
+	var star_count := Label.new()
+	star_count.name = "Count"
+	star_count.text = "0"
+	star_count.add_theme_font_override("font", FONT_TITLE)
+	star_count.add_theme_font_size_override("font_size", 36)
+	star_count.add_theme_color_override("font_color", COLOR_INK)
+	star_line.add_child(star_count)
+
 	var star_icon := TextureRect.new()
 	star_icon.name = "Icon"
 	star_icon.texture = TEX_STAR
@@ -568,14 +581,6 @@ func _make_kpi_card(
 	star_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	star_icon.modulate = star_color if star_color.a > 0.0 else Color.WHITE
 	star_line.add_child(star_icon)
-
-	var star_count := Label.new()
-	star_count.name = "Count"
-	star_count.text = "0"
-	star_count.add_theme_font_override("font", FONT_TITLE)
-	star_count.add_theme_font_size_override("font_size", 36)
-	star_count.add_theme_color_override("font_color", COLOR_INK)
-	star_line.add_child(star_count)
 	return card
 
 
@@ -585,7 +590,7 @@ func _build_progress_card() -> PanelContainer:
 	card.add_theme_stylebox_override("panel", _soft_card(COLOR_CARD, 34))
 
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 18)
+	box.add_theme_constant_override("separation", 16)
 	card.add_child(box)
 
 	var title := _section_title(_copy("progress_title"))
@@ -596,7 +601,7 @@ func _build_progress_card() -> PanelContainer:
 	tabs.add_theme_constant_override("separation", 14)
 	box.add_child(tabs)
 	var tab_spacer := Control.new()
-	tab_spacer.custom_minimum_size.x = 300
+	tab_spacer.custom_minimum_size.x = 176
 	tabs.add_child(tab_spacer)
 
 	_tab_quick = Button.new()
@@ -607,6 +612,7 @@ func _build_progress_card() -> PanelContainer:
 	_tab_quick.add_theme_font_size_override("font_size", 42)
 	_tab_quick.icon = TEX_QUICK
 	_tab_quick.expand_icon = true
+	_tab_quick.clip_text = true
 	_tab_quick.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tabs.add_child(_tab_quick)
 
@@ -618,6 +624,7 @@ func _build_progress_card() -> PanelContainer:
 	_tab_crypto.add_theme_font_size_override("font_size", 42)
 	_tab_crypto.icon = TEX_CRYPTO
 	_tab_crypto.expand_icon = true
+	_tab_crypto.clip_text = true
 	_tab_crypto.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tabs.add_child(_tab_crypto)
 
@@ -637,27 +644,31 @@ func _make_table_progress_row(
 ) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
-	row.custom_minimum_size = Vector2(0, 120)
-	var identity := HBoxContainer.new()
-	identity.custom_minimum_size.x = 300
-	identity.add_theme_constant_override("separation", 10)
+	row.custom_minimum_size = Vector2(0, 188)
+	var identity := VBoxContainer.new()
+	identity.custom_minimum_size.x = 176
+	identity.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	identity.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	identity.alignment = BoxContainer.ALIGNMENT_CENTER
+	identity.add_theme_constant_override("separation", 6)
 	row.add_child(identity)
 	var icon_wrap := PanelContainer.new()
-	icon_wrap.custom_minimum_size = Vector2(96, 96)
+	icon_wrap.custom_minimum_size = Vector2(88, 88)
+	icon_wrap.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	icon_wrap.add_theme_stylebox_override("panel", _flat(bar_color.lightened(0.55), 20))
 	identity.add_child(icon_wrap)
 	var icon := TextureRect.new()
 	icon.texture = icon_tex
 	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.custom_minimum_size = Vector2(72, 72)
+	icon.custom_minimum_size = Vector2(64, 64)
 	icon_wrap.add_child(icon)
 	var name_l := Label.new()
 	name_l.text = name_text
-	name_l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	name_l.add_theme_font_override("font", FONT_BODY)
-	name_l.add_theme_font_size_override("font_size", 30)
+	name_l.add_theme_font_size_override("font_size", 28)
 	name_l.add_theme_color_override("font_color", COLOR_INK)
 	identity.add_child(name_l)
 	row.add_child(_make_progress_cell(quick_row, bar_color))
@@ -671,6 +682,7 @@ func _make_progress_cell(data: Dictionary, bar_color: Color) -> VBoxContainer:
 	var percent := int(data.get("percent", 0))
 	var cell := VBoxContainer.new()
 	cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cell.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	cell.add_theme_constant_override("separation", 6)
 	var bar := ProgressBar.new()
 	bar.min_value = 0
@@ -681,13 +693,20 @@ func _make_progress_cell(data: Dictionary, bar_color: Color) -> VBoxContainer:
 	bar.add_theme_stylebox_override("background", _flat(Color(0.93, 0.88, 0.8, 1), 10))
 	bar.add_theme_stylebox_override("fill", _flat(bar_color, 10))
 	cell.add_child(bar)
-	var meta := Label.new()
-	meta.text = "%d / %d ★   %d%%" % [earned, available, percent]
-	meta.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	meta.add_theme_font_override("font", FONT_BODY)
-	meta.add_theme_font_size_override("font_size", 28)
-	meta.add_theme_color_override("font_color", COLOR_INK)
-	cell.add_child(meta)
+	var stars_l := Label.new()
+	stars_l.text = "%d / %d ★" % [earned, available]
+	stars_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	stars_l.add_theme_font_override("font", FONT_BODY)
+	stars_l.add_theme_font_size_override("font_size", 40)
+	stars_l.add_theme_color_override("font_color", COLOR_INK)
+	cell.add_child(stars_l)
+	var percent_l := Label.new()
+	percent_l.text = "%d%%" % percent
+	percent_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	percent_l.add_theme_font_override("font", FONT_TITLE)
+	percent_l.add_theme_font_size_override("font_size", 36)
+	percent_l.add_theme_color_override("font_color", COLOR_MUTED)
+	cell.add_child(percent_l)
 	return cell
 
 
@@ -774,7 +793,7 @@ func _build_hints_card() -> PanelContainer:
 	card.add_theme_stylebox_override("panel", _soft_card(COLOR_CARD, 34))
 
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 18)
+	box.add_theme_constant_override("separation", 16)
 	card.add_child(box)
 
 	var title := _section_title(_copy("hints_title"))
@@ -828,8 +847,8 @@ func _make_hint_cell(icon_tex: Texture2D, bg: Color, title: String, value: Strin
 	title_l.text = title
 	title_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	title_l.add_theme_font_override("font", FONT_REGULAR)
-	title_l.add_theme_font_size_override("font_size", 16)
+	title_l.add_theme_font_override("font", FONT_BODY)
+	title_l.add_theme_font_size_override("font_size", 26)
 	title_l.add_theme_color_override("font_color", COLOR_MUTED)
 	cell.add_child(title_l)
 
@@ -847,11 +866,11 @@ func _make_hint_cell(icon_tex: Texture2D, bg: Color, title: String, value: Strin
 func _build_avg_card() -> PanelContainer:
 	var card := PanelContainer.new()
 	card.name = "AvgCard"
-	card.custom_minimum_size = Vector2(0, 250)
+	card.custom_minimum_size = Vector2(0, 210)
 	card.add_theme_stylebox_override("panel", _soft_card(COLOR_CARD, 34))
 
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 18)
+	box.add_theme_constant_override("separation", 16)
 	card.add_child(box)
 
 	var title := _section_title(_copy("avg_title"))
@@ -921,7 +940,7 @@ func _build_results_card() -> PanelContainer:
 	card.add_theme_stylebox_override("panel", _soft_card(COLOR_CARD, 34))
 
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 18)
+	box.add_theme_constant_override("separation", 16)
 	card.add_child(box)
 
 	var title := _section_title(_copy("results_title"))
@@ -932,56 +951,23 @@ func _build_results_card() -> PanelContainer:
 	body.add_theme_constant_override("separation", 18)
 	box.add_child(body)
 
-	var perfect := _make_kpi_card(COLOR_CARD, TEX_WREATH, _copy("perfect_title"), "0", "")
+	var perfect := _make_kpi_card(COLOR_CARD, TEX_WREATH, _copy("perfect_title"), "0", "", Color(0, 0, 0, 0), 210.0)
 	_results_total = perfect.get_node("Box/Value")
 	body.add_child(perfect)
 
-	var fastest := _make_kpi_card(COLOR_CARD, TEX_CLOCK, _copy("fastest_title"), "—", "—")
+	var fastest := _make_kpi_card(COLOR_CARD, TEX_CLOCK, _copy("fastest_title"), "—", "—", Color(0, 0, 0, 0), 210.0)
 	_results_percent = fastest.get_node("Box/Value")
 	_results_average = fastest.get_node("Box/Sub")
 	body.add_child(fastest)
 	return card
 
 
-func _build_update_note() -> PanelContainer:
-	var note := PanelContainer.new()
-	note.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	note.custom_minimum_size = Vector2(710, 70)
-	var style := _flat(Color(1.0, 0.973, 0.91, 0.82), 28)
-	style.set_border_width_all(2)
-	style.border_color = Color(0.78, 0.64, 0.43, 0.28)
-	style.content_margin_left = 28
-	style.content_margin_right = 28
-	note.add_theme_stylebox_override("panel", style)
-
-	var row := HBoxContainer.new()
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", 14)
-	note.add_child(row)
-
-	var icon := TextureRect.new()
-	icon.texture = TEX_TIMER
-	icon.custom_minimum_size = Vector2(34, 34)
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.modulate = COLOR_MUTED
-	row.add_child(icon)
-
-	var label := Label.new()
-	label.text = _copy("updated_note")
-	label.add_theme_font_override("font", FONT_REGULAR)
-	label.add_theme_font_size_override("font_size", 19)
-	label.add_theme_color_override("font_color", COLOR_MUTED)
-	row.add_child(label)
-	return note
-
-
-func _section_title(text: String) -> Label:
+func _section_title(text: String, font_size: int = SECTION_TITLE_SIZE) -> Label:
 	var label := Label.new()
 	label.text = text
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.add_theme_font_override("font", FONT_TITLE)
-	label.add_theme_font_size_override("font_size", 30)
+	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", COLOR_INK)
 	return label
 
@@ -993,10 +979,10 @@ func _soft_card(bg: Color, radius: int) -> StyleBoxFlat:
 	style.shadow_color = Color(0.29, 0.18, 0.11, 0.14)
 	style.shadow_size = 12
 	style.shadow_offset = Vector2(0, 8)
-	style.content_margin_left = 24
-	style.content_margin_right = 24
-	style.content_margin_top = 22
-	style.content_margin_bottom = 22
+	style.content_margin_left = 18
+	style.content_margin_right = 18
+	style.content_margin_top = 20
+	style.content_margin_bottom = 20
 	return style
 
 
