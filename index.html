@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ayuda, contacto y privacidad de CifraLetra.">
+  <meta name="theme-color" content="#15365f">
+  <title>CifraLetra – Soporte</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #19324d;
+      --muted: #5d6f82;
+      --paper: #fffdf8;
+      --card: #ffffff;
+      --brand: #15365f;
+      --accent: #e9a83b;
+      --line: #e5e8ec;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(233, 168, 59, .17), transparent 28rem),
+        var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    main {
+      width: min(760px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 56px 0 72px;
+    }
+
+    header { margin-bottom: 34px; }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    h1, h2 { line-height: 1.2; }
+    h1 { margin: 0; color: var(--brand); font-size: clamp(2.15rem, 7vw, 3.8rem); }
+    h2 { margin: 0 0 12px; color: var(--brand); font-size: 1.35rem; }
+    p { margin: 0 0 14px; }
+    .intro { max-width: 640px; margin-top: 16px; color: var(--muted); font-size: 1.08rem; }
+
+    .card {
+      margin: 18px 0;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+      box-shadow: 0 9px 28px rgba(21, 54, 95, .06);
+    }
+
+    a { color: #145ea8; text-underline-offset: 3px; }
+    .button {
+      display: inline-block;
+      margin-top: 4px;
+      padding: 11px 17px;
+      border-radius: 999px;
+      color: white;
+      background: var(--brand);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    details { padding: 14px 0; border-top: 1px solid var(--line); }
+    details:first-of-type { border-top: 0; }
+    summary { color: var(--brand); cursor: pointer; font-weight: 700; }
+    details p { margin: 9px 0 0; color: var(--muted); }
+    ul { margin: 10px 0 0; padding-left: 22px; }
+    .small, footer { color: var(--muted); font-size: .91rem; }
+    footer { padding: 22px 2px 0; text-align: center; }
+
+    @media (max-width: 520px) {
+      main { padding-top: 36px; }
+      .card { padding: 20px; border-radius: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">Ayuda al jugador</p>
+      <h1>CifraLetra – Soporte</h1>
+      <p class="intro">CifraLetra es un juego de lógica, letras y deducción en el que cada número esconde una letra. Aquí encontrarás ayuda para resolver las dudas más habituales.</p>
+    </header>
+
+    <section class="card" aria-labelledby="contacto">
+      <h2 id="contacto">Contacto</h2>
+      <p>Si necesitas ayuda, has detectado un problema o quieres enviarnos una sugerencia, escríbenos. Indica el modelo de tu dispositivo, la versión de iOS y, si es posible, adjunta una captura.</p>
+      <a class="button" href="mailto:aki7an@gmail.com?subject=Soporte%20CifraLetra">Escribir a soporte</a>
+      <p class="small">Correo: <a href="mailto:aki7an@gmail.com">aki7an@gmail.com</a></p>
+    </section>
+
+    <section class="card" aria-labelledby="ayuda">
+      <h2 id="ayuda">Ayuda y problemas frecuentes</h2>
+
+      <details>
+        <summary>La partida no se ha guardado</summary>
+        <p>Cierra y vuelve a abrir la app. Comprueba también que tienes espacio libre en el dispositivo. Si el problema continúa, escríbenos con los pasos que seguiste antes de cerrar la partida.</p>
+      </details>
+
+      <details>
+        <summary>No aparece la clasificación en línea</summary>
+        <p>Comprueba tu conexión a internet y vuelve a intentarlo pasados unos minutos. El resto del juego puede seguir funcionando aunque el servicio de clasificación no esté disponible temporalmente.</p>
+      </details>
+
+      <details>
+        <summary>El sonido o la música no se oyen</summary>
+        <p>Revisa los ajustes de sonido dentro de CifraLetra, el volumen del dispositivo y que el modo silencio no esté activado.</p>
+      </details>
+
+      <details>
+        <summary>La app se cierra o deja de responder</summary>
+        <p>Actualiza CifraLetra y iOS a sus versiones más recientes y reinicia el dispositivo. Si vuelve a ocurrir, indícanos qué estabas haciendo y qué modelo de iPhone o iPad utilizas.</p>
+      </details>
+
+      <details>
+        <summary>¿Cómo puedo informar de una frase incorrecta?</summary>
+        <p>Usa la opción de valoración o comentarios disponible en el juego, si aparece, o envíanos un correo indicando la frase o su identificador.</p>
+      </details>
+    </section>
+
+    <section class="card" id="privacidad" aria-labelledby="titulo-privacidad">
+      <h2 id="titulo-privacidad">Privacidad</h2>
+      <p>CifraLetra guarda en el dispositivo la información necesaria para conservar tus preferencias, partidas y progreso.</p>
+      <p>Las funciones en línea, como las clasificaciones, pueden utilizar un identificador técnico de jugador, el nombre elegido dentro del juego, puntuaciones y datos básicos de la partida para prestar el servicio y mantener su funcionamiento. CifraLetra no utiliza estos datos para rastrearte entre apps o sitios web.</p>
+      <p>Si contactas por correo, utilizaremos la información que envíes únicamente para atender tu consulta. No incluyas información sensible que no sea necesaria.</p>
+      <p class="small">Última actualización: 2 de septiembre de 2026.</p>
+    </section>
+
+    <footer>
+      <p>Más información y código del proyecto en <a href="https://github.com/Aki7an/CabalaLiteraria">GitHub</a>.</p>
+      <p>© 2026 CifraLetra</p>
+    </footer>
+  </main>
+</body>
+</html>
