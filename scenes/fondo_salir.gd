@@ -6,6 +6,12 @@ const PUZZLE_SELECTION := "res://scenes/MenuSelectLevelByID.tscn"
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 	get_tree().paused = true
+	$Card/Title.text = tr("PauseTitle")
+	$Card/Subtitle.text = tr("PauseSavedWhilePlaying")
+	$Card/Actions/ButtonContinue.text = tr("KeepPlaying")
+	$Card/Actions/ButtonRestart.text = tr("RestartPuzzle")
+	$Card/Actions/ButtonExit.text = tr("ExitToMenu")
+	$Card/SaveNote.text = tr("ProgressAutoSaved")
 
 
 func _exit_tree() -> void:

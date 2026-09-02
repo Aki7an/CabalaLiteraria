@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="3_back"]
 [ext_resource type="PackedScene" uid="uid://5oqtmnkkrdjl" path="res://scenes/Tutorial/TutorialPage1.tscn" id="4_page1"]
 [ext_resource type="PackedScene" uid="uid://bqswxq0n8ghiy" path="res://scenes/Tutorial/TutorialPage2.tscn" id="5_page2"]
-[ext_resource type="PackedScene" path="res://scenes/Tutorial/TutorialPage3.tscn" id="6_page3"]
-[ext_resource type="PackedScene" path="res://scenes/Tutorial/TutorialPage4.tscn" id="7_page4"]
+[ext_resource type="PackedScene" uid="uid://1qdx5fhcwtxu" path="res://scenes/Tutorial/TutorialPage3.tscn" id="6_page3"]
+[ext_resource type="PackedScene" uid="uid://cka7g8u3g3b84" path="res://scenes/Tutorial/TutorialPage4.tscn" id="7_page4"]
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="8_title"]
 
 [sub_resource type="StyleBoxFlat" id="Style_next"]

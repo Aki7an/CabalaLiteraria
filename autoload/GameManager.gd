@@ -34,7 +34,7 @@ var allow_completed_replay := false
 
 @export var coins: int = 15
 
-@export var frases_json_path: String = "res://data/frases.json"
+@export var frases_json_path: String = "res://data/frases_es.json"
 @export var frases_json_path_es: String = "res://data/frases_es.json"
 @export var frases_json_path_en: String = "res://data/frases_en.json"
 @export var frases_json_path_eu: String = "res://data/frases_eu.json"
@@ -205,14 +205,16 @@ func apply_language(code: String) -> void:
 func normalize_category(raw: String) -> String:
 	var key := raw.strip_edges().to_lower()
 	key = key.replace("á", "a").replace("é", "e").replace("è", "e").replace("ë", "e")
+	key = key.replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ñ", "n")
+	key = key.replace("ä", "a").replace("ö", "o").replace("ü", "u")
 	match key:
 		"efemeride", "efemerides", "event", "events", "ereignis", "gertaera", "evenement", "evento":
 			return CAT_EFEMERIDE
-		"cita", "citas", "cita celebre", "appointment":
+		"cita", "citas", "cita celebre", "appointment", "famous quote", "famous quotes", "citation", "citation celebre", "zitat", "aipu", "aipu ospetsua", "citazione", "citazione celebre", "citacao", "citacao celebre":
 			return CAT_CITA
-		"curiosidades", "curiosities":
+		"curiosidades", "curiosities", "curiosites", "kuriositaten", "kuriositateak", "curiosita":
 			return CAT_CURIOSIDADES
-		"fragmento", "fragment", "fragmentos", "fragmento literario":
+		"fragmento", "fragment", "fragmentos", "fragmento literario", "literary fragment", "literary fragments", "fragment litteraire", "literarisches fragment", "fragmentu literarioa", "frammento letterario":
 			return CAT_FRAGMENTO
 		_:
 			return key
@@ -396,16 +398,20 @@ func level_game_mode(item: Dictionary) -> String:
 func find_level_image_path(image_number: int) -> String:
 	if image_number < 0:
 		return ""
-	var basename := "res://data/images/image%d" % image_number
+	var stems := [
+		"res://data/images/image%d" % image_number,
+		"res://data/images/Image%d" % image_number,
+	]
 	var extensions := (
 		[".PNG", ".png", ".jpg", ".jpeg", ".webp"]
 		if image_number == 1
 		else [".png", ".PNG", ".jpg", ".jpeg", ".webp"]
 	)
-	for extension in extensions:
-		var path: String = basename + str(extension)
-		if ResourceLoader.exists(path):
-			return path
+	for stem in stems:
+		for extension in extensions:
+			var path: String = stem + str(extension)
+			if ResourceLoader.exists(path) or FileAccess.file_exists(path):
+				return path
 	return ""
 
 

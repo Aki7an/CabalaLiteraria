@@ -35,8 +35,59 @@ func _ready() -> void:
 	for page in _pages:
 		_fit_page(page)
 		page.visible = true
+	_apply_locale()
 	await get_tree().process_frame
 	_show_page(0, false)
+
+
+func _apply_locale() -> void:
+	var page1 := _pages[0]
+	_set_tr(page1.get_node_or_null("TitleRow/Title"), "TutTitle1")
+	_set_tr(page1.get_node_or_null("Body1"), "TutBody1a")
+	_set_tr(page1.get_node_or_null("Body2"), "TutBody1b")
+	_set_tr(page1.get_node_or_null("Caption1"), "TutCap1")
+	_set_tr(page1.get_node_or_null("Caption2"), "TutCap2")
+	_set_tr(page1.get_node_or_null("Caption3"), "TutCap3")
+	_set_tr(page1.get_node_or_null("Caption4"), "TutCap4")
+	var page2 := _pages[1]
+	_set_tr(page2.get_node_or_null("TitleRow/Title"), "TutTitle2")
+	_set_tr(page2.get_node_or_null("Body1"), "TutBody2a")
+	_set_tr(page2.get_node_or_null("Body2"), "TutBody2b")
+	_set_tr(page2.get_node_or_null("Preview/Box/TopBar/Curiosidades/Label"), "Curiosities")
+	_set_tr(page2.get_node_or_null("Preview/Box/TopBar/Stats/StarsTitle"), "TutStarsPuzzle")
+	_set_tr(page2.get_node_or_null("Preview/Box/TopBar/Stats/Mode/Label"), "TutQuickGame")
+	_set_tr(page2.get_node_or_null("Preview/Box/Actions/Tema/Row/Title"), "THEME")
+	_set_tr(page2.get_node_or_null("Preview/Box/Actions/Pista/Row/Title"), "TutHint")
+	_set_tr(page2.get_node_or_null("Preview/Box/Actions/Revelar/Row/Title"), "TutReveal")
+	_set_tr(page2.get_node_or_null("Preview/Box/Colors/Erase/Row/Title"), "ERASE")
+	_set_tr(page2.get_node_or_null("Preview/Box/Caption"), "TutCaption2")
+	_set_tr(page2.get_node_or_null("Tip"), "TutTipColorsFree")
+	var letters := page2.get_node_or_null("Preview/Box/TopBar/Stats/Letters") as Label
+	if letters:
+		letters.text = "%s 43 / 167" % tr("LETTERS")
+	var page3 := _pages[2]
+	_set_tr(page3.get_node_or_null("TitleRow/Title"), "TutTitle3")
+	_set_tr(page3.get_node_or_null("Intro"), "TutIntro3")
+	_set_tr(page3.get_node_or_null("Actions/PistaCol/PistaCard/PistaBox/Title"), "TutHint")
+	_set_tr(page3.get_node_or_null("Actions/PistaCol/PistaText"), "TutHintExplain")
+	_set_tr(page3.get_node_or_null("Actions/RevelarCol/RevelarCard/RevelarBox/Title"), "TutReveal")
+	_set_tr(page3.get_node_or_null("Actions/RevelarCol/RevelarText"), "TutRevealExplain")
+	_set_tr(page3.get_node_or_null("Summary"), "TutSummary3")
+	var page4 := _pages[3]
+	_set_tr(page4.get_node_or_null("TitleRow/Title"), "TutTitle4")
+	_set_tr(page4.get_node_or_null("Intro"), "TutIntro4")
+	_set_tr(page4.get_node_or_null("Modes/QuickCard/QuickBox/Title"), "Quick")
+	_set_tr(page4.get_node_or_null("Modes/QuickCard/QuickBox/Text"), "TutQuickDesc")
+	_set_tr(page4.get_node_or_null("Modes/CryptoCard/CryptoBox/Title"), "Cryptogram")
+	_set_tr(page4.get_node_or_null("Modes/CryptoCard/CryptoBox/Text"), "TutCryptoDesc")
+	_set_tr(page4.get_node_or_null("SaveCard/SaveRow/Texts/Title"), "TutSaveTitle")
+	_set_tr(page4.get_node_or_null("SaveCard/SaveRow/Texts/Text"), "TutSaveText")
+	_set_tr(page4.get_node_or_null("StarsCard/StarsRow/Text"), "TutStarsGoal")
+
+
+func _set_tr(node: Node, key: String) -> void:
+	if node is Label or node is Button or node is RichTextLabel:
+		node.text = tr(key)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -75,7 +126,7 @@ func _show_page(index: int, animate := true) -> void:
 			var tween := create_tween()
 			tween.tween_property(page, "modulate:a", 1.0, 0.24)
 	_step_badge.text = "%d / %d" % [_page_index + 1, _pages.size()]
-	_next_button.text = "¡A JUGAR!" if last else "SIGUIENTE"
+	_next_button.text = tr("LetsPlay") if last else tr("Next")
 	_next_button.add_theme_stylebox_override("normal", style_play if last else style_next)
 	_next_button.add_theme_stylebox_override(
 		"hover",

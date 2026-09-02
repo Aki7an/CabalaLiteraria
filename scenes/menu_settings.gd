@@ -253,15 +253,19 @@ func _update_language_selection() -> void:
 	_update_localized_copy(current_locale)
 
 
-func _update_localized_copy(locale: String) -> void:
-	var copy: Dictionary = LOCALIZED_COPY.get(locale, LOCALIZED_COPY["en"])
-	title_label.text = copy["title"]
-	online_title_label.text = copy["online_title"]
-	online_help_label.text = copy["online_help"]
-	reset_label.text = copy["reset"]
-	game_title_label.text = copy["game_title"]
-	tutorial_label.text = copy["tutorial"]
-	reveal_label.text = copy["reveal"]
+func _update_localized_copy(_locale: String = "") -> void:
+	title_label.text = tr("Options")
+	online_title_label.text = tr("OnlineName")
+	online_help_label.text = tr("OnlineNameHelp")
+	reset_label.text = tr("ResetValues")
+	game_title_label.text = tr("GameSection")
+	tutorial_label.text = tr("ShowTutorialBefore")
+	reveal_label.text = tr("ShowRevealExplain")
+	nombre.placeholder_text = tr("Enter Name")
+	$Panel/SoundCard/Title.text = tr("SOUND")
+	$Panel/SoundCard/SoundRows/MusicLabel.text = tr("Music")
+	$Panel/SoundCard/SoundRows/FxLabel.text = tr("Fx")
+	$Panel/LanguageCard/Title.text = tr("LANGUAGE")
 
 
 func _make_selected_language_style() -> StyleBoxFlat:

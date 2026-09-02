@@ -1,67 +1,105 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scenes/menu_feedback.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_bg"]
-[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
-[ext_resource type="Script" path="res://scenes/feedback_star_row.gd" id="4_stars"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="3_title"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="4_body"]
+[ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="5_regular"]
+[ext_resource type="Script" path="res://scenes/feedback_star_row.gd" id="6_stars"]
 
 [sub_resource type="StyleBoxFlat" id="Style_bg"]
-bg_color = Color(0.992, 0.929, 0.745, 1)
+bg_color = Color(0.984, 0.949, 0.865, 1)
 
 [sub_resource type="StyleBoxFlat" id="Style_card"]
-bg_color = Color(1, 0.972, 0.882, 0.96)
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.996, 0.973, 0.906, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
-border_width_bottom = 8
-border_color = Color(0.79, 0.6, 0.31, 0.62)
-corner_radius_top_left = 42
-corner_radius_top_right = 42
-corner_radius_bottom_right = 42
-corner_radius_bottom_left = 42
-shadow_color = Color(0.35, 0.21, 0.11, 0.18)
-shadow_size = 16
-shadow_offset = Vector2(0, 12)
+border_width_bottom = 3
+border_color = Color(0.78, 0.61, 0.36, 0.48)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
 
 [sub_resource type="StyleBoxFlat" id="Style_row"]
-content_margin_left = 24.0
-content_margin_top = 18.0
-content_margin_right = 24.0
-content_margin_bottom = 18.0
-bg_color = Color(1, 0.984, 0.925, 0.8)
+content_margin_left = 28.0
+content_margin_top = 22.0
+content_margin_right = 28.0
+content_margin_bottom = 22.0
+bg_color = Color(1, 0.984, 0.953, 0.96)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
+border_width_bottom = 5
+border_color = Color(0.77, 0.62, 0.4, 0.38)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="Style_omit"]
+bg_color = Color(0.93, 0.84, 0.68, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.65, 0.48, 0.24, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_omit_pressed"]
+bg_color = Color(0.82, 0.7, 0.5, 1)
+border_width_left = 3
+border_width_top = 10
+border_width_right = 3
 border_width_bottom = 4
-border_color = Color(0.77, 0.62, 0.4, 0.4)
+border_color = Color(0.52, 0.36, 0.16, 1)
 corner_radius_top_left = 24
 corner_radius_top_right = 24
 corner_radius_bottom_right = 24
 corner_radius_bottom_left = 24
 
 [sub_resource type="StyleBoxFlat" id="Style_send"]
-bg_color = Color(0.18, 0.62, 0.38, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 9
-border_color = Color(0.08, 0.38, 0.22, 1)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
+bg_color = Color(0.1, 0.58, 0.5, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.07, 0.42, 0.36, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
 
-[sub_resource type="StyleBoxFlat" id="Style_cancel"]
-bg_color = Color(0.55, 0.42, 0.28, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 9
-border_color = Color(0.35, 0.24, 0.12, 1)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
+[sub_resource type="StyleBoxFlat" id="Style_send_pressed"]
+bg_color = Color(0.08, 0.48, 0.42, 1)
+border_width_left = 3
+border_width_top = 10
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.05, 0.32, 0.28, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxEmpty" id="Style_focus"]
 
 [node name="MenuFeedback" type="Control"]
 layout_mode = 3
@@ -83,281 +121,312 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_bg")
 
 [node name="Pattern" parent="Background" instance=ExtResource("2_bg")]
-modulate = Color(1, 1, 1, 0.35)
-
-[node name="Panel" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0.16)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 36.0
-offset_top = 48.0
-offset_right = -36.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 42.0
+offset_top = 72.0
+offset_right = -42.0
 offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("Style_card")
 
-[node name="Header" type="Control" parent="Panel"]
+[node name="Header" type="Control" parent="Card"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 40.0
-offset_top = 36.0
-offset_right = -40.0
+offset_left = 28.0
+offset_top = 28.0
+offset_right = -28.0
 offset_bottom = 220.0
 grow_horizontal = 2
 
-[node name="Title" type="Label" parent="Panel/Header"]
+[node name="Title" type="Label" parent="Card/Header"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 110.0
+offset_bottom = 120.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 72
-text = "FEEDBACK"
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("3_title")
+theme_override_font_sizes/font_size = 56
+text = "¿QUÉ TE PARECIÓ?"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="LevelId" type="Label" parent="Panel/Header"]
+[node name="LevelId" type="Label" parent="Card/Header"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 110.0
-offset_bottom = 170.0
+offset_top = 118.0
+offset_bottom = 186.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0.45, 0.3, 0.16, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 34
-text = "ID NIVEL: —"
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("5_regular")
+theme_override_font_sizes/font_size = 28
+text = "Tu opinión nos ayuda a mejorar el nivel"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="Scroll" type="ScrollContainer" parent="Panel"]
+[node name="Scroll" type="ScrollContainer" parent="Card"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 36.0
-offset_top = 230.0
-offset_right = -36.0
+offset_left = 28.0
+offset_top = 228.0
+offset_right = -28.0
 offset_bottom = -220.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
 
-[node name="Rows" type="VBoxContainer" parent="Panel/Scroll"]
+[node name="Rows" type="VBoxContainer" parent="Card/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 22
+theme_override_constants/separation = 20
 
-[node name="RowGlobal" type="PanelContainer" parent="Panel/Scroll/Rows"]
+[node name="RowGlobal" type="PanelContainer" parent="Card/Scroll/Rows"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("Style_row")
 
-[node name="Content" type="VBoxContainer" parent="Panel/Scroll/Rows/RowGlobal"]
+[node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowGlobal"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="Panel/Scroll/Rows/RowGlobal/Content"]
+[node name="Title" type="Label" parent="Card/Scroll/Rows/RowGlobal/Content"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 34
-text = "1 · Valoración general del nivel"
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_body")
+theme_override_font_sizes/font_size = 32
+text = "Valoración general"
 horizontal_alignment = 1
 
-[node name="Stars" type="HBoxContainer" parent="Panel/Scroll/Rows/RowGlobal/Content"]
-custom_minimum_size = Vector2(0, 80)
+[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowGlobal/Content"]
+custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
-script = ExtResource("4_stars")
+script = ExtResource("6_stars")
 
-[node name="RowDifficulty" type="PanelContainer" parent="Panel/Scroll/Rows"]
+[node name="RowDifficulty" type="PanelContainer" parent="Card/Scroll/Rows"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("Style_row")
 
-[node name="Content" type="VBoxContainer" parent="Panel/Scroll/Rows/RowDifficulty"]
+[node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowDifficulty"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="Panel/Scroll/Rows/RowDifficulty/Content"]
+[node name="Title" type="Label" parent="Card/Scroll/Rows/RowDifficulty/Content"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 34
-text = "2 · Dificultad"
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_body")
+theme_override_font_sizes/font_size = 32
+text = "Dificultad"
 horizontal_alignment = 1
 
-[node name="Stars" type="HBoxContainer" parent="Panel/Scroll/Rows/RowDifficulty/Content"]
-custom_minimum_size = Vector2(0, 80)
+[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowDifficulty/Content"]
+custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
-script = ExtResource("4_stars")
+script = ExtResource("6_stars")
 
-[node name="RowDuration" type="PanelContainer" parent="Panel/Scroll/Rows"]
+[node name="RowDuration" type="PanelContainer" parent="Card/Scroll/Rows"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("Style_row")
 
-[node name="Content" type="VBoxContainer" parent="Panel/Scroll/Rows/RowDuration"]
+[node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowDuration"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="Panel/Scroll/Rows/RowDuration/Content"]
+[node name="Title" type="Label" parent="Card/Scroll/Rows/RowDuration/Content"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 34
-text = "3 · Duración"
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_body")
+theme_override_font_sizes/font_size = 32
+text = "Duración"
 horizontal_alignment = 1
 
-[node name="Stars" type="HBoxContainer" parent="Panel/Scroll/Rows/RowDuration/Content"]
-custom_minimum_size = Vector2(0, 80)
+[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowDuration/Content"]
+custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
-script = ExtResource("4_stars")
+script = ExtResource("6_stars")
 
-[node name="RowHint1" type="PanelContainer" parent="Panel/Scroll/Rows"]
+[node name="RowHint1" type="PanelContainer" parent="Card/Scroll/Rows"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("Style_row")
 
-[node name="Content" type="VBoxContainer" parent="Panel/Scroll/Rows/RowHint1"]
+[node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowHint1"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="Panel/Scroll/Rows/RowHint1/Content"]
+[node name="Title" type="Label" parent="Card/Scroll/Rows/RowHint1/Content"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 34
-text = "4 · Pista 1"
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_body")
+theme_override_font_sizes/font_size = 32
+text = "Pista 1"
 horizontal_alignment = 1
 
-[node name="Stars" type="HBoxContainer" parent="Panel/Scroll/Rows/RowHint1/Content"]
-custom_minimum_size = Vector2(0, 80)
+[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint1/Content"]
+custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
-script = ExtResource("4_stars")
+script = ExtResource("6_stars")
 
-[node name="RowHint2" type="PanelContainer" parent="Panel/Scroll/Rows"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("Style_row")
-
-[node name="Content" type="VBoxContainer" parent="Panel/Scroll/Rows/RowHint2"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Title" type="Label" parent="Panel/Scroll/Rows/RowHint2/Content"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 34
-text = "5 · Pista 2"
-horizontal_alignment = 1
-
-[node name="Stars" type="HBoxContainer" parent="Panel/Scroll/Rows/RowHint2/Content"]
-custom_minimum_size = Vector2(0, 80)
-layout_mode = 2
-script = ExtResource("4_stars")
-
-[node name="Disabled" type="Label" parent="Panel/Scroll/Rows/RowHint2/Content"]
+[node name="Disabled" type="Label" parent="Card/Scroll/Rows/RowHint1/Content"]
 visible = false
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.35, 0.2, 0.8)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("5_regular")
+theme_override_font_sizes/font_size = 26
 text = "No usada en esta partida"
 horizontal_alignment = 1
 
-[node name="RowHint3" type="PanelContainer" parent="Panel/Scroll/Rows"]
+[node name="RowHint2" type="PanelContainer" parent="Card/Scroll/Rows"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("Style_row")
 
-[node name="Content" type="VBoxContainer" parent="Panel/Scroll/Rows/RowHint3"]
+[node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowHint2"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="Panel/Scroll/Rows/RowHint3/Content"]
+[node name="Title" type="Label" parent="Card/Scroll/Rows/RowHint2/Content"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 34
-text = "6 · Pista 3"
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_body")
+theme_override_font_sizes/font_size = 32
+text = "Pista 2"
 horizontal_alignment = 1
 
-[node name="Stars" type="HBoxContainer" parent="Panel/Scroll/Rows/RowHint3/Content"]
-custom_minimum_size = Vector2(0, 80)
+[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint2/Content"]
+custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
-script = ExtResource("4_stars")
+script = ExtResource("6_stars")
 
-[node name="Disabled" type="Label" parent="Panel/Scroll/Rows/RowHint3/Content"]
+[node name="Disabled" type="Label" parent="Card/Scroll/Rows/RowHint2/Content"]
 visible = false
 layout_mode = 2
-theme_override_colors/font_color = Color(0.5, 0.35, 0.2, 0.8)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("5_regular")
+theme_override_font_sizes/font_size = 26
 text = "No usada en esta partida"
 horizontal_alignment = 1
 
-[node name="RowLetters" type="PanelContainer" parent="Panel/Scroll/Rows"]
+[node name="RowHint3" type="PanelContainer" parent="Card/Scroll/Rows"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("Style_row")
 
-[node name="Content" type="VBoxContainer" parent="Panel/Scroll/Rows/RowLetters"]
+[node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowHint3"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="Panel/Scroll/Rows/RowLetters/Content"]
+[node name="Title" type="Label" parent="Card/Scroll/Rows/RowHint3/Content"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 34
-text = "7 · Letras iniciales"
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_body")
+theme_override_font_sizes/font_size = 32
+text = "Pista 3"
 horizontal_alignment = 1
 
-[node name="Stars" type="HBoxContainer" parent="Panel/Scroll/Rows/RowLetters/Content"]
-custom_minimum_size = Vector2(0, 80)
+[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint3/Content"]
+custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
-script = ExtResource("4_stars")
+script = ExtResource("6_stars")
 
-[node name="Buttons" type="HBoxContainer" parent="Panel"]
+[node name="Disabled" type="Label" parent="Card/Scroll/Rows/RowHint3/Content"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("5_regular")
+theme_override_font_sizes/font_size = 26
+text = "No usada en esta partida"
+horizontal_alignment = 1
+
+[node name="RowLetters" type="PanelContainer" parent="Card/Scroll/Rows"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_row")
+
+[node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowLetters"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Card/Scroll/Rows/RowLetters/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_body")
+theme_override_font_sizes/font_size = 32
+text = "Revelar"
+horizontal_alignment = 1
+
+[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowLetters/Content"]
+custom_minimum_size = Vector2(0, 92)
+layout_mode = 2
+script = ExtResource("6_stars")
+
+[node name="Disabled" type="Label" parent="Card/Scroll/Rows/RowLetters/Content"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("5_regular")
+theme_override_font_sizes/font_size = 26
+text = "No usada en esta partida"
+horizontal_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="Card"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 48.0
-offset_top = -180.0
-offset_right = -48.0
-offset_bottom = -40.0
+offset_left = 36.0
+offset_top = -188.0
+offset_right = -36.0
+offset_bottom = -36.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/separation = 28
+theme_override_constants/separation = 24
 alignment = 1
 
-[node name="ButtonCancel" type="Button" parent="Panel/Buttons"]
-custom_minimum_size = Vector2(420, 120)
+[node name="ButtonCancel" type="Button" parent="Card/Buttons"]
+custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_colors/font_color = Color(1, 1, 0.96, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 44
-theme_override_styles/normal = SubResource("Style_cancel")
-theme_override_styles/hover = SubResource("Style_cancel")
-theme_override_styles/pressed = SubResource("Style_cancel")
-text = "CANCELAR"
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("3_title")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("Style_omit")
+theme_override_styles/hover = SubResource("Style_omit")
+theme_override_styles/pressed = SubResource("Style_omit_pressed")
+theme_override_styles/focus = SubResource("Style_focus")
+text = "OMITIR"
 
-[node name="ButtonSend" type="Button" parent="Panel/Buttons"]
-custom_minimum_size = Vector2(420, 120)
+[node name="ButtonSend" type="Button" parent="Card/Buttons"]
+custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
+mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 1, 0.96, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 44
+theme_override_fonts/font = ExtResource("3_title")
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("Style_send")
 theme_override_styles/hover = SubResource("Style_send")
-theme_override_styles/pressed = SubResource("Style_send")
+theme_override_styles/pressed = SubResource("Style_send_pressed")
+theme_override_styles/focus = SubResource("Style_focus")
 text = "ENVIAR"
 
-[connection signal="pressed" from="Panel/Buttons/ButtonCancel" to="." method="_on_button_cancel_pressed"]
-[connection signal="pressed" from="Panel/Buttons/ButtonSend" to="." method="_on_button_send_pressed"]
+[connection signal="pressed" from="Card/Buttons/ButtonCancel" to="." method="_on_button_cancel_pressed"]
+[connection signal="pressed" from="Card/Buttons/ButtonSend" to="." method="_on_button_send_pressed"]

@@ -48,8 +48,30 @@ func _ready() -> void:
 	for i in mode_buttons.size():
 		var mode: String = modes[i]
 		mode_buttons[i].pressed.connect(func() -> void: _select_mode(mode))
+	_apply_locale()
 	_update_filter_styles()
 	_load_online_ranking()
+
+
+func _apply_locale() -> void:
+	$Header/Title.text = tr("Records")
+	%FilterQuick.text = tr("QuickUpper")
+	%FilterCryptogram.text = tr("CryptogramUpper")
+	%FilterGlobal.get_node("Text").text = tr("Global")
+	%FilterQuotes.get_node("Text").text = tr("QuotesFilter")
+	%FilterEvents.get_node("Text").text = tr("Ephemerides").to_upper()
+	%FilterCuriosities.get_node("Text").text = tr("Curiosities").to_upper()
+	%FilterFragments.get_node("Text").text = tr("FragmentsFilter")
+	$MainCard/RulesCard/Rules.text = tr("RankRules")
+	var header := $MainCard/AroundFrame/TableBody/TableHeader
+	header.get_node("Position").text = tr("RankPos")
+	header.get_node("Player").text = tr("RankPlayer")
+	header.get_node("Stars").text = tr("RankStars")
+	header.get_node("Puzzles").text = tr("RankPuzzles")
+	header.get_node("Average").text = tr("RankStarsPer")
+	header.get_node("Aids").text = tr("RankAids")
+	header.get_node("Failed").text = tr("RankFailed")
+	$MainCard/UpdateNote.text = tr("RankUpdateNote")
 
 
 func _select_category(value: String) -> void:
@@ -226,7 +248,7 @@ func _load_online_ranking() -> void:
 	_clear_rows(online_rows)
 	_clear_rows(around_rows)
 	online_status.visible = true
-	online_status.text = "Cargando clasificación online…"
+	online_status.text = tr("RankLoading")
 
 	if typeof(PlayFabTools) == TYPE_NIL:
 		_show_online_unavailable()
@@ -264,7 +286,7 @@ func _load_online_ranking() -> void:
 
 	var around_entries: Array = around_result.get("entries", [])
 	if around_entries.is_empty():
-		_add_placeholder_row(around_rows, 0, "TÚ — sin posición")
+		_add_placeholder_row(around_rows, 0, tr("RankYouNoPos"))
 	else:
 		for entry_value in around_entries:
 			var entry: Dictionary = entry_value
@@ -355,7 +377,7 @@ func _row_display_name(
 ) -> String:
 	var local_name := str(GameManager.player_name).strip_edges()
 	if is_player:
-		return local_name if _has_online_name() else "TÚ"
+		return local_name if _has_online_name() else tr("RankYou")
 	if around_player and not _has_online_name():
 		return "-"
 	var remote_name := str(entry.get("DisplayName", "")).strip_edges()
@@ -538,10 +560,10 @@ func _clear_rows(container: VBoxContainer) -> void:
 
 func _show_online_unavailable() -> void:
 	online_status.visible = true
-	online_status.text = "Clasificación online no disponible"
+	online_status.text = tr("RankUnavailable")
 	for i in TOP_ROWS:
 		_add_placeholder_row(online_rows, i + 1)
-	_add_placeholder_row(around_rows, 0, "TÚ — sin conexión")
+	_add_placeholder_row(around_rows, 0, tr("RankYouOffline"))
 	_loading = false
 	_set_filters_disabled(false)
 

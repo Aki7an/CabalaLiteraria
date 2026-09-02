@@ -1,12 +1,1429 @@
-[gd_scene format=3 uid="uid://c0owvmwtubnyu"]
+[gd_scene load_steps=36 format=3 uid="uid://c0owvmwtubnyu"]
 
-[ext_resource type="Script" uid="uid://7s17g0rp0lms" path="res://scenes/menu_stats.gd" id="1_ppt63"]
+[ext_resource type="Script" uid="uid://7s17g0rp0lms" path="res://scenes/menu_stats.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_fondo"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="3_back"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="4_title"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="5_body"]
+[ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="6_regular"]
+[ext_resource type="Texture2D" uid="uid://bih67rv8mpun2" path="res://images/stats_icon_trophy.svg" id="7_trophy"]
+[ext_resource type="Texture2D" uid="uid://dnye1cpjns8ev" path="res://images/stats_icon_wreath.svg" id="8_wreath"]
+[ext_resource type="Texture2D" uid="uid://c1x1ixn8eabtg" path="res://images/stats_icon_clock.svg" id="9_clock"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="10_star"]
+[ext_resource type="Texture2D" uid="uid://c8ojqmp0xr658" path="res://images/Bombilla.png" id="11_bulb"]
+[ext_resource type="Texture2D" uid="uid://o2skjac5ypjp" path="res://images/Cruz.png" id="12_cross"]
+[ext_resource type="Texture2D" uid="uid://cdbttrvjf58y3" path="res://images/lupa-con-un-ojo.png" id="13_eye"]
+[ext_resource type="Texture2D" uid="uid://duj5gi84s5bqf" path="res://images/mode_quick.svg" id="14_quick"]
+[ext_resource type="Texture2D" uid="uid://cxcb17n88b3b3" path="res://images/mode_scroll.svg" id="15_crypto"]
+[ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="16_citas"]
+[ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="17_efem"]
+[ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="18_curio"]
+[ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="19_frag"]
 
-[node name="MenuStats" type="Control" unique_id=1734152391]
+[sub_resource type="StyleBoxFlat" id="Style_bg"]
+bg_color = Color(0.992, 0.965, 0.914, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+content_margin_left = 14.0
+content_margin_top = 12.0
+content_margin_right = 14.0
+content_margin_bottom = 12.0
+bg_color = Color(1, 0.984, 0.953, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78, 0.62, 0.42, 0.45)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.29, 0.18, 0.11, 0.14)
+shadow_size = 8
+shadow_offset = Vector2(0, 5)
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxFlat" id="Style_kpi"]
+content_margin_left = 14.0
+content_margin_top = 12.0
+content_margin_right = 14.0
+content_margin_bottom = 12.0
+bg_color = Color(1, 0.984, 0.953, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78, 0.62, 0.42, 0.45)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.29, 0.18, 0.11, 0.14)
+shadow_size = 8
+shadow_offset = Vector2(0, 5)
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxFlat" id="Style_avg"]
+bg_color = Color(0.98, 0.95, 0.88, 0.92)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[sub_resource type="StyleBoxFlat" id="Style_hint_bulb"]
+bg_color = Color(1, 0.9, 0.55, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="Style_hint_eye"]
+bg_color = Color(0.78, 0.7, 0.92, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="Style_hint_fail"]
+bg_color = Color(0.95, 0.72, 0.72, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="Style_bar_bg"]
+bg_color = Color(0.93, 0.88, 0.8, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_fill_cita"]
+bg_color = Color(0.22, 0.67, 0.55, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_fill_efem"]
+bg_color = Color(0.55, 0.42, 0.78, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_fill_curio"]
+bg_color = Color(0.93, 0.55, 0.28, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_fill_frag"]
+bg_color = Color(0.3, 0.55, 0.86, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_icon_cita"]
+bg_color = Color(0.649, 0.852, 0.798, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="Style_icon_efem"]
+bg_color = Color(0.798, 0.739, 0.901, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="Style_icon_curio"]
+bg_color = Color(0.969, 0.798, 0.676, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="Style_icon_frag"]
+bg_color = Color(0.685, 0.798, 0.937, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="MenuStats" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ppt63")
+script = ExtResource("1_script")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_bg")
+
+[node name="Fondo" parent="Panel" instance=ExtResource("2_fondo")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Header" type="Control" parent="Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 180.0
+grow_horizontal = 2
+
+[node name="ButtonBack" parent="Panel/Header" instance=ExtResource("3_back")]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 28.0
+offset_right = 174.0
+offset_bottom = 174.0
+
+[node name="StarTotals" type="VBoxContainer" parent="Panel/Header"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -280.0
+offset_top = 28.0
+offset_right = -28.0
+offset_bottom = 174.0
+grow_horizontal = 0
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="StarQuick" type="HBoxContainer" parent="Panel/Header/StarTotals"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="Count" type="Label" parent="Panel/Header/StarTotals/StarQuick"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 48
+text = "0"
+vertical_alignment = 1
+
+[node name="Star" type="TextureRect" parent="Panel/Header/StarTotals/StarQuick"]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+modulate = Color(1, 0.82, 0.12, 1)
+texture = ExtResource("10_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StarCrypto" type="HBoxContainer" parent="Panel/Header/StarTotals"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="Count" type="Label" parent="Panel/Header/StarTotals/StarCrypto"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 48
+text = "0"
+vertical_alignment = 1
+
+[node name="Star" type="TextureRect" parent="Panel/Header/StarTotals/StarCrypto"]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+modulate = Color(1, 0.48, 0.08, 1)
+texture = ExtResource("10_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Panel/Header"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 190.0
+offset_top = 32.0
+offset_right = -190.0
+offset_bottom = 118.0
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 64
+text = "ESTADÍSTICAS"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Panel/Header"]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 138.0
+offset_bottom = 190.0
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+
+[node name="Content" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 188.0
+offset_right = -24.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+editor_description = "Ajusta offsets, separation y size_flags_stretch_ratio de cada tarjeta."
+
+[node name="KpiRow" type="HBoxContainer" parent="Panel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.05
+theme_override_constants/separation = 18
+
+[node name="GamesCard" type="PanelContainer" parent="Panel/Content/KpiRow"]
+custom_minimum_size = Vector2(0, 168)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_kpi")
+
+[node name="Box" type="VBoxContainer" parent="Panel/Content/KpiRow/GamesCard"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TopPad" type="Control" parent="Panel/Content/KpiRow/GamesCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/KpiRow/GamesCard/Box"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("7_trophy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Panel/Content/KpiRow/GamesCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 30
+text = "Partidas"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Value" type="Label" parent="Panel/Content/KpiRow/GamesCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 48
+text = "0"
+horizontal_alignment = 1
+
+[node name="Sub" type="Label" parent="Panel/Content/KpiRow/GamesCard/Box"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="BottomPad" type="Control" parent="Panel/Content/KpiRow/GamesCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="QuickCard" type="PanelContainer" parent="Panel/Content/KpiRow"]
+custom_minimum_size = Vector2(0, 168)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_kpi")
+
+[node name="Box" type="VBoxContainer" parent="Panel/Content/KpiRow/QuickCard"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TopPad" type="Control" parent="Panel/Content/KpiRow/QuickCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/KpiRow/QuickCard/Box"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("14_quick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Panel/Content/KpiRow/QuickCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 30
+text = "Partidas rápidas"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Value" type="Label" parent="Panel/Content/KpiRow/QuickCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 48
+text = "0"
+horizontal_alignment = 1
+
+[node name="Sub" type="Label" parent="Panel/Content/KpiRow/QuickCard/Box"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="BottomPad" type="Control" parent="Panel/Content/KpiRow/QuickCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CryptoCard" type="PanelContainer" parent="Panel/Content/KpiRow"]
+custom_minimum_size = Vector2(0, 168)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_kpi")
+
+[node name="Box" type="VBoxContainer" parent="Panel/Content/KpiRow/CryptoCard"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TopPad" type="Control" parent="Panel/Content/KpiRow/CryptoCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/KpiRow/CryptoCard/Box"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("15_crypto")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Panel/Content/KpiRow/CryptoCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 30
+text = "Partidas criptograma"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Value" type="Label" parent="Panel/Content/KpiRow/CryptoCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 48
+text = "0"
+horizontal_alignment = 1
+
+[node name="Sub" type="Label" parent="Panel/Content/KpiRow/CryptoCard/Box"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="BottomPad" type="Control" parent="Panel/Content/KpiRow/CryptoCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ProgressCard" type="PanelContainer" parent="Panel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.35
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="Panel/Content/ProgressCard"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Panel/Content/ProgressCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 38
+text = "PROGRESO"
+horizontal_alignment = 1
+
+[node name="Tabs" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TabSpacer" type="Control" parent="Panel/Content/ProgressCard/Box/Tabs"]
+custom_minimum_size = Vector2(148, 0)
+layout_mode = 2
+
+[node name="TabQuick" type="Button" parent="Panel/Content/ProgressCard/Box/Tabs"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_colors/font_pressed_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_colors/font_hover_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_colors/font_disabled_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("Style_empty")
+theme_override_styles/pressed = SubResource("Style_empty")
+theme_override_styles/hover = SubResource("Style_empty")
+theme_override_styles/disabled = SubResource("Style_empty")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "  Rápido"
+icon = ExtResource("14_quick")
+clip_text = true
+expand_icon = true
+
+[node name="TabCrypto" type="Button" parent="Panel/Content/ProgressCard/Box/Tabs"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_colors/font_pressed_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_colors/font_hover_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_colors/font_disabled_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("Style_empty")
+theme_override_styles/pressed = SubResource("Style_empty")
+theme_override_styles/hover = SubResource("Style_empty")
+theme_override_styles/disabled = SubResource("Style_empty")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "  Criptograma"
+icon = ExtResource("15_crypto")
+clip_text = true
+expand_icon = true
+
+[node name="ProgressList" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="RowCita" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList"]
+custom_minimum_size = Vector2(0, 118)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Identity" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita"]
+custom_minimum_size = Vector2(148, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="IconWrap" type="PanelContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/Identity"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("Style_icon_cita")
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/Identity/IconWrap"]
+custom_minimum_size = Vector2(42, 42)
+layout_mode = 2
+texture = ExtResource("16_citas")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/Identity"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 22
+text = "Citas"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="QuickCell" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="BarRow" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/QuickCell"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Left" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/QuickCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Bar" type="ProgressBar" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/QuickCell/BarRow"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+max_value = 1.0
+show_percentage = false
+theme_override_styles/background = SubResource("Style_bar_bg")
+theme_override_styles/fill = SubResource("Style_fill_cita")
+
+[node name="Right" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/QuickCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Stars" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/QuickCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 28
+text = "0 / 0 ★"
+horizontal_alignment = 1
+
+[node name="Percent" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/QuickCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 26
+text = "0%"
+horizontal_alignment = 1
+
+[node name="CryptoCell" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="BarRow" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/CryptoCell"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Left" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/CryptoCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Bar" type="ProgressBar" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/CryptoCell/BarRow"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+max_value = 1.0
+show_percentage = false
+theme_override_styles/background = SubResource("Style_bar_bg")
+theme_override_styles/fill = SubResource("Style_fill_cita")
+
+[node name="Right" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/CryptoCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Stars" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/CryptoCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 28
+text = "0 / 0 ★"
+horizontal_alignment = 1
+
+[node name="Percent" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCita/CryptoCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 26
+text = "0%"
+horizontal_alignment = 1
+
+[node name="RowEfemeride" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList"]
+custom_minimum_size = Vector2(0, 118)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Identity" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride"]
+custom_minimum_size = Vector2(148, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="IconWrap" type="PanelContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/Identity"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("Style_icon_efem")
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/Identity/IconWrap"]
+custom_minimum_size = Vector2(42, 42)
+layout_mode = 2
+texture = ExtResource("17_efem")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/Identity"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 22
+text = "Efemérides"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="QuickCell" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="BarRow" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/QuickCell"]
+layout_mode = 2
+
+[node name="Left" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/QuickCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Bar" type="ProgressBar" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/QuickCell/BarRow"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+max_value = 1.0
+show_percentage = false
+theme_override_styles/background = SubResource("Style_bar_bg")
+theme_override_styles/fill = SubResource("Style_fill_efem")
+
+[node name="Right" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/QuickCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Stars" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/QuickCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 28
+text = "0 / 0 ★"
+horizontal_alignment = 1
+
+[node name="Percent" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/QuickCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 26
+text = "0%"
+horizontal_alignment = 1
+
+[node name="CryptoCell" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="BarRow" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/CryptoCell"]
+layout_mode = 2
+
+[node name="Left" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/CryptoCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Bar" type="ProgressBar" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/CryptoCell/BarRow"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+max_value = 1.0
+show_percentage = false
+theme_override_styles/background = SubResource("Style_bar_bg")
+theme_override_styles/fill = SubResource("Style_fill_efem")
+
+[node name="Right" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/CryptoCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Stars" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/CryptoCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 28
+text = "0 / 0 ★"
+horizontal_alignment = 1
+
+[node name="Percent" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowEfemeride/CryptoCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 26
+text = "0%"
+horizontal_alignment = 1
+
+[node name="RowCuriosidades" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList"]
+custom_minimum_size = Vector2(0, 118)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Identity" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades"]
+custom_minimum_size = Vector2(148, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="IconWrap" type="PanelContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/Identity"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("Style_icon_curio")
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/Identity/IconWrap"]
+custom_minimum_size = Vector2(42, 42)
+layout_mode = 2
+texture = ExtResource("18_curio")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/Identity"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 22
+text = "Curiosidades"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="QuickCell" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="BarRow" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/QuickCell"]
+layout_mode = 2
+
+[node name="Left" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/QuickCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Bar" type="ProgressBar" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/QuickCell/BarRow"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+max_value = 1.0
+show_percentage = false
+theme_override_styles/background = SubResource("Style_bar_bg")
+theme_override_styles/fill = SubResource("Style_fill_curio")
+
+[node name="Right" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/QuickCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Stars" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/QuickCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 28
+text = "0 / 0 ★"
+horizontal_alignment = 1
+
+[node name="Percent" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/QuickCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 26
+text = "0%"
+horizontal_alignment = 1
+
+[node name="CryptoCell" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="BarRow" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/CryptoCell"]
+layout_mode = 2
+
+[node name="Left" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/CryptoCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Bar" type="ProgressBar" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/CryptoCell/BarRow"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+max_value = 1.0
+show_percentage = false
+theme_override_styles/background = SubResource("Style_bar_bg")
+theme_override_styles/fill = SubResource("Style_fill_curio")
+
+[node name="Right" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/CryptoCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Stars" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/CryptoCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 28
+text = "0 / 0 ★"
+horizontal_alignment = 1
+
+[node name="Percent" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowCuriosidades/CryptoCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 26
+text = "0%"
+horizontal_alignment = 1
+
+[node name="RowFragmento" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList"]
+custom_minimum_size = Vector2(0, 118)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Identity" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento"]
+custom_minimum_size = Vector2(148, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="IconWrap" type="PanelContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/Identity"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("Style_icon_frag")
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/Identity/IconWrap"]
+custom_minimum_size = Vector2(42, 42)
+layout_mode = 2
+texture = ExtResource("19_frag")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/Identity"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 22
+text = "Fragmentos"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="QuickCell" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="BarRow" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/QuickCell"]
+layout_mode = 2
+
+[node name="Left" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/QuickCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Bar" type="ProgressBar" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/QuickCell/BarRow"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+max_value = 1.0
+show_percentage = false
+theme_override_styles/background = SubResource("Style_bar_bg")
+theme_override_styles/fill = SubResource("Style_fill_frag")
+
+[node name="Right" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/QuickCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Stars" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/QuickCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 28
+text = "0 / 0 ★"
+horizontal_alignment = 1
+
+[node name="Percent" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/QuickCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 26
+text = "0%"
+horizontal_alignment = 1
+
+[node name="CryptoCell" type="VBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 2
+
+[node name="BarRow" type="HBoxContainer" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/CryptoCell"]
+layout_mode = 2
+
+[node name="Left" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/CryptoCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Bar" type="ProgressBar" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/CryptoCell/BarRow"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
+max_value = 1.0
+show_percentage = false
+theme_override_styles/background = SubResource("Style_bar_bg")
+theme_override_styles/fill = SubResource("Style_fill_frag")
+
+[node name="Right" type="Control" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/CryptoCell/BarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Stars" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/CryptoCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 28
+text = "0 / 0 ★"
+horizontal_alignment = 1
+
+[node name="Percent" type="Label" parent="Panel/Content/ProgressCard/Box/ProgressList/RowFragmento/CryptoCell"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 26
+text = "0%"
+horizontal_alignment = 1
+
+[node name="HintsCard" type="PanelContainer" parent="Panel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.05
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="Panel/Content/HintsCard"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Panel/Content/HintsCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 38
+text = "USO DE AYUDAS"
+horizontal_alignment = 1
+
+[node name="Grid" type="HBoxContainer" parent="Panel/Content/HintsCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="HintUsed" type="VBoxContainer" parent="Panel/Content/HintsCard/Box/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="IconWrap" type="PanelContainer" parent="Panel/Content/HintsCard/Box/Grid/HintUsed"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("Style_hint_bulb")
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/HintsCard/Box/Grid/HintUsed/IconWrap"]
+custom_minimum_size = Vector2(38, 38)
+layout_mode = 2
+texture = ExtResource("11_bulb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Panel/Content/HintsCard/Box/Grid/HintUsed"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 26
+text = "PISTAS USADAS"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Value" type="Label" parent="Panel/Content/HintsCard/Box/Grid/HintUsed"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 42
+text = "0"
+horizontal_alignment = 1
+
+[node name="HintLetters" type="VBoxContainer" parent="Panel/Content/HintsCard/Box/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="IconWrap" type="PanelContainer" parent="Panel/Content/HintsCard/Box/Grid/HintLetters"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("Style_hint_eye")
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/HintsCard/Box/Grid/HintLetters/IconWrap"]
+custom_minimum_size = Vector2(38, 38)
+layout_mode = 2
+texture = ExtResource("13_eye")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Panel/Content/HintsCard/Box/Grid/HintLetters"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 26
+text = "LETRAS REVELADAS"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Value" type="Label" parent="Panel/Content/HintsCard/Box/Grid/HintLetters"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 42
+text = "0"
+horizontal_alignment = 1
+
+[node name="HintFailed" type="VBoxContainer" parent="Panel/Content/HintsCard/Box/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="IconWrap" type="PanelContainer" parent="Panel/Content/HintsCard/Box/Grid/HintFailed"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("Style_hint_fail")
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/HintsCard/Box/Grid/HintFailed/IconWrap"]
+custom_minimum_size = Vector2(38, 38)
+layout_mode = 2
+texture = ExtResource("12_cross")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Panel/Content/HintsCard/Box/Grid/HintFailed"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 26
+text = "LETRAS FALLADAS"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Value" type="Label" parent="Panel/Content/HintsCard/Box/Grid/HintFailed"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.27, 0.27, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 42
+text = "0"
+horizontal_alignment = 1
+
+[node name="AvgCard" type="PanelContainer" parent="Panel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.95
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="Panel/Content/AvgCard"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Panel/Content/AvgCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 38
+text = "TIEMPO MEDIO POR PARTIDA"
+horizontal_alignment = 1
+
+[node name="Modes" type="HBoxContainer" parent="Panel/Content/AvgCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="AvgQuick" type="PanelContainer" parent="Panel/Content/AvgCard/Box/Modes"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_avg")
+
+[node name="Content" type="HBoxContainer" parent="Panel/Content/AvgCard/Box/Modes/AvgQuick"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/AvgCard/Box/Modes/AvgQuick/Content"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("14_quick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Texts" type="VBoxContainer" parent="Panel/Content/AvgCard/Box/Modes/AvgQuick/Content"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="Title" type="Label" parent="Panel/Content/AvgCard/Box/Modes/AvgQuick/Content/Texts"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 25
+text = "Rápido"
+horizontal_alignment = 1
+
+[node name="Value" type="Label" parent="Panel/Content/AvgCard/Box/Modes/AvgQuick/Content/Texts"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 40
+text = "0 s"
+horizontal_alignment = 1
+
+[node name="AvgCrypto" type="PanelContainer" parent="Panel/Content/AvgCard/Box/Modes"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_avg")
+
+[node name="Content" type="HBoxContainer" parent="Panel/Content/AvgCard/Box/Modes/AvgCrypto"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/AvgCard/Box/Modes/AvgCrypto/Content"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("15_crypto")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Texts" type="VBoxContainer" parent="Panel/Content/AvgCard/Box/Modes/AvgCrypto/Content"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="Title" type="Label" parent="Panel/Content/AvgCard/Box/Modes/AvgCrypto/Content/Texts"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 25
+text = "Criptograma"
+horizontal_alignment = 1
+
+[node name="Value" type="Label" parent="Panel/Content/AvgCard/Box/Modes/AvgCrypto/Content/Texts"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 40
+text = "0 s"
+horizontal_alignment = 1
+
+[node name="ResultsCard" type="PanelContainer" parent="Panel/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.05
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="Panel/Content/ResultsCard"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Panel/Content/ResultsCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 38
+text = "MARCAS PERSONALES"
+horizontal_alignment = 1
+
+[node name="Body" type="HBoxContainer" parent="Panel/Content/ResultsCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="PerfectCard" type="PanelContainer" parent="Panel/Content/ResultsCard/Box/Body"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_kpi")
+
+[node name="Box" type="VBoxContainer" parent="Panel/Content/ResultsCard/Box/Body/PerfectCard"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TopPad" type="Control" parent="Panel/Content/ResultsCard/Box/Body/PerfectCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/ResultsCard/Box/Body/PerfectCard/Box"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("8_wreath")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Panel/Content/ResultsCard/Box/Body/PerfectCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 30
+text = "Puzles perfectos"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Value" type="Label" parent="Panel/Content/ResultsCard/Box/Body/PerfectCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 48
+text = "0"
+horizontal_alignment = 1
+
+[node name="Sub" type="Label" parent="Panel/Content/ResultsCard/Box/Body/PerfectCard/Box"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="BottomPad" type="Control" parent="Panel/Content/ResultsCard/Box/Body/PerfectCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FastestCard" type="PanelContainer" parent="Panel/Content/ResultsCard/Box/Body"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_kpi")
+
+[node name="Box" type="VBoxContainer" parent="Panel/Content/ResultsCard/Box/Body/FastestCard"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TopPad" type="Control" parent="Panel/Content/ResultsCard/Box/Body/FastestCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Icon" type="TextureRect" parent="Panel/Content/ResultsCard/Box/Body/FastestCard/Box"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("9_clock")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Panel/Content/ResultsCard/Box/Body/FastestCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("5_body")
+theme_override_font_sizes/font_size = 30
+text = "Puzle más rápido"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Value" type="Label" parent="Panel/Content/ResultsCard/Box/Body/FastestCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 48
+text = "—"
+horizontal_alignment = 1
+
+[node name="Sub" type="Label" parent="Panel/Content/ResultsCard/Box/Body/FastestCard/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 22
+text = "—"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="BottomPad" type="Control" parent="Panel/Content/ResultsCard/Box/Body/FastestCard/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="pressed" from="Panel/Header/ButtonBack" to="." method="_on_button_back_pressed"]

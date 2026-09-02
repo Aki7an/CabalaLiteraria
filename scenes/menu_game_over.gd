@@ -1,6 +1,6 @@
 extends ColorRect
 
-const SCENE_MENU_MAIN := preload("res://scenes/MenuMain.tscn")
+const SCENE_FEEDBACK := "res://scenes/MenuFeedback.tscn"
 const STAR_EMPTY := Color(0.62, 0.51, 0.34, 0.28)
 const GAP := 24.0
 
@@ -24,6 +24,7 @@ const GAP := 24.0
 
 
 func _ready() -> void:
+	_apply_locale()
 	var phrase := GameManager.frase_original_til.strip_edges()
 	if phrase == "":
 		phrase = GameManager.frase_original.strip_edges()
@@ -31,11 +32,11 @@ func _ready() -> void:
 	category_label.text = "— %s —" % GameManager.category_display_name()
 	description_label.text = GameManager.descripcion_final_actual
 	if description_label.text.strip_edges() == "":
-		description_label.text = "Has completado correctamente este puzle."
+		description_label.text = tr("PuzzleCompleteFallback")
 
 	var maximum := GameManager.get_puzzle_difficulty_stars()
 	var earned: int = clampi(GameManager.puzzle_stars, 0, maximum)
-	stars_text.text = "Resultado: %d de %d" % [earned, maximum]
+	stars_text.text = tr("StarsResult") % [earned, maximum]
 
 	for index in range(stars.size()):
 		var star := stars[index]
@@ -50,6 +51,19 @@ func _ready() -> void:
 	for star in stars:
 		star.pivot_offset = star.size * 0.5
 	await _animate_stars(earned)
+
+
+func _apply_locale() -> void:
+	var title := $MainCard/Banner/Title as Label
+	if title:
+		title.text = tr("CONGRATULATIONS!!!!")
+	var solved := $MainCard/Solved as Label
+	if solved:
+		solved.text = tr("You've solved the sentence")
+	var stars_title := $MainCard/StarsCard/Title as Label
+	if stars_title:
+		stars_title.text = tr("StarsEarned")
+	continue_button.text = tr("CONTINUE")
 
 
 func _fit_phrase_card() -> void:
@@ -131,4 +145,4 @@ func _on_button_back_pressed() -> void:
 	SoundManager.play("ButtonClick")
 	TransitionScreen.transition_to_black()
 	await SignalManager.on_transition_finished
-	get_tree().change_scene_to_packed(SCENE_MENU_MAIN)
+	get_tree().change_scene_to_file(SCENE_FEEDBACK)

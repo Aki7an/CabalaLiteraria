@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://5oqtmnkkrdjl"]
 
-[ext_resource type="PackedScene" path="res://scenes/Tutorial/TutorialPhraseRow.tscn" id="1_row"]
+[ext_resource type="PackedScene" uid="uid://mjwufgbf1530" path="res://scenes/Tutorial/TutorialPhraseRow.tscn" id="1_row"]
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="2_title"]
 [ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="3_regular"]
 [ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="4_body"]
@@ -46,6 +46,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Control" type="Control" parent="." unique_id=1975686952]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="Body1" type="Label" parent="." unique_id=1488268851]
@@ -66,7 +67,21 @@ text = "Descubre las correspondencias para completar la frase."
 horizontal_alignment = 1
 autowrap_mode = 3
 
+[node name="Control2" type="Control" parent="." unique_id=1401637089]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Control12" type="Control" parent="." unique_id=1093867922]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
 [node name="Step1" parent="." unique_id=1558353802 instance=ExtResource("1_row")]
+layout_mode = 2
+letters = PackedStringArray("", "E", "", "", "E", "", "", "", "", "", "")
+highlight_number = "17"
+
+[node name="Control5" type="Control" parent="." unique_id=14243784]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="Caption1" type="RichTextLabel" parent="." unique_id=1306197808]
@@ -81,16 +96,27 @@ text = "[center]Deduce que el [color=#E68021][b]17[/b][/color] es la [color=#E68
 fit_content = true
 scroll_active = false
 
+[node name="Control4" type="Control" parent="." unique_id=1876865359]
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
 [node name="Arrow1" type="Label" parent="." unique_id=760734456]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.5, 0.13, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 80
 text = "▼"
 horizontal_alignment = 1
 
+[node name="Control3" type="Control" parent="." unique_id=794835257]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
 [node name="Step2" parent="." unique_id=1099873925 instance=ExtResource("1_row")]
 layout_mode = 2
+letters = PackedStringArray("", "E", "", "D", "E", "", "", "D", "", "", "")
+highlight_number = "19"
 
 [node name="Caption2" type="RichTextLabel" parent="." unique_id=1258424385]
 layout_mode = 2
@@ -104,15 +130,35 @@ text = "[center]Sigue deduciendo que el [color=#E68021][b]19[/b][/color] es la [
 fit_content = true
 scroll_active = false
 
+[node name="Control11" type="Control" parent="." unique_id=202697775]
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Control6" type="Control" parent="." unique_id=1896330594]
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
 [node name="Arrow2" type="Label" parent="." unique_id=676120978]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.5, 0.13, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 80
 text = "▼"
 horizontal_alignment = 1
 
+[node name="Control7" type="Control" parent="." unique_id=364135575]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
 [node name="Step3" parent="." unique_id=1284601204 instance=ExtResource("1_row")]
+layout_mode = 2
+letters = PackedStringArray("", "E", "R", "D", "E", "R", "", "D", "", "R", "")
+highlight_number = "2"
+
+[node name="Control8" type="Control" parent="." unique_id=16188291]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="Caption3" type="RichTextLabel" parent="." unique_id=167901130]
@@ -131,11 +177,21 @@ scroll_active = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.5, 0.13, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 80
 text = "▼"
 horizontal_alignment = 1
 
+[node name="Control9" type="Control" parent="." unique_id=368227682]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
 [node name="Step4" parent="." unique_id=1145549885 instance=ExtResource("1_row")]
+layout_mode = 2
+letters = PackedStringArray("", "E", "R", "D", "E", "R", "A", "D", "", "R", "")
+highlight_number = "15"
+
+[node name="Control10" type="Control" parent="." unique_id=580165901]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="Caption4" type="RichTextLabel" parent="." unique_id=1770135463]

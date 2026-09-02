@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://b224a7f08tbwq" path="res://images/Bombilla_1.png" id="24_bulb"]
 [ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="25_tip_font"]
 [ext_resource type="Script" uid="uid://tjdclh16sy1s" path="res://scenes/tapered_line.gd" id="26_taper"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="27_star"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.960784, 0.913725, 0.854902, 1)
@@ -437,6 +438,81 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="StarTotals" type="Control" parent="Panel" unique_id=72463766]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 49.0
+offset_top = 48.0
+offset_right = 280.0
+offset_bottom = 197.0
+mouse_filter = 2
+
+[node name="Rows" type="VBoxContainer" parent="Panel/StarTotals" unique_id=664443035]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -83.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="QuickRow" type="HBoxContainer" parent="Panel/StarTotals/Rows" unique_id=1242344627]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="StarsQuickCount" type="Label" parent="Panel/StarTotals/Rows/QuickRow" unique_id=306467501]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("21_title")
+theme_override_font_sizes/font_size = 52
+text = "0"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Panel/StarTotals/Rows/QuickRow" unique_id=996729817]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Star" type="TextureRect" parent="Panel/StarTotals/Rows/QuickRow" unique_id=2121046252]
+modulate = Color(1, 0.82, 0.12, 1)
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("27_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CryptoRow" type="HBoxContainer" parent="Panel/StarTotals/Rows" unique_id=974562645]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="StarsCryptoCount" type="Label" parent="Panel/StarTotals/Rows/CryptoRow" unique_id=329458901]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("21_title")
+theme_override_font_sizes/font_size = 52
+text = "0"
+vertical_alignment = 1
+
+[node name="Control2" type="Control" parent="Panel/StarTotals/Rows/CryptoRow" unique_id=448447682]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Star" type="TextureRect" parent="Panel/StarTotals/Rows/CryptoRow" unique_id=1972568744]
+modulate = Color(1, 0.48, 0.08, 1)
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("27_star")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="ButtonSettings" type="Button" parent="Panel" unique_id=2125989302]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 100)
@@ -599,6 +675,7 @@ script = ExtResource("26_taper")
 flip_horizontal = true
 
 [node name="Showcase" type="HBoxContainer" parent="Panel" unique_id=1237930159]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.12
@@ -611,18 +688,18 @@ offset_right = -17.119995
 offset_bottom = -60.599976
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
 alignment = 1
 
-[node name="TileL" type="Panel" parent="Panel/Showcase" unique_id=1014710418]
-custom_minimum_size = Vector2(150, 0)
+[node name="TileC" type="Panel" parent="Panel/Showcase" unique_id=1014710418]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileL" unique_id=1072026728]
+[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileC" unique_id=1072026728]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -637,20 +714,20 @@ mouse_filter = 2
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="SpacerR" type="Control" parent="Panel/Showcase/TileL/Col" unique_id=1099666261]
+[node name="SpacerR" type="Control" parent="Panel/Showcase/TileC/Col" unique_id=1099666261]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Number" type="Label" parent="Panel/Showcase/TileL/Col" unique_id=1538006943]
+[node name="Number" type="Label" parent="Panel/Showcase/TileC/Col" unique_id=1538006943]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 60
-text = "12"
+theme_override_font_sizes/font_size = 52
+text = "3"
 horizontal_alignment = 1
 
-[node name="Dots" type="Label" parent="Panel/Showcase/TileL/Col" unique_id=623858965]
+[node name="Dots" type="Label" parent="Panel/Showcase/TileC/Col" unique_id=623858965]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
@@ -658,25 +735,25 @@ theme_override_font_sizes/font_size = 18
 text = "·····"
 horizontal_alignment = 1
 
-[node name="Letter" type="Label" parent="Panel/Showcase/TileL/Col" unique_id=1802530807]
+[node name="Letter" type="Label" parent="Panel/Showcase/TileC/Col" unique_id=1802530807]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
 theme_override_fonts/font = ExtResource("21_title")
 theme_override_font_sizes/font_size = 140
-text = "L"
+text = "C"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TileU" type="Panel" parent="Panel/Showcase" unique_id=1581422640]
-custom_minimum_size = Vector2(150, 0)
+[node name="TileOAccent" type="Panel" parent="Panel/Showcase" unique_id=1581422640]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileU" unique_id=1556922029]
+[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileOAccent" unique_id=1556922029]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -691,20 +768,20 @@ mouse_filter = 2
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="SpacerR2" type="Control" parent="Panel/Showcase/TileU/Col" unique_id=879935440]
+[node name="SpacerR2" type="Control" parent="Panel/Showcase/TileOAccent/Col" unique_id=879935440]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Number" type="Label" parent="Panel/Showcase/TileU/Col" unique_id=1003837857]
+[node name="Number" type="Label" parent="Panel/Showcase/TileOAccent/Col" unique_id=1003837857]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 60
-text = "21"
+theme_override_font_sizes/font_size = 52
+text = "15"
 horizontal_alignment = 1
 
-[node name="Dots" type="Label" parent="Panel/Showcase/TileU/Col" unique_id=1634766538]
+[node name="Dots" type="Label" parent="Panel/Showcase/TileOAccent/Col" unique_id=1634766538]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
@@ -712,25 +789,25 @@ theme_override_font_sizes/font_size = 18
 text = "·····"
 horizontal_alignment = 1
 
-[node name="Letter" type="Label" parent="Panel/Showcase/TileU/Col" unique_id=2040824179]
+[node name="Letter" type="Label" parent="Panel/Showcase/TileOAccent/Col" unique_id=2040824179]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
 theme_override_fonts/font = ExtResource("21_title")
 theme_override_font_sizes/font_size = 140
-text = "U"
+text = "Ó"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TileN" type="Panel" parent="Panel/Showcase" unique_id=1907476924]
-custom_minimum_size = Vector2(150, 0)
+[node name="TileD" type="Panel" parent="Panel/Showcase" unique_id=1907476924]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileN" unique_id=689264265]
+[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileD" unique_id=689264265]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -745,20 +822,20 @@ mouse_filter = 2
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="SpacerR3" type="Control" parent="Panel/Showcase/TileN/Col" unique_id=1661016742]
+[node name="SpacerR3" type="Control" parent="Panel/Showcase/TileD/Col" unique_id=1661016742]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Number" type="Label" parent="Panel/Showcase/TileN/Col" unique_id=150327002]
+[node name="Number" type="Label" parent="Panel/Showcase/TileD/Col" unique_id=150327002]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 60
-text = "14"
+theme_override_font_sizes/font_size = 52
+text = "4"
 horizontal_alignment = 1
 
-[node name="Dots" type="Label" parent="Panel/Showcase/TileN/Col" unique_id=1102728287]
+[node name="Dots" type="Label" parent="Panel/Showcase/TileD/Col" unique_id=1102728287]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
@@ -766,25 +843,25 @@ theme_override_font_sizes/font_size = 18
 text = "·····"
 horizontal_alignment = 1
 
-[node name="Letter" type="Label" parent="Panel/Showcase/TileN/Col" unique_id=1971019316]
+[node name="Letter" type="Label" parent="Panel/Showcase/TileD/Col" unique_id=1971019316]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
 theme_override_fonts/font = ExtResource("21_title")
 theme_override_font_sizes/font_size = 140
-text = "N"
+text = "D"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TileA" type="Panel" parent="Panel/Showcase" unique_id=1827365200]
-custom_minimum_size = Vector2(150, 0)
+[node name="TileI" type="Panel" parent="Panel/Showcase" unique_id=1827365200]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileA" unique_id=1209592092]
+[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileI" unique_id=1209592092]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -799,20 +876,20 @@ mouse_filter = 2
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="SpacerR4" type="Control" parent="Panel/Showcase/TileA/Col" unique_id=1138651436]
+[node name="SpacerR4" type="Control" parent="Panel/Showcase/TileI/Col" unique_id=1138651436]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Number" type="Label" parent="Panel/Showcase/TileA/Col" unique_id=9907241]
+[node name="Number" type="Label" parent="Panel/Showcase/TileI/Col" unique_id=9907241]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 60
-text = "1"
+theme_override_font_sizes/font_size = 52
+text = "9"
 horizontal_alignment = 1
 
-[node name="Dots" type="Label" parent="Panel/Showcase/TileA/Col" unique_id=699704161]
+[node name="Dots" type="Label" parent="Panel/Showcase/TileI/Col" unique_id=699704161]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
@@ -820,13 +897,121 @@ theme_override_font_sizes/font_size = 18
 text = "·····"
 horizontal_alignment = 1
 
-[node name="Letter" type="Label" parent="Panel/Showcase/TileA/Col" unique_id=1923614580]
+[node name="Letter" type="Label" parent="Panel/Showcase/TileI/Col" unique_id=1923614580]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
 theme_override_fonts/font = ExtResource("21_title")
 theme_override_font_sizes/font_size = 140
-text = "A"
+text = "I"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TileG" type="Panel" parent="Panel/Showcase" unique_id=1827365201]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
+
+[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileG" unique_id=1209592093]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 14.0
+offset_right = -6.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="SpacerR5" type="Control" parent="Panel/Showcase/TileG/Col" unique_id=1138651437]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Number" type="Label" parent="Panel/Showcase/TileG/Col" unique_id=9907242]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 52
+text = "7"
+horizontal_alignment = 1
+
+[node name="Dots" type="Label" parent="Panel/Showcase/TileG/Col" unique_id=699704162]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
+theme_override_font_sizes/font_size = 18
+text = "·····"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Panel/Showcase/TileG/Col" unique_id=1923614581]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
+theme_override_fonts/font = ExtResource("21_title")
+theme_override_font_sizes/font_size = 140
+text = "G"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TileO" type="Panel" parent="Panel/Showcase" unique_id=1827365202]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
+
+[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileO" unique_id=1209592094]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 14.0
+offset_right = -6.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="SpacerR6" type="Control" parent="Panel/Showcase/TileO/Col" unique_id=1138651438]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Number" type="Label" parent="Panel/Showcase/TileO/Col" unique_id=9907243]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 52
+text = "15"
+horizontal_alignment = 1
+
+[node name="Dots" type="Label" parent="Panel/Showcase/TileO/Col" unique_id=699704163]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
+theme_override_font_sizes/font_size = 18
+text = "·····"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Panel/Showcase/TileO/Col" unique_id=1923614582]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
+theme_override_fonts/font = ExtResource("21_title")
+theme_override_font_sizes/font_size = 140
+text = "O"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -837,7 +1022,8 @@ anchor_left = 0.08
 anchor_top = 0.42
 anchor_right = 0.92
 anchor_bottom = 0.575
-offset_top = 2.6000366
+offset_top = -44.23999
+offset_bottom = -46.840088
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -940,9 +1126,7 @@ anchor_top = 0.575
 anchor_right = 0.9
 anchor_bottom = 0.605
 grow_horizontal = 2
-mouse_filter = 2
 theme_override_font_sizes/font_size = 1
-text = ""
 
 [node name="TipsBox" type="Panel" parent="Panel" unique_id=1780924533]
 layout_mode = 1

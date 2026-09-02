@@ -296,13 +296,26 @@ func _make_mode_selected_style() -> StyleBoxFlat:
 
 
 func _update_localized_copy() -> void:
-	var locale := TranslationServer.get_locale().left(2).to_lower()
-	var copy: Dictionary = LOCALIZED_COPY.get(locale, LOCALIZED_COPY["en"])
 	subtitle_label.visible = false
-	subtitle_label.text = copy["subtitle"]
-	category_title_label.text = copy["category"]
-	mode_title_label.text = copy["mode"]
-	quick_title_label.text = copy["quick"]
-	quick_description_label.text = copy["quick_description"]
-	cryptogram_title_label.text = copy["cryptogram"]
-	cryptogram_description_label.text = copy["cryptogram_description"]
+	subtitle_label.text = tr("ChooseGame")
+	category_title_label.text = tr("ChooseTheme")
+	mode_title_label.text = tr("GameType")
+	quick_title_label.text = tr("Quick")
+	quick_description_label.text = tr("QuickDescription")
+	cryptogram_title_label.text = tr("Cryptogram")
+	cryptogram_description_label.text = tr("CryptogramDescription")
+	button_citas_celebres.get_node("Label").text = GameManager.category_display_name(GameManager.CAT_CITA)
+	button_curiosidades.get_node("Label").text = GameManager.category_display_name(GameManager.CAT_CURIOSIDADES)
+	button_efemerides.get_node("Label").text = GameManager.category_display_name(GameManager.CAT_EFEMERIDE)
+	button_fragmentos_literarios.get_node("Label").text = GameManager.category_display_name(GameManager.CAT_FRAGMENTO)
+	for button in [button_citas_celebres, button_curiosidades, button_efemerides, button_fragmentos_literarios]:
+		var progress_title := button.get_node_or_null("ProgressTitle") as Label
+		if progress_title:
+			progress_title.text = tr("StarsEarnedLabel")
+	$Panel/ModeCard/ButtonQuick/TimeCaption.text = tr("Estimated time")
+	$Panel/ModeCard/ButtonQuick/TimeValue.text = tr("TimeQuickRange")
+	$Panel/ModeCard/ButtonCryptogram/TimeCaption.text = tr("Estimated time")
+	$Panel/ModeCard/ButtonCryptogram/TimeValue.text = tr("TimeCryptoRange")
+	$Panel/ButtonPlay/Content/Text.text = tr("ChoosePuzzle")
+	$Panel/Header/Brand/Cipher.text = tr("Cipher")
+	$Panel/Header/Brand/Letter.text = tr("Letter")

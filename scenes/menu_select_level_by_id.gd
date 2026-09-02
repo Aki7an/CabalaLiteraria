@@ -11,7 +11,7 @@ const DRAG_THRESHOLD := 14.0
 
 @export_dir var IMAGES_DIR: String = "res://data/images/"
 @export var FILE_EXTS: PackedStringArray = [".png", ".jpg", ".jpeg", ".webp"]
-@export_file("*.json") var JSON_PATH: String = "res://data/frases.json"
+@export_file("*.json") var JSON_PATH: String = "res://data/frases_es.json"
 @export var LOAD_BATCH_SIZE: int = 12
 @export var PLACEHOLDER_TEX: Texture2D
 
@@ -174,8 +174,10 @@ func _ready() -> void:
 	await get_tree().process_frame
 
 	_scroll.scroll_deadzone = 16
-	if not _populate_from_gamemanager() and JSON_PATH != "":
-		_load_and_populate_from_path(JSON_PATH)
+	if not _populate_from_gamemanager():
+		var fallback := GameManager.frases_json_path if GameManager.frases_json_path != "" else JSON_PATH
+		if fallback != "":
+			_load_and_populate_from_path(fallback)
 	set_process(true)
 
 
@@ -422,9 +424,9 @@ func _create_level_card(item: Dictionary) -> Button:
 	status_label.add_theme_font_size_override("font_size", 22)
 	status_label.add_theme_color_override("font_color", Color.WHITE)
 	status_label.text = {
-		"completed": "✓  COMPLETADO",
-		"in_progress": "▶  CONTINUAR",
-	}.get(puzzle_status, "NUEVO")
+		"completed": tr("StatusCompleted"),
+		"in_progress": tr("StatusContinue"),
+	}.get(puzzle_status, tr("StatusNew"))
 	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	status_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -452,7 +454,7 @@ func _create_level_card(item: Dictionary) -> Button:
 	letters_progress.add_theme_font_override("font", _title_label.get_theme_font("font"))
 	letters_progress.add_theme_font_size_override("font_size", 23)
 	letters_progress.add_theme_color_override("font_color", Color(0.25, 0.16, 0.11, 0.82))
-	letters_progress.text = "%d / %d letras" % [letters_filled, letters_total]
+	letters_progress.text = tr("LettersProgress") % [letters_filled, letters_total]
 	letters_progress.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	letters_progress.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	letters_progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -907,6 +909,16 @@ func _update_localized_copy() -> void:
 
 
 func _copy(key: String) -> String:
+	const MAP := {
+		"title": "Collection",
+		"quick": "Quick",
+		"cryptogram": "Cryptogram",
+		"progress": "ProgressDiscovered",
+		"random": "ChooseRandom",
+		"empty": "NoLevels",
+	}
+	if MAP.has(key):
+		return tr(MAP[key])
 	var locale: String = TranslationServer.get_locale().left(2).to_lower()
 	var translations: Dictionary = LOCALIZED_COPY.get(locale, LOCALIZED_COPY["es"])
 	return str(translations.get(key, LOCALIZED_COPY["es"].get(key, key)))

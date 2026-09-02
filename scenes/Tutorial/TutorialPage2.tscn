@@ -153,18 +153,6 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0oa1v"]
-bg_color = Color(1, 0.98, 0.92, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.12, 0.1, 0.08, 0.9)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w6o86"]
 bg_color = Color(0.1, 0.09, 0.08, 1)
 border_width_left = 2
 border_width_top = 2
@@ -176,7 +164,7 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yixgs"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w6o86"]
 bg_color = Color(1, 0.98, 0.92, 1)
 border_width_left = 2
 border_width_top = 2
@@ -188,8 +176,20 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yixgs"]
+bg_color = Color(0.6, 1, 0.6, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12, 0.1, 0.08, 0.9)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mrtkm"]
-bg_color = Color(1, 0.98, 0.92, 1)
+bg_color = Color(0.1, 0.09, 0.08, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -213,7 +213,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7j5qg"]
-bg_color = Color(0.6, 1, 0.6, 1)
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -237,7 +237,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3efpp"]
-bg_color = Color(1, 0.8, 0.6, 1)
+bg_color = Color(0.1, 0.09, 0.08, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -261,7 +261,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpwxp"]
-bg_color = Color(0.1, 0.09, 0.08, 1)
+bg_color = Color(1, 0.98, 0.92, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -273,7 +273,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5mxhh"]
-bg_color = Color(1, 0.98, 0.92, 1)
+bg_color = Color(1, 0.8, 0.6, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -321,7 +321,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fstb2"]
-bg_color = Color(1, 0.98, 0.92, 1)
+bg_color = Color(0.1, 0.09, 0.08, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -333,7 +333,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_abw8l"]
-bg_color = Color(0.6, 1, 0.6, 1)
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -369,7 +369,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8gq2f"]
-bg_color = Color(1, 0.98, 0.92, 1)
+bg_color = Color(1, 0.8, 0.6, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -393,7 +393,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ramoc"]
-bg_color = Color(1, 0.98, 0.92, 1)
+bg_color = Color(0.1, 0.09, 0.08, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -453,7 +453,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n1oih"]
-bg_color = Color(0.6, 1, 0.6, 1)
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -465,18 +465,6 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yfqsf"]
-bg_color = Color(1, 0.98, 0.92, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.12, 0.1, 0.08, 0.9)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgc55"]
 bg_color = Color(0.1, 0.09, 0.08, 1)
 border_width_left = 2
 border_width_top = 2
@@ -488,8 +476,20 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dp8lp"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgc55"]
 bg_color = Color(1, 0.98, 0.92, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12, 0.1, 0.08, 0.9)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dp8lp"]
+bg_color = Color(1, 0.8, 0.6, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -537,7 +537,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_occj8"]
-bg_color = Color(1, 0.8, 0.6, 1)
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -585,7 +585,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_torrx"]
-bg_color = Color(0.6, 1, 0.6, 1)
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -809,6 +809,7 @@ layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="TopBar" type="HBoxContainer" parent="Preview/Box" unique_id=214424838]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
 
@@ -1034,65 +1035,67 @@ columns = 9
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_efaw0")
 number = 22
-letter = "N"
+letter = "E"
 
 [node name="C0_1" parent="Preview/Box/Board/Frame/Grid" unique_id=14453283 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_s7tpa")
 number = 14
-letter = "N"
 fill_color = Color(0.6, 1, 0.6, 1)
 
 [node name="C0_2" parent="Preview/Box/Board/Frame/Grid" unique_id=765090029 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_p6606")
 number = 8
+letter = "T"
 
 [node name="C0_3" parent="Preview/Box/Board/Frame/Grid" unique_id=1619680572 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7bs4l")
 number = 19
-letter = "L"
+letter = "O"
 
 [node name="C0_4" parent="Preview/Box/Board/Frame/Grid" unique_id=327406212 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0oa1v")
-number = 3
+is_space = true
 
 [node name="C0_5" parent="Preview/Box/Board/Frame/Grid" unique_id=55878387 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w6o86")
-is_space = true
+number = 22
+letter = "E"
 
 [node name="C0_6" parent="Preview/Box/Board/Frame/Grid" unique_id=1788774766 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_yixgs")
-number = 12
-letter = "I"
+number = 14
+fill_color = Color(0.6, 1, 0.6, 1)
 
 [node name="C0_7" parent="Preview/Box/Board/Frame/Grid" unique_id=142629121 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_mrtkm")
 number = 5
+is_space = true
 
 [node name="C0_8" parent="Preview/Box/Board/Frame/Grid" unique_id=124596301 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_opnjn")
 number = 16
-letter = "A"
 fill_color = Color(1, 0.8, 0.6, 1)
 
 [node name="C1_0" parent="Preview/Box/Board/Frame/Grid" unique_id=865478946 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7j5qg")
-number = 14
+number = 4
 letter = "N"
-fill_color = Color(0.6, 1, 0.6, 1)
+fill_color = Color(1, 1, 1, 1)
 
 [node name="C1_1" parent="Preview/Box/Board/Frame/Grid" unique_id=2038259637 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_go5a6")
 number = 7
+letter = "A"
 
 [node name="C1_2" parent="Preview/Box/Board/Frame/Grid" unique_id=332018443 instance=ExtResource("5_cell")]
 layout_mode = 2
@@ -1100,56 +1103,63 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_3efpp")
 number = 16
 letter = "A"
 fill_color = Color(1, 0.8, 0.6, 1)
+is_space = true
 
 [node name="C1_3" parent="Preview/Box/Board/Frame/Grid" unique_id=473358823 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ep625")
 number = 2
+letter = "P"
 
 [node name="C1_4" parent="Preview/Box/Board/Frame/Grid" unique_id=825329712 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fpwxp")
-is_space = true
+number = 1
+letter = "R"
 
 [node name="C1_5" parent="Preview/Box/Board/Frame/Grid" unique_id=1412157958 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_5mxhh")
-number = 11
-letter = "D"
+number = 16
+fill_color = Color(1, 0.8, 0.6, 1)
 
 [node name="C1_6" parent="Preview/Box/Board/Frame/Grid" unique_id=968116354 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fkhui")
-number = 9
+number = 22
+letter = "E"
 
 [node name="C1_7" parent="Preview/Box/Board/Frame/Grid" unique_id=75500342 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_oh0gv")
-number = 4
+number = 15
+letter = "B"
 
 [node name="C1_8" parent="Preview/Box/Board/Frame/Grid" unique_id=1581963891 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_f35x6")
-number = 18
-letter = "E"
+number = 7
+letter = "A"
 
 [node name="C2_0" parent="Preview/Box/Board/Frame/Grid" unique_id=757604823 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fstb2")
 number = 18
 letter = "E"
+is_space = true
 
 [node name="C2_1" parent="Preview/Box/Board/Frame/Grid" unique_id=1405296700 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_abw8l")
-number = 14
-letter = "N"
-fill_color = Color(0.6, 1, 0.6, 1)
+number = 26
+letter = "D"
+fill_color = Color(1, 1, 1, 1)
 
 [node name="C2_2" parent="Preview/Box/Board/Frame/Grid" unique_id=1513896292 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lxy6r")
-number = 6
+number = 22
+letter = "E"
 
 [node name="C2_3" parent="Preview/Box/Board/Frame/Grid" unique_id=1286895157 instance=ExtResource("5_cell")]
 layout_mode = 2
@@ -1159,97 +1169,107 @@ is_space = true
 [node name="C2_4" parent="Preview/Box/Board/Frame/Grid" unique_id=1038081465 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8gq2f")
-number = 21
-letter = "O"
+number = 16
+fill_color = Color(1, 0.8, 0.6, 1)
 
 [node name="C2_5" parent="Preview/Box/Board/Frame/Grid" unique_id=1247738953 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_v5aai")
-number = 1
+number = 4
+letter = "N"
 
 [node name="C2_6" parent="Preview/Box/Board/Frame/Grid" unique_id=1121944853 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ramoc")
 number = 10
-letter = "U"
+letter = "P"
+is_space = true
 
 [node name="C2_7" parent="Preview/Box/Board/Frame/Grid" unique_id=2021463783 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a5aix")
-number = 15
+number = 2
+letter = "P"
 
 [node name="C2_8" parent="Preview/Box/Board/Frame/Grid" unique_id=523266984 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qfqd8")
-number = 8
+number = 7
+letter = "A"
 
 [node name="C3_0" parent="Preview/Box/Board/Frame/Grid" unique_id=752676649 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_r82pc")
-number = 13
+number = 4
+letter = "N"
 
 [node name="C3_1" parent="Preview/Box/Board/Frame/Grid" unique_id=2038147828 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wbfhg")
-number = 20
-letter = "P"
+number = 22
+letter = "E"
 
 [node name="C3_2" parent="Preview/Box/Board/Frame/Grid" unique_id=1568284508 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_n1oih")
-number = 14
-letter = "N"
-fill_color = Color(0.6, 1, 0.6, 1)
+number = 25
+letter = "L"
+fill_color = Color(1, 1, 1, 1)
 
 [node name="C3_3" parent="Preview/Box/Board/Frame/Grid" unique_id=1841649947 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_yfqsf")
 number = 17
+is_space = true
 
 [node name="C3_4" parent="Preview/Box/Board/Frame/Grid" unique_id=1536330659 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dgc55")
-is_space = true
+number = 8
+letter = "T"
 
 [node name="C3_5" parent="Preview/Box/Board/Frame/Grid" unique_id=993629190 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dp8lp")
-number = 23
+number = 16
+fill_color = Color(1, 0.8, 0.6, 1)
 
 [node name="C3_6" parent="Preview/Box/Board/Frame/Grid" unique_id=127365292 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_y63hc")
 number = 8
+letter = "T"
 
 [node name="C3_7" parent="Preview/Box/Board/Frame/Grid" unique_id=1750882703 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_w7xx6")
 number = 19
-letter = "L"
+letter = "O"
 
 [node name="C3_8" parent="Preview/Box/Board/Frame/Grid" unique_id=759281364 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_5tywb")
-number = 12
-letter = "I"
+number = 1
+letter = "R"
 
 [node name="C4_0" parent="Preview/Box/Board/Frame/Grid" unique_id=558221492 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_occj8")
-number = 16
-letter = "A"
-fill_color = Color(1, 0.8, 0.6, 1)
+number = 24
+letter = "I"
+fill_color = Color(1, 1, 1, 1)
 
 [node name="C4_1" parent="Preview/Box/Board/Frame/Grid" unique_id=557873482 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_326pl")
-number = 5
+number = 7
+letter = "A"
 
 [node name="C4_2" parent="Preview/Box/Board/Frame/Grid" unique_id=203051541 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ef4ah")
-number = 12
-letter = "I"
+number = 25
+letter = "L"
 
 [node name="C4_3" parent="Preview/Box/Board/Frame/Grid" unique_id=1847869796 instance=ExtResource("5_cell")]
 layout_mode = 2
@@ -1259,31 +1279,32 @@ is_space = true
 [node name="C4_4" parent="Preview/Box/Board/Frame/Grid" unique_id=1709512540 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_torrx")
-number = 14
-letter = "N"
-fill_color = Color(0.6, 1, 0.6, 1)
+number = 26
+letter = "F"
+fill_color = Color(1, 1, 1, 1)
 
 [node name="C4_5" parent="Preview/Box/Board/Frame/Grid" unique_id=2088008067 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ukx8h")
 number = 7
+letter = "A"
 
 [node name="C4_6" parent="Preview/Box/Board/Frame/Grid" unique_id=2049048887 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a38xa")
 number = 18
-letter = "E"
 
 [node name="C4_7" parent="Preview/Box/Board/Frame/Grid" unique_id=1067438302 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1t32o")
-number = 2
+number = 24
+letter = "I"
 
 [node name="C4_8" parent="Preview/Box/Board/Frame/Grid" unique_id=67399360 instance=ExtResource("5_cell")]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_s7avs")
-number = 21
-letter = "O"
+number = 25
+letter = "L"
 
 [node name="Scroll" type="Panel" parent="Preview/Box/Board" unique_id=1110168424]
 custom_minimum_size = Vector2(18, 0)

@@ -8,6 +8,7 @@ Online,Online,Online,Online,En ligne,Linean,Online,Online
 Tutorial,Tutorial,Tutorial,Anleitung,Tutoriel,Tutoretza,Esercitazione,Tutorial
 LastGame,Última partida,Last game,Letztes Spiel,Dernière partie,Azken partida,Ultima partita,Última partida
 Tagline,Descifra la frase,Decode the phrase,Entschlüssele den Satz,Déchiffre la phrase,Deszifratu esaldia,Decifra la frase,Decifre a frase
+ShowcaseWord,CÓDIGO,CODE,CODE,CODE,KODEA,CODICE,CÓDIGO
 Consejo,Consejo,Tip,Tipp,Conseil,Aholkua,Consiglio,Dica
 TapForNext,Toca para el siguiente consejo,Tap for the next tip,Tippen für den nächsten Tipp,Touchez pour le conseil suivant,Sakatu hurrengo aholkurako,Tocca per il prossimo consiglio,Toque para o próximo conselho
 TipShort,Utilizar pistas reducirá la puntuación con la que termines el puzzle.,Hints can be free or cost coins.,Hinweise können gratis sein oder Münzen kosten.,Les indices peuvent être gratuits ou coûter des pièces.,Pistak doakoak izan daitezke edo txanponak balio izan.,Gli indizi possono essere gratis o costare monete.,As dicas podem ser grátis ou custar moedas.
@@ -279,3 +280,175 @@ Level Acomplished,Nivel completado,Level Acomplished,Level A erreicht,Niveau acc
 CONGRATULATIONS!!!!,¡¡¡¡FELICIDADES!!!!,CONGRATULATIONS!!!!,GLÜCKWUNSCH!!!!,FÉLICITATIONS!!!!,ZORIONAK!!!!,CONGRATULAZIONI!!!!,PARABÉNS!!!!
 You've solved the sentence,Has resuelto la frase,You've solved the sentence,Du hast den Satz gelöst,Vous avez résolu la phrase,Ebatzi duzu esaldia,Hai risolto la frase,Você resolveu a frase
 Selected Letter:,Letra seleccionada:,Selected Letter:,Ausgewählter Buchstabe:,Lettre sélectionnée :,Hautatutako letra:,Lettera selezionata:,Letra selecionada:
+Next,SIGUIENTE,NEXT,WEITER,SUIVANT,HURRENGOA,AVANTI,SEGUINTE
+LetsPlay,¡A JUGAR!,LET'S PLAY,LOS GEHT'S,C'EST PARTI !,JOLASTU!,GIOCA!,JOGAR!
+TutTitle1,DESCIFRA LA FRASE,DECODE THE PHRASE,ENTSCHLÜSSELE DEN SATZ,DÉCHIFFRE LA PHRASE,DESZIFRATU ESALDIA,DECIFRA LA FRASE,DECIFRE A FRASE
+TutBody1a,Cada número representa siempre a la misma letra.,Each number always stands for the same letter.,Jede Zahl steht immer für denselben Buchstaben.,Chaque nombre représente toujours la même lettre.,Zenbaki bakoitza letra bera da beti.,Ogni numero rappresenta sempre la stessa lettera.,Cada número representa sempre a mesma letra.
+TutBody1b,Descubre las correspondencias para completar la frase.,Find the matches to complete the phrase.,"Finde die Zuordnungen, um den Satz zu vervollständigen.",Découvre les correspondances pour compléter la phrase.,Aurkitu korrespondentziak esaldia osatzeko.,Scopri le corrispondenze per completare la frase.,Descobre as correspondências para completar a frase.
+TutCap1,"[center]Deduce que el [color=#E68021][b]17[/b][/color] es la [color=#E68021][b]E[/b][/color].[/center]","[center]Deduce that [color=#E68021][b]17[/b][/color] is [color=#E68021][b]E[/b][/color].[/center]","[center]Schließe, dass [color=#E68021][b]17[/b][/color] ein [color=#E68021][b]E[/b][/color] ist.[/center]","[center]Déduis que le [color=#E68021][b]17[/b][/color] est un [color=#E68021][b]E[/b][/color].[/center]","[center]Ondorioztatu [color=#E68021][b]17[/b][/color] [color=#E68021][b]E[/b][/color] dela.[/center]","[center]Deduci che il [color=#E68021][b]17[/b][/color] è la [color=#E68021][b]E[/b][/color].[/center]","[center]Deduz que o [color=#E68021][b]17[/b][/color] é a [color=#E68021][b]E[/b][/color].[/center]"
+TutCap2,"[center]Sigue deduciendo que el [color=#E68021][b]19[/b][/color] es la [color=#E68021][b]D[/b][/color].[/center]","[center]Keep going: [color=#E68021][b]19[/b][/color] is [color=#E68021][b]D[/b][/color].[/center]","[center]Weiter: [color=#E68021][b]19[/b][/color] ist [color=#E68021][b]D[/b][/color].[/center]","[center]Continue : le [color=#E68021][b]19[/b][/color] est un [color=#E68021][b]D[/b][/color].[/center]","[center]Jarraitu: [color=#E68021][b]19[/b][/color] [color=#E68021][b]D[/b][/color] da.[/center]","[center]Continua: il [color=#E68021][b]19[/b][/color] è la [color=#E68021][b]D[/b][/color].[/center]","[center]Continua: o [color=#E68021][b]19[/b][/color] é a [color=#E68021][b]D[/b][/color].[/center]"
+TutCap3,"[center]Sigue deduciendo que el [color=#E68021][b]2[/b][/color] es la [color=#E68021][b]R[/b][/color].[/center]","[center]Keep going: [color=#E68021][b]2[/b][/color] is [color=#E68021][b]R[/b][/color].[/center]","[center]Weiter: [color=#E68021][b]2[/b][/color] ist [color=#E68021][b]R[/b][/color].[/center]","[center]Continue : le [color=#E68021][b]2[/b][/color] est un [color=#E68021][b]R[/b][/color].[/center]","[center]Jarraitu: [color=#E68021][b]2[/b][/color] [color=#E68021][b]R[/b][/color] da.[/center]","[center]Continua: il [color=#E68021][b]2[/b][/color] è la [color=#E68021][b]R[/b][/color].[/center]","[center]Continua: o [color=#E68021][b]2[/b][/color] é a [color=#E68021][b]R[/b][/color].[/center]"
+TutCap4,"[center]Sigue deduciendo que el [color=#E68021][b]15[/b][/color] es la [color=#E68021][b]A[/b][/color].[/center]","[center]Keep going: [color=#E68021][b]15[/b][/color] is [color=#E68021][b]A[/b][/color].[/center]","[center]Weiter: [color=#E68021][b]15[/b][/color] ist [color=#E68021][b]A[/b][/color].[/center]","[center]Continue : le [color=#E68021][b]15[/b][/color] est un [color=#E68021][b]A[/b][/color].[/center]","[center]Jarraitu: [color=#E68021][b]15[/b][/color] [color=#E68021][b]A[/b][/color] da.[/center]","[center]Continua: il [color=#E68021][b]15[/b][/color] è la [color=#E68021][b]A[/b][/color].[/center]","[center]Continua: o [color=#E68021][b]15[/b][/color] é a [color=#E68021][b]A[/b][/color].[/center]"
+TutTitle2,BUSCA PATRONES,LOOK FOR PATTERNS,SUCHE MUSTER,CHERCHE DES MOTIFS,BILATU EREDUAK,CERCA SCHEMI,PROCURA PADRÕES
+TutBody2a,Marca los números iguales con colores para localizar patrones y probar hipótesis.,Mark matching numbers with colors to spot patterns and test ideas.,"Markiere gleiche Zahlen mit Farben, um Muster zu finden und Hypothesen zu prüfen.",Marque les nombres identiques avec des couleurs pour repérer des motifs et tester des hypothèses.,Markatu zenbaki berdinak koloreekin ereduak aurkitzeko eta hipotesiak frogatzeko.,Segna i numeri uguali con i colori per trovare schemi e verificare ipotesi.,Marca os números iguais com cores para localizar padrões e testar hipóteses.
+TutBody2b,Normalmente es buena idea empezar localizando las vocales.,It is usually a good idea to start by finding the vowels.,"Meist ist es sinnvoll, zuerst die Vokale zu finden.",En général il est bon de commencer par repérer les voyelles.,Normalean ideia ona da bokalak aurkitzen hastea.,Di solito conviene iniziare localizzando le vocali.,Normalmente é boa ideia começar por localizar as vogais.
+TutStarsPuzzle,ESTRELLAS DEL PUZLE,PUZZLE STARS,RÄTSELSTERNE,ÉTOILES DU PUZZLE,PUZZLEAREN IZARRAK,STELLE DEL PUZZLE,ESTRELAS DO PUZZLE
+TutQuickGame,Partida rápida,Quick game,Schnelles Spiel,Partie rapide,Partida azkarra,Partita rapida,Partida rápida
+TutHint,PISTA,HINT,HINWEIS,INDICE,PISTA,INDIZIO,DICA
+TutReveal,REVELAR,REVEAL,AUFDECKEN,RÉVÉLER,AGERTU,RIVELA,REVELAR
+TutCaption2,Marca números iguales para encontrar patrones.,Mark matching numbers to find patterns.,"Markiere gleiche Zahlen, um Muster zu finden.",Marque les nombres identiques pour trouver des motifs.,Markatu zenbaki berdinak ereduak aurkitzeko.,Segna i numeri uguali per trovare gli schemi.,Marca números iguais para encontrar padrões.
+TutTipColorsFree,"Los colores son solo ayudas visuales, su uso no lleva ninguna penalización.",Colors are only visual aids; using them has no penalty.,Farben sind nur visuelle Hilfen; ihre Nutzung kostet nichts.,Les couleurs ne sont que des aides visuelles ; les utiliser n'entraîne aucune pénalité.,Koloreak laguntza bisualak besterik ez dira; erabiltzeak ez du zigorrik.,I colori sono solo aiuti visivi; usarli non comporta penalità.,As cores são só ajudas visuais; usá-las não tem penalização.
+TutTitle3,ESTRELLAS DE PUNTUACIÓN,SCORING STARS,PUNKTESTERNE,ÉTOILES DE SCORE,PUNTUAZIO IZARRAK,STELLE DI PUNTEGGIO,ESTRELAS DE PONTUAÇÃO
+TutIntro3,"Puedes pedir ayuda, pero perderás estrellas.","You can ask for help, but you will lose stars.","Du kannst Hilfe holen, verlierst dann aber Sterne.","Tu peux demander de l'aide, mais tu perdras des étoiles.","Laguntza eska dezakezu, baina izarrak galduko dituzu.","Puoi chiedere aiuto, ma perderai stelle.","Podes pedir ajuda, mas perderás estrelas."
+TutHintExplain,Te permite comprar por el precio de una estrella varias ayudas.,Lets you buy several helps for the price of one star.,Damit kaufst du mehrere Hilfen zum Preis eines Sterns.,Permet d'acheter plusieurs aides pour le prix d'une étoile.,Izar baten truke laguntza batzuk erosteko balio du.,Ti permette di comprare diversi aiuti al prezzo di una stella.,Permite comprar várias ajudas pelo preço de uma estrela.
+TutRevealExplain,"Te permite comprobar si las letras que has asignado están bien. Si todas las letras están bien no hay penalización, pero perderás una estrella por cada letra fallada.","Lets you check whether the letters you assigned are correct. If they are all right there is no penalty, but you lose one star for each wrong letter.","Damit prüfst du, ob die gesetzten Buchstaben stimmen. Sind alle richtig, gibt es keine Strafe; für jeden Fehler verlierst du einen Stern.","Permet de vérifier si les lettres assignées sont correctes. Si toutes sont justes, pas de pénalité ; tu perds une étoile par lettre fausse.","Esleitutako letrak ondo dauden egiaztatzeko. Denak ondo badaude ez dago zigorrik, baina huts egindako letra bakoitzeko izar bat galduko duzu.","Ti permette di verificare se le lettere assegnate sono corrette. Se sono tutte giuste non c'è penalità, ma perdi una stella per ogni lettera sbagliata.","Permite verificar se as letras atribuídas estão certas. Se todas estiverem certas não há penalização, mas perdes uma estrela por cada letra errada."
+TutSummary3,Cada ayuda que uses te costará estrellas.,Every help you use will cost you stars.,Jede Hilfe kostet Sterne.,Chaque aide utilisée te coûtera des étoiles.,Erabiltzen duzun laguntza bakoitzak izarrak kostatuko dizkizu.,Ogni aiuto che usi ti costerà stelle.,Cada ajuda que usares custará estrelas.
+TutTitle4,JUEGA A TU RITMO,PLAY AT YOUR PACE,SPIELE IN DEINEM TEMPO,JOUE À TON RYTHME,JOKATU ZURE ERRITMOAN,GIOCA AL TUO RITMO,JOGA AO TEU RITMO
+TutIntro4,Elige una temática y juega en modo Rápido o Criptograma.,Pick a theme and play in Quick or Cryptogram mode.,Wähle ein Thema und spiele im Schnell- oder Kryptogramm-Modus.,Choisis un thème et joue en mode Rapide ou Cryptogramme.,Aukeratu gai bat eta jokatu Azkarra edo Kriptograma moduan.,Scegli un tema e gioca in modalità Rapida o Crittogramma.,Escolhe um tema e joga no modo Rápido ou Criptograma.
+Quick,Rápido,Quick,Schnell,Rapide,Azkarra,Rapido,Rápido
+Cryptogram,Criptograma,Cryptogram,Kryptogramm,Cryptogramme,Kriptograma,Crittogramma,Criptograma
+TutQuickDesc,Puzles más cortos para partidas rápidas.,Shorter puzzles for quick games.,Kürzere Rätsel für schnelle Partien.,Des puzzles plus courts pour des parties rapides.,Puzzle laburragoak partida azkarretarako.,Puzzle più corti per partite rapide.,Puzzles mais curtos para partidas rápidas.
+TutCryptoDesc,Puzles más largos para los amantes del desafío.,Longer puzzles for those who love a challenge.,"Längere Rätsel für alle, die Herausforderungen lieben.",Des puzzles plus longs pour ceux qui aiment le défi.,Puzzle luzeagoak erronka maite dutenentzat.,Puzzle più lunghi per chi ama la sfida.,Puzzles mais longos para quem gosta de desafio.
+TutSaveTitle,Tu progreso se guarda automáticamente,Your progress is saved automatically,Dein Fortschritt wird automatisch gespeichert,Ta progression est enregistrée automatiquement,Zure aurrerapena automatikoki gordetzen da,I tuoi progressi si salvano automaticamente,O teu progresso guarda-se automaticamente
+TutSaveText,Puedes continuar un puzle más adelante.,You can continue a puzzle later.,Du kannst ein Rätsel später fortsetzen.,Tu peux continuer un puzzle plus tard.,Puzzle bat geroago jarrai dezakezu.,Puoi continuare un puzzle più avanti.,Podes continuar um puzzle mais tarde.
+TutStarsGoal,Intenta completar cada puzle conservando el mayor número de estrellas posible.,Try to finish each puzzle keeping as many stars as possible.,Versuche jedes Rätsel mit möglichst vielen Sternen zu lösen.,Essaie de terminer chaque puzzle en gardant le plus d'étoiles possible.,Saiatu puzzle bakoitza izar ahalik eta gehien gordez osatzen.,Cerca di completare ogni puzzle conservando il maggior numero di stelle possibile.,Tenta completar cada puzzle conservando o maior número de estrelas possível.
+StarsEarned,ESTRELLAS CONSEGUIDAS,STARS EARNED,ERREICHTE STERNE,ÉTOILES OBTENUES,LORTUTAKO IZARRAK,STELLE OTTENUTE,ESTRELAS CONQUISTADAS
+StarsResult,Resultado: %d de %d,Result: %d of %d,Ergebnis: %d von %d,Résultat : %d sur %d,Emaitza: %d / %d,Risultato: %d di %d,Resultado: %d de %d
+PuzzleCompleteFallback,Has completado correctamente este puzle.,You completed this puzzle correctly.,Du hast dieses Rätsel richtig gelöst.,Tu as correctement terminé ce puzzle.,Puzzle hau zuzen osatu duzu.,Hai completato correttamente questo puzzle.,Completaste corretamente este puzzle.
+Sorry,Lo siento...,Sorry...,Tut mir leid...,Désolé...,Barkatu...,Mi dispiace...,Lamento...
+FailedScreen,No has superado la pantalla,You didn't complete this puzzle,Du hast dieses Rätsel nicht geschafft,Tu n'as pas réussi cet écran,Ez duzu pantaila gainditu,Non hai superato lo schermo,Não superaste o ecrã
+ThePhraseWas,La frase era:,The phrase was:,Der Satz lautete :,La phrase était :,Esaldi hau zen:,La frase era:,A frase era:
+FeedbackTitle,¿QUÉ TE PARECIÓ?,HOW WAS IT?,WIE WAR'S?,ÇA T'A PLU ?,ZER IRUDITU ZAIZU?,COM'È ANDATA?,O QUE ACHASTE?
+FeedbackSubtitle,Tu opinión nos ayuda a mejorar el nivel %s,Your opinion helps us improve level %s,"Deine Meinung hilft uns, Level %s zu verbessern",Ton avis nous aide à améliorer le niveau %s,Zure iritziak %s maila hobetzen laguntzen du,La tua opinione ci aiuta a migliorare il livello %s,A tua opinião ajuda-nos a melhorar o nível %s
+FeedbackGlobal,Valoración general,Overall rating,Gesamtbewertung,Note générale,Balorazio orokorra,Valutazione generale,Avaliação geral
+FeedbackDuration,Duración,Length,Dauer,Durée,Iraupena,Durata,Duração
+FeedbackReveal,Revelar,Reveal,Aufdecken,Révéler,Agertu,Rivela,Revelar
+FeedbackUnused,No usada en esta partida,Not used in this game,In dieser Partie nicht genutzt,Non utilisée dans cette partie,Partida honetan erabili gabe,Non usata in questa partita,Não usada nesta partida
+FeedbackOmit,OMITIR,SKIP,ÜBERSPRINGEN,PASSER,SALTATU,SALTA,OMITIR
+FeedbackSend,ENVIAR,SEND,SENDEN,ENVOYER,BIDALI,INVIA,ENVIAR
+FeedbackSending,ENVIANDO…,SENDING…,WIRD GESENDET…,ENVOI…,BIDALTZEN…,INVIO…,A ENVIAR…
+Records,RÉCORDS,RECORDS,REKORDE,RECORDS,ERREKORRAK,RECORD,RECORDES
+QuickUpper,RÁPIDO,QUICK,SCHNELL,RAPIDE,AZKARRA,RAPIDO,RÁPIDO
+CryptogramUpper,CRIPTOGRAMA,CRYPTOGRAM,KRYPTOGRAMM,CRYPTOGRAMME,KRIPTOGRAMA,CRITTOGRAMMA,CRIPTOGRAMA
+Global,GLOBAL,GLOBAL,GLOBAL,MONDIAL,GLOBALA,GLOBALE,GLOBAL
+QuotesFilter,"CITAS
+CÉLEBRES","FAMOUS
+QUOTES","BERÜHMTE
+ZITATE","CITATIONS
+CÉLÈBRES","AIPAMEN
+OSPETSUAK","CITAZIONI
+FAMOSE","CITAÇÕES
+FAMOSAS"
+FragmentsFilter,"FRAGMENTOS
+LITERARIOS","LITERARY
+FRAGMENTS","LITERARISCHE
+FRAGMENTE","FRAGMENTS
+LITTÉRAIRES","ZATI
+LITERARIOAK","FRAMMENTI
+LETTERARI","FRAGMENTOS
+LITERÁRIOS"
+RankPos,POS.,POS.,PL.,POS.,POS.,POS.,POS.
+RankPlayer,JUGADOR,PLAYER,SPIELER,JOUEUR,JOKALARIA,GIOCATORE,JOGADOR
+RankStars,ESTRELLAS,STARS,STERNE,ÉTOILES,IZARRAK,STELLE,ESTRELAS
+RankPuzzles,PUZLES,PUZZLES,RÄTSEL,PUZZLES,PUZZLEAK,PUZZLE,PUZZLES
+RankStarsPer,★/PUZLE,★/PUZZLE,★/RÄTSEL,★/PUZZLE,★/PUZZLE,★/PUZZLE,★/PUZZLE
+RankAids,AYUDAS,HINTS,HILFEN,AIDES,LAGUNTZAK,AIUTI,AJUDAS
+RankFailed,FALLADAS,MISSED,FEHLER,RATÉES,HUTSEGITEAK,ERRATE,FALHADAS
+RankLoading,Cargando clasificación online…,Loading online ranking…,Online-Rangliste wird geladen…,Chargement du classement en ligne…,Lineako sailkapena kargatzen…,Caricamento classifica online…,A carregar classificação online…
+RankUnavailable,Clasificación online no disponible,Online ranking unavailable,Online-Rangliste nicht verfügbar,Classement en ligne indisponible,Lineako sailkapena ez dago eskuragarri,Classifica online non disponibile,Classificação online indisponível
+RankYou,TÚ,YOU,DU,TOI,ZU,TU,TU
+RankYouOffline,TÚ — sin conexión,YOU — offline,DU — offline,TOI — hors ligne,ZU — lineaz kanpo,TU — offline,TU — sem ligação
+RankYouNoPos,TÚ — sin posición,YOU — unranked,DU — ohne Platz,TOI — hors classement,ZU — posiziorik gabe,TU — senza posizione,TU — sem posição
+RankUpdateNote,✦   La clasificación se actualiza al completar un puzle.,✦   The ranking updates when you complete a puzzle.,✦   Die Rangliste wird nach einem gelösten Rätsel aktualisiert.,✦   Le classement se met à jour quand tu termines un puzzle.,✦   Sailkapena puzzle bat osatzean eguneratzen da.,✦   La classifica si aggiorna al completare un puzzle.,✦   A classificação atualiza-se ao completar um puzzle.
+RankRules,"La clasificación se basa en [color=#e55816]ESTRELLAS TOTALES[/color] obtenidas.
+
+Desempates (en este orden):
+1.  Más estrellas en menos número de puzles hechos (estrellas/puzle)
+2.  Menor número de ayudas utilizadas
+3.  Menor número de letras reveladas falladas","The ranking is based on [color=#e55816]TOTAL STARS[/color] earned.
+
+Tie-breakers (in this order):
+1.  More stars in fewer puzzles played (stars/puzzle)
+2.  Fewer hints used
+3.  Fewer failed revealed letters","Die Rangliste basiert auf den [color=#e55816]GESAMTSTERNEN[/color].
+
+Stichentscheide (in dieser Reihenfolge):
+1.  Mehr Sterne in weniger gespielten Rätseln (Sterne/Rätsel)
+2.  Weniger verwendete Hilfen
+3.  Weniger falsch aufgedeckte Buchstaben","Le classement est basé sur les [color=#e55816]ÉTOILES TOTALES[/color] obtenues.
+
+Départages (dans cet ordre) :
+1.  Plus d'étoiles en moins de puzzles joués (étoiles/puzzle)
+2.  Moins d'aides utilisées
+3.  Moins de lettres révélées ratées","Sailkapena lortutako [color=#e55816]IZAR GUZTIETAN[/color] oinarritzen da.
+
+Desberdinketak (ordena honetan):
+1.  Izar gehiago puzzle gutxiagotan (izarrak/puzzle)
+2.  Laguntza gutxiago
+3.  Huts egindako letra agertu gutxiago","La classifica si basa sulle [color=#e55816]STELLE TOTALI[/color] ottenute.
+
+Spareggi (in questo ordine):
+1.  Più stelle in meno puzzle giocati (stelle/puzzle)
+2.  Meno aiuti usati
+3.  Meno lettere rivelate sbagliate","A classificação baseia-se nas [color=#e55816]ESTRELAS TOTAIS[/color] obtidas.
+
+Desempates (nesta ordem):
+1.  Mais estrelas em menos puzzles jogados (estrelas/puzzle)
+2.  Menos ajudas usadas
+3.  Menos letras reveladas falhadas"
+Options,Opciones,Options,Optionen,Options,Aukerak,Opzioni,Opções
+OnlineName,NOMBRE ONLINE,ONLINE NAME,ONLINE-NAME,NOM EN LIGNE,LINEAKO IZENA,NOME ONLINE,NOME ONLINE
+OnlineNameHelp,Este nombre se mostrará en las clasificaciones y retos online.,This name will be shown in online leaderboards and challenges.,Dieser Name wird in Online-Ranglisten und Herausforderungen angezeigt.,Ce nom apparaîtra dans les classements et défis en ligne.,Izen hau lineako sailkapenetan eta erronketan agertuko da.,Questo nome apparirà nelle classifiche e nelle sfide online.,Este nome aparecerá nas classificações e desafios online.
+ResetValues,"RESTABLECER
+VALORES","RESET
+VALUES","WERTE
+ZURÜCKSETZEN","RÉINITIALISER
+LES VALEURS","BERREZARRI
+BALIOAK","RIPRISTINA
+VALORI","REPOR
+VALORES"
+GameSection,JUEGO,GAME,SPIEL,JEU,JOKOA,GIOCO,JOGO
+ShowTutorialBefore,Mostrar tutorial antes de jugar.,Show tutorial before playing.,Tutorial vor dem Spielen anzeigen.,Afficher le tutoriel avant de jouer.,Erakutsi tutoriala jokatu aurretik.,Mostra il tutorial prima di giocare.,Mostrar tutorial antes de jogar.
+ShowRevealExplain,Mostrar explicación botón REVELAR.,Show REVEAL button explanation.,Erklärung der AUFDECKEN-Taste anzeigen.,Afficher l'explication du bouton RÉVÉLER.,Erakutsi AGERTU botoiaren azalpena.,Mostra la spiegazione del pulsante RIVELA.,Mostrar explicação do botão REVELAR.
+OK,OK,OK,OK,OK,ADOS,OK,OK
+StatsSubtitle,Tu progreso en CifraLetra,Your progress in CifraLetra,Dein Fortschritt in CifraLetra,Ta progression dans CifraLetra,Zure aurrerapena CifraLetra-n,I tuoi progressi in CifraLetra,O teu progresso em CifraLetra
+StatsGames,Partidas,Games,Spiele,Parties,Partidak,Partite,Partidas
+StatsQuickGames,Partidas rápidas,Quick games,Schnelle Spiele,Parties rapides,Partida azkarrak,Partite rapide,Partidas rápidas
+StatsCryptoGames,Partidas criptograma,Cryptogram games,Kryptogramm-Spiele,Parties cryptogramme,Kriptograma partidak,Partite crittogramma,Partidas criptograma
+PerfectPuzzles,Puzles perfectos,Perfect puzzles,Perfekte Rätsel,Puzzles parfaits,Puzzle perfectuak,Puzzle perfetti,Puzzles perfeitos
+FastestPuzzle,Puzle más rápido,Fastest puzzle,Schnellstes Rätsel,Puzzle le plus rapide,Puzzle azkarrena,Puzzle più veloce,Puzzle mais rápido
+FastestPuzzleId,Puzzle #%d,Puzzle #%d,Rätsel #%d,Puzzle n°%d,Puzzle #%d,Puzzle n. %d,Puzzle n.º %d
+ProgressTitle,PROGRESO,PROGRESS,FORTSCHRITT,PROGRESSION,AURRERAPENA,PROGRESSI,PROGRESSO
+HintsUsage,USO DE AYUDAS,HINTS USED,HILFEN,UTILISATION DES AIDES,LAGUNTZEN ERABILERA,USO DEGLI AIUTI,USO DE AJUDAS
+LettersRevealed,LETRAS REVELADAS,LETTERS REVEALED,AUFGEDECKTE BUCHSTABEN,LETTRES RÉVÉLÉES,AGERTUTAKO LETRAK,LETTERE RIVELATE,LETRAS REVELADAS
+LettersFailed,LETRAS FALLADAS,FAILED LETTERS,FALSCHE BUCHSTABEN,LETTRES RATÉES,HUTS EGINDAKO LETRAK,LETTERE ERRATE,LETRAS FALHADAS
+AvgTimePerGame,TIEMPO MEDIO POR PARTIDA,AVERAGE TIME PER GAME,DURCHSCHNITTLICHE ZEIT PRO SPIEL,TEMPS MOYEN PAR PARTIE,PARTIDAKO BATEZ BESTEKO DENBORA,TEMPO MEDIO PER PARTITA,TEMPO MÉDIO POR PARTIDA
+PersonalMarks,MARCAS PERSONALES,PERSONAL MARKS,PERSÖNLICHE MARKEN,MARQUES PERSONNELLES,MARKA PERTSONALAK,RECORD PERSONALI,MARCAS PESSOAIS
+PuzzlesCount,%d puzles,%d puzzles,%d Rätsel,%d puzzles,%d puzzle,%d puzzle,%d puzzles
+StatsUpdatedNote,Las estadísticas se actualizan al completar un puzle.,Statistics update when a puzzle is completed.,Statistiken werden nach einem gelösten Rätsel aktualisiert.,Les statistiques se mettent à jour quand tu termines un puzzle.,Estatistikak puzzle bat osatzean eguneratzen dira.,Le statistiche si aggiornano al completare un puzzle.,As estatísticas atualizam-se ao completar um puzzle.
+ChooseGame,Elige tu partida,Choose your game,Wähle dein Spiel,Choisissez votre partie,Aukeratu zure partida,Scegli la tua partita,Escolha a sua partida
+ChooseTheme,Elige temática,Choose a theme,Wähle ein Thema,Choisissez un thème,Aukeratu gaia,Scegli un tema,Escolha um tema
+GameType,Tipo de partida,Game type,Spielart,Type de partie,Partida mota,Tipo di partita,Tipo de partida
+QuickDescription,Descifra frases cortas y directas.,"Decode short, direct phrases.","Entschlüssele kurze, direkte Sätze.",Déchiffrez des phrases courtes et directes.,Deszifratu esaldi labur eta zuzenak.,Decifra frasi brevi e dirette.,Decifre frases curtas e diretas.
+CryptogramDescription,Resuelve textos más largos y completos.,"Solve longer, complete texts.",Löse längere und vollständige Texte.,Résolvez des textes plus longs et complets.,Ebatzi testu luzeago eta osoak.,Risolvi testi più lunghi e completi.,Resolva textos mais longos e completos.
+StarsEarnedLabel,Estrellas conseguidas,Stars earned,Erreichte Sterne,Étoiles obtenues,Lortutako izarrak,Stelle ottenute,Estrelas conquistadas
+ChoosePuzzle,ELEGIR PUZZLE,CHOOSE PUZZLE,RÄTSEL WÄHLEN,CHOISIR UN PUZZLE,AUKERATU PUZZLEA,SCEGLI PUZZLE,ESCOLHER PUZZLE
+TimeQuickRange,5 – 10 min,5 – 10 min,5 – 10 Min.,5 – 10 min,5 – 10 min,5 – 10 min,5 – 10 min
+TimeCryptoRange,15 – 30 min,15 – 30 min,15 – 30 Min.,15 – 30 min,15 – 30 min,15 – 30 min,15 – 30 min
+Collection,Colección,Collection,Sammlung,Collection,Bilduma,Collezione,Coleção
+ProgressDiscovered,%d de %d descubiertos,%d of %d discovered,%d von %d entdeckt,%d sur %d découverts,%d / %d aurkituta,%d di %d scoperti,%d de %d descobertos
+ChooseRandom,Elegir al azar,Choose at random,Zufällig wählen,Choisir au hasard,Ausaz aukeratu,Scegli a caso,Escolher ao acaso
+NoLevels,No hay niveles disponibles,No levels available,Keine Level verfügbar,Aucun niveau disponible,Ez dago mailarik,Nessun livello disponibile,Nenhum nível disponível
+StatusCompleted,✓  COMPLETADO,✓  COMPLETED,✓  FERTIG,✓  TERMINÉ,✓  OSATUTA,✓  COMPLETATO,✓  CONCLUÍDO
+StatusContinue,▶  CONTINUAR,▶  CONTINUE,▶  FORTSETZEN,▶  CONTINUER,▶  JARRAITU,▶  CONTINUA,▶  CONTINUAR
+StatusNew,NUEVO,NEW,NEU,NOUVEAU,BERRIA,NUOVO,NOVO
+LettersProgress,%d / %d letras,%d / %d letters,%d / %d Buchstaben,%d / %d lettres,%d / %d letra,%d / %d lettere,%d / %d letras
+PauseTips,Pausar consejos,Pause tips,Tipps pausieren,Mettre les conseils en pause,Pausatu aholkuak,Metti in pausa i consigli,Pausar dicas
+ResumeTips,Reanudar consejos,Resume tips,Tipps fortsetzen,Reprendre les conseils,Berrekin aholkuak,Riprendi i consigli,Retomar dicas
+Version,VERSIÓN,VERSION,VERSION,VERSION,BERTSIOA,VERSIONE,VERSÃO
+PauseTitle,MENÚ DE PARTIDA,GAME MENU,SPIELMENÜ,MENU DE PARTIE,PARTIDAREN MENUA,MENU DI PARTITA,MENU DE PARTIDA
+PauseSavedWhilePlaying,Tu partida queda guardada mientras juegas,Your game is saved while you play,"Dein Spiel wird gespeichert, während du spielst",Ta partie est enregistrée pendant que tu joues,Zure partida gordeta geratzen da jokatzen duzun bitartean,La partita resta salvata mentre giochi,A tua partida fica guardada enquanto jogas
+KeepPlaying,▶   SEGUIR JUGANDO,▶   KEEP PLAYING,▶   WEITERSPIELEN,▶   CONTINUER À JOUER,▶   JOKATZEN JARRAITU,▶   CONTINUA A GIOCARE,▶   CONTINUAR A JOGAR
+RestartPuzzle,↻   REINICIAR PUZLE,↻   RESTART PUZZLE,↻   RÄTSEL NEUSTARTEN,↻   RECOMMENCER LE PUZZLE,↻   PUZZLEA BERRIZ HASI,↻   RIAVVIA PUZZLE,↻   REINICIAR PUZZLE
+ExitToMenu,⌂   SALIR AL MENÚ,⌂   EXIT TO MENU,⌂   ZUM MENÜ,⌂   RETOUR AU MENU,⌂   MENURA IRTEN,⌂   ESCI AL MENU,⌂   SAIR PARA O MENU
+ProgressAutoSaved,✓  Tu progreso se guarda automáticamente.,✓  Your progress is saved automatically.,✓  Dein Fortschritt wird automatisch gespeichert.,✓  Ta progression est enregistrée automatiquement.,✓  Zure aurrerapena automatikoki gordetzen da.,✓  I tuoi progressi si salvano automaticamente.,✓  O teu progresso guarda-se automaticamente.

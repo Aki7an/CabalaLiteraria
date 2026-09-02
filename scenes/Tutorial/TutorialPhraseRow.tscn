@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://mjwufgbf1530"]
 
 [ext_resource type="PackedScene" path="res://scenes/Tutorial/TutorialCipherTile.tscn" id="1_tile"]
+[ext_resource type="Script" uid="uid://bqroy8wqkmg2f" path="res://scenes/Tutorial/tutorial_phrase_row.gd" id="2_script"]
 
 [sub_resource type="StyleBoxFlat" id="Style_row"]
 content_margin_left = 12.0
@@ -23,6 +24,10 @@ offset_right = 980.0
 offset_bottom = 120.0
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("Style_row")
+script = ExtResource("2_script")
+numbers = PackedStringArray("6", "17", "2", "19", "17", "2", "15", "19", "13", "2", "1")
+letters = PackedStringArray("", "E", "", "", "E", "", "", "", "", "", "")
+highlight_number = "17"
 
 [node name="Row" type="HBoxContainer" parent="." unique_id=1684348690]
 layout_mode = 2
@@ -36,7 +41,6 @@ number_text = "6"
 [node name="N17a" parent="Row" unique_id=1055794788 instance=ExtResource("1_tile")]
 layout_mode = 2
 number_text = "17"
-letter_text = "E"
 
 [node name="N2a" parent="Row" unique_id=1843356627 instance=ExtResource("1_tile")]
 layout_mode = 2
@@ -49,7 +53,6 @@ number_text = "19"
 [node name="N17b" parent="Row" unique_id=2072587603 instance=ExtResource("1_tile")]
 layout_mode = 2
 number_text = "17"
-letter_text = "E"
 
 [node name="N2b" parent="Row" unique_id=44872117 instance=ExtResource("1_tile")]
 layout_mode = 2

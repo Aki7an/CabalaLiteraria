@@ -38,6 +38,12 @@ func _ready():
 	_set_image(GameManager.NUM_COLUMNAS)
 	
 	labe_columns.text = str(GameManager.NUM_COLUMNAS)
+	$Panel/LabelSound2.text = tr("GAME SETTINGS")
+	$Panel/TextureRect3/LabeLanguage.text = tr("COLUMNS")
+	$Panel/TextureRect4/LabeLanguage.text = tr("OnlineName")
+	$Panel/TextureRect2/LabelSound.text = tr("SOUND")
+	$Panel/ButtonRefranesPopulares2/Label2.text = tr("Music")
+	$Panel/ButtonBack.text = tr("Back")
 	
 	h_slider_fx.value = PlayerPrefs.volumen_fx
 	h_slider_sound.value = PlayerPrefs.volumen_musica
@@ -55,7 +61,7 @@ func _ready():
 	if GameManager.player_name != "":
 		nombre.placeholder_text = GameManager.player_name
 	else:
-		nombre.placeholder_text = "Enter Name ..."
+		nombre.placeholder_text = tr("Enter Name")
 
 func _on_check_button_music_pressed():
 	SoundManager.play("ButtonClick")
