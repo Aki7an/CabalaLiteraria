@@ -13,17 +13,26 @@ export_credentials.cfg
 *.pck
 *.zip
 *.ipa
-android/build/
-android/.build_version
 
-# Local iOS / Xcode exports
-/CodigoLetra_b_0_0_4/
-/CodigoLetra_b_0_0_4.xcodeproj/
-/CodigoLetra_b_0_0_4.xcframework/
+# Android Godot export / Gradle
+/android/
+
+# iOS / Xcode exports (keep them local, not on GitHub)
+/*.xcodeproj/
+/*.xcframework/
+/CifraLetra*/
+/CodigoLetra*/
 /MoltenVK.xcframework/
-/libgodot_camera.visionos.debug.xcframework/
-/libgodot_camera.visionos.release.xcframework/
+/libgodot_camera*.xcframework/
 /cabalaliteraria/
+/cifraletra/
+
+# Signing keys
+/keystores/
+*.jks
+*.keystore
+*.p12
+upload_certificate.pem
 
 # Editor settings
 .editor_settings-*
