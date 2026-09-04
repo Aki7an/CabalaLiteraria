@@ -12,7 +12,12 @@ extends Control
 @onready var check_button_fx: Button = $Panel/SoundCard/SoundRows/CheckButtonFx
 @onready var h_slider_sound: HSlider = $Panel/SoundCard/SoundRows/HSliderSound
 @onready var h_slider_fx: HSlider = $Panel/SoundCard/SoundRows/HSliderFx
+@onready var music_icon_texture: TextureRect = $Panel/SoundCard/SoundRows/MusicIcon/Texture
+@onready var music_icon_slash: TextureRect = $Panel/SoundCard/SoundRows/MusicIcon/Slash
+@onready var fx_icon_texture: TextureRect = $Panel/SoundCard/SoundRows/FxIcon/Texture
+@onready var fx_icon_slash: TextureRect = $Panel/SoundCard/SoundRows/FxIcon/Slash
 @onready var nombre: LineEdit = $Panel/OnlineCard/Nombre
+@onready var name_slots: HBoxContainer = $Panel/OnlineCard/NameSlots
 @onready var title_label: Label = $Panel/Header/Title
 @onready var online_title_label: Label = $Panel/OnlineCard/Title
 @onready var online_help_label: Label = $Panel/OnlineCard/Info/Text
@@ -25,6 +30,12 @@ extends Control
 
 var _language_buttons: Dictionary = {}
 var _normal_language_styles: Dictionary = {}
+var _name_slot_style: StyleBoxFlat
+var _name_slot_style_active: StyleBoxFlat
+var _updating_name := false
+var _updating_audio := false
+
+const NAME_MAX_LENGTH := 10
 
 const LOCALIZED_COPY := {
 	"es": {
@@ -107,23 +118,35 @@ func _ready() -> void:
 		var button: Button = _language_buttons[code]
 		_normal_language_styles[code] = button.get_theme_stylebox("normal").duplicate()
 
-	nombre.text = GameManager.player_name
-	nombre.placeholder_text = tr("Enter Name")
-	h_slider_fx.value = PlayerPrefs.volumen_fx
-	h_slider_sound.value = PlayerPrefs.volumen_musica
-	check_button_fx.button_pressed = PlayerPrefs.mute_fx
-	check_button_music.button_pressed = PlayerPrefs.mute_musica
+	nombre.max_length = NAME_MAX_LENGTH
+	nombre.focus_entered.connect(_refresh_name_slots)
+	nombre.focus_exited.connect(_on_nombre_focus_exited)
+	_build_name_slots()
+	_set_nombre_text(_sanitize_player_name(GameManager.chosen_online_name_or_empty()))
+	nombre.placeholder_text = ""
+	h_slider_fx.set_value_no_signal(PlayerPrefs.volumen_fx)
+	h_slider_sound.set_value_no_signal(PlayerPrefs.volumen_musica)
+	_refresh_audio_controls()
+	if not SignalManager.audio_prefs_changed.is_connected(_refresh_audio_controls):
+		SignalManager.audio_prefs_changed.connect(_refresh_audio_controls)
 	check_button_tutorial.button_pressed = PlayerPrefs.mostrar_tuto_antes_partida
 	check_button_reveal.button_pressed = not PlayerPrefs.skip_reveal_dialog
 	_update_language_selection()
 
 
 func _on_button_back_pressed() -> void:
-	_save_online_name()
+	_save_online_name(true)
+	SoundManager.play("ButtonClick")
+	if _is_overlay():
+		queue_free()
+		return
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
-	SoundManager.play("ButtonClick")
+
+
+func _is_overlay() -> bool:
+	return get_tree() != null and get_tree().current_scene != self
 
 
 func _select_language(code: String, button: Button) -> void:
@@ -161,67 +184,104 @@ func _on_button_frances_pressed() -> void:
 	_select_language("fr", button_frances)
 
 
-func _on_check_button_2_pressed() -> void:
-	SoundManager.play("ButtonClick")
-	PlayerPrefs.mute_fx = check_button_fx.button_pressed
-	AudioServer.set_bus_mute(
-		AudioServer.get_bus_index("SoundFx"),
-		not check_button_fx.button_pressed
-	)
-	PlayerPrefs.save_prefs()
+func _on_check_button_fx_toggled(enabled: bool) -> void:
+	if _updating_audio:
+		return
+	var enabling := enabled and not SoundManager.is_fx_enabled()
+	if not enabling:
+		SoundManager.play("ButtonClick")
+	SoundManager.set_fx_enabled(enabled)
+	if enabling:
+		SoundManager.play("ButtonClick")
 
 
-func _on_check_button_music_pressed() -> void:
+func _on_check_button_music_toggled(enabled: bool) -> void:
+	if _updating_audio:
+		return
 	SoundManager.play("ButtonClick")
-	PlayerPrefs.mute_musica = check_button_music.button_pressed
-	AudioServer.set_bus_mute(
-		AudioServer.get_bus_index("Music"),
-		not check_button_music.button_pressed
-	)
-	PlayerPrefs.save_prefs()
+	SoundManager.set_music_enabled(enabled)
 
 
 func _on_h_slider_fx_value_changed(value: float) -> void:
 	PlayerPrefs.volumen_fx = value
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SoundFx"), linear_to_db(value))
+	SoundManager.apply_audio_prefs()
 	PlayerPrefs.save_prefs()
 
 
 func _on_h_slider_sound_value_changed(value: float) -> void:
 	PlayerPrefs.volumen_musica = value
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(value))
+	SoundManager.apply_audio_prefs()
 	PlayerPrefs.save_prefs()
 
 
-func _on_nombre_text_submitted(new_text: String) -> void:
-	nombre.text = new_text.strip_edges()
+func _refresh_audio_controls(_unused: Variant = null) -> void:
+	_updating_audio = true
+	check_button_music.set_pressed_no_signal(SoundManager.is_music_enabled())
+	check_button_fx.set_pressed_no_signal(SoundManager.is_fx_enabled())
+	check_button_music.queue_redraw()
+	check_button_fx.queue_redraw()
+	_updating_audio = false
+	_set_audio_icon_state(music_icon_texture, music_icon_slash, SoundManager.is_music_enabled())
+	_set_audio_icon_state(fx_icon_texture, fx_icon_slash, SoundManager.is_fx_enabled())
+
+
+func _set_audio_icon_state(icon: TextureRect, slash: TextureRect, enabled: bool) -> void:
+	if icon:
+		var color := icon.modulate
+		color.a = 1.0 if enabled else 0.38
+		icon.modulate = color
+	if slash:
+		slash.visible = not enabled
+
+
+func _on_nombre_text_changed(new_text: String) -> void:
+	if _updating_name:
+		return
+	var caret := nombre.caret_column
+	var sanitized := _sanitize_player_name(new_text)
+	if sanitized != new_text:
+		var removed := new_text.length() - sanitized.length()
+		_set_nombre_text(sanitized)
+		nombre.caret_column = clampi(caret - removed, 0, sanitized.length())
+	else:
+		_refresh_name_slots()
 	_save_online_name()
+
+
+func _on_nombre_text_submitted(new_text: String) -> void:
+	_set_nombre_text(_sanitize_player_name(new_text))
+	_save_online_name(true)
 	nombre.release_focus()
+	_refresh_name_slots()
+
+
+func _on_nombre_focus_exited() -> void:
+	_save_online_name(true)
+	_refresh_name_slots()
 
 
 func _on_button_edit_pressed() -> void:
 	nombre.grab_focus()
-	nombre.select_all()
+	nombre.caret_column = nombre.text.length()
+	_refresh_name_slots()
 
 
 func _on_button_reset_pressed() -> void:
 	SoundManager.play("ButtonClick")
-	h_slider_sound.value = 0.8
-	h_slider_fx.value = 0.8
-	check_button_music.button_pressed = true
-	check_button_fx.button_pressed = true
+	h_slider_sound.set_value_no_signal(0.8)
+	h_slider_fx.set_value_no_signal(0.8)
 	PlayerPrefs.volumen_musica = 0.8
 	PlayerPrefs.volumen_fx = 0.8
-	PlayerPrefs.mute_musica = true
-	PlayerPrefs.mute_fx = true
-	AudioServer.set_bus_mute(AudioServer.get_bus_index("Music"), false)
-	AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundFx"), false)
+	SoundManager.set_music_enabled(true)
+	SoundManager.set_fx_enabled(true)
+	SoundManager.apply_audio_prefs()
 	PlayerPrefs.save_prefs()
 	GameManager.apply_language("es")
 	check_button_tutorial.button_pressed = true
 	check_button_reveal.button_pressed = true
 	PlayerPrefs.set_mostrar_tutorial(true)
 	PlayerPrefs.set_show_reveal_explanation(true)
+	_refresh_audio_controls()
 	_update_language_selection()
 
 
@@ -235,9 +295,101 @@ func _on_check_button_reveal_pressed() -> void:
 	PlayerPrefs.set_show_reveal_explanation(check_button_reveal.button_pressed)
 
 
-func _save_online_name() -> void:
-	GameManager.player_name = nombre.text.strip_edges()
+func _save_online_name(sync_online: bool = false) -> void:
+	GameManager.set_player_name(_sanitize_player_name(nombre.text))
 	PlayerPrefs.save_prefs()
+	if sync_online and typeof(PlayFabTools) != TYPE_NIL:
+		PlayFabTools.sync_player_display_name(GameManager.player_name)
+
+
+func _sanitize_player_name(text: String) -> String:
+	var out := ""
+	for i in text.length():
+		var ch := text.substr(i, 1)
+		if not _is_alphanumeric_char(ch):
+			continue
+		out += ch
+		if out.length() >= NAME_MAX_LENGTH:
+			break
+	return out
+
+
+func _is_alphanumeric_char(ch: String) -> bool:
+	if ch.length() != 1:
+		return false
+	var code := ch.unicode_at(0)
+	var is_upper := code >= 65 and code <= 90
+	var is_lower := code >= 97 and code <= 122
+	var is_digit := code >= 48 and code <= 57
+	return is_upper or is_lower or is_digit
+
+
+func _set_nombre_text(value: String) -> void:
+	_updating_name = true
+	nombre.text = value
+	_updating_name = false
+	_refresh_name_slots()
+
+
+func _build_name_slots() -> void:
+	_name_slot_style = StyleBoxFlat.new()
+	_name_slot_style.bg_color = Color(1.0, 0.984, 0.925, 0.92)
+	_name_slot_style.border_color = Color(0.77, 0.62, 0.40, 0.55)
+	_name_slot_style.set_border_width_all(2)
+	_name_slot_style.border_width_bottom = 6
+	_name_slot_style.set_corner_radius_all(14)
+	_name_slot_style_active = _name_slot_style.duplicate()
+	_name_slot_style_active.border_color = Color(0.04, 0.65, 0.64, 0.95)
+	_name_slot_style_active.set_border_width_all(3)
+	_name_slot_style_active.border_width_bottom = 7
+	while name_slots.get_child_count() > 0:
+		name_slots.get_child(0).free()
+	for _i in NAME_MAX_LENGTH:
+		var slot := Panel.new()
+		slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		slot.add_theme_stylebox_override("panel", _name_slot_style)
+		var letter := Label.new()
+		letter.name = "Letter"
+		letter.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		letter.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		letter.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		letter.set_anchors_preset(Control.PRESET_FULL_RECT)
+		letter.add_theme_font_override("font", nombre.get_theme_font("font"))
+		letter.add_theme_font_size_override("font_size", 46)
+		letter.add_theme_color_override("font_color", Color(0.34, 0.22, 0.15, 1))
+		slot.add_child(letter)
+		name_slots.add_child(slot)
+	_refresh_name_slots()
+
+
+func _refresh_name_slots() -> void:
+	if name_slots == null:
+		return
+	var value := nombre.text
+	var caret := nombre.caret_column if nombre.has_focus() else -1
+	for i in name_slots.get_child_count():
+		var slot := name_slots.get_child(i) as Panel
+		if slot == null:
+			continue
+		var letter := slot.get_node_or_null("Letter") as Label
+		if letter:
+			if i < value.length():
+				letter.text = value.substr(i, 1)
+				letter.modulate.a = 1.0
+			else:
+				letter.text = "_"
+				letter.modulate.a = 0.28
+		var is_active := nombre.has_focus() and i == mini(caret, NAME_MAX_LENGTH - 1)
+		slot.add_theme_stylebox_override(
+			"panel",
+			_name_slot_style_active if is_active else _name_slot_style
+		)
+
+
+func _process(_delta: float) -> void:
+	if is_instance_valid(nombre) and nombre.has_focus():
+		_refresh_name_slots()
 
 
 func _update_language_selection() -> void:
@@ -261,7 +413,7 @@ func _update_localized_copy(_locale: String = "") -> void:
 	game_title_label.text = tr("GameSection")
 	tutorial_label.text = tr("ShowTutorialBefore")
 	reveal_label.text = tr("ShowRevealExplain")
-	nombre.placeholder_text = tr("Enter Name")
+	nombre.placeholder_text = ""
 	$Panel/SoundCard/Title.text = tr("SOUND")
 	$Panel/SoundCard/SoundRows/MusicLabel.text = tr("Music")
 	$Panel/SoundCard/SoundRows/FxLabel.text = tr("Fx")

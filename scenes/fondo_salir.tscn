@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://d0r0jasc1534n"]
+[gd_scene load_steps=13 format=3 uid="uid://d0r0jasc1534n"]
 
 [ext_resource type="Script" path="res://scenes/fondo_salir.gd" id="1_script"]
 [ext_resource type="FontVariation" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
 [ext_resource type="FontFile" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="3_title"]
+[ext_resource type="Texture2D" uid="uid://dslqrdlfkvkm0" path="res://images/settings.png" id="4_settings"]
 
 [sub_resource type="StyleBoxFlat" id="Style_card"]
 bg_color = Color(1, 0.965, 0.86, 1)
@@ -47,19 +48,58 @@ corner_radius_bottom_right = 28
 corner_radius_bottom_left = 28
 
 [sub_resource type="StyleBoxFlat" id="Style_restart"]
-bg_color = Color(1, 0.69, 0.3, 1)
+bg_color = Color(0.94, 0.52, 0.5, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 9
-border_color = Color(0.77, 0.38, 0.1, 0.9)
+border_color = Color(0.72, 0.3, 0.3, 0.9)
 corner_radius_top_left = 28
 corner_radius_top_right = 28
 corner_radius_bottom_right = 28
 corner_radius_bottom_left = 28
-shadow_color = Color(0.35, 0.16, 0.04, 0.2)
+shadow_color = Color(0.4, 0.12, 0.12, 0.2)
 shadow_size = 8
 shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_restart_pressed"]
+bg_color = Color(0.84, 0.4, 0.4, 1)
+border_width_left = 3
+border_width_top = 8
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.62, 0.24, 0.24, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="Style_options"]
+bg_color = Color(1, 0.643137, 0.0156863, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 9
+border_color = Color(0.831373, 0.411765, 0.0156863, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.36, 0.18, 0.04, 0.22)
+shadow_size = 8
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_options_pressed"]
+bg_color = Color(0.929412, 0.505882, 0.00784314, 1)
+border_width_left = 3
+border_width_top = 8
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.741176, 0.337255, 0.0117647, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
 
 [sub_resource type="StyleBoxFlat" id="Style_exit"]
 bg_color = Color(1, 0.982, 0.92, 1)
@@ -94,9 +134,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -480.0
-offset_top = -680.0
+offset_top = -760.0
 offset_right = 480.0
-offset_bottom = 680.0
+offset_bottom = 760.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("Style_card")
@@ -143,13 +183,57 @@ vertical_alignment = 1
 [node name="Actions" type="VBoxContainer" parent="Card"]
 layout_mode = 0
 offset_left = 110.0
-offset_top = 470.0
+offset_top = 430.0
 offset_right = 850.0
-offset_bottom = 1030.0
-theme_override_constants/separation = 42
+offset_bottom = 1160.0
+theme_override_constants/separation = 26
+
+[node name="ButtonOptions" type="Button" parent="Card/Actions"]
+custom_minimum_size = Vector2(0, 132)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 0.96, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("Style_options")
+theme_override_styles/hover = SubResource("Style_options")
+theme_override_styles/pressed = SubResource("Style_options_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Row" type="HBoxContainer" parent="Card/Actions/ButtonOptions"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_right = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Card/Actions/ButtonOptions/Row"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_settings")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="Card/Actions/ButtonOptions/Row"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 1, 0.96, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+text = "OPCIONES"
+vertical_alignment = 1
 
 [node name="ButtonContinue" type="Button" parent="Card/Actions"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -163,21 +247,21 @@ theme_override_styles/focus = SubResource("Style_empty")
 text = "▶   SEGUIR JUGANDO"
 
 [node name="ButtonRestart" type="Button" parent="Card/Actions"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0.27, 0.15, 0.07, 1)
+theme_override_colors/font_color = Color(1, 1, 0.96, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("Style_restart")
 theme_override_styles/hover = SubResource("Style_restart")
-theme_override_styles/pressed = SubResource("Style_continue_pressed")
+theme_override_styles/pressed = SubResource("Style_restart_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
 text = "↻   REINICIAR PUZLE"
 
 [node name="ButtonExit" type="Button" parent="Card/Actions"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -193,9 +277,9 @@ text = "⌂   SALIR AL MENÚ"
 [node name="SaveNote" type="Label" parent="Card"]
 layout_mode = 0
 offset_left = 120.0
-offset_top = 1110.0
+offset_top = 1210.0
 offset_right = 840.0
-offset_bottom = 1220.0
+offset_bottom = 1320.0
 theme_override_colors/font_color = Color(0.44, 0.32, 0.2, 0.82)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 28
@@ -205,4 +289,5 @@ vertical_alignment = 1
 
 [connection signal="pressed" from="Card/Actions/ButtonContinue" to="." method="_on_button_seguir_pressed"]
 [connection signal="pressed" from="Card/Actions/ButtonRestart" to="." method="_on_button_reiniciar_pressed"]
+[connection signal="pressed" from="Card/Actions/ButtonOptions" to="." method="_on_button_options_pressed"]
 [connection signal="pressed" from="Card/Actions/ButtonExit" to="." method="_on_button_salir_pressed"]

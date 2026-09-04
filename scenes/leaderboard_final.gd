@@ -365,21 +365,14 @@ func _add_competitive_row(
 	)
 
 
-func _has_online_name() -> bool:
-	var local_name := str(GameManager.player_name).strip_edges()
-	return local_name != "" and local_name != "---" and local_name != "BAD"
-
-
 func _row_display_name(
 	entry: Dictionary,
 	is_player: bool,
-	around_player: bool
+	_around_player: bool
 ) -> String:
-	var local_name := str(GameManager.player_name).strip_edges()
 	if is_player:
-		return local_name if _has_online_name() else tr("RankYou")
-	if around_player and not _has_online_name():
-		return "-"
+		var local_name := str(GameManager.player_name).strip_edges()
+		return local_name if local_name != "" else tr("RankYou")
 	var remote_name := str(entry.get("DisplayName", "")).strip_edges()
 	return remote_name if remote_name != "" else "-"
 

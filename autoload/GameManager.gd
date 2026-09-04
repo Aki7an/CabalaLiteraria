@@ -28,6 +28,10 @@ var reveal_errors_count: int = 0
 var reveal_success_count: int = 0
 
 @export var player_name: String = ""
+var guest_online_id: String = ""
+var online_name_chosen: bool = false
+const PLAYER_NAME_MAX_LENGTH := 10
+const GUEST_NAME_PREFIX := "ANON"
 var allow_completed_replay := false
 @export var score: int
 @export var score_init: int = 30000
@@ -807,15 +811,7 @@ func _known_locked_letters() -> Dictionary:
 
 
 func _pick_most_repeated_hidden_letter() -> String:
-	var known := _known_locked_letters()
-	var counts := {}
-	for character in frase_original:
-		if is_excluded_character(character):
-			continue
-		var key := _hint_letter_key(character)
-		if known.has(key):
-			continue
-		counts[key] = int(counts.get(key, 0)) + 1
+	var counts := _count_unrevealed_letter_occurrences()
 	var best_letter := ""
 	var best_count := 0
 	for letter in counts:
@@ -824,6 +820,34 @@ func _pick_most_repeated_hidden_letter() -> String:
 			best_count = count
 			best_letter = str(letter)
 	return best_letter
+
+
+func _count_unrevealed_letter_occurrences() -> Dictionary:
+	var counts := {}
+	var counted_from_board := false
+	if is_inside_tree():
+		for node in get_tree().get_nodes_in_group("Celda"):
+			if not node is Celda:
+				continue
+			var cell := node as Celda
+			if cell.numero >= 100 or is_excluded_character(cell.letra) or cell.bloqueada:
+				continue
+			var key := _hint_letter_key(cell.letra)
+			if key.is_empty() or not is_playable_letter(key):
+				continue
+			counts[key] = int(counts.get(key, 0)) + 1
+			counted_from_board = true
+	if counted_from_board:
+		return counts
+	var known := _known_locked_letters()
+	for character in frase_original:
+		if is_excluded_character(character):
+			continue
+		var key := _hint_letter_key(character)
+		if known.has(key):
+			continue
+		counts[key] = int(counts.get(key, 0)) + 1
+	return counts
 
 
 func _word_is_unsolved(word: Dictionary) -> bool:
@@ -882,65 +906,108 @@ func _pick_remaining_hint_words() -> PackedStringArray:
 
 
 func reveal_assignment_errors() -> int:
-	var new_errors := 0
-	var new_successes := 0
-	var wrong_numbers: Dictionary = {}
-	var correct_numbers: Dictionary = {}
-	var wrong_letters: Dictionary = {}
-	var correct_letters: Dictionary = {}
-	var initial_letters: Dictionary = {}
-	for character in letras_iniciales.to_upper():
-		if not is_excluded_character(character):
-			initial_letters[character] = true
-			correct_letters[character] = true
-	for node: Node in get_tree().get_nodes_in_group("Celda"):
-		if not node is Celda:
-			continue
-		var cell := node as Celda
-		if cell.numero >= 100 or cell.letter_user == "":
-			continue
-		var player_letter := cell.letter_user.to_upper()
-		if letra_corresponde_a_numero(cell.letter_user, cell.numero):
-			if not cell.bloqueada and not correct_numbers.has(cell.numero):
-				new_successes += 1
-			correct_numbers[cell.numero] = true
-			correct_letters[player_letter] = true
-			cell.mostrar_letra()
-		else:
-			wrong_numbers[cell.numero] = cell.letter_user
-			wrong_letters[player_letter] = true
-			cell.mostrar_letra_errada()
+	if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
+		return 0
+	var layer := _game_hud_layer()
+	if layer == null:
+		return 0
+	var overlay := preload("res://scenes/RevealSequence.tscn").instantiate()
+	layer.add_child(overlay)
+	if overlay is Control:
+		overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+		overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	return 0
 
+
+func _game_hud_layer() -> Node:
+	var hud_nodes := get_tree().get_nodes_in_group("GameHUD")
+	if not hud_nodes.is_empty():
+		return hud_nodes[0].get_parent()
+	var feedback := get_tree().get_nodes_in_group("ErrorFeedback")
+	if not feedback.is_empty():
+		return feedback[0]
+	return null
+
+
+func mark_keyboard_letter(letter: String, correct: bool) -> void:
+	var key := letter.strip_edges().to_upper()
+	if key.is_empty():
+		return
 	for node: Node in get_tree().get_nodes_in_group("Letra"):
 		if not node is Letra:
 			continue
 		var keyboard_letter := node as Letra
-		var letter_key := keyboard_letter.letra.to_upper()
-		if correct_letters.has(letter_key):
-			keyboard_letter.mark_as_correct()
-		elif wrong_letters.has(letter_key):
-			keyboard_letter.mark_as_wrong_deselected()
-		else:
-			keyboard_letter.mark_as_unassigned()
-
-	# Clear fill-color slots that pointed at now-verified cipher numbers.
-	_clear_fill_color_slots_for_numbers(correct_numbers)
-
-	for number: Variant in correct_numbers:
-		_penalized_reveal_errors.erase(number)
-	for number: Variant in wrong_numbers:
-		var assigned_letter: String = str(wrong_numbers[number])
-		if str(_penalized_reveal_errors.get(number, "")) == assigned_letter:
+		if keyboard_letter.letra.to_upper() != key:
 			continue
-		_penalized_reveal_errors[number] = assigned_letter
-		new_errors += 1
+		if correct:
+			keyboard_letter.mark_as_correct()
+		else:
+			keyboard_letter.mark_as_wrong_deselected()
 
-	reveal_errors_count += new_errors
-	reveal_success_count += new_successes
-	subtract_puzzle_stars(new_errors)
+
+func apply_reveal_correct_number(number: int) -> void:
+	var letter := ""
+	var counted := false
+	for node: Node in get_tree().get_nodes_in_group("Celda"):
+		if not node is Celda:
+			continue
+		var cell := node as Celda
+		if cell.numero != number:
+			continue
+		if not cell.bloqueada and not counted:
+			reveal_success_count += 1
+			counted = true
+		letter = cell.letter_user.to_upper()
+		cell.mostrar_letra()
+	if letter != "":
+		mark_keyboard_letter(letter, true)
+	_clear_fill_color_slots_for_numbers({number: true})
+	_penalized_reveal_errors.erase(number)
+
+
+func apply_reveal_wrong_number(number: int) -> void:
+	var letter := ""
+	for node: Node in get_tree().get_nodes_in_group("Celda"):
+		if not node is Celda:
+			continue
+		var cell := node as Celda
+		if cell.numero != number:
+			continue
+		letter = cell.letter_user.to_upper()
+		cell.mostrar_letra_errada()
+	if letter != "":
+		mark_keyboard_letter(letter, false)
+
+
+func apply_reveal_initials_green(cells: Array[Celda]) -> void:
+	var letters: Dictionary = {}
+	for cell in cells:
+		if not is_instance_valid(cell):
+			continue
+		cell.mostrar_letra()
+		var key := cell.letter_user.to_upper()
+		if key != "":
+			letters[key] = true
+	for key in letters:
+		mark_keyboard_letter(str(key), true)
+
+
+func is_reveal_error_already_penalized(number: int, letter: String) -> bool:
+	return str(_penalized_reveal_errors.get(number, "")) == letter.strip_edges().to_upper()
+
+
+func consume_reveal_error_star(number: int, letter: String) -> bool:
+	var assigned := letter.strip_edges().to_upper()
+	if str(_penalized_reveal_errors.get(number, "")) == assigned:
+		return false
+	_penalized_reveal_errors[number] = assigned
+	reveal_errors_count += 1
+	return puzzle_stars > 0
+
+
+func finish_reveal_sequence() -> void:
 	update_numero_letras_reveladas(true)
 	PuzzleSaveManager.request_autosave()
-	return wrong_numbers.size()
 
 
 func _clear_fill_color_slots_for_numbers(correct_numbers: Dictionary) -> void:
@@ -1780,7 +1847,86 @@ func borrar_letra_en_tablero(letra_a_borrar: String) -> void:
 
 
 func set_player_name(nombre: String) -> void:
-	player_name = nombre
+	ensure_online_identity()
+	var cleaned := nombre.strip_edges()
+	if not looks_like_chosen_online_name(cleaned):
+		player_name = guest_online_id
+		online_name_chosen = false
+		return
+	if cleaned.length() > PLAYER_NAME_MAX_LENGTH:
+		cleaned = cleaned.substr(0, PLAYER_NAME_MAX_LENGTH)
+	player_name = cleaned
+	online_name_chosen = true
+
+
+func has_chosen_online_name() -> bool:
+	return online_name_chosen and looks_like_chosen_online_name(player_name)
+
+
+func chosen_online_name_or_empty() -> String:
+	return player_name if has_chosen_online_name() else ""
+
+
+func looks_like_chosen_online_name(nombre: String) -> bool:
+	var cleaned := nombre.strip_edges()
+	if cleaned == "" or cleaned == "---" or cleaned == "BAD":
+		return false
+	return not is_guest_online_name(cleaned)
+
+
+func is_guest_online_name(nombre: String) -> bool:
+	var cleaned := nombre.strip_edges().to_upper()
+	if not cleaned.begins_with(GUEST_NAME_PREFIX):
+		return false
+	if cleaned.length() != PLAYER_NAME_MAX_LENGTH:
+		return false
+	var suffix := cleaned.substr(GUEST_NAME_PREFIX.length())
+	for i in suffix.length():
+		var code := suffix.unicode_at(i)
+		var is_digit := code >= 48 and code <= 57
+		var is_hex := code >= 65 and code <= 70
+		if not (is_digit or is_hex):
+			return false
+	return true
+
+
+func ensure_online_identity() -> bool:
+	var changed := false
+	if is_guest_online_name(player_name) and guest_online_id.strip_edges() == "":
+		guest_online_id = player_name.strip_edges().to_upper()
+		changed = true
+	if guest_online_id.strip_edges() == "" or not is_guest_online_name(guest_online_id):
+		guest_online_id = _generate_guest_online_id()
+		changed = true
+	if not has_chosen_online_name():
+		if player_name != guest_online_id:
+			player_name = guest_online_id
+			changed = true
+		if online_name_chosen:
+			online_name_chosen = false
+			changed = true
+	return changed
+
+
+func _generate_guest_online_id() -> String:
+	var seed := _guest_id_seed()
+	var hasher := HashingContext.new()
+	hasher.start(HashingContext.HASH_SHA256)
+	hasher.update(seed.to_utf8_buffer())
+	var hex := hasher.finish().hex_encode().to_upper()
+	var suffix_len := PLAYER_NAME_MAX_LENGTH - GUEST_NAME_PREFIX.length()
+	return GUEST_NAME_PREFIX + hex.substr(0, suffix_len)
+
+
+func _guest_id_seed() -> String:
+	if typeof(PlayFabTools) != TYPE_NIL:
+		var playfab_seed := str(PlayFabTools.playfab_id).strip_edges()
+		if playfab_seed != "":
+			return playfab_seed
+	var device_id := OS.get_unique_id().strip_edges()
+	if device_id != "" and device_id.to_lower() != "unknown":
+		return device_id
+	return "%s|%s|%s" % [OS.get_name(), Time.get_unix_time_from_system(), randi()]
 
 func playfab_table() -> String:
 	if GameManager.dificultad_actual ==1:

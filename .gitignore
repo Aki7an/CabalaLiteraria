@@ -29,6 +29,7 @@ export_credentials.cfg
 
 # Signing keys
 /keystores/
+/tools/playfab_secret.txt
 *.jks
 *.keystore
 *.p12

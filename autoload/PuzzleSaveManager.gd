@@ -353,12 +353,10 @@ func _capture_resolution() -> Dictionary:
 				cell.letter_user,
 				cell.numero
 			)
-			if is_correct and GameManager.letras_iniciales.to_upper().contains(
-				cell.letter_user.to_upper()
-			):
-				visual_state = "initial"
-			elif cell.bloqueada and is_correct:
+			if cell.revelada_verde or (cell.bloqueada and is_correct and not cell.es_regalo_inicial):
 				visual_state = "correct"
+			elif cell.es_regalo_inicial:
+				visual_state = "initial"
 			elif cell.celda_mostrada:
 				visual_state = "player"
 			else:
@@ -405,6 +403,7 @@ func _apply_resolution(resolution: Dictionary) -> void:
 				saved_initial_letter,
 				cell.numero
 			):
+				cell.mostrar_letra_especifica(saved_initial_letter)
 				continue
 			# Repair saves created when an incorrect use of an initial letter
 			# was mistakenly stored as a locked initial cell.

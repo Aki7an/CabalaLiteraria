@@ -15,10 +15,15 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="CifraLetra"
+config/version="0.16"
 config/description="CifraLetra - pasatiempo "
 run/main_scene="uid://bvpri1mtnymgf"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="uid://cqxe6ckhc3s57"
+
+[audio]
+
+buses/default_bus_layout="res://default_bus_layout.tres"
 
 [autoload]
 

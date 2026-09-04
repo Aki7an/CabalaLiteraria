@@ -1076,6 +1076,7 @@ scale = Vector2(0.117187, 0.117187)
 texture = ExtResource("31_dnf3t")
 
 [node name="ButtonSettings" type="Button" parent="."]
+visible = false
 layout_mode = 1
 offset_left = 32.0
 offset_top = 32.0

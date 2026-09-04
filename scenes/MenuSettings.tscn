@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://bsljpeg6roq0l" path="res://GUI/Library/Frame/Frame_Demo_Light/BasicFrame_Circle_60.png" id="14_knob"]
 [ext_resource type="Texture2D" uid="uid://vmyg7opkn11t" path="res://GUI/Library/Frame/Frame_Demo_Light/BasicFrame_Circle_60_White.png" id="15_knob_hover"]
 [ext_resource type="Script" path="res://scenes/settings_toggle.gd" id="16_toggle"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_mute_slash.svg" id="17_slash"]
 [ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Arrow_Back.png" id="18_back"]
 [ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Pencil.png" id="19_pencil"]
 [ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_User_0.png" id="20_user"]
@@ -389,9 +390,9 @@ color = Color(0.713726, 0.505882, 0.258824, 0.52)
 [node name="SoundCard" type="Panel" parent="Panel"]
 layout_mode = 0
 offset_left = 72.0
-offset_top = 284.0
+offset_top = 767.0
 offset_right = 1134.0
-offset_bottom = 810.0
+offset_bottom = 1293.0
 theme_override_styles/panel = SubResource("Style_card")
 
 [node name="TitleLineL" type="ColorRect" parent="Panel/SoundCard"]
@@ -541,6 +542,24 @@ texture = ExtResource("12_music")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Slash" type="TextureRect" parent="Panel/SoundCard/SoundRows/MusicIcon"]
+visible = false
+modulate = Color(0.55, 0.16, 0.08, 0.95)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("17_slash")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="MusicLabel" type="Label" parent="Panel/SoundCard/SoundRows"]
 layout_mode = 0
 offset_left = 183.0
@@ -609,6 +628,24 @@ texture = ExtResource("13_fx")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Slash" type="TextureRect" parent="Panel/SoundCard/SoundRows/FxIcon"]
+visible = false
+modulate = Color(0.55, 0.16, 0.08, 0.95)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("17_slash")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="FxLabel" type="Label" parent="Panel/SoundCard/SoundRows"]
 layout_mode = 0
 offset_left = 183.0
@@ -656,9 +693,9 @@ script = ExtResource("16_toggle")
 [node name="LanguageCard" type="Panel" parent="Panel"]
 layout_mode = 0
 offset_left = 72.0
-offset_top = 856.0
+offset_top = 1339.0
 offset_right = 1134.0
-offset_bottom = 1537.0
+offset_bottom = 2020.0
 theme_override_styles/panel = SubResource("Style_card")
 
 [node name="TitleLineL" type="ColorRect" parent="Panel/LanguageCard"]
@@ -1142,9 +1179,9 @@ vertical_alignment = 1
 [node name="OnlineCard" type="Panel" parent="Panel"]
 layout_mode = 0
 offset_left = 72.0
-offset_top = 1582.0
+offset_top = 284.0
 offset_right = 1134.0
-offset_bottom = 2020.0
+offset_bottom = 722.0
 theme_override_styles/panel = SubResource("Style_card")
 
 [node name="TitleLineL" type="ColorRect" parent="Panel/OnlineCard"]
@@ -1178,23 +1215,35 @@ offset_bottom = 80.0
 mouse_filter = 2
 color = Color(0.713726, 0.505882, 0.258824, 0.58)
 
+[node name="NameSlots" type="HBoxContainer" parent="Panel/OnlineCard"]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 136.0
+offset_right = 848.0
+offset_bottom = 273.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+alignment = 1
+
 [node name="Nombre" type="LineEdit" parent="Panel/OnlineCard"]
 layout_mode = 0
 offset_left = 72.0
 offset_top = 136.0
-offset_right = 990.0
+offset_right = 848.0
 offset_bottom = 273.0
-theme_override_colors/font_color = Color(0.337255, 0.223529, 0.152941, 1)
-theme_override_colors/caret_color = Color(0.0392157, 0.647059, 0.643137, 1)
-theme_override_colors/selection_color = Color(0.0392157, 0.647059, 0.643137, 0.3)
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+theme_override_colors/font_placeholder_color = Color(0, 0, 0, 0)
+theme_override_colors/caret_color = Color(0.0392157, 0.647059, 0.643137, 0)
+theme_override_colors/selection_color = Color(0.0392157, 0.647059, 0.643137, 0)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 48
-theme_override_styles/normal = SubResource("Style_line_edit")
-theme_override_styles/focus = SubResource("Style_line_edit_focus")
-placeholder_text = "Enter Name"
+theme_override_styles/normal = SubResource("Style_empty")
+theme_override_styles/focus = SubResource("Style_empty")
+placeholder_text = ""
 max_length = 10
-select_all_on_focus = true
-caret_blink = true
+select_all_on_focus = false
+caret_blink = false
+caret_mid_grapheme = true
 
 [node name="ButtonEdit" type="Button" parent="Panel/OnlineCard"]
 layout_mode = 0
@@ -1444,9 +1493,9 @@ text = "OK"
 
 [connection signal="pressed" from="Panel/Header/ButtonBack" to="." method="_on_button_back_pressed"]
 [connection signal="value_changed" from="Panel/SoundCard/SoundRows/HSliderSound" to="." method="_on_h_slider_sound_value_changed"]
-[connection signal="pressed" from="Panel/SoundCard/SoundRows/CheckButtonMusic" to="." method="_on_check_button_music_pressed"]
+[connection signal="toggled" from="Panel/SoundCard/SoundRows/CheckButtonMusic" to="." method="_on_check_button_music_toggled"]
 [connection signal="value_changed" from="Panel/SoundCard/SoundRows/HSliderFx" to="." method="_on_h_slider_fx_value_changed"]
-[connection signal="pressed" from="Panel/SoundCard/SoundRows/CheckButtonFx" to="." method="_on_check_button_2_pressed"]
+[connection signal="toggled" from="Panel/SoundCard/SoundRows/CheckButtonFx" to="." method="_on_check_button_fx_toggled"]
 [connection signal="pressed" from="Panel/LanguageCard/ButtonEspañol" to="." method="_on_button_español_pressed"]
 [connection signal="pressed" from="Panel/LanguageCard/ButtonEuskera" to="." method="_on_button_euskera_pressed"]
 [connection signal="pressed" from="Panel/LanguageCard/ButtonIngles" to="." method="_on_button_ingles_pressed"]
@@ -1454,6 +1503,7 @@ text = "OK"
 [connection signal="pressed" from="Panel/LanguageCard/ButtonItaliano" to="." method="_on_button_italiano_pressed"]
 [connection signal="pressed" from="Panel/LanguageCard/ButtonFrances" to="." method="_on_button_frances_pressed"]
 [connection signal="pressed" from="Panel/LanguageCard/ButtonAleman" to="." method="_on_button_aleman_pressed"]
+[connection signal="text_changed" from="Panel/OnlineCard/Nombre" to="." method="_on_nombre_text_changed"]
 [connection signal="text_submitted" from="Panel/OnlineCard/Nombre" to="." method="_on_nombre_text_submitted"]
 [connection signal="pressed" from="Panel/OnlineCard/ButtonEdit" to="." method="_on_button_edit_pressed"]
 [connection signal="pressed" from="Panel/GameCard/GameRows/CheckButtonTutorial" to="." method="_on_check_button_tutorial_pressed"]

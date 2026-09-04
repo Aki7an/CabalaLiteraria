@@ -30,7 +30,9 @@ func _ready() -> void:
 	var ok: bool = await PlayFabTools.login_with_custom_id(playfab_id, true)
 	if ok:
 		print("Listo. Ticket:", PlayFabTools.session_ticket, "ID:", PlayFabTools.playfab_id)
-		# …ya puedes llamar Client APIs con X-Authorization
+		if typeof(GameManager) != TYPE_NIL:
+			GameManager.ensure_online_identity()
+			await _update_player_display_name(GameManager.player_name)
 	else:
 		print("No se pudo iniciar sesión en PlayFab.")
 	
@@ -126,6 +128,15 @@ func login_with_custom_id(custom_id: String, p_create: bool = true) -> bool:
 ## Utilidad: ¿estamos autenticados?
 func is_logged_in() -> bool:
 	return session_ticket != ""
+
+
+func sync_player_display_name(player_name: String = "") -> void:
+	var name := player_name.strip_edges()
+	if name == "" and typeof(GameManager) != TYPE_NIL:
+		name = str(GameManager.player_name).strip_edges()
+	if name == "":
+		return
+	_update_player_display_name(name)
 
 ## Imprime el estado actual del login en consola (con el ID si existe)
 func print_login_status() -> void:
@@ -252,9 +263,13 @@ func submit_player_score(score: int, player_name: String = "", stat_name: String
 	return true
 
 
-const COMPETITIVE_AVERAGE_BASE := 151
-const COMPETITIVE_AID_BASE := 50
-const COMPETITIVE_FAILED_BASE := 50
+## Packed ranking for PlayFab int32:
+## stars * 1_000_000 + (99 - puzzles) * 10_000 + (99 - aids) * 100 + (99 - failed)
+const COMPETITIVE_STAR_PLACE := 1_000_000
+const COMPETITIVE_PUZZLE_PLACE := 10_000
+const COMPETITIVE_AID_PLACE := 100
+const COMPETITIVE_COUNT_MAX := 99
+const COMPETITIVE_STAR_MAX := 2047
 
 
 func competitive_stat_name(category_filter: String, mode_filter: String) -> String:
@@ -275,44 +290,35 @@ func competitive_stat_name(category_filter: String, mode_filter: String) -> Stri
 
 
 func encode_competitive_record(record: Dictionary) -> int:
-	var total_stars := clampi(int(record.get("stars_earned", 0)), 0, 4999)
-	var average_tenths := clampi(
-		int(record.get("stars_per_puzzle_tenths", 0)),
-		0,
-		COMPETITIVE_AVERAGE_BASE - 1
-	)
-	var aids := clampi(int(record.get("aids_used", 0)), 0, COMPETITIVE_AID_BASE - 1)
-	var failed := clampi(int(record.get("failed_letters", 0)), 0, COMPETITIVE_FAILED_BASE - 1)
-	var fewer_aids_rank := COMPETITIVE_AID_BASE - 1 - aids
-	var fewer_failed_rank := COMPETITIVE_FAILED_BASE - 1 - failed
+	var stars := clampi(int(record.get("stars_earned", 0)), 0, COMPETITIVE_STAR_MAX)
+	var puzzles := clampi(int(record.get("completed", 0)), 0, COMPETITIVE_COUNT_MAX)
+	var aids := clampi(int(record.get("aids_used", 0)), 0, COMPETITIVE_COUNT_MAX)
+	var failed := clampi(int(record.get("failed_letters", 0)), 0, COMPETITIVE_COUNT_MAX)
 	return (
-		(
-			(total_stars * COMPETITIVE_AVERAGE_BASE + average_tenths)
-			* COMPETITIVE_AID_BASE
-			+ fewer_aids_rank
-		)
-		* COMPETITIVE_FAILED_BASE
-		+ fewer_failed_rank
+		stars * COMPETITIVE_STAR_PLACE
+		+ (COMPETITIVE_COUNT_MAX - puzzles) * COMPETITIVE_PUZZLE_PLACE
+		+ (COMPETITIVE_COUNT_MAX - aids) * COMPETITIVE_AID_PLACE
+		+ (COMPETITIVE_COUNT_MAX - failed)
 	)
 
 
 func decode_competitive_value(value: int) -> Dictionary:
 	var remaining := maxi(value, 0)
-	var fewer_failed_rank := remaining % COMPETITIVE_FAILED_BASE
-	remaining = int(remaining / COMPETITIVE_FAILED_BASE)
-	var fewer_aids_rank := remaining % COMPETITIVE_AID_BASE
-	remaining = int(remaining / COMPETITIVE_AID_BASE)
-	var average_tenths := remaining % COMPETITIVE_AVERAGE_BASE
-	var total_stars := int(remaining / COMPETITIVE_AVERAGE_BASE)
-	var completed := 0
-	if average_tenths > 0:
-		completed = int(round(float(total_stars * 10) / float(average_tenths)))
+	var failed := COMPETITIVE_COUNT_MAX - (remaining % COMPETITIVE_AID_PLACE)
+	remaining = int(remaining / COMPETITIVE_AID_PLACE)
+	var aids := COMPETITIVE_COUNT_MAX - (remaining % COMPETITIVE_AID_PLACE)
+	remaining = int(remaining / COMPETITIVE_AID_PLACE)
+	var puzzles := COMPETITIVE_COUNT_MAX - (remaining % COMPETITIVE_AID_PLACE)
+	var stars := int(remaining / COMPETITIVE_AID_PLACE)
+	var hundredths := 0
+	if puzzles > 0:
+		hundredths = int(round(float(stars) * 100.0 / float(puzzles)))
 	return {
-		"stars_earned": total_stars,
-		"stars_per_puzzle_hundredths": average_tenths * 10,
-		"completed": completed,
-		"aids_used": COMPETITIVE_AID_BASE - 1 - fewer_aids_rank,
-		"failed_letters": COMPETITIVE_FAILED_BASE - 1 - fewer_failed_rank,
+		"stars_earned": stars,
+		"stars_per_puzzle_hundredths": hundredths,
+		"completed": puzzles,
+		"aids_used": aids,
+		"failed_letters": failed,
 	}
 
 

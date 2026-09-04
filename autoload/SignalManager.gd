@@ -27,6 +27,7 @@ signal update_puzzle_stars(stars:int)
 signal fit_text
 
 signal app_version_changed(version_text: String)
+signal audio_prefs_changed
 
 signal update_score
 

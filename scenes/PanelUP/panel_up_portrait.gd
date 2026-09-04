@@ -22,15 +22,23 @@ const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 	$PuzzleInfo/Stars/Star4,
 	$PuzzleInfo/Stars/Star5
 ]
+@onready var reveal_button: Button = $ButtonReveal
+
+const REVEAL_BLINK_COUNT := 2
+const REVEAL_BLINK_DIM := Color(1, 1, 1, 0.28)
+const REVEAL_BLINK_FULL := Color(1, 1, 1, 1)
+const REVEAL_BLINK_STEP := 0.11
 
 const MODE_ICON_QUICK := preload("res://images/mode_quick.svg")
 const MODE_ICON_CRYPTO := preload("res://images/mode_scroll.svg")
 
 var _start_ms: int
 var _completion_recorded := false
+var _reveal_blink_tween: Tween
 
 
 func _ready() -> void:
+	add_to_group("GameHUD")
 	_start_ms = Time.get_ticks_msec()
 	category_label.text = GameManager.category_display_name()
 	_apply_category_color()
@@ -40,6 +48,7 @@ func _ready() -> void:
 
 	SignalManager.update_puzzle_stars.connect(_update_stars)
 	SignalManager.update_resting_characters.connect(_update_letters_filled)
+	SignalManager.insert_letter_in_number.connect(_on_letter_placed)
 	SignalManager.board_filled.connect(_on_board_filled)
 	SignalManager.game_finished.connect(_on_game_finished)
 	SignalManager.game_finished_lost.connect(_on_game_lost)
@@ -104,8 +113,37 @@ func _on_theme_pressed() -> void:
 	get_parent().add_child(preview)
 
 
+func _on_letter_placed(_letter: String, _number: int) -> void:
+	_blink_reveal_button()
+
+
+func _blink_reveal_button() -> void:
+	if not is_instance_valid(reveal_button):
+		return
+	if GameManager.partida_terminada:
+		return
+	_stop_reveal_blink()
+	reveal_button.modulate = REVEAL_BLINK_FULL
+	_reveal_blink_tween = create_tween()
+	_reveal_blink_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	for _i in REVEAL_BLINK_COUNT:
+		_reveal_blink_tween.tween_property(reveal_button, "modulate", REVEAL_BLINK_DIM, REVEAL_BLINK_STEP)
+		_reveal_blink_tween.tween_property(reveal_button, "modulate", REVEAL_BLINK_FULL, REVEAL_BLINK_STEP)
+
+
+func _stop_reveal_blink() -> void:
+	if _reveal_blink_tween != null and _reveal_blink_tween.is_valid():
+		_reveal_blink_tween.kill()
+	_reveal_blink_tween = null
+	if is_instance_valid(reveal_button):
+		reveal_button.modulate = REVEAL_BLINK_FULL
+
+
 func _on_reveal_pressed() -> void:
+	_stop_reveal_blink()
 	if not get_tree().get_nodes_in_group("RevealOverlay").is_empty():
+		return
+	if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
 		return
 	SoundManager.play("ButtonClick")
 	if PlayerPrefs.skip_reveal_dialog:
@@ -114,14 +152,38 @@ func _on_reveal_pressed() -> void:
 	_add_overlay(OVERLAY_REVEAL)
 
 
+func animate_star_loss() -> void:
+	if GameManager.puzzle_stars <= 0:
+		return
+	var index := GameManager.puzzle_stars - 1
+	if index < 0 or index >= stars.size():
+		return
+	var star := stars[index]
+	star.pivot_offset = star.size * 0.5
+	var base := Vector2.ONE
+	star.scale = base
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	for _cycle in 2:
+		tween.tween_property(star, "scale", base * 1.38, 0.12)
+		tween.tween_property(star, "scale", base * 0.7, 0.12)
+	tween.tween_property(star, "scale", base, 0.1)
+	await tween.finished
+	if is_instance_valid(star):
+		star.scale = base
+
+
 func _on_pause_pressed() -> void:
 	if not get_tree().get_nodes_in_group("GameMenu").is_empty():
+		return
+	if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
 		return
 	SoundManager.play("ButtonClick")
 	_add_overlay(OVERLAY_EXIT)
 
 
 func _on_game_finished() -> void:
+	_stop_reveal_blink()
 	if _completion_recorded:
 		return
 	_completion_recorded = true
@@ -134,6 +196,7 @@ func _on_game_finished() -> void:
 
 
 func _on_game_lost() -> void:
+	_stop_reveal_blink()
 	GameManager._game_finished()
 	GameManager.set_score_ultima_partida(0)
 	GameManager.score = 0

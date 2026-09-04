@@ -16,6 +16,7 @@ var _rng := RandomNumberGenerator.new()
 @onready var overlay := ColorRect.new()
 
 func _ready() -> void:
+	add_to_group("ErrorFeedback")
 	_rng.randomize()
 	# Capa superpuesta para el flash rojo
 	overlay.color = Color(1,0,0,0.0) # transparente al inicio
@@ -27,32 +28,50 @@ func _ready() -> void:
 func trigger_error_feedback() -> void:
 	_do_shake()
 	_do_flash()
+	_vibrate(220, 1.0)
+
+
+func trigger_soft_shake() -> void:
+	_do_shake_with(0.22, 7.0)
+	_vibrate(55, 0.28)
+
+
+func trigger_reveal_error_shake() -> void:
+	_do_shake_with(0.48, 24.0)
+	_vibrate(280, 1.0)
+
+
+func _vibrate(duration_ms: int, amplitude: float) -> void:
+	if not DisplayServer.is_touchscreen_available():
+		return
+	Input.vibrate_handheld(duration_ms, clampf(amplitude, 0.0, 1.0))
+
 
 # --- SHAKE -------------------------------------------------
 func _do_shake() -> void:
+	_do_shake_with(shake_duration, shake_strength)
+
+
+func _do_shake_with(duration: float, start_strength: float) -> void:
 	if is_instance_valid(_shake_tween):
 		_shake_tween.kill()
-	
+
 	var total_time := 0.0
-	var strength := shake_strength
+	var current_strength := start_strength
 	var steps: Array[Vector2] = []
-	
-	# Genera offsets aleatorios que decaen
-	while total_time < shake_duration:
-		var dir := Vector2(_rng.randf_range(-1,1), _rng.randf_range(-1,1)).normalized()
-		var off := dir * strength
-		steps.append(off)
-		strength *= shake_falloff
-		total_time += 0.03 # paso temporal fijo ~33 Hz
-	
-	# Vuelve al origen al final
+
+	while total_time < duration:
+		var raw := Vector2(_rng.randf_range(-1.0, 1.0), _rng.randf_range(-1.0, 1.0))
+		var dir := raw if raw.length() < 0.001 else raw.normalized()
+		steps.append(dir * current_strength)
+		current_strength *= shake_falloff
+		total_time += 0.03
+
 	steps.append(Vector2.ZERO)
 
 	_shake_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	var t := 0.03
-	for i in steps.size():
-		_shake_tween.tween_property(self, "offset", steps[i], t)
-	# Asegura que al terminar quedamos centrados
+	for _i in steps.size():
+		_shake_tween.tween_property(self, "offset", steps[_i], 0.03)
 	_shake_tween.finished.connect(func(): offset = Vector2.ZERO)
 
 # --- FLASH -------------------------------------------------

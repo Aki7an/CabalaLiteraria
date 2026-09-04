@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://clypxdctucwq6"]
+[gd_scene load_steps=38 format=3 uid="uid://clypxdctucwq6"]
 
 [ext_resource type="Script" uid="uid://dq8u7wb0v23qa" path="res://scenes/menu_select_category.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_background"]
@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="6_curiosity"]
 [ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="7_calendar"]
 [ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="8_book"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Setting_l.png" id="9_settings"]
+[ext_resource type="Texture2D" uid="uid://dslqrdlfkvkm0" path="res://images/settings.png" id="9_settings"]
 [ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Arrow_Play.png" id="10_play"]
 [ext_resource type="Texture2D" path="res://images/mode_quick.svg" id="11_quick"]
 [ext_resource type="Texture2D" path="res://images/mode_scroll.svg" id="12_scroll"]
@@ -87,6 +87,47 @@ corner_radius_top_left = 72
 corner_radius_top_right = 72
 corner_radius_bottom_right = 72
 corner_radius_bottom_left = 72
+
+[sub_resource type="StyleBoxFlat" id="Style_settings"]
+bg_color = Color(1, 0.643137, 0.0156863, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 10
+border_color = Color(0.831373, 0.411765, 0.0156863, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxFlat" id="Style_settings_pressed"]
+bg_color = Color(0.929412, 0.505882, 0.00784314, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.741176, 0.337255, 0.0117647, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="StyleBoxFlat" id="Style_settings_inset"]
+bg_color = Color(1, 1, 1, 0)
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.85, 0.45, 0.35)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
 
 [sub_resource type="StyleBoxFlat" id="Style_step"]
 bg_color = Color(0.0352941, 0.658824, 0.670588, 1)
@@ -390,18 +431,57 @@ offset_right = 1096.0
 offset_bottom = 170.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("Style_round_cream")
-theme_override_styles/hover = SubResource("Style_round_cream")
-theme_override_styles/pressed = SubResource("Style_round_cream_pressed")
+theme_override_styles/normal = SubResource("Style_settings")
+theme_override_styles/hover = SubResource("Style_settings")
+theme_override_styles/pressed = SubResource("Style_settings_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
 
+[node name="Inset" type="Panel" parent="Panel/Header/ButtonSettings"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -4.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_settings_inset")
+
+[node name="IconShadow" type="TextureRect" parent="Panel/Header/ButtonSettings"]
+modulate = Color(0.313726, 0.184314, 0.0352941, 0.42)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.0
+offset_top = -31.0
+offset_right = 29.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("9_settings")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Icon" type="TextureRect" parent="Panel/Header/ButtonSettings"]
-modulate = Color(0.321569, 0.196078, 0.117647, 1)
-layout_mode = 0
-offset_left = 34.0
-offset_top = 32.0
-offset_right = 112.0
-offset_bottom = 110.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.0
+offset_top = -34.0
+offset_right = 29.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("9_settings")
 expand_mode = 1

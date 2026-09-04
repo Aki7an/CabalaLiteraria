@@ -394,7 +394,10 @@ func _prompt_text(index: int) -> String:
 		1:
 			return "Palabra que está en la frase:"
 		2:
-			return "Letra más repetida en la frase:"
+			var prompt := tr("Hint2Prompt")
+			if prompt == "Hint2Prompt":
+				return "Revela la letra que más se repite de entre todas las que no están en verde (reveladas) del puzzle."
+			return prompt
 		_:
 			return "Los siguientes números son las 5 vocales:"
 
@@ -406,7 +409,7 @@ func _body_text(index: int) -> String:
 			return word.to_upper() if _is_unlocked(1) else _asterisks(word)
 		2:
 			if _is_unlocked(2):
-				var letter := GameManager.ensure_hint_letter()
+				var letter := GameManager.refresh_hint_letter()
 				return letter.to_upper() if letter != "" else "—"
 			return "*"
 		_:

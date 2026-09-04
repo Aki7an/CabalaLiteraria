@@ -3,11 +3,11 @@ extends Node
 var idioma: String = "es"
 var volumen_musica: float = 0.8
 var volumen_fx: float = 0.8
-var mute_musica: bool = false
-var mute_fx: bool = false
+var mute_musica: bool = true
+var mute_fx: bool = true
 var mostrar_tuto_antes_partida: bool = true
 ## Displayed as "Beta 0.XX". Starts at 1 → Beta 0.01. F2 increases by 1.
-## Persisted in res://data/demo_version.txt so it syncs via Git between machines.
+## Source of truth is project.godot + data/app_version.json so exports and Git stay in sync.
 var app_version_code: int = 1
 
 var level_normal_unlocked: bool = false
@@ -18,7 +18,11 @@ var skip_reveal_dialog: bool = false
 
 
 const SAVE_PATH := "user://prefs.cfg"
-const VERSION_PATH := "res://data/demo_version.txt"
+const VERSION_JSON_PATH := "res://data/app_version.json"
+const VERSION_TXT_PATH := "res://data/demo_version.txt"
+const PROJECT_PATH := "res://project.godot"
+const EXPORT_PRESETS_PATH := "res://export_presets.cfg"
+
 
 func _ready() -> void:
 	load_version_file()
@@ -29,37 +33,135 @@ func version_display() -> String:
 	return "Beta 0.%02d" % maxi(app_version_code, 1)
 
 
+func version_name() -> String:
+	return "0.%02d" % maxi(app_version_code, 1)
+
+
 func bump_app_version() -> void:
+	if not OS.has_feature("editor"):
+		return
 	app_version_code += 1
 	save_version_file()
 	SignalManager.app_version_changed.emit(version_display())
 
 
 func load_version_file() -> void:
-	if not FileAccess.file_exists(VERSION_PATH):
-		save_version_file()
-		return
-	var file := FileAccess.open(VERSION_PATH, FileAccess.READ)
-	if file == null:
-		push_warning("No se pudo leer %s" % VERSION_PATH)
-		return
-	var raw := file.get_as_text().strip_edges()
-	file.close()
-	if raw.is_valid_int():
-		app_version_code = maxi(int(raw), 1)
-	else:
-		# Accept legacy "Beta 0.01" lines if someone edited the file by hand.
-		var digits := raw.get_slice(".", raw.get_slice_count(".") - 1)
-		if digits.is_valid_int():
-			app_version_code = maxi(int(digits), 1)
+	var loaded := _code_from_project_settings()
+	if loaded <= 0:
+		loaded = _code_from_json()
+	if loaded <= 0:
+		loaded = _code_from_text(_read_text(VERSION_TXT_PATH))
+	if loaded <= 0:
+		loaded = 1
+	app_version_code = loaded
 
 
 func save_version_file() -> void:
-	var file := FileAccess.open(VERSION_PATH, FileAccess.WRITE)
-	if file == null:
-		push_error("No se pudo escribir %s (solo funciona desde el editor / carpeta del proyecto)." % VERSION_PATH)
+	if not OS.has_feature("editor"):
 		return
-	file.store_string("%d\n" % maxi(app_version_code, 1))
+	var code := maxi(app_version_code, 1)
+	var name := "0.%02d" % code
+	_write_text(VERSION_JSON_PATH, JSON.stringify({"code": code}, "\t") + "\n")
+	_write_text(VERSION_TXT_PATH, "%d\n" % code)
+	_sync_project_settings(name)
+	_sync_project_file(name)
+	_sync_export_presets(code, name)
+
+
+func _code_from_project_settings() -> int:
+	if not ProjectSettings.has_setting("application/config/version"):
+		return 0
+	return _code_from_text(str(ProjectSettings.get_setting("application/config/version", "")))
+
+
+func _code_from_json() -> int:
+	var raw := _read_text(VERSION_JSON_PATH)
+	if raw.is_empty():
+		return 0
+	var parsed: Variant = JSON.parse_string(raw)
+	if parsed is Dictionary:
+		return maxi(int(parsed.get("code", 0)), 0)
+	return _code_from_text(raw)
+
+
+func _code_from_text(raw: String) -> int:
+	var text := raw.strip_edges()
+	if text.is_empty():
+		return 0
+	if text.is_valid_int():
+		return maxi(int(text), 1)
+	var digits := text.get_slice(".", text.get_slice_count(".") - 1)
+	digits = digits.replace("\"", "")
+	if digits.is_valid_int():
+		return maxi(int(digits), 1)
+	return 0
+
+
+func _sync_project_settings(name: String) -> void:
+	ProjectSettings.set_setting("application/config/version", name)
+
+
+func _sync_project_file(name: String) -> void:
+	var text := _read_text(PROJECT_PATH)
+	if text.is_empty():
+		return
+	var re := RegEx.new()
+	re.compile("(?m)^config/version=.*$")
+	if re.search(text) != null:
+		text = re.sub(text, 'config/version="%s"' % name, false)
+	else:
+		text = text.replace(
+			'config/name="CifraLetra"',
+			'config/name="CifraLetra"\nconfig/version="%s"' % name
+		)
+	_write_text(PROJECT_PATH, text)
+
+
+func _sync_export_presets(code: int, name: String) -> void:
+	var text := _read_text(EXPORT_PRESETS_PATH)
+	if text.is_empty():
+		return
+	text = _replace_line(text, "version/code", str(code))
+	text = _replace_quoted(text, "version/name", name)
+	text = _replace_quoted(text, "application/short_version", name)
+	text = _replace_quoted(text, "application/version", str(code))
+	text = _replace_quoted(text, "include_filter", "*.json,*.txt")
+	_write_text(EXPORT_PRESETS_PATH, text)
+
+
+func _replace_line(text: String, key: String, value: String) -> String:
+	var re := RegEx.new()
+	re.compile("(?m)^%s=.*$" % key)
+	if re.search(text) == null:
+		return text
+	return re.sub(text, "%s=%s" % [key, value], true)
+
+
+func _replace_quoted(text: String, key: String, value: String) -> String:
+	var re := RegEx.new()
+	re.compile("(?m)^%s=.*$" % key)
+	if re.search(text) == null:
+		return text
+	return re.sub(text, '%s="%s"' % [key, value], true)
+
+
+func _read_text(path: String) -> String:
+	if not FileAccess.file_exists(path):
+		return ""
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return ""
+	var raw := file.get_as_text()
+	file.close()
+	return raw
+
+
+func _write_text(path: String, contents: String) -> void:
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		push_error("No se pudo escribir %s" % path)
+		return
+	file.store_string(contents)
 	file.close()
 
 
@@ -73,6 +175,8 @@ func save_prefs() -> void:
 	var cfg := ConfigFile.new()
 	cfg.set_value("general", "idioma", idioma)
 	cfg.set_value("general", "player_name", GameManager.player_name)
+	cfg.set_value("general", "guest_online_id", GameManager.guest_online_id)
+	cfg.set_value("general", "online_name_chosen", GameManager.online_name_chosen)
 	cfg.set_value("general", "mostrar_tutorial_antes_de_partida", mostrar_tuto_antes_partida)
 	cfg.set_value("audio", "volumen_musica", volumen_musica)
 	cfg.set_value("audio", "volumen_fx", volumen_fx)
@@ -93,11 +197,21 @@ func load_prefs() -> void:
 	if err == OK:
 		idioma = cfg.get_value("general", "idioma", idioma)
 		GameManager.player_name = str(cfg.get_value("general", "player_name", GameManager.player_name))
+		GameManager.guest_online_id = str(cfg.get_value("general", "guest_online_id", GameManager.guest_online_id))
+		if cfg.has_section_key("general", "online_name_chosen"):
+			GameManager.online_name_chosen = bool(cfg.get_value("general", "online_name_chosen", false))
+		else:
+			GameManager.online_name_chosen = GameManager.looks_like_chosen_online_name(GameManager.player_name)
 		mostrar_tuto_antes_partida = cfg.get_value("general", "mostrar_tutorial_antes_de_partida", mostrar_tuto_antes_partida)
 		volumen_musica = cfg.get_value("audio", "volumen_musica", volumen_musica)
 		volumen_fx = cfg.get_value("audio", "volumen_fx", volumen_fx)
 		mute_musica = cfg.get_value("audio", "mute_musica", mute_musica)
 		mute_fx = cfg.get_value("audio", "mute_fx", mute_fx)
+		if not bool(cfg.get_value("audio", "bgm_playlist_v1", false)):
+			mute_musica = true
+			cfg.set_value("audio", "bgm_playlist_v1", true)
+			cfg.set_value("audio", "mute_musica", mute_musica)
+			cfg.save(SAVE_PATH)
 		level_normal_unlocked = cfg.get_value("levels","levelNormalUnlocked", level_normal_unlocked )
 		GameManager.set_level_normal_unlocked(level_normal_unlocked)
 		level_dificil_unlocked = cfg.get_value("levels","levelDificilUnlocked", level_dificil_unlocked )
@@ -115,6 +229,9 @@ func load_prefs() -> void:
 			GameManager.set_mostrar_tuto_antes_partida_enable()
 		else:
 			GameManager.set_mostrar_tuto_antes_partida_disable()
+
+	if GameManager.ensure_online_identity():
+		save_prefs()
 
 	var locale := idioma.strip_edges()
 	if locale.is_empty():

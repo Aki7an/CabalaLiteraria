@@ -1,6 +1,8 @@
 extends Control
 
 @onready var button_settings: Button = %ButtonSettings
+@onready var button_music: Button = %ButtonMusic
+@onready var button_fx: Button = %ButtonFx
 @onready var button_play: Button = %ButtonPlay
 @onready var button_ranking: Button = %ButtonRanking
 @onready var button_stats: Button = %ButtonStats
@@ -9,10 +11,21 @@ extends Control
 @onready var stars_quick_count: Label = %StarsQuickCount
 @onready var stars_crypto_count: Label = %StarsCryptoCount
 
+const TITLE_LETTER_GREEN := Color(0.22, 0.62, 0.28, 1)
+const TITLE_SPANISH_LETTERS := 5
+const TITLE_SPANISH_WIDTH_SCALE := 0.8
+const TITLE_SAFETY_PX := 24.0
+const TITLE_LETTER_SIZE := 78
+const TITLE_NUMBER_SIZE := 34
+const TITLE_NUMBER_TOP_GAP := 14.0
+
 func _ready() -> void:
-	_apply_audio()
+	SoundManager.apply_audio_prefs()
+	_refresh_audio_buttons()
+	if not SignalManager.audio_prefs_changed.is_connected(_refresh_audio_buttons):
+		SignalManager.audio_prefs_changed.connect(_refresh_audio_buttons)
 	_apply_labels()
-	_apply_showcase_word()
+	_apply_title_tiles()
 	_update_version_label()
 	_refresh_star_totals()
 	if not HistoryManager.stats_updated.is_connected(_refresh_star_totals):
@@ -34,12 +47,6 @@ func _apply_labels() -> void:
 	var tagline := get_node_or_null("Panel/TaglineRow/Tagline") as Label
 	if tagline:
 		tagline.text = tr("Tagline")
-	var cipher := get_node_or_null("Panel/Brand/Cipher") as Label
-	if cipher:
-		cipher.text = tr("Cipher")
-	var letter := get_node_or_null("Panel/Brand/Letter") as Label
-	if letter:
-		letter.text = tr("Letter")
 	var ranking := get_node_or_null("Panel/Actions/ColRanking/ButtonRanking/Label") as Label
 	if ranking:
 		ranking.text = tr("Leaderboard")
@@ -54,23 +61,6 @@ func _apply_labels() -> void:
 		play.text = tr("PLAY")
 
 
-func _showcase_word() -> String:
-	var translated := tr("ShowcaseWord").strip_edges()
-	if not translated.is_empty() and translated != "ShowcaseWord":
-		return translated
-	match TranslationServer.get_locale().substr(0, 2):
-		"en", "de", "fr":
-			return "CODE"
-		"eu":
-			return "KODEA"
-		"it":
-			return "CODICE"
-		"pt":
-			return "CÓDIGO"
-		_:
-			return "CÓDIGO"
-
-
 func _showcase_cipher_number(letter: String) -> int:
 	var key := GameManager._hint_letter_key(letter)
 	if key.length() != 1:
@@ -81,39 +71,72 @@ func _showcase_cipher_number(letter: String) -> int:
 	return 0
 
 
-func _apply_showcase_word() -> void:
-	var showcase := get_node_or_null("%Showcase") as HBoxContainer
-	if showcase == null:
-		showcase = get_node_or_null("Panel/Showcase") as HBoxContainer
-	if showcase == null or showcase.get_child_count() == 0:
+func _title_word(key: String, fallback: String) -> String:
+	var translated := tr(key).strip_edges()
+	if translated.is_empty():
+		translated = fallback
+	var out := ""
+	for i in translated.length():
+		var ch := translated.substr(i, 1).to_upper()
+		if GameManager.is_excluded_character(ch):
+			continue
+		out += ch
+	return out if not out.is_empty() else fallback
+
+
+func _apply_title_tiles() -> void:
+	var brand := get_node_or_null("Panel/Brand") as Control
+	if brand:
+		brand.visible = false
+	var cipher_row := get_node_or_null("%Showcase") as HBoxContainer
+	if cipher_row == null:
+		cipher_row = get_node_or_null("Panel/TitleBlock/Showcase") as HBoxContainer
+	if cipher_row == null:
+		cipher_row = get_node_or_null("Panel/Showcase") as HBoxContainer
+	if cipher_row == null:
 		return
+	var cipher_word := _title_word("Cipher", "CIFRA")
+	var letter_word := _title_word("Letter", "LETRA")
+	_fill_tile_row(cipher_row, cipher_word, false)
+	var letter_row := _ensure_letter_row(cipher_row)
+	if letter_row:
+		_fill_tile_row(letter_row, letter_word, true)
+	await get_tree().process_frame
+	_layout_title_row(cipher_row)
+	if letter_row:
+		_layout_title_row(letter_row)
+
+
+func _ensure_letter_row(cipher_row: HBoxContainer) -> HBoxContainer:
+	var parent := cipher_row.get_parent()
+	if parent == null:
+		return null
+	var existing := parent.get_node_or_null("ShowcaseLetra") as HBoxContainer
+	if existing:
+		return existing
+	var row := cipher_row.duplicate() as HBoxContainer
+	row.name = "ShowcaseLetra"
+	row.unique_name_in_owner = false
+	parent.add_child(row)
+	return row
+
+
+func _fill_tile_row(row: HBoxContainer, word: String, revealed_green: bool) -> void:
 	var letters: Array[String] = []
-	var word := _showcase_word().to_upper()
 	for i in word.length():
 		var ch := word.substr(i, 1)
 		if GameManager.is_excluded_character(ch):
 			continue
 		letters.append(ch)
-	if letters.is_empty():
+	if letters.is_empty() or row.get_child_count() == 0:
 		return
-	var template := showcase.get_child(0) as Control
-	while showcase.get_child_count() < letters.size():
-		showcase.add_child(template.duplicate())
-	var letter_size := 140
-	var number_size := 60
-	match letters.size():
-		5:
-			letter_size = 108
-			number_size = 48
-		6:
-			letter_size = 88
-			number_size = 40
-		_:
-			if letters.size() > 6:
-				letter_size = 72
-				number_size = 34
-	for i in showcase.get_child_count():
-		var tile := showcase.get_child(i) as Control
+	var template := row.get_child(0) as Control
+	while row.get_child_count() < letters.size():
+		row.add_child(template.duplicate())
+	var letter_size := TITLE_LETTER_SIZE
+	var number_size := TITLE_NUMBER_SIZE
+	for i in row.get_child_count():
+		var tile := row.get_child(i) as Control
 		if i >= letters.size():
 			tile.visible = false
 			continue
@@ -123,9 +146,83 @@ func _apply_showcase_word() -> void:
 		if letter_label:
 			letter_label.text = letters[i]
 			letter_label.add_theme_font_size_override("font_size", letter_size)
+			letter_label.add_theme_color_override(
+				"font_color",
+				TITLE_LETTER_GREEN if revealed_green else Color(0.364706, 0.25098, 0.215686, 1)
+			)
 		if number_label:
 			number_label.text = str(_showcase_cipher_number(letters[i]))
 			number_label.add_theme_font_size_override("font_size", number_size)
+
+
+func _layout_title_row(row: HBoxContainer) -> void:
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var parent := row.get_parent() as Control
+	var available := parent.size.x if parent != null else row.size.x
+	available = maxf(available - TITLE_SAFETY_PX * 2.0, 1.0)
+	var visible_tiles: Array[Control] = []
+	for child in row.get_children():
+		if child is Control and (child as Control).visible:
+			visible_tiles.append(child)
+	if visible_tiles.is_empty():
+		return
+	var count := visible_tiles.size()
+	var sep := float(row.get_theme_constant("separation"))
+	var spanish_max := (
+		(available - sep * float(TITLE_SPANISH_LETTERS - 1))
+		/ float(TITLE_SPANISH_LETTERS)
+		* TITLE_SPANISH_WIDTH_SCALE
+	)
+	var fit_width := (available - sep * float(count - 1)) / float(count)
+	var tile_width := minf(fit_width, spanish_max)
+	var font_scale := clampf(tile_width / spanish_max, 0.42, 1.0)
+	var letter_size := maxi(roundi(float(TITLE_LETTER_SIZE) * font_scale), 32)
+	var number_size := maxi(roundi(float(TITLE_NUMBER_SIZE) * font_scale), 16)
+	for tile in visible_tiles:
+		tile.size_flags_horizontal = 0
+		tile.custom_minimum_size.x = tile_width
+		var letter_label := tile.find_child("Letter", true, false) as Label
+		var number_label := tile.find_child("Number", true, false) as Label
+		if letter_label:
+			letter_label.add_theme_font_size_override("font_size", letter_size)
+		if number_label:
+			number_label.add_theme_font_size_override("font_size", number_size)
+		_nudge_title_number(tile, number_size)
+
+
+func _nudge_title_number(tile: Control, number_size: int) -> void:
+	var number := tile.find_child("Number", true, false) as Label
+	if number == null:
+		return
+	var font := number.get_theme_font("font")
+	var line_h := float(number_size) * 1.2
+	if font:
+		line_h = font.get_height(number_size)
+	var parent := number.get_parent()
+	if parent != tile:
+		var reserved_h := number.size.y
+		if reserved_h < 1.0:
+			reserved_h = line_h
+		var slot := Control.new()
+		slot.name = "NumberSlot"
+		slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		slot.custom_minimum_size.y = reserved_h
+		var idx := number.get_index()
+		parent.add_child(slot)
+		parent.move_child(slot, idx)
+		var spacer := parent.get_child(0) as Control
+		if spacer and spacer != slot and spacer.name.begins_with("Spacer"):
+			spacer.visible = false
+		number.reparent(tile)
+	number.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	number.offset_left = 0.0
+	number.offset_right = 0.0
+	number.offset_top = TITLE_NUMBER_TOP_GAP
+	number.offset_bottom = TITLE_NUMBER_TOP_GAP + line_h
+	number.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 
 func _update_version_label() -> void:
 	if version_label == null:
@@ -135,13 +232,35 @@ func _update_version_label() -> void:
 func _on_app_version_changed(_version_text: String) -> void:
 	_update_version_label()
 
-func _apply_audio() -> void:
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"),
-		linear_to_db(PlayerPrefs.volumen_musica))
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SoundFx"),
-		linear_to_db(PlayerPrefs.volumen_fx))
-	AudioServer.set_bus_mute(AudioServer.get_bus_index("Music"), not PlayerPrefs.mute_musica)
-	AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundFx"), not PlayerPrefs.mute_fx)
+func _refresh_audio_buttons(_unused: Variant = null) -> void:
+	_set_audio_button_state(button_music, SoundManager.is_music_enabled())
+	_set_audio_button_state(button_fx, SoundManager.is_fx_enabled())
+
+
+func _set_audio_button_state(button: Button, enabled: bool) -> void:
+	if button == null:
+		return
+	var icon := button.get_node_or_null("Icon") as TextureRect
+	var slash := button.get_node_or_null("Slash") as TextureRect
+	if icon:
+		icon.modulate = Color(0.32, 0.2, 0.12, 1.0 if enabled else 0.38)
+	if slash:
+		slash.visible = not enabled
+
+
+func _on_button_music_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	SoundManager.toggle_music_enabled()
+
+
+func _on_button_fx_pressed() -> void:
+	var enabling := not SoundManager.is_fx_enabled()
+	if not enabling:
+		SoundManager.play("ButtonClick")
+	SoundManager.toggle_fx_enabled()
+	if enabling:
+		SoundManager.play("ButtonClick")
+
 
 func _go_to(path: String, blink_node: Control = null) -> void:
 	TransitionScreen.transition_to_black()

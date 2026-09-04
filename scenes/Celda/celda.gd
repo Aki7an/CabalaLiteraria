@@ -4,6 +4,10 @@ class_name Celda
 @export var celda_mostrada: bool  = false
 ## Locked cells (initial gifts or verified-correct) cannot be selected or changed.
 @export var bloqueada: bool = false
+## Gifted at the start of the puzzle (grey). Turns green on reveal.
+@export var es_regalo_inicial: bool = false
+## Verified correct: green letter on white.
+@export var revelada_verde: bool = false
 
 # Letra que contiene la celda (puede estar vacía inicialmente)
 @export var letra: String = ""
@@ -115,6 +119,8 @@ func _inicializar_letra() -> void:
 		
 	celda_mostrada = false
 	bloqueada = false
+	es_regalo_inicial = false
+	revelada_verde = false
 	label_numero.add_theme_font_size_override("font_size",font_size_inicial )
 	if _is_blank_mark(letra):
 		espacio_blanco.visible = true
@@ -296,6 +302,8 @@ func mostrar_letra_jugador() -> void:
 	label_letra.add_theme_color_override("font_color", color_font_default)
 	celda_mostrada = letter_user != ""
 	bloqueada = false
+	es_regalo_inicial = false
+	revelada_verde = false
 	if celda_mostrada:
 		stop_remaining_hint()
 
@@ -310,6 +318,7 @@ func mostrar_letra() -> void:
 	_set_fondo_color(color_fondo_blanco)
 	celda_mostrada = true
 	bloqueada = true
+	revelada_verde = true
 
 func limpiar_letra_usuario() -> void:
 	letter_user = ""
@@ -319,6 +328,8 @@ func limpiar_letra_usuario() -> void:
 	label_letra.add_theme_color_override("font_color", color_font_default)
 	celda_mostrada = false
 	bloqueada = false
+	es_regalo_inicial = false
+	revelada_verde = false
 
 func mostrar_letra_errada() -> void:
 	label_letra.text = letter_user
@@ -327,6 +338,7 @@ func mostrar_letra_errada() -> void:
 	label_letra.visible = true
 	celda_mostrada = false
 	bloqueada = false
+	revelada_verde = false
 
 	
 func mostrar_letra_especifica(letra_a_mostrar: String) -> void:
@@ -335,8 +347,11 @@ func mostrar_letra_especifica(letra_a_mostrar: String) -> void:
 	label_letra.text = letra_a_mostrar
 	set_letter_font_size()
 	label_letra.visible = true
+	label_letra.add_theme_color_override("font_color", color_font_default)
 	celda_mostrada = true
 	bloqueada = true
+	es_regalo_inicial = true
+	revelada_verde = false
 	var style = StyleBoxFlat.new()
 	style.bg_color = color_rellena
 	#style.bg_color = Color(0.795, 0.295, 0.482)

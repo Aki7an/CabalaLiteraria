@@ -19,5 +19,6 @@ func _on_NameEdit_text_changed(t: String) -> void:
 
 func _on_RecordDialog_confirmed() -> void:
 	var nombre := name_edit.text.strip_edges().substr(0, 12)
-	GameManager.player_name = nombre
+	GameManager.set_player_name(nombre)
+	PlayerPrefs.save_prefs()
 	# guarda/continúa flujo…
