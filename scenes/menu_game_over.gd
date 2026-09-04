@@ -112,15 +112,68 @@ func _fit_stars_card() -> void:
 
 	description_label.fit_content = false
 	description_label.size.y = actual_description_height
-	description_label.scroll_active = (
-		desired_description_height > actual_description_height + 1.0
-	)
+	var needs_scroll := desired_description_height > actual_description_height + 1.0
+	description_label.scroll_active = needs_scroll
+	description_label.selection_enabled = false
+	description_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	info_card.size.y = (
 		description_label.position.y
 		+ actual_description_height
 		+ 32.0
 	)
 	stars_card.size.y = info_card.position.y + info_card.size.y + 28.0
+	await get_tree().process_frame
+	_sync_description_drag_layer(needs_scroll)
+
+
+func _sync_description_drag_layer(needs_scroll: bool) -> void:
+	var layer := info_card.get_node_or_null("DescriptionDrag") as Control
+	if not needs_scroll:
+		if layer:
+			layer.visible = false
+		return
+	if layer == null:
+		layer = Control.new()
+		layer.name = "DescriptionDrag"
+		layer.mouse_filter = Control.MOUSE_FILTER_STOP
+		info_card.add_child(layer)
+		layer.gui_input.connect(_on_description_gui_input)
+	var bar := description_label.get_v_scroll_bar()
+	var bar_w := 36.0
+	if bar:
+		bar_w = maxf(bar.size.x, 28.0)
+	layer.visible = true
+	layer.position = description_label.position
+	layer.size = Vector2(
+		maxf(description_label.size.x - bar_w, 1.0),
+		description_label.size.y
+	)
+
+
+func _on_description_gui_input(event: InputEvent) -> void:
+	if not description_label.scroll_active:
+		return
+	var bar := description_label.get_v_scroll_bar()
+	if bar == null or bar.max_value <= bar.page:
+		return
+	var handled := false
+	if event is InputEventScreenDrag:
+		bar.value -= (event as InputEventScreenDrag).relative.y
+		handled = true
+	elif event is InputEventPanGesture:
+		bar.value += (event as InputEventPanGesture).delta.y
+		handled = true
+	elif event is InputEventMouseButton:
+		var mouse := event as InputEventMouseButton
+		var step := 48.0 if bar.page <= 0.0 else maxf(bar.page * 0.18, 24.0)
+		if mouse.button_index == MOUSE_BUTTON_WHEEL_UP:
+			bar.value -= step
+			handled = true
+		elif mouse.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			bar.value += step
+			handled = true
+	if handled:
+		get_viewport().set_input_as_handled()
 
 
 func _layout_top_down() -> void:

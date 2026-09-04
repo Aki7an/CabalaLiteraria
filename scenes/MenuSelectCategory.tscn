@@ -1237,7 +1237,7 @@ mouse_filter = 2
 theme_override_colors/font_color = Color(0.0392157, 0.576471, 0.611765, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
-text = "5 – 10 min"
+text = "1 – 3 min"
 vertical_alignment = 1
 
 [node name="Selected" type="Panel" parent="Panel/ModeCard/ButtonQuick"]
@@ -1360,7 +1360,7 @@ mouse_filter = 2
 theme_override_colors/font_color = Color(0.66, 0.34, 0.08, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
-text = "15 – 30 min"
+text = "5 – 10 min"
 vertical_alignment = 1
 
 [node name="Selected" type="Panel" parent="Panel/ModeCard/ButtonCryptogram"]

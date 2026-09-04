@@ -438,6 +438,7 @@ theme_override_font_sizes/normal_font_size = 44
 text = "Información adicional sobre la frase."
 fit_content = true
 scroll_active = false
+selection_enabled = false
 
 [node name="ButtonBack" type="Button" parent="MainCard"]
 layout_mode = 0

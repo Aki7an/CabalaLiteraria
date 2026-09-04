@@ -433,8 +433,8 @@ QuickDescription,Descifra frases cortas y directas.,"Decode short, direct phrase
 CryptogramDescription,Resuelve textos más largos y completos.,"Solve longer, complete texts.",Löse längere und vollständige Texte.,Résolvez des textes plus longs et complets.,Ebatzi testu luzeago eta osoak.,Risolvi testi più lunghi e completi.,Resolva textos mais longos e completos.
 StarsEarnedLabel,Estrellas conseguidas,Stars earned,Erreichte Sterne,Étoiles obtenues,Lortutako izarrak,Stelle ottenute,Estrelas conquistadas
 ChoosePuzzle,ELEGIR PUZZLE,CHOOSE PUZZLE,RÄTSEL WÄHLEN,CHOISIR UN PUZZLE,AUKERATU PUZZLEA,SCEGLI PUZZLE,ESCOLHER PUZZLE
-TimeQuickRange,5 – 10 min,5 – 10 min,5 – 10 Min.,5 – 10 min,5 – 10 min,5 – 10 min,5 – 10 min
-TimeCryptoRange,15 – 30 min,15 – 30 min,15 – 30 Min.,15 – 30 min,15 – 30 min,15 – 30 min,15 – 30 min
+TimeQuickRange,1 – 3 min,1 – 3 min,1 – 3 Min.,1 – 3 min,1 – 3 min,1 – 3 min,1 – 3 min
+TimeCryptoRange,5 – 10 min,5 – 10 min,5 – 10 Min.,5 – 10 min,5 – 10 min,5 – 10 min,5 – 10 min
 Collection,Colección,Collection,Sammlung,Collection,Bilduma,Collezione,Coleção
 ProgressDiscovered,%d de %d descubiertos,%d of %d discovered,%d von %d entdeckt,%d sur %d découverts,%d / %d aurkituta,%d di %d scoperti,%d de %d descobertos
 ChooseRandom,Elegir al azar,Choose at random,Zufällig wählen,Choisir au hasard,Ausaz aukeratu,Scegli a caso,Escolher ao acaso
