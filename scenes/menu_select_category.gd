@@ -211,7 +211,7 @@ func _update_mode_selection() -> void:
 		_set_check_blink(button, is_selected)
 		button.add_theme_stylebox_override(
 			"normal",
-			_make_mode_selected_style() if is_selected else _mode_normal_styles[mode_id]
+			_make_mode_selected_style(mode_id) if is_selected else _mode_normal_styles[mode_id]
 		)
 
 
@@ -286,13 +286,37 @@ func _make_category_style(category_id: String, selected: bool) -> StyleBoxFlat:
 	return style
 
 
-func _make_mode_selected_style() -> StyleBoxFlat:
+func _make_mode_selected_style(mode_id: String = MODE_QUICK) -> StyleBoxFlat:
 	var style := _make_selected_style()
-	style.bg_color = Color("#DDF4D3")
+	if mode_id == MODE_CRYPTOGRAM:
+		style.bg_color = Color(1.0, 0.96, 0.90, 1)
+		style.border_color = Color(0.66, 0.34, 0.08, 1)
+		style.shadow_color = Color(0.40, 0.18, 0.06, 0.14)
+	else:
+		style.bg_color = Color(0.86, 0.95, 0.96, 1)
+		style.border_color = Color(0.04, 0.58, 0.61, 1)
+		style.shadow_color = Color(0.04, 0.42, 0.48, 0.14)
 	style.set_border_width_all(9)
 	style.border_width_bottom = 12
 	style.set_corner_radius_all(32)
 	return style
+
+
+func _set_mode_time_labels(button: Button, caption: String, value: String) -> void:
+	var caption_label := button.get_node_or_null("TimeCaption") as Label
+	var value_label := button.get_node_or_null("TimeValue") as Label
+	if caption_label:
+		caption_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		caption_label.clip_text = true
+		caption_label.position.y = 277.0
+		caption_label.size = Vector2(267.0, 48.0)
+		caption_label.text = caption
+	if value_label:
+		value_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		value_label.clip_text = true
+		value_label.position.y = 328.0
+		value_label.size = Vector2(267.0, 66.0)
+		value_label.text = value
 
 
 func _update_localized_copy() -> void:
@@ -312,10 +336,16 @@ func _update_localized_copy() -> void:
 		var progress_title := button.get_node_or_null("ProgressTitle") as Label
 		if progress_title:
 			progress_title.text = tr("StarsEarnedLabel")
-	$Panel/ModeCard/ButtonQuick/TimeCaption.text = tr("Estimated time")
-	$Panel/ModeCard/ButtonQuick/TimeValue.text = tr("TimeQuickRange")
-	$Panel/ModeCard/ButtonCryptogram/TimeCaption.text = tr("Estimated time")
-	$Panel/ModeCard/ButtonCryptogram/TimeValue.text = tr("TimeCryptoRange")
+	_set_mode_time_labels(
+		$Panel/ModeCard/ButtonQuick,
+		tr("Estimated time"),
+		"1 – 3 min"
+	)
+	_set_mode_time_labels(
+		$Panel/ModeCard/ButtonCryptogram,
+		tr("Estimated time"),
+		"5 – 10 min"
+	)
 	$Panel/ButtonPlay/Content/Text.text = tr("ChoosePuzzle")
 	$Panel/Header/Brand/Cipher.text = tr("Cipher")
 	$Panel/Header/Brand/Letter.text = tr("Letter")

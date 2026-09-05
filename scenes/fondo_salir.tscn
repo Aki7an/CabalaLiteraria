@@ -232,6 +232,11 @@ theme_override_font_sizes/font_size = 36
 text = "OPCIONES"
 vertical_alignment = 1
 
+[node name="OptionsGap" type="Control" parent="Card/Actions"]
+custom_minimum_size = Vector2(0, 84)
+layout_mode = 2
+mouse_filter = 2
+
 [node name="ButtonContinue" type="Button" parent="Card/Actions"]
 custom_minimum_size = Vector2(0, 132)
 layout_mode = 2

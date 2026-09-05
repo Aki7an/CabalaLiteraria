@@ -12,13 +12,14 @@ var _icons: Array[TextureRect] = []
 
 
 func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	alignment = BoxContainer.ALIGNMENT_CENTER
 	add_theme_constant_override("separation", 14)
 	var fill := GameManager.star_fill_color()
 	for index in range(5):
 		var button := Button.new()
 		button.focus_mode = Control.FOCUS_NONE
-		button.custom_minimum_size = Vector2(88, 88)
+		button.custom_minimum_size = Vector2(76, 76)
 		button.flat = true
 		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		var icon := TextureRect.new()
@@ -29,14 +30,16 @@ func _ready() -> void:
 		icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		icon.modulate = Color(0.72, 0.68, 0.6, 0.45)
 		button.add_child(icon)
-		button.pressed.connect(_on_star_pressed.bind(index + 1))
+		button.pressed.connect(_on_star_pressed.bind(index + 1, button))
 		add_child(button)
 		_buttons.append(button)
 		_icons.append(icon)
 	_paint(0, fill)
 
 
-func _on_star_pressed(value: int) -> void:
+func _on_star_pressed(value: int, button: Button) -> void:
+	if button.get_global_mouse_position().distance_to(button.global_position + button.size * 0.5) > 80.0:
+		return
 	question_stars = value
 	_paint(value, GameManager.star_fill_color())
 	rating_changed.emit(value)

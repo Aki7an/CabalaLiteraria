@@ -9,20 +9,27 @@ const OVERLAY_REVEAL := preload("res://scenes/CuadroRevelar.tscn")
 const OVERLAY_BOARD_FILL := preload("res://scenes/fondo_tablero_completo.tscn")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 
-@onready var category_button: Button = $ButtonCategory
-@onready var category_label: Label = $ButtonCategory/Category
-@onready var category_icon: TextureRect = $ButtonCategory/Icon
-@onready var letters_label: Label = $PuzzleInfo/LettersFilled
-@onready var mode_icon: TextureRect = $PuzzleInfo/ModeRow/ModeIcon
-@onready var mode_label: Label = $PuzzleInfo/ModeRow/ModeLabel
+@onready var _header: Node = $GameHeader
+@onready var category_button: Button = _header.get_node("%ButtonCategory")
+@onready var category_label: Label = _header.get_node("%Category")
+@onready var category_icon: TextureRect = _header.get_node("%CategoryIcon")
+@onready var letters_label: Label = _header.get_node("%LettersFilled")
+@onready var letters_progress: ProgressBar = _header.get_node("%LettersProgress")
+@onready var stars_title: Label = _header.get_node("%StarsTitle")
+@onready var time_value: Label = _header.get_node("%TimeValue")
+@onready var time_unit: Label = _header.get_node("%TimeUnit")
+@onready var hourglass: Control = _header.get_node("%TimeIcon")
+@onready var mode_icon: TextureRect = _header.get_node("%ModeIcon")
+@onready var mode_label: Label = _header.get_node("%ModeLabel")
 @onready var stars: Array[TextureRect] = [
-	$PuzzleInfo/Stars/Star1,
-	$PuzzleInfo/Stars/Star2,
-	$PuzzleInfo/Stars/Star3,
-	$PuzzleInfo/Stars/Star4,
-	$PuzzleInfo/Stars/Star5
+	_header.get_node("%Star1") as TextureRect,
+	_header.get_node("%Star2") as TextureRect,
+	_header.get_node("%Star3") as TextureRect,
+	_header.get_node("%Star4") as TextureRect,
+	_header.get_node("%Star5") as TextureRect
 ]
 @onready var reveal_button: Button = $ButtonReveal
+@onready var pause_button: Button = _header.get_node("%ButtonPause")
 
 const REVEAL_BLINK_COUNT := 2
 const REVEAL_BLINK_DIM := Color(1, 1, 1, 0.28)
@@ -33,18 +40,29 @@ const MODE_ICON_QUICK := preload("res://images/mode_quick.svg")
 const MODE_ICON_CRYPTO := preload("res://images/mode_scroll.svg")
 
 var _start_ms: int
+var _shown_minute := -1
+var _suppress_minute_fx := false
 var _completion_recorded := false
 var _reveal_blink_tween: Tween
+var _time_blink_tween: Tween
+var _pause_ms := 0
 
 
 func _ready() -> void:
 	add_to_group("GameHUD")
 	_start_ms = Time.get_ticks_msec()
+	if pause_button and not pause_button.pressed.is_connected(_on_pause_pressed):
+		pause_button.pressed.connect(_on_pause_pressed)
 	category_label.text = GameManager.category_display_name()
+	if stars_title:
+		stars_title.text = tr("TutStarsPuzzle")
 	_apply_category_color()
 	_update_stars()
 	_update_letters_filled()
 	_update_game_mode()
+	_suppress_minute_fx = true
+	_update_timer_label(0.0)
+	_suppress_minute_fx = false
 
 	SignalManager.update_puzzle_stars.connect(_update_stars)
 	SignalManager.update_resting_characters.connect(_update_letters_filled)
@@ -57,12 +75,74 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	var elapsed_seconds := float(Time.get_ticks_msec() - _start_ms) / 1000.0
+	var elapsed_seconds := _elapsed_play_seconds()
 	GameManager.set_tiempo_partida(elapsed_seconds)
+	_update_timer_label(float(elapsed_seconds))
 
 
 func resume_saved_time() -> void:
+	_pause_ms = 0
 	_start_ms = Time.get_ticks_msec() - GameManager.tiempo_partida * 1000
+	_suppress_minute_fx = true
+	_shown_minute = -1
+	_update_timer_label(float(GameManager.tiempo_partida))
+	_suppress_minute_fx = false
+
+
+func sync_play_time() -> void:
+	GameManager.set_tiempo_partida(_elapsed_play_seconds())
+
+
+func _elapsed_play_seconds() -> int:
+	var now := Time.get_ticks_msec()
+	var start := _start_ms
+	if _pause_ms > 0:
+		now = _pause_ms
+	return maxi(int((now - start) / 1000.0), 0)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PAUSED:
+		GameManager.set_tiempo_partida(_elapsed_play_seconds())
+		_pause_ms = Time.get_ticks_msec()
+	elif what == NOTIFICATION_UNPAUSED:
+		if _pause_ms > 0:
+			_start_ms += Time.get_ticks_msec() - _pause_ms
+			_pause_ms = 0
+
+
+func _update_timer_label(elapsed_seconds: float) -> void:
+	var elapsed := maxf(elapsed_seconds, 0.0)
+	var minutes := int(elapsed) / 60
+	var frac := fmod(elapsed, 60.0) / 60.0
+	if time_unit:
+		time_unit.text = "min"
+	if time_value:
+		time_value.text = str(minutes)
+		if minutes != _shown_minute:
+			if not _suppress_minute_fx and _shown_minute >= 0:
+				_blink_time_label()
+				if hourglass and hourglass.has_method("play_flip"):
+					hourglass.play_flip()
+			_shown_minute = minutes
+	if hourglass and hourglass.has_method("set_sand_progress"):
+		if hourglass.has_method("is_flipping") and hourglass.is_flipping():
+			return
+		hourglass.set_sand_progress(frac)
+
+
+func _blink_time_label() -> void:
+	if time_value == null:
+		return
+	time_value.pivot_offset = time_value.size * 0.5
+	if _time_blink_tween != null and _time_blink_tween.is_valid():
+		_time_blink_tween.kill()
+	time_value.scale = Vector2.ONE
+	_time_blink_tween = create_tween()
+	_time_blink_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_time_blink_tween.tween_property(time_value, "scale", Vector2(1.34, 1.34), 0.12)
+	_time_blink_tween.tween_property(time_value, "scale", Vector2(0.9, 0.9), 0.1)
+	_time_blink_tween.tween_property(time_value, "scale", Vector2.ONE, 0.12)
 
 
 func _update_stars(_value: int = -1) -> void:
@@ -78,16 +158,19 @@ func _update_stars(_value: int = -1) -> void:
 
 
 func _update_letters_filled() -> void:
-	letters_label.text = "%d / %d" % [
-		GameManager.numero_letras_reveladas,
-		GameManager.numero_letras_a_revelar_originales
-	]
+	var filled := GameManager.numero_letras_reveladas
+	var total := GameManager.numero_letras_a_revelar_originales
+	if letters_label:
+		letters_label.text = tr("LettersProgress") % [filled, total]
+	if letters_progress:
+		letters_progress.max_value = 1.0
+		letters_progress.value = 0.0 if total <= 0 else float(filled) / float(total)
 
 
 func _update_game_mode() -> void:
 	var is_crypto := GameManager.game_mode_actual == GameManager.MODE_CRYPTOGRAM
 	mode_icon.texture = MODE_ICON_CRYPTO if is_crypto else MODE_ICON_QUICK
-	mode_label.text = "Criptograma" if is_crypto else "Partida rápida"
+	mode_label.text = tr("Cryptogram") if is_crypto else tr("TutQuickGame")
 
 
 func _on_board_filled() -> void:

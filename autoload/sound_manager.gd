@@ -7,14 +7,14 @@ class SoundEntry:
 
 enum MusicContext { MENU, GAME }
 
-const MENU_MUSIC_PATH := "res://audio/music/menus.mp3"
+const MENU_MUSIC_PATH := "res://audio/music/word_garden_menu.mp3"
+const CELEBRATION_MUSIC_PATH := "res://audio/music/celebration.mp3"
 const GAME_MUSIC_PATHS: PackedStringArray = [
-	"res://audio/music/espacio_y_eco.mp3",
-	"res://audio/music/espacio_y_eco_v1.mp3",
-	"res://audio/music/espacio_y_eco_v2.mp3",
-	"res://audio/music/espacio_y_eco_v3.mp3",
-	"res://audio/music/espacio_y_eco_v4.mp3",
-	"res://audio/music/papel_tibio.mp3",
+	"res://audio/music/stillwater_puzzle.mp3",
+	"res://audio/music/stillwater_puzzle_v2.mp3",
+	"res://audio/music/stillwater_puzzle_piano_strings.mp3",
+	"res://audio/music/papel_de_lino_piano_cuerdas.mp3",
+	"res://audio/music/papel_de_lino_piano_cuerdas_v2.mp3",
 ]
 const GAMEPLAY_SCENE_PATHS: PackedStringArray = [
 	"res://scenes/App.tscn",
@@ -22,11 +22,13 @@ const GAMEPLAY_SCENE_PATHS: PackedStringArray = [
 ]
 const MUSIC_FADE_OUT_SEC := 0.35
 const MUSIC_FADE_IN_SEC := 1.5
+const VICTORY_MENU_FADE_IN_SEC := 5.0
 const MUSIC_SILENT_DB := -80.0
 
 var _registry: Dictionary[String, SoundEntry] = {}
 var _music_player: AudioStreamPlayer
 var _menu_stream: AudioStream
+var _celebration_stream: AudioStream
 var _game_tracks: Array[AudioStream] = []
 var _music_order: Array[int] = []
 var _music_index: int = -1
@@ -34,6 +36,8 @@ var _music_context: int = -1
 var _music_tween: Tween
 var _music_switch_id := 0
 var _switching_music := false
+var _awaiting_celebration := false
+var _pending_fade_in_sec := MUSIC_FADE_IN_SEC
 
 func _ready() -> void:
 	_build_registry()
@@ -148,6 +152,8 @@ func toggle_fx_enabled() -> void:
 func _setup_background_music() -> void:
 	_menu_stream = _load_audio_stream(MENU_MUSIC_PATH)
 	_set_stream_loop(_menu_stream, true)
+	_celebration_stream = _load_audio_stream(CELEBRATION_MUSIC_PATH)
+	_set_stream_loop(_celebration_stream, false)
 	for path in GAME_MUSIC_PATHS:
 		var stream := _load_audio_stream(path)
 		if stream == null:
@@ -198,17 +204,58 @@ func _is_gameplay_scene(path: String) -> bool:
 
 
 func fade_to_menu_music() -> void:
+	_awaiting_celebration = false
+	_pending_fade_in_sec = MUSIC_FADE_IN_SEC
 	_set_music_context(MusicContext.MENU)
 
 
 func fade_to_game_music() -> void:
+	_awaiting_celebration = false
+	_pending_fade_in_sec = MUSIC_FADE_IN_SEC
 	_set_music_context(MusicContext.GAME)
+
+
+func play_victory_then_menu_music() -> void:
+	if _music_player == null:
+		return
+	_music_switch_id += 1
+	var switch_id := _music_switch_id
+	_switching_music = true
+	_awaiting_celebration = true
+	_music_context = MusicContext.MENU
+	if _music_tween:
+		_music_tween.kill()
+		_music_tween = null
+	var should_fade_out := _music_player.playing and _music_player.volume_db > MUSIC_SILENT_DB + 1.0
+	if should_fade_out:
+		_music_tween = create_tween()
+		_music_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		_music_tween.tween_property(_music_player, "volume_db", MUSIC_SILENT_DB, MUSIC_FADE_OUT_SEC)\
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		await _music_tween.finished
+		if switch_id != _music_switch_id:
+			return
+	if switch_id != _music_switch_id:
+		return
+	if _celebration_stream == null:
+		_awaiting_celebration = false
+		_pending_fade_in_sec = VICTORY_MENU_FADE_IN_SEC
+		_switching_music = false
+		_fade_to_context_track()
+		return
+	_music_player.volume_db = 0.0
+	_music_player.stream = _celebration_stream
+	_music_player.play()
+	_switching_music = false
+	_music_tween = null
 
 
 func _set_music_context(context: MusicContext) -> void:
 	if _music_player == null:
 		return
-	if _music_context == context and _music_player.playing and not _switching_music:
+	if _music_context == context and (
+		_awaiting_celebration or _switching_music or _music_player.playing
+	):
 		return
 	var entering_game := context == MusicContext.GAME and _music_context != context
 	_music_context = context
@@ -220,6 +267,8 @@ func _set_music_context(context: MusicContext) -> void:
 func _fade_to_context_track() -> void:
 	_music_switch_id += 1
 	var switch_id := _music_switch_id
+	var fade_in_sec := _pending_fade_in_sec
+	_pending_fade_in_sec = MUSIC_FADE_IN_SEC
 	_switching_music = true
 	if _music_tween:
 		_music_tween.kill()
@@ -240,7 +289,7 @@ func _fade_to_context_track() -> void:
 		_music_player.play()
 	_music_tween = create_tween()
 	_music_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	_music_tween.tween_property(_music_player, "volume_db", 0.0, MUSIC_FADE_IN_SEC).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_music_tween.tween_property(_music_player, "volume_db", 0.0, fade_in_sec).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	await _music_tween.finished
 	if switch_id != _music_switch_id:
 		return
@@ -275,6 +324,11 @@ func _play_menu_music() -> void:
 
 func _on_music_finished() -> void:
 	if _switching_music:
+		return
+	if _awaiting_celebration:
+		_awaiting_celebration = false
+		_pending_fade_in_sec = VICTORY_MENU_FADE_IN_SEC
+		_fade_to_context_track()
 		return
 	if _music_context == MusicContext.MENU:
 		_play_menu_music()

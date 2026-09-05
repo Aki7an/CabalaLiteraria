@@ -81,6 +81,37 @@ shadow_size = 10
 shadow_offset = Vector2(0, 8)
 anti_aliasing_size = 0.5
 
+[sub_resource type="StyleBoxFlat" id="Style_audio_quiet"]
+bg_color = Color(0.960784, 0.913725, 0.854902, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 10
+border_color = Color(0.847059, 0.776471, 0.694118, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.1)
+shadow_size = 6
+shadow_offset = Vector2(0, 5)
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxFlat" id="Style_audio_quiet_pressed"]
+bg_color = Color(0.921569, 0.870588, 0.807843, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.776471, 0.701961, 0.615686, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.07)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings_inset"]
 bg_color = Color(1, 1, 1, 0)
 draw_center = false
@@ -530,9 +561,11 @@ offset_bottom = 196.96
 grow_horizontal = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme = SubResource("Theme_settings")
-theme_override_styles/normal = SubResource("StyleBoxFlat_mb0qt")
-theme_override_styles/hover = SubResource("StyleBoxFlat_mb0qt")
+theme_override_styles/normal = SubResource("Style_audio_quiet")
+theme_override_styles/hover = SubResource("Style_audio_quiet")
+theme_override_styles/pressed = SubResource("Style_audio_quiet_pressed")
+theme_override_styles/focus = SubResource("Style_audio_quiet")
+theme_override_styles/disabled = SubResource("Style_audio_quiet")
 script = ExtResource("22_btnfx")
 enable_intro_scale = false
 enable_intro_rotation = false
@@ -589,9 +622,11 @@ offset_bottom = 196.96
 grow_horizontal = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme = SubResource("Theme_settings")
-theme_override_styles/normal = SubResource("StyleBoxFlat_mb0qt")
-theme_override_styles/hover = SubResource("StyleBoxFlat_mb0qt")
+theme_override_styles/normal = SubResource("Style_audio_quiet")
+theme_override_styles/hover = SubResource("Style_audio_quiet")
+theme_override_styles/pressed = SubResource("Style_audio_quiet_pressed")
+theme_override_styles/focus = SubResource("Style_audio_quiet")
+theme_override_styles/disabled = SubResource("Style_audio_quiet")
 script = ExtResource("22_btnfx")
 enable_intro_scale = false
 enable_intro_rotation = false

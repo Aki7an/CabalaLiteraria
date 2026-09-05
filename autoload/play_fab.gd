@@ -912,6 +912,7 @@ func send_phrase_feedback(
 			"rating_hint1": int(ratings.get("hint1", 0)),
 			"rating_hint2": int(ratings.get("hint2", 0)),
 			"rating_hint3": int(ratings.get("hint3", 0)),
+			"rating_interest": int(ratings.get("interest", 0)),
 			"rating_init_letters": int(ratings.get("init_letters", 0)),
 			"comment": comment,
 			"client_ver": str(ProjectSettings.get_setting("application/config/version", "")),

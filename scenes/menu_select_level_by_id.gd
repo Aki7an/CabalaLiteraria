@@ -449,12 +449,19 @@ func _create_level_card(item: Dictionary) -> Button:
 	button.add_child(status_stars)
 
 	var letters_progress := Label.new()
-	letters_progress.position = Vector2(18, 418)
-	letters_progress.size = Vector2(294, 42)
+	letters_progress.position = Vector2(18, 400 if puzzle_status == "in_progress" else 418)
+	letters_progress.size = Vector2(294, 70 if puzzle_status == "in_progress" else 42)
 	letters_progress.add_theme_font_override("font", _title_label.get_theme_font("font"))
 	letters_progress.add_theme_font_size_override("font_size", 23)
 	letters_progress.add_theme_color_override("font_color", Color(0.25, 0.16, 0.11, 0.82))
-	letters_progress.text = tr("LettersProgress") % [letters_filled, letters_total]
+	var letters_text := tr("LettersProgress") % [letters_filled, letters_total]
+	if puzzle_status == "in_progress":
+		letters_progress.text = "%s\n%s" % [
+			letters_text,
+			_format_continue_time(int(saved_summary.get("tiempo_partida", 0)))
+		]
+	else:
+		letters_progress.text = letters_text
 	letters_progress.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	letters_progress.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	letters_progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -944,6 +951,18 @@ func _star_icons(filled: int, total: int, size: int, color: Color) -> HBoxContai
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		row.add_child(icon)
 	return row
+
+
+func _format_continue_time(total_sec: int) -> String:
+	var seconds := maxi(total_sec, 0)
+	var hours := seconds / 3600
+	var minutes := (seconds % 3600) / 60
+	var rest := seconds % 60
+	var elapsed := "%d:%02d:%02d" % [hours, minutes, rest] if hours > 0 else "%d:%02d" % [minutes, rest]
+	var template := tr("TimeTaken")
+	if "%s" in template:
+		return template % elapsed
+	return "%s: %s" % [tr("Time"), elapsed]
 
 
 func _count_puzzle_letters(text: String) -> int:

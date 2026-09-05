@@ -59,3 +59,10 @@ volume_db = 7.866
 pitch_scale = 2.01
 bus = &"SoundFx"
 script = ExtResource("3_bacxp")
+
+[node name="PaperStamp" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_08ara")
+volume_db = 2.0
+pitch_scale = 0.62
+bus = &"SoundFx"
+script = ExtResource("3_bacxp")

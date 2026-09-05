@@ -310,12 +310,12 @@ shadow_size = 8
 shadow_offset = Vector2(0, 7)
 
 [sub_resource type="StyleBoxFlat" id="Style_mode_selected"]
-bg_color = Color(0.941176, 0.976471, 0.901961, 1)
+bg_color = Color(0.86, 0.95, 0.96, 1)
 border_width_left = 7
 border_width_top = 7
 border_width_right = 7
 border_width_bottom = 9
-border_color = Color(0.0392157, 0.647059, 0.643137, 1)
+border_color = Color(0.0392157, 0.576471, 0.611765, 1)
 corner_radius_top_left = 32
 corner_radius_top_right = 32
 corner_radius_bottom_right = 32
@@ -1226,11 +1226,12 @@ theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 28
 text = "Tiempo estimado"
 vertical_alignment = 1
+clip_text = true
 
 [node name="TimeValue" type="Label" parent="Panel/ModeCard/ButtonQuick"]
 layout_mode = 0
 offset_left = 128.0
-offset_top = 325.0
+offset_top = 328.0
 offset_right = 395.0
 offset_bottom = 394.0
 mouse_filter = 2
@@ -1349,11 +1350,12 @@ theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 28
 text = "Tiempo estimado"
 vertical_alignment = 1
+clip_text = true
 
 [node name="TimeValue" type="Label" parent="Panel/ModeCard/ButtonCryptogram"]
 layout_mode = 0
 offset_left = 128.0
-offset_top = 325.0
+offset_top = 328.0
 offset_right = 405.0
 offset_bottom = 394.0
 mouse_filter = 2

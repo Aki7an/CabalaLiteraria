@@ -283,6 +283,35 @@ corner_radius_top_right = 38
 corner_radius_bottom_right = 38
 corner_radius_bottom_left = 38
 
+[sub_resource type="StyleBoxFlat" id="Style_credits"]
+bg_color = Color(1, 0.964706, 0.85098, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 7
+border_color = Color(0.819608, 0.654902, 0.403922, 0.66)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+shadow_color = Color(0.352941, 0.211765, 0.109804, 0.18)
+shadow_size = 9
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_credits_pressed"]
+bg_color = Color(0.952941, 0.894118, 0.760784, 1)
+border_width_left = 4
+border_width_top = 9
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0.760784, 0.568627, 0.290196, 0.8)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+
+[sub_resource type="StyleBoxEmpty" id="Style_credits_focus"]
+
 [sub_resource type="StyleBoxFlat" id="Style_ok"]
 bg_color = Color(1, 0.568627, 0, 1)
 border_width_left = 8
@@ -380,12 +409,42 @@ vertical_alignment = 1
 
 [node name="TitleLineR" type="ColorRect" parent="Panel/Header"]
 layout_mode = 0
-offset_left = 895.0
+offset_left = 885.0
 offset_top = 90.0
-offset_right = 1010.0
+offset_right = 928.0
 offset_bottom = 94.0
 mouse_filter = 2
 color = Color(0.713726, 0.505882, 0.258824, 0.52)
+
+[node name="ButtonCredits" type="Button" parent="Panel/Header"]
+custom_minimum_size = Vector2(146, 146)
+layout_mode = 0
+offset_left = 944.0
+offset_top = 8.0
+offset_right = 1090.0
+offset_bottom = 154.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_credits")
+theme_override_styles/hover = SubResource("Style_credits")
+theme_override_styles/pressed = SubResource("Style_credits_pressed")
+theme_override_styles/focus = SubResource("Style_credits_focus")
+
+[node name="Mark" type="Label" parent="Panel/Header/ButtonCredits"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.321569, 0.196078, 0.117647, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 92
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="SoundCard" type="Panel" parent="Panel"]
 layout_mode = 0
@@ -1492,6 +1551,7 @@ theme_override_styles/focus = SubResource("Style_empty")
 text = "OK"
 
 [connection signal="pressed" from="Panel/Header/ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="Panel/Header/ButtonCredits" to="." method="_on_button_credits_pressed"]
 [connection signal="value_changed" from="Panel/SoundCard/SoundRows/HSliderSound" to="." method="_on_h_slider_sound_value_changed"]
 [connection signal="toggled" from="Panel/SoundCard/SoundRows/CheckButtonMusic" to="." method="_on_check_button_music_toggled"]
 [connection signal="value_changed" from="Panel/SoundCard/SoundRows/HSliderFx" to="." method="_on_h_slider_fx_value_changed"]

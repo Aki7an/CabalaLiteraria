@@ -1,57 +1,11 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scenes/PanelUP/panel_up_portrait.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
-[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="3_star"]
 [ext_resource type="Texture2D" path="res://images/ui_icon_bulb_white.svg" id="4_bulb"]
 [ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_eye.png" id="5_eye"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Pause.png" id="6_pause"]
 [ext_resource type="Texture2D" path="res://images/ui_icon_theme_white.svg" id="7_theme"]
-[ext_resource type="Texture2D" path="res://images/ui_icon_quotes_white.svg" id="8_quotes"]
-[ext_resource type="Texture2D" path="res://images/mode_quick.svg" id="9_mode_quick"]
-[ext_resource type="Texture2D" path="res://images/mode_scroll.svg" id="10_mode_crypto"]
-
-[sub_resource type="StyleBoxFlat" id="Style_card"]
-bg_color = Color(1, 0.949, 0.804, 0.98)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 7
-border_color = Color(0.77, 0.59, 0.31, 0.58)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.35, 0.22, 0.08, 0.2)
-shadow_size = 13
-shadow_offset = Vector2(0, 10)
-
-[sub_resource type="StyleBoxFlat" id="Style_pause"]
-bg_color = Color(1, 0.56, 0.02, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 9
-border_color = Color(0.72, 0.32, 0.02, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
-shadow_color = Color(0.4, 0.2, 0.03, 0.25)
-shadow_size = 10
-shadow_offset = Vector2(0, 8)
-
-[sub_resource type="StyleBoxFlat" id="Style_pause_pressed"]
-bg_color = Color(0.9, 0.4, 0.015, 1)
-border_width_left = 5
-border_width_top = 9
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0.65, 0.25, 0.01, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
+[ext_resource type="PackedScene" path="res://scenes/PanelUP/GameHeader.tscn" id="8_header"]
 
 [sub_resource type="StyleBoxFlat" id="Style_hint"]
 bg_color = Color(1, 0.72, 0.08, 1)
@@ -134,232 +88,18 @@ corner_radius_top_right = 28
 corner_radius_bottom_right = 28
 corner_radius_bottom_left = 28
 
-[sub_resource type="StyleBoxFlat" id="Style_category"]
-bg_color = Color(0.106, 0.541, 0.812, 1)
-border_width_left = 0
-border_width_top = 0
-border_width_right = 0
-border_width_bottom = 10
-border_color = Color(0.05, 0.32, 0.52, 1)
-corner_radius_top_left = 0
-corner_radius_top_right = 0
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
-shadow_color = Color(0.05, 0.18, 0.32, 0.28)
-shadow_size = 10
-shadow_offset = Vector2(0, 8)
-
-[sub_resource type="StyleBoxFlat" id="Style_category_pressed"]
-bg_color = Color(0.08, 0.42, 0.65, 1)
-border_width_left = 0
-border_width_top = 8
-border_width_right = 0
-border_width_bottom = 4
-border_color = Color(0.04, 0.26, 0.42, 1)
-corner_radius_top_left = 0
-corner_radius_top_right = 0
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
-
 [sub_resource type="StyleBoxEmpty" id="Style_empty"]
 
 [node name="PanelUPPortrait" type="Panel"]
 offset_right = 1174.0
 offset_bottom = 548.0
-theme_override_styles/panel = SubResource("Style_card")
+theme_override_styles/panel = SubResource("Style_empty")
 script = ExtResource("1_script")
 
-[node name="ButtonCategory" type="Button" parent="."]
+[node name="GameHeader" parent="." instance=ExtResource("8_header")]
 layout_mode = 0
-offset_left = 48.0
-offset_top = -20.0
-offset_right = 278.0
-offset_bottom = 252.0
-focus_mode = 0
-mouse_filter = 2
-theme_override_styles/normal = SubResource("Style_category")
-theme_override_styles/hover = SubResource("Style_category")
-theme_override_styles/pressed = SubResource("Style_category_pressed")
-theme_override_styles/focus = SubResource("Style_empty")
-
-[node name="Icon" type="TextureRect" parent="ButtonCategory"]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 28.0
-offset_right = 182.0
-offset_bottom = 118.0
-mouse_filter = 2
-texture = ExtResource("8_quotes")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Category" type="Label" parent="ButtonCategory"]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 118.0
-offset_right = 222.0
-offset_bottom = 248.0
-mouse_filter = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 32
-text = "Citas Célebres"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
-
-[node name="PuzzleInfo" type="Control" parent="."]
-layout_mode = 0
-offset_left = 320.0
-offset_top = 28.0
-offset_right = 940.0
-offset_bottom = 268.0
-
-[node name="Title" type="Label" parent="PuzzleInfo"]
-layout_mode = 0
-offset_right = 620.0
-offset_bottom = 36.0
-theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 26
-text = "ESTRELLAS DEL PUZLE"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Stars" type="HBoxContainer" parent="PuzzleInfo"]
-layout_mode = 0
-offset_left = 95.0
-offset_top = 40.0
-offset_right = 525.0
-offset_bottom = 108.0
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="Star1" type="TextureRect" parent="PuzzleInfo/Stars"]
-custom_minimum_size = Vector2(60, 60)
-layout_mode = 2
-texture = ExtResource("3_star")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Star2" type="TextureRect" parent="PuzzleInfo/Stars"]
-custom_minimum_size = Vector2(60, 60)
-layout_mode = 2
-texture = ExtResource("3_star")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Star3" type="TextureRect" parent="PuzzleInfo/Stars"]
-custom_minimum_size = Vector2(60, 60)
-layout_mode = 2
-texture = ExtResource("3_star")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Star4" type="TextureRect" parent="PuzzleInfo/Stars"]
-custom_minimum_size = Vector2(60, 60)
-layout_mode = 2
-texture = ExtResource("3_star")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Star5" type="TextureRect" parent="PuzzleInfo/Stars"]
-custom_minimum_size = Vector2(60, 60)
-layout_mode = 2
-texture = ExtResource("3_star")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="LettersCaption" type="Label" parent="PuzzleInfo"]
-layout_mode = 0
-offset_top = 112.0
-offset_right = 300.0
-offset_bottom = 156.0
-theme_override_colors/font_color = Color(0.42, 0.3, 0.18, 0.9)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 22
-text = "LETRAS"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="LettersFilled" type="Label" parent="PuzzleInfo"]
-layout_mode = 0
-offset_left = 310.0
-offset_top = 108.0
-offset_right = 520.0
-offset_bottom = 160.0
-theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 36
-text = "0 / 0"
-horizontal_alignment = 0
-vertical_alignment = 1
-
-[node name="ModeRow" type="HBoxContainer" parent="PuzzleInfo"]
-layout_mode = 0
-offset_left = 90.0
-offset_top = 162.0
-offset_right = 550.0
-offset_bottom = 240.0
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="ModeIcon" type="TextureRect" parent="PuzzleInfo/ModeRow"]
-custom_minimum_size = Vector2(72, 72)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-texture = ExtResource("9_mode_quick")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="ModeLabel" type="Label" parent="PuzzleInfo/ModeRow"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 40
-text = "Partida rápida"
-vertical_alignment = 1
-
-[node name="ButtonPause" type="Button" parent="."]
-layout_mode = 0
-offset_left = 1004.0
-offset_top = 54.0
-offset_right = 1126.0
-offset_bottom = 187.0
-focus_mode = 0
-theme_override_styles/normal = SubResource("Style_pause")
-theme_override_styles/hover = SubResource("Style_pause")
-theme_override_styles/pressed = SubResource("Style_pause_pressed")
-theme_override_styles/focus = SubResource("Style_empty")
-
-[node name="Icon" type="Label" parent="ButtonPause"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 14.0
-offset_top = 10.0
-offset_right = -14.0
-offset_bottom = -14.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_colors/font_color = Color(1, 0.976471, 0.909804, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 68
-text = "☰"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Divider" type="HSeparator" parent="."]
-layout_mode = 0
-offset_left = 30.0
-offset_top = 278.0
-offset_right = 1144.0
-offset_bottom = 289.0
-theme_override_colors/separator = Color(0.62, 0.45, 0.24, 0.38)
+offset_right = 1174.0
+offset_bottom = 300.0
 
 [node name="ButtonTheme" type="Button" parent="."]
 layout_mode = 0
@@ -498,7 +238,8 @@ theme_override_font_sizes/font_size = 52
 text = "REVELAR"
 vertical_alignment = 1
 
-[connection signal="pressed" from="ButtonPause" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="ButtonTheme" to="." method="_on_theme_pressed"]
 [connection signal="pressed" from="ButtonHint" to="." method="_on_hint_pressed"]
 [connection signal="pressed" from="ButtonReveal" to="." method="_on_reveal_pressed"]
+
+[editable path="GameHeader"]

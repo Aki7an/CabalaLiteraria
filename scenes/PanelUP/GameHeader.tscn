@@ -1,0 +1,353 @@
+[gd_scene format=3 uid="uid://d2gfi0jjm57t4"]
+
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="1_font"]
+[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="2_star"]
+[ext_resource type="Texture2D" uid="uid://fjjkguxyahu3" path="res://images/ui_icon_quotes_white.svg" id="3_quotes"]
+[ext_resource type="Texture2D" uid="uid://duj5gi84s5bqf" path="res://images/mode_quick.svg" id="4_mode_quick"]
+[ext_resource type="PackedScene" path="res://scenes/PanelUP/Hourglass.tscn" id="5_hourglass"]
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(1, 0.949, 0.804, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.77, 0.59, 0.31, 0.58)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.35, 0.22, 0.08, 0.2)
+shadow_size = 13
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_category"]
+bg_color = Color(0.106, 0.541, 0.812, 1)
+border_width_bottom = 10
+border_color = Color(0.05, 0.32, 0.52, 1)
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.05, 0.18, 0.32, 0.28)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_category_pressed"]
+bg_color = Color(0.08, 0.42, 0.65, 1)
+border_width_top = 8
+border_width_bottom = 4
+border_color = Color(0.04, 0.26, 0.42, 1)
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[sub_resource type="StyleBoxFlat" id="Style_pause"]
+bg_color = Color(1, 0.56, 0.02, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 9
+border_color = Color(0.72, 0.32, 0.02, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_color = Color(0.4, 0.2, 0.03, 0.25)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_pause_pressed"]
+bg_color = Color(0.9, 0.4, 0.015, 1)
+border_width_left = 5
+border_width_top = 9
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.65, 0.25, 0.01, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_bg"]
+bg_color = Color(0.82, 0.72, 0.52, 0.42)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.55, 0.28, 0.35)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_fill"]
+bg_color = Color(1, 0.55, 0.08, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[node name="GameHeader" type="Panel" unique_id=404521592]
+custom_minimum_size = Vector2(1174, 300)
+offset_right = 1174.0
+offset_bottom = 300.0
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1806907331]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 18
+
+[node name="Main" type="VBoxContainer" parent="Margin" unique_id=1001130713]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Top" type="HBoxContainer" parent="Margin/Main" unique_id=436517566]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="CategoryWrap" type="MarginContainer" parent="Margin/Main/Top" unique_id=810313474]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_top = -24
+
+[node name="ButtonCategory" type="Button" parent="Margin/Main/Top/CategoryWrap" unique_id=1529828182]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(230, 248)
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 2
+theme_override_styles/normal = SubResource("Style_category")
+theme_override_styles/pressed = SubResource("Style_category_pressed")
+theme_override_styles/hover = SubResource("Style_category")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="CategoryIcon" type="TextureRect" parent="Margin/Main/Top/CategoryWrap/ButtonCategory" unique_id=2004158255]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -67.0
+offset_top = 28.0
+offset_right = 67.0
+offset_bottom = 118.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("3_quotes")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Category" type="Label" parent="Margin/Main/Top/CategoryWrap/ButtonCategory" unique_id=1483841560]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -169.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 32
+text = "Citas Célebres"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="StarsBlock" type="VBoxContainer" parent="Margin/Main/Top" unique_id=192513889]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 6
+
+[node name="Control" type="Control" parent="Margin/Main/Top/StarsBlock" unique_id=12739446]
+visible = false
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="StarsTitle" type="Label" parent="Margin/Main/Top/StarsBlock" unique_id=1583520361]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 24
+text = "ESTRELLAS DEL PUZLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stars" type="HBoxContainer" parent="Margin/Main/Top/StarsBlock" unique_id=366942351]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="Margin/Main/Top/StarsBlock/Stars" unique_id=1478831115]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+texture = ExtResource("2_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="Margin/Main/Top/StarsBlock/Stars" unique_id=1763205395]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+texture = ExtResource("2_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="Margin/Main/Top/StarsBlock/Stars" unique_id=396780771]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+texture = ExtResource("2_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="Margin/Main/Top/StarsBlock/Stars" unique_id=2063291636]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+texture = ExtResource("2_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star5" type="TextureRect" parent="Margin/Main/Top/StarsBlock/Stars" unique_id=1781490523]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+texture = ExtResource("2_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Control2" type="Control" parent="Margin/Main/Top/StarsBlock" unique_id=1228162396]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="ModeRow" type="HBoxContainer" parent="Margin/Main/Top/StarsBlock" unique_id=1576324494]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ModeIcon" type="TextureRect" parent="Margin/Main/Top/StarsBlock/ModeRow" unique_id=1060925120]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(46, 46)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_mode_quick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ModeLabel" type="Label" parent="Margin/Main/Top/StarsBlock/ModeRow" unique_id=273826567]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 32
+text = "Partida rápida"
+vertical_alignment = 1
+
+[node name="TimerRow" type="HBoxContainer" parent="Margin/Main/Top" unique_id=1803027369]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TimeIcon" parent="Margin/Main/Top/TimerRow" unique_id=1681202910 instance=ExtResource("5_hourglass")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(135, 135)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TimeValue" type="Label" parent="Margin/Main/Top/TimerRow" unique_id=322042263]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.13, 0.08, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 56
+text = "0"
+vertical_alignment = 1
+
+[node name="TimeUnit" type="Label" parent="Margin/Main/Top/TimerRow" unique_id=1669127630]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 28
+text = "min"
+vertical_alignment = 2
+
+[node name="Control3" type="Control" parent="Margin/Main/Top" unique_id=507960961]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="ButtonPause" type="Button" parent="Margin/Main/Top" unique_id=224151839]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(122, 133)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_pause")
+theme_override_styles/pressed = SubResource("Style_pause_pressed")
+theme_override_styles/hover = SubResource("Style_pause")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Icon" type="Label" parent="Margin/Main/Top/ButtonPause" unique_id=794069161]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 10.0
+offset_right = -14.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.976471, 0.909804, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 68
+text = "☰"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bottom" type="HBoxContainer" parent="Margin/Main" unique_id=352731007]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="LettersProgress" type="ProgressBar" parent="Margin/Main/Bottom" unique_id=739356952]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/background = SubResource("Style_progress_bg")
+theme_override_styles/fill = SubResource("Style_progress_fill")
+max_value = 1.0
+show_percentage = false
+
+[node name="LettersFilled" type="Label" parent="Margin/Main/Bottom" unique_id=819917698]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 30
+text = "0 / 0 letras"
+vertical_alignment = 1

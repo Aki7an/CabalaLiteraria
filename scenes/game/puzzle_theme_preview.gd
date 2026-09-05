@@ -28,15 +28,14 @@ func _ready() -> void:
 	_update_difficulty_stars()
 	_load_image()
 	start_button.visible = true
+	var saved := PuzzleSaveManager.get_puzzle_summary(GameManager.id_frase)
+	var in_progress := str(saved.get("status", "new")) == "in_progress"
 	if launch_game_on_start:
-		var saved := PuzzleSaveManager.get_puzzle_summary(GameManager.id_frase)
-		start_button.text = (
-			"CONTINUAR"
-			if str(saved.get("status", "new")) == "in_progress"
-			else "EMPEZAR"
-		)
+		start_button.text = "CONTINUAR" if in_progress else "EMPEZAR"
 	else:
 		start_button.text = "CONTINUAR"
+	if in_progress:
+		_show_continue_progress(saved)
 
 
 func _update_difficulty_stars() -> void:
@@ -52,6 +51,23 @@ func _update_difficulty_stars() -> void:
 		difficulty_stars[index].self_modulate = (
 			GameManager.star_fill_color() if index < remaining else STAR_EMPTY
 		)
+
+
+func _show_continue_progress(saved: Dictionary) -> void:
+	var wait_text := get_node_or_null("Card/WaitText") as Label
+	if wait_text == null:
+		return
+	var filled := int(saved.get("letters_filled", 0))
+	var total := int(saved.get("letters_total", 0))
+	var letters := tr("LettersProgress") % [filled, total]
+	var seconds := maxi(int(saved.get("tiempo_partida", 0)), 0)
+	var hours := seconds / 3600
+	var minutes := (seconds % 3600) / 60
+	var rest := seconds % 60
+	var elapsed := "%d:%02d:%02d" % [hours, minutes, rest] if hours > 0 else "%d:%02d" % [minutes, rest]
+	var template := tr("TimeTaken")
+	var time_text := template % elapsed if "%s" in template else "%s: %s" % [tr("Time"), elapsed]
+	wait_text.text = "%s   ·   %s" % [letters, time_text]
 
 
 func setup(should_launch_game: bool, path: String = "") -> void:

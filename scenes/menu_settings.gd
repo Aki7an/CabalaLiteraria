@@ -1,6 +1,10 @@
 extends Control
 
+const CREDITS_SCENE := preload("res://scenes/MenuCredits.tscn")
+const CREDITS_BLINK_EVERY := 3.0
+
 @onready var button_español: Button = $Panel/LanguageCard/ButtonEspañol
+@onready var button_credits: Button = $Panel/Header/ButtonCredits
 @onready var button_euskera: Button = $Panel/LanguageCard/ButtonEuskera
 @onready var button_ingles: Button = $Panel/LanguageCard/ButtonIngles
 @onready var button_frances: Button = $Panel/LanguageCard/ButtonFrances
@@ -132,6 +136,7 @@ func _ready() -> void:
 	check_button_tutorial.button_pressed = PlayerPrefs.mostrar_tuto_antes_partida
 	check_button_reveal.button_pressed = not PlayerPrefs.skip_reveal_dialog
 	_update_language_selection()
+	_start_credits_blink()
 
 
 func _on_button_back_pressed() -> void:
@@ -143,6 +148,54 @@ func _on_button_back_pressed() -> void:
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
+
+
+func _on_button_credits_pressed() -> void:
+	_save_online_name(true)
+	SoundManager.play("ButtonClick")
+	if _is_overlay():
+		var credits := CREDITS_SCENE.instantiate()
+		if credits.has_method("present_as_overlay"):
+			credits.call("present_as_overlay")
+		get_parent().add_child(credits)
+		if credits is Control:
+			var overlay := credits as Control
+			overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+			overlay.z_index = 20
+		return
+	TransitionScreen.transition_to_black()
+	await TransitionScreen._on_animation_finished("fade_to_black", 1)
+	get_tree().change_scene_to_file("res://scenes/MenuCredits.tscn")
+
+
+func _start_credits_blink() -> void:
+	if button_credits == null:
+		return
+	await get_tree().process_frame
+	if not is_instance_valid(button_credits):
+		return
+	button_credits.pivot_offset = button_credits.size * 0.5
+	await get_tree().create_timer(0.7).timeout
+	while is_instance_valid(button_credits):
+		await _pulse_credits_button()
+		if not is_instance_valid(button_credits):
+			return
+		await get_tree().create_timer(CREDITS_BLINK_EVERY).timeout
+
+
+func _pulse_credits_button() -> void:
+	if not is_instance_valid(button_credits):
+		return
+	button_credits.pivot_offset = button_credits.size * 0.5
+	var blink := create_tween()
+	blink.tween_property(button_credits, "scale", Vector2(1.16, 1.16), 0.16).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	blink.parallel().tween_property(button_credits, "modulate", Color(1.12, 0.9, 0.45, 1), 0.16)
+	blink.tween_property(button_credits, "scale", Vector2.ONE, 0.22).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	blink.parallel().tween_property(button_credits, "modulate", Color.WHITE, 0.22)
+	blink.tween_property(button_credits, "scale", Vector2(1.08, 1.08), 0.12).set_trans(Tween.TRANS_SINE)
+	blink.tween_property(button_credits, "scale", Vector2.ONE, 0.16).set_trans(Tween.TRANS_SINE)
+	await blink.finished
 
 
 func _is_overlay() -> bool:
