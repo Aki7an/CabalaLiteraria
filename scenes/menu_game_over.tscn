@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scenes/menu_game_over.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
@@ -137,6 +137,33 @@ border_width_top = 13
 border_width_right = 6
 border_width_bottom = 6
 border_color = Color(0.64, 0.23, 0.015, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_feedback"]
+bg_color = Color(0.08, 0.62, 0.64, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.035, 0.36, 0.39, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.02, 0.22, 0.24, 0.28)
+shadow_size = 14
+shadow_offset = Vector2(0, 11)
+
+[sub_resource type="StyleBoxFlat" id="Style_feedback_pressed"]
+bg_color = Color(0.05, 0.5, 0.52, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.025, 0.31, 0.34, 1)
 corner_radius_top_left = 38
 corner_radius_top_right = 38
 corner_radius_bottom_right = 38
@@ -446,20 +473,39 @@ autowrap_mode = 3
 
 [node name="ButtonBack" type="Button" parent="MainCard"]
 layout_mode = 0
-offset_left = 238.0
+offset_left = 36.0
 offset_top = 2263.0
-offset_right = 908.0
+offset_right = 640.0
 offset_bottom = 2483.0
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 0.94, 1)
 theme_override_colors/font_shadow_color = Color(0.42, 0.17, 0.01, 0.52)
 theme_override_constants/shadow_offset_y = 5
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 66
+theme_override_font_sizes/font_size = 58
 theme_override_styles/normal = SubResource("Style_continue")
 theme_override_styles/hover = SubResource("Style_continue")
 theme_override_styles/pressed = SubResource("Style_continue_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
 text = "CONTINUAR"
 
+[node name="ButtonFeedback" type="Button" parent="MainCard"]
+layout_mode = 0
+offset_left = 664.0
+offset_top = 2263.0
+offset_right = 1110.0
+offset_bottom = 2483.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_colors/font_shadow_color = Color(0.02, 0.22, 0.24, 0.52)
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_feedback")
+theme_override_styles/hover = SubResource("Style_feedback")
+theme_override_styles/pressed = SubResource("Style_feedback_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "Valora Puzzle"
+
 [connection signal="pressed" from="MainCard/ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="MainCard/ButtonFeedback" to="." method="_on_button_feedback_pressed"]

@@ -18,6 +18,8 @@ var _dimmer: ColorRect
 var _halo: Control
 var _letter_label: Label
 var _running := false
+var _keyboard_panel: Control
+var _keyboard_z := 0
 
 
 class WhiteHalo extends Control:
@@ -34,8 +36,49 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	color = Color(0, 0, 0, 0)
 	z_index = 80
+	_raise_keyboard()
 	_build()
 	_run_sequence()
+
+
+func _exit_tree() -> void:
+	_restore_keyboard()
+
+
+func _raise_keyboard() -> void:
+	var nodes := get_tree().get_nodes_in_group("KeyboardPanel")
+	if nodes.is_empty():
+		return
+	_keyboard_panel = nodes[0] as Control
+	if _keyboard_panel == null:
+		return
+	_keyboard_z = _keyboard_panel.z_index
+	_keyboard_panel.z_index = 90
+
+
+func _restore_keyboard() -> void:
+	if is_instance_valid(_keyboard_panel):
+		_keyboard_panel.z_index = _keyboard_z
+	_keyboard_panel = null
+
+
+func _clip_above_keyboard() -> void:
+	if _keyboard_panel == null or not is_instance_valid(_keyboard_panel):
+		return
+	var top := _keyboard_panel.global_position.y
+	if top <= 1.0:
+		return
+	anchor_left = 0.0
+	anchor_top = 0.0
+	anchor_right = 1.0
+	anchor_bottom = 0.0
+	offset_left = 0.0
+	offset_top = 0.0
+	offset_right = 0.0
+	offset_bottom = top
+	_layout_letter_stack()
+	if _letter_label and _letter_label.text != "":
+		_layout_halo(_letter_label.text)
 
 
 func _build() -> void:
@@ -69,6 +112,7 @@ func _run_sequence() -> void:
 		return
 	_running = true
 	await get_tree().process_frame
+	_clip_above_keyboard()
 	await _reveal_initial_letters()
 	for assignment in _player_assignments():
 		if assignment.get("correct", false):
@@ -213,27 +257,59 @@ func _hide_center_letter() -> void:
 func _blink_cells(cells: Array[Celda]) -> void:
 	if cells.is_empty():
 		return
+	var keys := _keyboard_keys_for(cells)
 	for cell in cells:
 		if is_instance_valid(cell):
 			cell.modulate.a = 1.0
+	for key in keys:
+		if is_instance_valid(key):
+			key.modulate.a = 1.0
 	var tween := create_tween()
 	for _cycle in 2:
 		tween.tween_callback(func() -> void:
 			for cell in cells:
 				if is_instance_valid(cell):
 					cell.modulate.a = BLINK_DIM
+			for key in keys:
+				if is_instance_valid(key):
+					key.modulate.a = BLINK_DIM
 		)
 		tween.tween_interval(BLINK_STEP)
 		tween.tween_callback(func() -> void:
 			for cell in cells:
 				if is_instance_valid(cell):
 					cell.modulate.a = 1.0
+			for key in keys:
+				if is_instance_valid(key):
+					key.modulate.a = 1.0
 		)
 		tween.tween_interval(BLINK_STEP)
 	await tween.finished
 	for cell in cells:
 		if is_instance_valid(cell):
 			cell.modulate.a = 1.0
+	for key in keys:
+		if is_instance_valid(key):
+			key.modulate.a = 1.0
+
+
+func _keyboard_keys_for(cells: Array[Celda]) -> Array[Letra]:
+	var wanted := {}
+	for cell in cells:
+		if not is_instance_valid(cell):
+			continue
+		var raw := cell.letter_user if cell.letter_user != "" else cell.letra
+		var key := GameManager._hint_letter_key(raw)
+		if key != "":
+			wanted[key] = true
+	var keys: Array[Letra] = []
+	for node in get_tree().get_nodes_in_group("Letra"):
+		if not node is Letra:
+			continue
+		var keyboard_letter := node as Letra
+		if wanted.has(keyboard_letter.letra.to_upper()):
+			keys.append(keyboard_letter)
+	return keys
 
 
 func _cells_from(assignment: Dictionary) -> Array[Celda]:

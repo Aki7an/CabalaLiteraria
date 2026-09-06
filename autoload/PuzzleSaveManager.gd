@@ -78,7 +78,7 @@ func restore_current_puzzle() -> void:
 	request_autosave()
 
 
-## Debug only: leave puzzle 3067 with a single A empty so the win screen is one tap away.
+## Debug only: leave puzzle 3067 with letter A unassigned so one tap solves it.
 func _apply_debug_nearly_solved_3067() -> void:
 	if not OS.is_debug_build():
 		return
@@ -97,14 +97,14 @@ func _apply_debug_nearly_solved_3067() -> void:
 		if GameManager.is_excluded_character(cell.letra):
 			continue
 		var key := GameManager._hint_letter_key(cell.letra)
-		if key == leave and first_empty == null:
+		if key == leave:
 			cell.limpiar_letra_usuario()
-			first_empty = cell
+			if first_empty == null:
+				first_empty = cell
 			continue
 		cell.set_letter_user(key)
 		cell.mostrar_letra_jugador()
-		if key != leave:
-			assigned_letters[key] = true
+		assigned_letters[key] = true
 	for node in get_tree().get_nodes_in_group("Letra"):
 		if not node is Letra:
 			continue
@@ -145,7 +145,8 @@ func _reopen_debug_3067() -> void:
 		var total := int(meta.get("letters_total", 97))
 		if total <= 0:
 			total = 97
-		meta["letters_filled"] = maxi(total - 1, 0)
+		# Phrase 3067 has 10 playable A's; leave that letter for the player.
+		meta["letters_filled"] = maxi(total - 10, 0)
 		meta["letters_total"] = total
 		state["meta"] = meta
 	var resolution: Dictionary = state.get("resolution", {})

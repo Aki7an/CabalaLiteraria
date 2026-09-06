@@ -11,6 +11,7 @@ const LAYOUT_MODE_CONTAINER := 1
 @onready var grid: GridContainer = $GridContainer
 
 func _ready() -> void:
+	add_to_group("KeyboardPanel")
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 

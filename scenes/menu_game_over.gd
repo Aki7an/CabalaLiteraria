@@ -1,6 +1,7 @@
 extends ColorRect
 
 const SCENE_FEEDBACK := "res://scenes/MenuFeedback.tscn"
+const SCENE_MENU_MAIN := "res://scenes/MenuMain.tscn"
 const STAR_EMPTY := Color(0.62, 0.51, 0.34, 0.28)
 const GAP := 24.0
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
@@ -23,6 +24,7 @@ const INTRO_CONTINUE_AT := 5.0
 @onready var time_pill: Panel = $MainCard/StarsCard/TimePill
 @onready var info_card: Panel = $MainCard/StarsCard/InfoCard
 @onready var continue_button: Button = $MainCard/ButtonBack
+@onready var feedback_button: Button = $MainCard/ButtonFeedback
 @onready var description_label: RichTextLabel = $MainCard/StarsCard/InfoCard/Description
 @onready var time_text: Label = $MainCard/StarsCard/TimePill/TimeText
 @onready var stars: Array[TextureRect] = [
@@ -96,6 +98,8 @@ func _apply_locale() -> void:
 	if stars_title:
 		stars_title.text = tr("StarsEarned")
 	continue_button.text = tr("CONTINUE")
+	if feedback_button:
+		feedback_button.text = tr("RatePuzzle")
 
 
 func _escape_bbcode(text: String) -> String:
@@ -163,7 +167,18 @@ func _hide_drag_layer(host: Control, layer_name: String) -> void:
 
 func _layout_top_down() -> void:
 	stars_card.position.y = phrase_card.position.y + phrase_card.size.y + GAP
-	continue_button.position.y = main_card.size.y - continue_button.size.y - 36.0
+	var button_h := continue_button.size.y
+	var y := main_card.size.y - button_h - 36.0
+	var margin := 36.0
+	var gap := 20.0
+	var available := main_card.size.x - margin * 2.0
+	var continue_w := minf(400.0, available * 0.40)
+	var feedback_w := available - gap - continue_w
+	if feedback_button:
+		feedback_button.position = Vector2(margin, y)
+		feedback_button.size = Vector2(feedback_w, button_h)
+	continue_button.position = Vector2(margin + feedback_w + gap, y)
+	continue_button.size = Vector2(continue_w, button_h)
 
 
 func _install_body_scroll() -> void:
@@ -190,8 +205,8 @@ func _install_body_scroll() -> void:
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	scroll.add_child(body)
 
-	for node in [phrase_card, stars_card]:
-		var local := node.position
+	for node: Panel in [phrase_card, stars_card]:
+		var local: Vector2 = node.position
 		node.reparent(body)
 		node.position = Vector2(local.x, local.y - top)
 	body.custom_minimum_size = Vector2(
@@ -200,7 +215,7 @@ func _install_body_scroll() -> void:
 	)
 	main_card.add_child(scroll)
 	_body_scroll = scroll
-	for node in [banner, banner_left, banner_right, confetti_left, confetti_right, solved_label, continue_button]:
+	for node in [banner, banner_left, banner_right, confetti_left, confetti_right, solved_label, continue_button, feedback_button]:
 		if node:
 			node.z_index = 8
 
@@ -223,6 +238,8 @@ func _handle_body_drag_press(pressed: bool, position: Vector2) -> void:
 		if not _body_scroll.get_global_rect().has_point(position):
 			return
 		if continue_button.get_global_rect().has_point(position):
+			return
+		if feedback_button and feedback_button.get_global_rect().has_point(position):
 			return
 		_drag_held = true
 		_drag_active = false
@@ -278,9 +295,16 @@ func _play_continue_at(delay_s: float) -> void:
 		return
 	continue_button.disabled = false
 	continue_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	if feedback_button:
+		feedback_button.disabled = false
+		feedback_button.mouse_filter = Control.MOUSE_FILTER_STOP
 	var tween := create_tween()
+	tween.set_parallel(true)
 	tween.tween_property(continue_button, "modulate:a", 1.0, 0.36)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	if feedback_button:
+		tween.tween_property(feedback_button, "modulate:a", 1.0, 0.36)\
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
 func _hide_node(node: CanvasItem, alpha := 0.0) -> void:
@@ -319,6 +343,10 @@ func _prepare_intro_pose() -> void:
 	continue_button.modulate.a = 0.0
 	continue_button.disabled = true
 	continue_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if feedback_button:
+		feedback_button.modulate.a = 0.0
+		feedback_button.disabled = true
+		feedback_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	_stamp = _make_stamp()
 	phrase_card.add_child(_stamp)
@@ -520,6 +548,13 @@ func _animate_info_intro() -> void:
 
 
 func _on_button_back_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	TransitionScreen.transition_to_black()
+	await SignalManager.on_transition_finished
+	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
+
+
+func _on_button_feedback_pressed() -> void:
 	SoundManager.play("ButtonClick")
 	TransitionScreen.transition_to_black()
 	await SignalManager.on_transition_finished
