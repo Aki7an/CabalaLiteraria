@@ -16,15 +16,6 @@ const DRAG_THRESHOLD := 14.0
 @onready var comment_edit: TextEdit = $Card/Scroll/Rows/RowComment/Content/Comment
 @onready var button_omit: Button = $Card/Buttons/ButtonCancel
 @onready var button_send: Button = $Card/Buttons/ButtonSend
-@onready var hint1_row: Control = $Card/Scroll/Rows/RowHint1
-@onready var hint2_row: Control = $Card/Scroll/Rows/RowHint2
-@onready var hint3_row: Control = $Card/Scroll/Rows/RowHint3
-@onready var hint1_disabled: Label = $Card/Scroll/Rows/RowHint1/Content/Disabled
-@onready var hint2_disabled: Label = $Card/Scroll/Rows/RowHint2/Content/Disabled
-@onready var hint3_disabled: Label = $Card/Scroll/Rows/RowHint3/Content/Disabled
-@onready var comment_edit: TextEdit = $Card/Scroll/Rows/RowComment/Content/Comment
-@onready var button_omit: Button = $Card/Buttons/ButtonCancel
-@onready var button_send: Button = $Card/Buttons/ButtonSend
 
 @onready var estrellas1: FeedbackStarRow = $Card/Scroll/Rows/RowGlobal/Content/Stars
 @onready var estrellas2: FeedbackStarRow = $Card/Scroll/Rows/RowDifficulty/Content/Stars
