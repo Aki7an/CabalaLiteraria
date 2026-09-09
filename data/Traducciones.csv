@@ -2,10 +2,68 @@ Key,es,en,de,fr,eu,it,pt
 Play,Jugar,Play,Spielen,Jouer,Jolastu,Giocare,Jogar
 Settings,Ajustes,Settings,Einstellungen,Paramètres,Ezarpenak,Impostazioni,Configurações
 Shop,Tienda,Shop,Laden,Boutique,Denda,Negozio,Comprar
+DailyChallenge,Reto diario,Daily,Täglich,Défi du jour,Eguneko erronka,Sfida del giorno,Desafio diário
+Library,Biblioteca,Library,Bibliothek,Bibliothèque,Liburutegia,Biblioteca,Biblioteca
+LibrarySolvedSubtitle,Tu colección,Your collection,Deine Sammlung,Ta collection,Zure bilduma,La tua collezione,A tua coleção
+LibraryProgress,%d / %d descubiertos,%d / %d discovered,%d / %d entdeckt,%d / %d découverts,%d / %d aurkituta,%d / %d scoperti,%d / %d descobertos
 Leaderboard,Clasificación,Leaderboard,Bestenliste,Classement,Leaderboard,Classifica,Classificação
 Local,Local,Local,Lokal,Local,Lokala,Locale,Local
 Online,Online,Online,Online,En ligne,Linean,Online,Online
 Tutorial,Tutorial,Tutorial,Anleitung,Tutoriel,Tutoretza,Esercitazione,Tutorial
+HowToPlay,Cómo jugar,How to play,So spielt man,Comment jouer,Nola jokatu,Come si gioca,Como jogar
+Today,HOY,TODAY,HEUTE,"AUJOURD'HUI",GAUR,OGGI,HOJE
+AllCategories,Todas,All,Alle,Toutes,Guztiak,Tutte,Todas
+Sources,Fuentes,Sources,Quellen,Sources,Iturriak,Fonti,Fontes
+LibraryEmpty,Aún no has descubierto ningún puzle. Termina una partida para guardarla aquí.,You have not discovered any puzzles yet. Finish one to keep it here.,"Du hast noch kein Rätsel entdeckt. Beende eines, um es hier zu speichern.","Tu n'as encore découvert aucun puzzle. Termines-en un pour le garder ici.",Oraindik ez duzu puzzleik aurkitu. Amaitu bat hemen gordetzeko.,Non hai ancora scoperto nessun puzzle. Finiscine uno per salvarlo qui.,Ainda não descobriste nenhum puzzle. Termina um para o guardar aqui.
+LibraryEmptyCategory,No hay puzles descubiertos en esta categoría.,There are no discovered puzzles in this category.,In dieser Kategorie gibt es noch keine entdeckten Rätsel.,"Il n'y a pas de puzzles découverts dans cette catégorie.",Kategoria honetan ez dago puzzle aurkitorik.,Non ci sono puzzle scoperti in questa categoria.,Não há puzzles descobertos nesta categoria.
+LibrarySheet,Ficha del puzzle,Puzzle card,Rätselkarte,Fiche du puzzle,Puzzlearen fitxa,Scheda del puzzle,Ficha do puzzle
+LibraryPuzzleSolved,Puzle resuelto,Puzzle solved,Rätsel gelöst,Puzzle résolu,Puzzlea ebatzita,Puzzle risolto,Puzzle resolvido
+LibrarySolvedOn,Resuelto el %s,Solved on %s,Gelöst am %s,Résolu le %s,%s ebatzita,Risolto il %s,Resolvido em %s
+LibraryBaseGame,Juego base,Base game,Grundspiel,Jeu de base,Oinarrizko jokoa,Gioco base,Jogo base
+LibraryInfo,Información,Information,Informationen,Informations,Informazioa,Informazioni,Informação
+AddToFavorites,Añadir a favoritos,Add to favorites,Zu Favoriten,Ajouter aux favoris,Gehitu gogokoetara,Aggiungi ai preferiti,Adicionar aos favoritos
+InFavorites,En favoritos,In favorites,In Favoriten,Dans les favoris,Gogokoetan,Nei preferiti,Nos favoritos
+PlayAgain,Volver a jugar,Play again,Nochmal spielen,Rejouer,Berriro jokatu,Gioca di nuovo,Jogar outra vez
+DailyPlay,JUGAR RETO,PLAY CHALLENGE,CHALLENGE SPIELEN,JOUER LE DÉFI,ERRONKA JOLASTU,GIOCA SFIDA,JOGAR DESAFIO
+DailyCompleted,✓ Reto completado,✓ Challenge completed,✓ Herausforderung geschafft,✓ Défi terminé,✓ Erronka ebatzita,✓ Sfida completata,✓ Desafio concluído
+DailyViewSheet,Ver ficha,View card,Karte ansehen,Voir la fiche,Ikusi fitxa,Vedi scheda,Ver ficha
+DailyLockedBody,El Reto Diario forma parte de la versión completa.,The Daily Challenge is part of the full version.,Die tägliche Herausforderung gehört zur Vollversion.,Le défi du jour fait partie de la version complète.,Eguneko erronka bertsio osoaren parte da.,La sfida del giorno fa parte della versione completa.,O desafio diário faz parte da versão completa.
+DailyUnlock,Desbloquear,Unlock,Freischalten,Débloquer,Desblokeatu,Sblocca,Desbloquear
+DailyCategory,Categoría: %s,Category: %s,Kategorie: %s,Catégorie : %s,Kategoria: %s,Categoria: %s,Categoria: %s
+DailyType,Tipo: %s,Type: %s,Typ: %s,Type : %s,Mota: %s,Tipo: %s,Tipo: %s
+DailyDifficulty,Dificultad: %s,Difficulty: %s,Schwierigkeit: %s,Difficulté : %s,Zailtasuna: %s,Difficoltà: %s,Dificuldade: %s
+DailyCompletedShort,Completado,Completed,Geschafft,Terminé,Ebatzita,Completata,Concluído
+DailyBadge,Reto diario,Daily,Täglich,Défi,Erronka,Sfida,Diário
+DailyCongrats,¡Reto diario!,Daily challenge!,Tägliche Herausforderung!,Défi du jour !,Eguneko erronka!,Sfida del giorno!,Desafio diário!
+DailyTagline,El puzle especial de hoy,Today's special puzzle,Das besondere Rätsel von heute,Le puzzle spécial du jour,Gaurko puzzle berezia,Il puzzle speciale di oggi,O puzzle especial de hoje
+DailyAvailable,Disponible hoy,Available today,Heute verfügbar,Disponible aujourd'hui,Gaur eskuragarri,Disponibile oggi,Disponível hoje
+DailySameForAll,El mismo reto para todos los jugadores,The same challenge for every player,Dieselbe Herausforderung für alle Spieler,Le même défi pour tous les joueurs,Erronka bera jokalari guztientzat,La stessa sfida per tutti i giocatori,O mesmo desafio para todos os jogadores
+DailyHowTitle,Cómo funciona,How it works,So funktioniert's,Comment ça marche,Nola dabil,Come funziona,Como funciona
+DailyHow1,Un puzle nuevo cada día,A new puzzle every day,Jeden Tag ein neues Rätsel,Un nouveau puzzle chaque jour,Puzzle berri bat egunero,Un nuovo puzzle ogni giorno,Um puzzle novo todos os dias
+DailyHow2,"Si lo completas, pasa a tu Biblioteca","If you complete it, it goes to your Library","Wenn du es löst, landet es in deiner Bibliothek","Si tu le termines, il rejoint ta bibliothèque","Osatu ondoren, zure Liburutegira joaten da","Se lo completi, va nella tua Biblioteca","Se o completares, passa à tua Biblioteca"
+DailyHow3,Mañana habrá un reto distinto,Tomorrow there will be a different challenge,Morgen gibt es eine andere Herausforderung,"Demain, il y aura un autre défi",Bihar erronka desberdin bat egongo da,Domani ci sarà una sfida diversa,Amanhã haverá um desafio diferente
+DailyBackToMenu,Volver al menú,Back to menu,Zurück zum Menü,Retour au menu,Itzuli menura,Torna al menu,Voltar ao menu
+DailyEstimated,Tiempo estimado: %s,Estimated time: %s,Geschätzte Zeit: %s,Temps estimé : %s,Gutxi gorabeherako denbora: %s,Tempo stimato: %s,Tempo estimado: %s
+Medium,Media,Medium,Mittel,Moyen,Ertaina,Media,Média
+DailyTeaserCuriosities,Descubre una curiosidad y pon a prueba tu intuición.,Discover a curiosity and test your intuition.,Entdecke eine Kuriosität und prüfe deine Intuition.,Découvre une curiosité et teste ton intuition.,Aurkitu jakin-min bat eta frogatu zure intuizioa.,Scopri una curiosità e metti alla prova il tuo intuito.,Descobre uma curiosidade e põe à prova a tua intuição.
+DailyTeaserQuotes,Descifra una cita célebre.,Decode a famous quote.,Entschlüssele ein berühmtes Zitat.,Déchiffre une citation célèbre.,Deszifratu aipu ospetsu bat.,Decifra una citazione celebre.,Decifra uma citação célebre.
+DailyTeaserEphemerides,Resuelve una efeméride.,Solve an anniversary fact.,Löse eine historische Begebenheit.,Résous une éphéméride.,Ebatzi efemeride bat.,Risolvi un'efemeride.,Resolve uma efeméride.
+DailyTeaserFragments,Descifra un fragmento literario.,Decode a literary fragment.,Entschlüssele ein literarisches Fragment.,Déchiffre un fragment littéraire.,Deszifratu zati literario bat.,Decifra un frammento letterario.,Decifra um fragmento literário.
+Month1,enero,January,Januar,janvier,urtarrila,gennaio,janeiro
+Month2,febrero,February,Februar,février,otsaila,febbraio,fevereiro
+Month3,marzo,March,März,mars,martxoa,marzo,março
+Month4,abril,April,April,avril,apirila,aprile,abril
+Month5,mayo,May,Mai,mai,maiatza,maggio,maio
+Month6,junio,June,Juni,juin,ekaina,giugno,junho
+Month7,julio,July,Juli,juillet,uztaila,luglio,julho
+Month8,agosto,August,August,août,abuztua,agosto,agosto
+Month9,septiembre,September,September,septembre,iraila,settembre,setembro
+Month10,octubre,October,Oktober,octobre,urria,ottobre,outubro
+Month11,noviembre,November,November,novembre,azaroa,novembre,novembro
+Month12,diciembre,December,Dezember,décembre,abendua,dicembre,dezembro
+LibraryFavorites,Favoritos,Favorites,Favoriten,Favoris,Gogokoak,Preferiti,Favoritos
+LibraryFavoritesSubtitle,Tus puzzles favoritos,Your favorite puzzles,Deine Lieblingsrätsel,Tes puzzles favoris,Puzzle gogokoenak,I tuoi puzzle preferiti,Os teus puzzles favoritos
+LibraryNoFavorites,Aún no tienes favoritos. Marca un puzle con el corazón.,You have no favorites yet. Tap the heart on a puzzle to save it.,Du hast noch keine Favoriten. Markiere ein Rätsel mit dem Herz.,Tu n'as pas encore de favoris. Marque un puzzle avec le cœur.,Oraindik ez duzu gogokorik. Markatu puzzle bat bihotzarekin.,Non hai ancora preferiti. Segna un puzzle con il cuore.,Ainda não tens favoritos. Marca um puzzle com o coração.
 LastGame,Última partida,Last game,Letztes Spiel,Dernière partie,Azken partida,Ultima partita,Última partida
 Tagline,Descifra la frase,Decode the phrase,Entschlüssele den Satz,Déchiffre la phrase,Deszifratu esaldia,Decifra la frase,Decifre a frase
 ShowcaseWord,CÓDIGO,CODE,CODE,CODE,KODEA,CODICE,CÓDIGO

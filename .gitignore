@@ -27,13 +27,11 @@ export_credentials.cfg
 /cabalaliteraria/
 /cifraletra/
 
-# Signing keys
-/keystores/
+# Secrets
 /tools/playfab_secret.txt
+/keystores/
 *.jks
 *.keystore
-*.p12
-upload_certificate.pem
 
 # Editor settings
 .editor_settings-*

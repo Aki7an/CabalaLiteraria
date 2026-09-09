@@ -20,13 +20,13 @@ handlers.submitPhraseFeedback = function (args, context) {
 
   const fb = {
     phrase_id: phraseId,
-    rating_global:   clampInt(p.rating_global,   0, 5),
-    rating_diff:     clampInt(p.rating_difficulty, 0, 5),
-    rating_interest: clampInt(p.rating_interest, 0, 5),
-    rating_duration: String(p.rating_duration || "ok"), // "short"|"ok"|"long"
-    rating_hint1:    clampInt(p.rating_hint1, 0, 5),
-    rating_hint2:    clampInt(p.rating_hint2, 0, 5),
-    rating_hint3:    clampInt(p.rating_hint3, 0, 5),
+    rating_global:   clampInt(p.rating_global,   0, 10),
+    rating_diff:     clampInt(p.rating_difficulty, 0, 10),
+    rating_interest: clampInt(p.rating_interest, 0, 10),
+    rating_duration: clampInt(p.rating_duration, 0, 10),
+    rating_hint1:    clampInt(p.rating_hint1, 0, 10),
+    rating_hint2:    clampInt(p.rating_hint2, 0, 10),
+    rating_hint3:    clampInt(p.rating_hint3, 0, 10),
     comment:         String(p.comment || "").substring(0, MAX_COMMENT),
     // extra contexto útil:
     client_ver: String(p.client_ver || ""),

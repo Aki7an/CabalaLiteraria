@@ -500,6 +500,7 @@ func _on_level_pressed(item: Dictionary, allow_completed := false) -> void:
 		_show_completed_lock_dialog()
 		return
 	SoundManager.play("ButtonClick")
+	GameManager.session_source = GameManager.SOURCE_NONE
 	GameManager.allow_completed_replay = allow_completed and _is_completed(index_number)
 	if GameManager.allow_completed_replay:
 		PlayerPrefs.mark_completed_replay_today()

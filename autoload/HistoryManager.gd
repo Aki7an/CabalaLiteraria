@@ -163,12 +163,15 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 		"revelaciones_correctas": int(GameManager.reveal_success_count),
 		"vidas_perdidas": _calcula_vidas_perdidas(),
 		"completed_unix": int(Time.get_unix_time_from_system()),
+		"source": str(GameManager.session_source),
 	}
 	_historial.append(entry)
 	_save_history(_historial)
 	_recompute_stats()
 	if resultado:
 		PuzzleSaveManager.mark_completed(int(GameManager.id_frase))
+		if GameManager.session_source == GameManager.SOURCE_DAILY:
+			PlayerPrefs.mark_daily_completed(int(GameManager.id_frase), int(GameManager.puzzle_stars))
 
 func _calcula_vidas_perdidas() -> int:
 	if GameManager.dificultad_actual == 1:

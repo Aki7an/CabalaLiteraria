@@ -33,6 +33,10 @@ var online_name_chosen: bool = false
 const PLAYER_NAME_MAX_LENGTH := 10
 const GUEST_NAME_PREFIX := "ANON"
 var allow_completed_replay := false
+const SOURCE_NONE := ""
+const SOURCE_DAILY := "daily"
+var session_source: String = SOURCE_NONE
+var pending_library_puzzle_id: int = -1
 @export var score: int
 @export var score_init: int = 30000
 
@@ -397,6 +401,66 @@ func level_game_mode(item: Dictionary) -> String:
 	if raw in ["quick", "rapido", "fast"]:
 		return MODE_QUICK
 	return MODE_CRYPTOGRAM if int(item.get("difficulty", 1)) >= 3 else MODE_QUICK
+
+
+func has_full_game() -> bool:
+	return true
+
+
+func daily_date_key() -> String:
+	var date := Time.get_datetime_dict_from_unix_time(int(Time.get_unix_time_from_system()))
+	return "%04d-%02d-%02d" % [int(date.year), int(date.month), int(date.day)]
+
+
+func format_long_date(date_key: String = "") -> String:
+	var key := date_key if date_key != "" else daily_date_key()
+	var parts := key.split("-")
+	if parts.size() < 3:
+		return key
+	var year := int(parts[0])
+	var month := clampi(int(parts[1]), 1, 12)
+	var day := int(parts[2])
+	var month_name := tr("Month%d" % month)
+	if locale_code() == "en":
+		return "%s %d, %d" % [month_name, day, year]
+	return "%d de %s de %d" % [day, month_name, year]
+
+
+func todays_daily_item() -> Dictionary:
+	if frases_db.is_empty():
+		cargar_frases_desde_json()
+	var date_key := daily_date_key()
+	var stored_id := PlayerPrefs.daily_puzzle_id_for(date_key)
+	if stored_id >= 0:
+		var stored := get_phrase_item(stored_id)
+		if not stored.is_empty():
+			return stored
+	var item := _pick_daily_item(date_key)
+	if not item.is_empty():
+		PlayerPrefs.lock_daily_puzzle(date_key, int(item.get("index", -1)))
+	return item
+
+
+func _pick_daily_item(date_key: String) -> Dictionary:
+	var pool: Array = []
+	for item in frases_db:
+		if item is Dictionary:
+			pool.append(item)
+	if pool.is_empty():
+		return {}
+	pool.sort_custom(func(a, b): return int(a.get("index", 0)) < int(b.get("index", 0)))
+	var seed := "%s|%s" % [date_key, locale_code()]
+	var hashed := 2166136261
+	for i in seed.length():
+		hashed = ((hashed ^ seed.unicode_at(i)) * 16777619) & 0x7fffffff
+	return pool[hashed % pool.size()]
+
+
+func get_phrase_item(puzzle_id: int) -> Dictionary:
+	for item in frases_db:
+		if int(item.get("index", -1)) == puzzle_id:
+			return item
+	return {}
 
 
 func find_level_image_path(image_number: int) -> String:
@@ -1373,7 +1437,10 @@ func cargar_frases_desde_json() -> void:
 		#d.letters_total     = int(dict.get("letters_total", 0))
 		#d.letters_discover  = int(dict.get("letters_discover", 0))
 		#d.description_init  = String(dict.get("description", ""))
+		d.description_init  = String(dict.get("description_init", ""))
 		d.description_end   = String(dict.get("description_end", ""))
+		d.source            = String(dict.get("source", ""))
+		d.pack              = String(dict.get("pack", dict.get("collection", "")))
 		d.category          = normalize_category(String(dict.get("category", "")))
 		d.language          = String(dict.get("language", loc)).to_lower()
 		d.difficulty        = int(dict.get("difficulty", 1))

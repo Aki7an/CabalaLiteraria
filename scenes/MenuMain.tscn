@@ -12,17 +12,16 @@
 [ext_resource type="Script" uid="uid://bt4vf7weivebq" path="res://scenes/AdjustSize.gd" id="11_11y0k"]
 [ext_resource type="Texture2D" uid="uid://7culudbdg6aa" path="res://images/Leaderboard2Shadow.png" id="15_1f17j"]
 [ext_resource type="Texture2D" uid="uid://di3qlfff4uys8" path="res://images/TutorialShadow.png" id="18_8myay"]
-[ext_resource type="Script" uid="uid://brd14tiskdrxk" path="res://scenes/tips_box.gd" id="20_1hsi3"]
 [ext_resource type="FontFile" uid="uid://1oc1fewipk23" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="21_title"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="22_btnfx"]
-[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="23_mont"]
-[ext_resource type="Texture2D" uid="uid://b0ave6ecxfho3" path="res://images/Bombilla_1.png" id="24_bulb"]
-[ext_resource type="FontFile" uid="uid://ckcy86bkgbt4g" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="25_tip_font"]
 [ext_resource type="Script" uid="uid://tjdclh16sy1s" path="res://scenes/tapered_line.gd" id="26_taper"]
 [ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="27_star"]
 [ext_resource type="Texture2D" uid="uid://hqwatbm1ab1y" path="res://images/ui_icon_music_note.svg" id="28_music"]
 [ext_resource type="Texture2D" uid="uid://dm7gsouiq18gi" path="res://images/ui_icon_speaker.svg" id="29_fx"]
 [ext_resource type="Texture2D" uid="uid://dvtuv0l5fovjd" path="res://images/ui_icon_mute_slash.svg" id="30_slash"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_shop.svg" id="31_shop"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_daily.svg" id="32_daily"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_library.svg" id="33_library"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.960784, 0.913725, 0.854902, 1)
@@ -239,81 +238,6 @@ anti_aliasing_size = 0.5
 [sub_resource type="FontVariation" id="FontVariation_play"]
 base_font = ExtResource("10_87486")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip"]
-content_margin_left = 22.0
-content_margin_top = 16.0
-content_margin_right = 22.0
-content_margin_bottom = 16.0
-bg_color = Color(0.996078, 0.972549, 0.92549, 0.98)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.760784, 0.603922, 0.439216, 1)
-corner_radius_top_left = 26
-corner_radius_top_right = 26
-corner_radius_bottom_right = 26
-corner_radius_bottom_left = 26
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
-shadow_size = 14
-shadow_offset = Vector2(0, 10)
-anti_aliasing_size = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip_inset"]
-bg_color = Color(1, 1, 1, 0)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.705882, 0.521569, 0.345098, 0.5)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-anti_aliasing_size = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip_pause"]
-bg_color = Color(1, 1, 1, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 3
-border_color = Color(0.705882, 0.376471, 0.0705882, 1)
-corner_radius_top_left = 11
-corner_radius_top_right = 11
-corner_radius_bottom_right = 11
-corner_radius_bottom_left = 11
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.2)
-shadow_size = 3
-shadow_offset = Vector2(0, 2)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip_pause_pressed"]
-bg_color = Color(0.364706, 0.25098, 0.215686, 0.1)
-border_width_left = 2
-border_width_top = 3
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.580392, 0.290196, 0.0470588, 1)
-corner_radius_top_left = 11
-corner_radius_top_right = 11
-corner_radius_bottom_right = 11
-corner_radius_bottom_left = 11
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
-bg_color = Color(0.364706, 0.25098, 0.215686, 0.14)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
-bg_color = Color(0.94902, 0.54902, 0.0862745, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_blue"]
 bg_color = Color(0.509804, 0.772549, 0.862745, 1)
 border_width_left = 5
@@ -441,6 +365,120 @@ Button/styles/focus = SubResource("StyleBoxFlat_btn_mint")
 Button/styles/hover = SubResource("StyleBoxFlat_btn_mint")
 Button/styles/normal = SubResource("StyleBoxFlat_btn_mint")
 Button/styles/pressed = SubResource("StyleBoxFlat_btn_mint_pressed")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_gold"]
+bg_color = Color(0.831373, 0.67451, 0.372549, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 12
+border_color = Color(0.65098, 0.494118, 0.219608, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_gold_pressed"]
+bg_color = Color(0.756863, 0.6, 0.313726, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 6
+border_color = Color(0.556863, 0.411765, 0.172549, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
+shadow_size = 5
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="Theme" id="Theme_btn_gold"]
+Button/styles/disabled = SubResource("StyleBoxFlat_btn_gold")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_gold")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_gold")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_gold")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_gold_pressed")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_teal"]
+bg_color = Color(0.415686, 0.701961, 0.701961, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 12
+border_color = Color(0.270588, 0.52549, 0.52549, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_teal_pressed"]
+bg_color = Color(0.345098, 0.619608, 0.619608, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 6
+border_color = Color(0.219608, 0.439216, 0.439216, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
+shadow_size = 5
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="Theme" id="Theme_btn_teal"]
+Button/styles/disabled = SubResource("StyleBoxFlat_btn_teal")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_teal")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_teal")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_teal")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_teal_pressed")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_sand"]
+bg_color = Color(0.72549, 0.615686, 0.505882, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 12
+border_color = Color(0.541176, 0.435294, 0.337255, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_sand_pressed"]
+bg_color = Color(0.647059, 0.541176, 0.439216, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 6
+border_color = Color(0.454902, 0.360784, 0.27451, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
+shadow_size = 5
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="Theme" id="Theme_btn_sand"]
+Button/styles/disabled = SubResource("StyleBoxFlat_btn_sand")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_sand")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_sand")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_sand")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_sand_pressed")
 
 [node name="MenuMain" type="Control" unique_id=1741371593]
 layout_mode = 3
@@ -1287,199 +1325,261 @@ anchor_bottom = 0.605
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 1
 
-[node name="TipsBox" type="Panel" parent="Panel" unique_id=1780924533]
+[node name="Shortcuts" type="HBoxContainer" parent="Panel" unique_id=1888001001]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.14
-anchor_top = 0.625
-anchor_right = 0.86
-anchor_bottom = 0.755
+anchor_left = 0.06
+anchor_top = 0.605
+anchor_right = 0.94
+anchor_bottom = 0.72
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_tip")
-script = ExtResource("20_1hsi3")
+theme_override_constants/separation = 28
 
-[node name="Inset" type="Panel" parent="Panel/TipsBox" unique_id=823867733]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_tip_inset")
-
-[node name="Content" type="VBoxContainer" parent="Panel/TipsBox" unique_id=1293669384]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 22.0
-offset_right = -22.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+[node name="ColShop" type="VBoxContainer" parent="Panel/Shortcuts" unique_id=1888001002]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="SpacerTop" type="Control" parent="Panel/TipsBox/Content" unique_id=1418852292]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TitleRow" type="HBoxContainer" parent="Panel/TipsBox/Content" unique_id=936111531]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 6
-alignment = 1
-
-[node name="LineL" type="Control" parent="Panel/TipsBox/Content/TitleRow" unique_id=1897249387]
-custom_minimum_size = Vector2(64, 14)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-script = ExtResource("26_taper")
-line_color = Color(0.658824, 0.454902, 0.235294, 1)
-
-[node name="DotL" type="Panel" parent="Panel/TipsBox/Content/TitleRow" unique_id=1904339012]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
-
-[node name="TipTitle" type="Label" parent="Panel/TipsBox/Content/TitleRow" unique_id=898781458]
+[node name="ButtonShop" type="Button" parent="Panel/Shortcuts/ColShop" unique_id=1888001003]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
-theme_override_fonts/font = ExtResource("21_title")
-theme_override_font_sizes/font_size = 30
-text = "CONSEJO"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="DotR" type="Panel" parent="Panel/TipsBox/Content/TitleRow" unique_id=499348634]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
-
-[node name="LineR" type="Control" parent="Panel/TipsBox/Content/TitleRow" unique_id=1046000871]
-custom_minimum_size = Vector2(64, 14)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-script = ExtResource("26_taper")
-flip_horizontal = true
-line_color = Color(0.658824, 0.454902, 0.235294, 1)
-
-[node name="SpacerAfterTitle" type="Control" parent="Panel/TipsBox/Content" unique_id=1914955916]
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TipRow" type="HBoxContainer" parent="Panel/TipsBox/Content" unique_id=1216188759]
-layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
-mouse_filter = 2
-theme_override_constants/separation = 0
+focus_mode = 0
+theme = SubResource("Theme_btn_salmon")
+script = ExtResource("22_btnfx")
 
-[node name="Bulb" type="TextureRect" parent="Panel/TipsBox/Content/TipRow" unique_id=1933859135]
-custom_minimum_size = Vector2(120, 120)
-layout_mode = 2
-size_flags_vertical = 0
+[node name="Inset" type="Panel" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1888001004]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = -7.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("24_bulb")
+theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
+
+[node name="IconShadow" type="TextureRect" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1888001005]
+modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.1
+anchor_right = 0.83
+anchor_bottom = 0.62
+offset_left = 5.0
+offset_top = 6.0
+offset_right = 5.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("31_shop")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="SpacerAfterBulb" type="Control" parent="Panel/TipsBox/Content/TipRow" unique_id=1717272811]
-custom_minimum_size = Vector2(18, 0)
-layout_mode = 2
+[node name="Icon" type="TextureRect" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1888001006]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.1
+anchor_right = 0.83
+anchor_bottom = 0.62
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
+texture = ExtResource("31_shop")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="TipCol" type="VBoxContainer" parent="Panel/TipsBox/Content/TipRow" unique_id=1100373877]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-theme_override_constants/separation = 10
-
-[node name="TipText" type="RichTextLabel" parent="Panel/TipsBox/Content/TipRow/TipCol" unique_id=2057266084]
-unique_name_in_owner = true
-auto_translate_mode = 2
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-theme = ExtResource("23_mont")
-theme_override_colors/default_color = Color(0.329412, 0.235294, 0.196078, 1)
-theme_override_fonts/normal_font = ExtResource("25_tip_font")
-theme_override_font_sizes/normal_font_size = 32
-text = "TipShort"
-scroll_active = false
+[node name="Label" type="Label" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1888001007]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.67
+anchor_right = 0.96
+anchor_bottom = 0.93
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 38
+text = "Tienda"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
-[node name="Dots" type="HBoxContainer" parent="Panel/TipsBox/Content/TipRow/TipCol" unique_id=432438741]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 32)
+[node name="ColDaily" type="VBoxContainer" parent="Panel/Shortcuts" unique_id=1888001008]
 layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 12
-alignment = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
 
-[node name="PausePlay" type="Button" parent="Panel/TipsBox/Content/TipRow/TipCol/Dots" unique_id=655849331]
+[node name="ButtonDaily" type="Button" parent="Panel/Shortcuts/ColDaily" unique_id=1888001009]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(32, 28)
 layout_mode = 2
-tooltip_text = "Pausar consejos"
+size_flags_horizontal = 3
+size_flags_vertical = 3
 focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.42)
-theme_override_colors/font_pressed_color = Color(0.364706, 0.25098, 0.215686, 0.72)
-theme_override_colors/font_hover_color = Color(0.364706, 0.25098, 0.215686, 0.65)
-theme_override_fonts/font = ExtResource("21_title")
-theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_tip_pause")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_tip_pause_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tip_pause")
-theme_override_styles/focus = SubResource("StyleBoxFlat_tip_pause")
-text = "Ⅱ"
+theme = SubResource("Theme_btn_gold")
+script = ExtResource("22_btnfx")
 
-[node name="Progress" type="ProgressBar" parent="Panel/TipsBox/Content/TipRow/TipCol" unique_id=1369182899]
+[node name="Inset" type="Panel" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=1888001010]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = -7.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
+
+[node name="IconShadow" type="TextureRect" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=1888001011]
+modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.1
+anchor_right = 0.83
+anchor_bottom = 0.62
+offset_left = 5.0
+offset_top = 6.0
+offset_right = 5.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("32_daily")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Icon" type="TextureRect" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=1888001012]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.1
+anchor_right = 0.83
+anchor_bottom = 0.62
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("32_daily")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=1888001013]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.67
+anchor_right = 0.96
+anchor_bottom = 0.93
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 38
+text = "Reto diario"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ColLibrary" type="VBoxContainer" parent="Panel/Shortcuts" unique_id=1888001014]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="ButtonLibrary" type="Button" parent="Panel/Shortcuts/ColLibrary" unique_id=1888001015]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_progress_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
-show_percentage = false
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 0
+theme = SubResource("Theme_btn_mint")
+script = ExtResource("22_btnfx")
 
-[node name="SpacerRight" type="Control" parent="Panel/TipsBox/Content/TipRow" unique_id=1417714517]
-custom_minimum_size = Vector2(18, 0)
-layout_mode = 2
+[node name="Inset" type="Panel" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1888001016]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = -7.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 
-[node name="SpacerBottom" type="Control" parent="Panel/TipsBox/Content" unique_id=1998292624]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
+[node name="IconShadow" type="TextureRect" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1888001017]
+modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.1
+anchor_right = 0.83
+anchor_bottom = 0.62
+offset_left = 5.0
+offset_top = 6.0
+offset_right = 5.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
+texture = ExtResource("33_library")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Timer" type="Timer" parent="Panel/TipsBox" unique_id=1217258070]
-unique_name_in_owner = true
-one_shot = true
+[node name="Icon" type="TextureRect" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1888001018]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.1
+anchor_right = 0.83
+anchor_bottom = 0.62
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("33_library")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1888001019]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.67
+anchor_right = 0.96
+anchor_bottom = 0.93
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 38
+text = "Biblioteca"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Actions" type="HBoxContainer" parent="Panel" unique_id=996565079]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.06
-anchor_top = 0.79
+anchor_top = 0.74
 anchor_right = 0.94
-anchor_bottom = 0.95
+anchor_bottom = 0.855
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 28
@@ -1743,6 +1843,9 @@ vertical_alignment = 1
 [connection signal="pressed" from="Panel/ButtonMusic" to="." method="_on_button_music_pressed"]
 [connection signal="pressed" from="Panel/ButtonSettings" to="." method="_on_button_settings_pressed"]
 [connection signal="pressed" from="Panel/PlayWrap/ButtonPlay" to="." method="_on_button_play_pressed"]
+[connection signal="pressed" from="Panel/Shortcuts/ColShop/ButtonShop" to="." method="_on_button_shop_pressed"]
+[connection signal="pressed" from="Panel/Shortcuts/ColDaily/ButtonDaily" to="." method="_on_button_daily_pressed"]
+[connection signal="pressed" from="Panel/Shortcuts/ColLibrary/ButtonLibrary" to="." method="_on_button_library_pressed"]
 [connection signal="pressed" from="Panel/Actions/ColRanking/ButtonRanking" to="." method="_on_button_ranking_pressed"]
 [connection signal="pressed" from="Panel/Actions/ColStats/ButtonStats" to="." method="_on_button_stats_pressed"]
 [connection signal="pressed" from="Panel/Actions/ColTutorial/ButtonTutorial" to="." method="_on_button_tutorial_pressed"]

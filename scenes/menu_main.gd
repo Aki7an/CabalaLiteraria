@@ -4,6 +4,9 @@ extends Control
 @onready var button_music: Button = %ButtonMusic
 @onready var button_fx: Button = %ButtonFx
 @onready var button_play: Button = %ButtonPlay
+@onready var button_shop: Button = %ButtonShop
+@onready var button_daily: Button = %ButtonDaily
+@onready var button_library: Button = %ButtonLibrary
 @onready var button_ranking: Button = %ButtonRanking
 @onready var button_stats: Button = %ButtonStats
 @onready var button_tutorial: Button = %ButtonTutorial
@@ -24,10 +27,13 @@ func _ready() -> void:
 	_refresh_audio_buttons()
 	if not SignalManager.audio_prefs_changed.is_connected(_refresh_audio_buttons):
 		SignalManager.audio_prefs_changed.connect(_refresh_audio_buttons)
+	GameManager.session_source = GameManager.SOURCE_NONE
+	_layout_home_buttons()
 	_apply_labels()
 	_apply_title_tiles()
 	_update_version_label()
 	_refresh_star_totals()
+	_refresh_daily_button()
 	if not HistoryManager.stats_updated.is_connected(_refresh_star_totals):
 		HistoryManager.stats_updated.connect(_refresh_star_totals)
 	SignalManager.app_version_changed.connect(_on_app_version_changed)
@@ -47,6 +53,15 @@ func _apply_labels() -> void:
 	var tagline := get_node_or_null("Panel/TaglineRow/Tagline") as Label
 	if tagline:
 		tagline.text = tr("Tagline")
+	var shop := get_node_or_null("Panel/Shortcuts/ColShop/ButtonShop/Label") as Label
+	if shop:
+		shop.text = tr("Shop")
+	var daily := get_node_or_null("Panel/Shortcuts/ColDaily/ButtonDaily/Label") as Label
+	if daily:
+		daily.text = tr("DailyChallenge")
+	var library := get_node_or_null("Panel/Shortcuts/ColLibrary/ButtonLibrary/Label") as Label
+	if library:
+		library.text = tr("Library")
 	var ranking := get_node_or_null("Panel/Actions/ColRanking/ButtonRanking/Label") as Label
 	if ranking:
 		ranking.text = tr("Leaderboard")
@@ -55,7 +70,7 @@ func _apply_labels() -> void:
 		stats.text = tr("Stats")
 	var tutorial := get_node_or_null("Panel/Actions/ColTutorial/ButtonTutorial/Label") as Label
 	if tutorial:
-		tutorial.text = tr("Tutorial")
+		tutorial.text = tr("HowToPlay")
 	var play := get_node_or_null("Panel/PlayWrap/ButtonPlay/Play") as Label
 	if play:
 		play.text = tr("PLAY")
@@ -277,6 +292,136 @@ func _on_button_settings_pressed() -> void:
 
 func _on_button_play_pressed() -> void:
 	_go_to("res://scenes/MenuSelectCategory.tscn", button_play)
+
+func _on_button_shop_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	if button_shop:
+		GameManager.button_blink(button_shop)
+
+
+func _on_button_daily_pressed() -> void:
+	_go_to("res://scenes/MenuDaily.tscn", button_daily)
+
+
+func _layout_home_buttons() -> void:
+	var shortcuts := get_node_or_null("Panel/Shortcuts") as HBoxContainer
+	if shortcuts:
+		var daily_col := shortcuts.get_node_or_null("ColDaily")
+		var library_col := shortcuts.get_node_or_null("ColLibrary")
+		var shop_col := shortcuts.get_node_or_null("ColShop")
+		if daily_col:
+			shortcuts.move_child(daily_col, 0)
+		if library_col:
+			shortcuts.move_child(library_col, 1)
+		if shop_col:
+			shortcuts.move_child(shop_col, 2)
+	var actions := get_node_or_null("Panel/Actions") as HBoxContainer
+	if actions:
+		var stats_col := actions.get_node_or_null("ColStats")
+		var ranking_col := actions.get_node_or_null("ColRanking")
+		var tutorial_col := actions.get_node_or_null("ColTutorial")
+		if stats_col:
+			actions.move_child(stats_col, 0)
+		if ranking_col:
+			actions.move_child(ranking_col, 1)
+		if tutorial_col:
+			actions.move_child(tutorial_col, 2)
+	_refresh_daily_button()
+
+
+func _refresh_daily_button() -> void:
+	if button_daily == null:
+		return
+	var done := PlayerPrefs.is_daily_completed_today()
+	var title := button_daily.get_node_or_null("Label") as Label
+	if title:
+		title.text = ("✓  %s" % tr("DailyChallenge")) if done else tr("DailyChallenge")
+		title.anchor_top = 0.62 if done else 0.67
+		title.anchor_bottom = 0.84 if done else 0.93
+	var status := _ensure_daily_status_label()
+	if status:
+		status.visible = done
+		status.text = tr("DailyCompletedShort")
+	var badge := _ensure_today_badge()
+	if badge:
+		badge.visible = not done
+		var badge_label := badge.get_node_or_null("Label") as Label
+		if badge_label:
+			badge_label.text = tr("Today")
+
+
+func _ensure_daily_status_label() -> Label:
+	if button_daily == null:
+		return null
+	var existing := button_daily.get_node_or_null("Status") as Label
+	if existing:
+		return existing
+	var status := Label.new()
+	status.name = "Status"
+	status.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	status.anchor_left = 0.04
+	status.anchor_top = 0.80
+	status.anchor_right = 0.96
+	status.anchor_bottom = 0.97
+	status.offset_left = 0
+	status.offset_top = 0
+	status.offset_right = 0
+	status.offset_bottom = 0
+	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	status.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	status.add_theme_color_override("font_color", Color(0.22, 0.5, 0.3, 1))
+	status.add_theme_font_size_override("font_size", 24)
+	var font := button_daily.get_node_or_null("Label") as Label
+	if font and font.get_theme_font("font"):
+		status.add_theme_font_override("font", font.get_theme_font("font"))
+	status.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button_daily.add_child(status)
+	return status
+
+
+func _ensure_today_badge() -> Panel:
+	if button_daily == null:
+		return null
+	var existing := button_daily.get_node_or_null("TodayBadge") as Panel
+	if existing:
+		return existing
+	var badge := Panel.new()
+	badge.name = "TodayBadge"
+	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	badge.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	badge.anchor_left = 1.0
+	badge.anchor_right = 1.0
+	badge.offset_left = -118.0
+	badge.offset_top = 10.0
+	badge.offset_right = -10.0
+	badge.offset_bottom = 52.0
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.82, 0.16, 0.14, 1)
+	style.set_corner_radius_all(18)
+	style.shadow_color = Color(0.29, 0.12, 0.08, 0.28)
+	style.shadow_size = 4
+	style.shadow_offset = Vector2(0, 2)
+	badge.add_theme_stylebox_override("panel", style)
+	var label := Label.new()
+	label.name = "Label"
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	label.text = tr("Today")
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.add_theme_color_override("font_color", Color.WHITE)
+	label.add_theme_font_size_override("font_size", 22)
+	var font := button_daily.get_node_or_null("Label") as Label
+	if font and font.get_theme_font("font"):
+		label.add_theme_font_override("font", font.get_theme_font("font"))
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	badge.add_child(label)
+	button_daily.add_child(badge)
+	return badge
+
+
+func _on_button_library_pressed() -> void:
+	_go_to("res://scenes/MenuLibrary.tscn", button_library)
+
 
 func _on_button_ranking_pressed() -> void:
 	HistoryManager.get_results_filtered("Todas", -1)

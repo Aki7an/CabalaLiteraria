@@ -19,7 +19,7 @@ config/description="CifraLetra - pasatiempo "
 config/version="0.18"
 run/main_scene="uid://bvpri1mtnymgf"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="uid://bfx23x7qnu8kq"
+config/icon="uid://dsrlf8ywh241q"
 
 [autoload]
 

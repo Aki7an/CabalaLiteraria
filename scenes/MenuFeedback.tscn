@@ -233,9 +233,10 @@ text = "Valoración general del nivel"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowGlobal/Content"]
-custom_minimum_size = Vector2(0, 84)
+[node name="Stars" type="Control" parent="Card/Scroll/Rows/RowGlobal/Content"]
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="RowDifficulty" type="PanelContainer" parent="Card/Scroll/Rows"]
@@ -255,9 +256,10 @@ text = "¿La dificultad es adecuada a las estrellas que tiene el nivel?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowDifficulty/Content"]
-custom_minimum_size = Vector2(0, 84)
+[node name="Stars" type="Control" parent="Card/Scroll/Rows/RowDifficulty/Content"]
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowDifficulty/Content"]
@@ -317,9 +319,10 @@ text = "¿El tiempo de resolución del puzzle te ha parecido adecuado a las estr
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowDuration/Content"]
-custom_minimum_size = Vector2(0, 84)
+[node name="Stars" type="Control" parent="Card/Scroll/Rows/RowDuration/Content"]
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowDuration/Content"]
@@ -379,9 +382,10 @@ text = "¿La primera pista ha sido útil en este nivel?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint1/Content"]
-custom_minimum_size = Vector2(0, 84)
+[node name="Stars" type="Control" parent="Card/Scroll/Rows/RowHint1/Content"]
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint1/Content"]
@@ -451,9 +455,10 @@ text = "¿La segunda pista ha sido útil en este nivel?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint2/Content"]
-custom_minimum_size = Vector2(0, 84)
+[node name="Stars" type="Control" parent="Card/Scroll/Rows/RowHint2/Content"]
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint2/Content"]
@@ -523,9 +528,10 @@ text = "¿La tercera pista ha sido útil en este nivel?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint3/Content"]
-custom_minimum_size = Vector2(0, 84)
+[node name="Stars" type="Control" parent="Card/Scroll/Rows/RowHint3/Content"]
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint3/Content"]
@@ -595,9 +601,10 @@ text = "¿El tema del puzzle es interesante?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Stars" type="HBoxContainer" parent="Card/Scroll/Rows/RowTheme/Content"]
-custom_minimum_size = Vector2(0, 84)
+[node name="Stars" type="Control" parent="Card/Scroll/Rows/RowTheme/Content"]
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowTheme/Content"]

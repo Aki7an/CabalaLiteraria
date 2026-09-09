@@ -242,6 +242,9 @@ func mark_completed(puzzle_id: int) -> void:
 		meta = _current_meta()
 	meta["letters_filled"] = int(meta.get("letters_total", 0))
 	meta["completed_at"] = int(Time.get_unix_time_from_system())
+	if GameManager.session_source == GameManager.SOURCE_DAILY:
+		meta["source"] = GameManager.SOURCE_DAILY
+		meta["daily"] = true
 	state["meta"] = meta
 	_states[str(puzzle_id)] = state
 	_write_to_disk()
@@ -569,6 +572,7 @@ func _current_meta() -> Dictionary:
 		"letters_total": int(GameManager.numero_letras_a_revelar_originales),
 		"tiempo_partida": int(GameManager.tiempo_partida),
 		"updated_at": Time.get_unix_time_from_system(),
+		"source": str(GameManager.session_source),
 	}
 
 

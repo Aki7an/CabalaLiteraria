@@ -64,7 +64,6 @@ func _make_rows_drag_through(node: Node) -> void:
 	if node == comment_edit:
 		return
 	if node is FeedbackStarRow:
-		(node as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
 		return
 	if node is Label or node is PanelContainer or node is VBoxContainer or node is HBoxContainer:
 		(node as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -89,6 +88,8 @@ func _handle_drag_press(pressed: bool, position: Vector2) -> void:
 		if not scroll.get_global_rect().has_point(position):
 			return
 		if comment_edit.get_global_rect().has_point(position):
+			return
+		if _is_on_slider(position):
 			return
 		_drag_held = true
 		_drag_active = false
@@ -177,6 +178,13 @@ func _apply_copy() -> void:
 	button_send.text = _t("FeedbackSend", "ENVIAR")
 
 
+func _is_on_slider(position: Vector2) -> bool:
+	for slider in [estrellas1, estrellas2, estrellas3, estrellas4, estrellas5, estrellas6, estrellas7]:
+		if slider and slider.visible and slider.get_global_rect().grow(8.0).has_point(position):
+			return true
+	return false
+
+
 func _set_row_title(row: Node, text: String) -> void:
 	var title := row.get_node_or_null("Content/Title") as Label
 	if title:
@@ -187,7 +195,7 @@ func _set_scale(row: Node, left: String, mid: String, right: String) -> void:
 	var scale := row.get_node_or_null("Content/Scale") as Control
 	if scale == null:
 		return
-	_set_scale_label(scale.get_node_or_null("Left"), "0 · %s" % left, HORIZONTAL_ALIGNMENT_LEFT)
+	_set_scale_label(scale.get_node_or_null("Left"), left, HORIZONTAL_ALIGNMENT_LEFT)
 	_set_scale_label(scale.get_node_or_null("Mid"), mid, HORIZONTAL_ALIGNMENT_CENTER)
 	_set_scale_label(scale.get_node_or_null("Right"), right, HORIZONTAL_ALIGNMENT_RIGHT)
 

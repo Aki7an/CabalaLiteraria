@@ -15,6 +15,12 @@ var level_dificil_unlocked: bool = false
 var level_pro_unlocked: bool = false
 var last_completed_replay_date: String = ""
 var skip_reveal_dialog: bool = false
+var favorite_ids: PackedInt32Array = PackedInt32Array()
+var daily_date: String = ""
+var daily_puzzle_id: int = -1
+var daily_completed: bool = false
+var daily_stars: int = 0
+var daily_ids: PackedInt32Array = PackedInt32Array()
 
 
 const SAVE_PATH := "user://prefs.cfg"
@@ -173,6 +179,7 @@ func save_prefs() -> void:
 		mostrar_tuto_antes_partida = true
 		
 	var cfg := ConfigFile.new()
+	cfg.load(SAVE_PATH)
 	cfg.set_value("general", "idioma", idioma)
 	cfg.set_value("general", "player_name", GameManager.player_name)
 	cfg.set_value("general", "guest_online_id", GameManager.guest_online_id)
@@ -187,6 +194,12 @@ func save_prefs() -> void:
 	cfg.set_value("levels","levelProUnlocked", GameManager.level_pro_unlocked)
 	cfg.set_value("levels", "last_completed_replay_date", last_completed_replay_date)
 	cfg.set_value("general", "skip_reveal_dialog", skip_reveal_dialog)
+	cfg.set_value("library", "favorite_ids", Array(favorite_ids))
+	cfg.set_value("daily", "date", daily_date)
+	cfg.set_value("daily", "puzzle_id", daily_puzzle_id)
+	cfg.set_value("daily", "completed", daily_completed)
+	cfg.set_value("daily", "stars", daily_stars)
+	cfg.set_value("daily", "ids", Array(daily_ids))
 	cfg.save(SAVE_PATH)
 	
 
@@ -205,13 +218,8 @@ func load_prefs() -> void:
 		mostrar_tuto_antes_partida = cfg.get_value("general", "mostrar_tutorial_antes_de_partida", mostrar_tuto_antes_partida)
 		volumen_musica = cfg.get_value("audio", "volumen_musica", volumen_musica)
 		volumen_fx = cfg.get_value("audio", "volumen_fx", volumen_fx)
-		mute_musica = cfg.get_value("audio", "mute_musica", mute_musica)
-		mute_fx = cfg.get_value("audio", "mute_fx", mute_fx)
-		if not bool(cfg.get_value("audio", "bgm_playlist_v1", false)):
-			mute_musica = true
-			cfg.set_value("audio", "bgm_playlist_v1", true)
-			cfg.set_value("audio", "mute_musica", mute_musica)
-			cfg.save(SAVE_PATH)
+		mute_musica = bool(cfg.get_value("audio", "mute_musica", mute_musica))
+		mute_fx = bool(cfg.get_value("audio", "mute_fx", mute_fx))
 		level_normal_unlocked = cfg.get_value("levels","levelNormalUnlocked", level_normal_unlocked )
 		GameManager.set_level_normal_unlocked(level_normal_unlocked)
 		level_dificil_unlocked = cfg.get_value("levels","levelDificilUnlocked", level_dificil_unlocked )
@@ -224,6 +232,12 @@ func load_prefs() -> void:
 			last_completed_replay_date
 		))
 		skip_reveal_dialog = bool(cfg.get_value("general", "skip_reveal_dialog", skip_reveal_dialog))
+		favorite_ids = _load_favorite_ids(cfg)
+		daily_date = str(cfg.get_value("daily", "date", daily_date))
+		daily_puzzle_id = int(cfg.get_value("daily", "puzzle_id", daily_puzzle_id))
+		daily_completed = bool(cfg.get_value("daily", "completed", daily_completed))
+		daily_stars = int(cfg.get_value("daily", "stars", daily_stars))
+		daily_ids = _load_int_ids(cfg, "daily", "ids")
 		
 		if mostrar_tuto_antes_partida:
 			GameManager.set_mostrar_tuto_antes_partida_enable()
@@ -266,6 +280,72 @@ func set_mostrar_tutorial(enabled: bool) -> void:
 	else:
 		GameManager.set_mostrar_tuto_antes_partida_disable()
 	save_prefs()
+
+
+func _load_favorite_ids(cfg: ConfigFile) -> PackedInt32Array:
+	return _load_int_ids(cfg, "library", "favorite_ids")
+
+
+func _load_int_ids(cfg: ConfigFile, section: String, key: String) -> PackedInt32Array:
+	var loaded := PackedInt32Array()
+	var raw: Variant = cfg.get_value(section, key, [])
+	if raw is PackedInt32Array:
+		return raw
+	if raw is Array:
+		for value in raw:
+			var puzzle_id := int(value)
+			if puzzle_id >= 0 and not loaded.has(puzzle_id):
+				loaded.append(puzzle_id)
+	return loaded
+
+
+func daily_puzzle_id_for(date_key: String) -> int:
+	if daily_date == date_key:
+		return daily_puzzle_id
+	return -1
+
+
+func lock_daily_puzzle(date_key: String, puzzle_id: int) -> void:
+	if daily_date == date_key and daily_puzzle_id == puzzle_id:
+		return
+	daily_date = date_key
+	daily_puzzle_id = puzzle_id
+	daily_completed = false
+	daily_stars = 0
+	save_prefs()
+
+
+func is_daily_completed_today() -> bool:
+	return daily_date == GameManager.daily_date_key() and daily_completed
+
+
+func mark_daily_completed(puzzle_id: int, stars: int) -> void:
+	daily_date = GameManager.daily_date_key()
+	daily_puzzle_id = puzzle_id
+	daily_completed = true
+	daily_stars = stars
+	if puzzle_id >= 0 and not daily_ids.has(puzzle_id):
+		daily_ids.append(puzzle_id)
+	save_prefs()
+
+
+func is_daily_discovered(puzzle_id: int) -> bool:
+	return daily_ids.has(puzzle_id)
+
+
+func is_favorite(puzzle_id: int) -> bool:
+	return favorite_ids.has(puzzle_id)
+
+
+func toggle_favorite(puzzle_id: int) -> bool:
+	var idx := favorite_ids.find(puzzle_id)
+	if idx == -1:
+		favorite_ids.append(puzzle_id)
+		save_prefs()
+		return true
+	favorite_ids.remove_at(idx)
+	save_prefs()
+	return false
 
 
 func set_show_reveal_explanation(enabled: bool) -> void:

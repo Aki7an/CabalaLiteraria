@@ -25,10 +25,10 @@ func _on_check_button_2_pressed():
 	if check_button_fx.button_pressed:
 		PlayerPrefs.mute_fx = true
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundFx"), false)
-		PlayerPrefs.save_prefs()
 	else:
 		PlayerPrefs.mute_fx = false
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundFx"), true)
+	PlayerPrefs.save_prefs()
 		
 	
 

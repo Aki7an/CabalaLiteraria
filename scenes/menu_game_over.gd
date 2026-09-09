@@ -89,12 +89,13 @@ func _ready() -> void:
 
 
 func _apply_locale() -> void:
+	var is_daily := GameManager.session_source == GameManager.SOURCE_DAILY
 	if banner:
 		var title := banner.get_node_or_null("Title") as Label
 		if title:
-			title.text = tr("CONGRATULATIONS!!!!")
+			title.text = tr("DailyCongrats") if is_daily else tr("CONGRATULATIONS!!!!")
 	if solved_label:
-		solved_label.text = tr("You've solved the sentence")
+		solved_label.text = tr("DailyCompleted") if is_daily else tr("You've solved the sentence")
 	if stars_title:
 		stars_title.text = tr("StarsEarned")
 	continue_button.text = tr("CONTINUE")
@@ -166,28 +167,47 @@ func _hide_drag_layer(host: Control, layer_name: String) -> void:
 
 
 func _layout_top_down() -> void:
+	var y := banner.position.y + banner.size.y + 8.0
+	if solved_label:
+		solved_label.position.y = y
+		y = solved_label.position.y + solved_label.size.y + 8.0
+	phrase_card.position.y = y
 	stars_card.position.y = phrase_card.position.y + phrase_card.size.y + GAP
 	var button_h := continue_button.size.y
-	var y := main_card.size.y - button_h - 36.0
+	var button_y := main_card.size.y - button_h - 36.0
 	var margin := 36.0
 	var gap := 20.0
 	var available := main_card.size.x - margin * 2.0
 	var continue_w := minf(400.0, available * 0.40)
 	var feedback_w := available - gap - continue_w
 	if feedback_button:
-		feedback_button.position = Vector2(margin, y)
+		feedback_button.position = Vector2(margin, button_y)
 		feedback_button.size = Vector2(feedback_w, button_h)
-	continue_button.position = Vector2(margin + feedback_w + gap, y)
+	continue_button.position = Vector2(margin + feedback_w + gap, button_y)
 	continue_button.size = Vector2(continue_w, button_h)
 
 
+func _body_scroll_nodes() -> Array[Control]:
+	var nodes: Array[Control] = []
+	if solved_label:
+		nodes.append(solved_label)
+	nodes.append(phrase_card)
+	nodes.append(stars_card)
+	return nodes
+
+
 func _install_body_scroll() -> void:
-	var top := phrase_card.position.y
+	var top := banner.position.y + banner.size.y + 6.0
 	var bottom := continue_button.position.y - GAP
 	var viewport_height := bottom - top
-	if viewport_height < 200.0:
+	if viewport_height < 160.0:
 		return
-	var content_bottom := stars_card.position.y + stars_card.size.y + 20.0
+
+	var content_nodes := _body_scroll_nodes()
+	var content_bottom := 0.0
+	for node in content_nodes:
+		content_bottom = maxf(content_bottom, node.position.y + node.size.y)
+	content_bottom += 28.0
 	if content_bottom <= bottom + 1.0:
 		return
 
@@ -199,13 +219,14 @@ func _install_body_scroll() -> void:
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	scroll.scroll_deadzone = 16
 	scroll.mouse_filter = Control.MOUSE_FILTER_STOP
+	scroll.clip_contents = true
 
 	var body := Control.new()
 	body.name = "Body"
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	scroll.add_child(body)
 
-	for node: Panel in [phrase_card, stars_card]:
+	for node in content_nodes:
 		var local: Vector2 = node.position
 		node.reparent(body)
 		node.position = Vector2(local.x, local.y - top)
@@ -215,7 +236,7 @@ func _install_body_scroll() -> void:
 	)
 	main_card.add_child(scroll)
 	_body_scroll = scroll
-	for node in [banner, banner_left, banner_right, confetti_left, confetti_right, solved_label, continue_button, feedback_button]:
+	for node in [banner, banner_left, banner_right, confetti_left, confetti_right, continue_button, feedback_button]:
 		if node:
 			node.z_index = 8
 
