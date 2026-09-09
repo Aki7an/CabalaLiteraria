@@ -2,6 +2,20 @@ Key,es,en,de,fr,eu,it,pt
 Play,Jugar,Play,Spielen,Jouer,Jolastu,Giocare,Jogar
 Settings,Ajustes,Settings,Einstellungen,Paramètres,Ezarpenak,Impostazioni,Configurações
 Shop,Tienda,Shop,Laden,Boutique,Denda,Negozio,Comprar
+ShopTagline,Más contenido para CifraLetra,More content for CifraLetra,Mehr Inhalte für CifraLetra,Plus de contenu pour CifraLetra,Eduki gehiago CifraLetrarentzat,Più contenuti per CifraLetra,Mais conteúdo para CifraLetra
+ShopFullTitle,Compra el juego completo,Get the full game,Kaufe das vollständige Spiel,Achetez le jeu complet,Erosi joko osoa,Acquista il gioco completo,Compra o jogo completo
+ShopFullBody,Descubre las %s frases y disfruta de toda la experiencia de CifraLetra.,Discover the %s phrases and enjoy the full CifraLetra experience.,Entdecke die %s Sätze und genieße das gesamte CifraLetra-Erlebnis.,Découvre les %s phrases et profite de toute l'expérience CifraLetra.,Ezagutu %s esaldiak eta gozatu CifraLetra esperientzia osoaz.,Scopri le %s frasi e goditi tutta l'esperienza di CifraLetra.,Descobre as %s frases e desfruta de toda a experiência CifraLetra.
+ShopPuzzles,%s puzles,%s puzzles,%s Rätsel,%s puzzles,%s puzzle,%s puzzle,%s puzzles
+ShopQuick,%s rápidos,%s quick,%s schnelle,%s rapides,%s azkarrak,%s rapidi,%s rápidos
+ShopCryptograms,%s criptogramas,%s cryptograms,%s Kryptogramme,%s cryptogrammes,%s kriptogramak,%s crittogrammi,%s criptogramas
+ShopDailyIncluded,Reto diario incluido,Daily challenge included,Tägliche Herausforderung inklusive,Défi du jour inclus,Eguneko erronka barne,Sfida del giorno inclusa,Desafio diário incluído
+ShopBuy,Comprar %s,Buy %s,Kaufen %s,Acheter %s,Erosi %s,Acquista %s,Comprar %s
+ShopPrice,"1,99 €",€1.99,"1,99 €","1,99 €","1,99 €","1,99 €","1,99 €"
+ShopLockedTitle,Puzle bloqueado,Puzzle locked,Rätsel gesperrt,Puzzle verrouillé,Puzzlea blokeatuta,Puzzle bloccato,Puzzle bloqueado
+ShopLockedBody,Para jugar a este puzle hay que comprar el juego completo.,To play this puzzle you need to buy the full game.,Um dieses Rätsel zu spielen musst du das vollständige Spiel kaufen.,Pour jouer à ce puzzle il faut acheter le jeu complet.,Puzzle hau jokatzeko joko osoa erosi behar da.,Per giocare a questo puzzle devi acquistare il gioco completo.,Para jogar este puzzle é preciso comprar o jogo completo.
+ShopGoToStore,Ir a la tienda,Go to shop,Zum Laden,Aller à la boutique,Joan dendara,Vai al negozio,Ir à loja
+ShopOwned,Ya tienes el juego completo.,You already have the full game.,Du hast das vollständige Spiel bereits.,Tu as déjà le jeu complet.,Jada joko osoa daukazu.,Hai già il gioco completo.,Já tens o jogo completo.
+StatusLocked,BLOQUEADO,LOCKED,GESPERRT,VERROUILLÉ,BLOKEATUTA,BLOCCATO,BLOQUEADO
 DailyChallenge,Reto diario,Daily,Täglich,Défi du jour,Eguneko erronka,Sfida del giorno,Desafio diário
 Library,Biblioteca,Library,Bibliothek,Bibliothèque,Liburutegia,Biblioteca,Biblioteca
 LibrarySolvedSubtitle,Tu colección,Your collection,Deine Sammlung,Ta collection,Zure bilduma,La tua collezione,A tua coleção
@@ -24,6 +38,10 @@ LibraryInfo,Información,Information,Informationen,Informations,Informazioa,Info
 AddToFavorites,Añadir a favoritos,Add to favorites,Zu Favoriten,Ajouter aux favoris,Gehitu gogokoetara,Aggiungi ai preferiti,Adicionar aos favoritos
 InFavorites,En favoritos,In favorites,In Favoriten,Dans les favoris,Gogokoetan,Nei preferiti,Nos favoritos
 PlayAgain,Volver a jugar,Play again,Nochmal spielen,Rejouer,Berriro jokatu,Gioca di nuovo,Jogar outra vez
+LibraryPracticeTitle,Esta partida no cambia la puntuación,This game will not change the score,Diese Partie ändert die Wertung nicht,Cette partie ne change pas le score,Partida honek ez du puntuazioa aldatuko,Questa partita non cambia il punteggio,Esta partida não muda a pontuação
+LibraryPracticeBody,"Puedes volver a jugar este puzle, pero no se modificarán las estrellas ni la puntuación de la Biblioteca.\n\nPara que cuente hay que esperar 48 horas y jugar desde Jugar. No se puede elegir el puzle: se elige al azar entre los ya completados hace más de 48 horas.","You can play this puzzle again, but the Library stars and score will not change.\n\nTo update the score you must wait 48 hours and play from Play. You cannot pick the puzzle: one is chosen at random among those completed more than 48 hours ago.","Du kannst das Rätsel noch einmal spielen, aber Sterne und Wertung in der Bibliothek bleiben unverändert.\n\nDamit es zählt, musst du 48 Stunden warten und über Spielen starten. Du kannst keines wählen: Es wird zufällig unter den vor mehr als 48 Stunden abgeschlossenen gewählt.","Tu peux rejouer ce puzzle, mais les étoiles et le score de la Bibliothèque ne changeront pas.\n\nPour que ça compte, il faut attendre 48 heures et jouer depuis Jouer. On ne choisit pas le puzzle : il est tiré au hasard parmi ceux terminés il y a plus de 48 heures.","Puzzle hau berriro joka dezakezu, baina Liburutegiko izarrak eta puntuazioa ez dira aldatuko.\n\nKontuan hartzeko, 48 ordu itxaron eta Jolastu-tik jokatu behar da. Ezin da puzzlea aukeratu: ausaz aukeratzen da orain dela 48 ordu baino gehiago osatu direnen artean.","Puoi rigiocare questo puzzle, ma stelle e punteggio della Biblioteca non cambieranno.\n\nPerché conti bisogna aspettare 48 ore e giocare da Giocare. Non si può scegliere il puzzle: viene scelto a caso tra quelli completati da più di 48 ore.","Podes jogar este puzzle outra vez, mas as estrelas e a pontuação da Biblioteca não mudam.\n\nPara contar, é preciso esperar 48 horas e jogar a partir de Jogar. Não se pode escolher o puzzle: é escolhido ao acaso entre os concluídos há mais de 48 horas."
+LibraryPracticePlay,Jugar igual,Play anyway,Trotzdem spielen,Jouer quand même,Jolastu hala ere,Gioca lo stesso,Jogar na mesma
+Cancel,Cancelar,Cancel,Abbrechen,Annuler,Utzi,Annulla,Cancelar
 DailyPlay,JUGAR RETO,PLAY CHALLENGE,CHALLENGE SPIELEN,JOUER LE DÉFI,ERRONKA JOLASTU,GIOCA SFIDA,JOGAR DESAFIO
 DailyCompleted,✓ Reto completado,✓ Challenge completed,✓ Herausforderung geschafft,✓ Défi terminé,✓ Erronka ebatzita,✓ Sfida completata,✓ Desafio concluído
 DailyViewSheet,Ver ficha,View card,Karte ansehen,Voir la fiche,Ikusi fitxa,Vedi scheda,Ver ficha
@@ -42,6 +60,7 @@ DailyHowTitle,Cómo funciona,How it works,So funktioniert's,Comment ça marche,N
 DailyHow1,Un puzle nuevo cada día,A new puzzle every day,Jeden Tag ein neues Rätsel,Un nouveau puzzle chaque jour,Puzzle berri bat egunero,Un nuovo puzzle ogni giorno,Um puzzle novo todos os dias
 DailyHow2,"Si lo completas, pasa a tu Biblioteca","If you complete it, it goes to your Library","Wenn du es löst, landet es in deiner Bibliothek","Si tu le termines, il rejoint ta bibliothèque","Osatu ondoren, zure Liburutegira joaten da","Se lo completi, va nella tua Biblioteca","Se o completares, passa à tua Biblioteca"
 DailyHow3,Mañana habrá un reto distinto,Tomorrow there will be a different challenge,Morgen gibt es eine andere Herausforderung,"Demain, il y aura un autre défi",Bihar erronka desberdin bat egongo da,Domani ci sarà una sfida diversa,Amanhã haverá um desafio diferente
+DailyHow4,El mismo puzle para todos los jugadores.,The same puzzle for every player.,Dasselbe Rätsel für alle Spieler.,Le même puzzle pour tous les joueurs.,Puzzle bera jokalari guztientzat.,Lo stesso puzzle per tutti i giocatori.,O mesmo puzzle para todos os jogadores.
 DailyBackToMenu,Volver al menú,Back to menu,Zurück zum Menü,Retour au menu,Itzuli menura,Torna al menu,Voltar ao menu
 DailyEstimated,Tiempo estimado: %s,Estimated time: %s,Geschätzte Zeit: %s,Temps estimé : %s,Gutxi gorabeherako denbora: %s,Tempo stimato: %s,Tempo estimado: %s
 Medium,Media,Medium,Mittel,Moyen,Ertaina,Media,Média

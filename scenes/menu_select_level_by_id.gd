@@ -1,10 +1,12 @@
 extends Control
 
 const PATH_CATEGORY := "res://scenes/MenuSelectCategory.tscn"
+const PATH_SHOP := "res://scenes/MenuShop.tscn"
 const MODE_QUICK := "quick"
 const MODE_CRYPTOGRAM := "cryptogram"
 const STAR_TEXTURE: Texture2D = preload("res://images/estrella_plano.png")
 const STAR_OFF_TEXTURE: Texture2D = preload("res://images/contorno_estrella.png")
+const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock_gray.svg")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 const COLOR_STAR_EMPTY := Color(0.50, 0.38, 0.24, 0.55)
 const DRAG_THRESHOLD := 14.0
@@ -46,8 +48,8 @@ const LOCALIZED_COPY := {
 		"empty": "No hay niveles disponibles",
 		"level": "Nivel",
 		"lock_title": "Puzle ya completado",
-		"lock_body": "Este puzle ya está completado. Para repetir uno terminado hay que esperar 48 horas desde que se completó.\n\nNo se puede elegir cuál: se elige al azar entre los 5 con menos estrellas y peor puntuación (más ayudas, más fallos), siempre que lleven más de 48 h y no tengan puntuación perfecta.\n\nSolo se puede repetir un puzle al día.",
-		"lock_body_random": "No hay puzles nuevos ni en curso.\n\nPara repetir uno terminado hay que esperar 48 horas. No se puede elegir cuál: se elige al azar entre los 5 con menos estrellas y peor puntuación (más ayudas, más fallos), siempre que lleven más de 48 h y no tengan puntuación perfecta.\n\nSolo se puede repetir un puzle al día.",
+		"lock_body": "Este puzle ya está completado. Para que la repetición cuente en la puntuación hay que esperar 48 horas y jugar desde Jugar.\n\nNo se puede elegir cuál: se elige al azar entre todos los puzles completados hace más de 48 horas.\n\nSolo se puede repetir un puzle al día.",
+		"lock_body_random": "No hay puzles nuevos ni en curso.\n\nPara repetir uno terminado de forma que cuente hay que esperar 48 horas y jugar desde Jugar. No se puede elegir cuál: se elige al azar entre todos los completados hace más de 48 horas.\n\nSolo se puede repetir un puzle al día.",
 		"lock_pool": "Puzles que se pueden repetir",
 		"lock_empty": "No hay puzles disponibles para repetir.",
 		"lock_daily": "Hoy ya has repetido un puzle. Vuelve mañana.",
@@ -64,8 +66,8 @@ const LOCALIZED_COPY := {
 		"empty": "No levels available",
 		"level": "Level",
 		"lock_title": "Puzzle already completed",
-		"lock_body": "This puzzle is already completed. To replay a finished one you must wait 48 hours after completing it.\n\nYou cannot pick which one: a random puzzle is chosen among the 5 with the fewest stars and worst score (more hints, more mistakes), as long as they were completed more than 48 hours ago and are not perfect.\n\nYou can replay only one puzzle per day.",
-		"lock_body_random": "There are no new or in-progress puzzles.\n\nTo replay a finished one you must wait 48 hours. You cannot pick which one: a random puzzle is chosen among the 5 with the fewest stars and worst score, as long as they were completed more than 48 hours ago and are not perfect.\n\nYou can replay only one puzzle per day.",
+		"lock_body": "This puzzle is already completed. For a replay to count toward the score you must wait 48 hours and play from Play.\n\nYou cannot pick which one: a random puzzle is chosen among all puzzles completed more than 48 hours ago.\n\nYou can replay only one puzzle per day.",
+		"lock_body_random": "There are no new or in-progress puzzles.\n\nTo replay a finished one so it counts you must wait 48 hours and play from Play. You cannot pick which one: a random puzzle is chosen among all puzzles completed more than 48 hours ago.\n\nYou can replay only one puzzle per day.",
 		"lock_pool": "Puzzles you can replay",
 		"lock_empty": "There are no puzzles available to replay.",
 		"lock_daily": "You already replayed a puzzle today. Come back tomorrow.",
@@ -174,6 +176,8 @@ func _ready() -> void:
 	await get_tree().process_frame
 
 	_scroll.scroll_deadzone = 16
+	if not SignalManager.full_game_changed.is_connected(refresh_from_gamemanager):
+		SignalManager.full_game_changed.connect(refresh_from_gamemanager)
 	if not _populate_from_gamemanager():
 		var fallback := GameManager.frases_json_path if GameManager.frases_json_path != "" else JSON_PATH
 		if fallback != "":
@@ -310,6 +314,8 @@ func _passes_filters(item: Dictionary) -> bool:
 		return false
 	if not GameManager.level_has_image(item):
 		return false
+	if GameManager.is_daily_puzzle(item):
+		return false
 
 	var target_category: String = str(GameManager.categoria_actual).strip_edges()
 	if target_category != "":
@@ -326,7 +332,8 @@ func _create_level_card(item: Dictionary) -> Button:
 	var difficulty: int = int(item.get("difficulty", 1))
 	var saved_summary: Dictionary = PuzzleSaveManager.get_puzzle_summary(index_number)
 	var puzzle_status := _puzzle_status(index_number)
-	var completed := puzzle_status == "completed"
+	var playable := GameManager.is_puzzle_playable(item)
+	var completed := playable and puzzle_status == "completed"
 	var stars_max := _difficulty_to_stars(difficulty)
 	var stars_remaining := clampi(
 		int(saved_summary.get("stars_remaining", stars_max)),
@@ -383,7 +390,9 @@ func _create_level_card(item: Dictionary) -> Button:
 	if PLACEHOLDER_TEX != null:
 		texture.texture = PLACEHOLDER_TEX
 	image_frame.add_child(texture)
-	if puzzle_status == "completed":
+	if not playable:
+		image_frame.add_child(_purchase_lock_overlay())
+	elif puzzle_status == "completed":
 		image_frame.add_child(_hours_badge(index_number))
 
 	var id_badge := Panel.new()
@@ -411,7 +420,9 @@ func _create_level_card(item: Dictionary) -> Button:
 	status.size = Vector2(286, 48)
 	status.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var status_color := Color(0.92, 0.43, 0.035, 1)
-	if puzzle_status == "completed":
+	if not playable:
+		status_color = Color(0.42, 0.36, 0.32, 1)
+	elif puzzle_status == "completed":
 		status_color = Color(0.08, 0.63, 0.64, 1)
 	elif puzzle_status == "in_progress":
 		status_color = Color(0.25, 0.58, 0.78, 1)
@@ -423,10 +434,15 @@ func _create_level_card(item: Dictionary) -> Button:
 	status_label.add_theme_font_override("font", _title_label.get_theme_font("font"))
 	status_label.add_theme_font_size_override("font_size", 22)
 	status_label.add_theme_color_override("font_color", Color.WHITE)
-	status_label.text = {
-		"completed": tr("StatusCompleted"),
-		"in_progress": tr("StatusContinue"),
-	}.get(puzzle_status, tr("StatusNew"))
+	if not playable:
+		status_label.text = tr("StatusLocked")
+		if status_label.text == "StatusLocked":
+			status_label.text = "BLOQUEADO"
+	else:
+		status_label.text = {
+			"completed": tr("StatusCompleted"),
+			"in_progress": tr("StatusContinue"),
+		}.get(puzzle_status, tr("StatusNew"))
 	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	status_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -491,6 +507,9 @@ func _on_level_pressed(item: Dictionary, allow_completed := false) -> void:
 	var index_number: int = int(item.get("index", -1))
 	if index_number < 0:
 		return
+	if not GameManager.is_puzzle_playable(item):
+		_show_purchase_lock_dialog()
+		return
 	if not get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty():
 		return
 	if _is_completed(index_number) and not allow_completed:
@@ -519,6 +538,9 @@ func _on_level_pressed(item: Dictionary, allow_completed := false) -> void:
 
 
 func _on_button_random_pressed() -> void:
+	if _playable_items().is_empty():
+		_show_purchase_lock_dialog()
+		return
 	var pool := _random_pool()
 	if pool.is_empty() or _is_completed(int(pool[0].get("index", -1))):
 		_show_completed_lock_dialog(true)
@@ -570,11 +592,19 @@ func _puzzle_status(puzzle_id: int) -> String:
 	return "new"
 
 
+func _playable_items() -> Array[Dictionary]:
+	var playable: Array[Dictionary] = []
+	for item in _visible_items:
+		if GameManager.is_puzzle_playable(item):
+			playable.append(item)
+	return playable
+
+
 func _random_pool() -> Array[Dictionary]:
 	var not_started: Array[Dictionary] = []
 	var in_progress: Array[Dictionary] = []
 	var completed: Array[Dictionary] = []
-	for item in _visible_items:
+	for item in _playable_items():
 		var status := _puzzle_status(int(item.get("index", -1)))
 		match status:
 			"completed":
@@ -593,25 +623,12 @@ func _random_pool() -> Array[Dictionary]:
 func _replay_pool(completed_items: Array[Dictionary]) -> Array[Dictionary]:
 	var eligible: Array[Dictionary] = []
 	for item in completed_items:
+		if not GameManager.is_puzzle_playable(item):
+			continue
 		var puzzle_id := int(item.get("index", -1))
 		if PuzzleSaveManager.can_replay_completed(puzzle_id):
 			eligible.append(item)
-	eligible.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-		var key_a := _replay_sort_key(a)
-		var key_b := _replay_sort_key(b)
-		if key_a[0] != key_b[0]:
-			return key_a[0] < key_b[0]
-		if key_a[1] != key_b[1]:
-			return key_a[1] < key_b[1]
-		if key_a[2] != key_b[2]:
-			return key_a[2] > key_b[2]
-		return key_a[3] > key_b[3]
-	)
-	var limit := mini(5, eligible.size())
-	var pool: Array[Dictionary] = []
-	for index in range(limit):
-		pool.append(eligible[index])
-	return pool
+	return eligible
 
 
 func _replay_sort_key(item: Dictionary) -> Array:
@@ -640,6 +657,8 @@ func _all_completed_items() -> Array[Dictionary]:
 		if _puzzle_status(puzzle_id) != "completed":
 			continue
 		if not GameManager.level_has_image(item):
+			continue
+		if GameManager.is_daily_puzzle(item):
 			continue
 		seen[puzzle_id] = true
 		completed.append(item)
@@ -678,6 +697,133 @@ func _hours_badge(puzzle_id: int) -> Panel:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	badge.add_child(label)
 	return badge
+
+
+func _purchase_lock_overlay() -> Control:
+	var overlay := ColorRect.new()
+	overlay.name = "PurchaseLock"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.12, 0.08, 0.05, 0.42)
+	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var icon := TextureRect.new()
+	icon.texture = ICON_LOCK
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon.anchor_left = 0.5
+	icon.anchor_top = 0.5
+	icon.anchor_right = 0.5
+	icon.anchor_bottom = 0.5
+	icon.offset_left = -40
+	icon.offset_top = -40
+	icon.offset_right = 40
+	icon.offset_bottom = 40
+	overlay.add_child(icon)
+	return overlay
+
+
+func _show_purchase_lock_dialog() -> void:
+	if get_node_or_null("PurchaseLockDialog") != null:
+		return
+	SoundManager.play("ButtonClick")
+	var overlay := ColorRect.new()
+	overlay.name = "PurchaseLockDialog"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.08, 0.04, 0.02, 0.58)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	overlay.z_index = 80
+	add_child(overlay)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.add_child(center)
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(980, 0)
+	card.mouse_filter = Control.MOUSE_FILTER_STOP
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(1, 0.965, 0.86, 1)
+	card_style.border_color = Color(0.62, 0.4, 0.16, 0.46)
+	card_style.set_border_width_all(4)
+	card_style.border_width_bottom = 9
+	card_style.set_corner_radius_all(40)
+	card.add_theme_stylebox_override("panel", card_style)
+	center.add_child(card)
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 48)
+	margin.add_theme_constant_override("margin_right", 48)
+	margin.add_theme_constant_override("margin_top", 40)
+	margin.add_theme_constant_override("margin_bottom", 36)
+	card.add_child(margin)
+	var inner := VBoxContainer.new()
+	inner.add_theme_constant_override("separation", 24)
+	margin.add_child(inner)
+	var lock := TextureRect.new()
+	lock.texture = ICON_LOCK
+	lock.custom_minimum_size = Vector2(80, 80)
+	lock.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	lock.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	lock.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	inner.add_child(lock)
+	var title := Label.new()
+	title.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	title.add_theme_font_size_override("font_size", 48)
+	title.add_theme_color_override("font_color", Color(0.24, 0.14, 0.08, 1))
+	title.text = tr("ShopLockedTitle")
+	if title.text == "ShopLockedTitle":
+		title.text = "Puzle bloqueado"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inner.add_child(title)
+	var body := Label.new()
+	body.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	body.add_theme_font_size_override("font_size", 36)
+	body.add_theme_color_override("font_color", Color(0.28, 0.17, 0.1, 1))
+	body.text = tr("ShopLockedBody")
+	if body.text == "ShopLockedBody":
+		body.text = "Para jugar a este puzle hay que comprar el juego completo."
+	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inner.add_child(body)
+	var buttons := HBoxContainer.new()
+	buttons.add_theme_constant_override("separation", 24)
+	inner.add_child(buttons)
+	var cancel := _make_dialog_button(
+		_copy("lock_cancel"),
+		Color(1, 0.982, 0.92, 1),
+		Color(0.66, 0.44, 0.2, 0.7),
+		Color(0.32, 0.18, 0.08, 1)
+	)
+	cancel.pressed.connect(func() -> void:
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+	)
+	buttons.add_child(cancel)
+	var shop_text := tr("ShopGoToStore")
+	if shop_text == "ShopGoToStore":
+		shop_text = "Ir a la tienda"
+	var shop := _make_dialog_button(
+		shop_text,
+		Color(0.96, 0.51, 0.01, 1),
+		Color(0.83, 0.41, 0.02, 1),
+		Color.WHITE
+	)
+	shop.pressed.connect(func() -> void:
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+		TransitionScreen.transition_to_black()
+		await TransitionScreen._on_animation_finished("fade_to_black", 1)
+		get_tree().change_scene_to_file(PATH_SHOP)
+	)
+	buttons.add_child(shop)
+	overlay.gui_input.connect(func(event: InputEvent) -> void:
+		if not (event is InputEventMouseButton and event.pressed):
+			return
+		var mouse := event as InputEventMouseButton
+		if card.get_global_rect().has_point(mouse.global_position):
+			return
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+	)
 
 
 func _show_completed_lock_dialog(from_random := false) -> void:
@@ -826,8 +972,11 @@ func _replay_thumb_row(pool: Array[Dictionary]) -> HBoxContainer:
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 14)
 	row.custom_minimum_size = Vector2(0, 210)
-	for item in pool:
-		row.add_child(_replay_thumb(item))
+	var shown: Array[Dictionary] = pool.duplicate()
+	shown.shuffle()
+	var limit := mini(5, shown.size())
+	for index in range(limit):
+		row.add_child(_replay_thumb(shown[index]))
 	return row
 
 

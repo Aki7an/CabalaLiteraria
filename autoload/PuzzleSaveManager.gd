@@ -2,6 +2,8 @@ extends Node
 
 const SAVE_PATH := "user://puzzle_states.json"
 const SAVE_VERSION := 1
+const DEBUG_NEARLY_SOLVED_ID := 3075
+const DEBUG_NEARLY_SOLVED_LETTER := "A"
 
 var _states: Dictionary = {}
 var _save_queued := false
@@ -10,7 +12,7 @@ var _restoring := false
 
 func _ready() -> void:
 	_load_from_disk()
-	_reopen_debug_3067()
+	_reopen_debug_nearly_solved()
 	var safety_timer := Timer.new()
 	safety_timer.wait_time = 5.0
 	safety_timer.autostart = true
@@ -26,8 +28,10 @@ func begin_current_puzzle() -> void:
 	var existing: Dictionary = get_puzzle_state(puzzle_id)
 	var was_completed := str(existing.get("status", "")) == "completed"
 	if was_completed and not GameManager.allow_completed_replay:
-		if not (OS.is_debug_build() and puzzle_id == 3067):
+		if not _is_debug_nearly_solved(puzzle_id):
 			return
+	if GameManager.is_practice_session() and was_completed:
+		return
 	if existing.is_empty() or was_completed:
 		_states[key] = {
 			"status": "in_progress",
@@ -55,7 +59,7 @@ func restore_current_puzzle() -> void:
 	var state := get_puzzle_state(puzzle_id)
 	if state.is_empty() or str(state.get("status", "")) == "completed":
 		begin_current_puzzle()
-		_apply_debug_nearly_solved_3067()
+		_apply_debug_nearly_solved()
 		GameManager.update_numero_letras_reveladas()
 		SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
 		request_autosave()
@@ -71,21 +75,23 @@ func restore_current_puzzle() -> void:
 			"set_scroll_normalized",
 			float(state.get("resolution", {}).get("scroll", 0.0))
 		)
-	_apply_debug_nearly_solved_3067()
+	_apply_debug_nearly_solved()
 	GameManager.update_numero_letras_reveladas()
 	SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
 	_restoring = false
 	request_autosave()
 
 
-## Debug only: leave puzzle 3067 with letter A unassigned so one tap solves it.
-func _apply_debug_nearly_solved_3067() -> void:
-	if not OS.is_debug_build():
+func _is_debug_nearly_solved(puzzle_id: int) -> bool:
+	return OS.is_debug_build() and puzzle_id == DEBUG_NEARLY_SOLVED_ID
+
+
+## Debug only: leave the debug puzzle with letter A unassigned so one tap solves it.
+func _apply_debug_nearly_solved() -> void:
+	if not _is_debug_nearly_solved(int(GameManager.id_frase)):
 		return
-	if int(GameManager.id_frase) != 3067:
-		return
-	_reopen_debug_3067()
-	var leave := GameManager._hint_letter_key("A")
+	_reopen_debug_nearly_solved()
+	var leave := GameManager._hint_letter_key(DEBUG_NEARLY_SOLVED_LETTER)
 	var assigned_letters := {}
 	var first_empty: Celda = null
 	for node in get_tree().get_nodes_in_group("Celda"):
@@ -121,11 +127,11 @@ func _apply_debug_nearly_solved_3067() -> void:
 		GameManager.set_selected_letter_user("")
 
 
-func _reopen_debug_3067() -> void:
+func _reopen_debug_nearly_solved() -> void:
 	if not OS.is_debug_build():
 		return
-	var key := "3067"
-	var state: Dictionary = get_puzzle_state(3067)
+	var key := str(DEBUG_NEARLY_SOLVED_ID)
+	var state: Dictionary = get_puzzle_state(DEBUG_NEARLY_SOLVED_ID)
 	if state.is_empty():
 		state = {
 			"status": "in_progress",
@@ -142,28 +148,53 @@ func _reopen_debug_3067() -> void:
 	var meta: Dictionary = state.get("meta", {})
 	if meta is Dictionary:
 		meta.erase("completed_at")
-		var total := int(meta.get("letters_total", 97))
+		var leftover := _debug_letter_count(DEBUG_NEARLY_SOLVED_ID, DEBUG_NEARLY_SOLVED_LETTER)
+		var total := int(meta.get("letters_total", 0))
 		if total <= 0:
-			total = 97
-		# Phrase 3067 has 10 playable A's; leave that letter for the player.
-		meta["letters_filled"] = maxi(total - 10, 0)
+			total = _debug_playable_letter_count(DEBUG_NEARLY_SOLVED_ID)
+		meta["letters_filled"] = maxi(total - leftover, 0)
 		meta["letters_total"] = total
 		state["meta"] = meta
 	var resolution: Dictionary = state.get("resolution", {})
 	if resolution is Dictionary:
 		var cells: Dictionary = resolution.get("cells", {})
-		var a_number := _debug_cipher_number_for_letter(state.get("cipher", {}), "A")
-		if a_number > 0 and cells is Dictionary:
-			cells[str(a_number)] = {
+		var leave_number := _debug_cipher_number_for_letter(
+			state.get("cipher", {}),
+			DEBUG_NEARLY_SOLVED_LETTER
+		)
+		if leave_number > 0 and cells is Dictionary:
+			cells[str(leave_number)] = {
 				"letter": "",
 				"color_id": 0,
 				"visual_state": "empty",
 			}
 			resolution["cells"] = cells
-			resolution["selected_number"] = a_number
+			resolution["selected_number"] = leave_number
 			state["resolution"] = resolution
 	_states[key] = state
 	_write_to_disk()
+
+
+func _debug_playable_letter_count(puzzle_id: int) -> int:
+	var text := str(GameManager.get_phrase_item(puzzle_id).get("text", ""))
+	var count := 0
+	for i in text.length():
+		if not GameManager.is_excluded_character(text.substr(i, 1)):
+			count += 1
+	return count
+
+
+func _debug_letter_count(puzzle_id: int, letter: String) -> int:
+	var text := str(GameManager.get_phrase_item(puzzle_id).get("text", ""))
+	var leave := GameManager._hint_letter_key(letter)
+	var count := 0
+	for i in text.length():
+		var ch := text.substr(i, 1)
+		if GameManager.is_excluded_character(ch):
+			continue
+		if GameManager._hint_letter_key(ch) == leave:
+			count += 1
+	return count
 
 
 func _debug_cipher_number_for_letter(cipher: Variant, letter: String) -> int:
@@ -199,7 +230,7 @@ func save_current_now() -> void:
 		return
 	var existing := get_puzzle_state(puzzle_id)
 	if str(existing.get("status", "")) == "completed":
-		if not (OS.is_debug_build() and puzzle_id == 3067):
+		if GameManager.is_practice_session() or not _is_debug_nearly_solved(puzzle_id):
 			return
 	_states[str(puzzle_id)] = {
 		"status": "in_progress",
@@ -231,6 +262,8 @@ func reset_resolution_keep_attempt() -> void:
 
 func mark_completed(puzzle_id: int) -> void:
 	if puzzle_id < 0:
+		return
+	if GameManager.is_practice_session():
 		return
 	var state: Dictionary = get_puzzle_state(puzzle_id)
 	state["status"] = "completed"
@@ -601,6 +634,12 @@ func _load_from_disk() -> void:
 	var parsed: Variant = JSON.parse_string(file.get_as_text())
 	if parsed is Dictionary:
 		_states = (parsed as Dictionary).get("states", {})
+
+
+func clear_all() -> void:
+	_states.clear()
+	_save_queued = false
+	_write_to_disk()
 
 
 func _write_to_disk() -> void:

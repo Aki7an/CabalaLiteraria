@@ -128,6 +128,8 @@ func _recompute_games_won() -> void:
 # ------------------- API PÚBLICA -------------------
 
 func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> void:
+	if GameManager.is_practice_session():
+		return
 	var now: Dictionary = Time.get_datetime_dict_from_system()
 	var fecha: Dictionary = {
 		"dia": now["day"],
@@ -529,6 +531,8 @@ func _count_levels_for(category_id: String, mode: String) -> int:
 			continue
 		if GameManager.level_game_mode(item) != mode:
 			continue
+		if GameManager.is_daily_puzzle(item):
+			continue
 		total += 1
 	return total
 
@@ -778,6 +782,8 @@ func get_competitive_record(
 		if not filter_all_categories and category != normalized_category:
 			continue
 		if not filter_all_modes and mode != normalized_mode:
+			continue
+		if GameManager.is_daily_puzzle(item):
 			continue
 		var phrase_id := int(item.get("index", -1))
 		if phrase_id >= 0:

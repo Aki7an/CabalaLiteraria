@@ -62,6 +62,8 @@ func _ready() -> void:
 
 	var maximum := GameManager.get_puzzle_difficulty_stars()
 	var earned: int = clampi(GameManager.puzzle_stars, 0, maximum)
+	if GameManager.is_practice_session() and GameManager.locked_record_stars >= 0:
+		earned = clampi(GameManager.locked_record_stars, 0, maximum)
 	if time_text:
 		var elapsed := _format_play_time(int(GameManager.tiempo_partida))
 		var template := tr("TimeTaken")

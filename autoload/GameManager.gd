@@ -35,8 +35,27 @@ const GUEST_NAME_PREFIX := "ANON"
 var allow_completed_replay := false
 const SOURCE_NONE := ""
 const SOURCE_DAILY := "daily"
+const SOURCE_PRACTICE := "practice"
+const PACK_DAILY := "daily"
 var session_source: String = SOURCE_NONE
 var pending_library_puzzle_id: int = -1
+var locked_record_stars: int = -1
+
+
+func is_practice_session() -> bool:
+	return session_source == SOURCE_PRACTICE
+
+
+func is_daily_puzzle(item: Dictionary) -> bool:
+	return str(item.get("pack", "")).strip_edges().to_lower() == PACK_DAILY
+
+
+func library_category(item: Dictionary) -> String:
+	if is_daily_puzzle(item):
+		return CAT_DAILY
+	return normalize_category(str(item.get("category", "")))
+
+
 @export var score: int
 @export var score_init: int = 30000
 
@@ -61,6 +80,7 @@ var pending_library_puzzle_id: int = -1
 @export var partida_terminada: bool = false
 
 var frases_db: Array = []
+var _free_puzzle_ids: Dictionary = {}
 
 # Campos extra de la frase activa
 var frase_index_actual: int = -1
@@ -185,6 +205,7 @@ const CAT_EFEMERIDE := "efemeride"
 const CAT_CITA := "cita"
 const CAT_CURIOSIDADES := "curiosidades"
 const CAT_FRAGMENTO := "fragmento"
+const CAT_DAILY := "daily"
 const MODE_QUICK := "quick"
 const MODE_CRYPTOGRAM := "cryptogram"
 const COLOR_STAR_QUICK := Color(1.0, 0.82, 0.12, 1.0)
@@ -224,6 +245,8 @@ func normalize_category(raw: String) -> String:
 			return CAT_CURIOSIDADES
 		"fragmento", "fragment", "fragmentos", "fragmento literario", "literary fragment", "literary fragments", "fragment litteraire", "literarisches fragment", "fragmentu literarioa", "frammento letterario":
 			return CAT_FRAGMENTO
+		"daily", "reto diario", "daily challenge", "taglich", "defi du jour", "eguneko erronka", "sfida del giorno", "desafio diario":
+			return CAT_DAILY
 		_:
 			return key
 
@@ -245,6 +268,8 @@ func category_tr_key(cat: String = "") -> String:
 			return "Curiosities"
 		CAT_FRAGMENTO:
 			return "Literary Fragments"
+		CAT_DAILY:
+			return "DailyChallenge"
 		_:
 			return cat if cat != "" else categoria_actual
 
@@ -261,6 +286,8 @@ func category_color(cat: String = "") -> Color:
 			return Color(0.4, 0.824, 0.698)
 		CAT_CURIOSIDADES:
 			return Color(0.812, 0.463, 0.176)
+		CAT_DAILY:
+			return Color(0.89, 0.62, 0.16)
 		_:
 			return Color(0.5, 0.5, 0.5)
 
@@ -309,6 +336,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_F3:
 			PlayerPrefs.reset_completed_replay_today()
+			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_W:
+			lock_full_game()
 			get_viewport().set_input_as_handled()
 
 
@@ -404,7 +434,77 @@ func level_game_mode(item: Dictionary) -> String:
 
 
 func has_full_game() -> bool:
-	return true
+	return PlayerPrefs.full_game
+
+
+func unlock_full_game() -> void:
+	if PlayerPrefs.full_game:
+		return
+	PlayerPrefs.full_game = true
+	PlayerPrefs.save_prefs()
+	SignalManager.full_game_changed.emit()
+
+
+func lock_full_game() -> void:
+	if not PlayerPrefs.full_game:
+		return
+	PlayerPrefs.full_game = false
+	PlayerPrefs.save_prefs()
+	SignalManager.full_game_changed.emit()
+
+
+func reset_player_data() -> void:
+	HistoryManager.clear_history()
+	PuzzleSaveManager.clear_all()
+	PlayerPrefs.reset_player_progress()
+	reset_game_paremeters()
+	resetear_partida_terminada()
+	reset_numero_letras_reveladas()
+	HistoryManager.stats_updated.emit()
+
+
+func is_puzzle_playable(item: Dictionary) -> bool:
+	if has_full_game():
+		return true
+	if is_daily_puzzle(item):
+		return false
+	return bool(_free_puzzle_ids.get(int(item.get("index", -1)), false))
+
+
+func rebuild_free_puzzle_ids() -> void:
+	_free_puzzle_ids.clear()
+	var groups: Dictionary = {}
+	for raw in frases_db:
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		var item: Dictionary = raw
+		if is_daily_puzzle(item):
+			continue
+		var key := "%s|%s" % [normalize_category(str(item.get("category", ""))), level_game_mode(item)]
+		if not groups.has(key):
+			groups[key] = []
+		groups[key].append(item)
+	for key in groups.keys():
+		var arr: Array = groups[key]
+		arr.sort_custom(_free_content_sort)
+		var parts := str(key).split("|")
+		var cat := parts[0] if parts.size() > 0 else ""
+		var mode := parts[1] if parts.size() > 1 else ""
+		var quota := 2 if mode == MODE_QUICK and (cat == CAT_CITA or cat == CAT_CURIOSIDADES) else 1
+		for i in range(mini(quota, arr.size())):
+			_free_puzzle_ids[int(arr[i].get("index", -1))] = true
+
+
+func _free_content_sort(a: Dictionary, b: Dictionary) -> bool:
+	var image_a := int(a.get("image_number", 0))
+	var image_b := int(b.get("image_number", 0))
+	if image_a != image_b:
+		return image_a < image_b
+	var diff_a := int(a.get("difficulty", 1))
+	var diff_b := int(b.get("difficulty", 1))
+	if diff_a != diff_b:
+		return diff_a < diff_b
+	return int(a.get("index", 0)) < int(b.get("index", 0))
 
 
 func daily_date_key() -> String:
@@ -426,6 +526,37 @@ func format_long_date(date_key: String = "") -> String:
 	return "%d de %s de %d" % [day, month_name, year]
 
 
+func daily_puzzle_pool() -> Array:
+	if frases_db.is_empty():
+		cargar_frases_desde_json()
+	var pool: Array = []
+	for item in frases_db:
+		if item is Dictionary and is_daily_puzzle(item):
+			pool.append(item)
+	pool.sort_custom(func(a, b): return int(a.get("index", 0)) < int(b.get("index", 0)))
+	return pool
+
+
+func advance_daily_to_next() -> Dictionary:
+	var pool := daily_puzzle_pool()
+	if pool.is_empty():
+		return {}
+	var current_id := -1
+	if typeof(PlayerPrefs) != TYPE_NIL:
+		current_id = PlayerPrefs.daily_puzzle_id_for(daily_date_key())
+	if current_id < 0:
+		current_id = int(todays_daily_item().get("index", -1))
+	var next_i := 0
+	for i in pool.size():
+		if int(pool[i].get("index", -1)) == current_id:
+			next_i = (i + 1) % pool.size()
+			break
+	var next: Dictionary = pool[next_i]
+	if typeof(PlayerPrefs) != TYPE_NIL:
+		PlayerPrefs.lock_daily_puzzle(daily_date_key(), int(next.get("index", -1)))
+	return next
+
+
 func todays_daily_item() -> Dictionary:
 	if frases_db.is_empty():
 		cargar_frases_desde_json()
@@ -433,7 +564,7 @@ func todays_daily_item() -> Dictionary:
 	var stored_id := PlayerPrefs.daily_puzzle_id_for(date_key)
 	if stored_id >= 0:
 		var stored := get_phrase_item(stored_id)
-		if not stored.is_empty():
+		if not stored.is_empty() and is_daily_puzzle(stored):
 			return stored
 	var item := _pick_daily_item(date_key)
 	if not item.is_empty():
@@ -443,17 +574,23 @@ func todays_daily_item() -> Dictionary:
 
 func _pick_daily_item(date_key: String) -> Dictionary:
 	var pool: Array = []
+	var unseen: Array = []
 	for item in frases_db:
-		if item is Dictionary:
-			pool.append(item)
-	if pool.is_empty():
+		if not (item is Dictionary) or not is_daily_puzzle(item):
+			continue
+		pool.append(item)
+		var puzzle_id := int(item.get("index", -1))
+		if typeof(PlayerPrefs) == TYPE_NIL or not PlayerPrefs.is_daily_discovered(puzzle_id):
+			unseen.append(item)
+	var use: Array = unseen if not unseen.is_empty() else pool
+	if use.is_empty():
 		return {}
-	pool.sort_custom(func(a, b): return int(a.get("index", 0)) < int(b.get("index", 0)))
+	use.sort_custom(func(a, b): return int(a.get("index", 0)) < int(b.get("index", 0)))
 	var seed := "%s|%s" % [date_key, locale_code()]
 	var hashed := 2166136261
 	for i in seed.length():
 		hashed = ((hashed ^ seed.unicode_at(i)) * 16777619) & 0x7fffffff
-	return pool[hashed % pool.size()]
+	return use[hashed % use.size()]
 
 
 func get_phrase_item(puzzle_id: int) -> Dictionary:
@@ -1467,6 +1604,7 @@ func cargar_frases_desde_json() -> void:
 			frases_db.append(d)
 
 	print("Frases JSON cargadas: ", frases_db.size())
+	rebuild_free_puzzle_ids()
 
 	
 func seleccionar_frase_por_indice_db(index_val: int) -> void:
@@ -1488,12 +1626,18 @@ func seleccionar_frase_aleatoria() -> void:
 	if frases_db.is_empty():
 		push_error("No hay frases cargadas.")
 		return
-	var pos := randi() % frases_db.size()
 	print("ID FRASE: " , str(id_frase))
 	if id_frase != -1:
 		_aplicar_frase_desde_db(id_frase)
-	else:
-		_aplicar_frase_desde_db(pos)
+		return
+	var candidates: Array[int] = []
+	for i in frases_db.size():
+		if not is_daily_puzzle(frases_db[i]):
+			candidates.append(i)
+	if candidates.is_empty():
+		push_error("No hay frases cargadas.")
+		return
+	_aplicar_frase_desde_db(candidates[randi() % candidates.size()])
 
 func _aplicar_frase_desde_db(pos: int) -> void:
 	print("pasa por rutina de frase")
@@ -1536,6 +1680,8 @@ func seleccionar_por_categoria_y_dificultad(cat: String, diff: int) -> void:
 	# Buscar frases que cumplan los dos criterios
 	for i in frases_db.size():
 		var item: Dictionary = frases_db[i]
+		if is_daily_puzzle(item):
+			continue
 		var same_cat := cat == "" or categories_match(String(item.category), cat)
 		if same_cat and int(item.difficulty) == diff:
 			candidatos.append(i)

@@ -2,29 +2,60 @@
 
 [ext_resource type="Script" uid="uid://cp7diyyw67hkl" path="res://scenes/menu_main.gd" id="1_5cqvi"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_nnl2u"]
-[ext_resource type="Texture2D" uid="uid://b1q15vddra5wi" path="res://images/settings.png" id="6_fnepi"]
+[ext_resource type="Texture2D" uid="uid://dslqrdlfkvkm0" path="res://images/settings.png" id="6_fnepi"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="6_nf8ut"]
-[ext_resource type="Texture2D" uid="uid://2ihewkmwcck0" path="res://images/Stats.png" id="9_8myay"]
-[ext_resource type="Texture2D" uid="uid://dfqcfbc4gla42" path="res://GUI/BotonPlaySimboloTextura.png" id="9_fnepi"]
-[ext_resource type="FontFile" uid="uid://foahejbukn0g" path="res://fonts/Fonts/Fredoka One/FredokaOne-Regular.ttf" id="10_87486"]
-[ext_resource type="Texture2D" uid="uid://cwjmgxbigi0se" path="res://images/Tutorial.png" id="10_ittxv"]
-[ext_resource type="Texture2D" uid="uid://b7arn7bxj0hq1" path="res://images/Leaderboard2.png" id="10_t01w5"]
+[ext_resource type="Texture2D" uid="uid://cgq01abliuw8v" path="res://images/Stats.png" id="9_8myay"]
+[ext_resource type="Texture2D" uid="uid://c0n8lq36j8ubr" path="res://GUI/BotonPlaySimboloTextura.png" id="9_fnepi"]
+[ext_resource type="FontFile" uid="uid://qsd4rrtmjkyp" path="res://fonts/Fonts/Fredoka One/FredokaOne-Regular.ttf" id="10_87486"]
+[ext_resource type="Texture2D" uid="uid://bidxfrqctyknx" path="res://images/Tutorial.png" id="10_ittxv"]
+[ext_resource type="Texture2D" uid="uid://bfbujo1eiyth7" path="res://images/Leaderboard2.png" id="10_t01w5"]
 [ext_resource type="Script" uid="uid://bt4vf7weivebq" path="res://scenes/AdjustSize.gd" id="11_11y0k"]
-[ext_resource type="Texture2D" uid="uid://7culudbdg6aa" path="res://images/Leaderboard2Shadow.png" id="15_1f17j"]
-[ext_resource type="Texture2D" uid="uid://di3qlfff4uys8" path="res://images/TutorialShadow.png" id="18_8myay"]
-[ext_resource type="FontFile" uid="uid://1oc1fewipk23" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="21_title"]
+[ext_resource type="Texture2D" uid="uid://djgesm36twvkd" path="res://images/Leaderboard2Shadow.png" id="15_1f17j"]
+[ext_resource type="Texture2D" uid="uid://bc5r1ladqsipe" path="res://images/TutorialShadow.png" id="18_8myay"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="21_title"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="22_btnfx"]
 [ext_resource type="Script" uid="uid://tjdclh16sy1s" path="res://scenes/tapered_line.gd" id="26_taper"]
-[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="27_star"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="27_star"]
 [ext_resource type="Texture2D" uid="uid://hqwatbm1ab1y" path="res://images/ui_icon_music_note.svg" id="28_music"]
 [ext_resource type="Texture2D" uid="uid://dm7gsouiq18gi" path="res://images/ui_icon_speaker.svg" id="29_fx"]
 [ext_resource type="Texture2D" uid="uid://dvtuv0l5fovjd" path="res://images/ui_icon_mute_slash.svg" id="30_slash"]
-[ext_resource type="Texture2D" path="res://images/ui_icon_shop.svg" id="31_shop"]
-[ext_resource type="Texture2D" path="res://images/ui_icon_daily.svg" id="32_daily"]
-[ext_resource type="Texture2D" path="res://images/ui_icon_library.svg" id="33_library"]
+[ext_resource type="Texture2D" uid="uid://rihcct8nat2h" path="res://images/ui_icon_shop.svg" id="31_shop"]
+[ext_resource type="Texture2D" uid="uid://dxivvuw5oykyh" path="res://images/ui_icon_daily.svg" id="32_daily"]
+[ext_resource type="Texture2D" uid="uid://cwpp1jnlww7fk" path="res://images/ui_icon_library.svg" id="33_library"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.960784, 0.913725, 0.854902, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_audio_quiet"]
+bg_color = Color(0.960784, 0.913725, 0.854902, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 10
+border_color = Color(0.847059, 0.776471, 0.694118, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.1)
+shadow_size = 6
+shadow_offset = Vector2(0, 5)
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxFlat" id="Style_audio_quiet_pressed"]
+bg_color = Color(0.921569, 0.870588, 0.807843, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.776471, 0.701961, 0.615686, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.07)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings"]
 bg_color = Color(1, 0.643137, 0.0156863, 1)
@@ -79,37 +110,6 @@ shadow_color = Color(0.364706, 0.25098, 0.215686, 0.16)
 shadow_size = 10
 shadow_offset = Vector2(0, 8)
 anti_aliasing_size = 0.5
-
-[sub_resource type="StyleBoxFlat" id="Style_audio_quiet"]
-bg_color = Color(0.960784, 0.913725, 0.854902, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 10
-border_color = Color(0.847059, 0.776471, 0.694118, 1)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
-shadow_color = Color(0.364706, 0.25098, 0.215686, 0.1)
-shadow_size = 6
-shadow_offset = Vector2(0, 5)
-anti_aliasing_size = 0.5
-
-[sub_resource type="StyleBoxFlat" id="Style_audio_quiet_pressed"]
-bg_color = Color(0.921569, 0.870588, 0.807843, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0.776471, 0.701961, 0.615686, 1)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
-corner_radius_bottom_left = 25
-shadow_color = Color(0.364706, 0.25098, 0.215686, 0.07)
-shadow_size = 3
-shadow_offset = Vector2(0, 2)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings_inset"]
 bg_color = Color(1, 1, 1, 0)
@@ -238,58 +238,6 @@ anti_aliasing_size = 0.5
 [sub_resource type="FontVariation" id="FontVariation_play"]
 base_font = ExtResource("10_87486")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_blue"]
-bg_color = Color(0.509804, 0.772549, 0.862745, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 12
-border_color = Color(0.286275, 0.568627, 0.682353, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
-shadow_size = 10
-shadow_offset = Vector2(0, 8)
-anti_aliasing_size = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_blue_pressed"]
-bg_color = Color(0.439216, 0.701961, 0.807843, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 6
-border_color = Color(0.243137, 0.501961, 0.607843, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
-shadow_size = 5
-shadow_offset = Vector2(0, 4)
-
-[sub_resource type="Theme" id="Theme_btn_blue"]
-Button/styles/disabled = SubResource("StyleBoxFlat_btn_blue")
-Button/styles/focus = SubResource("StyleBoxFlat_btn_blue")
-Button/styles/hover = SubResource("StyleBoxFlat_btn_blue")
-Button/styles/normal = SubResource("StyleBoxFlat_btn_blue")
-Button/styles/pressed = SubResource("StyleBoxFlat_btn_blue_pressed")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_inset"]
-bg_color = Color(1, 1, 1, 0)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.42)
-corner_radius_top_left = 27
-corner_radius_top_right = 27
-corner_radius_bottom_right = 27
-corner_radius_bottom_left = 27
-anti_aliasing_size = 0.5
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_salmon"]
 bg_color = Color(0.960784, 0.552941, 0.407843, 1)
 border_width_left = 5
@@ -328,43 +276,19 @@ Button/styles/hover = SubResource("StyleBoxFlat_btn_salmon")
 Button/styles/normal = SubResource("StyleBoxFlat_btn_salmon")
 Button/styles/pressed = SubResource("StyleBoxFlat_btn_salmon_pressed")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_mint"]
-bg_color = Color(0.619608, 0.843137, 0.729412, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 12
-border_color = Color(0.368627, 0.643137, 0.498039, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
-shadow_size = 10
-shadow_offset = Vector2(0, 8)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_inset"]
+bg_color = Color(1, 1, 1, 0)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.42)
+corner_radius_top_left = 27
+corner_radius_top_right = 27
+corner_radius_bottom_right = 27
+corner_radius_bottom_left = 27
 anti_aliasing_size = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_mint_pressed"]
-bg_color = Color(0.541176, 0.772549, 0.654902, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 6
-border_color = Color(0.309804, 0.552941, 0.419608, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
-shadow_size = 5
-shadow_offset = Vector2(0, 4)
-
-[sub_resource type="Theme" id="Theme_btn_mint"]
-Button/styles/disabled = SubResource("StyleBoxFlat_btn_mint")
-Button/styles/focus = SubResource("StyleBoxFlat_btn_mint")
-Button/styles/hover = SubResource("StyleBoxFlat_btn_mint")
-Button/styles/normal = SubResource("StyleBoxFlat_btn_mint")
-Button/styles/pressed = SubResource("StyleBoxFlat_btn_mint_pressed")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_gold"]
 bg_color = Color(0.831373, 0.67451, 0.372549, 1)
@@ -404,13 +328,13 @@ Button/styles/hover = SubResource("StyleBoxFlat_btn_gold")
 Button/styles/normal = SubResource("StyleBoxFlat_btn_gold")
 Button/styles/pressed = SubResource("StyleBoxFlat_btn_gold_pressed")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_teal"]
-bg_color = Color(0.415686, 0.701961, 0.701961, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_mint"]
+bg_color = Color(0.619608, 0.843137, 0.729412, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 12
-border_color = Color(0.270588, 0.52549, 0.52549, 1)
+border_color = Color(0.368627, 0.643137, 0.498039, 1)
 corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
@@ -420,13 +344,13 @@ shadow_size = 10
 shadow_offset = Vector2(0, 8)
 anti_aliasing_size = 0.5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_teal_pressed"]
-bg_color = Color(0.345098, 0.619608, 0.619608, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_mint_pressed"]
+bg_color = Color(0.541176, 0.772549, 0.654902, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 6
-border_color = Color(0.219608, 0.439216, 0.439216, 1)
+border_color = Color(0.309804, 0.552941, 0.419608, 1)
 corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
@@ -435,20 +359,20 @@ shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
 shadow_size = 5
 shadow_offset = Vector2(0, 4)
 
-[sub_resource type="Theme" id="Theme_btn_teal"]
-Button/styles/disabled = SubResource("StyleBoxFlat_btn_teal")
-Button/styles/focus = SubResource("StyleBoxFlat_btn_teal")
-Button/styles/hover = SubResource("StyleBoxFlat_btn_teal")
-Button/styles/normal = SubResource("StyleBoxFlat_btn_teal")
-Button/styles/pressed = SubResource("StyleBoxFlat_btn_teal_pressed")
+[sub_resource type="Theme" id="Theme_btn_mint"]
+Button/styles/disabled = SubResource("StyleBoxFlat_btn_mint")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_mint")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_mint")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_mint")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_mint_pressed")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_sand"]
-bg_color = Color(0.72549, 0.615686, 0.505882, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_blue"]
+bg_color = Color(0.509804, 0.772549, 0.862745, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 12
-border_color = Color(0.541176, 0.435294, 0.337255, 1)
+border_color = Color(0.286275, 0.568627, 0.682353, 1)
 corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
@@ -458,13 +382,13 @@ shadow_size = 10
 shadow_offset = Vector2(0, 8)
 anti_aliasing_size = 0.5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_sand_pressed"]
-bg_color = Color(0.647059, 0.541176, 0.439216, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_blue_pressed"]
+bg_color = Color(0.439216, 0.701961, 0.807843, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 6
-border_color = Color(0.454902, 0.360784, 0.27451, 1)
+border_color = Color(0.243137, 0.501961, 0.607843, 1)
 corner_radius_top_left = 34
 corner_radius_top_right = 34
 corner_radius_bottom_right = 34
@@ -473,12 +397,12 @@ shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
 shadow_size = 5
 shadow_offset = Vector2(0, 4)
 
-[sub_resource type="Theme" id="Theme_btn_sand"]
-Button/styles/disabled = SubResource("StyleBoxFlat_btn_sand")
-Button/styles/focus = SubResource("StyleBoxFlat_btn_sand")
-Button/styles/hover = SubResource("StyleBoxFlat_btn_sand")
-Button/styles/normal = SubResource("StyleBoxFlat_btn_sand")
-Button/styles/pressed = SubResource("StyleBoxFlat_btn_sand_pressed")
+[sub_resource type="Theme" id="Theme_btn_blue"]
+Button/styles/disabled = SubResource("StyleBoxFlat_btn_blue")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_blue")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_blue")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_blue")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_blue_pressed")
 
 [node name="MenuMain" type="Control" unique_id=1741371593]
 layout_mode = 3
@@ -600,10 +524,10 @@ grow_horizontal = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_audio_quiet")
-theme_override_styles/hover = SubResource("Style_audio_quiet")
 theme_override_styles/pressed = SubResource("Style_audio_quiet_pressed")
-theme_override_styles/focus = SubResource("Style_audio_quiet")
+theme_override_styles/hover = SubResource("Style_audio_quiet")
 theme_override_styles/disabled = SubResource("Style_audio_quiet")
+theme_override_styles/focus = SubResource("Style_audio_quiet")
 script = ExtResource("22_btnfx")
 enable_intro_scale = false
 enable_intro_rotation = false
@@ -661,10 +585,10 @@ grow_horizontal = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_audio_quiet")
-theme_override_styles/hover = SubResource("Style_audio_quiet")
 theme_override_styles/pressed = SubResource("Style_audio_quiet_pressed")
-theme_override_styles/focus = SubResource("Style_audio_quiet")
+theme_override_styles/hover = SubResource("Style_audio_quiet")
 theme_override_styles/disabled = SubResource("Style_audio_quiet")
+theme_override_styles/focus = SubResource("Style_audio_quiet")
 script = ExtResource("22_btnfx")
 enable_intro_scale = false
 enable_intro_rotation = false
@@ -1216,11 +1140,11 @@ vertical_alignment = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.08
-anchor_top = 0.42
+anchor_top = 0.473
 anchor_right = 0.92
-anchor_bottom = 0.575
-offset_top = -44.23999
-offset_bottom = -46.840088
+anchor_bottom = 0.617
+offset_top = -37.215942
+offset_bottom = -34.783936
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -1329,9 +1253,9 @@ theme_override_font_sizes/font_size = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.06
-anchor_top = 0.605
+anchor_top = 0.692
 anchor_right = 0.94
-anchor_bottom = 0.72
+anchor_bottom = 0.807
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 28
@@ -1366,6 +1290,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 
 [node name="IconShadow" type="TextureRect" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1888001005]
+visible = false
 modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
 layout_mode = 1
 anchors_preset = -1
@@ -1387,10 +1312,10 @@ stretch_mode = 5
 [node name="Icon" type="TextureRect" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1888001006]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.157
+anchor_top = 0.088
+anchor_right = 0.843
+anchor_bottom = 0.628
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -1445,6 +1370,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 
 [node name="IconShadow" type="TextureRect" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=1888001011]
+visible = false
 modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
 layout_mode = 1
 anchors_preset = -1
@@ -1466,10 +1392,10 @@ stretch_mode = 5
 [node name="Icon" type="TextureRect" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=1888001012]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.157
+anchor_top = 0.088
+anchor_right = 0.843
+anchor_bottom = 0.628
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -1524,6 +1450,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 
 [node name="IconShadow" type="TextureRect" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1888001017]
+visible = false
 modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
 layout_mode = 1
 anchors_preset = -1
@@ -1545,10 +1472,10 @@ stretch_mode = 5
 [node name="Icon" type="TextureRect" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1888001018]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.104
+anchor_top = 0.078
+anchor_right = 0.896
+anchor_bottom = 0.702
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -1560,9 +1487,9 @@ stretch_mode = 5
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.04
-anchor_top = 0.67
+anchor_top = 0.74
 anchor_right = 0.96
-anchor_bottom = 0.93
+anchor_bottom = 0.96
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
@@ -1577,9 +1504,9 @@ autowrap_mode = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.06
-anchor_top = 0.74
+anchor_top = 0.827
 anchor_right = 0.94
-anchor_bottom = 0.855
+anchor_bottom = 0.942
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 28
@@ -1617,10 +1544,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
 offset_left = 4.999996
 offset_top = 6.0
 offset_right = 5.0
@@ -1635,10 +1562,10 @@ stretch_mode = 5
 [node name="Icon" type="TextureRect" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=1835116931]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -1696,10 +1623,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
 offset_left = 5.0
 offset_top = 7.0
 offset_right = 5.0
@@ -1714,10 +1641,10 @@ stretch_mode = 5
 [node name="Icon" type="TextureRect" parent="Panel/Actions/ColStats/ButtonStats" unique_id=1290548388]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -1775,10 +1702,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
 offset_left = 4.999996
 offset_top = 10.0
 offset_right = 5.0
@@ -1793,10 +1720,10 @@ stretch_mode = 5
 [node name="Icon" type="TextureRect" parent="Panel/Actions/ColTutorial/ButtonTutorial" unique_id=743024439]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2

@@ -38,6 +38,7 @@ const REVEAL_BLINK_STEP := 0.11
 
 const MODE_ICON_QUICK := preload("res://images/mode_quick.svg")
 const MODE_ICON_CRYPTO := preload("res://images/mode_scroll.svg")
+const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
 
 var _start_ms: int
 var _shown_minute := -1
@@ -57,6 +58,7 @@ func _ready() -> void:
 	if stars_title:
 		stars_title.text = tr("TutStarsPuzzle")
 	_apply_category_color()
+	_apply_practice_lock()
 	_update_stars()
 	_update_letters_filled()
 	_update_game_mode()
@@ -145,9 +147,50 @@ func _blink_time_label() -> void:
 	_time_blink_tween.tween_property(time_value, "scale", Vector2.ONE, 0.12)
 
 
+func _apply_practice_lock() -> void:
+	if not GameManager.is_practice_session():
+		return
+	var stars_row := stars[0].get_parent() as Control
+	if stars_row == null or stars_row.get_parent() == null:
+		return
+	if stars_row.get_parent().name == "PracticeLockFrame":
+		return
+	var block := stars_row.get_parent()
+	var frame := PanelContainer.new()
+	frame.name = "PracticeLockFrame"
+	frame.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	frame.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	var index := stars_row.get_index()
+	block.add_child(frame)
+	block.move_child(frame, index)
+	stars_row.reparent(frame)
+	var lock := TextureRect.new()
+	lock.name = "Lock"
+	lock.texture = ICON_LOCK
+	lock.custom_minimum_size = Vector2(80, 80)
+	lock.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	lock.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	lock.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	lock.set_anchors_preset(Control.PRESET_CENTER)
+	lock.anchor_left = 0.5
+	lock.anchor_right = 0.5
+	lock.anchor_top = 0.5
+	lock.anchor_bottom = 0.5
+	lock.offset_left = -40.0
+	lock.offset_top = -40.0
+	lock.offset_right = 40.0
+	lock.offset_bottom = 40.0
+	frame.add_child(lock)
+
+
 func _update_stars(_value: int = -1) -> void:
 	var maximum := GameManager.get_puzzle_difficulty_stars()
 	var filled: int = clampi(GameManager.puzzle_stars, 0, maximum)
+	if GameManager.is_practice_session():
+		var recorded := GameManager.locked_record_stars
+		if recorded < 0:
+			recorded = int(PuzzleSaveManager.get_puzzle_summary(int(GameManager.id_frase)).get("stars_remaining", filled))
+		filled = clampi(recorded, 0, maximum)
 	for index in range(stars.size()):
 		stars[index].visible = index < maximum
 		stars[index].self_modulate = (
@@ -272,8 +315,9 @@ func _on_game_finished() -> void:
 	_completion_recorded = true
 	if not GameManager.partida_terminada:
 		GameManager._game_finished()
-	HistoryManager.add_result(GameManager.player_name, GameManager.score)
-	PlayFabTools.submit_competitive_rankings(GameManager.player_name)
+	if not GameManager.is_practice_session():
+		HistoryManager.add_result(GameManager.player_name, GameManager.score)
+		PlayFabTools.submit_competitive_rankings(GameManager.player_name)
 	SoundManager.play("ButtonClick")
 	_add_overlay(OVERLAY_RESULTS)
 
@@ -284,7 +328,8 @@ func _on_game_lost() -> void:
 	GameManager.set_score_ultima_partida(0)
 	GameManager.score = 0
 	SoundManager.play("GameOver")
-	HistoryManager.add_result(GameManager.player_name, 0)
+	if not GameManager.is_practice_session():
+		HistoryManager.add_result(GameManager.player_name, 0)
 	_add_overlay(OVERLAY_GAME_OVER)
 
 

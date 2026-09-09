@@ -1,25 +1,12 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scenes/menu_daily.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_fondo"]
 [ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="3_back"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="4_font"]
-[ext_resource type="Texture2D" path="res://images/ui_icon_daily.svg" id="5_daily"]
 
 [sub_resource type="StyleBoxFlat" id="Style_bg"]
-bg_color = Color(0.98, 0.953, 0.91, 1)
-
-[sub_resource type="StyleBoxFlat" id="Style_calendar"]
-bg_color = Color(0.961, 0.51, 0.008, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 8
-border_color = Color(0.83, 0.41, 0.02, 1)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
+bg_color = Color(0.992, 0.973, 0.949, 1)
 
 [sub_resource type="StyleBoxFlat" id="Style_play"]
 bg_color = Color(0.961, 0.51, 0.008, 1)
@@ -83,49 +70,23 @@ modulate = Color(1, 1, 1, 0.22)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 300.0
+offset_bottom = 268.0
 grow_horizontal = 2
 
 [node name="ButtonBack" parent="Header" instance=ExtResource("3_back")]
 layout_mode = 0
 offset_left = 28.0
-offset_top = 36.0
-offset_right = 160.0
-offset_bottom = 168.0
-
-[node name="CalendarButton" type="Button" parent="Header"]
-layout_mode = 0
-offset_left = 920.0
-offset_top = 44.0
-offset_right = 1052.0
-offset_bottom = 176.0
-focus_mode = 0
-mouse_filter = 2
-theme_override_styles/normal = SubResource("Style_calendar")
-theme_override_styles/hover = SubResource("Style_calendar")
-theme_override_styles/pressed = SubResource("Style_calendar")
-theme_override_styles/focus = SubResource("Style_calendar")
-
-[node name="Icon" type="TextureRect" parent="Header/CalendarButton"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 22.0
-offset_top = 20.0
-offset_right = -22.0
-offset_bottom = -26.0
-mouse_filter = 2
-texture = ExtResource("5_daily")
-expand_mode = 1
-stretch_mode = 5
+offset_top = 28.0
+offset_right = 140.0
+offset_bottom = 140.0
 
 [node name="Brand" type="HBoxContainer" parent="Header"]
-layout_mode = 0
-offset_left = 180.0
-offset_top = 28.0
-offset_right = 900.0
-offset_bottom = 92.0
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 22.0
+offset_bottom = 70.0
+grow_horizontal = 2
 alignment = 1
 theme_override_constants/separation = 0
 
@@ -133,57 +94,61 @@ theme_override_constants/separation = 0
 layout_mode = 2
 theme_override_colors/font_color = Color(0.29, 0.2, 0.13, 1)
 theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 32
 text = "Cifra"
 
 [node name="Letra" type="Label" parent="Header/Brand"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.29, 0.69, 0.67, 1)
 theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 32
 text = "Letra"
 
 [node name="Title" type="Label" parent="Header"]
-layout_mode = 0
-offset_left = 80.0
-offset_top = 96.0
-offset_right = 1000.0
-offset_bottom = 188.0
-theme_override_colors/font_color = Color(0.267, 0.184, 0.102, 1)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 64.0
+offset_bottom = 168.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 68
+theme_override_font_sizes/font_size = 72
 text = "Reto diario"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TaglineRow" type="HBoxContainer" parent="Header"]
-layout_mode = 0
-offset_left = 80.0
-offset_top = 196.0
-offset_right = 1000.0
-offset_bottom = 260.0
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 70.0
+offset_top = 168.0
+offset_right = -70.0
+offset_bottom = 236.0
+grow_horizontal = 2
 alignment = 1
 theme_override_constants/separation = 16
 
 [node name="LineL" type="ColorRect" parent="Header/TaglineRow"]
-custom_minimum_size = Vector2(90, 3)
+custom_minimum_size = Vector2(80, 2)
 layout_mode = 2
 size_flags_vertical = 4
-color = Color(0.78, 0.62, 0.42, 0.55)
+color = Color(0.82, 0.7, 0.52, 0.55)
 
 [node name="Tagline" type="Label" parent="Header/TaglineRow"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.42, 0.3, 0.2, 0.86)
+theme_override_colors/font_color = Color(0.5, 0.38, 0.26, 0.78)
 theme_override_fonts/font = ExtResource("4_font")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 32
 text = "El puzle especial de hoy"
 horizontal_alignment = 1
 
 [node name="LineR" type="ColorRect" parent="Header/TaglineRow"]
-custom_minimum_size = Vector2(90, 3)
+custom_minimum_size = Vector2(80, 2)
 layout_mode = 2
 size_flags_vertical = 4
-color = Color(0.78, 0.62, 0.42, 0.55)
+color = Color(0.82, 0.7, 0.52, 0.55)
 
 [node name="Scroll" type="ScrollContainer" parent="."]
 layout_mode = 1
@@ -191,9 +156,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 40.0
-offset_top = 288.0
+offset_top = 248.0
 offset_right = -40.0
-offset_bottom = -36.0
+offset_bottom = -200.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
@@ -202,24 +167,36 @@ scroll_deadzone = 16
 [node name="Body" type="VBoxContainer" parent="Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 28
+theme_override_constants/separation = 20
 
-[node name="Version" type="Label" parent="."]
+[node name="Footer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
+anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -280.0
-offset_top = -48.0
-offset_right = -24.0
-offset_bottom = -12.0
+offset_left = 56.0
+offset_top = -188.0
+offset_right = -56.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -32.0
+offset_right = 360.0
+offset_bottom = -6.0
 theme_override_colors/font_color = Color(0.45, 0.34, 0.24, 0.55)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 22
 text = "VERSIÓN"
-horizontal_alignment = 2
+horizontal_alignment = 0
 vertical_alignment = 2
 
 [node name="LockOverlay" type="ColorRect" parent="."]

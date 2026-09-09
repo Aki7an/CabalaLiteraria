@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://bjpeu7rrl4i88"]
 
-[ext_resource type="Texture2D" uid="uid://cn1pgqtgndjjj" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="3_pm6hv"]
+[ext_resource type="Texture2D" uid="uid://c23vr7r8uyqfk" path="res://GUI/Library/Button/Button_Custom/Btn_IconButton_Circle_121_White.png" id="3_pm6hv"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6ye2o"]
 texture = ExtResource("3_pm6hv")

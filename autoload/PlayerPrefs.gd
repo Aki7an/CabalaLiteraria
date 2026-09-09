@@ -21,6 +21,7 @@ var daily_puzzle_id: int = -1
 var daily_completed: bool = false
 var daily_stars: int = 0
 var daily_ids: PackedInt32Array = PackedInt32Array()
+var full_game: bool = false
 
 
 const SAVE_PATH := "user://prefs.cfg"
@@ -200,6 +201,7 @@ func save_prefs() -> void:
 	cfg.set_value("daily", "completed", daily_completed)
 	cfg.set_value("daily", "stars", daily_stars)
 	cfg.set_value("daily", "ids", Array(daily_ids))
+	cfg.set_value("shop", "full_game", full_game)
 	cfg.save(SAVE_PATH)
 	
 
@@ -238,6 +240,7 @@ func load_prefs() -> void:
 		daily_completed = bool(cfg.get_value("daily", "completed", daily_completed))
 		daily_stars = int(cfg.get_value("daily", "stars", daily_stars))
 		daily_ids = _load_int_ids(cfg, "daily", "ids")
+		full_game = bool(cfg.get_value("shop", "full_game", full_game))
 		
 		if mostrar_tuto_antes_partida:
 			GameManager.set_mostrar_tuto_antes_partida_enable()
@@ -271,6 +274,32 @@ func mark_completed_replay_today() -> void:
 func reset_completed_replay_today() -> void:
 	last_completed_replay_date = ""
 	save_prefs()
+
+
+func reset_player_progress() -> void:
+	level_normal_unlocked = false
+	level_dificil_unlocked = false
+	level_pro_unlocked = false
+	last_completed_replay_date = ""
+	skip_reveal_dialog = false
+	favorite_ids = PackedInt32Array()
+	daily_date = ""
+	daily_puzzle_id = -1
+	daily_completed = false
+	daily_stars = 0
+	daily_ids = PackedInt32Array()
+	full_game = false
+	mostrar_tuto_antes_partida = true
+	GameManager.set_level_normal_unlocked(false)
+	GameManager.set_level_dificil_unlocked(false)
+	GameManager.set_level_pro_unlocked(false)
+	GameManager.set_mostrar_tuto_antes_partida_enable()
+	GameManager.online_name_chosen = false
+	GameManager.guest_online_id = ""
+	GameManager.player_name = ""
+	GameManager.ensure_online_identity()
+	save_prefs()
+	SignalManager.full_game_changed.emit()
 
 
 func set_mostrar_tutorial(enabled: bool) -> void:

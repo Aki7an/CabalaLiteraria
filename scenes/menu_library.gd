@@ -13,6 +13,7 @@ const STAR_ON: Texture2D = preload("res://images/estrella_plano.png")
 const STAR_OFF: Texture2D = preload("res://images/contorno_estrella.png")
 const ICON_PLAY: Texture2D = preload("res://GUI/BotonPlaySimboloTextura.png")
 const ICON_DAILY: Texture2D = preload("res://images/ui_icon_daily.svg")
+const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 const PREVIEW_COUNT := 4
 const THUMB_SIZE := 222
@@ -132,6 +133,12 @@ func _end_drag() -> void:
 func _category_defs() -> Array[Dictionary]:
 	return [
 		{
+			"id": GameManager.CAT_DAILY,
+			"icon": ICON_DAILY,
+			"color": GameManager.category_color(GameManager.CAT_DAILY),
+			"icon_bg": Color(1, 0.82, 0.35, 1),
+		},
+		{
 			"id": GameManager.CAT_CITA,
 			"icon": ICON_CITA,
 			"color": GameManager.category_color(GameManager.CAT_CITA),
@@ -180,8 +187,9 @@ func _is_completed(puzzle_id: int) -> bool:
 
 func _items_for(cat_id: String, mode: String = "") -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
+	var wanted := GameManager.normalize_category(cat_id)
 	for item in _all_items():
-		if not GameManager.categories_match(str(item.get("category", "")), cat_id):
+		if GameManager.library_category(item) != wanted:
 			continue
 		if mode != "" and GameManager.level_game_mode(item) != mode:
 			continue
@@ -215,11 +223,14 @@ func _carousel_items(items: Array[Dictionary]) -> Array[Dictionary]:
 func _rebuild_index() -> void:
 	for child in cards.get_children():
 		child.queue_free()
-	var all_items := _all_items()
-	var completed_all := _completed_in(all_items)
-	progress_bar.max_value = maxi(all_items.size(), 1)
+	var catalog: Array[Dictionary] = []
+	for item in _all_items():
+		if not GameManager.is_daily_puzzle(item):
+			catalog.append(item)
+	var completed_all := _completed_in(catalog)
+	progress_bar.max_value = maxi(catalog.size(), 1)
 	progress_bar.value = completed_all.size()
-	progress_label.text = tr("LibraryProgress") % [completed_all.size(), all_items.size()]
+	progress_label.text = tr("LibraryProgress") % [completed_all.size(), catalog.size()]
 	subtitle_label.text = tr("LibraryFavoritesSubtitle") if _filter_favorites else tr("LibrarySolvedSubtitle")
 	empty_state.visible = false
 	for def in _category_defs():
@@ -326,9 +337,12 @@ func _create_category_card(def: Dictionary) -> PanelContainer:
 
 	if not collapsed:
 		var accent: Color = def.get("color", Color(0.8, 0.6, 0.3))
-		col.add_child(_create_mode_row(cat_id, GameManager.MODE_QUICK, tr("Quick"), accent))
-		col.add_child(_mode_separator())
-		col.add_child(_create_mode_row(cat_id, GameManager.MODE_CRYPTOGRAM, tr("Cryptogram"), accent))
+		if cat_id == GameManager.CAT_DAILY:
+			col.add_child(_create_mode_row(cat_id, "", "", accent, false))
+		else:
+			col.add_child(_create_mode_row(cat_id, GameManager.MODE_QUICK, tr("Quick"), accent))
+			col.add_child(_mode_separator())
+			col.add_child(_create_mode_row(cat_id, GameManager.MODE_CRYPTOGRAM, tr("Cryptogram"), accent))
 	return card
 
 
@@ -363,10 +377,10 @@ func _visible_slice(done: Array[Dictionary], offset: int) -> Array[Dictionary]:
 	return done.slice(offset, end)
 
 
-func _create_mode_row(cat_id: String, mode: String, caption: String, accent: Color) -> VBoxContainer:
+func _create_mode_row(cat_id: String, mode: String, caption: String, accent: Color, show_mode_header: bool = true) -> VBoxContainer:
 	var items := _items_for(cat_id, mode)
 	var done := _carousel_items(items)
-	var key := "%s|%s" % [cat_id, mode]
+	var key := "%s|%s" % [cat_id, mode if mode != "" else "all"]
 	var offset := _clamped_offset(key, done.size())
 
 	var block := VBoxContainer.new()
@@ -374,50 +388,51 @@ func _create_mode_row(cat_id: String, mode: String, caption: String, accent: Col
 	block.set_meta("carousel_key", key)
 	block.set_meta("carousel_items", done)
 
-	var info := HBoxContainer.new()
-	info.add_theme_constant_override("separation", 14)
-	info.alignment = BoxContainer.ALIGNMENT_CENTER
-	block.add_child(info)
+	if show_mode_header:
+		var info := HBoxContainer.new()
+		info.add_theme_constant_override("separation", 14)
+		info.alignment = BoxContainer.ALIGNMENT_CENTER
+		block.add_child(info)
 
-	var mode_icon := TextureRect.new()
-	mode_icon.custom_minimum_size = Vector2(44, 44)
-	mode_icon.texture = ICON_QUICK if mode == GameManager.MODE_QUICK else ICON_LUPA
-	mode_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	mode_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	mode_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	info.add_child(mode_icon)
+		var mode_icon := TextureRect.new()
+		mode_icon.custom_minimum_size = Vector2(44, 44)
+		mode_icon.texture = ICON_QUICK if mode == GameManager.MODE_QUICK else ICON_LUPA
+		mode_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		mode_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		mode_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		info.add_child(mode_icon)
 
-	var name_label := Label.new()
-	name_label.text = caption
-	name_label.add_theme_font_override("font", FONT_UI)
-	name_label.add_theme_font_size_override("font_size", 40)
-	name_label.add_theme_color_override("font_color", INK)
-	info.add_child(name_label)
+		var name_label := Label.new()
+		name_label.text = caption
+		name_label.add_theme_font_override("font", FONT_UI)
+		name_label.add_theme_font_size_override("font_size", 40)
+		name_label.add_theme_color_override("font_color", INK)
+		info.add_child(name_label)
 
-	var count := Label.new()
-	count.text = "%d / %d" % [_completed_in(items).size(), items.size()]
-	count.add_theme_font_override("font", FONT_UI)
-	count.add_theme_font_size_override("font_size", 26)
-	count.add_theme_color_override("font_color", INK_SOFT)
-	info.add_child(count)
+		var count := Label.new()
+		count.text = "%d / %d" % [_completed_in(items).size(), items.size()]
+		count.add_theme_font_override("font", FONT_UI)
+		count.add_theme_font_size_override("font_size", 26)
+		count.add_theme_color_override("font_color", INK_SOFT)
+		info.add_child(count)
 
-	var mini := ProgressBar.new()
-	mini.custom_minimum_size = Vector2(220, 16)
-	mini.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	mini.max_value = maxi(items.size(), 1)
-	mini.value = _completed_in(items).size()
-	mini.show_percentage = false
-	mini.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var mini_bg := StyleBoxFlat.new()
-	mini_bg.bg_color = accent.lerp(Color(1, 0.98, 0.95, 1), 0.42)
-	mini_bg.bg_color.a = 0.38
-	mini_bg.set_corner_radius_all(8)
-	var mini_fill := StyleBoxFlat.new()
-	mini_fill.bg_color = accent.darkened(0.06)
-	mini_fill.set_corner_radius_all(8)
-	mini.add_theme_stylebox_override("background", mini_bg)
-	mini.add_theme_stylebox_override("fill", mini_fill)
-	info.add_child(mini)
+		var mini := ProgressBar.new()
+		mini.custom_minimum_size = Vector2(220, 16)
+		mini.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		mini.max_value = maxi(items.size(), 1)
+		mini.value = _completed_in(items).size()
+		mini.show_percentage = false
+		mini.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var mini_bg := StyleBoxFlat.new()
+		mini_bg.bg_color = accent.lerp(Color(1, 0.98, 0.95, 1), 0.42)
+		mini_bg.bg_color.a = 0.38
+		mini_bg.set_corner_radius_all(8)
+		var mini_fill := StyleBoxFlat.new()
+		mini_fill.bg_color = accent.darkened(0.06)
+		mini_fill.set_corner_radius_all(8)
+		mini.add_theme_stylebox_override("background", mini_bg)
+		mini.add_theme_stylebox_override("fill", mini_fill)
+		info.add_child(mini)
 
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 8)
@@ -597,8 +612,6 @@ func _create_thumb(item: Dictionary) -> Button:
 	frame.add_theme_stylebox_override("panel", _image_frame_style())
 	button.add_child(frame)
 	button.add_child(_thumb_heart_button(puzzle_id))
-	if PlayerPrefs.is_daily_discovered(puzzle_id):
-		button.add_child(_thumb_daily_badge())
 
 	var image := TextureRect.new()
 	image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -871,18 +884,23 @@ func _count_pill(text: String) -> PanelContainer:
 
 
 func _pack_caption(item: Dictionary) -> String:
-	var pack := str(item.get("pack", "")).strip_edges()
+	var pack := _pack_label(item)
 	if pack != "":
 		return "⚝ %s" % pack
 	return ""
+
+
+func _pack_label(item: Dictionary) -> String:
+	if GameManager.is_daily_puzzle(item):
+		return tr("DailyChallenge")
+	return str(item.get("pack", "")).strip_edges()
 
 
 func _puzzle_title(item: Dictionary) -> String:
 	var init := str(item.get("description_init", "")).strip_edges()
 	if init != "" and init.to_lower() != "frase final":
 		return init
-	var pack := str(item.get("pack", "")).strip_edges()
-	return pack
+	return _pack_label(item)
 
 
 func _setup_ficha_layout() -> void:
@@ -942,10 +960,10 @@ func _ensure_ficha_backdrop() -> void:
 
 
 func _ensure_info_header() -> void:
+	ficha_context.offset_top = 120
 	if ficha_context.get_parent().get_node_or_null("InfoHeader") != null:
 		return
 	var card := ficha_context.get_parent() as Control
-	ficha_context.offset_top = 78
 	var header := HBoxContainer.new()
 	header.name = "InfoHeader"
 	header.set_anchors_preset(Control.PRESET_TOP_WIDE)
@@ -1089,7 +1107,7 @@ func _footer_action_button(
 	var label := Label.new()
 	label.name = "Label"
 	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 30)
+	label.add_theme_font_size_override("font_size", 38)
 	label.add_theme_color_override("font_color", text_color)
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -1195,6 +1213,8 @@ func _category_icon_for(cat_id: String) -> Texture2D:
 			return ICON_CURIO
 		GameManager.CAT_FRAGMENTO:
 			return ICON_FRAG
+		GameManager.CAT_DAILY:
+			return ICON_DAILY
 		_:
 			return ICON_CITA
 
@@ -1217,7 +1237,7 @@ func _fill_ficha_summary(item: Dictionary) -> void:
 	var card := ficha_body.get_node_or_null("SummaryCard") as Panel
 	if card == null:
 		return
-	var cat_id := str(item.get("category", ""))
+	var cat_id := GameManager.library_category(item)
 	card.add_theme_stylebox_override("panel", _category_card_style(GameManager.category_color(cat_id), cat_id))
 	var icon := card.find_child("CategoryIcon", true, false) as TextureRect
 	if icon:
@@ -1238,11 +1258,11 @@ func _fill_ficha_summary(item: Dictionary) -> void:
 		old_date.visible = false
 	var pack_label := card.find_child("PackLabel", true, false) as Label
 	if pack_label:
-		var pack := str(item.get("pack", "")).strip_edges()
+		var pack := _pack_label(item)
 		pack_label.text = pack if pack != "" else tr("LibraryBaseGame")
 	var daily_badge := card.find_child("DailyBadge", true, false) as Control
 	if daily_badge:
-		daily_badge.visible = PlayerPrefs.is_daily_discovered(puzzle_id)
+		daily_badge.visible = false
 	var stars := card.find_child("Stars", true, false) as HBoxContainer
 	if stars:
 		for child in stars.get_children():
@@ -1293,7 +1313,7 @@ func _outlined_star(filled: bool, cryptogram: bool) -> Control:
 func _open_ficha(item: Dictionary) -> void:
 	SoundManager.play("ButtonClick")
 	_ficha_item = item
-	var cat_id := str(item.get("category", ""))
+	var cat_id := GameManager.library_category(item)
 	ficha_title.text = tr("LibrarySheet")
 	ficha_subtitle.text = tr("LibraryPuzzleSolved")
 	_fill_ficha_summary(item)
@@ -1343,7 +1363,7 @@ func _open_ficha(item: Dictionary) -> void:
 func _fit_ficha_cards() -> void:
 	await get_tree().process_frame
 	_fit_text_card($FichaRoot/Scroll/Body/PhraseCard as Panel, ficha_phrase, 108.0, 260.0)
-	_fit_text_card($FichaRoot/Scroll/Body/ContextCard as Panel, ficha_context, 110.0, 220.0)
+	_fit_text_card($FichaRoot/Scroll/Body/ContextCard as Panel, ficha_context, 150.0, 260.0)
 	if ficha_sources_card.visible:
 		_fit_text_card(ficha_sources_card, ficha_sources, 120.0, 180.0)
 	if ficha_image_frame.visible:
@@ -1416,10 +1436,125 @@ func _on_ficha_play_again_pressed() -> void:
 		return
 	if not get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty():
 		return
+	if ficha_root.get_node_or_null("PracticeDialog") != null:
+		return
 	SoundManager.play("ButtonClick")
-	GameManager.session_source = GameManager.SOURCE_NONE
+	_show_practice_dialog(item)
+
+
+func _show_practice_dialog(item: Dictionary) -> void:
+	var overlay := ColorRect.new()
+	overlay.name = "PracticeDialog"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.08, 0.04, 0.02, 0.58)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	overlay.z_index = 80
+	ficha_root.add_child(overlay)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.add_child(center)
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(1020, 0)
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(1, 0.965, 0.86, 1)
+	card_style.border_color = Color(0.62, 0.4, 0.16, 0.46)
+	card_style.set_border_width_all(4)
+	card_style.border_width_bottom = 9
+	card_style.set_corner_radius_all(40)
+	card.add_theme_stylebox_override("panel", card_style)
+	center.add_child(card)
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 48)
+	margin.add_theme_constant_override("margin_right", 48)
+	margin.add_theme_constant_override("margin_top", 40)
+	margin.add_theme_constant_override("margin_bottom", 36)
+	card.add_child(margin)
+	var inner := VBoxContainer.new()
+	inner.add_theme_constant_override("separation", 26)
+	margin.add_child(inner)
+	var lock := TextureRect.new()
+	lock.texture = ICON_LOCK
+	lock.custom_minimum_size = Vector2(80, 80)
+	lock.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	lock.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	lock.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	inner.add_child(lock)
+	var title := Label.new()
+	title.text = tr("LibraryPracticeTitle")
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	title.add_theme_font_override("font", FONT_UI)
+	title.add_theme_font_size_override("font_size", 52)
+	title.add_theme_color_override("font_color", INK)
+	inner.add_child(title)
+	var body := Label.new()
+	body.text = tr("LibraryPracticeBody")
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.add_theme_font_override("font", FONT_UI)
+	body.add_theme_font_size_override("font_size", 40)
+	body.add_theme_color_override("font_color", INK_SOFT)
+	inner.add_child(body)
+	var buttons := HBoxContainer.new()
+	buttons.add_theme_constant_override("separation", 24)
+	inner.add_child(buttons)
+	var cancel := Button.new()
+	cancel.text = tr("Cancel")
+	cancel.focus_mode = Control.FOCUS_NONE
+	cancel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cancel.custom_minimum_size = Vector2(0, 124)
+	cancel.add_theme_font_override("font", FONT_UI)
+	cancel.add_theme_font_size_override("font_size", 42)
+	cancel.add_theme_color_override("font_color", INK)
+	var cancel_style := StyleBoxFlat.new()
+	cancel_style.bg_color = Color(1, 0.982, 0.92, 1)
+	cancel_style.border_color = Color(0.66, 0.44, 0.2, 0.7)
+	cancel_style.set_border_width_all(3)
+	cancel_style.border_width_bottom = 8
+	cancel_style.set_corner_radius_all(28)
+	cancel.add_theme_stylebox_override("normal", cancel_style)
+	cancel.add_theme_stylebox_override("hover", cancel_style)
+	cancel.add_theme_stylebox_override("pressed", cancel_style)
+	cancel.pressed.connect(func() -> void:
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+	)
+	buttons.add_child(cancel)
+	var play := Button.new()
+	play.text = tr("LibraryPracticePlay")
+	play.focus_mode = Control.FOCUS_NONE
+	play.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	play.custom_minimum_size = Vector2(0, 124)
+	play.add_theme_font_override("font", FONT_UI)
+	play.add_theme_font_size_override("font_size", 42)
+	play.add_theme_color_override("font_color", Color.WHITE)
+	var play_style := StyleBoxFlat.new()
+	play_style.bg_color = Color(0.96, 0.51, 0.01, 1)
+	play_style.border_color = Color(0.83, 0.41, 0.02, 1)
+	play_style.set_border_width_all(3)
+	play_style.border_width_bottom = 8
+	play_style.set_corner_radius_all(28)
+	play.add_theme_stylebox_override("normal", play_style)
+	play.add_theme_stylebox_override("hover", play_style)
+	play.add_theme_stylebox_override("pressed", play_style)
+	play.pressed.connect(func() -> void:
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+		_start_practice_game(item)
+	)
+	buttons.add_child(play)
+
+
+func _start_practice_game(item: Dictionary) -> void:
+	var puzzle_id := int(item.get("index", -1))
+	if puzzle_id < 0:
+		return
+	var summary := PuzzleSaveManager.get_puzzle_summary(puzzle_id)
+	GameManager.session_source = GameManager.SOURCE_PRACTICE
+	GameManager.locked_record_stars = clampi(int(summary.get("stars_remaining", 0)), 0, 5)
 	GameManager.allow_completed_replay = true
 	GameManager.id_frase = puzzle_id
+	GameManager.set_game_mode_actual(GameManager.level_game_mode(item))
 	GameManager.set_dificultad_actual(int(item.get("difficulty", 1)))
 	GameManager.seleccionar_por_index(puzzle_id)
 	PuzzleSaveManager.prepare_current_puzzle_cipher()
@@ -1474,11 +1609,13 @@ func _apply_ficha_favorite_button() -> void:
 			icon.modulate = Color(0.86, 0.22, 0.28, 1)
 		var label := footer.find_child("Label", true, false) as Label
 		if label:
+			label.add_theme_font_size_override("font_size", 38)
 			label.text = tr("InFavorites") if on else tr("AddToFavorites")
 	var play_again := ficha_root.find_child("PlayAgain", true, false) as Button
 	if play_again:
 		var play_label := play_again.find_child("Label", true, false) as Label
 		if play_label:
+			play_label.add_theme_font_size_override("font_size", 38)
 			play_label.text = tr("PlayAgain")
 
 

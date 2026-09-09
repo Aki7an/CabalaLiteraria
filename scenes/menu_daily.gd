@@ -15,12 +15,18 @@ const ICON_DAILY: Texture2D = preload("res://images/ui_icon_daily.svg")
 const ICON_LIBRARY: Texture2D = preload("res://images/ui_icon_library.svg")
 const ICON_CLOCK: Texture2D = preload("res://images/stats_icon_clock.svg")
 const ICON_PLAY: Texture2D = preload("res://GUI/BotonPlaySimboloTextura.png")
+const ICON_BULB: Texture2D = preload("res://images/ui_icon_bulb_white.svg")
+const ICON_SIGNAL: Texture2D = preload("res://images/ui_icon_signal.svg")
+const ICON_PEOPLE: Texture2D = preload("res://images/ui_icon_people.svg")
 const STAR_ON: Texture2D = preload("res://images/estrella_plano.png")
 const STAR_OFF: Texture2D = preload("res://images/contorno_estrella.png")
-const INK := Color(0.29, 0.2, 0.13, 1)
-const INK_SOFT := Color(0.45, 0.32, 0.22, 0.86)
-const TEAL := Color(0.29, 0.69, 0.67, 1)
+const INK := Color(0.22, 0.16, 0.1, 1)
+const INK_SOFT := Color(0.48, 0.36, 0.26, 0.82)
+const TEAL := Color(0.31, 0.74, 0.76, 1)
 const ORANGE := Color(0.96, 0.51, 0.01, 1)
+const CARD_WHITE := Color(1, 0.997, 0.992, 1)
+const ICON_TEAL := Color(0.22, 0.62, 0.66, 1)
+const ICON_BROWN := Color(0.55, 0.38, 0.24, 1)
 
 var _item: Dictionary = {}
 var _play_button: Button
@@ -31,6 +37,7 @@ var _completed_box: VBoxContainer
 @onready var title_label: Label = $Header/Title
 @onready var tagline_label: Label = $Header/TaglineRow/Tagline
 @onready var body: VBoxContainer = $Scroll/Body
+@onready var footer: VBoxContainer = $Footer
 @onready var version_label: Label = $Version
 @onready var lock_overlay: Control = $LockOverlay
 
@@ -41,28 +48,52 @@ func _ready() -> void:
 	title_label.text = tr("DailyChallenge")
 	tagline_label.text = tr("DailyTagline")
 	version_label.text = "%s %s" % [tr("Version"), PlayerPrefs.version_display()]
+	version_label.visible = false
+	_style_back_button()
+	_apply_lock_texts()
+	if not SignalManager.full_game_changed.is_connected(_refresh_purchase_lock):
+		SignalManager.full_game_changed.connect(_refresh_purchase_lock)
+	_refresh_purchase_lock()
+
+
+func _refresh_purchase_lock() -> void:
 	_apply_lock_texts()
 	if not GameManager.has_full_game():
 		$Scroll.visible = false
+		footer.visible = false
 		lock_overlay.visible = true
 		return
 	lock_overlay.visible = false
+	$Scroll.visible = true
+	footer.visible = true
 	_item = GameManager.todays_daily_item()
 	_build_content()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q:
+		_item = GameManager.advance_daily_to_next()
+		_build_content()
+		get_viewport().set_input_as_handled()
 
 
 func _build_content() -> void:
 	for child in body.get_children():
 		child.queue_free()
+	for child in footer.get_children():
+		child.queue_free()
 	var done := PlayerPrefs.is_daily_completed_today()
 	body.add_child(_date_card(done))
-	body.add_child(_challenge_card(done))
 	body.add_child(_how_card())
+	body.add_child(_image_block(done))
+	body.add_child(_details_card())
+	var spacer := Control.new()
+	spacer.custom_minimum_size = Vector2(0, 24)
+	body.add_child(spacer)
 	_play_button = _make_play_button()
 	_completed_box = _make_completed_box()
-	body.add_child(_play_button)
-	body.add_child(_completed_box)
-	body.add_child(_menu_link())
+	footer.add_child(_play_button)
+	footer.add_child(_completed_box)
 	_play_button.visible = not done
 	_completed_box.visible = done
 	if _item.is_empty():
@@ -71,8 +102,8 @@ func _build_content() -> void:
 
 func _date_card(done: bool) -> Panel:
 	var card := Panel.new()
-	card.custom_minimum_size = Vector2(0, 132)
-	card.add_theme_stylebox_override("panel", _stroke_card_style())
+	card.custom_minimum_size = Vector2(0, 196)
+	card.add_theme_stylebox_override("panel", _white_card_style())
 	var row := HBoxContainer.new()
 	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	row.offset_left = 28
@@ -80,70 +111,88 @@ func _date_card(done: bool) -> Panel:
 	row.add_theme_constant_override("separation", 20)
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	card.add_child(row)
-	var icon := TextureRect.new()
-	icon.custom_minimum_size = Vector2(72, 72)
-	icon.texture = ICON_DAILY
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var icon := _circle_icon(ICON_DAILY, 128, Color(0.9, 0.97, 0.97, 1), Color.WHITE, 0.14)
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(icon)
 	var col := VBoxContainer.new()
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	col.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	col.alignment = BoxContainer.ALIGNMENT_CENTER
-	col.add_theme_constant_override("separation", 4)
+	col.add_theme_constant_override("separation", 6)
 	row.add_child(col)
 	var date := Label.new()
 	date.text = GameManager.format_long_date()
 	date.add_theme_font_override("font", FONT_UI)
-	date.add_theme_font_size_override("font_size", 36)
+	date.add_theme_font_size_override("font_size", 38)
 	date.add_theme_color_override("font_color", INK)
 	col.add_child(date)
 	var status := Label.new()
 	status.text = tr("DailyCompletedShort") if done else tr("DailyAvailable")
 	status.add_theme_font_override("font", FONT_UI)
-	status.add_theme_font_size_override("font_size", 28)
+	status.add_theme_font_size_override("font_size", 36)
 	status.add_theme_color_override("font_color", Color(0.18, 0.55, 0.32, 1) if done else INK_SOFT)
 	col.add_child(status)
 	var sparkles := Label.new()
 	sparkles.text = "✦"
-	sparkles.add_theme_font_size_override("font_size", 34)
-	sparkles.add_theme_color_override("font_color", ORANGE)
+	sparkles.add_theme_font_size_override("font_size", 40)
+	sparkles.add_theme_color_override("font_color", Color(0.98, 0.78, 0.28, 1))
 	sparkles.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	sparkles.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(sparkles)
 	return card
 
 
-func _challenge_card(done: bool) -> Panel:
-	var card := Panel.new()
-	card.add_theme_stylebox_override("panel", _cream_card_style())
+func _image_block(done: bool) -> CenterContainer:
+	return _square_image(str(_item.get("category", "")), done)
+
+
+func _details_card() -> PanelContainer:
+	var card := PanelContainer.new()
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card.add_theme_stylebox_override("panel", _white_card_style())
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 32)
+	margin.add_theme_constant_override("margin_right", 32)
+	margin.add_theme_constant_override("margin_top", 28)
+	margin.add_theme_constant_override("margin_bottom", 28)
+	card.add_child(margin)
 	var col := VBoxContainer.new()
-	col.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	col.offset_left = 24
-	col.offset_right = -24
-	col.offset_top = 24
-	col.offset_bottom = -20
-	col.add_theme_constant_override("separation", 20)
-	card.add_child(col)
-	var top := HBoxContainer.new()
-	top.add_theme_constant_override("separation", 22)
-	col.add_child(top)
+	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	col.add_theme_constant_override("separation", 16)
+	margin.add_child(col)
+	var cat_id := str(_item.get("category", ""))
+	var mode := GameManager.level_game_mode(_item)
+	var is_crypto := mode == GameManager.MODE_CRYPTOGRAM
+	var diff_name := tr("Medium") if int(_item.get("difficulty", 1)) == 2 else GameManager.difficulty_display_name(int(_item.get("difficulty", 1)))
+	col.add_child(_centered_meta(ICON_LUPA if is_crypto else ICON_QUICK, tr("DailyType") % (
+		tr("Cryptogram") if is_crypto else tr("Quick")
+	), INK_SOFT))
+	col.add_child(_centered_meta(ICON_SIGNAL, "%s %s" % [
+		tr("DailyDifficulty").replace("%s", "").strip_edges(),
+		diff_name
+	], ORANGE))
+	col.add_child(_centered_meta(ICON_CLOCK, tr("DailyEstimated") % (
+		tr("TimeCryptoRange") if is_crypto else tr("TimeQuickRange")
+	), ICON_TEAL))
+	col.add_child(_centered_text(_teaser_for(cat_id), 32, INK_SOFT))
+	return card
+
+
+func _square_image(cat_id: String, done: bool) -> CenterContainer:
+	var wrap := CenterContainer.new()
+	wrap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var frame := Panel.new()
-	frame.custom_minimum_size = Vector2(280, 280)
 	frame.clip_contents = true
+	frame.custom_minimum_size = Vector2(760, 760)
 	var frame_style := StyleBoxFlat.new()
-	frame_style.bg_color = Color(0.91, 0.82, 0.64, 1)
-	frame_style.set_corner_radius_all(24)
+	frame_style.bg_color = Color(0.93, 0.9, 0.86, 1)
+	frame_style.set_corner_radius_all(28)
 	frame.add_theme_stylebox_override("panel", frame_style)
 	var image := TextureRect.new()
 	image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	image.offset_left = 8
-	image.offset_top = 8
-	image.offset_right = -8
-	image.offset_bottom = -8
 	image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	image.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var cat_id := str(_item.get("category", ""))
 	var path := GameManager.find_level_image_path(int(_item.get("image_number", -1)))
 	if path != "":
 		var tex := load(path) as Texture2D
@@ -151,138 +200,60 @@ func _challenge_card(done: bool) -> Panel:
 	else:
 		image.texture = _category_icon_for(cat_id)
 	frame.add_child(image)
-	top.add_child(frame)
-	var info := VBoxContainer.new()
-	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	info.add_theme_constant_override("separation", 10)
-	top.add_child(info)
-	var cat_row := HBoxContainer.new()
-	cat_row.add_theme_constant_override("separation", 10)
-	info.add_child(cat_row)
-	var cat_icon := TextureRect.new()
-	cat_icon.custom_minimum_size = Vector2(42, 42)
-	cat_icon.texture = _category_icon_for(cat_id)
-	cat_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	cat_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	cat_row.add_child(cat_icon)
-	var cat_label := Label.new()
-	cat_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	cat_label.text = GameManager.category_display_name(cat_id)
-	cat_label.add_theme_font_override("font", FONT_UI)
-	cat_label.add_theme_font_size_override("font_size", 36)
-	cat_label.add_theme_color_override("font_color", INK)
-	cat_row.add_child(cat_label)
-	cat_row.add_child(_hoy_badge(done))
-	var mode := GameManager.level_game_mode(_item)
-	var is_crypto := mode == GameManager.MODE_CRYPTOGRAM
-	info.add_child(_meta_row(ICON_QUICK if not is_crypto else ICON_LUPA, tr("DailyType") % (
-		tr("Cryptogram") if is_crypto else tr("Quick")
-	)))
-	info.add_child(_difficulty_row(int(_item.get("difficulty", 1))))
-	info.add_child(_meta_row(ICON_CLOCK, tr("DailyEstimated") % (
-		tr("TimeCryptoRange") if is_crypto else tr("TimeQuickRange")
-	)))
-	var teaser := Panel.new()
-	var teaser_style := StyleBoxFlat.new()
-	teaser_style.bg_color = Color(0.97, 0.93, 0.86, 1)
-	teaser_style.set_corner_radius_all(16)
-	teaser.add_theme_stylebox_override("panel", teaser_style)
-	var teaser_label := Label.new()
-	teaser_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	teaser_label.offset_left = 16
-	teaser_label.offset_right = -16
-	teaser_label.offset_top = 12
-	teaser_label.offset_bottom = -12
-	teaser_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	teaser_label.text = _teaser_for(cat_id)
-	teaser_label.add_theme_font_override("font", FONT_UI)
-	teaser_label.add_theme_font_size_override("font_size", 26)
-	teaser_label.add_theme_color_override("font_color", INK_SOFT)
-	teaser.add_child(teaser_label)
-	teaser.custom_minimum_size = Vector2(0, 110)
-	info.add_child(teaser)
-	var line := ColorRect.new()
-	line.custom_minimum_size = Vector2(0, 2)
-	line.color = Color(0.78, 0.62, 0.42, 0.28)
-	col.add_child(line)
-	var footer := HBoxContainer.new()
-	footer.alignment = BoxContainer.ALIGNMENT_CENTER
-	footer.add_theme_constant_override("separation", 10)
-	var people := Label.new()
-	people.text = "👤👤"
-	people.add_theme_font_size_override("font_size", 22)
-	footer.add_child(people)
-	var same := Label.new()
-	same.text = tr("DailySameForAll")
-	same.add_theme_font_override("font", FONT_UI)
-	same.add_theme_font_size_override("font_size", 26)
-	same.add_theme_color_override("font_color", INK_SOFT)
-	same.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	same.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	footer.add_child(same)
-	col.add_child(footer)
-	card.custom_minimum_size = Vector2(0, 500)
-	return card
+	if done:
+		frame.clip_contents = false
+		frame.add_child(_completed_stamp(Vector2(280, 88), 30))
+	wrap.add_child(frame)
+	wrap.resized.connect(func() -> void:
+		var side := mini(int(wrap.size.x), 820)
+		if side > 1:
+			frame.custom_minimum_size = Vector2(side, side)
+	)
+	return wrap
 
 
-func _how_card() -> Panel:
-	var card := Panel.new()
-	card.add_theme_stylebox_override("panel", _cream_card_style())
+func _how_card() -> PanelContainer:
+	var card := PanelContainer.new()
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card.add_theme_stylebox_override("panel", _white_card_style())
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 28)
+	margin.add_theme_constant_override("margin_right", 28)
+	margin.add_theme_constant_override("margin_top", 22)
+	margin.add_theme_constant_override("margin_bottom", 22)
+	card.add_child(margin)
 	var col := VBoxContainer.new()
-	col.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	col.offset_left = 28
-	col.offset_right = -28
-	col.offset_top = 18
-	col.offset_bottom = -18
+	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	col.add_theme_constant_override("separation", 8)
-	card.add_child(col)
+	margin.add_child(col)
 	col.add_child(_ruled_title(tr("DailyHowTitle")))
-	var rows := [
-		[ICON_DAILY, tr("DailyHow1"), TEAL],
-		[ICON_LIBRARY, tr("DailyHow2"), Color(0.48, 0.32, 0.2, 1)],
-		[ICON_DAILY, tr("DailyHow3"), TEAL],
-	]
-	for i in rows.size():
+	var how4 := tr("DailyHow4")
+	if how4 == "DailyHow4":
+		how4 = "El mismo puzle para todos los jugadores."
+	var lines := [tr("DailyHow1"), tr("DailyHow2"), tr("DailyHow3"), how4]
+	for i in lines.size():
 		if i > 0:
 			var sep := ColorRect.new()
 			sep.custom_minimum_size = Vector2(0, 2)
-			sep.color = Color(0.78, 0.62, 0.42, 0.22)
+			sep.color = Color(0.9, 0.84, 0.74, 0.35)
 			col.add_child(sep)
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 16)
-		row.custom_minimum_size = Vector2(0, 64)
-		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(42, 42)
-		icon.texture = rows[i][0]
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.modulate = rows[i][2]
-		row.add_child(icon)
-		var label := Label.new()
-		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		label.text = rows[i][1]
-		label.add_theme_font_override("font", FONT_UI)
-		label.add_theme_font_size_override("font_size", 30)
-		label.add_theme_color_override("font_color", INK)
-		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		row.add_child(label)
-		col.add_child(row)
-	card.custom_minimum_size = Vector2(0, 320)
+		col.add_child(_centered_text(lines[i], 36, INK))
 	return card
 
 
 func _make_play_button() -> Button:
 	var button := Button.new()
-	button.custom_minimum_size = Vector2(0, 140)
+	button.custom_minimum_size = Vector2(0, 132)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.focus_mode = Control.FOCUS_NONE
 	button.pressed.connect(_on_play_pressed)
 	var style := StyleBoxFlat.new()
 	style.bg_color = ORANGE
-	style.border_color = Color(0.83, 0.41, 0.02, 1)
-	style.set_border_width_all(4)
-	style.border_width_bottom = 10
-	style.set_corner_radius_all(40)
+	style.set_border_width_all(0)
+	style.set_corner_radius_all(66)
+	style.shadow_color = Color(0.96, 0.51, 0.01, 0.28)
+	style.shadow_size = 10
+	style.shadow_offset = Vector2(0, 6)
 	button.add_theme_stylebox_override("normal", style)
 	button.add_theme_stylebox_override("hover", style)
 	button.add_theme_stylebox_override("pressed", style)
@@ -290,20 +261,21 @@ func _make_play_button() -> Button:
 	var row := HBoxContainer.new()
 	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", 18)
+	row.add_theme_constant_override("separation", 16)
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	button.add_child(row)
 	var icon := TextureRect.new()
-	icon.custom_minimum_size = Vector2(56, 56)
+	icon.custom_minimum_size = Vector2(48, 48)
 	icon.texture = ICON_PLAY
 	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.modulate = Color.WHITE
 	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(icon)
 	var label := Label.new()
 	label.text = tr("DailyPlay")
 	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 48)
+	label.add_theme_font_size_override("font_size", 46)
 	label.add_theme_color_override("font_color", Color.WHITE)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(label)
@@ -314,11 +286,7 @@ func _make_completed_box() -> VBoxContainer:
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 14)
 	var title := Label.new()
-	title.text = tr("DailyCompleted")
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_override("font", FONT_UI)
-	title.add_theme_font_size_override("font_size", 42)
-	title.add_theme_color_override("font_color", Color(0.18, 0.55, 0.32, 1))
+	title.visible = false
 	box.add_child(title)
 	var stars := HBoxContainer.new()
 	stars.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -340,18 +308,20 @@ func _make_completed_box() -> VBoxContainer:
 			star.modulate = Color(0.62, 0.52, 0.46, 0.38)
 		stars.add_child(star)
 	var view := Button.new()
-	view.custom_minimum_size = Vector2(0, 110)
+	view.custom_minimum_size = Vector2(0, 104)
 	view.focus_mode = Control.FOCUS_NONE
 	view.text = tr("DailyViewSheet")
 	view.add_theme_font_override("font", FONT_UI)
-	view.add_theme_font_size_override("font_size", 40)
+	view.add_theme_font_size_override("font_size", 38)
 	view.add_theme_color_override("font_color", INK)
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(1, 0.99, 0.96, 0.96)
-	style.border_color = Color(0.78, 0.62, 0.42, 0.45)
-	style.set_border_width_all(4)
-	style.border_width_bottom = 8
+	style.bg_color = CARD_WHITE
+	style.border_color = Color(0.9, 0.84, 0.76, 0.8)
+	style.set_border_width_all(2)
 	style.set_corner_radius_all(28)
+	style.shadow_color = Color(0.32, 0.2, 0.12, 0.08)
+	style.shadow_size = 8
+	style.shadow_offset = Vector2(0, 4)
 	view.add_theme_stylebox_override("normal", style)
 	view.add_theme_stylebox_override("hover", style)
 	view.add_theme_stylebox_override("pressed", style)
@@ -360,29 +330,55 @@ func _make_completed_box() -> VBoxContainer:
 	return box
 
 
-func _menu_link() -> Button:
-	var button := Button.new()
-	button.focus_mode = Control.FOCUS_NONE
-	button.flat = true
-	button.text = tr("DailyBackToMenu")
-	button.add_theme_font_override("font", FONT_UI)
-	button.add_theme_font_size_override("font_size", 32)
-	button.add_theme_color_override("font_color", INK_SOFT)
-	button.add_theme_color_override("font_hover_color", INK)
-	button.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
-	button.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
-	button.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
-	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	button.pressed.connect(_on_button_back_pressed)
-	return button
+func _completed_stamp(stamp_size: Vector2, font_size: int) -> Panel:
+	var stamp := Panel.new()
+	stamp.name = "CompletedStamp"
+	stamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stamp.custom_minimum_size = stamp_size
+	stamp.size = stamp_size
+	stamp.position = Vector2(16, 96)
+	stamp.pivot_offset = stamp_size * 0.5
+	stamp.rotation = deg_to_rad(-22.0)
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.16, 0.5, 0.3, 0.16)
+	style.border_color = Color(0.16, 0.5, 0.3, 0.92)
+	style.set_border_width_all(6)
+	style.set_corner_radius_all(8)
+	stamp.add_theme_stylebox_override("panel", style)
+	var inner := Panel.new()
+	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	inner.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	inner.offset_left = 7
+	inner.offset_top = 6
+	inner.offset_right = -7
+	inner.offset_bottom = -6
+	var inner_style := StyleBoxFlat.new()
+	inner_style.bg_color = Color(0, 0, 0, 0)
+	inner_style.border_color = Color(0.16, 0.5, 0.3, 0.88)
+	inner_style.set_border_width_all(3)
+	inner_style.set_corner_radius_all(4)
+	inner.add_theme_stylebox_override("panel", inner_style)
+	stamp.add_child(inner)
+	var label := Label.new()
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	label.text = tr("DailyCompletedShort").to_upper()
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.add_theme_font_override("font", FONT_UI)
+	label.add_theme_font_size_override("font_size", font_size)
+	label.add_theme_color_override("font_color", Color(0.14, 0.46, 0.28, 0.95))
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stamp.add_child(label)
+	return stamp
 
 
 func _hoy_badge(done: bool) -> Panel:
 	var badge := Panel.new()
-	badge.custom_minimum_size = Vector2(86, 40)
+	badge.custom_minimum_size = Vector2(184, 84)
+	badge.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.18, 0.55, 0.32, 1) if done else TEAL
-	style.set_corner_radius_all(16)
+	style.set_corner_radius_all(42)
 	badge.add_theme_stylebox_override("panel", style)
 	var label := Label.new()
 	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -390,25 +386,28 @@ func _hoy_badge(done: bool) -> Panel:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 22)
+	label.add_theme_font_size_override("font_size", 40)
 	label.add_theme_color_override("font_color", Color.WHITE)
 	badge.add_child(label)
 	return badge
 
 
-func _meta_row(icon_tex: Texture2D, text: String) -> HBoxContainer:
+func _meta_row(icon_tex: Texture2D, text: String, icon_color: Color = INK_SOFT) -> HBoxContainer:
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 10)
+	row.add_theme_constant_override("separation", 12)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	var icon := TextureRect.new()
-	icon.custom_minimum_size = Vector2(32, 32)
+	icon.custom_minimum_size = Vector2(40, 40)
 	icon.texture = icon_tex
 	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.modulate = icon_color
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(icon)
 	var label := Label.new()
 	label.text = text
 	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 28)
+	label.add_theme_font_size_override("font_size", 36)
 	label.add_theme_color_override("font_color", INK_SOFT)
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(label)
@@ -418,12 +417,15 @@ func _meta_row(icon_tex: Texture2D, text: String) -> HBoxContainer:
 func _difficulty_row(difficulty: int) -> HBoxContainer:
 	var name := tr("Medium") if difficulty == 2 else GameManager.difficulty_display_name(difficulty)
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 10)
-	var mark := Label.new()
-	mark.text = "▮"
-	mark.add_theme_font_size_override("font_size", 26)
-	mark.add_theme_color_override("font_color", ORANGE)
-	row.add_child(mark)
+	row.add_theme_constant_override("separation", 12)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	var icon := TextureRect.new()
+	icon.custom_minimum_size = Vector2(40, 40)
+	icon.texture = ICON_SIGNAL
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(icon)
 	var label := RichTextLabel.new()
 	label.bbcode_enabled = true
 	label.fit_content = true
@@ -431,9 +433,45 @@ func _difficulty_row(difficulty: int) -> HBoxContainer:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.add_theme_font_override("normal_font", FONT_UI)
-	label.add_theme_font_size_override("normal_font_size", 28)
+	label.add_theme_font_size_override("normal_font_size", 36)
 	label.add_theme_color_override("default_color", INK_SOFT)
 	label.text = "%s [color=#F58220]%s[/color]" % [tr("DailyDifficulty").replace("%s", "").strip_edges(), name]
+	row.add_child(label)
+	return row
+
+
+func _centered_text(text: String, font_size: int, color: Color) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.custom_minimum_size = Vector2(0, 56)
+	label.add_theme_font_override("font", FONT_UI)
+	label.add_theme_font_size_override("font_size", font_size)
+	label.add_theme_color_override("font_color", color)
+	return label
+
+
+func _centered_meta(icon_tex: Texture2D, text: String, icon_color: Color = INK_SOFT) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 12)
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var icon := TextureRect.new()
+	icon.custom_minimum_size = Vector2(36, 36)
+	icon.texture = icon_tex
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.modulate = icon_color
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(icon)
+	var label := Label.new()
+	label.text = text
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.add_theme_font_override("font", FONT_UI)
+	label.add_theme_font_size_override("font_size", 34)
+	label.add_theme_color_override("font_color", INK)
 	row.add_child(label)
 	return row
 
@@ -446,7 +484,7 @@ func _ruled_title(text: String) -> HBoxContainer:
 	var label := Label.new()
 	label.text = text
 	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 32)
+	label.add_theme_font_size_override("font_size", 38)
 	label.add_theme_color_override("font_color", INK)
 	row.add_child(label)
 	row.add_child(_rule())
@@ -487,29 +525,64 @@ func _category_icon_for(cat_id: String) -> Texture2D:
 			return ICON_CITA
 
 
-func _cream_card_style() -> StyleBoxFlat:
+func _white_card_style() -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(1, 0.99, 0.97, 0.98)
-	style.border_color = Color(0.82, 0.68, 0.46, 0.32)
+	style.bg_color = CARD_WHITE
+	style.border_color = Color(0.9, 0.84, 0.76, 0.7)
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(28)
-	style.shadow_color = Color(0.29, 0.18, 0.11, 0.12)
-	style.shadow_size = 10
-	style.shadow_offset = Vector2(0, 6)
-	style.content_margin_left = 8
-	style.content_margin_right = 8
-	style.content_margin_top = 8
-	style.content_margin_bottom = 8
+	style.shadow_color = Color(0.32, 0.2, 0.12, 0.08)
+	style.shadow_size = 12
+	style.shadow_offset = Vector2(0, 5)
 	return style
 
 
-func _stroke_card_style() -> StyleBoxFlat:
+func _circle_icon(tex: Texture2D, size: float, bg: Color, icon_mod: Color, pad: float = 0.2) -> Panel:
+	var wrap := Panel.new()
+	wrap.custom_minimum_size = Vector2(size, size)
+	wrap.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(1, 0.99, 0.97, 0.72)
-	style.border_color = Color(0.72, 0.55, 0.36, 0.55)
-	style.set_border_width_all(3)
-	style.set_corner_radius_all(28)
-	return style
+	style.bg_color = bg
+	style.set_corner_radius_all(int(size * 0.5))
+	wrap.add_theme_stylebox_override("panel", style)
+	var icon := TextureRect.new()
+	icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var margin := size * pad
+	icon.offset_left = margin
+	icon.offset_top = margin
+	icon.offset_right = -margin
+	icon.offset_bottom = -margin
+	icon.texture = tex
+	icon.modulate = icon_mod
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	wrap.add_child(icon)
+	return wrap
+
+
+func _style_back_button() -> void:
+	var back := $Header/ButtonBack as Button
+	if back == null:
+		return
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(1, 1, 1, 1)
+	style.set_border_width_all(0)
+	style.set_corner_radius_all(80)
+	style.shadow_color = Color(0.22, 0.16, 0.1, 0.1)
+	style.shadow_size = 8
+	style.shadow_offset = Vector2(0, 3)
+	back.add_theme_stylebox_override("normal", style)
+	back.add_theme_stylebox_override("hover", style)
+	var pressed := style.duplicate() as StyleBoxFlat
+	pressed.bg_color = Color(0.97, 0.95, 0.92, 1)
+	back.add_theme_stylebox_override("pressed", pressed)
+	back.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	var arrow := back.get_node_or_null("ArrowIcon")
+	if arrow:
+		arrow.set("line_color", Color(0.55, 0.5, 0.46, 1))
+		arrow.set("stroke_width", 11.0)
 
 
 func _apply_lock_texts() -> void:

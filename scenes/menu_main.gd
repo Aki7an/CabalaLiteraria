@@ -21,6 +21,9 @@ const TITLE_SAFETY_PX := 24.0
 const TITLE_LETTER_SIZE := 78
 const TITLE_NUMBER_SIZE := 34
 const TITLE_NUMBER_TOP_GAP := 14.0
+const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
+const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
+const PATH_SHOP := "res://scenes/MenuShop.tscn"
 
 func _ready() -> void:
 	SoundManager.apply_audio_prefs()
@@ -28,18 +31,28 @@ func _ready() -> void:
 	if not SignalManager.audio_prefs_changed.is_connected(_refresh_audio_buttons):
 		SignalManager.audio_prefs_changed.connect(_refresh_audio_buttons)
 	GameManager.session_source = GameManager.SOURCE_NONE
+	GameManager.locked_record_stars = -1
 	_layout_home_buttons()
 	_apply_labels()
 	_apply_title_tiles()
 	_update_version_label()
 	_refresh_star_totals()
 	_refresh_daily_button()
+	if not SignalManager.full_game_changed.is_connected(_refresh_daily_button):
+		SignalManager.full_game_changed.connect(_refresh_daily_button)
 	if not HistoryManager.stats_updated.is_connected(_refresh_star_totals):
 		HistoryManager.stats_updated.connect(_refresh_star_totals)
 	SignalManager.app_version_changed.connect(_on_app_version_changed)
 	SignalManager.fit_text.emit()
 	GameManager.reset_game_paremeters()
 	GameManager.resetear_partida_terminada()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q:
+		GameManager.advance_daily_to_next()
+		_refresh_daily_button()
+		get_viewport().set_input_as_handled()
 
 
 func _refresh_star_totals(_unused: Variant = null) -> void:
@@ -294,12 +307,13 @@ func _on_button_play_pressed() -> void:
 	_go_to("res://scenes/MenuSelectCategory.tscn", button_play)
 
 func _on_button_shop_pressed() -> void:
-	SoundManager.play("ButtonClick")
-	if button_shop:
-		GameManager.button_blink(button_shop)
+	_go_to("res://scenes/MenuShop.tscn", button_shop)
 
 
 func _on_button_daily_pressed() -> void:
+	if not GameManager.has_full_game():
+		_show_daily_locked_dialog()
+		return
 	_go_to("res://scenes/MenuDaily.tscn", button_daily)
 
 
@@ -332,51 +346,171 @@ func _layout_home_buttons() -> void:
 func _refresh_daily_button() -> void:
 	if button_daily == null:
 		return
+	var locked := not GameManager.has_full_game()
 	var done := PlayerPrefs.is_daily_completed_today()
 	var title := button_daily.get_node_or_null("Label") as Label
 	if title:
-		title.text = ("✓  %s" % tr("DailyChallenge")) if done else tr("DailyChallenge")
-		title.anchor_top = 0.62 if done else 0.67
-		title.anchor_bottom = 0.84 if done else 0.93
-	var status := _ensure_daily_status_label()
+		title.text = tr("DailyChallenge")
+		title.anchor_top = 0.67
+		title.anchor_bottom = 0.93
+	var status := button_daily.get_node_or_null("Status") as Label
 	if status:
-		status.visible = done
-		status.text = tr("DailyCompletedShort")
+		status.visible = false
+	var lock := _ensure_daily_lock()
+	if lock:
+		lock.visible = locked
 	var badge := _ensure_today_badge()
 	if badge:
-		badge.visible = not done
+		_place_today_badge(badge)
+		badge.visible = not locked and not done
 		var badge_label := badge.get_node_or_null("Label") as Label
 		if badge_label:
 			badge_label.text = tr("Today")
+	var stamp := _ensure_completed_stamp()
+	if stamp:
+		stamp.visible = not locked and done
+		if stamp.visible:
+			_place_completed_stamp(stamp)
 
 
-func _ensure_daily_status_label() -> Label:
+func _ensure_daily_lock() -> Control:
 	if button_daily == null:
 		return null
-	var existing := button_daily.get_node_or_null("Status") as Label
+	var existing := button_daily.get_node_or_null("PurchaseLock") as Control
 	if existing:
 		return existing
-	var status := Label.new()
-	status.name = "Status"
-	status.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	status.anchor_left = 0.04
-	status.anchor_top = 0.80
-	status.anchor_right = 0.96
-	status.anchor_bottom = 0.97
-	status.offset_left = 0
-	status.offset_top = 0
-	status.offset_right = 0
-	status.offset_bottom = 0
-	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	status.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	status.add_theme_color_override("font_color", Color(0.22, 0.5, 0.3, 1))
-	status.add_theme_font_size_override("font_size", 24)
-	var font := button_daily.get_node_or_null("Label") as Label
-	if font and font.get_theme_font("font"):
-		status.add_theme_font_override("font", font.get_theme_font("font"))
-	status.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	button_daily.add_child(status)
-	return status
+	var overlay := ColorRect.new()
+	overlay.name = "PurchaseLock"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.16, 0.1, 0.06, 0.38)
+	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var icon := TextureRect.new()
+	icon.texture = ICON_LOCK
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon.anchor_left = 0.5
+	icon.anchor_top = 0.18
+	icon.anchor_right = 0.5
+	icon.anchor_bottom = 0.58
+	icon.offset_left = -46
+	icon.offset_top = 0
+	icon.offset_right = 46
+	icon.offset_bottom = 0
+	overlay.add_child(icon)
+	button_daily.add_child(overlay)
+	return overlay
+
+
+func _show_daily_locked_dialog() -> void:
+	if get_node_or_null("DailyLockDialog") != null:
+		return
+	SoundManager.play("ButtonClick")
+	if button_daily:
+		GameManager.button_blink(button_daily)
+	var overlay := ColorRect.new()
+	overlay.name = "DailyLockDialog"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.08, 0.04, 0.02, 0.58)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	overlay.z_index = 80
+	add_child(overlay)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.add_child(center)
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(980, 0)
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(1, 0.965, 0.86, 1)
+	card_style.border_color = Color(0.62, 0.4, 0.16, 0.46)
+	card_style.set_border_width_all(4)
+	card_style.border_width_bottom = 9
+	card_style.set_corner_radius_all(40)
+	card.add_theme_stylebox_override("panel", card_style)
+	center.add_child(card)
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 48)
+	margin.add_theme_constant_override("margin_right", 48)
+	margin.add_theme_constant_override("margin_top", 40)
+	margin.add_theme_constant_override("margin_bottom", 36)
+	card.add_child(margin)
+	var inner := VBoxContainer.new()
+	inner.add_theme_constant_override("separation", 24)
+	margin.add_child(inner)
+	var lock := TextureRect.new()
+	lock.texture = ICON_LOCK
+	lock.custom_minimum_size = Vector2(80, 80)
+	lock.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	lock.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	lock.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	inner.add_child(lock)
+	var title := Label.new()
+	title.add_theme_font_override("font", FONT_UI)
+	title.add_theme_font_size_override("font_size", 48)
+	title.add_theme_color_override("font_color", Color(0.24, 0.14, 0.08, 1))
+	title.text = tr("DailyChallenge")
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inner.add_child(title)
+	var body := Label.new()
+	body.add_theme_font_override("font", FONT_UI)
+	body.add_theme_font_size_override("font_size", 36)
+	body.add_theme_color_override("font_color", Color(0.28, 0.17, 0.1, 1))
+	body.text = tr("DailyLockedBody")
+	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inner.add_child(body)
+	var buttons := HBoxContainer.new()
+	buttons.add_theme_constant_override("separation", 24)
+	inner.add_child(buttons)
+	var cancel := Button.new()
+	cancel.text = tr("Back")
+	cancel.focus_mode = Control.FOCUS_NONE
+	cancel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cancel.custom_minimum_size = Vector2(0, 110)
+	cancel.add_theme_font_override("font", FONT_UI)
+	cancel.add_theme_font_size_override("font_size", 36)
+	cancel.add_theme_color_override("font_color", Color(0.32, 0.18, 0.08, 1))
+	var cancel_style := StyleBoxFlat.new()
+	cancel_style.bg_color = Color(1, 0.982, 0.92, 1)
+	cancel_style.border_color = Color(0.66, 0.44, 0.2, 0.7)
+	cancel_style.set_border_width_all(3)
+	cancel_style.border_width_bottom = 8
+	cancel_style.set_corner_radius_all(30)
+	cancel.add_theme_stylebox_override("normal", cancel_style)
+	cancel.add_theme_stylebox_override("hover", cancel_style)
+	cancel.add_theme_stylebox_override("pressed", cancel_style)
+	cancel.pressed.connect(func() -> void:
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+	)
+	buttons.add_child(cancel)
+	var shop := Button.new()
+	var shop_text := tr("ShopGoToStore")
+	if shop_text == "ShopGoToStore":
+		shop_text = "Ir a la tienda"
+	shop.text = shop_text
+	shop.focus_mode = Control.FOCUS_NONE
+	shop.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	shop.custom_minimum_size = Vector2(0, 110)
+	shop.add_theme_font_override("font", FONT_UI)
+	shop.add_theme_font_size_override("font_size", 36)
+	shop.add_theme_color_override("font_color", Color.WHITE)
+	var shop_style := StyleBoxFlat.new()
+	shop_style.bg_color = Color(0.96, 0.51, 0.01, 1)
+	shop_style.border_color = Color(0.83, 0.41, 0.02, 1)
+	shop_style.set_border_width_all(3)
+	shop_style.border_width_bottom = 8
+	shop_style.set_corner_radius_all(30)
+	shop.add_theme_stylebox_override("normal", shop_style)
+	shop.add_theme_stylebox_override("hover", shop_style)
+	shop.add_theme_stylebox_override("pressed", shop_style)
+	shop.pressed.connect(func() -> void:
+		overlay.queue_free()
+		_go_to(PATH_SHOP, button_shop)
+	)
+	buttons.add_child(shop)
 
 
 func _ensure_today_badge() -> Panel:
@@ -388,13 +522,7 @@ func _ensure_today_badge() -> Panel:
 	var badge := Panel.new()
 	badge.name = "TodayBadge"
 	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	badge.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	badge.anchor_left = 1.0
-	badge.anchor_right = 1.0
-	badge.offset_left = -118.0
-	badge.offset_top = 10.0
-	badge.offset_right = -10.0
-	badge.offset_bottom = 52.0
+	_place_today_badge(badge)
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.82, 0.16, 0.14, 1)
 	style.set_corner_radius_all(18)
@@ -417,6 +545,87 @@ func _ensure_today_badge() -> Panel:
 	badge.add_child(label)
 	button_daily.add_child(badge)
 	return badge
+
+
+func _place_today_badge(badge: Panel) -> void:
+	badge.rotation = 0.0
+	badge.anchor_left = 0.58
+	badge.anchor_top = 0.02
+	badge.anchor_right = 0.98
+	badge.anchor_bottom = 0.22
+	badge.offset_left = 0
+	badge.offset_top = 0
+	badge.offset_right = 0
+	badge.offset_bottom = 0
+
+
+func _ensure_completed_stamp() -> Panel:
+	if button_daily == null:
+		return null
+	var existing := button_daily.get_node_or_null("CompletedStamp") as Panel
+	if existing:
+		return existing
+	var stamp := Panel.new()
+	stamp.name = "CompletedStamp"
+	stamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stamp.visible = false
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.16, 0.5, 0.3, 0.14)
+	style.border_color = Color(0.16, 0.5, 0.3, 0.92)
+	style.set_border_width_all(6)
+	style.set_corner_radius_all(8)
+	stamp.add_theme_stylebox_override("panel", style)
+	var inner := Panel.new()
+	inner.name = "Inner"
+	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	inner.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	inner.offset_left = 7
+	inner.offset_top = 6
+	inner.offset_right = -7
+	inner.offset_bottom = -6
+	var inner_style := StyleBoxFlat.new()
+	inner_style.bg_color = Color(0, 0, 0, 0)
+	inner_style.border_color = Color(0.16, 0.5, 0.3, 0.88)
+	inner_style.set_border_width_all(3)
+	inner_style.set_corner_radius_all(4)
+	inner.add_theme_stylebox_override("panel", inner_style)
+	stamp.add_child(inner)
+	var label := Label.new()
+	label.name = "Label"
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	label.text = tr("DailyCompletedShort").to_upper()
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.add_theme_color_override("font_color", Color(0.14, 0.46, 0.28, 0.95))
+	label.add_theme_font_size_override("font_size", 28)
+	var font := button_daily.get_node_or_null("Label") as Label
+	if font and font.get_theme_font("font"):
+		label.add_theme_font_override("font", font.get_theme_font("font"))
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stamp.add_child(label)
+	button_daily.add_child(stamp)
+	return stamp
+
+
+func _place_completed_stamp(stamp: Panel) -> void:
+	stamp.anchor_left = 0.04
+	stamp.anchor_top = 0.28
+	stamp.anchor_right = 0.96
+	stamp.anchor_bottom = 0.56
+	stamp.offset_left = 0
+	stamp.offset_top = 0
+	stamp.offset_right = 0
+	stamp.offset_bottom = 0
+	stamp.rotation = deg_to_rad(-22.0)
+	var label := stamp.get_node_or_null("Label") as Label
+	if label:
+		label.text = tr("DailyCompletedShort").to_upper()
+	call_deferred("_center_stamp_pivot", stamp)
+
+
+func _center_stamp_pivot(stamp: Control) -> void:
+	if is_instance_valid(stamp):
+		stamp.pivot_offset = stamp.size * 0.5
 
 
 func _on_button_library_pressed() -> void:
