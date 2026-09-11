@@ -8,7 +8,7 @@ const ICON_CURIO: Texture2D = preload("res://images/Adivinanza.png")
 const ICON_FRAG: Texture2D = preload("res://images/FragmentosLiterarios.png")
 const ICON_HEART: Texture2D = preload("res://images/ui_icon_heart.svg")
 const ICON_QUICK: Texture2D = preload("res://images/mode_quick.svg")
-const ICON_LUPA: Texture2D = preload("res://images/ui_icon_lupa.svg")
+const ICON_CRYPTO: Texture2D = preload("res://images/CriptogramaIcono.png")
 const STAR_ON: Texture2D = preload("res://images/estrella_plano.png")
 const STAR_OFF: Texture2D = preload("res://images/contorno_estrella.png")
 const ICON_PLAY: Texture2D = preload("res://GUI/BotonPlaySimboloTextura.png")
@@ -27,6 +27,7 @@ const CREAM := Color(1, 0.984, 0.953, 0.98)
 
 var _ficha_item: Dictionary = {}
 var _collapsed: Dictionary = {}
+var _mode_collapsed: Dictionary = {}
 var _carousel_offset: Dictionary = {}
 var _carousel_busy: Dictionary = {}
 var _filter_favorites := false
@@ -70,7 +71,6 @@ func _ready() -> void:
 	index_scroll.scroll_deadzone = 16
 	ficha_scroll.scroll_deadzone = 16
 	_setup_ficha_layout()
-	_apply_favorites_button()
 	_rebuild_index()
 	_open_pending_ficha()
 
@@ -235,14 +235,14 @@ func _rebuild_index() -> void:
 	empty_state.visible = false
 	for def in _category_defs():
 		cards.add_child(_create_category_card(def))
-	_apply_favorites_button()
 
 
 func _create_category_card(def: Dictionary) -> PanelContainer:
 	var cat_id := str(def.get("id", ""))
 	var cat_items := _items_for(cat_id)
 	var cat_done := _completed_in(cat_items)
-	var collapsed := bool(_collapsed.get(cat_id, false))
+	var has_puzzles := not _carousel_items(cat_items).is_empty()
+	var collapsed := _is_category_collapsed(cat_id, has_puzzles)
 
 	var card := PanelContainer.new()
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -271,7 +271,7 @@ func _create_category_card(def: Dictionary) -> PanelContainer:
 		if _drag_active:
 			return
 		SoundManager.play("ButtonClick")
-		_collapsed[cat_id] = not bool(_collapsed.get(cat_id, false))
+		_collapsed[cat_id] = not _is_category_collapsed(cat_id, has_puzzles)
 		_rebuild_index()
 	)
 	col.add_child(header)
@@ -324,16 +324,7 @@ func _create_category_card(def: Dictionary) -> PanelContainer:
 	if cat_items.size() > 0 and cat_done.size() >= cat_items.size():
 		head_row.add_child(_complete_check())
 
-	var chevron := Label.new()
-	chevron.text = "›" if collapsed else "⌄"
-	chevron.custom_minimum_size = Vector2(40, 0)
-	chevron.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	chevron.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	chevron.add_theme_font_override("font", FONT_UI)
-	chevron.add_theme_font_size_override("font_size", 46)
-	chevron.add_theme_color_override("font_color", INK_SOFT)
-	chevron.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	head_row.add_child(chevron)
+	head_row.add_child(_fold_chip(collapsed, 88.0))
 
 	if not collapsed:
 		var accent: Color = def.get("color", Color(0.8, 0.6, 0.3))
@@ -377,11 +368,56 @@ func _visible_slice(done: Array[Dictionary], offset: int) -> Array[Dictionary]:
 	return done.slice(offset, end)
 
 
+func _is_category_collapsed(cat_id: String, has_puzzles: bool) -> bool:
+	if _collapsed.has(cat_id):
+		return bool(_collapsed[cat_id])
+	if cat_id == GameManager.CAT_DAILY:
+		return not has_puzzles
+	return false
+
+
+func _is_mode_collapsed(key: String, has_puzzles: bool) -> bool:
+	if _mode_collapsed.has(key):
+		return bool(_mode_collapsed[key])
+	return not has_puzzles
+
+
+func _toggle_mode_collapsed(key: String, has_puzzles: bool) -> void:
+	_mode_collapsed[key] = not _is_mode_collapsed(key, has_puzzles)
+	_rebuild_index()
+
+
+func _fold_chip(collapsed: bool, diameter: float = 96.0) -> Control:
+	var mark := Control.new()
+	mark.custom_minimum_size = Vector2(diameter, diameter)
+	mark.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var color := Color(0.16, 0.1, 0.07, 0.86)
+	mark.draw.connect(func() -> void:
+		var side := minf(mark.size.x, mark.size.y)
+		var center := mark.size * 0.5
+		var half_w := side * 0.2
+		var half_h := side * 0.16
+		var pts := PackedVector2Array()
+		if collapsed:
+			pts.append(Vector2(center.x - half_h, center.y - half_w))
+			pts.append(Vector2(center.x + half_w, center.y))
+			pts.append(Vector2(center.x - half_h, center.y + half_w))
+		else:
+			pts.append(Vector2(center.x - half_w, center.y - half_h))
+			pts.append(Vector2(center.x + half_w, center.y - half_h))
+			pts.append(Vector2(center.x, center.y + half_w))
+		mark.draw_colored_polygon(pts, color)
+	)
+	mark.resized.connect(mark.queue_redraw)
+	return mark
+
+
 func _create_mode_row(cat_id: String, mode: String, caption: String, accent: Color, show_mode_header: bool = true) -> VBoxContainer:
 	var items := _items_for(cat_id, mode)
 	var done := _carousel_items(items)
 	var key := "%s|%s" % [cat_id, mode if mode != "" else "all"]
 	var offset := _clamped_offset(key, done.size())
+	var collapsed := show_mode_header and _is_mode_collapsed(key, not done.is_empty())
 
 	var block := VBoxContainer.new()
 	block.add_theme_constant_override("separation", 12)
@@ -389,14 +425,32 @@ func _create_mode_row(cat_id: String, mode: String, caption: String, accent: Col
 	block.set_meta("carousel_items", done)
 
 	if show_mode_header:
+		var header := Button.new()
+		header.focus_mode = Control.FOCUS_NONE
+		header.custom_minimum_size = Vector2(0, 76)
+		header.flat = true
+		header.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+		header.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
+		header.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
+		header.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+		header.pressed.connect(func() -> void:
+			if _drag_active:
+				return
+			SoundManager.play("ButtonClick")
+			_toggle_mode_collapsed(key, not done.is_empty())
+		)
+		block.add_child(header)
+
 		var info := HBoxContainer.new()
 		info.add_theme_constant_override("separation", 14)
 		info.alignment = BoxContainer.ALIGNMENT_CENTER
-		block.add_child(info)
+		info.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		info.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		header.add_child(info)
 
 		var mode_icon := TextureRect.new()
 		mode_icon.custom_minimum_size = Vector2(44, 44)
-		mode_icon.texture = ICON_QUICK if mode == GameManager.MODE_QUICK else ICON_LUPA
+		mode_icon.texture = ICON_QUICK if mode == GameManager.MODE_QUICK else ICON_CRYPTO
 		mode_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		mode_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		mode_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -433,6 +487,10 @@ func _create_mode_row(cat_id: String, mode: String, caption: String, accent: Col
 		mini.add_theme_stylebox_override("background", mini_bg)
 		mini.add_theme_stylebox_override("fill", mini_fill)
 		info.add_child(mini)
+		info.add_child(_fold_chip(collapsed, 80.0))
+
+	if collapsed:
+		return block
 
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 8)
@@ -1574,24 +1632,6 @@ func _on_ficha_favorite_pressed() -> void:
 	SoundManager.play("ButtonClick")
 	PlayerPrefs.toggle_favorite(puzzle_id)
 	_apply_ficha_favorite_button()
-
-
-func _apply_favorites_button() -> void:
-	if button_favorites == null:
-		return
-	var style_off := StyleBoxFlat.new()
-	style_off.bg_color = Color(0.95, 0.76, 0.78, 1)
-	style_off.border_color = Color(0.84, 0.56, 0.60, 0.85)
-	style_off.set_border_width_all(5)
-	style_off.border_width_bottom = 10
-	style_off.set_corner_radius_all(28)
-	var style_on := style_off.duplicate() as StyleBoxFlat
-	style_on.bg_color = Color(0.90, 0.60, 0.64, 1)
-	style_on.border_color = Color(0.78, 0.46, 0.50, 0.9)
-	var style := style_on if _filter_favorites else style_off
-	button_favorites.add_theme_stylebox_override("normal", style)
-	button_favorites.add_theme_stylebox_override("hover", style)
-	button_favorites.add_theme_stylebox_override("focus", style)
 
 
 func _apply_ficha_favorite_button() -> void:

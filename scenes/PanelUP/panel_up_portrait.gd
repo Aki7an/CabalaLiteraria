@@ -37,7 +37,7 @@ const REVEAL_BLINK_FULL := Color(1, 1, 1, 1)
 const REVEAL_BLINK_STEP := 0.11
 
 const MODE_ICON_QUICK := preload("res://images/mode_quick.svg")
-const MODE_ICON_CRYPTO := preload("res://images/mode_scroll.svg")
+const MODE_ICON_CRYPTO := preload("res://images/CriptogramaIcono.png")
 const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
 
 var _start_ms: int

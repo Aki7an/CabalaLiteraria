@@ -1,14 +1,58 @@
-[gd_scene load_steps=5 format=3 uid="uid://dxalsld2rolt0"]
+[gd_scene format=3 uid="uid://dxalsld2rolt0"]
 
-[ext_resource type="Script" path="res://scenes/menu_shop.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://dqihpgpaxp0c0" path="res://scenes/menu_shop.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_fondo"]
 [ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="3_back"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="4_font"]
+[ext_resource type="Script" uid="uid://b8kq2n4mx7wpr" path="res://scenes/shop_pie_chart.gd" id="5_pie"]
+[ext_resource type="Texture2D" uid="uid://bkketlhgdh7nm" path="res://images/ui_icon_puzzle.svg" id="6_puzzle"]
+[ext_resource type="Texture2D" uid="uid://u82aj5d5uh71" path="res://images/ui_icon_bolt.svg" id="7_bolt"]
+[ext_resource type="Texture2D" uid="uid://cwpp1jnlww7fk" path="res://images/ui_icon_library.svg" id="8_library"]
+[ext_resource type="Texture2D" uid="uid://dxivvuw5oykyh" path="res://images/ui_icon_daily.svg" id="9_daily"]
+[ext_resource type="Texture2D" uid="uid://hqwatbm1ab1y" path="res://images/ui_icon_music_note.svg" id="10_music"]
+[ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="11_citas"]
+[ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="12_curio"]
+[ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="13_frag"]
+[ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="14_efem"]
 
 [sub_resource type="StyleBoxFlat" id="Style_bg"]
 bg_color = Color(0.992, 0.973, 0.949, 1)
 
-[node name="MenuShop" type="Control"]
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(1, 0.997, 0.992, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.84, 0.76, 0.7)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
+shadow_color = Color(0.32, 0.2, 0.12, 0.08)
+shadow_size = 14
+shadow_offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxFlat" id="Style_buy"]
+bg_color = Color(0.96, 0.51, 0.01, 1)
+corner_radius_top_left = 64
+corner_radius_top_right = 64
+corner_radius_bottom_right = 64
+corner_radius_bottom_left = 64
+shadow_color = Color(0.96, 0.51, 0.01, 0.28)
+shadow_size = 10
+shadow_offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxFlat" id="Style_buy_pressed"]
+bg_color = Color(0.9, 0.46, 0.01, 1)
+corner_radius_top_left = 64
+corner_radius_top_right = 64
+corner_radius_bottom_right = 64
+corner_radius_bottom_left = 64
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[node name="MenuShop" type="Control" unique_id=2069412757]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,7 +61,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="Panel" parent="."]
+[node name="Background" type="Panel" parent="." unique_id=844234076]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,24 +71,25 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_bg")
 
-[node name="Pattern" parent="Background" instance=ExtResource("2_fondo")]
+[node name="Pattern" parent="Background" unique_id=138884001 instance=ExtResource("2_fondo")]
 modulate = Color(1, 1, 1, 0.22)
+layout_mode = 0
 
-[node name="Header" type="Control" parent="."]
+[node name="Header" type="Control" parent="." unique_id=711047198]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 248.0
 grow_horizontal = 2
 
-[node name="ButtonBack" parent="Header" instance=ExtResource("3_back")]
+[node name="ButtonBack" parent="Header" unique_id=869258753 instance=ExtResource("3_back")]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 28.0
 offset_right = 140.0
 offset_bottom = 140.0
 
-[node name="Title" type="Label" parent="Header"]
+[node name="Title" type="Label" parent="Header" unique_id=1746917206]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -60,7 +105,7 @@ text = "Tienda"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TaglineRow" type="HBoxContainer" parent="Header"]
+[node name="TaglineRow" type="HBoxContainer" parent="Header" unique_id=946747523]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -69,16 +114,16 @@ offset_top = 148.0
 offset_right = -70.0
 offset_bottom = 220.0
 grow_horizontal = 2
-alignment = 1
 theme_override_constants/separation = 16
+alignment = 1
 
-[node name="LineL" type="ColorRect" parent="Header/TaglineRow"]
+[node name="LineL" type="ColorRect" parent="Header/TaglineRow" unique_id=306716665]
 custom_minimum_size = Vector2(80, 2)
 layout_mode = 2
 size_flags_vertical = 4
 color = Color(0.82, 0.7, 0.52, 0.55)
 
-[node name="Tagline" type="Label" parent="Header/TaglineRow"]
+[node name="Tagline" type="Label" parent="Header/TaglineRow" unique_id=149269661]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.38, 0.26, 0.78)
 theme_override_fonts/font = ExtResource("4_font")
@@ -86,19 +131,19 @@ theme_override_font_sizes/font_size = 32
 text = "Más contenido para CifraLetra"
 horizontal_alignment = 1
 
-[node name="LineR" type="ColorRect" parent="Header/TaglineRow"]
+[node name="LineR" type="ColorRect" parent="Header/TaglineRow" unique_id=1120604091]
 custom_minimum_size = Vector2(80, 2)
 layout_mode = 2
 size_flags_vertical = 4
 color = Color(0.82, 0.7, 0.52, 0.55)
 
-[node name="Scroll" type="ScrollContainer" parent="."]
+[node name="Scroll" type="ScrollContainer" parent="." unique_id=1892889596]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 40.0
-offset_top = 236.0
+offset_top = 340.0
 offset_right = -40.0
 offset_bottom = -40.0
 grow_horizontal = 2
@@ -106,9 +151,380 @@ grow_vertical = 2
 horizontal_scroll_mode = 0
 scroll_deadzone = 16
 
-[node name="Body" type="VBoxContainer" parent="Scroll"]
+[node name="Body" type="VBoxContainer" parent="Scroll" unique_id=1519644261]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 20
 
+[node name="OfferCard" type="PanelContainer" parent="Scroll/Body" unique_id=2096167877]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Margin" type="MarginContainer" parent="Scroll/Body/OfferCard" unique_id=1320056848]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 36
+
+[node name="Col" type="VBoxContainer" parent="Scroll/Body/OfferCard/Margin" unique_id=1249864077]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 22
+
+[node name="OfferTitle" type="Label" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=134290407]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 56
+text = "Compra el juego base"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control4" type="Control" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=805223736]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="OfferBody" type="Label" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=761788045]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.36, 0.26, 0.82)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 40
+text = "Desbloquea los puzles que aparecen con candado y accede al reto diario."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="OfferUnlock" type="Label" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=1901219133]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.36, 0.26, 0.82)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 40
+text = "Desbloquea los puzles que ahora aparecen con candado."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Features" type="HBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=1808999950]
+layout_mode = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="PieChart" type="Control" parent="Scroll/Body/OfferCard/Margin/Col/Features" unique_id=1441588997]
+custom_minimum_size = Vector2(380, 380)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("5_pie")
+color_cita = Color(0.5706918, 0.80465156, 0.9909888, 1)
+color_curio = Color(0.99736816, 0.879141, 0.3996949, 1)
+color_frag = Color(0.5068341, 0.9088498, 0.78436786, 1)
+color_efem = Color(0.88424313, 0.5303177, 0.50010914, 1)
+
+[node name="IconCita" type="TextureRect" parent="Scroll/Body/OfferCard/Margin/Col/Features/PieChart" unique_id=1008893885]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 66.0
+offset_right = 154.0
+offset_bottom = 154.0
+mouse_filter = 2
+texture = ExtResource("11_citas")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconCurio" type="TextureRect" parent="Scroll/Body/OfferCard/Margin/Col/Features/PieChart" unique_id=1039010870]
+layout_mode = 0
+offset_left = 226.0
+offset_top = 66.0
+offset_right = 314.0
+offset_bottom = 154.0
+mouse_filter = 2
+texture = ExtResource("12_curio")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconFrag" type="TextureRect" parent="Scroll/Body/OfferCard/Margin/Col/Features/PieChart" unique_id=527471320]
+layout_mode = 0
+offset_left = 226.0
+offset_top = 226.0
+offset_right = 314.0
+offset_bottom = 314.0
+mouse_filter = 2
+texture = ExtResource("13_frag")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconEfem" type="TextureRect" parent="Scroll/Body/OfferCard/Margin/Col/Features/PieChart" unique_id=1938905400]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 226.0
+offset_right = 154.0
+offset_bottom = 314.0
+mouse_filter = 2
+texture = ExtResource("14_efem")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Stats" type="VBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col/Features" unique_id=441903627]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 16
+
+[node name="Control" type="Control" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats" unique_id=383623394]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="RowPuzzles" type="HBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats" unique_id=13480708]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Icon" type="TextureRect" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/RowPuzzles" unique_id=1260316683]
+custom_minimum_size = Vector2(68, 68)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_puzzle")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LabelPuzzles" type="Label" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/RowPuzzles" unique_id=1931033896]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 42
+text = "%s puzles:"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="StatsIndent" type="MarginContainer" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats" unique_id=773854207]
+layout_mode = 2
+theme_override_constants/margin_left = 56
+
+[node name="List" type="VBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent" unique_id=1896383190]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="RowQuick" type="HBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List" unique_id=365654217]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Icon" type="TextureRect" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List/RowQuick" unique_id=84381630]
+custom_minimum_size = Vector2(68, 68)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("7_bolt")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LabelQuick" type="Label" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List/RowQuick" unique_id=1869633160]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 42
+text = "%s rápidos"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RowCrypto" type="HBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List" unique_id=1834274686]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Icon" type="TextureRect" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List/RowCrypto" unique_id=1374414851]
+custom_minimum_size = Vector2(68, 68)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("8_library")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LabelCrypto" type="Label" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List/RowCrypto" unique_id=1593600450]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 42
+text = "%s criptogramas"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RowDaily" type="HBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List" unique_id=778681963]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Icon" type="TextureRect" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List/RowDaily" unique_id=240656042]
+custom_minimum_size = Vector2(68, 68)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("9_daily")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LabelDaily" type="Label" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List/RowDaily" unique_id=1091941586]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 42
+text = "Reto diario incluido"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RowOst" type="HBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List" unique_id=202800796]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Icon" type="TextureRect" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List/RowOst" unique_id=1116940422]
+modulate = Color(0.42, 0.3, 0.2, 1)
+custom_minimum_size = Vector2(68, 68)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_music")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LabelOst" type="Label" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List/RowOst" unique_id=218434221]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 42
+text = "Banda Sonora Original"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Control2" type="Control" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=454289105]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Extras" type="VBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=66975217]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ExtraNoAds" type="Label" parent="Scroll/Body/OfferCard/Margin/Col/Extras" unique_id=1573465545]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.36, 0.26, 0.82)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 38
+text = "El juego no contiene anuncios ni vídeos de recompensa."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ExtraSoundtrack" type="Label" parent="Scroll/Body/OfferCard/Margin/Col/Extras" unique_id=1729455253]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.36, 0.26, 0.82)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 38
+text = "Sin anuncios. BSO completa incluida y descargable."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control3" type="Control" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=523562034]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="ButtonBuy" type="Button" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=1127418015]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("Style_buy")
+theme_override_styles/pressed = SubResource("Style_buy_pressed")
+theme_override_styles/hover = SubResource("Style_buy")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="BuyRow" type="HBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col/ButtonBuy" unique_id=594580267]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="LabelBuyVerb" type="Label" parent="Scroll/Body/OfferCard/Margin/Col/ButtonBuy/BuyRow" unique_id=533848580]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 48
+text = "Desbloquear"
+vertical_alignment = 1
+
+[node name="LabelBuyPrice" type="Label" parent="Scroll/Body/OfferCard/Margin/Col/ButtonBuy/BuyRow" unique_id=5273480]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 55
+text = "1,99 €"
+vertical_alignment = 1
+
+[node name="LabelOwned" type="Label" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=494425020]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.18, 0.55, 0.32, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 40
+text = "Ya tienes el juego completo."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="RestoreWrap" type="MarginContainer" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=1514563928]
+layout_mode = 2
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_bottom = 8
+
+[node name="ButtonRestore" type="Button" parent="Scroll/Body/OfferCard/Margin/Col/RestoreWrap" unique_id=660586755]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.48, 0.36, 0.26, 0.72)
+theme_override_colors/font_pressed_color = Color(0.22, 0.16, 0.1, 1)
+theme_override_colors/font_hover_color = Color(0.48, 0.36, 0.26, 0.82)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("Style_empty")
+theme_override_styles/pressed = SubResource("Style_empty")
+theme_override_styles/hover = SubResource("Style_empty")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "Restaurar compras"
+flat = true
+
+[node name="LabelRestoreStatus" type="Label" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=895169007]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.36, 0.26, 0.82)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 30
+text = "No hay compras que restaurar."
+horizontal_alignment = 1
+autowrap_mode = 3
+
 [connection signal="pressed" from="Header/ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="Scroll/Body/OfferCard/Margin/Col/ButtonBuy" to="." method="_on_buy_pressed"]
+[connection signal="pressed" from="Scroll/Body/OfferCard/Margin/Col/RestoreWrap/ButtonRestore" to="." method="_on_restore_pressed"]

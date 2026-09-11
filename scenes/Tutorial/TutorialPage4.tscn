@@ -4,7 +4,7 @@
 [ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="2_regular"]
 [ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="3_body"]
 [ext_resource type="Texture2D" uid="uid://duj5gi84s5bqf" path="res://images/mode_quick.svg" id="4_quick"]
-[ext_resource type="Texture2D" uid="uid://cxcb17n88b3b3" path="res://images/mode_scroll.svg" id="5_crypto"]
+[ext_resource type="Texture2D" uid="uid://c3sofhyrdkn54" path="res://images/CriptogramaIcono.png" id="5_crypto"]
 [ext_resource type="Texture2D" uid="uid://cw4dqgcsmvh2y" path="res://images/tutorial_cloud.svg" id="6_cloud"]
 [ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="7_star"]
 

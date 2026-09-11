@@ -32,7 +32,6 @@ func _ready() -> void:
 		SignalManager.audio_prefs_changed.connect(_refresh_audio_buttons)
 	GameManager.session_source = GameManager.SOURCE_NONE
 	GameManager.locked_record_stars = -1
-	_layout_home_buttons()
 	_apply_labels()
 	_apply_title_tiles()
 	_update_version_label()
@@ -317,32 +316,6 @@ func _on_button_daily_pressed() -> void:
 	_go_to("res://scenes/MenuDaily.tscn", button_daily)
 
 
-func _layout_home_buttons() -> void:
-	var shortcuts := get_node_or_null("Panel/Shortcuts") as HBoxContainer
-	if shortcuts:
-		var daily_col := shortcuts.get_node_or_null("ColDaily")
-		var library_col := shortcuts.get_node_or_null("ColLibrary")
-		var shop_col := shortcuts.get_node_or_null("ColShop")
-		if daily_col:
-			shortcuts.move_child(daily_col, 0)
-		if library_col:
-			shortcuts.move_child(library_col, 1)
-		if shop_col:
-			shortcuts.move_child(shop_col, 2)
-	var actions := get_node_or_null("Panel/Actions") as HBoxContainer
-	if actions:
-		var stats_col := actions.get_node_or_null("ColStats")
-		var ranking_col := actions.get_node_or_null("ColRanking")
-		var tutorial_col := actions.get_node_or_null("ColTutorial")
-		if stats_col:
-			actions.move_child(stats_col, 0)
-		if ranking_col:
-			actions.move_child(ranking_col, 1)
-		if tutorial_col:
-			actions.move_child(tutorial_col, 2)
-	_refresh_daily_button()
-
-
 func _refresh_daily_button() -> void:
 	if button_daily == null:
 		return
@@ -351,55 +324,31 @@ func _refresh_daily_button() -> void:
 	var title := button_daily.get_node_or_null("Label") as Label
 	if title:
 		title.text = tr("DailyChallenge")
-		title.anchor_top = 0.67
-		title.anchor_bottom = 0.93
+		title.modulate.a = 1.0
 	var status := button_daily.get_node_or_null("Status") as Label
 	if status:
 		status.visible = false
-	var lock := _ensure_daily_lock()
+	var daily_icon := button_daily.get_node_or_null("Icon") as CanvasItem
+	if daily_icon:
+		daily_icon.modulate.a = 1.0
+	var lock := button_daily.get_node_or_null("PurchaseLock") as Control
 	if lock:
 		lock.visible = locked
-	var badge := _ensure_today_badge()
+	var badge := button_daily.get_node_or_null("TodayBadge") as Control
 	if badge:
-		_place_today_badge(badge)
 		badge.visible = not locked and not done
 		var badge_label := badge.get_node_or_null("Label") as Label
 		if badge_label:
 			badge_label.text = tr("Today")
-	var stamp := _ensure_completed_stamp()
+	var stamp := button_daily.get_node_or_null("CompletedStamp") as Control
 	if stamp:
 		stamp.visible = not locked and done
+		var stamp_label := stamp.get_node_or_null("Label") as Label
+		if stamp_label:
+			var done_text := tr("DailyDone")
+			stamp_label.text = "HECHO" if done_text == "DailyDone" else done_text
 		if stamp.visible:
-			_place_completed_stamp(stamp)
-
-
-func _ensure_daily_lock() -> Control:
-	if button_daily == null:
-		return null
-	var existing := button_daily.get_node_or_null("PurchaseLock") as Control
-	if existing:
-		return existing
-	var overlay := ColorRect.new()
-	overlay.name = "PurchaseLock"
-	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	overlay.color = Color(0.16, 0.1, 0.06, 0.38)
-	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var icon := TextureRect.new()
-	icon.texture = ICON_LOCK
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	icon.anchor_left = 0.5
-	icon.anchor_top = 0.18
-	icon.anchor_right = 0.5
-	icon.anchor_bottom = 0.58
-	icon.offset_left = -46
-	icon.offset_top = 0
-	icon.offset_right = 46
-	icon.offset_bottom = 0
-	overlay.add_child(icon)
-	button_daily.add_child(overlay)
-	return overlay
+			call_deferred("_center_stamp_pivot", stamp)
 
 
 func _show_daily_locked_dialog() -> void:
@@ -511,116 +460,6 @@ func _show_daily_locked_dialog() -> void:
 		_go_to(PATH_SHOP, button_shop)
 	)
 	buttons.add_child(shop)
-
-
-func _ensure_today_badge() -> Panel:
-	if button_daily == null:
-		return null
-	var existing := button_daily.get_node_or_null("TodayBadge") as Panel
-	if existing:
-		return existing
-	var badge := Panel.new()
-	badge.name = "TodayBadge"
-	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_place_today_badge(badge)
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.82, 0.16, 0.14, 1)
-	style.set_corner_radius_all(18)
-	style.shadow_color = Color(0.29, 0.12, 0.08, 0.28)
-	style.shadow_size = 4
-	style.shadow_offset = Vector2(0, 2)
-	badge.add_theme_stylebox_override("panel", style)
-	var label := Label.new()
-	label.name = "Label"
-	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	label.text = tr("Today")
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.add_theme_color_override("font_color", Color.WHITE)
-	label.add_theme_font_size_override("font_size", 22)
-	var font := button_daily.get_node_or_null("Label") as Label
-	if font and font.get_theme_font("font"):
-		label.add_theme_font_override("font", font.get_theme_font("font"))
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	badge.add_child(label)
-	button_daily.add_child(badge)
-	return badge
-
-
-func _place_today_badge(badge: Panel) -> void:
-	badge.rotation = 0.0
-	badge.anchor_left = 0.58
-	badge.anchor_top = 0.02
-	badge.anchor_right = 0.98
-	badge.anchor_bottom = 0.22
-	badge.offset_left = 0
-	badge.offset_top = 0
-	badge.offset_right = 0
-	badge.offset_bottom = 0
-
-
-func _ensure_completed_stamp() -> Panel:
-	if button_daily == null:
-		return null
-	var existing := button_daily.get_node_or_null("CompletedStamp") as Panel
-	if existing:
-		return existing
-	var stamp := Panel.new()
-	stamp.name = "CompletedStamp"
-	stamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	stamp.visible = false
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.16, 0.5, 0.3, 0.14)
-	style.border_color = Color(0.16, 0.5, 0.3, 0.92)
-	style.set_border_width_all(6)
-	style.set_corner_radius_all(8)
-	stamp.add_theme_stylebox_override("panel", style)
-	var inner := Panel.new()
-	inner.name = "Inner"
-	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	inner.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	inner.offset_left = 7
-	inner.offset_top = 6
-	inner.offset_right = -7
-	inner.offset_bottom = -6
-	var inner_style := StyleBoxFlat.new()
-	inner_style.bg_color = Color(0, 0, 0, 0)
-	inner_style.border_color = Color(0.16, 0.5, 0.3, 0.88)
-	inner_style.set_border_width_all(3)
-	inner_style.set_corner_radius_all(4)
-	inner.add_theme_stylebox_override("panel", inner_style)
-	stamp.add_child(inner)
-	var label := Label.new()
-	label.name = "Label"
-	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	label.text = tr("DailyCompletedShort").to_upper()
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.add_theme_color_override("font_color", Color(0.14, 0.46, 0.28, 0.95))
-	label.add_theme_font_size_override("font_size", 28)
-	var font := button_daily.get_node_or_null("Label") as Label
-	if font and font.get_theme_font("font"):
-		label.add_theme_font_override("font", font.get_theme_font("font"))
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	stamp.add_child(label)
-	button_daily.add_child(stamp)
-	return stamp
-
-
-func _place_completed_stamp(stamp: Panel) -> void:
-	stamp.anchor_left = 0.04
-	stamp.anchor_top = 0.28
-	stamp.anchor_right = 0.96
-	stamp.anchor_bottom = 0.56
-	stamp.offset_left = 0
-	stamp.offset_top = 0
-	stamp.offset_right = 0
-	stamp.offset_bottom = 0
-	stamp.rotation = deg_to_rad(-22.0)
-	var label := stamp.get_node_or_null("Label") as Label
-	if label:
-		label.text = tr("DailyCompletedShort").to_upper()
-	call_deferred("_center_stamp_pivot", stamp)
 
 
 func _center_stamp_pivot(stamp: Control) -> void:

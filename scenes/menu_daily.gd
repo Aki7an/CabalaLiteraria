@@ -10,7 +10,7 @@ const ICON_EFEM: Texture2D = preload("res://images/Efemerides.png")
 const ICON_CURIO: Texture2D = preload("res://images/Adivinanza.png")
 const ICON_FRAG: Texture2D = preload("res://images/FragmentosLiterarios.png")
 const ICON_QUICK: Texture2D = preload("res://images/mode_quick.svg")
-const ICON_LUPA: Texture2D = preload("res://images/ui_icon_lupa.svg")
+const ICON_CRYPTO: Texture2D = preload("res://images/CriptogramaIcono.png")
 const ICON_DAILY: Texture2D = preload("res://images/ui_icon_daily.svg")
 const ICON_LIBRARY: Texture2D = preload("res://images/ui_icon_library.svg")
 const ICON_CLOCK: Texture2D = preload("res://images/stats_icon_clock.svg")
@@ -164,7 +164,7 @@ func _details_card() -> PanelContainer:
 	var mode := GameManager.level_game_mode(_item)
 	var is_crypto := mode == GameManager.MODE_CRYPTOGRAM
 	var diff_name := tr("Medium") if int(_item.get("difficulty", 1)) == 2 else GameManager.difficulty_display_name(int(_item.get("difficulty", 1)))
-	col.add_child(_centered_meta(ICON_LUPA if is_crypto else ICON_QUICK, tr("DailyType") % (
+	col.add_child(_centered_meta(ICON_CRYPTO if is_crypto else ICON_QUICK, tr("DailyType") % (
 		tr("Cryptogram") if is_crypto else tr("Quick")
 	), INK_SOFT))
 	col.add_child(_centered_meta(ICON_SIGNAL, "%s %s" % [

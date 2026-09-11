@@ -3,18 +3,30 @@ Play,Jugar,Play,Spielen,Jouer,Jolastu,Giocare,Jogar
 Settings,Ajustes,Settings,Einstellungen,Paramètres,Ezarpenak,Impostazioni,Configurações
 Shop,Tienda,Shop,Laden,Boutique,Denda,Negozio,Comprar
 ShopTagline,Más contenido para CifraLetra,More content for CifraLetra,Mehr Inhalte für CifraLetra,Plus de contenu pour CifraLetra,Eduki gehiago CifraLetrarentzat,Più contenuti per CifraLetra,Mais conteúdo para CifraLetra
-ShopFullTitle,Compra el juego completo,Get the full game,Kaufe das vollständige Spiel,Achetez le jeu complet,Erosi joko osoa,Acquista il gioco completo,Compra o jogo completo
-ShopFullBody,Descubre las %s frases y disfruta de toda la experiencia de CifraLetra.,Discover the %s phrases and enjoy the full CifraLetra experience.,Entdecke die %s Sätze und genieße das gesamte CifraLetra-Erlebnis.,Découvre les %s phrases et profite de toute l'expérience CifraLetra.,Ezagutu %s esaldiak eta gozatu CifraLetra esperientzia osoaz.,Scopri le %s frasi e goditi tutta l'esperienza di CifraLetra.,Descobre as %s frases e desfruta de toda a experiência CifraLetra.
-ShopPuzzles,%s puzles,%s puzzles,%s Rätsel,%s puzzles,%s puzzle,%s puzzle,%s puzzles
+ShopFullTitle,Compra el juego base,Buy the base game,Kaufe das Basisspiel,Achetez le jeu de base,Erosi oinarrizko jokoa,Acquista il gioco base,Compra o jogo base
+ShopBaseTitle,Compra el juego base,Buy the base game,Kaufe das Basisspiel,Achetez le jeu de base,Erosi oinarrizko jokoa,Acquista il gioco base,Compra o jogo base
+ShopFullBody,Accede a los %s puzles del juego base y al reto diario.,Access the %s puzzles in the base game and the daily challenge.,Erhalte Zugang zu den %s Rätseln des Basisspiels und zur täglichen Herausforderung.,Accède aux %s puzzles du jeu de base et au défi du jour.,Oinarrizko jokoaren %s puzzleetara eta eguneko erronkara sartu.,Accedi ai %s puzzle del gioco base e alla sfida del giorno.,Acede aos %s puzzles do jogo base e ao desafio diário.
+ShopFullAccess,Accede a los %s puzles del juego base y al reto diario.,Access the %s puzzles in the base game and the daily challenge.,Erhalte Zugang zu den %s Rätseln des Basisspiels und zur täglichen Herausforderung.,Accède aux %s puzzles du jeu de base et au défi du jour.,Oinarrizko jokoaren %s puzzleetara eta eguneko erronkara sartu.,Accedi ai %s puzzle del gioco base e alla sfida del giorno.,Acede aos %s puzzles do jogo base e ao desafio diário.
+ShopBaseBody,Desbloquea los puzles que aparecen con candado y accede al reto diario.,Unlock the puzzles that show a lock and access the daily challenge.,Schalte die Rätsel mit Schloss frei und erhalte Zugang zur täglichen Herausforderung.,Débloque les puzzles qui apparaissent avec un cadenas et accède au défi du jour.,Giltzarrapoarekin agertzen diren puzzleak desblokeatu eta eguneko erronkara sartu.,Sblocca i puzzle che appaiono con un lucchetto e accedi alla sfida del giorno.,Desbloqueia os puzzles que aparecem com cadeado e acede ao desafio diário.
+ShopPuzzles,%s puzles:,%s puzzles:,%s Rätsel:,%s puzzles:,%s puzzle:,%s puzzle:,%s puzzles:
+ShopSoundtrackTitle,Banda Sonora Original,Original Soundtrack,Original-Soundtrack,Bande originale,Soinu-banda originala,Colonna sonora originale,Banda sonora original
 ShopQuick,%s rápidos,%s quick,%s schnelle,%s rapides,%s azkarrak,%s rapidi,%s rápidos
 ShopCryptograms,%s criptogramas,%s cryptograms,%s Kryptogramme,%s cryptogrammes,%s kriptogramak,%s crittogrammi,%s criptogramas
 ShopDailyIncluded,Reto diario incluido,Daily challenge included,Tägliche Herausforderung inklusive,Défi du jour inclus,Eguneko erronka barne,Sfida del giorno inclusa,Desafio diário incluído
 ShopBuy,Comprar %s,Buy %s,Kaufen %s,Acheter %s,Erosi %s,Acquista %s,Comprar %s
+ShopBuyVerb,Desbloquear,Unlock,Freischalten,Débloquer,Desblokeatu,Sblocca,Desbloquear
+ShopUnlockVerb,Desbloquear,Unlock,Freischalten,Débloquer,Desblokeatu,Sblocca,Desbloquear
 ShopPrice,"1,99 €",€1.99,"1,99 €","1,99 €","1,99 €","1,99 €","1,99 €"
 ShopLockedTitle,Puzle bloqueado,Puzzle locked,Rätsel gesperrt,Puzzle verrouillé,Puzzlea blokeatuta,Puzzle bloccato,Puzzle bloqueado
 ShopLockedBody,Para jugar a este puzle hay que comprar el juego completo.,To play this puzzle you need to buy the full game.,Um dieses Rätsel zu spielen musst du das vollständige Spiel kaufen.,Pour jouer à ce puzzle il faut acheter le jeu complet.,Puzzle hau jokatzeko joko osoa erosi behar da.,Per giocare a questo puzzle devi acquistare il gioco completo.,Para jogar este puzzle é preciso comprar o jogo completo.
 ShopGoToStore,Ir a la tienda,Go to shop,Zum Laden,Aller à la boutique,Joan dendara,Vai al negozio,Ir à loja
 ShopOwned,Ya tienes el juego completo.,You already have the full game.,Du hast das vollständige Spiel bereits.,Tu as déjà le jeu complet.,Jada joko osoa daukazu.,Hai già il gioco completo.,Já tens o jogo completo.
+ShopUnlockLocks,Desbloquea los puzles que ahora aparecen con candado.,It unlocks the puzzles that currently show a lock.,"Es schaltet die Rätsel frei, die jetzt mit einem Schloss angezeigt werden.",Cela débloque les puzzles qui apparaissent actuellement avec un cadenas.,Orain giltzarrapoarekin agertzen diren puzzleak desblokeatzen ditu.,Sblocca i puzzle che ora appaiono con un lucchetto.,Desbloqueia os puzzles que agora aparecem com cadeado.
+ShopNoAds,El juego no contiene anuncios ni vídeos de recompensa.,The game has no ads and no rewarded videos.,Das Spiel enthält weder Werbung noch Belohnungsvideos.,Le jeu ne contient ni publicités ni vidéos récompensées.,Jokoak ez du iragarkirik ez sari-bideorik.,Il gioco non contiene pubblicità né video premio.,O jogo não contém anúncios nem vídeos de recompensa.
+ShopSoundtrack,"La descarga incluye la BSO del juego, que se guarda en la aplicación y en el móvil.","The download includes the game soundtrack, saved in the app and on your phone.","Der Download enthält den Soundtrack des Spiels, der in der App und auf dem Handy gespeichert wird.","Le téléchargement inclut la BO du jeu, enregistrée dans l'application et sur le téléphone.","Deskargak jokoaren BSO-a barne hartzen du, aplikazioan eta mugikorrean gordetzen dena.","Il download include la colonna sonora del gioco, salvata nell'app e sul telefono.","A descarga inclui a BSO do jogo, guardada na aplicação e no telemóvel."
+ShopFinalNote,Sin anuncios. BSO completa incluida y descargable.,No ads. Full soundtrack included and downloadable.,Ohne Werbung. Vollständiger Soundtrack inklusive und herunterladbar.,Sans publicité. BO complète incluse et téléchargeable.,Iragarkirik gabe. BSO osoa barne eta deskargagarria.,Senza pubblicità. Colonna sonora completa inclusa e scaricabile.,Sem anúncios. BSO completa incluída e descarregável.
+ShopRestore,Restaurar compras,Restore purchases,Käufe wiederherstellen,Restaurer les achats,Erosketak berreskuratu,Ripristina acquisti,Restaurar compras
+ShopRestoreNone,No hay compras que restaurar.,No purchases to restore.,Keine Käufe zum Wiederherstellen.,Aucun achat à restaurer.,Ez dago berreskuratzeko erosketarik.,Nessun acquisto da ripristinare.,Não há compras para restaurar.
 StatusLocked,BLOQUEADO,LOCKED,GESPERRT,VERROUILLÉ,BLOKEATUTA,BLOCCATO,BLOQUEADO
 DailyChallenge,Reto diario,Daily,Täglich,Défi du jour,Eguneko erronka,Sfida del giorno,Desafio diário
 Library,Biblioteca,Library,Bibliothek,Bibliothèque,Liburutegia,Biblioteca,Biblioteca
@@ -51,6 +63,7 @@ DailyCategory,Categoría: %s,Category: %s,Kategorie: %s,Catégorie : %s,Kategori
 DailyType,Tipo: %s,Type: %s,Typ: %s,Type : %s,Mota: %s,Tipo: %s,Tipo: %s
 DailyDifficulty,Dificultad: %s,Difficulty: %s,Schwierigkeit: %s,Difficulté : %s,Zailtasuna: %s,Difficoltà: %s,Dificuldade: %s
 DailyCompletedShort,Completado,Completed,Geschafft,Terminé,Ebatzita,Completata,Concluído
+DailyDone,HECHO,DONE,FERTIG,FAIT,EGINA,FATTO,FEITO
 DailyBadge,Reto diario,Daily,Täglich,Défi,Erronka,Sfida,Diário
 DailyCongrats,¡Reto diario!,Daily challenge!,Tägliche Herausforderung!,Défi du jour !,Eguneko erronka!,Sfida del giorno!,Desafio diário!
 DailyTagline,El puzle especial de hoy,Today's special puzzle,Das besondere Rätsel von heute,Le puzzle spécial du jour,Gaurko puzzle berezia,Il puzzle speciale di oggi,O puzzle especial de hoje
@@ -447,6 +460,7 @@ LITERARIOAK","FRAMMENTI
 LETTERARI","FRAGMENTOS
 LITERÁRIOS"
 RankPos,POS.,POS.,PL.,POS.,POS.,POS.,POS.
+RankLanguage,IDIOMA,LANG,SPRACHE,LANGUE,HIZKUNTZA,LINGUA,IDIOMA
 RankPlayer,JUGADOR,PLAYER,SPIELER,JOUEUR,JOKALARIA,GIOCATORE,JOGADOR
 RankStars,ESTRELLAS,STARS,STERNE,ÉTOILES,IZARRAK,STELLE,ESTRELAS
 RankPuzzles,PUZLES,PUZZLES,RÄTSEL,PUZZLES,PUZZLEAK,PUZZLE,PUZZLES
@@ -458,6 +472,11 @@ RankUnavailable,Clasificación online no disponible,Online ranking unavailable,O
 RankYou,TÚ,YOU,DU,TOI,ZU,TU,TU
 RankYouOffline,TÚ — sin conexión,YOU — offline,DU — offline,TOI — hors ligne,ZU — lineaz kanpo,TU — offline,TU — sem ligação
 RankYouNoPos,TÚ — sin posición,YOU — unranked,DU — ohne Platz,TOI — hors classement,ZU — posiziorik gabe,TU — senza posizione,TU — sem posição
+RankByStars,Clasificación por estrellas totales,Ranking by total stars,Rangliste nach Gesamtsternen,Classement par étoiles totales,Sailkapena izar osoen arabera,Classifica per stelle totali,Classificação por estrelas totais
+RankNearMe,CERCA DE MÍ,NEAR ME,IN MEINER NÄHE,AUTOUR DE MOI,NIRE INGURUAN,VICINO A ME,PERTO DE MIM
+RankTopPlaces,PRIMEROS PUESTOS,TOP RANKS,SPITZENPLÄTZE,PREMIERS,LEHEN POSTUAK,PRIMI POSTI,PRIMEIROS LUGARES
+RankMyPlace,MI PUESTO · #%s,MY RANK · #%s,MEIN PLATZ · #%s,MA PLACE · #%s,NIRE POSTUA · #%s,IL MIO POSTO · #%s,O MEU LUGAR · #%s
+RankYouTag,(tú),(you),(du),(toi),(zu),(tu),(tu)
 RankUpdateNote,✦   La clasificación se actualiza al completar un puzle.,✦   The ranking updates when you complete a puzzle.,✦   Die Rangliste wird nach einem gelösten Rätsel aktualisiert.,✦   Le classement se met à jour quand tu termines un puzzle.,✦   Sailkapena puzzle bat osatzean eguneratzen da.,✦   La classifica si aggiorna al completare un puzzle.,✦   A classificação atualiza-se ao completar um puzzle.
 RankRules,"La clasificación se basa en [color=#e55816]ESTRELLAS TOTALES[/color] obtenidas.
 
@@ -523,6 +542,24 @@ LettersRevealed,LETRAS REVELADAS,LETTERS REVEALED,AUFGEDECKTE BUCHSTABEN,LETTRES
 LettersFailed,LETRAS FALLADAS,FAILED LETTERS,FALSCHE BUCHSTABEN,LETTRES RATÉES,HUTS EGINDAKO LETRAK,LETTERE ERRATE,LETRAS FALHADAS
 AvgTimePerGame,TIEMPO MEDIO POR PARTIDA,AVERAGE TIME PER GAME,DURCHSCHNITTLICHE ZEIT PRO SPIEL,TEMPS MOYEN PAR PARTIE,PARTIDAKO BATEZ BESTEKO DENBORA,TEMPO MEDIO PER PARTITA,TEMPO MÉDIO POR PARTIDA
 PersonalMarks,MARCAS PERSONALES,PERSONAL MARKS,PERSÖNLICHE MARKEN,MARQUES PERSONNELLES,MARKA PERTSONALAK,RECORD PERSONALI,MARCAS PESSOAIS
+StatsYourProgress,TU PROGRESO,YOUR PROGRESS,DEIN FORTSCHRITT,TA PROGRESSION,ZURE AURRERAPENA,I TUOI PROGRESSI,O TEU PROGRESSO
+StatsByCategory,POR CATEGORÍA,BY CATEGORY,NACH KATEGORIE,PAR CATÉGORIE,KATEGORIAKA,PER CATEGORIA,POR CATEGORIA
+StatsAids,AYUDAS,HINTS,HILFEN,AIDES,LAGUNTZAK,AIUTI,AJUDAS
+StatsStarsOf,%d de %d,%d of %d,%d von %d,%d sur %d,%d / %d,%d di %d,%d de %d
+StatsPuzzlesSolved,%d de %d puzles resueltos,%d of %d puzzles solved,%d von %d gelösten Rätseln,%d sur %d puzzles résolus,%d / %d puzzle ebatzita,%d di %d puzzle risolti,%d de %d puzzles resolvidos
+StatsMatchOne,1 partida,1 game,1 Spiel,1 partie,1 partida,1 partita,1 partida
+StatsMatches,%d partidas,%d games,%d Spiele,%d parties,%d partida,%d partite,%d partidas
+StatsAvgSuffix,%s media,%s avg,%s Schnitt,%s moyenne,%s batez besteko,%s media,%s média
+StatsCatStars,%d/%d★,%d/%d★,%d/%d★,%d/%d★,%d/%d★,%d/%d★,%d/%d★
+StatsPistas,Pistas,Hints,Hinweise,Indices,Aholkuak,Suggerimenti,Dicas
+StatsRevealed,Reveladas,Revealed,Aufgedeckt,Révélées,Agertuak,Rivelate,Reveladas
+StatsFails,Fallos,Fails,Fehler,Erreurs,Hutsegiteak,Errori,Falhas
+StatsPerfectPuzzle,Puzle perfecto,Perfect puzzle,Perfektes Rätsel,Puzzle parfait,Puzzle perfectua,Puzzle perfetto,Puzzle perfeito
+StatsBestTime,Mejor tiempo,Best time,Beste Zeit,Meilleur temps,Denbora onena,Miglior tempo,Melhor tempo
+StatsCatCita,Citas,Quotes,Zitate,Citations,Aipuak,Citazioni,Citações
+StatsCatEfem,Efemérides,Dates,Jahrestage,Éphémérides,Efemerideak,Efeméridi,Efemérides
+StatsCatCurio,Curiosidades,Curiosities,Kuriositäten,Curiosités,Bitxikeriak,Curiosità,Curiosidades
+StatsCatFrag,Fragmentos,Fragments,Fragmente,Fragments,Zatiak,Frammenti,Fragmentos
 PuzzlesCount,%d puzles,%d puzzles,%d Rätsel,%d puzzles,%d puzzle,%d puzzle,%d puzzles
 StatsUpdatedNote,Las estadísticas se actualizan al completar un puzle.,Statistics update when a puzzle is completed.,Statistiken werden nach einem gelösten Rätsel aktualisiert.,Les statistiques se mettent à jour quand tu termines un puzzle.,Estatistikak puzzle bat osatzean eguneratzen dira.,Le statistiche si aggiornano al completare un puzzle.,As estatísticas atualizam-se ao completar um puzzle.
 ChooseGame,Elige tu partida,Choose your game,Wähle dein Spiel,Choisissez votre partie,Aukeratu zure partida,Scegli la tua partita,Escolha a sua partida

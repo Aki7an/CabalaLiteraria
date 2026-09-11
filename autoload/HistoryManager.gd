@@ -657,6 +657,8 @@ func get_stats_dashboard() -> Dictionary:
 				"stars_earned": int(record.get("stars_earned", 0)),
 				"stars_available": int(record.get("stars_available", 0)),
 				"percent": int(round(float(record.get("percentage", 0.0)))),
+				"maps_done": int(record.get("catalog_completed", record.get("completed", 0))),
+				"maps_total": int(record.get("available_puzzles", 0)),
 			})
 
 	var star_distribution := {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
@@ -872,6 +874,10 @@ func get_competitive_record(
 			hard_completed += 1
 
 	var completed := best_by_puzzle.size()
+	var catalog_completed := 0
+	for puzzle_key in best_by_puzzle.keys():
+		if available_puzzles.has(str(puzzle_key)):
+			catalog_completed += 1
 	var stars_available := 0
 	for maximum_value in available_puzzles.values():
 		stars_available += int(maximum_value)
@@ -890,6 +896,7 @@ func get_competitive_record(
 		"percentage": percentage,
 		"percentage_tenths": clampi(int(round(percentage * 10.0)), 0, 1000),
 		"completed": completed,
+		"catalog_completed": catalog_completed,
 		"hard_completed": hard_completed,
 		"aids_used": aids_used,
 		"failed_letters": failed_letters,

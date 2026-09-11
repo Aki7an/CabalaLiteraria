@@ -33,6 +33,7 @@ func _ready() -> void:
 		if typeof(GameManager) != TYPE_NIL:
 			GameManager.ensure_online_identity()
 			await _update_player_display_name(GameManager.player_name)
+			sync_player_language(GameManager.locale_code())
 	else:
 		print("No se pudo iniciar sesión en PlayFab.")
 	
@@ -137,6 +138,127 @@ func sync_player_display_name(player_name: String = "") -> void:
 	if name == "":
 		return
 	_update_player_display_name(name)
+
+
+const LANGUAGE_STAT_NAME := "PlayerLanguage"
+const LANGUAGE_DATA_KEY := "Language"
+
+
+func language_code_from_locale(code: String = "") -> String:
+	var raw := code.strip_edges().to_lower().replace("-", "_")
+	if raw.is_empty() and typeof(GameManager) != TYPE_NIL:
+		raw = GameManager.locale_code()
+	var base := String(raw.split("_")[0])
+	match base:
+		"es", "en", "eu", "de", "pt", "it", "fr":
+			return base
+		_:
+			return ""
+
+
+func language_stat_value(code: String = "") -> int:
+	match language_code_from_locale(code):
+		"es":
+			return 1
+		"en":
+			return 2
+		"eu":
+			return 3
+		"de":
+			return 4
+		"pt":
+			return 5
+		"it":
+			return 6
+		"fr":
+			return 7
+		_:
+			return 0
+
+
+func language_from_stat_value(value: int) -> String:
+	match value:
+		1:
+			return "es"
+		2:
+			return "en"
+		3:
+			return "eu"
+		4:
+			return "de"
+		5:
+			return "pt"
+		6:
+			return "it"
+		7:
+			return "fr"
+		_:
+			return ""
+
+
+func sync_player_language(code: String = "") -> void:
+	if not is_logged_in():
+		return
+	var lang := language_code_from_locale(code)
+	if lang == "":
+		return
+	await _update_public_user_data({LANGUAGE_DATA_KEY: lang})
+
+
+func fetch_player_languages(playfab_ids: Array) -> Dictionary:
+	var languages := {}
+	var unique: Array[String] = []
+	for id_value in playfab_ids:
+		var id := str(id_value).strip_edges()
+		if id == "" or unique.has(id):
+			continue
+		unique.append(id)
+	for id in unique:
+		languages[id] = await _fetch_one_player_language(id)
+	return languages
+
+
+func _fetch_one_player_language(target_id: String) -> String:
+	var json := await _client_post_json("GetPlayerCombinedInfo", {
+		"PlayFabId": target_id,
+		"InfoRequestParameters": {
+			"GetUserData": true,
+			"UserDataKeys": [LANGUAGE_DATA_KEY],
+			"GetPlayerStatistics": true,
+			"PlayerStatisticNames": [LANGUAGE_STAT_NAME],
+		},
+	})
+	if json.is_empty():
+		return ""
+	var data: Variant = json.get("data", {})
+	if not (data is Dictionary):
+		return ""
+	var payload: Variant = data.get("InfoResultPayload", {})
+	if not (payload is Dictionary):
+		return ""
+	var from_data := language_from_user_data_payload(payload)
+	if from_data != "":
+		return from_data
+	var stats_value: Variant = payload.get("PlayerStatistics", [])
+	if stats_value is Array:
+		for stat_value in stats_value:
+			if not (stat_value is Dictionary):
+				continue
+			var stat: Dictionary = stat_value
+			if str(stat.get("StatisticName", "")) != LANGUAGE_STAT_NAME:
+				continue
+			return language_from_stat_value(int(stat.get("Value", 0)))
+	return ""
+
+
+func language_from_user_data_payload(payload: Dictionary) -> String:
+	var user_data: Variant = payload.get("UserData", {})
+	if not (user_data is Dictionary) or not user_data.has(LANGUAGE_DATA_KEY):
+		return ""
+	var entry: Variant = user_data[LANGUAGE_DATA_KEY]
+	if entry is Dictionary:
+		return language_code_from_locale(str(entry.get("Value", "")))
+	return language_code_from_locale(str(entry))
 
 ## Imprime el estado actual del login en consola (con el ID si existe)
 func print_login_status() -> void:
@@ -333,6 +455,8 @@ func submit_competitive_rankings(player_name: String = "") -> bool:
 			return false
 	if player_name.strip_edges() != "":
 		await _update_player_display_name(player_name)
+	var language := language_code_from_locale()
+	await sync_player_language(language)
 
 	var categories := [
 		"global",
@@ -350,6 +474,12 @@ func submit_competitive_rankings(player_name: String = "") -> bool:
 				"StatisticName": competitive_stat_name(category, mode),
 				"Value": encode_competitive_record(record),
 			})
+	var language_value := language_stat_value(language)
+	if language_value > 0:
+		statistics.append({
+			"StatisticName": LANGUAGE_STAT_NAME,
+			"Value": language_value,
+		})
 
 	var request := HTTPRequest.new()
 	add_child(request)
@@ -424,6 +554,55 @@ func _update_player_display_name(player_name: String) -> bool:
 	var json: Dictionary = parsed
 	var pf_code: int = int(json.get("code", http_code))
 	return pf_code == 200
+
+
+func _update_public_user_data(data: Dictionary) -> bool:
+	var json := await _client_post_json("UpdateUserData", {
+		"Data": data,
+		"Permission": "Public",
+	})
+	return not json.is_empty()
+
+
+func _client_post(endpoint: String, body: Dictionary) -> bool:
+	var json := await _client_post_json(endpoint, body)
+	return not json.is_empty()
+
+
+func _client_post_json(endpoint: String, body: Dictionary) -> Dictionary:
+	if not is_logged_in():
+		return {}
+	var request := HTTPRequest.new()
+	add_child(request)
+	request.timeout = 20
+	var headers := PackedStringArray([
+		"Content-Type: application/json",
+		"Accept: application/json",
+		"Accept-Encoding: identity",
+		"X-Authorization: " + session_ticket,
+		"X-ReportErrorAsSuccess: true",
+	])
+	var url := "https://%s.playfabapi.com/Client/%s" % [TITLE_ID, endpoint]
+	if request.request(url, headers, HTTPClient.METHOD_POST, JSON.stringify(body)) != OK:
+		request.queue_free()
+		return {}
+	var response: Array = await request.request_completed
+	var http_code := int(response[1])
+	var text := (response[3] as PackedByteArray).get_string_from_utf8()
+	request.queue_free()
+	var parsed: Variant = JSON.parse_string(text)
+	if not (parsed is Dictionary):
+		return {}
+	var json: Dictionary = parsed
+	if int(json.get("code", http_code)) != 200:
+		push_warning(
+			"PlayFab %s falló: %s" % [
+				endpoint,
+				str(json.get("errorMessage", json.get("error", http_code))),
+			]
+		)
+		return {}
+	return json
 
 func send_match_event(duration_sec: int, vowelsAE: int, vowelsIOU:int, letras: int, pistas1: int, pistas2: int, dificultad: int, categoria: String) -> bool:
 	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():

@@ -11,10 +11,28 @@
 [ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="9_back"]
 [ext_resource type="Texture2D" uid="uid://t0gcgg5c52mq" path="res://images/leaderboard_global.svg" id="10_global"]
 [ext_resource type="Texture2D" uid="uid://duj5gi84s5bqf" path="res://images/mode_quick.svg" id="11_quick"]
-[ext_resource type="Texture2D" uid="uid://cxcb17n88b3b3" path="res://images/mode_scroll.svg" id="12_cryptogram"]
+[ext_resource type="Texture2D" uid="uid://c3sofhyrdkn54" path="res://images/CriptogramaIcono.png" id="12_cryptogram"]
+[ext_resource type="Texture2D" uid="uid://ceedgay116g77" path="res://images/Infoed.png" id="13_8uxnf"]
 
 [sub_resource type="StyleBoxFlat" id="Style_background"]
 bg_color = Color(0.984, 0.949, 0.865, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(1, 0.972549, 0.882353, 0.94)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.788235, 0.6, 0.305882, 0.52)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+corner_detail = 12
+shadow_color = Color(0.352941, 0.211765, 0.109804, 0.16)
+shadow_size = 15
+shadow_offset = Vector2(0, 12)
+anti_aliasing_size = 0.5
 
 [sub_resource type="StyleBoxFlat" id="Style_mode"]
 bg_color = Color(1, 0.96, 0.87, 1)
@@ -29,21 +47,6 @@ corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
 [sub_resource type="StyleBoxEmpty" id="Style_empty"]
-
-[sub_resource type="StyleBoxFlat" id="Style_card"]
-bg_color = Color(1, 0.976, 0.925, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 4
-border_color = Color(0.902, 0.788, 0.588, 0.82)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
-shadow_color = Color(0.31, 0.2, 0.09, 0.14)
-shadow_size = 16
-shadow_offset = Vector2(0, 11)
 
 [sub_resource type="StyleBoxFlat" id="Style_filter"]
 bg_color = Color(1, 0.976, 0.925, 1)
@@ -81,21 +84,21 @@ corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
-[sub_resource type="StyleBoxFlat" id="Style_around_frame"]
-content_margin_left = 14.0
-content_margin_top = 14.0
-content_margin_right = 14.0
-content_margin_bottom = 14.0
-bg_color = Color(1, 0.965, 0.91, 1)
+[sub_resource type="StyleBoxFlat" id="Style_my_place"]
+content_margin_left = 28.0
+content_margin_top = 10.0
+content_margin_right = 28.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 0.984, 0.94, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.82, 0.62, 0.38, 0.4)
-corner_radius_top_left = 36
-corner_radius_top_right = 36
-corner_radius_bottom_right = 36
-corner_radius_bottom_left = 36
+border_color = Color(0.82, 0.62, 0.38, 0.5)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
 
 [node name="LeaderBoard" type="Control" unique_id=2002514090]
 layout_mode = 3
@@ -117,7 +120,6 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_background")
 
 [node name="Pattern" parent="Background" unique_id=167697658 instance=ExtResource("2_background")]
-modulate = Color(1, 1, 1, 0.12)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -153,15 +155,23 @@ text = "RÉCORDS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ModeTabs" type="HBoxContainer" parent="." unique_id=1874981241]
+[node name="MainCard" type="Panel" parent="." unique_id=1232219028]
 layout_mode = 0
-offset_left = 32.0
-offset_top = 202.0
-offset_right = 1174.0
-offset_bottom = 380.0
-theme_override_constants/separation = 0
+offset_left = 24.0
+offset_top = 196.0
+offset_right = 1182.0
+offset_bottom = 2598.0
+theme_override_styles/panel = SubResource("Style_card")
 
-[node name="FilterQuick" type="Button" parent="ModeTabs" unique_id=683418167]
+[node name="ModeTabs" type="HBoxContainer" parent="MainCard" unique_id=1874981241]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 1138.0
+offset_bottom = 148.0
+theme_override_constants/separation = 16
+
+[node name="FilterQuick" type="Button" parent="MainCard/ModeTabs" unique_id=683418167]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -173,18 +183,18 @@ theme_override_styles/normal = SubResource("Style_mode")
 theme_override_styles/focus = SubResource("Style_empty")
 text = "RÁPIDO"
 
-[node name="Icon" type="TextureRect" parent="ModeTabs/FilterQuick" unique_id=2057069721]
+[node name="Icon" type="TextureRect" parent="MainCard/ModeTabs/FilterQuick" unique_id=2057069721]
 layout_mode = 0
-offset_left = 118.0
-offset_top = 42.0
-offset_right = 190.0
-offset_bottom = 136.0
+offset_left = 48.0
+offset_top = 30.0
+offset_right = 120.0
+offset_bottom = 102.0
 mouse_filter = 2
 texture = ExtResource("11_quick")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="FilterCryptogram" type="Button" parent="ModeTabs" unique_id=836680143]
+[node name="FilterCryptogram" type="Button" parent="MainCard/ModeTabs" unique_id=836680143]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -196,32 +206,24 @@ theme_override_styles/normal = SubResource("Style_mode")
 theme_override_styles/focus = SubResource("Style_empty")
 text = "CRIPTOGRAMA"
 
-[node name="Icon" type="TextureRect" parent="ModeTabs/FilterCryptogram" unique_id=1909880904]
+[node name="Icon" type="TextureRect" parent="MainCard/ModeTabs/FilterCryptogram" unique_id=1909880904]
 layout_mode = 0
-offset_left = 37.0
-offset_top = 38.0
-offset_right = 109.0
-offset_bottom = 132.0
+offset_left = 48.0
+offset_top = 30.0
+offset_right = 120.0
+offset_bottom = 102.0
 mouse_filter = 2
 texture = ExtResource("12_cryptogram")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MainCard" type="Panel" parent="." unique_id=1232219028]
-layout_mode = 0
-offset_left = 28.0
-offset_top = 350.0
-offset_right = 1178.0
-offset_bottom = 2584.0
-theme_override_styles/panel = SubResource("Style_card")
-
 [node name="CategoryFilters" type="HBoxContainer" parent="MainCard" unique_id=928681907]
 layout_mode = 0
-offset_left = 30.0
-offset_top = 56.0
-offset_right = 1120.0
-offset_bottom = 320.0
-theme_override_constants/separation = 14
+offset_left = 20.0
+offset_top = 172.0
+offset_right = 1138.0
+offset_bottom = 428.0
+theme_override_constants/separation = 10
 
 [node name="FilterGlobal" type="Button" parent="MainCard/CategoryFilters" unique_id=996994361]
 unique_name_in_owner = true
@@ -257,6 +259,7 @@ vertical_alignment = 1
 
 [node name="FilterQuotes" type="Button" parent="MainCard/CategoryFilters" unique_id=879911942]
 unique_name_in_owner = true
+self_modulate = Color(0.7921569, 0.83137256, 0.972549, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -291,6 +294,7 @@ vertical_alignment = 1
 
 [node name="FilterEvents" type="Button" parent="MainCard/CategoryFilters" unique_id=1625054350]
 unique_name_in_owner = true
+self_modulate = Color(0.9647059, 0.81960785, 0.80784315, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -323,6 +327,7 @@ vertical_alignment = 1
 
 [node name="FilterCuriosities" type="Button" parent="MainCard/CategoryFilters" unique_id=635915692]
 unique_name_in_owner = true
+self_modulate = Color(0.98039216, 0.92941177, 0.69803923, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -355,6 +360,7 @@ vertical_alignment = 1
 
 [node name="FilterFragments" type="Button" parent="MainCard/CategoryFilters" unique_id=911568405]
 unique_name_in_owner = true
+self_modulate = Color(0.78039217, 0.9098039, 0.92156863, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -387,7 +393,71 @@ LITERARIOS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="RankingRow" type="HBoxContainer" parent="MainCard" unique_id=2068501791]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 462.0
+offset_right = 1130.0
+offset_bottom = 542.0
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="RankingTitle" type="Label" parent="MainCard/RankingRow" unique_id=136333808]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.32, 0.2, 0.12, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 36
+text = "Clasificación por estrellas totales"
+vertical_alignment = 1
+
+[node name="ButtonInfo" type="Button" parent="MainCard/RankingRow" unique_id=2122550134]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.2, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("Style_empty")
+icon = ExtResource("13_8uxnf")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ViewTabs" type="HBoxContainer" parent="MainCard" unique_id=21566055]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 573.0
+offset_right = 1138.0
+offset_bottom = 681.0
+theme_override_constants/separation = 16
+
+[node name="FilterAround" type="Button" parent="MainCard/ViewTabs" unique_id=202881397]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/focus = SubResource("Style_empty")
+text = "CERCA DE MÍ"
+
+[node name="FilterTop" type="Button" parent="MainCard/ViewTabs" unique_id=845766856]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/focus = SubResource("Style_empty")
+text = "PRIMEROS PUESTOS"
+
 [node name="RulesCard" type="Panel" parent="MainCard" unique_id=75970903]
+visible = false
 layout_mode = 0
 offset_left = 30.0
 offset_top = 352.0
@@ -443,12 +513,12 @@ fit_content = true
 [node name="AroundFrame" type="PanelContainer" parent="MainCard" unique_id=390431496]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 18.0
-offset_top = 828.0
-offset_right = 1132.0
+offset_left = 12.0
+offset_top = 680.0
+offset_right = 1146.0
 offset_bottom = 2194.0
 mouse_filter = 2
-theme_override_styles/panel = SubResource("Style_around_frame")
+theme_override_styles/panel = SubResource("Style_empty")
 
 [node name="TableBody" type="VBoxContainer" parent="MainCard/AroundFrame" unique_id=390431497]
 layout_mode = 2
@@ -466,6 +536,16 @@ theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 28
 text = "POS."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Language" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=2007347431]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 28
+text = "IDIOMA"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -509,6 +589,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Aids" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=885789561]
+visible = false
 custom_minimum_size = Vector2(105, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
@@ -519,6 +600,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Failed" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=734486508]
+visible = false
 custom_minimum_size = Vector2(126, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
@@ -535,6 +617,7 @@ layout_mode = 2
 theme_override_constants/separation = 6
 
 [node name="Ellipsis" type="Label" parent="MainCard/AroundFrame/TableBody" unique_id=1074324666]
+visible = false
 custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.38, 0.24, 0.13, 0.8)
@@ -552,10 +635,10 @@ theme_override_constants/separation = 6
 [node name="OnlineStatus" type="Label" parent="MainCard" unique_id=948527625]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 250.0
-offset_top = 1190.0
-offset_right = 896.0
-offset_bottom = 1270.0
+offset_left = 56.0
+offset_top = 1200.0
+offset_right = 1102.0
+offset_bottom = 1280.0
 theme_override_colors/font_color = Color(0.43, 0.34, 0.24, 0.82)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
@@ -564,6 +647,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="UpdateNote" type="Label" parent="MainCard" unique_id=372431628]
+visible = false
 layout_mode = 0
 offset_left = 170.0
 offset_top = 2240.0
@@ -575,3 +659,91 @@ theme_override_font_sizes/font_size = 25
 text = "✦   La clasificación se actualiza al completar un puzle."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ButtonMyPlace" type="Button" parent="MainCard" unique_id=168272224]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 230.0
+offset_top = 2236.0
+offset_right = 928.0
+offset_bottom = 2372.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("Style_my_place")
+theme_override_styles/pressed = SubResource("Style_my_place")
+theme_override_styles/hover = SubResource("Style_my_place")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "MI PUESTO · #—"
+
+[node name="InfoOverlay" type="Control" parent="." unique_id=2080142308]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="InfoOverlay" unique_id=1534355351]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18, 0.1, 0.05, 0.45)
+
+[node name="Card" type="Panel" parent="InfoOverlay" unique_id=1196833390]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -340.0
+offset_right = 480.0
+offset_bottom = 340.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_info")
+
+[node name="Rules" type="RichTextLabel" parent="InfoOverlay/Card" unique_id=1728835041]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 48.0
+offset_top = 48.0
+offset_right = 912.0
+offset_bottom = 520.0
+theme_override_colors/default_color = Color(0.24, 0.14, 0.08, 1)
+theme_override_constants/line_separation = 10
+theme_override_fonts/normal_font = ExtResource("3_font")
+theme_override_fonts/bold_font = ExtResource("3_font")
+theme_override_font_sizes/normal_font_size = 36
+theme_override_font_sizes/bold_font_size = 36
+bbcode_enabled = true
+text = "La clasificación se basa en [color=#e55816]ESTRELLAS TOTALES[/color] obtenidas.
+
+Desempates (en este orden):
+1.  Más estrellas en menos número de puzles hechos (estrellas/puzle)
+2.  Menor número de ayudas utilizadas
+3.  Menor número de letras reveladas falladas"
+fit_content = true
+
+[node name="ButtonClose" type="Button" parent="InfoOverlay/Card" unique_id=7910398]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 300.0
+offset_top = 548.0
+offset_right = 660.0
+offset_bottom = 648.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 34
+theme_override_styles/focus = SubResource("Style_empty")
+text = "OK"

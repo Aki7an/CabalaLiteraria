@@ -230,6 +230,8 @@ func apply_language(code: String) -> void:
 	change_letters_aphabet_array()
 	cargar_frases_desde_json()
 	SignalManager.fit_text.emit()
+	if typeof(PlayFabTools) != TYPE_NIL:
+		PlayFabTools.sync_player_language(locale)
 
 func normalize_category(raw: String) -> String:
 	var key := raw.strip_edges().to_lower()
@@ -327,6 +329,9 @@ func _ready():
 	SignalManager.update_stars.emit()
 	SignalManager.decrease_live.connect(decrease_live)
 	SignalManager.game_finished.connect(_game_finished)
+	if FileAccess.file_exists("user://force_reset_progress"):
+		reset_player_data()
+		DirAccess.remove_absolute("user://force_reset_progress")
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -443,6 +448,14 @@ func unlock_full_game() -> void:
 	PlayerPrefs.full_game = true
 	PlayerPrefs.save_prefs()
 	SignalManager.full_game_changed.emit()
+
+
+func restore_full_game() -> bool:
+	PlayerPrefs.load_prefs()
+	if not PlayerPrefs.full_game:
+		return false
+	SignalManager.full_game_changed.emit()
+	return true
 
 
 func lock_full_game() -> void:
