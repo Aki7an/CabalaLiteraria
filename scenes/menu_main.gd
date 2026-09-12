@@ -18,12 +18,16 @@ const TITLE_LETTER_GREEN := Color(0.22, 0.62, 0.28, 1)
 const TITLE_SPANISH_LETTERS := 5
 const TITLE_SPANISH_WIDTH_SCALE := 0.8
 const TITLE_SAFETY_PX := 24.0
-const TITLE_LETTER_SIZE := 78
-const TITLE_NUMBER_SIZE := 34
-const TITLE_NUMBER_TOP_GAP := 14.0
+const TITLE_LETTER_SIZE := 96
+const TITLE_NUMBER_SIZE := 42
+const TITLE_NUMBER_TOP_GAP := 12.0
+const TITLE_LETTER_EMBOLDEN := 0.85
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
+const FONT_TITLE_LETTER: Font = preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
 const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
 const PATH_SHOP := "res://scenes/MenuShop.tscn"
+
+var _title_letter_font: FontVariation
 
 func _ready() -> void:
 	SoundManager.apply_audio_prefs()
@@ -148,6 +152,22 @@ func _ensure_letter_row(cipher_row: HBoxContainer) -> HBoxContainer:
 	return row
 
 
+func _title_letter_typeface() -> Font:
+	if _title_letter_font == null:
+		_title_letter_font = FontVariation.new()
+		_title_letter_font.base_font = FONT_TITLE_LETTER
+		_title_letter_font.variation_embolden = TITLE_LETTER_EMBOLDEN
+	return _title_letter_font
+
+
+func _style_title_letter(letter_label: Label, letter_size: int, color: Color) -> void:
+	letter_label.add_theme_font_override("font", _title_letter_typeface())
+	letter_label.add_theme_font_size_override("font_size", letter_size)
+	letter_label.add_theme_color_override("font_color", color)
+	letter_label.add_theme_constant_override("outline_size", 5)
+	letter_label.add_theme_color_override("font_outline_color", color)
+
+
 func _fill_tile_row(row: HBoxContainer, word: String, revealed_green: bool) -> void:
 	var letters: Array[String] = []
 	for i in word.length():
@@ -172,9 +192,9 @@ func _fill_tile_row(row: HBoxContainer, word: String, revealed_green: bool) -> v
 		var number_label := tile.find_child("Number", true, false) as Label
 		if letter_label:
 			letter_label.text = letters[i]
-			letter_label.add_theme_font_size_override("font_size", letter_size)
-			letter_label.add_theme_color_override(
-				"font_color",
+			_style_title_letter(
+				letter_label,
+				letter_size,
 				TITLE_LETTER_GREEN if revealed_green else Color(0.364706, 0.25098, 0.215686, 1)
 			)
 		if number_label:
@@ -209,9 +229,11 @@ func _layout_title_row(row: HBoxContainer) -> void:
 	for tile in visible_tiles:
 		tile.size_flags_horizontal = 0
 		tile.custom_minimum_size.x = tile_width
+		tile.clip_contents = true
 		var letter_label := tile.find_child("Letter", true, false) as Label
 		var number_label := tile.find_child("Number", true, false) as Label
 		if letter_label:
+			letter_label.add_theme_font_override("font", _title_letter_typeface())
 			letter_label.add_theme_font_size_override("font_size", letter_size)
 		if number_label:
 			number_label.add_theme_font_size_override("font_size", number_size)
