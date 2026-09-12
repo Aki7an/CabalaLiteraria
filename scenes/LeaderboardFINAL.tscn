@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://duj5gi84s5bqf" path="res://images/mode_quick.svg" id="11_quick"]
 [ext_resource type="Texture2D" uid="uid://c3sofhyrdkn54" path="res://images/CriptogramaIcono.png" id="12_cryptogram"]
 [ext_resource type="Texture2D" uid="uid://ceedgay116g77" path="res://images/Infoed.png" id="13_8uxnf"]
+[ext_resource type="FontFile" uid="uid://cgq34g30v2a07" path="res://fonts/Fonts/Rubik-SemiBold.ttf" id="14_rubik"]
 
 [sub_resource type="StyleBoxFlat" id="Style_background"]
 bg_color = Color(0.984, 0.949, 0.865, 1)
@@ -61,7 +62,7 @@ corner_radius_bottom_right = 34
 corner_radius_bottom_left = 34
 
 [sub_resource type="StyleBoxFlat" id="Style_info"]
-bg_color = Color(0.996, 0.956, 0.875, 0.82)
+bg_color = Color(0.996, 0.956, 0.875, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -83,6 +84,11 @@ corner_radius_top_left = 40
 corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
+
+[sub_resource type="FontVariation" id="Font_table_header"]
+base_font = ExtResource("14_rubik")
+spacing_top = 6
+spacing_bottom = 8
 
 [sub_resource type="StyleBoxFlat" id="Style_my_place"]
 content_margin_left = 28.0
@@ -137,10 +143,10 @@ offset_bottom = 220.0
 [node name="ButtonBack" parent="Header" unique_id=2142967141 instance=ExtResource("9_back")]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 42.0
-offset_top = 36.0
-offset_right = 188.0
-offset_bottom = 182.0
+offset_left = 228.0
+offset_top = 162.0
+offset_right = 374.0
+offset_bottom = 308.0
 
 [node name="Title" type="Label" parent="Header" unique_id=960502261]
 layout_mode = 0
@@ -177,22 +183,39 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 44
 theme_override_styles/normal = SubResource("Style_mode")
 theme_override_styles/focus = SubResource("Style_empty")
-text = "RÁPIDO"
 
-[node name="Icon" type="TextureRect" parent="MainCard/ModeTabs/FilterQuick" unique_id=2057069721]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 30.0
-offset_right = 120.0
-offset_bottom = 102.0
+[node name="Center" type="CenterContainer" parent="MainCard/ModeTabs/FilterQuick" unique_id=2057069720]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Content" type="HBoxContainer" parent="MainCard/ModeTabs/FilterQuick/Center" unique_id=2057069722]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="MainCard/ModeTabs/FilterQuick/Center/Content" unique_id=2057069721]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("11_quick")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Text" type="Label" parent="MainCard/ModeTabs/FilterQuick/Center/Content" unique_id=2057069723]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.22, 0.13, 0.07, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 44
+text = "RÁPIDO"
+vertical_alignment = 1
 
 [node name="FilterCryptogram" type="Button" parent="MainCard/ModeTabs" unique_id=836680143]
 unique_name_in_owner = true
@@ -200,22 +223,39 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 44
 theme_override_styles/normal = SubResource("Style_mode")
 theme_override_styles/focus = SubResource("Style_empty")
-text = "CRIPTOGRAMA"
 
-[node name="Icon" type="TextureRect" parent="MainCard/ModeTabs/FilterCryptogram" unique_id=1909880904]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 30.0
-offset_right = 120.0
-offset_bottom = 102.0
+[node name="Center" type="CenterContainer" parent="MainCard/ModeTabs/FilterCryptogram" unique_id=1909880903]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Content" type="HBoxContainer" parent="MainCard/ModeTabs/FilterCryptogram/Center" unique_id=1909880905]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="MainCard/ModeTabs/FilterCryptogram/Center/Content" unique_id=1909880904]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("12_cryptogram")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="Text" type="Label" parent="MainCard/ModeTabs/FilterCryptogram/Center/Content" unique_id=1909880906]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.32, 0.2, 0.75)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 44
+text = "CRIPTOGRAMA"
+vertical_alignment = 1
 
 [node name="CategoryFilters" type="HBoxContainer" parent="MainCard" unique_id=928681907]
 layout_mode = 0
@@ -408,7 +448,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.32, 0.2, 0.12, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 44
 text = "Clasificación por estrellas totales"
 vertical_alignment = 1
 
@@ -421,10 +461,14 @@ mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.45, 0.32, 0.2, 1)
 theme_override_fonts/font = ExtResource("4_title")
 theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("Style_empty")
+theme_override_styles/pressed = SubResource("Style_empty")
+theme_override_styles/hover = SubResource("Style_empty")
+theme_override_styles/disabled = SubResource("Style_empty")
 theme_override_styles/focus = SubResource("Style_empty")
 icon = ExtResource("13_8uxnf")
+flat = true
 icon_alignment = 1
-expand_icon = true
 
 [node name="ViewTabs" type="HBoxContainer" parent="MainCard" unique_id=21566055]
 layout_mode = 0
@@ -514,7 +558,7 @@ fit_content = true
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 12.0
-offset_top = 680.0
+offset_top = 700.0
 offset_right = 1146.0
 offset_bottom = 2194.0
 mouse_filter = 2
@@ -525,90 +569,105 @@ layout_mode = 2
 theme_override_constants/separation = 6
 
 [node name="TableHeader" type="HBoxContainer" parent="MainCard/AroundFrame/TableBody" unique_id=804256437]
-custom_minimum_size = Vector2(0, 98)
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_constants/separation = 8
 
 [node name="Position" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=309134559]
-custom_minimum_size = Vector2(92, 0)
+custom_minimum_size = Vector2(100, 56)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_constants/line_spacing = 8
+theme_override_fonts/font = SubResource("Font_table_header")
+theme_override_font_sizes/font_size = 36
 text = "POS."
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Language" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=2007347431]
-custom_minimum_size = Vector2(110, 0)
+custom_minimum_size = Vector2(128, 56)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_constants/line_spacing = 8
+theme_override_fonts/font = SubResource("Font_table_header")
+theme_override_font_sizes/font_size = 36
 text = "IDIOMA"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Player" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=1111298564]
+custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_constants/line_spacing = 8
+theme_override_fonts/font = SubResource("Font_table_header")
+theme_override_font_sizes/font_size = 36
 text = "JUGADOR"
 vertical_alignment = 1
 
 [node name="Stars" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=2124534108]
-custom_minimum_size = Vector2(142, 0)
+custom_minimum_size = Vector2(168, 56)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_constants/line_spacing = 8
+theme_override_fonts/font = SubResource("Font_table_header")
+theme_override_font_sizes/font_size = 36
 text = "ESTRELLAS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Puzzles" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=832039678]
-custom_minimum_size = Vector2(105, 0)
+custom_minimum_size = Vector2(118, 56)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_constants/line_spacing = 8
+theme_override_fonts/font = SubResource("Font_table_header")
+theme_override_font_sizes/font_size = 36
 text = "PUZLES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Average" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=980667571]
-custom_minimum_size = Vector2(146, 0)
+custom_minimum_size = Vector2(168, 56)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_constants/line_spacing = 8
+theme_override_fonts/font = SubResource("Font_table_header")
+theme_override_font_sizes/font_size = 36
 text = "★/PUZLE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Aids" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=885789561]
 visible = false
-custom_minimum_size = Vector2(105, 0)
+custom_minimum_size = Vector2(105, 56)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_constants/line_spacing = 8
+theme_override_fonts/font = SubResource("Font_table_header")
+theme_override_font_sizes/font_size = 36
 text = "AYUDAS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Failed" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=734486508]
 visible = false
-custom_minimum_size = Vector2(126, 0)
+custom_minimum_size = Vector2(126, 56)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 28
+theme_override_constants/line_spacing = 8
+theme_override_fonts/font = SubResource("Font_table_header")
+theme_override_font_sizes/font_size = 36
 text = "FALLADAS"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="HeaderGap" type="Control" parent="MainCard/AroundFrame/TableBody" unique_id=804256438]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+mouse_filter = 2
 
 [node name="OnlineRows" type="VBoxContainer" parent="MainCard/AroundFrame/TableBody" unique_id=1837482115]
 unique_name_in_owner = true

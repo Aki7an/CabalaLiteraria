@@ -31,8 +31,21 @@ handlers.submitPhraseFeedback = function (args, context) {
     // extra contexto útil:
     client_ver: String(p.client_ver || ""),
     locale:     String(p.locale || ""),
-    platform:   String(p.platform || "")
+    platform:   String(p.platform || ""),
+    player_name: ""
   };
+
+  try {
+    var profile = server.GetPlayerProfile({
+      PlayFabId: currentPlayerId,
+      ProfileConstraints: { ShowDisplayName: true }
+    });
+    if (profile && profile.PlayerProfile && profile.PlayerProfile.DisplayName) {
+      fb.player_name = String(profile.PlayerProfile.DisplayName);
+    }
+  } catch (e) {
+    fb.player_name = "";
+  }
 
   // --- Escribir evento PlayStream (server-authoritative) ---
   // (Puedes usar también Events/Telemetry; PlayStream es perfecto para queries y reacciones)

@@ -82,18 +82,19 @@ func _ready() -> void:
 	info_overlay.get_node("Dim").gui_input.connect(_on_info_dim_input)
 	button_my_place.pressed.connect(func() -> void: _select_view("around"))
 	_style_info_button()
-	_place_mode_icons()
 	_cache_category_editor_look()
 	_apply_locale()
 	_update_filter_styles()
+	_loading = true
+	_show_loading_status()
 	_apply_view()
 	_load_online_ranking()
 
 
 func _apply_locale() -> void:
 	$Header/Title.text = tr("Records")
-	%FilterQuick.text = tr("QuickUpper")
-	%FilterCryptogram.text = tr("CryptogramUpper")
+	_mode_label(%FilterQuick).text = tr("QuickUpper")
+	_mode_label(%FilterCryptogram).text = tr("CryptogramUpper")
 	%FilterGlobal.get_node("Text").text = tr("Global")
 	%FilterQuotes.get_node("Text").text = tr("QuotesFilter")
 	%FilterEvents.get_node("Text").text = tr("Ephemerides").to_upper()
@@ -140,10 +141,13 @@ func _select_view(value: String) -> void:
 
 func _apply_view() -> void:
 	var show_top := _view == "top"
-	online_rows.visible = show_top
-	around_rows.visible = not show_top
+	var ready := not _loading
+	online_rows.visible = ready and show_top
+	around_rows.visible = ready and not show_top
 	if ellipsis:
 		ellipsis.visible = false
+	if _loading:
+		_show_loading_status()
 
 
 func _show_info() -> void:
@@ -160,26 +164,20 @@ func _on_info_dim_input(event: InputEvent) -> void:
 		_hide_info()
 
 
-func _place_mode_icons() -> void:
-	for button in mode_buttons:
-		var icon := button.get_node_or_null("Icon") as TextureRect
-		if icon == null:
-			continue
-		icon.offset_left = 48
-		icon.offset_top = 30
-		icon.offset_right = 120
-		icon.offset_bottom = 102
+func _mode_label(button: Button) -> Label:
+	return button.get_node("Center/Content/Text") as Label
 
 
 func _style_info_button() -> void:
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(1, 0.97, 0.9, 1)
-	style.border_color = Color(0.78, 0.64, 0.43, 0.55)
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(40)
+	# Infoed.png ya es el botón. Un StyleBoxFlat detrás asoma como aro
+	# blanco/crema en runtime (F5), porque el icono no llena los 72 px.
+	var style := StyleBoxEmpty.new()
+	button_info.flat = true
 	button_info.add_theme_stylebox_override("normal", style)
 	button_info.add_theme_stylebox_override("hover", style)
 	button_info.add_theme_stylebox_override("pressed", style)
+	button_info.add_theme_stylebox_override("disabled", style)
+	button_info.add_theme_stylebox_override("focus", style)
 
 
 func _refresh_my_place_label() -> void:
@@ -328,6 +326,9 @@ func _apply_rounded_tab_style(button: Button, selected: bool, radius: int) -> vo
 	var ink := Color(0.22, 0.13, 0.07, 1) if selected else Color(0.45, 0.32, 0.2, 0.75)
 	button.add_theme_color_override("font_color", ink)
 	button.add_theme_color_override("font_disabled_color", ink)
+	var label := button.get_node_or_null("Center/Content/Text") as Label
+	if label:
+		label.add_theme_color_override("font_color", ink)
 
 
 func _make_button_style(
@@ -359,13 +360,18 @@ func _set_filters_disabled(disabled: bool) -> void:
 		button.disabled = disabled
 
 
+func _show_loading_status() -> void:
+	online_status.visible = true
+	online_status.text = tr("RankLoading")
+
+
 func _load_online_ranking() -> void:
 	_loading = true
 	_set_filters_disabled(true)
 	_clear_rows(online_rows)
 	_clear_rows(around_rows)
-	online_status.visible = true
-	online_status.text = tr("RankLoading")
+	_show_loading_status()
+	_apply_view()
 
 	if typeof(PlayFabTools) == TYPE_NIL:
 		_show_online_unavailable()
@@ -406,7 +412,6 @@ func _load_online_ranking() -> void:
 		_show_online_unavailable()
 		return
 
-	online_status.visible = false
 	var top_entries: Array = top_result.get("entries", [])
 	_my_rank = 0
 	var around_entries: Array = around_result.get("entries", [])
@@ -430,8 +435,9 @@ func _load_online_ranking() -> void:
 		if _my_rank <= 0:
 			_add_local_player_row(around_rows)
 	_refresh_my_place_label()
-	_apply_view()
 	_loading = false
+	online_status.visible = false
+	_apply_view()
 	_set_filters_disabled(false)
 
 
@@ -651,29 +657,29 @@ func _add_row(
 	else:
 		var rank_label := _make_label(
 			"—" if rank <= 0 else _format_rank(rank),
-			32,
+			40,
 			HORIZONTAL_ALIGNMENT_CENTER
 		)
-		rank_label.custom_minimum_size.x = 92
+		rank_label.custom_minimum_size.x = 100
 		row.add_child(rank_label)
 
 	row.add_child(_make_flag(language))
 
-	var name_label := _make_label(player_name, 32, HORIZONTAL_ALIGNMENT_LEFT)
+	var name_label := _make_label(player_name, 40, HORIZONTAL_ALIGNMENT_LEFT)
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(name_label)
 
 	row.add_child(_make_stars_value(stars))
-	row.add_child(_make_value_label("—" if puzzles < 0 else str(puzzles), 120))
+	row.add_child(_make_value_label("—" if puzzles < 0 else str(puzzles), 130))
 	row.add_child(_make_value_label(
 		"—" if average_hundredths < 0 else _format_average(average_hundredths),
-		150
+		168
 	))
 
 
 func _make_medal(rank: int) -> Control:
 	var wrap := Control.new()
-	wrap.custom_minimum_size = Vector2(92, 118)
+	wrap.custom_minimum_size = Vector2(100, 118)
 	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	var medal := TextureRect.new()
@@ -690,7 +696,7 @@ func _make_medal(rank: int) -> Control:
 	number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	number.set_anchors_preset(Control.PRESET_FULL_RECT)
 	number.offset_bottom = -28
-	number.add_theme_font_size_override("font_size", 36)
+	number.add_theme_font_size_override("font_size", 42)
 	number.add_theme_color_override("font_color", _medal_number_color(rank))
 	number.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	wrap.add_child(number)
@@ -709,16 +715,16 @@ func _medal_number_color(rank: int) -> Color:
 
 func _make_stars_value(stars: int) -> HBoxContainer:
 	var value := HBoxContainer.new()
-	value.custom_minimum_size.x = 142
+	value.custom_minimum_size.x = 168
 	value.alignment = BoxContainer.ALIGNMENT_CENTER
 	value.add_theme_constant_override("separation", 5)
 	if stars < 0:
-		value.add_child(_make_label("—", 32, HORIZONTAL_ALIGNMENT_CENTER))
+		value.add_child(_make_label("—", 40, HORIZONTAL_ALIGNMENT_CENTER))
 		return value
-	var number := _make_label(str(stars), 35, HORIZONTAL_ALIGNMENT_RIGHT)
+	var number := _make_label(str(stars), 42, HORIZONTAL_ALIGNMENT_RIGHT)
 	number.add_theme_color_override("font_color", COLOR_ORANGE)
 	value.add_child(number)
-	var star := _make_label("★", 49, HORIZONTAL_ALIGNMENT_LEFT)
+	var star := _make_label("★", 56, HORIZONTAL_ALIGNMENT_LEFT)
 	star.add_theme_color_override("font_color", GameManager.star_fill_color(_mode_filter))
 	value.add_child(star)
 	return value
@@ -739,11 +745,11 @@ func _player_row_colors() -> Dictionary:
 
 func _make_flag(language: String) -> Control:
 	var wrap := Control.new()
-	wrap.custom_minimum_size = Vector2(110, 64)
+	wrap.custom_minimum_size = Vector2(128, 64)
 	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var code := language.strip_edges().to_lower()
 	if not FLAG_TEXTURES.has(code):
-		var empty := _make_label("-", 32, HORIZONTAL_ALIGNMENT_CENTER)
+		var empty := _make_label("-", 40, HORIZONTAL_ALIGNMENT_CENTER)
 		empty.set_anchors_preset(Control.PRESET_FULL_RECT)
 		empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		wrap.add_child(empty)
@@ -784,7 +790,7 @@ func _make_value_label(
 	width: float,
 	color: Color = COLOR_INK
 ) -> Label:
-	var label := _make_label(value, 32, HORIZONTAL_ALIGNMENT_CENTER)
+	var label := _make_label(value, 40, HORIZONTAL_ALIGNMENT_CENTER)
 	label.custom_minimum_size.x = width
 	label.add_theme_color_override("font_color", color)
 	return label
@@ -813,8 +819,8 @@ func _show_online_unavailable() -> void:
 	_add_placeholder_row(around_rows, 0, tr("RankYouOffline"))
 	_my_rank = 0
 	_refresh_my_place_label()
-	_apply_view()
 	_loading = false
+	_apply_view()
 	_set_filters_disabled(false)
 
 

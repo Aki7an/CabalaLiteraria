@@ -26,6 +26,7 @@ const DRAG_THRESHOLD := 14.0
 @onready var _progress_bar: ProgressBar = $Header/ProgressCard/ProgressBar
 @onready var _random_text: Label = $ButtonRandom/Row/Text
 @onready var _random_button: Button = $ButtonRandom
+@onready var _tap_hint: Label = %TapHint
 
 var _pending_textures: Array[Button] = []
 var _image_path_cache: Dictionary = {}
@@ -45,6 +46,8 @@ const LOCALIZED_COPY := {
 		"cryptogram": "Criptograma",
 		"progress": "%d de %d descubiertos",
 		"random": "Elegir al azar",
+		"tap_puzzle": "Selecciona un puzle",
+		"or_word": "o",
 		"empty": "No hay niveles disponibles",
 		"level": "Nivel",
 		"lock_title": "Puzle ya completado",
@@ -63,6 +66,8 @@ const LOCALIZED_COPY := {
 		"cryptogram": "Cryptogram",
 		"progress": "%d of %d discovered",
 		"random": "Choose at random",
+		"tap_puzzle": "Select a puzzle",
+		"or_word": "or",
 		"empty": "No levels available",
 		"level": "Level",
 		"lock_title": "Puzzle already completed",
@@ -81,6 +86,8 @@ const LOCALIZED_COPY := {
 		"cryptogram": "Kriptograma",
 		"progress": "%d / %d aurkituta",
 		"random": "Ausaz aukeratu",
+		"tap_puzzle": "Hautatu puzzle bat",
+		"or_word": "edo",
 		"empty": "Ez dago mailarik",
 		"level": "Maila",
 		"lock_title": "Puzzlea jada osatuta",
@@ -99,6 +106,8 @@ const LOCALIZED_COPY := {
 		"cryptogram": "Cryptogramme",
 		"progress": "%d sur %d découverts",
 		"random": "Choisir au hasard",
+		"tap_puzzle": "Sélectionne un puzzle",
+		"or_word": "ou",
 		"empty": "Aucun niveau disponible",
 		"level": "Niveau",
 		"lock_title": "Puzzle déjà terminé",
@@ -117,6 +126,8 @@ const LOCALIZED_COPY := {
 		"cryptogram": "Kryptogramm",
 		"progress": "%d von %d entdeckt",
 		"random": "Zufällig wählen",
+		"tap_puzzle": "Wähle ein Rätsel",
+		"or_word": "oder",
 		"empty": "Keine Level verfügbar",
 		"level": "Level",
 		"lock_title": "Rätsel bereits abgeschlossen",
@@ -135,6 +146,8 @@ const LOCALIZED_COPY := {
 		"cryptogram": "Crittogramma",
 		"progress": "%d di %d scoperti",
 		"random": "Scegli a caso",
+		"tap_puzzle": "Seleziona un puzzle",
+		"or_word": "o",
 		"empty": "Nessun livello disponibile",
 		"level": "Livello",
 		"lock_title": "Puzzle già completato",
@@ -153,6 +166,8 @@ const LOCALIZED_COPY := {
 		"cryptogram": "Criptograma",
 		"progress": "%d de %d descobertos",
 		"random": "Escolher ao acaso",
+		"tap_puzzle": "Seleciona um puzzle",
+		"or_word": "ou",
 		"empty": "Nenhum nível disponível",
 		"level": "Nível",
 		"lock_title": "Puzzle já concluído",
@@ -1062,6 +1077,7 @@ func _update_localized_copy() -> void:
 	_title_label.text = _copy("title")
 	_subtitle_label.text = "%s · %s" % [category_name, _copy(mode_key)]
 	_random_text.text = _copy("random")
+	_tap_hint.text = "%s\n%s" % [_copy("tap_puzzle"), _copy("or_word")]
 	_empty_state.text = _copy("empty")
 
 
