@@ -28,10 +28,10 @@ const LANGUAGES := [
 ]
 
 const CATEGORY_VALUES := [
-	["Efeméride", "Efeméride"],
-	["Cita célebre", "Cita célebre"],
+	["Efemérides", "Efeméride"],
+	["Personalidades", "Cita célebre"],
 	["Curiosidades", "Curiosidades"],
-	["Fragmento literario", "Fragmento literario"],
+	["Literatura", "Fragmento literario"],
 ]
 
 const MODE_VALUES := [

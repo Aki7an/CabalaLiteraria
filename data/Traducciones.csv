@@ -78,9 +78,9 @@ DailyBackToMenu,Volver al menú,Back to menu,Zurück zum Menü,Retour au menu,It
 DailyEstimated,Tiempo estimado: %s,Estimated time: %s,Geschätzte Zeit: %s,Temps estimé : %s,Gutxi gorabeherako denbora: %s,Tempo stimato: %s,Tempo estimado: %s
 Medium,Media,Medium,Mittel,Moyen,Ertaina,Media,Média
 DailyTeaserCuriosities,Descubre una curiosidad y pon a prueba tu intuición.,Discover a curiosity and test your intuition.,Entdecke eine Kuriosität und prüfe deine Intuition.,Découvre une curiosité et teste ton intuition.,Aurkitu jakin-min bat eta frogatu zure intuizioa.,Scopri una curiosità e metti alla prova il tuo intuito.,Descobre uma curiosidade e põe à prova a tua intuição.
-DailyTeaserQuotes,Descifra una cita célebre.,Decode a famous quote.,Entschlüssele ein berühmtes Zitat.,Déchiffre une citation célèbre.,Deszifratu aipu ospetsu bat.,Decifra una citazione celebre.,Decifra uma citação célebre.
+DailyTeaserQuotes,Descifra un puzle de Personalidades.,Decode a Personalities puzzle.,Löse ein Persönlichkeiten-Rätsel.,Déchiffre un puzzle Personnalités.,Deszifratu Nortasunak puzzle bat.,Decifra un puzzle Personalità.,Decifra um puzzle de Personalidades.
 DailyTeaserEphemerides,Resuelve una efeméride.,Solve an anniversary fact.,Löse eine historische Begebenheit.,Résous une éphéméride.,Ebatzi efemeride bat.,Risolvi un'efemeride.,Resolve uma efeméride.
-DailyTeaserFragments,Descifra un fragmento literario.,Decode a literary fragment.,Entschlüssele ein literarisches Fragment.,Déchiffre un fragment littéraire.,Deszifratu zati literario bat.,Decifra un frammento letterario.,Decifra um fragmento literário.
+DailyTeaserFragments,Descifra un puzle de Literatura.,Decode a Literature puzzle.,Löse ein Literatur-Rätsel.,Déchiffre un puzzle Littérature.,Deszifratu Literatura puzzle bat.,Decifra un puzzle Letteratura.,Decifra um puzzle de Literatura.
 Month1,enero,January,Januar,janvier,urtarrila,gennaio,janeiro
 Month2,febrero,February,Februar,février,otsaila,febbraio,fevereiro
 Month3,marzo,March,März,mars,martxoa,marzo,março
@@ -125,9 +125,9 @@ THEME,TEMÁTICA,THEME,THEMA,THÈME,GAIA,TEMA,TEMA
 DIFFICULTY,DIFICULTAD,DIFFICULTY,SCHWIERIGKEIT,DIFFICULTÉ,ZAILTASUNA,DIFFICOLTÀ,DIFICULDADE
 Riddles,Adivinanzas,Riddles,Rätsel,Énigmes,Asmakizunak,Enigmi,Enigmas
 Bible Quotes,Citas Bíblicas,Bible Quotes,Bibelzitate,Citations bibliques,Bibliako aipamenak,Citazioni della Bibbia,Citações da Bíblia
-Literary Fragments,Fragmentos Literarios,Literary Fragments,Literaturfragmente,Fragments littéraires,Zati literarioak,Frammenti letterari,Fragmentos Literários
+Literary Fragments,Literatura,Literature,Literatur,Littérature,Literatura,Letteratura,Literatura
 Jokes,Chistes,Jokes,Witze,Blagues,Txantxak,Barzellette,Piadas
-Famous Quotes,Citas Célebres,Famous Quotes,Berühmte Zitate,Citations célèbres,Aipamen ospetsuak,Citazioni famose,Citações famosas
+Famous Quotes,Personalidades,Personalities,Persönlichkeiten,Personnalités,Nortasunak,Personalità,Personalidades
 Ephemerides,Efemérides,Ephemerides,Ereignisse,Éphémérides,Efemerideak,Effemeridi,Efemérides
 Popular Sayings,Refranes Populares,Popular Sayings,Sprichwörter,Dictons populaires,Esaera herrikoiak,Detti popolari,Ditados populares
 Easy,Fácil,Easy,Einfach,Facile,Erraza,Facile,Fácil
@@ -199,22 +199,22 @@ Rank 7 in LOCAL TOP,Puesto 7 en TOP LOCAL,Rank 7 in LOCAL TOP,Platz 7 in der LOK
 Rank 8 in LOCAL TOP,Puesto 8 en TOP LOCAL,Rank 8 in LOCAL TOP,Platz 8 in der LOKALEN BESTENLISTE,Rang 8 dans le TOP LOCAL,8. postua LOCAL TOP-en,Posizione 8 nella TOP LOCALE,Classificação 8 no LOCAL TOP
 Easy – Riddles,Fácil – Adivinanza,Easy – Riddles,Einfach – Rätsel,Facile – Énigmes,Erraza - Asmakizunak,Facile – Enigmi,Fácil – Enigmas
 Easy – Ephemerides,Fácil – Efeméride,Easy – Ephemerides,Einfach – Ereignisse,Facile – Éphémérides,Erraza - Efemerideak,Facile – Effemeridi,Fácil – Efemérides
-Easy – Literary Fragments,Fácil – Fragmento,Easy – Literary Fragments,Einfach – Literaturfragmente,Facile – Fragments littéraires,Erraza - Fragmentu literarioak,Facile – Frammenti letterari,Fácil – Fragmentos Literários
-Easy – Famous Quotes,Fácil – Cita célebre,Easy – Famous Quotes,Einfach – Berühmte Zitate,Facile – Citations célèbres,Erraza - Aipamen ospetsuak,Facile – Citazioni famose,Fácil – Citações Famosas
+Easy – Literary Fragments,Fácil – Literatura,Easy – Literature,Einfach – Literatur,Facile – Littérature,Erraza - Literatura,Facile – Letteratura,Fácil – Literatura
+Easy – Famous Quotes,Fácil – Personalidades,Easy – Personalities,Einfach – Persönlichkeiten,Facile – Personnalités,Erraza - Nortasunak,Facile – Personalità,Fácil – Personalidades
 Easy – Jokes,Fácil – Chiste,Easy – Jokes,Einfach – Witze,Facile – Blagues,Erraza - Txantxak,Facile – Barzellette,Fácil – Piadas
 Easy – Popular Sayings,Fácil – Refrán,Easy – Popular Sayings,Einfach – Sprichwörter,Facile – Dictons populaires,Erraza - Esaera herrikoiak,Facile – Detti popolari,Fácil – Provérbios populares
 Easy – Bible Quotes,Fácil – Cita Biblia,Easy – Bible Quotes,Einfach – Bibelzitate,Facile – Citations bibliques,Erraza - Bibliako aipamenak,Facile – Citazioni della Bibbia,Fácil – Citações da Bíblia
 Normal – Riddles,Normal – Adivinanza,Normal – Riddles,Normal – Rätsel,Normal – Énigmes,Normala – Asmakizunak,Normale – Enigmi,Normal – Enigmas
 Normal – Ephemerides,Normal – Efeméride,Normal – Ephemerides,Normal – Ereignisse,Normal – Éphémérides,Normala – Efemerideak,Normale – Effemeridi,Normal – Efemérides
-Normal – Literary Fragments,Normal – Fragmento,Normal – Literary Fragments,Normal – Literaturfragmente,Normal – Fragments littéraires,Normala – Zati literarioak,Normale – Frammenti letterari,Normal – Fragmentos Literários
-Normal – Famous Quotes,Normal – Cita célebre,Normal – Famous Quotes,Normal – Berühmte Zitate,Normal – Citations célèbres,Normala - Aipamen ospetsuak,Normale – Citazioni famose,Normal – Citações Famosas
+Normal – Literary Fragments,Normal – Literatura,Normal – Literature,Normal – Literatur,Normal – Littérature,Normala – Literatura,Normale – Letteratura,Normal – Literatura
+Normal – Famous Quotes,Normal – Personalidades,Normal – Personalities,Normal – Persönlichkeiten,Normal – Personnalités,Normala - Nortasunak,Normale – Personalità,Normal – Personalidades
 Normal – Jokes,Normal – Chiste,Normal – Jokes,Normal – Witze,Normal – Blagues,Normala – Txantxak,Normale – Barzellette,Normal – Piadas
 Normal – Popular Sayings,Normal – Refrán,Normal – Popular Sayings,Normal – Sprichwörter,Normal – Dictons populaires,Normala – Esaera herrikoiak,Normale – Detti popolari,Normal – Ditados Populares
 Normal – Bible Quotes,Normal – Cita Biblia,Normal – Bible Quotes,Normal – Bibelzitate,Normal – Citations bibliques,Normala - Bibliako aipamenak,Normale – Citazioni della Bibbia,Normal – Citações da Bíblia
 Hard – Riddles,Difícil – Adivinanza,Hard – Riddles,Schwierig – Rätsel,Difficile – Énigmes,Gogorra – Asmakizunak,Difficile – Enigmi,Difícil – Enigmas
 Hard – Ephemerides,Difícil – Efeméride,Hard – Ephemerides,Schwierig – Ereignisse,Difficile – Éphémérides,Gogorra – Efemerideak,Difficile – Effemeridi,Difícil – Efemérides
-Hard – Literary Fragments,Difícil – Fragmento,Hard – Literary Fragments,Schwierig – Literaturfragmente,Difficile – Fragments littéraires,Gogorra - Fragmento literarioa,Difficile – Frammenti letterari,Difícil – Fragmentos Literários
-Hard – Famous Quotes,Difícil – Cita célebre,Hard – Famous Quotes,Schwierig – Berühmte Zitate,Difficile – Citations célèbres,Gogorra - Aipamen ospetsuak,Difficile – Citazioni famose,Difícil – Citações Famosas
+Hard – Literary Fragments,Difícil – Literatura,Hard – Literature,Schwierig – Literatur,Difficile – Littérature,Gogorra - Literatura,Difficile – Letteratura,Difícil – Literatura
+Hard – Famous Quotes,Difícil – Personalidades,Hard – Personalities,Schwierig – Persönlichkeiten,Difficile – Personnalités,Gogorra - Nortasunak,Difficile – Personalità,Difícil – Personalidades
 Hard – Jokes,Difícil – Chiste,Hard – Jokes,Schwierig – Witze,Difficile – Blagues,Gogorra - Txantxak,Difficile – Barzellette,Piadas Difíceis
 Hard – Popular Sayings,Difícil – Refrán,Hard – Popular Sayings,Schwierig – Sprichwörter,Difficile – Dictons populaires,Gogorra – Esaera herrikoiak,Difficile – Detti popolari,Difícil – Ditados Populares
 Hard – Bible Quotes,Difícil – Cita Biblia,Hard – Bible Quotes,Schwierig – Bibelzitate,Difficile – Citations bibliques,Gogorra - Bibliako aipamenak,Difficile – Citazioni della Bibbia,Difícil – Citações da Bíblia
@@ -443,22 +443,8 @@ Records,RÉCORDS,RECORDS,REKORDE,RECORDS,ERREKORRAK,RECORD,RECORDES
 QuickUpper,RÁPIDO,QUICK,SCHNELL,RAPIDE,AZKARRA,RAPIDO,RÁPIDO
 CryptogramUpper,CRIPTOGRAMA,CRYPTOGRAM,KRYPTOGRAMM,CRYPTOGRAMME,KRIPTOGRAMA,CRITTOGRAMMA,CRIPTOGRAMA
 Global,GLOBAL,GLOBAL,GLOBAL,MONDIAL,GLOBALA,GLOBALE,GLOBAL
-QuotesFilter,"CITAS
-CÉLEBRES","FAMOUS
-QUOTES","BERÜHMTE
-ZITATE","CITATIONS
-CÉLÈBRES","AIPAMEN
-OSPETSUAK","CITAZIONI
-FAMOSE","CITAÇÕES
-FAMOSAS"
-FragmentsFilter,"FRAGMENTOS
-LITERARIOS","LITERARY
-FRAGMENTS","LITERARISCHE
-FRAGMENTE","FRAGMENTS
-LITTÉRAIRES","ZATI
-LITERARIOAK","FRAMMENTI
-LETTERARI","FRAGMENTOS
-LITERÁRIOS"
+QuotesFilter,PERSONALIDADES,PERSONALITIES,PERSÖNLICHKEITEN,PERSONNALITÉS,NORTASUNAK,PERSONALITÀ,PERSONALIDADES
+FragmentsFilter,LITERATURA,LITERATURE,LITERATUR,LITTÉRATURE,LITERATURA,LETTERATURA,LITERATURA
 RankPos,POS.,POS.,PL.,POS.,POS.,POS.,POS.
 RankLanguage,IDIOMA,LANG,SPRACHE,LANGUE,HIZKUNTZA,LINGUA,IDIOMA
 RankPlayer,JUGADOR,PLAYER,SPIELER,JOUEUR,JOKALARIA,GIOCATORE,JOGADOR
@@ -556,10 +542,10 @@ StatsRevealed,Reveladas,Revealed,Aufgedeckt,Révélées,Agertuak,Rivelate,Revela
 StatsFails,Fallos,Fails,Fehler,Erreurs,Hutsegiteak,Errori,Falhas
 StatsPerfectPuzzle,Puzle perfecto,Perfect puzzle,Perfektes Rätsel,Puzzle parfait,Puzzle perfectua,Puzzle perfetto,Puzzle perfeito
 StatsBestTime,Mejor tiempo,Best time,Beste Zeit,Meilleur temps,Denbora onena,Miglior tempo,Melhor tempo
-StatsCatCita,Citas,Quotes,Zitate,Citations,Aipuak,Citazioni,Citações
-StatsCatEfem,Efemérides,Dates,Jahrestage,Éphémérides,Efemerideak,Efeméridi,Efemérides
+StatsCatCita,Personalidades,Personalities,Persönlichkeiten,Personnalités,Nortasunak,Personalità,Personalidades
+StatsCatEfem,Efemérides,Ephemerides,Ereignisse,Éphémérides,Efemerideak,Efeméridi,Efemérides
 StatsCatCurio,Curiosidades,Curiosities,Kuriositäten,Curiosités,Bitxikeriak,Curiosità,Curiosidades
-StatsCatFrag,Fragmentos,Fragments,Fragmente,Fragments,Zatiak,Frammenti,Fragmentos
+StatsCatFrag,Literatura,Literature,Literatur,Littérature,Literatura,Letteratura,Literatura
 PuzzlesCount,%d puzles,%d puzzles,%d Rätsel,%d puzzles,%d puzzle,%d puzzle,%d puzzles
 StatsUpdatedNote,Las estadísticas se actualizan al completar un puzle.,Statistics update when a puzzle is completed.,Statistiken werden nach einem gelösten Rätsel aktualisiert.,Les statistiques se mettent à jour quand tu termines un puzzle.,Estatistikak puzzle bat osatzean eguneratzen dira.,Le statistiche si aggiornano al completare un puzzle.,As estatísticas atualizam-se ao completar um puzzle.
 ChooseGame,Elige tu partida,Choose your game,Wähle dein Spiel,Choisissez votre partie,Aukeratu zure partida,Scegli la tua partita,Escolha a sua partida

@@ -241,11 +241,11 @@ func normalize_category(raw: String) -> String:
 	match key:
 		"efemeride", "efemerides", "event", "events", "ereignis", "gertaera", "evenement", "evento":
 			return CAT_EFEMERIDE
-		"cita", "citas", "cita celebre", "appointment", "famous quote", "famous quotes", "citation", "citation celebre", "zitat", "aipu", "aipu ospetsua", "citazione", "citazione celebre", "citacao", "citacao celebre":
+		"cita", "citas", "cita celebre", "personajes", "personaje", "personalidades", "personalidad", "characters", "appointment", "famous quote", "famous quotes", "citation", "citation celebre", "zitat", "aipu", "aipu ospetsua", "citazione", "citazione celebre", "citacao", "citacao celebre":
 			return CAT_CITA
 		"curiosidades", "curiosities", "curiosites", "kuriositaten", "kuriositateak", "curiosita":
 			return CAT_CURIOSIDADES
-		"fragmento", "fragment", "fragmentos", "fragmento literario", "literary fragment", "literary fragments", "fragment litteraire", "literarisches fragment", "fragmentu literarioa", "frammento letterario":
+		"fragmento", "fragment", "fragmentos", "fragmento literario", "literatura", "literature", "literary fragment", "literary fragments", "fragment litteraire", "literarisches fragment", "fragmentu literarioa", "frammento letterario":
 			return CAT_FRAGMENTO
 		"daily", "reto diario", "daily challenge", "taglich", "defi du jour", "eguneko erronka", "sfida del giorno", "desafio diario":
 			return CAT_DAILY
@@ -276,7 +276,21 @@ func category_tr_key(cat: String = "") -> String:
 			return cat if cat != "" else categoria_actual
 
 func category_display_name(cat: String = "") -> String:
-	return tr(category_tr_key(cat))
+	match normalize_category(cat if cat != "" else categoria_actual):
+		CAT_CITA:
+			return "Personalidades"
+		CAT_CURIOSIDADES:
+			return "Curiosidades"
+		CAT_EFEMERIDE:
+			return "Efemérides"
+		CAT_FRAGMENTO:
+			return "Literatura"
+		CAT_DAILY:
+			return tr("DailyChallenge")
+		_:
+			var key := category_tr_key(cat)
+			var translated := tr(key)
+			return translated if translated != "" else key
 
 func category_color(cat: String = "") -> Color:
 	match normalize_category(cat if cat != "" else categoria_actual):

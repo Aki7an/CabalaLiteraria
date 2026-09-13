@@ -100,10 +100,10 @@ func _apply_static() -> void:
 	_hint_failed_title.text = _t("StatsFails", _hint_failed_title.text)
 	_perfect_title.text = _t("StatsPerfectPuzzle", _perfect_title.text)
 	_fastest_title.text = _t("StatsBestTime", _fastest_title.text)
-	_set_cat_name("RowCita", "StatsCatCita")
-	_set_cat_name("RowEfemeride", "StatsCatEfem")
-	_set_cat_name("RowCuriosidades", "StatsCatCurio")
-	_set_cat_name("RowFragmento", "StatsCatFrag")
+	_set_cat_label("RowCita", GameManager.CAT_CITA)
+	_set_cat_label("RowEfemeride", GameManager.CAT_EFEMERIDE)
+	_set_cat_label("RowCuriosidades", GameManager.CAT_CURIOSIDADES)
+	_set_cat_label("RowFragmento", GameManager.CAT_FRAGMENTO)
 
 
 func _row_inner(row: Node) -> Node:
@@ -122,6 +122,12 @@ func _set_cat_name(row_name: String, key: String) -> void:
 	var name_l := _row_child(_progress_list.get_node_or_null(row_name), "Name") as Label
 	if name_l:
 		name_l.text = _t(key, name_l.text)
+
+
+func _set_cat_label(row_name: String, category_id: String) -> void:
+	var name_l := _row_child(_progress_list.get_node_or_null(row_name), "Name") as Label
+	if name_l:
+		name_l.text = GameManager.category_display_name(category_id)
 
 
 func _apply_hero() -> void:

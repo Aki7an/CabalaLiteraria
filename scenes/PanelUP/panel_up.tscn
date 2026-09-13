@@ -566,7 +566,7 @@ layout_mode = 2
 theme = ExtResource("3_yg0a0")
 theme_override_colors/font_color = Color(0.83, 0.36686, 0.0581, 1)
 theme_override_font_sizes/font_size = 45
-text = "Citas"
+text = "Personalidades"
 horizontal_alignment = 1
 metadata/_edit_lock_ = true
 
