@@ -5,7 +5,7 @@ const PATH_SHOP := "res://scenes/MenuShop.tscn"
 const PATH_APP := "res://scenes/App.tscn"
 const PATH_LIBRARY := "res://scenes/MenuLibrary.tscn"
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
-const ICON_CITA: Texture2D = preload("res://images/Citas.png")
+const ICON_CITA: Texture2D = preload("res://images/Ilustres.png")
 const ICON_EFEM: Texture2D = preload("res://images/Efemerides.png")
 const ICON_CURIO: Texture2D = preload("res://images/Adivinanza.png")
 const ICON_FRAG: Texture2D = preload("res://images/FragmentosLiterarios.png")
@@ -53,6 +53,8 @@ func _ready() -> void:
 	_apply_lock_texts()
 	if not SignalManager.full_game_changed.is_connected(_refresh_purchase_lock):
 		SignalManager.full_game_changed.connect(_refresh_purchase_lock)
+	if not SignalManager.daily_puzzle_changed.is_connected(_on_daily_puzzle_changed):
+		SignalManager.daily_puzzle_changed.connect(_on_daily_puzzle_changed)
 	_refresh_purchase_lock()
 
 
@@ -70,11 +72,11 @@ func _refresh_purchase_lock() -> void:
 	_build_content()
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q:
-		_item = GameManager.advance_daily_to_next()
-		_build_content()
-		get_viewport().set_input_as_handled()
+func _on_daily_puzzle_changed() -> void:
+	if not GameManager.has_full_game():
+		return
+	_item = GameManager.todays_daily_item()
+	_build_content()
 
 
 func _build_content() -> void:
@@ -653,5 +655,4 @@ func _on_play_pressed() -> void:
 		_play_button.disabled = true
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	SignalManager.partida_iniciada.emit()
-	get_tree().change_scene_to_file(PATH_APP)
+	GameManager.launch_prepared_game()

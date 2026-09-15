@@ -24,13 +24,14 @@ const CREDITS_BLINK_EVERY := 3.0
 @onready var name_slots: HBoxContainer = $Panel/OnlineCard/NameSlots
 @onready var title_label: Label = $Panel/Header/Title
 @onready var online_title_label: Label = $Panel/OnlineCard/Title
-@onready var online_help_label: Label = $Panel/OnlineCard/Info/Text
 @onready var reset_label: Label = $Panel/Footer/ButtonReset/Text
 @onready var game_title_label: Label = $Panel/GameCard/Title
 @onready var tutorial_label: Label = $Panel/GameCard/GameRows/TutorialLabel
 @onready var reveal_label: Label = $Panel/GameCard/GameRows/RevealLabel
+@onready var share_label: Label = $Panel/GameCard/GameRows/ShareLabel
 @onready var check_button_tutorial: Button = $Panel/GameCard/GameRows/CheckButtonTutorial
 @onready var check_button_reveal: Button = $Panel/GameCard/GameRows/CheckButtonReveal
+@onready var check_button_share: Button = $Panel/GameCard/GameRows/CheckButtonShare
 
 var _language_buttons: Dictionary = {}
 var _normal_language_styles: Dictionary = {}
@@ -45,65 +46,65 @@ const LOCALIZED_COPY := {
 	"es": {
 		"title": "Opciones",
 		"online_title": "NOMBRE ONLINE",
-		"online_help": "Este nombre se mostrará en las clasificaciones y retos online.",
 		"reset": "RESTABLECER VALORES",
 		"game_title": "JUEGO",
 		"tutorial": "Mostrar tutorial antes de jugar.",
 		"reveal": "Mostrar explicación botón REVELAR.",
+		"share": "Compartir datos de resolución con el desarrollador.",
 	},
 	"en": {
 		"title": "Options",
 		"online_title": "ONLINE NAME",
-		"online_help": "This name will be shown in online leaderboards and challenges.",
 		"reset": "RESET VALUES",
 		"game_title": "GAME",
 		"tutorial": "Show tutorial before playing.",
 		"reveal": "Show REVEAL button explanation.",
+		"share": "Share puzzle solve data with the developer.",
 	},
 	"eu": {
 		"title": "Aukerak",
 		"online_title": "LINEAKO IZENA",
-		"online_help": "Izen hau lineako sailkapenetan eta erronketan agertuko da.",
 		"reset": "BERREZARRI BALIOAK",
 		"game_title": "JOKOA",
 		"tutorial": "Erakutsi tutoriala jokatu aurretik.",
 		"reveal": "Erakutsi REVELAR botoiaren azalpena.",
+		"share": "Partekatu puzzlearen ebazpen-datuak garatzailearekin.",
 	},
 	"de": {
 		"title": "Optionen",
 		"online_title": "ONLINE-NAME",
-		"online_help": "Dieser Name wird in Online-Ranglisten und Herausforderungen angezeigt.",
 		"reset": "WERTE ZURÜCKSETZEN",
 		"game_title": "SPIEL",
 		"tutorial": "Tutorial vor dem Spielen anzeigen.",
 		"reveal": "Erklärung der REVELAR-Taste anzeigen.",
+		"share": "Lösedaten mit dem Entwickler teilen.",
 	},
 	"fr": {
 		"title": "Options",
 		"online_title": "NOM EN LIGNE",
-		"online_help": "Ce nom apparaîtra dans les classements et défis en ligne.",
 		"reset": "RÉINITIALISER",
 		"game_title": "JEU",
 		"tutorial": "Afficher le tutoriel avant de jouer.",
 		"reveal": "Afficher l'explication du bouton REVELAR.",
+		"share": "Partager les données de résolution avec le développeur.",
 	},
 	"it": {
 		"title": "Opzioni",
 		"online_title": "NOME ONLINE",
-		"online_help": "Questo nome apparirà nelle classifiche e nelle sfide online.",
 		"reset": "RIPRISTINA VALORI",
 		"game_title": "GIOCO",
 		"tutorial": "Mostra il tutorial prima di giocare.",
 		"reveal": "Mostra la spiegazione del pulsante REVELAR.",
+		"share": "Condividi i dati di risoluzione con lo sviluppatore.",
 	},
 	"pt": {
 		"title": "Opções",
 		"online_title": "NOME ONLINE",
-		"online_help": "Este nome aparecerá nas classificações e desafios online.",
 		"reset": "REPOR VALORES",
 		"game_title": "JOGO",
 		"tutorial": "Mostrar tutorial antes de jogar.",
 		"reveal": "Mostrar explicação do botão REVELAR.",
+		"share": "Partilhar dados de resolução com o programador.",
 	},
 }
 
@@ -135,6 +136,7 @@ func _ready() -> void:
 		SignalManager.audio_prefs_changed.connect(_refresh_audio_controls)
 	check_button_tutorial.button_pressed = PlayerPrefs.mostrar_tuto_antes_partida
 	check_button_reveal.button_pressed = not PlayerPrefs.skip_reveal_dialog
+	check_button_share.button_pressed = PlayerPrefs.share_solve_data
 	_update_language_selection()
 	_start_credits_blink()
 
@@ -332,8 +334,11 @@ func _on_button_reset_pressed() -> void:
 	GameManager.apply_language("es")
 	check_button_tutorial.button_pressed = true
 	check_button_reveal.button_pressed = true
+	check_button_share.button_pressed = false
 	PlayerPrefs.set_mostrar_tutorial(true)
 	PlayerPrefs.set_show_reveal_explanation(true)
+	PlayerPrefs.set_share_solve_data(false)
+	PlayerPrefs.set_hide_share_solve_dialog(false)
 	_refresh_audio_controls()
 	_update_language_selection()
 
@@ -346,6 +351,11 @@ func _on_check_button_tutorial_pressed() -> void:
 func _on_check_button_reveal_pressed() -> void:
 	SoundManager.play("ButtonClick")
 	PlayerPrefs.set_show_reveal_explanation(check_button_reveal.button_pressed)
+
+
+func _on_check_button_share_pressed() -> void:
+	SoundManager.play("ButtonClick")
+	PlayerPrefs.set_share_solve_data(check_button_share.button_pressed)
 
 
 func _save_online_name(sync_online: bool = false) -> void:
@@ -461,11 +471,13 @@ func _update_language_selection() -> void:
 func _update_localized_copy(_locale: String = "") -> void:
 	title_label.text = tr("Options")
 	online_title_label.text = tr("OnlineName")
-	online_help_label.text = tr("OnlineNameHelp")
 	reset_label.text = tr("ResetValues")
 	game_title_label.text = tr("GameSection")
 	tutorial_label.text = tr("ShowTutorialBefore")
 	reveal_label.text = tr("ShowRevealExplain")
+	if share_label:
+		var share_text := tr("ShareSolveOption")
+		share_label.text = "Compartir datos de resolución con el desarrollador." if share_text == "ShareSolveOption" else share_text
 	nombre.placeholder_text = ""
 	$Panel/SoundCard/Title.text = tr("SOUND")
 	$Panel/SoundCard/SoundRows/MusicLabel.text = tr("Music")

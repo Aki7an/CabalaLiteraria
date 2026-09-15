@@ -449,9 +449,9 @@ vertical_alignment = 1
 [node name="SoundCard" type="Panel" parent="Panel"]
 layout_mode = 0
 offset_left = 72.0
-offset_top = 767.0
+offset_top = 634.0
 offset_right = 1134.0
-offset_bottom = 1293.0
+offset_bottom = 1160.0
 theme_override_styles/panel = SubResource("Style_card")
 
 [node name="TitleLineL" type="ColorRect" parent="Panel/SoundCard"]
@@ -752,9 +752,9 @@ script = ExtResource("16_toggle")
 [node name="LanguageCard" type="Panel" parent="Panel"]
 layout_mode = 0
 offset_left = 72.0
-offset_top = 1339.0
+offset_top = 1206.0
 offset_right = 1134.0
-offset_bottom = 2020.0
+offset_bottom = 1887.0
 theme_override_styles/panel = SubResource("Style_card")
 
 [node name="TitleLineL" type="ColorRect" parent="Panel/LanguageCard"]
@@ -1240,7 +1240,7 @@ layout_mode = 0
 offset_left = 72.0
 offset_top = 284.0
 offset_right = 1134.0
-offset_bottom = 722.0
+offset_bottom = 589.0
 theme_override_styles/panel = SubResource("Style_card")
 
 [node name="TitleLineL" type="ColorRect" parent="Panel/OnlineCard"]
@@ -1333,6 +1333,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Info" type="Panel" parent="Panel/OnlineCard"]
+visible = false
 layout_mode = 0
 offset_left = 72.0
 offset_top = 310.0
@@ -1368,9 +1369,9 @@ autowrap_mode = 2
 [node name="GameCard" type="Panel" parent="Panel"]
 layout_mode = 0
 offset_left = 72.0
-offset_top = 2048.0
+offset_top = 1915.0
 offset_right = 1134.0
-offset_bottom = 2412.0
+offset_bottom = 2389.0
 theme_override_styles/panel = SubResource("Style_card")
 
 [node name="TitleLineL" type="ColorRect" parent="Panel/GameCard"]
@@ -1409,7 +1410,7 @@ layout_mode = 0
 offset_left = 44.0
 offset_top = 118.0
 offset_right = 1018.0
-offset_bottom = 338.0
+offset_bottom = 448.0
 theme_override_styles/panel = SubResource("Style_inner")
 
 [node name="Divider" type="ColorRect" parent="Panel/GameCard/GameRows"]
@@ -1477,12 +1478,48 @@ button_pressed = true
 toggle_mode = true
 script = ExtResource("16_toggle")
 
+[node name="DividerShare" type="ColorRect" parent="Panel/GameCard/GameRows"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 218.0
+offset_right = 956.0
+offset_bottom = 220.0
+mouse_filter = 2
+color = Color(0.65098, 0.501961, 0.290196, 0.25)
+
+[node name="ShareLabel" type="Label" parent="Panel/GameCard/GameRows"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 228.0
+offset_right = 760.0
+offset_bottom = 328.0
+theme_override_colors/font_color = Color(0.337255, 0.223529, 0.152941, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 32
+text = "Compartir datos de resolución con el desarrollador."
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="CheckButtonShare" type="Button" parent="Panel/GameCard/GameRows"]
+layout_mode = 0
+offset_left = 790.0
+offset_top = 248.0
+offset_right = 936.0
+offset_bottom = 318.0
+theme_override_styles/normal = SubResource("Style_empty")
+theme_override_styles/hover = SubResource("Style_empty")
+theme_override_styles/pressed = SubResource("Style_empty")
+theme_override_styles/hover_pressed = SubResource("Style_empty")
+theme_override_styles/focus = SubResource("Style_empty")
+toggle_mode = true
+script = ExtResource("16_toggle")
+
 [node name="Footer" type="Control" parent="Panel"]
 layout_mode = 0
 offset_left = 72.0
-offset_top = 2435.0
+offset_top = 2412.0
 offset_right = 1134.0
-offset_bottom = 2618.0
+offset_bottom = 2595.0
 
 [node name="ButtonReset" type="Button" parent="Panel/Footer"]
 layout_mode = 0
@@ -1568,5 +1605,6 @@ text = "OK"
 [connection signal="pressed" from="Panel/OnlineCard/ButtonEdit" to="." method="_on_button_edit_pressed"]
 [connection signal="pressed" from="Panel/GameCard/GameRows/CheckButtonTutorial" to="." method="_on_check_button_tutorial_pressed"]
 [connection signal="pressed" from="Panel/GameCard/GameRows/CheckButtonReveal" to="." method="_on_check_button_reveal_pressed"]
+[connection signal="pressed" from="Panel/GameCard/GameRows/CheckButtonShare" to="." method="_on_check_button_share_pressed"]
 [connection signal="pressed" from="Panel/Footer/ButtonReset" to="." method="_on_button_reset_pressed"]
 [connection signal="pressed" from="Panel/Footer/ButtonOk" to="." method="_on_button_back_pressed"]

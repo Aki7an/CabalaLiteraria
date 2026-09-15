@@ -10,6 +10,7 @@ signal login_failed(error_message: String, http_code: int)
 var _seed_run_nonce: String = ""  # identificador único de esta ejecución
 
 const LEADERBOARD_NAME: String = "Score"  # nombre de la estadística
+const TRACE_CHUNK_CHARS := 8500
 
 ## Ajusta tu TitleId aquí o desde fuera (set_title_id)
 @export var TITLE_ID: String = "1BC2FD"
@@ -638,6 +639,65 @@ func send_match_event(duration_sec: int, vowelsAE: int, vowelsIOU:int, letras: i
 	var parsed: Variant = JSON.parse_string((r[3] as PackedByteArray).get_string_from_utf8())
 	return (parsed is Dictionary) and (int((parsed as Dictionary).get("code", http_code)) == 200)
 
+
+func send_puzzle_trace(payload: Dictionary) -> bool:
+	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
+		push_warning("No hay sesión PlayFab para enviar la traza del puzle.")
+		return false
+	var events: Array = payload.get("events", [])
+	var header := payload.duplicate(true)
+	header.erase("events")
+	header["event_count"] = events.size()
+	var chunks := _chunk_trace_events(events)
+	header["chunk_count"] = chunks.size()
+	var ok := await _write_player_event("puzzle_solve_trace", header)
+	if ok:
+		await _client_post_json("UpdateUserData", {
+			"Data": {"LastPuzzleTrace": JSON.stringify(header)},
+			"Permission": "Private",
+		})
+	if not ok:
+		return false
+	for i in chunks.size():
+		var sent := await _write_player_event("puzzle_solve_trace_chunk", {
+			"session_id": str(payload.get("session_id", "")),
+			"puzzle_id": int(payload.get("puzzle_id", -1)),
+			"chunk_index": i,
+			"chunk_count": chunks.size(),
+			"events": chunks[i],
+		})
+		if not sent:
+			ok = false
+	return ok
+
+
+func _chunk_trace_events(events: Array) -> Array:
+	var chunks: Array = []
+	var current: Array = []
+	for ev in events:
+		current.append(ev)
+		if JSON.stringify(current).length() >= TRACE_CHUNK_CHARS:
+			current.pop_back()
+			if current.is_empty():
+				chunks.append([ev])
+				current = []
+			else:
+				chunks.append(current)
+				current = [ev]
+	if not current.is_empty() or chunks.is_empty():
+		chunks.append(current)
+	return chunks
+
+
+func _write_player_event(event_name: String, body: Dictionary) -> bool:
+	if not is_logged_in():
+		return false
+	var json := await _client_post_json("WritePlayerEvent", {
+		"EventName": event_name,
+		"Body": body,
+	})
+	return not json.is_empty()
+
 # Devuelve la posición (1-based) del jugador en "Score_Facil".
 # Requiere estar logeado (PlayFabLogin.is_logged_in()).
 # Retorna -1 si falla o si no hay entrada.
@@ -1093,6 +1153,8 @@ func send_phrase_feedback(
 			"rating_hint3": int(ratings.get("hint3", 0)),
 			"rating_interest": int(ratings.get("interest", 0)),
 			"rating_init_letters": int(ratings.get("init_letters", 0)),
+			"difficulty_issue": str(ratings.get("difficulty_issue", "")),
+			"duration_issue": str(ratings.get("duration_issue", "")),
 			"comment": comment,
 			"client_ver": str(ProjectSettings.get_setting("application/config/version", "")),
 			"locale": OS.get_locale(),

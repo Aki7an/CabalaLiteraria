@@ -29,14 +29,14 @@ const LANGUAGES := [
 
 const CATEGORY_VALUES := [
 	["Efemérides", "Efeméride"],
-	["Personalidades", "Cita célebre"],
+	["Ilustres", "Cita célebre"],
 	["Curiosidades", "Curiosidades"],
 	["Literatura", "Fragmento literario"],
 ]
 
 const MODE_VALUES := [
 	["RÁPIDO", GameManager.MODE_QUICK],
-	["CRIPTOGRAMA", GameManager.MODE_CRYPTOGRAM],
+	["DESAFÍO", GameManager.MODE_CRYPTOGRAM],
 ]
 
 const FILTER_ALL := "all"

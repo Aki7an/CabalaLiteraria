@@ -121,6 +121,10 @@ func _on_button_pressed() -> void:
 		GameManager.liberar_letra_teclado(previous_letter)
 
 	print("Tocada LETRA con letra:", letra)
+	SignalManager.puzzle_input.emit("letter", {
+		"letter": letra,
+		"numero": target_number,
+	})
 	GameManager.set_selected_letter_user(letra)
 	SoundManager.play("ClickLetra")
 	_apply_panel_color(color_selected)
@@ -141,6 +145,10 @@ func _on_button_pressed() -> void:
 		GameManager.recoger_letras_mostradas()
 	)
 	PuzzleSaveManager.request_autosave()
+
+
+func apply_from_keyboard() -> void:
+	_on_button_pressed()
 
 
 func _erase_letter() -> void:

@@ -11,6 +11,20 @@ const ICON_HEART := preload("res://images/credit_icon_heart.svg")
 const FONT_TITLE := preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
 const FONT_BODY := preload("res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf")
 const FONT_STRONG := preload("res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf")
+const COPY := {
+	"Cipher": {
+		"es": "Cifra", "en": "Cipher", "de": "Zahl",
+		"fr": "Chiffrer", "eu": "Zifratzea", "it": "Cifra", "pt": "Cifra",
+	},
+	"Letter": {
+		"es": "Letra", "en": "Letter", "de": "Buchstabe",
+		"fr": "Lettre", "eu": "Gutuna", "it": "Lettera", "pt": "Carta",
+	},
+	"Credits": {
+		"es": "Créditos", "en": "Credits", "de": "Mitwirkende",
+		"fr": "Crédits", "eu": "Kredituak", "it": "Crediti", "pt": "Créditos",
+	},
+}
 
 @onready var title_label: Label = $Panel/Header/Title
 @onready var scroll: ScrollContainer = $Panel/Scroll
@@ -36,9 +50,27 @@ func _ready() -> void:
 
 func _t(key: String, fallback: String) -> String:
 	var text := tr(key)
-	if text.is_empty() or text == key:
-		return fallback
-	return text
+	if not text.is_empty() and text != key:
+		return text
+	var locale := TranslationServer.get_locale().left(2).to_lower()
+	var by_locale: Dictionary = COPY.get(key, {})
+	if by_locale.has(locale):
+		return str(by_locale[locale])
+	if not text.is_empty() and locale == "en":
+		return text
+	return fallback
+
+
+func _brand_name() -> String:
+	return "%s %s" % [_t("Cipher", "Cifra"), _t("Letter", "Letra")]
+
+
+func _brand_title() -> String:
+	return _brand_name().to_upper()
+
+
+func _with_brand(text: String) -> String:
+	return text.replace("Cifra Letra", _brand_name())
 
 
 func _build_content() -> void:
@@ -86,10 +118,10 @@ func _build_content() -> void:
 	)
 	_add_text_card(
 		_t("CreditsHobbyTitle", "Un hobby, ahora posible"),
-		_t(
+		_with_brand(_t(
 			"CreditsHobby",
 			"Cifra Letra responde a un hobby por el diseño, la creación y la programación de videojuegos. Ahora lo he potenciado con Cursor, ChatGPT y Suno. Todo esto habría llevado un tiempo del que, por desgracia, no dispongo. Sin estas herramientas habría sido imposible."
-		),
+		)),
 		ICON_CURSOR
 	)
 	_add_future_card()
@@ -112,17 +144,17 @@ func _add_intro_card() -> void:
 	)
 	kicker.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var name_label := _make_label(
-		"CIFRA LETRA",
+		_brand_title(),
 		FONT_TITLE,
 		64,
 		Color(0.325, 0.2, 0.125, 1)
 	)
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var body := _make_label(
-		_t(
+		_with_brand(_t(
 			"CreditsLead",
 			"Cifra Letra es un juego creado por Aki (Aki7an, AkiDev…) con la ayuda de la IA, de amigos y de la familia. Un pasatiempo hecho con cariño, entre frases, números y mucho café."
-		),
+		)),
 		FONT_BODY,
 		40,
 		Color(0.34, 0.22, 0.14, 0.92)
@@ -196,10 +228,10 @@ func _add_future_card() -> void:
 	)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var body := _make_label(
-		_t(
+		_with_brand(_t(
 			"CreditsFuture",
 			"Si te ha gustado Cifra Letra, este es el rincón para seguir en contacto. Iré publicando más juegos pequeños desde aquí. Gracias por descifrar conmigo."
-		),
+		)),
 		FONT_BODY,
 		38,
 		Color(0.18, 0.32, 0.3, 0.95)

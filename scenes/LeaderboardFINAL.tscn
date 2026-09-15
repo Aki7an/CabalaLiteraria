@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_background"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="4_title"]
-[ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="5_quotes"]
+[ext_resource type="Texture2D" path="res://images/Ilustres.png" id="5_quotes"]
 [ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="6_events"]
 [ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="7_curiosities"]
 [ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="8_fragments"]
@@ -254,7 +254,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.45, 0.32, 0.2, 0.75)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 44
-text = "CRIPTOGRAMA"
+text = "DESAFÍO"
 vertical_alignment = 1
 
 [node name="CategoryFilters" type="HBoxContainer" parent="MainCard" unique_id=928681907]
@@ -327,7 +327,7 @@ offset_bottom = 254.0
 theme_override_colors/font_color = Color(0.24, 0.14, 0.08, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 26
-text = "PERSONALIDADES"
+text = "ILUSTRES"
 horizontal_alignment = 1
 vertical_alignment = 1
 

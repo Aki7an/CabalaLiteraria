@@ -54,6 +54,7 @@ func _on_button_options_pressed() -> void:
 func _on_button_salir_pressed() -> void:
 	SoundManager.play("ButtonClick")
 	PuzzleSaveManager.save_current_now()
+	EventLoggerAutoload.discard_session()
 	get_tree().paused = false
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)

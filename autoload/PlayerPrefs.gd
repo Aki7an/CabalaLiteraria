@@ -15,6 +15,8 @@ var level_dificil_unlocked: bool = false
 var level_pro_unlocked: bool = false
 var last_completed_replay_date: String = ""
 var skip_reveal_dialog: bool = false
+var share_solve_data: bool = false
+var hide_share_solve_dialog: bool = false
 var favorite_ids: PackedInt32Array = PackedInt32Array()
 var daily_date: String = ""
 var daily_puzzle_id: int = -1
@@ -195,6 +197,8 @@ func save_prefs() -> void:
 	cfg.set_value("levels","levelProUnlocked", GameManager.level_pro_unlocked)
 	cfg.set_value("levels", "last_completed_replay_date", last_completed_replay_date)
 	cfg.set_value("general", "skip_reveal_dialog", skip_reveal_dialog)
+	cfg.set_value("general", "share_solve_data", share_solve_data)
+	cfg.set_value("general", "hide_share_solve_dialog", hide_share_solve_dialog)
 	cfg.set_value("library", "favorite_ids", Array(favorite_ids))
 	cfg.set_value("daily", "date", daily_date)
 	cfg.set_value("daily", "puzzle_id", daily_puzzle_id)
@@ -234,6 +238,8 @@ func load_prefs() -> void:
 			last_completed_replay_date
 		))
 		skip_reveal_dialog = bool(cfg.get_value("general", "skip_reveal_dialog", skip_reveal_dialog))
+		share_solve_data = bool(cfg.get_value("general", "share_solve_data", share_solve_data))
+		hide_share_solve_dialog = bool(cfg.get_value("general", "hide_share_solve_dialog", hide_share_solve_dialog))
 		favorite_ids = _load_favorite_ids(cfg)
 		daily_date = str(cfg.get_value("daily", "date", daily_date))
 		daily_puzzle_id = int(cfg.get_value("daily", "puzzle_id", daily_puzzle_id))
@@ -282,6 +288,8 @@ func reset_player_progress() -> void:
 	level_pro_unlocked = false
 	last_completed_replay_date = ""
 	skip_reveal_dialog = false
+	share_solve_data = false
+	hide_share_solve_dialog = false
 	favorite_ids = PackedInt32Array()
 	daily_date = ""
 	daily_puzzle_id = -1
@@ -379,4 +387,14 @@ func toggle_favorite(puzzle_id: int) -> bool:
 
 func set_show_reveal_explanation(enabled: bool) -> void:
 	skip_reveal_dialog = not enabled
+	save_prefs()
+
+
+func set_share_solve_data(enabled: bool) -> void:
+	share_solve_data = enabled
+	save_prefs()
+
+
+func set_hide_share_solve_dialog(enabled: bool) -> void:
+	hide_share_solve_dialog = enabled
 	save_prefs()

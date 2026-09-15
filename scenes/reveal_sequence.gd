@@ -114,7 +114,9 @@ func _run_sequence() -> void:
 	await get_tree().process_frame
 	_clip_above_keyboard()
 	await _reveal_initial_letters()
-	for assignment in _player_assignments():
+	var assignments := _player_assignments()
+	_log_reveal_result(assignments)
+	for assignment in assignments:
 		if assignment.get("correct", false):
 			await _reveal_correct(assignment)
 		else:
@@ -318,6 +320,24 @@ func _cells_from(assignment: Dictionary) -> Array[Celda]:
 		if item is Celda:
 			cells.append(item)
 	return cells
+
+
+func _log_reveal_result(assignments: Array[Dictionary]) -> void:
+	var correct: Array = []
+	var wrong: Array = []
+	for assignment in assignments:
+		var item := {
+			"letter": str(assignment.get("letter", "")),
+			"numero": int(assignment.get("numero", 0)),
+		}
+		if assignment.get("correct", false):
+			correct.append(item)
+		else:
+			wrong.append(item)
+	SignalManager.puzzle_input.emit("reveal_result", {
+		"correct": correct,
+		"wrong": wrong,
+	})
 
 
 func _player_assignments() -> Array[Dictionary]:

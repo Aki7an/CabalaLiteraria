@@ -25,6 +25,11 @@ const DRAG_THRESHOLD := 14.0
 @onready var estrellas6: FeedbackStarRow = $Card/Scroll/Rows/RowHint3/Content/Stars
 @onready var estrellas7: FeedbackStarRow = $Card/Scroll/Rows/RowTheme/Content/Stars
 
+const FONT_CHIP := preload("res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf")
+const COLOR_CHIP_OFF := Color(0.953, 0.906, 0.855, 1)
+const COLOR_CHIP_ON := Color(0.9608, 0.5098, 0.1255, 1)
+const COLOR_CHIP_TEXT := Color(0.325, 0.2, 0.125, 1)
+
 var _busy := false
 var _drag_held := false
 var _drag_active := false
@@ -32,6 +37,11 @@ var _drag_origin := Vector2.ZERO
 var _drag_scroll_origin := 0
 var _card_bottom_rest := -48.0
 var _applied_keyboard_h := -1.0
+var _diff_issue := ""
+var _time_issue := ""
+var _issue_buttons: Array[Button] = []
+var _chip_off: StyleBoxFlat
+var _chip_on: StyleBoxFlat
 
 
 func _ready() -> void:
@@ -39,6 +49,7 @@ func _ready() -> void:
 	_apply_copy()
 	_reorder_questions()
 	_apply_locks()
+	_build_issue_chips()
 	scroll.scroll_deadzone = 16
 	_make_rows_drag_through($Card/Scroll/Rows)
 	comment_edit.focus_entered.connect(_on_comment_focus_entered)
@@ -63,7 +74,7 @@ func _make_rows_drag_through(node: Node) -> void:
 		_make_rows_drag_through(child)
 	if node == comment_edit:
 		return
-	if node is FeedbackStarRow:
+	if node is FeedbackStarRow or node is Button:
 		return
 	if node is Label or node is PanelContainer or node is VBoxContainer or node is HBoxContainer:
 		(node as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -89,7 +100,7 @@ func _handle_drag_press(pressed: bool, position: Vector2) -> void:
 			return
 		if comment_edit.get_global_rect().has_point(position):
 			return
-		if _is_on_slider(position):
+		if _is_on_slider(position) or _is_on_issue_chip(position):
 			return
 		_drag_held = true
 		_drag_active = false
@@ -129,49 +140,34 @@ func _apply_copy() -> void:
 	title_label.text = _t("FeedbackTitle", "¿QUÉ TE PARECIÓ?")
 	subtitle_label.text = _t("FeedbackSubtitle", "Tu opinión nos ayuda a mejorar el nivel %s") % str(GameManager.id_frase)
 	_set_row_title($Card/Scroll/Rows/RowGlobal, _t("FeedbackGlobal", "Valoración general del nivel"))
-	_set_row_title($Card/Scroll/Rows/RowDifficulty, _t("FeedbackDifficultyQ", "¿La dificultad es adecuada a las estrellas que tiene el nivel?"))
-	_set_row_title($Card/Scroll/Rows/RowDuration, _t("FeedbackDurationQ", "¿El tiempo de resolución del puzzle te ha parecido adecuado a las estrellas?"))
+	_set_row_title($Card/Scroll/Rows/RowDifficulty, _t("FeedbackDifficultyQ", "¿La dificultad te ha parecido adecuada?"))
+	_set_row_title($Card/Scroll/Rows/RowDuration, _t("FeedbackDurationQ", "¿El tiempo de resolución te ha parecido adecuado?"))
 	_set_row_title($Card/Scroll/Rows/RowHint1, _t("FeedbackHintQ1", "¿La primera pista ha sido útil en este nivel?"))
 	_set_row_title($Card/Scroll/Rows/RowHint2, _t("FeedbackHintQ2", "¿La segunda pista ha sido útil en este nivel?"))
 	_set_row_title($Card/Scroll/Rows/RowHint3, _t("FeedbackHintQ3", "¿La tercera pista ha sido útil en este nivel?"))
-	_set_row_title($Card/Scroll/Rows/RowTheme, _t("FeedbackThemeQ", "¿El tema del puzzle es interesante?"))
+	_set_row_title($Card/Scroll/Rows/RowTheme, _t("FeedbackThemeQ", "¿El tema del puzle es interesante?"))
 	_set_row_title($Card/Scroll/Rows/RowComment, _t("FeedbackComment", "Deja un comentario sobre el nivel (opcional):"))
-	_set_scale(
-		$Card/Scroll/Rows/RowDifficulty,
-		_t("FeedbackDiffLow", "Mucha dificultad"),
-		_t("FeedbackScaleMid", "Correcto"),
-		_t("FeedbackDiffHigh", "Poca dificultad")
-	)
-	_set_scale(
-		$Card/Scroll/Rows/RowDuration,
-		_t("FeedbackTimeShort", "Muy corto"),
-		_t("FeedbackScaleMid", "Correcto"),
-		_t("FeedbackTimeLong", "Muy largo")
-	)
-	_set_scale(
-		$Card/Scroll/Rows/RowHint1,
-		_t("FeedbackHintLow", "Prácticamente inútil"),
-		_t("FeedbackHintMid", "Bien, ayuda pero no resuelve"),
-		_t("FeedbackHintHigh", "Demasiada pista")
-	)
-	_set_scale(
-		$Card/Scroll/Rows/RowHint2,
-		_t("FeedbackHintLow", "Prácticamente inútil"),
-		_t("FeedbackHintMid", "Bien, ayuda pero no resuelve"),
-		_t("FeedbackHintHigh", "Demasiada pista")
-	)
-	_set_scale(
-		$Card/Scroll/Rows/RowHint3,
-		_t("FeedbackHintLow", "Prácticamente inútil"),
-		_t("FeedbackHintMid", "Bien, ayuda pero no resuelve"),
-		_t("FeedbackHintHigh", "Demasiada pista")
-	)
-	_set_scale(
-		$Card/Scroll/Rows/RowTheme,
-		_t("FeedbackThemeLow", "Nada"),
-		_t("FeedbackThemeMid", "Bien"),
-		_t("FeedbackThemeHigh", "Muy interesante")
-	)
+	var score_scale := PackedStringArray([
+		_t("FeedbackScore1", "Fatal"),
+		_t("FeedbackScore2", "Mal"),
+		_t("FeedbackScore3", "Aceptable"),
+		_t("FeedbackScore4", "Bien"),
+		_t("FeedbackScore5", "Excelente"),
+	])
+	_set_scale($Card/Scroll/Rows/RowGlobal, score_scale)
+	_set_scale($Card/Scroll/Rows/RowDifficulty, score_scale)
+	_set_scale($Card/Scroll/Rows/RowDuration, score_scale)
+	var hint_scale := PackedStringArray([
+		_t("FeedbackHint1", "Prácticamente inútil"),
+		_t("FeedbackHint2", "Poco útil"),
+		_t("FeedbackHint3", "Bien, ayuda pero no resuelve"),
+		_t("FeedbackHint4", "Bastante útil"),
+		_t("FeedbackHint5", "Demasiada pista"),
+	])
+	_set_scale($Card/Scroll/Rows/RowHint1, hint_scale)
+	_set_scale($Card/Scroll/Rows/RowHint2, hint_scale)
+	_set_scale($Card/Scroll/Rows/RowHint3, hint_scale)
+	_set_scale($Card/Scroll/Rows/RowTheme, score_scale)
 	hint3_disabled.text = _t("FeedbackUnused", "No usada en esta partida")
 	comment_edit.placeholder_text = _t("FeedbackCommentHint", "Escribe aquí…")
 	button_omit.text = _t("FeedbackOmit", "OMITIR")
@@ -185,26 +181,160 @@ func _is_on_slider(position: Vector2) -> bool:
 	return false
 
 
+func _is_on_issue_chip(position: Vector2) -> bool:
+	for chip in _issue_buttons:
+		if chip and chip.visible and chip.get_global_rect().grow(4.0).has_point(position):
+			return true
+	return false
+
+
+func _build_issue_chips() -> void:
+	_chip_off = _make_chip_style(COLOR_CHIP_OFF, Color(0.77, 0.62, 0.4, 0.55))
+	_chip_on = _make_chip_style(COLOR_CHIP_ON, Color(0.72, 0.34, 0.06, 1))
+	_add_issue_row(
+		$Card/Scroll/Rows/RowDifficulty/Content,
+		"diff",
+		_t("FeedbackIssueDiff", "Dificultad"),
+		"too_easy",
+		_t("FeedbackIssueTooEasy", "Demasiado fácil"),
+		"too_hard",
+		_t("FeedbackIssueTooHard", "Demasiado difícil")
+	)
+	_add_issue_row(
+		$Card/Scroll/Rows/RowDuration/Content,
+		"time",
+		_t("FeedbackIssueTime", "Tiempo"),
+		"too_short",
+		_t("FeedbackIssueTooShort", "Demasiado corto"),
+		"too_long",
+		_t("FeedbackIssueTooLong", "Demasiado largo")
+	)
+
+
+func _add_issue_row(
+		parent: Node,
+		kind: String,
+		caption: String,
+		left_value: String,
+		left_text: String,
+		right_value: String,
+		right_text: String
+	) -> void:
+	var wrap := VBoxContainer.new()
+	wrap.add_theme_constant_override("separation", 4)
+	var title := Label.new()
+	title.text = caption
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_color_override("font_color", Color(0.45, 0.32, 0.22, 0.86))
+	title.add_theme_font_override("font", FONT_CHIP)
+	title.add_theme_font_size_override("font_size", 42)
+	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 12)
+	var left := _make_chip_button(left_text)
+	var right := _make_chip_button(right_text)
+	left.pressed.connect(func() -> void:
+		_select_issue(kind, left_value, left, right)
+	)
+	right.pressed.connect(func() -> void:
+		_select_issue(kind, right_value, right, left)
+	)
+	row.add_child(left)
+	row.add_child(right)
+	wrap.add_child(title)
+	wrap.add_child(row)
+	parent.add_child(wrap)
+
+
+func _make_chip_button(text: String) -> Button:
+	var chip := Button.new()
+	chip.text = text
+	chip.toggle_mode = true
+	chip.focus_mode = Control.FOCUS_NONE
+	chip.custom_minimum_size = Vector2(0, 68)
+	chip.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	chip.add_theme_font_override("font", FONT_CHIP)
+	chip.add_theme_font_size_override("font_size", 34)
+	chip.add_theme_color_override("font_color", COLOR_CHIP_TEXT)
+	chip.add_theme_color_override("font_pressed_color", Color.WHITE)
+	chip.add_theme_color_override("font_hover_color", COLOR_CHIP_TEXT)
+	chip.add_theme_color_override("font_hover_pressed_color", Color.WHITE)
+	chip.add_theme_stylebox_override("normal", _chip_off)
+	chip.add_theme_stylebox_override("hover", _chip_off)
+	chip.add_theme_stylebox_override("pressed", _chip_on)
+	chip.add_theme_stylebox_override("focus", _chip_off)
+	_issue_buttons.append(chip)
+	return chip
+
+
+func _make_chip_style(bg: Color, border: Color) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = border
+	box.set_border_width_all(2)
+	box.set_corner_radius_all(18)
+	box.content_margin_left = 12
+	box.content_margin_right = 12
+	box.content_margin_top = 6
+	box.content_margin_bottom = 6
+	return box
+
+
+func _select_issue(kind: String, value: String, chosen: Button, other: Button) -> void:
+	var current := _diff_issue if kind == "diff" else _time_issue
+	var next := "" if current == value else value
+	if kind == "diff":
+		_diff_issue = next
+	else:
+		_time_issue = next
+	chosen.set_pressed_no_signal(next == value)
+	other.set_pressed_no_signal(false)
+	_style_chip(chosen, next == value)
+	_style_chip(other, false)
+
+
+func _style_chip(chip: Button, on: bool) -> void:
+	var box := _chip_on if on else _chip_off
+	var color := Color.WHITE if on else COLOR_CHIP_TEXT
+	chip.add_theme_stylebox_override("normal", box)
+	chip.add_theme_stylebox_override("hover", box)
+	chip.add_theme_stylebox_override("pressed", box)
+	chip.add_theme_color_override("font_color", color)
+	chip.add_theme_color_override("font_hover_color", color)
+
+
 func _set_row_title(row: Node, text: String) -> void:
 	var title := row.get_node_or_null("Content/Title") as Label
 	if title:
 		title.text = text
 
 
-func _set_scale(row: Node, left: String, mid: String, right: String) -> void:
-	var scale := row.get_node_or_null("Content/Scale") as Control
+func _set_scale(row: Node, labels: PackedStringArray) -> void:
+	var scale := row.get_node_or_null("Content/Scale") as HBoxContainer
 	if scale == null:
 		return
-	_set_scale_label(scale.get_node_or_null("Left"), left, HORIZONTAL_ALIGNMENT_LEFT)
-	_set_scale_label(scale.get_node_or_null("Mid"), mid, HORIZONTAL_ALIGNMENT_CENTER)
-	_set_scale_label(scale.get_node_or_null("Right"), right, HORIZONTAL_ALIGNMENT_RIGHT)
-
-
-func _set_scale_label(label: Label, text: String, align: HorizontalAlignment) -> void:
-	if label == null:
-		return
-	label.text = text
-	label.horizontal_alignment = align
+	for child in scale.get_children():
+		scale.remove_child(child)
+		child.free()
+	for i in labels.size():
+		var label := Label.new()
+		label.text = labels[i]
+		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		label.custom_minimum_size = Vector2(0, 88)
+		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+		if i == 0:
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		elif i == labels.size() - 1:
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		else:
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.add_theme_color_override("font_color", Color(0.45, 0.32, 0.22, 0.9))
+		label.add_theme_font_override("font", FONT_CHIP)
+		label.add_theme_font_size_override("font_size", 38)
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		scale.add_child(label)
 
 
 func _apply_locks() -> void:
@@ -229,6 +359,8 @@ func _on_button_send_pressed() -> void:
 		"hint2": estrellas5.question_stars if GameManager.pista_2 else 0,
 		"hint3": estrellas6.question_stars if GameManager.pista_3 else 0,
 		"interest": estrellas7.question_stars,
+		"difficulty_issue": _diff_issue,
+		"duration_issue": _time_issue,
 	}
 	var comment := comment_edit.text.strip_edges()
 	await PlayFabTools.send_phrase_feedback(GameManager.id_frase, ratings, comment, true)

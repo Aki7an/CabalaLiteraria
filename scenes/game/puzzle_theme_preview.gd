@@ -1,12 +1,11 @@
 extends Control
 class_name PuzzleThemePreview
 
-const PATH_APP := "res://scenes/App.tscn"
-
 @export var launch_game_on_start: bool = false
 @export var image_path: String = ""
 
 @onready var image: TextureRect = $Card/ImageFrame/Image
+@onready var title_label: Label = $Card/Title
 @onready var category_label: Label = $Card/Category
 @onready var id_label: Label = $Card/Id
 @onready var start_button: Button = $Card/ButtonStart
@@ -19,10 +18,49 @@ const PATH_APP := "res://scenes/App.tscn"
 ]
 
 const STAR_EMPTY := Color(0.7, 0.62, 0.5, 0.32)
+const COPY := {
+	"PuzzleThemeTitle": {
+		"es": "TEMA DEL PUZLE",
+		"en": "PUZZLE THEME",
+		"de": "RÄTSELTHEMA",
+		"fr": "THÈME DU PUZZLE",
+		"eu": "PUZZLEAREN GAIA",
+		"it": "TEMA DEL PUZZLE",
+		"pt": "TEMA DO PUZZLE",
+	},
+	"StartPuzzle": {
+		"es": "EMPEZAR",
+		"en": "START",
+		"de": "STARTEN",
+		"fr": "COMMENCER",
+		"eu": "HASI",
+		"it": "INIZIA",
+		"pt": "COMEÇAR",
+	},
+	"ContinuePuzzle": {
+		"es": "CONTINUAR",
+		"en": "CONTINUE",
+		"de": "FORTSETZEN",
+		"fr": "CONTINUER",
+		"eu": "JARRAITU",
+		"it": "CONTINUA",
+		"pt": "CONTINUAR",
+	},
+	"ObserveTheme": {
+		"es": "Observa la imagen del tema",
+		"en": "Look at the theme image",
+		"de": "Sieh dir das Themenbild an",
+		"fr": "Regarde l'image du thème",
+		"eu": "Begiratu gaiaren irudia",
+		"it": "Guarda l'immagine del tema",
+		"pt": "Olha a imagem do tema",
+	},
+}
 
 
 func _ready() -> void:
 	add_to_group("PuzzleThemePreview")
+	title_label.text = _t("PuzzleThemeTitle")
 	category_label.text = GameManager.category_display_name()
 	id_label.text = "ID %d" % GameManager.id_frase
 	_update_difficulty_stars()
@@ -31,11 +69,24 @@ func _ready() -> void:
 	var saved := PuzzleSaveManager.get_puzzle_summary(GameManager.id_frase)
 	var in_progress := str(saved.get("status", "new")) == "in_progress"
 	if launch_game_on_start:
-		start_button.text = "CONTINUAR" if in_progress else "EMPEZAR"
+		start_button.text = _t("ContinuePuzzle") if in_progress else _t("StartPuzzle")
 	else:
-		start_button.text = "CONTINUAR"
+		start_button.text = _t("ContinuePuzzle")
 	if in_progress:
 		_show_continue_progress(saved)
+	else:
+		var wait_text := get_node_or_null("Card/WaitText") as Label
+		if wait_text:
+			wait_text.text = _t("ObserveTheme")
+
+
+func _t(key: String) -> String:
+	var translated := tr(key)
+	if translated != "" and translated != key:
+		return translated
+	var locale := TranslationServer.get_locale().left(2).to_lower()
+	var by_locale: Dictionary = COPY.get(key, {})
+	return str(by_locale.get(locale, by_locale.get("es", key)))
 
 
 func _update_difficulty_stars() -> void:
@@ -96,8 +147,7 @@ func _on_start_pressed() -> void:
 	start_button.disabled = true
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	SignalManager.partida_iniciada.emit()
-	get_tree().change_scene_to_file(PATH_APP)
+	GameManager.launch_prepared_game()
 
 
 func _on_back_pressed() -> void:

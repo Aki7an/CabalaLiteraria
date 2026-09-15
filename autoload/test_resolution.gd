@@ -37,24 +37,6 @@ func _resize_window_to_fit(vw: int, vh: int, requested_scale: float) -> void:
 
 	DisplayServer.window_set_size(target)
 
-	# Solo se centra al iniciar o pulsar F1/F2; después puede moverse normalmente.
+	# Solo se centra al iniciar; después puede moverse normalmente.
 	var pos := usable_rect.position + (usable_rect.size - target) / 2
 	DisplayServer.window_set_position(pos)
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed:
-		match event.keycode:
-			KEY_F1:
-				_accion_F1()
-			KEY_F2:
-				_accion_F2()
-
-func _accion_F1() -> void:
-	print("Vista F5 ajustada al monitor")
-	WINDOW_SCALE = 0.5
-	_ready()
-
-func _accion_F2() -> void:
-	print("Vista F5 grande ajustada al monitor")
-	WINDOW_SCALE = 1.0
-	_ready()

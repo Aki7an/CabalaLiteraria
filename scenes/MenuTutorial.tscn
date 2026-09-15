@@ -3,11 +3,13 @@
 [ext_resource type="Script" uid="uid://dljh1fsfpnfnj" path="res://scenes/menu_tutorial.gd" id="1_tutorial"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_fondo"]
 [ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="3_back"]
-[ext_resource type="PackedScene" uid="uid://5oqtmnkkrdjl" path="res://scenes/Tutorial/TutorialPage1.tscn" id="4_page1"]
-[ext_resource type="PackedScene" uid="uid://bqswxq0n8ghiy" path="res://scenes/Tutorial/TutorialPage2.tscn" id="5_page2"]
-[ext_resource type="PackedScene" uid="uid://1qdx5fhcwtxu" path="res://scenes/Tutorial/TutorialPage3.tscn" id="6_page3"]
-[ext_resource type="PackedScene" uid="uid://cka7g8u3g3b84" path="res://scenes/Tutorial/TutorialPage4.tscn" id="7_page4"]
+[ext_resource type="PackedScene" uid="uid://dylx284mbgpv6" path="res://scenes/Tutorial/TutorialEraseRevealPage.tscn" id="4_erase"]
+[ext_resource type="PackedScene" uid="uid://b3cvy1pa4nuko" path="res://scenes/Tutorial/TutorialHowToPage.tscn" id="4_howto"]
+[ext_resource type="PackedScene" uid="uid://cghrisutiflvx" path="res://scenes/Tutorial/TutorialModesHintsPage.tscn" id="4_modes"]
+[ext_resource type="PackedScene" uid="uid://dmjhl5f2wu747" path="res://scenes/Tutorial/TutorialSaveDailyPage.tscn" id="4_save"]
+[ext_resource type="PackedScene" uid="uid://btuttipspage3" path="res://scenes/Tutorial/TutorialTipsPage.tscn" id="4_tips"]
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="8_title"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="9_body"]
 
 [sub_resource type="StyleBoxFlat" id="Style_next"]
 bg_color = Color(0.9, 0.5, 0.13, 1)
@@ -157,6 +159,32 @@ corner_radius_bottom_left = 14
 
 [sub_resource type="StyleBoxEmpty" id="Style_focus"]
 
+[sub_resource type="StyleBoxEmpty" id="Style_skip_empty"]
+
+[sub_resource type="StyleBoxFlat" id="Style_check_off"]
+bg_color = Color(1, 0.98, 0.93, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.72, 0.52, 0.28, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_check_on"]
+bg_color = Color(0.93, 0.84, 0.68, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78, 0.38, 0.05, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="MenuTutorial" type="Control" unique_id=1166697130]
 layout_mode = 3
 anchors_preset = 15
@@ -173,6 +201,8 @@ style_play_hover = SubResource("Style_play_hover")
 style_play_pressed = SubResource("Style_play_pressed")
 style_dot_on = SubResource("Style_dot_on")
 style_dot_off = SubResource("Style_dot_off")
+style_check_off = SubResource("Style_check_off")
+style_check_on = SubResource("Style_check_on")
 
 [node name="Background" type="Panel" parent="." unique_id=1024663669]
 layout_mode = 1
@@ -223,7 +253,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("8_title")
 theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("Style_badge")
-text = "1 / 4"
+text = "1 / 5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -235,34 +265,131 @@ anchor_bottom = 1.0
 offset_left = 40.0
 offset_top = 74.0
 offset_right = -40.0
-offset_bottom = -292.0
+offset_bottom = -360.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Page1" parent="TutorialCard/Pages" unique_id=848034149 instance=ExtResource("4_page1")]
+[node name="Page1" parent="TutorialCard/Pages" unique_id=848034149 instance=ExtResource("4_howto")]
 layout_mode = 1
 
-[node name="Page2" parent="TutorialCard/Pages" unique_id=1436571205 instance=ExtResource("5_page2")]
+[node name="Page2" parent="TutorialCard/Pages" unique_id=1436571205 instance=ExtResource("4_erase")]
 layout_mode = 1
 
-[node name="Page3" parent="TutorialCard/Pages" unique_id=1106081513 instance=ExtResource("6_page3")]
+[node name="Page3" parent="TutorialCard/Pages" unique_id=1106081513 instance=ExtResource("4_tips")]
 layout_mode = 1
 
-[node name="Page4" parent="TutorialCard/Pages" unique_id=2044710075 instance=ExtResource("7_page4")]
+[node name="Page4" parent="TutorialCard/Pages" unique_id=2044710075 instance=ExtResource("4_modes")]
 layout_mode = 1
 
-[node name="ButtonNext" type="Button" parent="TutorialCard" unique_id=412518111]
+[node name="Page5" parent="TutorialCard/Pages" unique_id=2044710076 instance=ExtResource("4_save")]
+layout_mode = 1
+
+[node name="SkipRow" type="Button" parent="TutorialCard" unique_id=412518200]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -240.0
-offset_top = -236.0
-offset_right = 240.0
-offset_bottom = -108.0
+offset_left = -500.0
+offset_top = -338.0
+offset_right = 500.0
+offset_bottom = -246.0
 grow_horizontal = 2
+grow_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_skip_empty")
+theme_override_styles/pressed = SubResource("Style_skip_empty")
+theme_override_styles/hover = SubResource("Style_skip_empty")
+theme_override_styles/hover_pressed = SubResource("Style_skip_empty")
+theme_override_styles/focus = SubResource("Style_focus")
+toggle_mode = true
+
+[node name="Inner" type="HBoxContainer" parent="TutorialCard/SkipRow" unique_id=412518201]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_right = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="SkipBox" type="Panel" parent="TutorialCard/SkipRow/Inner" unique_id=412518202]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_check_off")
+
+[node name="SkipMark" type="Label" parent="TutorialCard/SkipRow/Inner/SkipBox" unique_id=412518203]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("8_title")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkipLabel" type="Label" parent="TutorialCard/SkipRow/Inner" unique_id=412518204]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.34, 0.22, 0.15, 1)
+theme_override_fonts/font = ExtResource("9_body")
+theme_override_font_sizes/font_size = 36
+text = "No volver a mostrar tutorial al inicio."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ButtonPlay" type="Button" parent="TutorialCard" unique_id=412518210]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -230.0
+offset_right = 500.0
+offset_bottom = -110.0
+grow_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("8_title")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("Style_play")
+theme_override_styles/pressed = SubResource("Style_play_pressed")
+theme_override_styles/hover = SubResource("Style_play_hover")
+theme_override_styles/focus = SubResource("Style_focus")
+text = "JUGAR"
+
+[node name="ButtonNext" type="Button" parent="TutorialCard" unique_id=412518111]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -230.0
+offset_right = -28.0
+offset_bottom = -110.0
+grow_horizontal = 0
 grow_vertical = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -284,9 +411,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -110.0
+offset_left = -140.0
 offset_top = -84.0
-offset_right = 110.0
+offset_right = 140.0
 offset_bottom = -36.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -333,6 +460,16 @@ theme_override_styles/pressed = SubResource("Style_dot_off")
 theme_override_styles/hover = SubResource("Style_dot_off")
 theme_override_styles/focus = SubResource("Style_focus")
 
+[node name="Dot5" type="Button" parent="TutorialCard/Dots" unique_id=122306299]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_dot_off")
+theme_override_styles/pressed = SubResource("Style_dot_off")
+theme_override_styles/hover = SubResource("Style_dot_off")
+theme_override_styles/focus = SubResource("Style_focus")
+
 [node name="ButtonBack" parent="." unique_id=1819014362 instance=ExtResource("3_back")]
 layout_mode = 0
 offset_left = 28.0
@@ -340,9 +477,12 @@ offset_top = 28.0
 offset_right = 174.0
 offset_bottom = 174.0
 
+[connection signal="toggled" from="TutorialCard/SkipRow" to="." method="_on_skip_toggled"]
+[connection signal="pressed" from="TutorialCard/ButtonPlay" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="TutorialCard/ButtonNext" to="." method="_on_next_pressed"]
 [connection signal="pressed" from="TutorialCard/Dots/Dot1" to="." method="_on_dot_pressed" binds= [0]]
 [connection signal="pressed" from="TutorialCard/Dots/Dot2" to="." method="_on_dot_pressed" binds= [1]]
 [connection signal="pressed" from="TutorialCard/Dots/Dot3" to="." method="_on_dot_pressed" binds= [2]]
 [connection signal="pressed" from="TutorialCard/Dots/Dot4" to="." method="_on_dot_pressed" binds= [3]]
+[connection signal="pressed" from="TutorialCard/Dots/Dot5" to="." method="_on_dot_pressed" binds= [4]]
 [connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]

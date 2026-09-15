@@ -268,7 +268,9 @@ func _fill(template: String, a: Variant, b: Variant) -> String:
 
 func _t(key: String, fallback: String) -> String:
 	var value := tr(key)
-	return fallback if value == key or value.is_empty() else value
+	if value.is_empty():
+		return fallback
+	return value
 
 
 func _schedule_fit() -> void:

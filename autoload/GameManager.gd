@@ -241,7 +241,7 @@ func normalize_category(raw: String) -> String:
 	match key:
 		"efemeride", "efemerides", "event", "events", "ereignis", "gertaera", "evenement", "evento":
 			return CAT_EFEMERIDE
-		"cita", "citas", "cita celebre", "personajes", "personaje", "personalidades", "personalidad", "characters", "appointment", "famous quote", "famous quotes", "citation", "citation celebre", "zitat", "aipu", "aipu ospetsua", "citazione", "citazione celebre", "citacao", "citacao celebre":
+		"cita", "citas", "cita celebre", "personajes", "personaje", "personalidades", "personalidad", "ilustres", "ilustre", "characters", "appointment", "famous quote", "famous quotes", "citation", "citation celebre", "zitat", "aipu", "aipu ospetsua", "citazione", "citazione celebre", "citacao", "citacao celebre":
 			return CAT_CITA
 		"curiosidades", "curiosities", "curiosites", "kuriositaten", "kuriositateak", "curiosita":
 			return CAT_CURIOSIDADES
@@ -276,21 +276,9 @@ func category_tr_key(cat: String = "") -> String:
 			return cat if cat != "" else categoria_actual
 
 func category_display_name(cat: String = "") -> String:
-	match normalize_category(cat if cat != "" else categoria_actual):
-		CAT_CITA:
-			return "Personalidades"
-		CAT_CURIOSIDADES:
-			return "Curiosidades"
-		CAT_EFEMERIDE:
-			return "Efemérides"
-		CAT_FRAGMENTO:
-			return "Literatura"
-		CAT_DAILY:
-			return tr("DailyChallenge")
-		_:
-			var key := category_tr_key(cat)
-			var translated := tr(key)
-			return translated if translated != "" else key
+	var key := category_tr_key(cat)
+	var translated := tr(key)
+	return translated if translated != "" else key
 
 func category_color(cat: String = "") -> Color:
 	match normalize_category(cat if cat != "" else categoria_actual):
@@ -349,14 +337,20 @@ func _ready():
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not OS.is_debug_build():
+		return
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_F2:
+		if event.keycode == KEY_F1:
+			advance_daily_to_next()
+			SignalManager.daily_puzzle_changed.emit()
+			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_F2:
 			PlayerPrefs.bump_app_version()
 			get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_F3:
 			PlayerPrefs.reset_completed_replay_today()
 			get_viewport().set_input_as_handled()
-		elif event.keycode == KEY_W:
+		elif event.keycode == KEY_F4:
 			lock_full_game()
 			get_viewport().set_input_as_handled()
 
@@ -445,7 +439,7 @@ func star_fill_color(mode: String = "") -> Color:
 func level_game_mode(item: Dictionary) -> String:
 	var raw := str(item.get("game_mode", "")).strip_edges().to_lower()
 	raw = raw.replace("á", "a").replace("é", "e")
-	if raw in ["cryptogram", "criptograma", "crypto"]:
+	if raw in ["cryptogram", "criptograma", "crypto", "desafio", "desafío", "challenge"]:
 		return MODE_CRYPTOGRAM
 	if raw in ["quick", "rapido", "fast"]:
 		return MODE_QUICK
@@ -691,6 +685,16 @@ func set_go_to_game_enable() -> void:
 	
 func set_go_to_game_disable() -> void:
 	go_to_game = false
+
+
+func launch_prepared_game() -> void:
+	if PlayerPrefs.mostrar_tuto_antes_partida:
+		set_go_to_game_enable()
+		get_tree().change_scene_to_file("res://scenes/MenuTutorial.tscn")
+		return
+	set_go_to_game_disable()
+	SignalManager.partida_iniciada.emit()
+	get_tree().change_scene_to_file("res://scenes/App.tscn")
 	
 func calcula_score() -> void:
 	#

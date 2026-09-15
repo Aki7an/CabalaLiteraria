@@ -2,6 +2,7 @@ extends ColorRect
 
 const SCENE_FEEDBACK := "res://scenes/MenuFeedback.tscn"
 const SCENE_MENU_MAIN := "res://scenes/MenuMain.tscn"
+const SHARE_DIALOG := preload("res://scenes/share_solve_dialog.gd")
 const STAR_EMPTY := Color(0.62, 0.51, 0.34, 0.28)
 const GAP := 24.0
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
@@ -45,6 +46,7 @@ var _drag_held := false
 var _drag_active := false
 var _drag_origin := Vector2.ZERO
 var _drag_scroll_origin := 0
+var _share_asked := false
 
 
 func _ready() -> void:
@@ -88,6 +90,7 @@ func _ready() -> void:
 	_prepare_intro_pose()
 	_play_continue_at(INTRO_CONTINUE_AT)
 	await _play_victory_intro(earned, maximum)
+	await _ask_share_if_needed()
 
 
 func _apply_locale() -> void:
@@ -572,13 +575,26 @@ func _animate_info_intro() -> void:
 
 func _on_button_back_pressed() -> void:
 	SoundManager.play("ButtonClick")
-	TransitionScreen.transition_to_black()
-	await SignalManager.on_transition_finished
-	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
+	await _confirm_share_then_go(SCENE_MENU_MAIN)
 
 
 func _on_button_feedback_pressed() -> void:
 	SoundManager.play("ButtonClick")
+	await _confirm_share_then_go(SCENE_FEEDBACK)
+
+
+func _ask_share_if_needed() -> void:
+	if _share_asked or PlayerPrefs.hide_share_solve_dialog:
+		return
+	_share_asked = true
+	var dialog := SHARE_DIALOG.new()
+	add_child(dialog)
+	await dialog.finished
+
+
+func _confirm_share_then_go(next_scene: String) -> void:
+	await _ask_share_if_needed()
+	EventLoggerAutoload.submit_if_consented()
 	TransitionScreen.transition_to_black()
 	await SignalManager.on_transition_finished
-	get_tree().change_scene_to_file(SCENE_FEEDBACK)
+	get_tree().change_scene_to_file(next_scene)

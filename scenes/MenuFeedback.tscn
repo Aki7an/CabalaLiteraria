@@ -31,9 +31,9 @@ shadow_offset = Vector2(0, 7)
 
 [sub_resource type="StyleBoxFlat" id="Style_row"]
 content_margin_left = 28.0
-content_margin_top = 22.0
+content_margin_top = 12.0
 content_margin_right = 28.0
-content_margin_bottom = 22.0
+content_margin_bottom = 12.0
 bg_color = Color(1, 0.984, 0.953, 0.96)
 border_width_left = 2
 border_width_top = 2
@@ -166,18 +166,18 @@ anchor_right = 1.0
 offset_left = 28.0
 offset_top = 28.0
 offset_right = -28.0
-offset_bottom = 220.0
+offset_bottom = 198.0
 grow_horizontal = 2
 
 [node name="Title" type="Label" parent="Card/Header"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 120.0
+offset_bottom = 96.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("3_title")
-theme_override_font_sizes/font_size = 56
+theme_override_font_sizes/font_size = 48
 text = "¿QUÉ TE PARECIÓ?"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -187,12 +187,12 @@ autowrap_mode = 3
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 118.0
-offset_bottom = 186.0
+offset_top = 96.0
+offset_bottom = 172.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.78)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 44
+theme_override_font_sizes/font_size = 30
 text = "Tu opinión nos ayuda a mejorar el nivel"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -204,7 +204,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 28.0
-offset_top = 228.0
+offset_top = 208.0
 offset_right = -28.0
 offset_bottom = -220.0
 grow_horizontal = 2
@@ -214,7 +214,7 @@ horizontal_scroll_mode = 0
 [node name="Rows" type="VBoxContainer" parent="Card/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 22
+theme_override_constants/separation = 18
 
 [node name="RowGlobal" type="PanelContainer" parent="Card/Scroll/Rows"]
 layout_mode = 2
@@ -222,22 +222,62 @@ theme_override_styles/panel = SubResource("Style_row")
 
 [node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowGlobal"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Title" type="Label" parent="Card/Scroll/Rows/RowGlobal/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 42
 text = "Valoración general del nivel"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Stars" type="Control" parent="Card/Scroll/Rows/RowGlobal/Content"]
-custom_minimum_size = Vector2(0, 132)
+custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("6_stars")
+
+[node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowGlobal/Content"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Left" type="Label" parent="Card/Scroll/Rows/RowGlobal/Content/Scale"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
+theme_override_fonts/font = ExtResource("5_regular")
+theme_override_font_sizes/font_size = 30
+text = "Muy mala"
+horizontal_alignment = 0
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Mid" type="Label" parent="Card/Scroll/Rows/RowGlobal/Content/Scale"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
+theme_override_fonts/font = ExtResource("5_regular")
+theme_override_font_sizes/font_size = 30
+text = "Aceptable"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Right" type="Label" parent="Card/Scroll/Rows/RowGlobal/Content/Scale"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
+theme_override_fonts/font = ExtResource("5_regular")
+theme_override_font_sizes/font_size = 30
+text = "Excelente"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="RowDifficulty" type="PanelContainer" parent="Card/Scroll/Rows"]
 layout_mode = 2
@@ -245,59 +285,59 @@ theme_override_styles/panel = SubResource("Style_row")
 
 [node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowDifficulty"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Title" type="Label" parent="Card/Scroll/Rows/RowDifficulty/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 50
-text = "¿La dificultad es adecuada a las estrellas que tiene el nivel?"
+theme_override_font_sizes/font_size = 42
+text = "¿La dificultad te ha parecido adecuada?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Stars" type="Control" parent="Card/Scroll/Rows/RowDifficulty/Content"]
-custom_minimum_size = Vector2(0, 132)
+custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowDifficulty/Content"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Left" type="Label" parent="Card/Scroll/Rows/RowDifficulty/Content/Scale"]
-custom_minimum_size = Vector2(0, 108)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
-text = "Mucha dificultad"
+theme_override_font_sizes/font_size = 30
+text = "Nada adecuada"
 horizontal_alignment = 0
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Mid" type="Label" parent="Card/Scroll/Rows/RowDifficulty/Content/Scale"]
-custom_minimum_size = Vector2(0, 108)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
-text = "Correcto"
+theme_override_font_sizes/font_size = 30
+text = "Aceptable"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Right" type="Label" parent="Card/Scroll/Rows/RowDifficulty/Content/Scale"]
-custom_minimum_size = Vector2(0, 108)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
-text = "Poca dificultad"
+theme_override_font_sizes/font_size = 30
+text = "Totalmente adecuada"
 horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 3
@@ -308,59 +348,59 @@ theme_override_styles/panel = SubResource("Style_row")
 
 [node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowDuration"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Title" type="Label" parent="Card/Scroll/Rows/RowDuration/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 50
-text = "¿El tiempo de resolución del puzzle te ha parecido adecuado a las estrellas?"
+theme_override_font_sizes/font_size = 42
+text = "¿El tiempo de resolución te ha parecido adecuado?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Stars" type="Control" parent="Card/Scroll/Rows/RowDuration/Content"]
-custom_minimum_size = Vector2(0, 132)
+custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowDuration/Content"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Left" type="Label" parent="Card/Scroll/Rows/RowDuration/Content/Scale"]
-custom_minimum_size = Vector2(0, 108)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
-text = "Muy corto"
+theme_override_font_sizes/font_size = 30
+text = "Nada adecuado"
 horizontal_alignment = 0
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Mid" type="Label" parent="Card/Scroll/Rows/RowDuration/Content/Scale"]
-custom_minimum_size = Vector2(0, 108)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
-text = "Correcto"
+theme_override_font_sizes/font_size = 30
+text = "Aceptable"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Right" type="Label" parent="Card/Scroll/Rows/RowDuration/Content/Scale"]
-custom_minimum_size = Vector2(0, 108)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
-text = "Muy largo"
+theme_override_font_sizes/font_size = 30
+text = "Totalmente adecuado"
 horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 3
@@ -371,58 +411,58 @@ theme_override_styles/panel = SubResource("Style_row")
 
 [node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowHint1"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Title" type="Label" parent="Card/Scroll/Rows/RowHint1/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 42
 text = "¿La primera pista ha sido útil en este nivel?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Stars" type="Control" parent="Card/Scroll/Rows/RowHint1/Content"]
-custom_minimum_size = Vector2(0, 132)
+custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint1/Content"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Left" type="Label" parent="Card/Scroll/Rows/RowHint1/Content/Scale"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Prácticamente inútil"
 horizontal_alignment = 0
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Mid" type="Label" parent="Card/Scroll/Rows/RowHint1/Content/Scale"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Bien, ayuda pero no resuelve"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Right" type="Label" parent="Card/Scroll/Rows/RowHint1/Content/Scale"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Demasiada pista"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -444,58 +484,58 @@ theme_override_styles/panel = SubResource("Style_row")
 
 [node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowHint2"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Title" type="Label" parent="Card/Scroll/Rows/RowHint2/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 42
 text = "¿La segunda pista ha sido útil en este nivel?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Stars" type="Control" parent="Card/Scroll/Rows/RowHint2/Content"]
-custom_minimum_size = Vector2(0, 132)
+custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint2/Content"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Left" type="Label" parent="Card/Scroll/Rows/RowHint2/Content/Scale"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Prácticamente inútil"
 horizontal_alignment = 0
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Mid" type="Label" parent="Card/Scroll/Rows/RowHint2/Content/Scale"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Bien, ayuda pero no resuelve"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Right" type="Label" parent="Card/Scroll/Rows/RowHint2/Content/Scale"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Demasiada pista"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -517,58 +557,58 @@ theme_override_styles/panel = SubResource("Style_row")
 
 [node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowHint3"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Title" type="Label" parent="Card/Scroll/Rows/RowHint3/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 42
 text = "¿La tercera pista ha sido útil en este nivel?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Stars" type="Control" parent="Card/Scroll/Rows/RowHint3/Content"]
-custom_minimum_size = Vector2(0, 132)
+custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowHint3/Content"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Left" type="Label" parent="Card/Scroll/Rows/RowHint3/Content/Scale"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Prácticamente inútil"
 horizontal_alignment = 0
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Mid" type="Label" parent="Card/Scroll/Rows/RowHint3/Content/Scale"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Bien, ayuda pero no resuelve"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Right" type="Label" parent="Card/Scroll/Rows/RowHint3/Content/Scale"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Demasiada pista"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -590,58 +630,58 @@ theme_override_styles/panel = SubResource("Style_row")
 
 [node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowTheme"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Title" type="Label" parent="Card/Scroll/Rows/RowTheme/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 50
-text = "¿El tema del puzzle es interesante?"
+theme_override_font_sizes/font_size = 42
+text = "¿El tema del puzle es interesante?"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Stars" type="Control" parent="Card/Scroll/Rows/RowTheme/Content"]
-custom_minimum_size = Vector2(0, 132)
+custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("6_stars")
 
 [node name="Scale" type="HBoxContainer" parent="Card/Scroll/Rows/RowTheme/Content"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 6
 
 [node name="Left" type="Label" parent="Card/Scroll/Rows/RowTheme/Content/Scale"]
-custom_minimum_size = Vector2(0, 108)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
-text = "Nada"
+theme_override_font_sizes/font_size = 30
+text = "Nada interesante"
 horizontal_alignment = 0
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Mid" type="Label" parent="Card/Scroll/Rows/RowTheme/Content/Scale"]
-custom_minimum_size = Vector2(0, 108)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
-text = "Bien"
+theme_override_font_sizes/font_size = 30
+text = "Aceptable"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Right" type="Label" parent="Card/Scroll/Rows/RowTheme/Content/Scale"]
-custom_minimum_size = Vector2(0, 108)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.45, 0.32, 0.22, 0.86)
 theme_override_fonts/font = ExtResource("5_regular")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Muy interesante"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -653,13 +693,13 @@ theme_override_styles/panel = SubResource("Style_row")
 
 [node name="Content" type="VBoxContainer" parent="Card/Scroll/Rows/RowComment"]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="Card/Scroll/Rows/RowComment/Content"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("4_body")
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 42
 text = "Deja un comentario sobre el nivel (opcional):"
 horizontal_alignment = 1
 autowrap_mode = 3

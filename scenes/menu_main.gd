@@ -43,19 +43,14 @@ func _ready() -> void:
 	_refresh_daily_button()
 	if not SignalManager.full_game_changed.is_connected(_refresh_daily_button):
 		SignalManager.full_game_changed.connect(_refresh_daily_button)
+	if not SignalManager.daily_puzzle_changed.is_connected(_refresh_daily_button):
+		SignalManager.daily_puzzle_changed.connect(_refresh_daily_button)
 	if not HistoryManager.stats_updated.is_connected(_refresh_star_totals):
 		HistoryManager.stats_updated.connect(_refresh_star_totals)
 	SignalManager.app_version_changed.connect(_on_app_version_changed)
 	SignalManager.fit_text.emit()
 	GameManager.reset_game_paremeters()
 	GameManager.resetear_partida_terminada()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q:
-		GameManager.advance_daily_to_next()
-		_refresh_daily_button()
-		get_viewport().set_input_as_handled()
 
 
 func _refresh_star_totals(_unused: Variant = null) -> void:
@@ -501,4 +496,5 @@ func _on_button_stats_pressed() -> void:
 	_go_to("res://scenes/MenuStats.tscn", button_stats)
 
 func _on_button_tutorial_pressed() -> void:
+	GameManager.set_go_to_game_disable()
 	_go_to("res://scenes/MenuTutorial.tscn", button_tutorial)

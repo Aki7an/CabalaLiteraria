@@ -19,6 +19,8 @@ const COLOR_COST := Color(0.55, 0.28, 0.08, 1)
 const RIBBON_WIDTH := 72.0
 
 var _card: Panel
+var _chosen_hint := 0
+var _result_sent := false
 
 
 func _ready() -> void:
@@ -29,6 +31,7 @@ func _ready() -> void:
 	GameManager.ensure_hint_word()
 	_build()
 	gui_input.connect(_on_background_input)
+	tree_exiting.connect(_emit_hint_result)
 
 
 func _build() -> void:
@@ -315,6 +318,8 @@ func _buy_hint(index: int) -> void:
 	if _is_unlocked(index):
 		return
 	SoundManager.play("ButtonClick")
+	_chosen_hint = index
+	SignalManager.puzzle_input.emit("hint_select", {"hint": index})
 	match index:
 		1:
 			GameManager.register_hint_used("hint_1")
@@ -341,6 +346,16 @@ func _rebuild() -> void:
 	for child in get_children():
 		child.free()
 	_build()
+
+
+func _emit_hint_result() -> void:
+	if _result_sent:
+		return
+	_result_sent = true
+	SignalManager.puzzle_input.emit("hint_result", {
+		"chosen": _chosen_hint > 0,
+		"hint": _chosen_hint,
+	})
 
 
 func _on_background_input(event: InputEvent) -> void:
@@ -396,7 +411,7 @@ func _prompt_text(index: int) -> String:
 		2:
 			var prompt := tr("Hint2Prompt")
 			if prompt == "Hint2Prompt":
-				return "Revela la letra que más se repite de entre todas las que no están en verde (reveladas) del puzzle."
+				return "Revela la letra que más se repite de entre todas las que no están en verde (reveladas) del puzle."
 			return prompt
 		_:
 			return "Los siguientes números son las 5 vocales:"

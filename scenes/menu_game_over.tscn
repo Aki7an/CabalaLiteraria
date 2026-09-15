@@ -505,7 +505,7 @@ theme_override_styles/normal = SubResource("Style_feedback")
 theme_override_styles/hover = SubResource("Style_feedback")
 theme_override_styles/pressed = SubResource("Style_feedback_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
-text = "Valora Puzzle"
+text = "Valora puzle"
 
 [connection signal="pressed" from="MainCard/ButtonBack" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="MainCard/ButtonFeedback" to="." method="_on_button_feedback_pressed"]

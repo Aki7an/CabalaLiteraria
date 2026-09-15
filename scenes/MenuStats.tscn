@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://c8ojqmp0xr658" path="res://images/Bombilla.png" id="10_bulb"]
 [ext_resource type="Texture2D" uid="uid://duj5gi84s5bqf" path="res://images/mode_quick.svg" id="13_quick"]
 [ext_resource type="Texture2D" uid="uid://dvwlfem1q7cit" path="res://images/lupa-con-un-ojo-sombra.png" id="15_3t1nt"]
-[ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="15_citas"]
+[ext_resource type="Texture2D" path="res://images/Ilustres.png" id="15_citas"]
 [ext_resource type="Texture2D" uid="uid://cfmtja1j2gkq" path="res://images/error.png" id="16_3t1nt"]
 [ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="16_efem"]
 [ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="17_curio"]
@@ -413,7 +413,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("5_body")
 theme_override_font_sizes/font_size = 40
-text = "CRIPTOGRAMA"
+text = "DESAFÍO"
 
 [node name="LabelCryptoMatches" type="Label" parent="Panel/Scroll/Content/ModeRow/CryptoCard/Box/Texts" unique_id=598539159]
 unique_name_in_owner = true
@@ -515,7 +515,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.38, 0.28, 0.8)
 theme_override_fonts/font = ExtResource("6_regular")
 theme_override_font_sizes/font_size = 36
-text = "Criptograma"
+text = "Desafío"
 
 [node name="ProgressList" type="VBoxContainer" parent="Panel/Scroll/Content/ByCategory/Box" unique_id=1988266883]
 unique_name_in_owner = true
@@ -545,7 +545,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("5_body")
 theme_override_font_sizes/font_size = 36
-text = "Personalidades"
+text = "Ilustres"
 vertical_alignment = 1
 
 [node name="Bars" type="VBoxContainer" parent="Panel/Scroll/Content/ByCategory/Box/ProgressList/RowCita/Inner" unique_id=1798852051]

@@ -310,7 +310,7 @@ offset_bottom = 150.0
 theme_override_colors/font_color = Color(0.267, 0.184, 0.102, 1)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 72
-text = "Ficha del puzzle"
+text = "Ficha del puzle"
 horizontal_alignment = 1
 vertical_alignment = 1
 

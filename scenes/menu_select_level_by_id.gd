@@ -43,7 +43,7 @@ const LOCALIZED_COPY := {
 	"es": {
 		"title": "Colección",
 		"quick": "Rápido",
-		"cryptogram": "Criptograma",
+		"cryptogram": "Desafío",
 		"progress": "%d de %d descubiertos",
 		"random": "Elegir al azar",
 		"tap_puzzle": "Selecciona un puzle",
@@ -63,7 +63,7 @@ const LOCALIZED_COPY := {
 	"en": {
 		"title": "Collection",
 		"quick": "Quick",
-		"cryptogram": "Cryptogram",
+		"cryptogram": "Challenge",
 		"progress": "%d of %d discovered",
 		"random": "Choose at random",
 		"tap_puzzle": "Select a puzzle",
@@ -83,7 +83,7 @@ const LOCALIZED_COPY := {
 	"eu": {
 		"title": "Bilduma",
 		"quick": "Azkarra",
-		"cryptogram": "Kriptograma",
+		"cryptogram": "Erronka",
 		"progress": "%d / %d aurkituta",
 		"random": "Ausaz aukeratu",
 		"tap_puzzle": "Hautatu puzzle bat",
@@ -103,7 +103,7 @@ const LOCALIZED_COPY := {
 	"fr": {
 		"title": "Collection",
 		"quick": "Rapide",
-		"cryptogram": "Cryptogramme",
+		"cryptogram": "Défi",
 		"progress": "%d sur %d découverts",
 		"random": "Choisir au hasard",
 		"tap_puzzle": "Sélectionne un puzzle",
@@ -123,7 +123,7 @@ const LOCALIZED_COPY := {
 	"de": {
 		"title": "Sammlung",
 		"quick": "Schnell",
-		"cryptogram": "Kryptogramm",
+		"cryptogram": "Herausforderung",
 		"progress": "%d von %d entdeckt",
 		"random": "Zufällig wählen",
 		"tap_puzzle": "Wähle ein Rätsel",
@@ -143,7 +143,7 @@ const LOCALIZED_COPY := {
 	"it": {
 		"title": "Collezione",
 		"quick": "Rapida",
-		"cryptogram": "Crittogramma",
+		"cryptogram": "Sfida",
 		"progress": "%d di %d scoperti",
 		"random": "Scegli a caso",
 		"tap_puzzle": "Seleziona un puzzle",
@@ -163,7 +163,7 @@ const LOCALIZED_COPY := {
 	"pt": {
 		"title": "Coleção",
 		"quick": "Rápido",
-		"cryptogram": "Criptograma",
+		"cryptogram": "Desafio",
 		"progress": "%d de %d descobertos",
 		"random": "Escolher ao acaso",
 		"tap_puzzle": "Seleciona um puzzle",

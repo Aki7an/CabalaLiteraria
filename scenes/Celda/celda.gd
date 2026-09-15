@@ -246,6 +246,11 @@ func _on_button_pressed() -> void:
 		else:
 				# otherwise LETTER
 			SoundManager.play("ClickCelda")
+			SignalManager.puzzle_input.emit("cell", {
+				"orden": orden,
+				"numero": numero,
+				"letter": letter_user,
+			})
 			GameManager.set_celda_seleccionada(orden, numero)
 			deselect_all_cels()
 			celda_selected.visible = true

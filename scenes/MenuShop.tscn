@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cwpp1jnlww7fk" path="res://images/ui_icon_library.svg" id="8_library"]
 [ext_resource type="Texture2D" uid="uid://dxivvuw5oykyh" path="res://images/ui_icon_daily.svg" id="9_daily"]
 [ext_resource type="Texture2D" uid="uid://hqwatbm1ab1y" path="res://images/ui_icon_music_note.svg" id="10_music"]
-[ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="11_citas"]
+[ext_resource type="Texture2D" path="res://images/Ilustres.png" id="11_citas"]
 [ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="12_curio"]
 [ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="13_frag"]
 [ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="14_efem"]
@@ -351,7 +351,7 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 42
-text = "%s criptogramas"
+text = "%s desafíos"
 vertical_alignment = 1
 autowrap_mode = 3
 

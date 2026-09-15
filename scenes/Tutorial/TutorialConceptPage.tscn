@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://dipi2f1vyxwp5"]
+
+[ext_resource type="Script" uid="uid://c8tutconceptpage" path="res://scenes/Tutorial/tutorial_concept_page.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="2_title"]
+[ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="3_body"]
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+content_margin_left = 22.0
+content_margin_top = 18.0
+content_margin_right = 22.0
+content_margin_bottom = 18.0
+bg_color = Color(1, 0.984, 0.94, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78, 0.61, 0.36, 0.48)
+corner_radius_top_left = 26
+corner_radius_top_right = 26
+corner_radius_bottom_right = 26
+corner_radius_bottom_left = 26
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 8
+shadow_offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxFlat" id="Style_frame"]
+bg_color = Color(0.96, 0.91, 0.82, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.61, 0.36, 0.4)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[node name="TutorialConceptPage" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 22
+script = ExtResource("1_script")
+
+[node name="BlockA" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="BlockA"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="BlockA/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.15, 0.09, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 34
+text = "Título"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Frame" type="Panel" parent="BlockA/Box"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_frame")
+
+[node name="Image" type="TextureRect" parent="BlockA/Box/Frame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Body" type="Label" parent="BlockA/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 26
+text = "Texto"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="BlockB" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="BlockB"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="BlockB/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.15, 0.09, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 34
+text = "Título"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Frame" type="Panel" parent="BlockB/Box"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 220)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_frame")
+
+[node name="Image" type="TextureRect" parent="BlockB/Box/Frame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Body" type="Label" parent="BlockB/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.36, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 26
+text = "Texto"
+horizontal_alignment = 1
+autowrap_mode = 3

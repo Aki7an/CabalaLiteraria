@@ -2,7 +2,7 @@ extends Control
 
 const PATH_MAIN := "res://scenes/MenuMain.tscn"
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
-const ICON_CITA: Texture2D = preload("res://images/Citas.png")
+const ICON_CITA: Texture2D = preload("res://images/Ilustres.png")
 const ICON_EFEM: Texture2D = preload("res://images/Efemerides.png")
 const ICON_CURIO: Texture2D = preload("res://images/Adivinanza.png")
 const ICON_FRAG: Texture2D = preload("res://images/FragmentosLiterarios.png")

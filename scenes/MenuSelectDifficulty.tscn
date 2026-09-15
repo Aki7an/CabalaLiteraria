@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://buqyyr7htufh2" path="res://scenes/menu_select_difficulty.gd" id="1_mnvl1"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_p00t6"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="4_1kbma"]
-[ext_resource type="Texture2D" uid="uid://uwoq2pc5q5oj" path="res://images/Citas.png" id="5_a8wg7"]
+[ext_resource type="Texture2D" path="res://images/Ilustres.png" id="5_a8wg7"]
 [ext_resource type="Texture2D" uid="uid://b6nxfxre5njbj" path="res://images/CheckOK.png" id="6_6xln6"]
 [ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="7_vcddi"]
 [ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="8_4aytf"]
@@ -455,7 +455,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.611765, 0.407843, 0.337255, 1)
 theme_override_constants/line_spacing = -15
 theme_override_font_sizes/font_size = 40
-text = "Personalidades"
+text = "Ilustres"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

@@ -18,6 +18,12 @@ extends Panel
 @onready var paginas_abajo = $HBoxContainer/ButtonDown/PaginasAbajo
 
 func _ready() -> void:
+	var erase_label := get_node_or_null("HBoxContainer/Button0/Content/Label") as Label
+	if erase_label:
+		erase_label.text = tr("TutEraseButton")
+	var instruction := get_node_or_null("Instruction") as Label
+	if instruction:
+		instruction.text = tr("TutCaption2")
 	for i in range(1, GameManager.lista_colores.size()):
 		var button: Button = $HBoxContainer.get_node("Button" + str(i))
 		var current := button.get_theme_stylebox("normal")
@@ -44,6 +50,7 @@ func _on_button_1_pressed() -> void:
 	GameManager.pinta_celdas(GameManager.celda_seleccionada_numero,1)
 	color1_usado = true
 	GameManager.set_number1(GameManager.celda_seleccionada_numero)
+	_log_color(1)
 
 
 func _on_button_2_pressed() -> void:
@@ -54,6 +61,7 @@ func _on_button_2_pressed() -> void:
 	GameManager.pinta_celdas(GameManager.celda_seleccionada_numero,2)
 	color2_usado = true
 	GameManager.set_number2(GameManager.celda_seleccionada_numero)
+	_log_color(2)
 
 
 func _on_button_3_pressed() -> void:
@@ -64,6 +72,7 @@ func _on_button_3_pressed() -> void:
 	GameManager.pinta_celdas(GameManager.celda_seleccionada_numero,3)
 	color3_usado = true
 	GameManager.set_number3(GameManager.celda_seleccionada_numero)
+	_log_color(3)
 
 	
 func _on_button_4_pressed() -> void:
@@ -74,6 +83,7 @@ func _on_button_4_pressed() -> void:
 	GameManager.pinta_celdas(GameManager.celda_seleccionada_numero,4)
 	color4_usado = true
 	GameManager.set_number4(GameManager.celda_seleccionada_numero)
+	_log_color(4)
 
 func _on_button_5_pressed() -> void:
 	if color5_usado or GameManager.number_5 != 0:
@@ -83,6 +93,7 @@ func _on_button_5_pressed() -> void:
 	GameManager.pinta_celdas(GameManager.celda_seleccionada_numero,5)
 	color5_usado = true
 	GameManager.set_number5(GameManager.celda_seleccionada_numero)
+	_log_color(5)
 
 
 func _on_btn_erase_pressed() -> void:
@@ -98,6 +109,10 @@ func _on_btn_erase_pressed() -> void:
 		color3_usado = GameManager.number_3 != 0
 		color4_usado = GameManager.number_4 != 0
 		color5_usado = GameManager.number_5 != 0
+		SignalManager.puzzle_input.emit("erase", {
+			"kind": "color",
+			"numero": GameManager.celda_seleccionada_numero,
+		})
 		SignalManager.update_rubber.emit()
 		return
 
@@ -109,6 +124,11 @@ func _on_btn_erase_pressed() -> void:
 
 	var letra := GameManager.selected_letra
 	var celda := GameManager.selected_celda_number
+	SignalManager.puzzle_input.emit("erase", {
+		"kind": "letter",
+		"letter": letra,
+		"numero": celda,
+	})
 	GameManager.cambios_increase()
 	SignalManager.erase_letter.emit(letra)
 	SignalManager.update_rubber.emit()
@@ -116,6 +136,12 @@ func _on_btn_erase_pressed() -> void:
 	SignalManager.añade_las_letras_iniciales.emit()
 	SignalManager.borrar_letra.emit(GameManager.tiempo_partida, celda, letra)
 
+
+func _log_color(slot: int) -> void:
+	SignalManager.puzzle_input.emit("color_%d" % slot, {
+		"slot": slot,
+		"numero": GameManager.celda_seleccionada_numero,
+	})
 
 
 func _on_button_down_pressed():

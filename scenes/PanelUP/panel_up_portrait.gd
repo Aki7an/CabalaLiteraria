@@ -51,12 +51,22 @@ var _pause_ms := 0
 
 func _ready() -> void:
 	add_to_group("GameHUD")
+	EventLoggerAutoload.start_session()
 	_start_ms = Time.get_ticks_msec()
 	if pause_button and not pause_button.pressed.is_connected(_on_pause_pressed):
 		pause_button.pressed.connect(_on_pause_pressed)
 	category_label.text = GameManager.category_display_name()
 	if stars_title:
 		stars_title.text = tr("TutStarsPuzzle")
+	var theme_title := get_node_or_null("ButtonTheme/Title") as Label
+	if theme_title:
+		theme_title.text = tr("ThemeAction")
+	var hint_title := get_node_or_null("ButtonHint/Title") as Label
+	if hint_title:
+		hint_title.text = tr("TutHint")
+	var reveal_title := get_node_or_null("ButtonReveal/Title") as Label
+	if reveal_title:
+		reveal_title.text = tr("TutReveal")
 	_apply_category_color()
 	_apply_practice_lock()
 	_update_stars()
@@ -74,6 +84,53 @@ func _ready() -> void:
 	SignalManager.game_finished_lost.connect(_on_game_lost)
 	SignalManager.erase_letter.connect(_erase_selected_letter)
 	SignalManager.erase_letter_open_dialog.connect(_open_erase_dialog)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if GameManager.partida_terminada:
+		return
+	if not (event is InputEventKey and event.pressed and not event.echo):
+		return
+	if _has_blocking_overlay():
+		return
+	var letter := _letter_from_key(event as InputEventKey)
+	if letter == "":
+		return
+	if not _try_type_letter(letter):
+		return
+	get_viewport().set_input_as_handled()
+
+
+func _has_blocking_overlay() -> bool:
+	for group_name in ["HintsOverlay", "RevealOverlay", "RevealSequence", "BoardFillPrompt", "ShareSolveDialog", "GameMenu"]:
+		if not get_tree().get_nodes_in_group(group_name).is_empty():
+			return true
+	return false
+
+
+func _letter_from_key(event: InputEventKey) -> String:
+	var raw := ""
+	if event.unicode > 0:
+		raw = String.chr(event.unicode)
+	elif event.keycode >= KEY_A and event.keycode <= KEY_Z:
+		raw = String.chr(event.keycode)
+	if raw == "":
+		return ""
+	return GameManager._hint_letter_key(raw)
+
+
+func _try_type_letter(letter: String) -> bool:
+	if GameManager.celda_seleccionada_numero <= 0 or GameManager.celda_seleccionada_numero >= 100:
+		return false
+	for node in get_tree().get_nodes_in_group("Letra"):
+		if not node is Letra:
+			continue
+		var key := node as Letra
+		if key.letra.to_upper() != letter:
+			continue
+		key.apply_from_keyboard()
+		return true
+	return false
 
 
 func _process(_delta: float) -> void:
@@ -227,6 +284,7 @@ func _on_hint_pressed() -> void:
 	if not get_tree().get_nodes_in_group("HintsOverlay").is_empty():
 		return
 	SoundManager.play("ButtonClick")
+	SignalManager.puzzle_input.emit("hint", {"opened": true})
 	_add_overlay(OVERLAY_HINTS)
 
 
@@ -234,6 +292,7 @@ func _on_theme_pressed() -> void:
 	if not get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty():
 		return
 	SoundManager.play("ButtonClick")
+	SignalManager.puzzle_input.emit("theme", {})
 	var preview := THEME_PREVIEW.instantiate()
 	preview.set("launch_game_on_start", false)
 	get_parent().add_child(preview)
@@ -272,6 +331,7 @@ func _on_reveal_pressed() -> void:
 	if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
 		return
 	SoundManager.play("ButtonClick")
+	SignalManager.puzzle_input.emit("reveal", {})
 	if PlayerPrefs.skip_reveal_dialog:
 		GameManager.reveal_assignment_errors()
 		return
@@ -305,6 +365,7 @@ func _on_pause_pressed() -> void:
 	if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
 		return
 	SoundManager.play("ButtonClick")
+	SignalManager.puzzle_input.emit("options", {})
 	_add_overlay(OVERLAY_EXIT)
 
 
@@ -315,6 +376,7 @@ func _on_game_finished() -> void:
 	_completion_recorded = true
 	if not GameManager.partida_terminada:
 		GameManager._game_finished()
+	EventLoggerAutoload.finish_session()
 	if not GameManager.is_practice_session():
 		HistoryManager.add_result(GameManager.player_name, GameManager.score)
 		PlayFabTools.submit_competitive_rankings(GameManager.player_name)
@@ -324,6 +386,7 @@ func _on_game_finished() -> void:
 
 func _on_game_lost() -> void:
 	_stop_reveal_blink()
+	EventLoggerAutoload.discard_session()
 	GameManager._game_finished()
 	GameManager.set_score_ultima_partida(0)
 	GameManager.score = 0
