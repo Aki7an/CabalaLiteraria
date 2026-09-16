@@ -7,19 +7,22 @@ class SoundEntry:
 
 enum MusicContext { MENU, GAME }
 
-const MENU_MUSIC_PATH := "res://audio/music/menus_flying_by.mp3"
-const CELEBRATION_MUSIC_PATH := "res://audio/music/celebration.mp3"
+const MENU_MUSIC_PATH := "res://audio/music/menus_flying_by.ogg"
+const CELEBRATION_MUSIC_PATH := "res://audio/music/celebration.ogg"
 const GAME_MUSIC_PATHS: PackedStringArray = [
-	"res://audio/music/01_quiet_contemplation.mp3",
-	"res://audio/music/02_revelation.mp3",
-	"res://audio/music/03_suspended_space.mp3",
-	"res://audio/music/04_quiet_space.mp3",
-	"res://audio/music/05_looking_for.mp3",
-	"res://audio/music/06_space_over_time.mp3",
-	"res://audio/music/07_exploration.mp3",
-	"res://audio/music/08_inside.mp3",
-	"res://audio/music/09_outer_stars.mp3",
-	"res://audio/music/10_between_the_echoes.mp3",
+	"res://audio/music/01_quiet_contemplation.ogg",
+	"res://audio/music/02_revelation.ogg",
+	"res://audio/music/03_suspended_space.ogg",
+	"res://audio/music/04_quiet_space.ogg",
+	"res://audio/music/05_looking_for.ogg",
+	"res://audio/music/06_space_over_time.ogg",
+	"res://audio/music/07_exploration.ogg",
+	"res://audio/music/08_inside.ogg",
+	"res://audio/music/09_outer_stars.ogg",
+	"res://audio/music/10_between_the_echoes.ogg",
+	"res://audio/music/11_Suspended Space — Flute Version.ogg",
+	"res://audio/music/12_Espacio Silencioso v2.ogg",
+	"res://audio/music/13_Espacio Silencioso.ogg",
 ]
 const GAMEPLAY_SCENE_PATHS: PackedStringArray = [
 	"res://scenes/App.tscn",
