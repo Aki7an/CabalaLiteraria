@@ -24,6 +24,8 @@ var daily_completed: bool = false
 var daily_stars: int = 0
 var daily_ids: PackedInt32Array = PackedInt32Array()
 var full_game: bool = false
+var ads_quick_streak: int = 0
+var daily_rewarded_date: String = ""
 
 
 const SAVE_PATH := "user://prefs.cfg"
@@ -206,6 +208,8 @@ func save_prefs() -> void:
 	cfg.set_value("daily", "stars", daily_stars)
 	cfg.set_value("daily", "ids", Array(daily_ids))
 	cfg.set_value("shop", "full_game", full_game)
+	cfg.set_value("ads", "quick_streak", ads_quick_streak)
+	cfg.set_value("ads", "daily_rewarded_date", daily_rewarded_date)
 	cfg.save(SAVE_PATH)
 	
 
@@ -247,6 +251,8 @@ func load_prefs() -> void:
 		daily_stars = int(cfg.get_value("daily", "stars", daily_stars))
 		daily_ids = _load_int_ids(cfg, "daily", "ids")
 		full_game = bool(cfg.get_value("shop", "full_game", full_game))
+		ads_quick_streak = int(cfg.get_value("ads", "quick_streak", ads_quick_streak))
+		daily_rewarded_date = str(cfg.get_value("ads", "daily_rewarded_date", daily_rewarded_date))
 		
 		if mostrar_tuto_antes_partida:
 			GameManager.set_mostrar_tuto_antes_partida_enable()
@@ -266,6 +272,15 @@ func load_prefs() -> void:
 func today_date_key() -> String:
 	var date := Time.get_date_dict_from_system()
 	return "%04d-%02d-%02d" % [int(date.year), int(date.month), int(date.day)]
+
+
+func has_daily_reward_today() -> bool:
+	return daily_rewarded_date == today_date_key()
+
+
+func mark_daily_rewarded_today() -> void:
+	daily_rewarded_date = today_date_key()
+	save_prefs()
 
 
 func can_replay_completed_today() -> bool:
@@ -297,6 +312,8 @@ func reset_player_progress() -> void:
 	daily_stars = 0
 	daily_ids = PackedInt32Array()
 	full_game = false
+	ads_quick_streak = 0
+	daily_rewarded_date = ""
 	mostrar_tuto_antes_partida = true
 	GameManager.set_level_normal_unlocked(false)
 	GameManager.set_level_dificil_unlocked(false)

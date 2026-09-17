@@ -11,6 +11,7 @@ const scene_to_load_MenuMain = preload("res://scenes/MenuMain.tscn")
 @onready var button_back = $ButtonBack
 
 func go_to_main_menu() -> void:
+	await AdManager.show_interstitial_after_puzzle()
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	SoundManager.play("ButtonClick")

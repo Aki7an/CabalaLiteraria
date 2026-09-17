@@ -595,6 +595,7 @@ func _ask_share_if_needed() -> void:
 func _confirm_share_then_go(next_scene: String) -> void:
 	await _ask_share_if_needed()
 	EventLoggerAutoload.submit_if_consented()
+	await AdManager.show_interstitial_after_puzzle()
 	TransitionScreen.transition_to_black()
 	await SignalManager.on_transition_finished
 	get_tree().change_scene_to_file(next_scene)

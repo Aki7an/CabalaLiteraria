@@ -16,7 +16,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="CifraLetra"
 config/description="CifraLetra - pasatiempo "
-config/version="0.21"
+config/version="0.22"
 run/main_scene="uid://bvpri1mtnymgf"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="uid://bfx23x7qnu8kq"
@@ -25,6 +25,7 @@ config/icon="uid://bfx23x7qnu8kq"
 
 PlayerPrefs="*res://autoload/PlayerPrefs.gd"
 GameManager="*res://autoload/GameManager.gd"
+AdManager="*res://autoload/AdManager.gd"
 SoundManager="*res://autoload/SoundManager.tscn"
 SignalManager="*res://autoload/SignalManager.gd"
 TestResolution="*res://autoload/test_resolution.gd"
@@ -47,7 +48,7 @@ window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/alignment-tool/plugin.cfg")
+enabled=PackedStringArray("res://addons/alignment-tool/plugin.cfg", "res://addons/admob/plugin.cfg")
 
 [input]
 
@@ -80,3 +81,10 @@ title_id="1BC2FD"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+
+[admob]
+
+general/android/enabled=true
+general/android/app_id="ca-app-pub-3940256099942544~3347511713"
+general/ios/enabled=true
+general/ios/app_id="ca-app-pub-3940256099942544~1458002511"

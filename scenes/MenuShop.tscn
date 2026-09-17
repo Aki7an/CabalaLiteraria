@@ -427,7 +427,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.48, 0.36, 0.26, 0.82)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 38
-text = "Sin anuncios. BSO completa incluida y descargable."
+text = "Al comprar el juego se quitan todos los anuncios. BSO completa incluida y descargable."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -477,7 +477,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 55
-text = "1,99 €"
+text = "2,99 €"
 vertical_alignment = 1
 
 [node name="LabelOwned" type="Label" parent="Scroll/Body/OfferCard/Margin/Col" unique_id=494425020]

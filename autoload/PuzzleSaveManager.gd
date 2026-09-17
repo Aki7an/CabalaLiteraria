@@ -224,6 +224,8 @@ func _flush_autosave() -> void:
 func save_current_now() -> void:
 	if _restoring or not _is_gameplay_active():
 		return
+	if GameManager.tutorial_board_active:
+		return
 	_sync_play_time_from_hud()
 	var puzzle_id := int(GameManager.id_frase)
 	if puzzle_id < 0:

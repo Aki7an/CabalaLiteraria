@@ -60,7 +60,7 @@ func _ready() -> void:
 
 func _refresh_purchase_lock() -> void:
 	_apply_lock_texts()
-	if not GameManager.has_full_game():
+	if not GameManager.has_daily_access():
 		$Scroll.visible = false
 		footer.visible = false
 		lock_overlay.visible = true
@@ -73,7 +73,7 @@ func _refresh_purchase_lock() -> void:
 
 
 func _on_daily_puzzle_changed() -> void:
-	if not GameManager.has_full_game():
+	if not GameManager.has_daily_access():
 		return
 	_item = GameManager.todays_daily_item()
 	_build_content()
@@ -596,9 +596,9 @@ func _apply_lock_texts() -> void:
 	if lock_title:
 		lock_title.text = tr("DailyChallenge")
 	if lock_body:
-		lock_body.text = tr("DailyLockedBody")
+		lock_body.text = _t("DailyLockedBody", "Mira un anuncio para jugar el reto de hoy, o compra el juego para quitar todos los anuncios.")
 	if unlock_btn:
-		unlock_btn.text = tr("DailyUnlock")
+		unlock_btn.text = _t("DailyWatchAd", "Ver anuncio para jugar")
 	if shop_btn:
 		shop_btn.text = tr("Shop")
 	if back_btn:
@@ -620,8 +620,30 @@ func _on_shop_pressed() -> void:
 	_go_to(PATH_SHOP)
 
 
+func _t(key: String, fallback: String) -> String:
+	var value := tr(key)
+	return fallback if value == key or value.is_empty() else value
+
+
 func _on_unlock_pressed() -> void:
-	_go_to(PATH_SHOP)
+	if GameManager.has_daily_access():
+		_refresh_purchase_lock()
+		return
+	var unlock_btn := lock_overlay.get_node_or_null("Card/Unlock") as Button
+	if unlock_btn:
+		unlock_btn.disabled = true
+		unlock_btn.text = _t("DailyAdLoading", "Cargando anuncio...")
+	var ok: bool = await AdManager.show_rewarded()
+	if unlock_btn:
+		unlock_btn.disabled = false
+	if ok:
+		PlayerPrefs.mark_daily_rewarded_today()
+		_refresh_purchase_lock()
+		return
+	_apply_lock_texts()
+	var lock_body := lock_overlay.get_node_or_null("Card/Body") as Label
+	if lock_body:
+		lock_body.text = _t("DailyAdFailed", "No hay anuncio disponible. Inténtalo de nuevo o compra el juego.")
 
 
 func _on_lock_back_pressed() -> void:
@@ -638,6 +660,9 @@ func _on_view_sheet_pressed() -> void:
 
 func _on_play_pressed() -> void:
 	if _item.is_empty() or PlayerPrefs.is_daily_completed_today():
+		return
+	if not GameManager.has_daily_access():
+		_refresh_purchase_lock()
 		return
 	SoundManager.play("ButtonClick")
 	var puzzle_id := int(_item.get("index", -1))

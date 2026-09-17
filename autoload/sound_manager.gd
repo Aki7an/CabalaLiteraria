@@ -28,13 +28,14 @@ const GAMEPLAY_SCENE_PATHS: PackedStringArray = [
 	"res://scenes/App.tscn",
 	"res://scenes/main/MainPortrait.tscn",
 ]
-const MUSIC_FADE_OUT_SEC := 0.35
-const MUSIC_FADE_IN_SEC := 1.5
-const VICTORY_MENU_FADE_IN_SEC := 5.0
+const MUSIC_FADE_OUT_SEC := 2.0
+const MUSIC_FADE_IN_SEC := 2.0
+const VICTORY_MENU_FADE_IN_SEC := 2.0
 const MUSIC_SILENT_DB := -80.0
 
 var _registry: Dictionary[String, SoundEntry] = {}
 var _music_player: AudioStreamPlayer
+var _outgoing_player: AudioStreamPlayer
 var _menu_stream: AudioStream
 var _celebration_stream: AudioStream
 var _game_tracks: Array[AudioStream] = []
@@ -42,6 +43,7 @@ var _music_order: Array[int] = []
 var _music_index: int = -1
 var _music_context: int = -1
 var _music_tween: Tween
+var _outgoing_tween: Tween
 var _music_switch_id := 0
 var _switching_music := false
 var _awaiting_celebration := false
@@ -175,6 +177,10 @@ func _setup_background_music() -> void:
 	_music_player.bus = "Music"
 	_music_player.finished.connect(_on_music_finished)
 	add_child(_music_player)
+	_outgoing_player = AudioStreamPlayer.new()
+	_outgoing_player.name = "BackgroundMusicOutgoing"
+	_outgoing_player.bus = "Music"
+	add_child(_outgoing_player)
 	_reshuffle_game_music()
 
 
@@ -227,35 +233,46 @@ func play_victory_then_menu_music() -> void:
 	if _music_player == null:
 		return
 	_music_switch_id += 1
-	var switch_id := _music_switch_id
-	_switching_music = true
+	_switching_music = false
 	_awaiting_celebration = true
 	_music_context = MusicContext.MENU
 	if _music_tween:
 		_music_tween.kill()
 		_music_tween = null
-	var should_fade_out := _music_player.playing and _music_player.volume_db > MUSIC_SILENT_DB + 1.0
-	if should_fade_out:
-		_music_tween = create_tween()
-		_music_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-		_music_tween.tween_property(_music_player, "volume_db", MUSIC_SILENT_DB, MUSIC_FADE_OUT_SEC)\
-			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		await _music_tween.finished
-		if switch_id != _music_switch_id:
-			return
-	if switch_id != _music_switch_id:
-		return
+	_begin_outgoing_fade(MUSIC_FADE_OUT_SEC)
 	if _celebration_stream == null:
 		_awaiting_celebration = false
 		_pending_fade_in_sec = VICTORY_MENU_FADE_IN_SEC
-		_switching_music = false
 		_fade_to_context_track()
 		return
 	_music_player.volume_db = 0.0
 	_music_player.stream = _celebration_stream
 	_music_player.play()
-	_switching_music = false
-	_music_tween = null
+
+
+func _begin_outgoing_fade(duration: float) -> void:
+	if _outgoing_player == null or _music_player == null:
+		return
+	if not _music_player.playing or _music_player.volume_db <= MUSIC_SILENT_DB + 1.0:
+		return
+	if _outgoing_tween:
+		_outgoing_tween.kill()
+		_outgoing_tween = null
+	var position := _music_player.get_playback_position()
+	_outgoing_player.stream = _music_player.stream
+	_outgoing_player.volume_db = _music_player.volume_db
+	_outgoing_player.play(position)
+	_music_player.stop()
+	_outgoing_tween = create_tween()
+	_outgoing_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_outgoing_tween.tween_property(_outgoing_player, "volume_db", MUSIC_SILENT_DB, duration)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	_outgoing_tween.tween_callback(func() -> void:
+		if is_instance_valid(_outgoing_player):
+			_outgoing_player.stop()
+			_outgoing_player.stream = null
+		_outgoing_tween = null
+	)
 
 
 func _set_music_context(context: MusicContext) -> void:
@@ -340,8 +357,26 @@ func _on_music_finished() -> void:
 		return
 	if _music_context == MusicContext.MENU:
 		_play_menu_music()
-	else:
-		_play_next_game_track()
+		return
+	_music_switch_id += 1
+	var switch_id := _music_switch_id
+	_switching_music = true
+	if _music_tween:
+		_music_tween.kill()
+		_music_tween = null
+	_music_player.volume_db = MUSIC_SILENT_DB
+	_play_next_game_track()
+	if not _music_player.playing:
+		_music_player.play()
+	_music_tween = create_tween()
+	_music_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_music_tween.tween_property(_music_player, "volume_db", 0.0, MUSIC_FADE_IN_SEC)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	await _music_tween.finished
+	if switch_id != _music_switch_id:
+		return
+	_switching_music = false
+	_music_tween = null
 
 
 func _reshuffle_game_music() -> void:

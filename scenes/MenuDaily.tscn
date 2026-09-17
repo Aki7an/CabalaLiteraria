@@ -246,7 +246,7 @@ offset_bottom = 320.0
 theme_override_colors/font_color = Color(0.42, 0.3, 0.2, 0.88)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 36
-text = "El Reto Diario forma parte de la versión completa."
+text = "Mira un anuncio para jugar el reto de hoy, o compra el juego para quitar todos los anuncios."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -264,7 +264,7 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("Style_play")
 theme_override_styles/hover = SubResource("Style_play")
 theme_override_styles/pressed = SubResource("Style_play")
-text = "Desbloquear"
+text = "Ver anuncio para jugar"
 
 [node name="Shop" type="Button" parent="LockOverlay/Card"]
 layout_mode = 0

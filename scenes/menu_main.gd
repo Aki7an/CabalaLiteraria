@@ -327,16 +327,13 @@ func _on_button_shop_pressed() -> void:
 
 
 func _on_button_daily_pressed() -> void:
-	if not GameManager.has_full_game():
-		_show_daily_locked_dialog()
-		return
 	_go_to("res://scenes/MenuDaily.tscn", button_daily)
 
 
 func _refresh_daily_button() -> void:
 	if button_daily == null:
 		return
-	var locked := not GameManager.has_full_game()
+	var locked := not GameManager.has_daily_access()
 	var done := PlayerPrefs.is_daily_completed_today()
 	var title := button_daily.get_node_or_null("Label") as Label
 	if title:

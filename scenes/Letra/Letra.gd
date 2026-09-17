@@ -138,7 +138,8 @@ func _on_button_pressed() -> void:
 		SignalManager.update_rubber.emit()
 	SignalManager.asignar_letra.emit(
 		GameManager.tiempo_partida,
-		GameManager.selected_letra
+		target_number,
+		letra
 	)
 	SignalManager.update_difficulty.emit(
 		GameManager.frase_original,
@@ -174,6 +175,14 @@ func _erase_letter() -> void:
 	SignalManager.update_cambios.emit()
 	SignalManager.update_rubber.emit()
 	PuzzleSaveManager.request_autosave()
+
+
+func reset_for_new_puzzle() -> void:
+	letra_mostrada = false
+	verificada_correcta = false
+	letra_selected.visible = false
+	_inicializar_letra()
+	_apply_panel_color(color_normal)
 
 
 func liberar_para_reuso() -> void:

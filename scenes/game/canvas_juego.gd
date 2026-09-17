@@ -59,6 +59,7 @@ var escena_celda: PackedScene = preload("res://scenes/Celda/Celda.tscn")
 @export var curve_override: Curve
 
 var _tween: Tween
+var _gift_tries: int = 0
 
 ## Mueve canvasJuego de X=inicio a X=fin en 'duration' segundos.
 ## Si 'start_from_current' es true, parte desde la X actual del nodo.
@@ -227,6 +228,33 @@ func change_grid(step: int) -> void:
 	_update_scroll_bounds()
 	SignalManager.update_size_celdas.emit()
 
+func rebuild_puzzle_board() -> void:
+	for child in grid_container.get_children():
+		grid_container.remove_child(child)
+		child.free()
+	GameManager.lista_celdas.clear()
+	_reset_keyboard_keys()
+	crear_linea_horizontal()
+	reset_grid()
+	await get_tree().process_frame
+	_update_cell_min_heights()
+	_update_scroll_bounds()
+	_clamp_canvas_y()
+	update_position_botton_red_line()
+	_gift_tries = 20
+	_añade_las_letras_iniciales()
+	SignalManager.update_size_celdas.emit()
+	SignalManager.update_resting_characters.emit()
+	position.y = _rest_y
+	_clamp_canvas_y()
+
+
+func _reset_keyboard_keys() -> void:
+	for node in get_tree().get_nodes_in_group("Letra"):
+		if node is Letra and node.has_method("reset_for_new_puzzle"):
+			(node as Letra).reset_for_new_puzzle()
+
+
 func reset_grid() -> void:
 	grid_container.columns = max(1, GameManager.NUM_COLUMNAS)
 	_update_cell_min_heights()
@@ -254,73 +282,58 @@ func _update_cell_min_heights() -> void:
 
 	
 func _añade_las_letras_iniciales() -> void:
-	#falta revisar las Letras y pintarlas en pantalla independientemente de si hay o no letras en la frase
-		# Buscar todos los nodos que pertenezcan al grupo "Letra"
-	var letras := get_tree().get_nodes_in_group("Letra")
-	
-	for letra in letras:
-		for caracter in GameManager.letras_iniciales:
-			if letra.letra == caracter:
-				letra.muestra_letra()
-				#print(caracter)
-			
-			
-	
-	# Asegúrate de tener celdas en el árbol
 	var celdas := get_tree().get_nodes_in_group("Celda")
-	if celdas.is_empty():
-		# Reintenta en el siguiente frame (evita llamar en bucle si nunca se instancian)
+	var initials := GameManager.letras_iniciales.strip_edges()
+	var expects_gifts := GameManager.dificultad_actual <= 2
+	if celdas.is_empty() or (expects_gifts and initials == "" and _gift_tries < 10):
+		_gift_tries += 1
 		call_deferred("_añade_las_letras_iniciales")
 		return
 
-	# Nada que hacer si no hay letras iniciales
-	if GameManager.letras_iniciales.strip_edges() == "":
+	var letras := get_tree().get_nodes_in_group("Letra")
+	for node in letras:
+		if not node is Letra:
+			continue
+		var key := node as Letra
+		for caracter in GameManager.letras_iniciales:
+			if GameManager._hint_letter_key(key.letra) == GameManager._hint_letter_key(str(caracter)):
+				key.muestra_letra()
+
+	if initials == "":
+		GameManager.update_numero_letras_reveladas()
+		SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
 		return
 
-	# Normaliza y evita duplicados (por si "ATDBA" repite A)
 	var letras_set := {}
-	var s : String = GameManager.letras_iniciales.to_upper()
+	var s := initials.to_upper()
 	for i in s.length():
-		var ch := s[i]
-		if not GameManager.is_excluded_character(ch):
+		var ch := GameManager._hint_letter_key(s[i])
+		if ch != "" and not GameManager.is_excluded_character(ch):
 			letras_set[ch] = true
 
-	# Para cada letra inicial, calcula su número (mapeo dinámico actual)
 	for letter in letras_set.keys():
-		var num_objetivo := GameManager.letra_a_numero(letter) + 1  # tus celdas usan +1
+		var gift_key := GameManager._hint_letter_key(str(letter))
+		var num_objetivo := GameManager.letra_a_numero(gift_key) + 1
 		if num_objetivo <= 0:
-			continue  # letra no encontrada en el alfabeto actual
-
-		# Rellena todas las celdas cuyo número coincida
+			continue
 		for celda in celdas:
-			# Saltar signos/espacios (tu convenio usa >=100 para no-jugables)
-			#if not celda.has_variable("numero"):
-				#continue
-			if celda.numero >= 100:
+			if celda == null or not (celda is Celda):
 				continue
-			if celda.numero != num_objetivo:
+			if celda.numero >= 100 or celda.numero != num_objetivo:
 				continue
-			
-			if (String(celda.letra) == letter):
-				celda.mostrar_letra_especifica(letter)
-				#print("LETRA:" , letter)
-				#celda.set_user_letter(letter)
-				
-				
-			elif celda.has_method("set_letter"):
-				# Si tu set_letter está pensada para "cargar" la frase, úsala solo si en tu UI es correcto
-				celda.set_letter(letter)
-			else:
-				# Fallback directo a la propiedad (asumiendo que el Label interno se actualiza al settear letra)
-				celda.letra = letter
+			var cell_key := GameManager._hint_letter_key(str(celda.letra))
+			if cell_key == gift_key:
+				celda.mostrar_letra_especifica(gift_key)
 
-			# Cuenta esta revelación
-			GameManager.update_numero_letras_reveladas()
+	GameManager.update_numero_letras_reveladas()
+	SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
 
 # ----------------------------------------------------
 #                     INPUT
 # ----------------------------------------------------
 func _input(event: InputEvent) -> void:
+	if get_tree().get_first_node_in_group("BasicStartTutorial"):
+		return
 	var pos: Vector2 = _event_pos(event)
 	
 
@@ -506,7 +519,10 @@ func crear_linea_horizontal() -> void:
 # ----------------------------------------------------
 
 func _insert_letter_in_number(letter2: String, number: int) -> void:
-	for celda: Celda in get_tree().get_nodes_in_group("Celda"):
+	for node in get_tree().get_nodes_in_group("Celda"):
+		if not node is Celda:
+			continue
+		var celda := node as Celda
 		if celda.numero != number:
 			continue
 		if celda.bloqueada:

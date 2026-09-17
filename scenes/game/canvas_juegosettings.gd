@@ -140,6 +140,8 @@ func _añade_las_letras_iniciales() -> void:
 #                     INPUT
 # ----------------------------------------------------
 func _input(event: InputEvent) -> void:
+	if get_tree().get_first_node_in_group("BasicStartTutorial"):
+		return
 	var pos: Vector2 = _event_pos(event)
 
 	# Desplazar solo si el puntero/gesto está sobre el canvas

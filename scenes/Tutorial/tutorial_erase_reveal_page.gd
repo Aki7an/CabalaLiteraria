@@ -1,12 +1,11 @@
 extends VBoxContainer
 
 const STAR_ON := preload("res://images/estrella_plano.png")
+const LocaleDemo := preload("res://scenes/Tutorial/tutorial_locale_demo.gd")
 const LETTER_BLACK := Color(0.08, 0.07, 0.06, 1)
 const LETTER_GREEN := Color(0.12, 0.58, 0.32, 1)
 const LETTER_RED := Color(0.72, 0.16, 0.16, 1)
 const STAR_YELLOW := Color(1, 0.86, 0.2, 1)
-const OK_LETTERS := ["C", "I", "F", "R", "A", "L", "E", "T", "R", "A"]
-const BAD_LETTERS := ["C", "I", "F", "Y", "A", "L", "E", "T", "R", "A"]
 const HAND_MOVE := 0.48
 const TAP_DOWN := 0.09
 const TAP_UP := 0.12
@@ -84,10 +83,17 @@ const GROUP_REVEAL := "reveal"
 @onready var _bar4: ProgressBar = %AnimBar4
 @onready var _pause3: Button = %Pause3
 @onready var _pause4: Button = %Pause4
+@onready var _phrase_erase: HBoxContainer = $Card1/Box/Demo/Col/Phrase
+@onready var _phrase_ok: HBoxContainer = $Card2/Box/Demo2/Col/Phrase
+@onready var _phrase_bad: HBoxContainer = $Card2/Box/Demo2/Col/Phrase2
 @onready var _correct_stars: Array[TextureRect] = []
 @onready var _wrong_stars: Array[TextureRect] = []
 @onready var _ok_tiles: Array[VBoxContainer] = []
 @onready var _bad_tiles: Array[VBoxContainer] = []
+var _ok_letters: Array = []
+var _bad_letters: Array = []
+var _wrong_index := 3
+var _erase_wrong := "P"
 
 var _active := false
 var _loop_token := 0
@@ -100,8 +106,6 @@ var _reveal_tweens: Array[Tween] = []
 func _ready() -> void:
 	_correct_stars = [%CorrectStar1, %CorrectStar2, %CorrectStar3, %CorrectStar4, %CorrectStar5]
 	_wrong_stars = [%WrongStar1, %WrongStar2, %WrongStar3, %WrongStar4]
-	_ok_tiles = [%C, %I, %F, %R1, %A1, %L, %E, %T, %R2, %A2]
-	_bad_tiles = [%WdC, %WdI, %WdF, %WdY, %WdA1, %WdL, %WdE, %WdT, %WdR, %WdA2]
 	_prepare_stars()
 	apply_locale()
 	_pause3.pressed.connect(_toggle_erase_pause)
@@ -122,6 +126,36 @@ func apply_locale() -> void:
 	_wrong_rest.text = tr("TutLoseStar")
 	_erase_label.text = tr("TutEraseButton")
 	_reveal_title.text = tr("TutReveal")
+	_apply_demo_words()
+
+
+func _apply_demo_words() -> void:
+	var word := LocaleDemo.demo_word()
+	var erase_tiles := LocaleDemo.fill_phrase(_phrase_erase, word)
+	var repeats := LocaleDemo.repeating_letters(word)
+	var erase_letter := repeats[1] if repeats.size() > 1 else (repeats[0] if repeats.size() > 0 else word.substr(mini(3, word.length() - 1), 1))
+	var erase_index := word.find(erase_letter)
+	if erase_index < 0:
+		erase_index = mini(3, word.length() - 1)
+		erase_letter = word.substr(erase_index, 1)
+	_erase_wrong = LocaleDemo.wrong_letter(erase_letter, word)
+	if erase_index < erase_tiles.size():
+		_tile_p = erase_tiles[erase_index]
+		LocaleDemo.letter_label(_tile_p).text = _erase_wrong
+	_ok_letters.clear()
+	_bad_letters.clear()
+	for i in word.length():
+		_ok_letters.append(word.substr(i, 1))
+		_bad_letters.append(word.substr(i, 1))
+	_wrong_index = erase_index
+	if _wrong_index >= word.length():
+		_wrong_index = mini(3, word.length() - 1)
+	_bad_letters[_wrong_index] = LocaleDemo.wrong_letter(str(_ok_letters[_wrong_index]), word)
+	var bad_word := ""
+	for ch in _bad_letters:
+		bad_word += str(ch)
+	_ok_tiles = LocaleDemo.fill_phrase(_phrase_ok, word)
+	_bad_tiles = LocaleDemo.fill_phrase(_phrase_bad, bad_word)
 
 
 func set_active(active: bool) -> void:
@@ -198,7 +232,7 @@ func _run_reveal_loop(token: int) -> void:
 		await _tap_reveal(token, false)
 		if not _still(token):
 			return
-		await _paint_pass(token, _ok_tiles, OK_LETTERS, -1)
+		await _paint_pass(token, _ok_tiles, _ok_letters, -1)
 		if not _still(token):
 			return
 		await _show_correct()
@@ -210,7 +244,7 @@ func _run_reveal_loop(token: int) -> void:
 		await _tap_reveal(token, true)
 		if not _still(token):
 			return
-		await _paint_pass(token, _bad_tiles, BAD_LETTERS, 3)
+		await _paint_pass(token, _bad_tiles, _bad_letters, _wrong_index)
 		if not _still(token):
 			return
 		await _pause(REVEAL_END, GROUP_REVEAL)
@@ -239,7 +273,7 @@ func _tap_reveal(token: int, show_second_row: bool) -> void:
 
 func _reset_erase() -> void:
 	_clear_ripples(_demo)
-	_tile_letter(_tile_p).text = "P"
+	_tile_letter(_tile_p).text = _erase_wrong
 	_tile_panel(_tile_p).add_theme_stylebox_override("panel", style_tile_empty)
 	_erase_button.add_theme_stylebox_override("panel", style_erase_normal)
 	_hand.position = _hand_start_erase()
@@ -252,8 +286,8 @@ func _erase_p() -> void:
 
 func _reset_reveal() -> void:
 	_clear_ripples(_demo2)
-	_reset_tiles(_ok_tiles, OK_LETTERS)
-	_reset_tiles(_bad_tiles, BAD_LETTERS)
+	_reset_tiles(_ok_tiles, _ok_letters)
+	_reset_tiles(_bad_tiles, _bad_letters)
 	_correct_col.visible = false
 	_wrong_col.visible = false
 	_phrase2.visible = false

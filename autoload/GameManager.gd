@@ -91,6 +91,8 @@ var game_mode_actual: String = "quick"
 #var descripcion_actual: String = ""
 var descripcion_final: String = ""
 var letras_iniciales: String = ""
+var tutorial_board_active: bool = false
+var _tutorial_board_backup: Dictionary = {}
 var pistas_actuales: Array[String] = []
 @export var descripcion_final_actual: String = ""
 
@@ -450,6 +452,10 @@ func has_full_game() -> bool:
 	return PlayerPrefs.full_game
 
 
+func has_daily_access() -> bool:
+	return has_full_game() or PlayerPrefs.has_daily_reward_today()
+
+
 func unlock_full_game() -> void:
 	if PlayerPrefs.full_game:
 		return
@@ -676,8 +682,9 @@ func _game_finished() -> void:
 func reset_cell_select() -> void:
 	selected_celda_number = 100
 	celda_seleccionada_numero = 100
-	for celda:Celda in get_tree().get_nodes_in_group("Celda"): 
-		celda.deselect_cell()
+	for node in get_tree().get_nodes_in_group("Celda"):
+		if node is Celda:
+			(node as Celda).deselect_cell()
 	celda_seleccionada_numero = 0
 	
 func set_go_to_game_enable() -> void:
@@ -688,10 +695,6 @@ func set_go_to_game_disable() -> void:
 
 
 func launch_prepared_game() -> void:
-	if PlayerPrefs.mostrar_tuto_antes_partida:
-		set_go_to_game_enable()
-		get_tree().change_scene_to_file("res://scenes/MenuTutorial.tscn")
-		return
 	set_go_to_game_disable()
 	SignalManager.partida_iniciada.emit()
 	get_tree().change_scene_to_file("res://scenes/App.tscn")
@@ -1259,6 +1262,49 @@ func set_mostrar_tuto_antes_partida_enable() -> void:
 
 func set_mostrar_tuto_antes_partida_disable() -> void:
 	mostrar_tuto_antes_partida = false
+
+
+func begin_basic_tutorial_board(phrase: String, gifts: String) -> void:
+	if tutorial_board_active:
+		return
+	_tutorial_board_backup = {
+		"frase_original": frase_original,
+		"frase_original_til": frase_original_til,
+		"letras_iniciales": letras_iniciales,
+		"cipher": export_cipher_state(),
+		"attempt": export_attempt_state(),
+		"NUM_COLUMNAS": NUM_COLUMNAS,
+		"NUM_FILAS": NUM_FILAS,
+		"lista_letras_frase_usuario": lista_letras_frase_usuario.duplicate(true),
+	}
+	tutorial_board_active = true
+	frase_original = phrase
+	frase_original_til = phrase
+	letras_iniciales = gifts
+	_inicializar_lista_letras(frase_original)
+	_inicializar_lista_numeros()
+	_inicializar_lista_colores_asignados()
+	_inicializar_lista_numeros_original()
+	lista_celdas.clear()
+	reset_cell_select()
+
+
+func end_basic_tutorial_board() -> void:
+	if not tutorial_board_active:
+		return
+	var backup := _tutorial_board_backup
+	frase_original = str(backup.get("frase_original", frase_original))
+	frase_original_til = str(backup.get("frase_original_til", frase_original_til))
+	letras_iniciales = str(backup.get("letras_iniciales", letras_iniciales))
+	NUM_COLUMNAS = int(backup.get("NUM_COLUMNAS", NUM_COLUMNAS))
+	_inicializar_lista_letras(frase_original)
+	import_cipher_state(backup.get("cipher", {}))
+	import_attempt_state(backup.get("attempt", {}))
+	lista_letras_frase_usuario = backup.get("lista_letras_frase_usuario", [])
+	lista_celdas.clear()
+	tutorial_board_active = false
+	_tutorial_board_backup.clear()
+	reset_cell_select()
 
 	
 func _inicializar_lista_letras(frase: String) -> void:

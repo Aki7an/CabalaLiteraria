@@ -9,11 +9,7 @@ const PAUSE_MID := 0.32
 const PAUSE_END := 1.15
 const ICON_PAUSE := "⏸"
 const ICON_PLAY := "▶"
-const REVEALED := {
-	"C": "C",
-	"F": "F",
-	"T": "T",
-}
+const LocaleDemo := preload("res://scenes/Tutorial/tutorial_locale_demo.gd")
 
 @export var style_tile_normal: StyleBoxFlat
 @export var style_tile_selected: StyleBoxFlat
@@ -36,33 +32,32 @@ const REVEALED := {
 @onready var _chip2: Panel = %Chip2
 @onready var _bar: ProgressBar = %AnimBar5
 @onready var _pause_btn: Button = %Pause5
+@onready var _phrase: HBoxContainer = $Card1/Box/Demo/Col/Phrase
+@onready var _keyboard: Control = $Card1/Box/Demo/Col/Keyboard
+@onready var _whale_phrase: HBoxContainer = $Card2/Box/Phrase
 
 var _active := false
 var _loop_token := 0
 var _paused := false
 var _tweens: Array[Tween] = []
-var _tiles: Dictionary = {}
+var _phrase_tiles: Array[VBoxContainer] = []
 var _a_tiles: Array[VBoxContainer] = []
 var _r_tiles: Array[VBoxContainer] = []
 var _used_keys: Array[Panel] = []
+var _color1_letter := "A"
+var _color2_letter := "R"
+var _gift_letters: PackedStringArray = PackedStringArray()
+var _whale_green: StyleBoxFlat
 
 
 func _ready() -> void:
-	_tiles = {
-		"C": %C,
-		"I": %I,
-		"F": %F,
-		"R1": %R1,
-		"A1": %A1,
-		"L": %L,
-		"E": %E,
-		"T": %T,
-		"R2": %R2,
-		"A2": %A2,
-	}
-	_a_tiles = [%A1, %A2]
-	_r_tiles = [%R1, %R2]
-	_used_keys = [%KeyC, %KeyF, %KeyT]
+	var green_tile := $Card2/Box/Phrase/WA1 as VBoxContainer
+	if green_tile:
+		var panel := LocaleDemo.tile_panel(green_tile)
+		if panel:
+			var box := panel.get_theme_stylebox("panel")
+			if box is StyleBoxFlat:
+				_whale_green = box as StyleBoxFlat
 	apply_locale()
 	_pause_btn.pressed.connect(_toggle_pause)
 	visibility_changed.connect(_on_visibility_changed)
@@ -75,6 +70,37 @@ func apply_locale() -> void:
 	_body_1.text = tr("TutC3Body")
 	_title_2.text = tr("TutC4Title").to_upper()
 	_body_2.text = tr("TutC4Body")
+	var word := LocaleDemo.demo_word()
+	var repeats := LocaleDemo.repeating_letters(word)
+	_color1_letter = repeats[0] if repeats.size() > 0 else "A"
+	_color2_letter = repeats[1] if repeats.size() > 1 else (repeats[0] if repeats.size() > 0 else "R")
+	_phrase_tiles = LocaleDemo.fill_phrase(_phrase, word, "", false)
+	_a_tiles = LocaleDemo.tiles_with_letter(_phrase_tiles, _color1_letter)
+	_r_tiles = LocaleDemo.tiles_with_letter(_phrase_tiles, _color2_letter)
+	_gift_letters = PackedStringArray()
+	var seen := {}
+	for i in word.length():
+		var ch := word.substr(i, 1)
+		if ch == _color1_letter or ch == _color2_letter or seen.has(ch):
+			continue
+		seen[ch] = true
+		_gift_letters.append(ch)
+		if _gift_letters.size() >= 3:
+			break
+	for tile in _phrase_tiles:
+		var ch := str(tile.get_meta("demo_letter"))
+		var show := ch in _gift_letters
+		LocaleDemo.letter_label(tile).text = ch if show else ""
+	_key_a = LocaleDemo.find_key(_keyboard, _color1_letter)
+	_key_r = LocaleDemo.find_key(_keyboard, _color2_letter)
+	_used_keys.clear()
+	for ch in _gift_letters:
+		var key := LocaleDemo.find_key(_keyboard, ch)
+		if key:
+			_used_keys.append(key)
+	LocaleDemo.sync_keyboard(_keyboard)
+	var whale := LocaleDemo.whale_word()
+	LocaleDemo.fill_whale(_whale_phrase, whale, style_tile_normal, _whale_green if _whale_green else style_tile_normal)
 
 
 func set_active(active: bool) -> void:
@@ -116,6 +142,9 @@ func _run_loop(token: int) -> void:
 		await _pause(PAUSE_START)
 		if not _still(token):
 			return
+		if _a_tiles.is_empty() or _r_tiles.is_empty():
+			await _pause(PAUSE_END)
+			continue
 		await _move_hand(_tile_panel(_a_tiles[0]))
 		if not _still(token):
 			return
@@ -153,7 +182,7 @@ func _run_loop(token: int) -> void:
 			return
 		_set_key_style(_key_r, style_key_pressed, false)
 		await _tap_hand()
-		_fill_tiles(_r_tiles, "R", style_color2)
+		_fill_tiles(_r_tiles, _color2_letter, style_color2)
 		_set_key_style(_key_r, style_key_used, true)
 		await _pause(PAUSE_MID)
 		if not _still(token):
@@ -171,7 +200,7 @@ func _run_loop(token: int) -> void:
 			return
 		_set_key_style(_key_a, style_key_pressed, false)
 		await _tap_hand()
-		_fill_tiles(_a_tiles, "A", style_color1)
+		_fill_tiles(_a_tiles, _color1_letter, style_color1)
 		_set_key_style(_key_a, style_key_used, true)
 		await _pause(PAUSE_END)
 
@@ -182,12 +211,14 @@ func _still(token: int) -> bool:
 
 func _reset_demo() -> void:
 	_clear_ripples()
-	for name in _tiles.keys():
-		var tile: VBoxContainer = _tiles[name]
-		_tile_letter(tile).text = str(REVEALED.get(name, ""))
+	for tile in _phrase_tiles:
+		var ch := str(tile.get_meta("demo_letter")) if tile.has_meta("demo_letter") else ""
+		_tile_letter(tile).text = ch if ch in _gift_letters else ""
 		_tile_panel(tile).add_theme_stylebox_override("panel", style_tile_normal)
-	_set_key_style(_key_a, style_key_normal, false)
-	_set_key_style(_key_r, style_key_normal, false)
+	if _key_a:
+		_set_key_style(_key_a, style_key_normal, false)
+	if _key_r:
+		_set_key_style(_key_r, style_key_normal, false)
 	for key in _used_keys:
 		_set_key_style(key, style_key_used, true)
 	_hand.modulate.a = 1.0
@@ -195,6 +226,8 @@ func _reset_demo() -> void:
 
 
 func _set_key_style(key: Panel, style: StyleBoxFlat, used: bool) -> void:
+	if key == null or style == null:
+		return
 	key.add_theme_stylebox_override("panel", style)
 	var letter := key.get_node("Letter") as Label
 	if letter == null:
@@ -206,6 +239,8 @@ func _set_key_style(key: Panel, style: StyleBoxFlat, used: bool) -> void:
 
 
 func _paint_tiles(tiles: Array[VBoxContainer], style: StyleBoxFlat) -> void:
+	if style == null:
+		return
 	for tile in tiles:
 		_tile_panel(tile).add_theme_stylebox_override("panel", style)
 
@@ -235,6 +270,8 @@ func _hand_tip() -> Vector2:
 
 
 func _move_hand(target: Control) -> void:
+	if target == null:
+		return
 	var tween := _anim_tween()
 	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(_hand, "position", _hand_pos(target), HAND_MOVE)

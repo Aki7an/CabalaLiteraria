@@ -9,6 +9,7 @@ const PAUSE_END := 1.5
 const LOOP_DURATION := PAUSE_START + HAND_MOVE + TAP_DOWN + TAP_UP + PAUSE_MID + HAND_MOVE + TAP_DOWN + TAP_UP + PAUSE_END
 const ICON_PAUSE := "⏸"
 const ICON_PLAY := "▶"
+const LocaleDemo := preload("res://scenes/Tutorial/tutorial_locale_demo.gd")
 
 @export var style_tile_normal: StyleBoxFlat
 @export var style_tile_empty_a: StyleBoxFlat
@@ -30,11 +31,17 @@ const ICON_PLAY := "▶"
 @onready var _demo_a2: VBoxContainer = %DemoA2
 @onready var _bar2: ProgressBar = %AnimBar2
 @onready var _pause_btn: Button = %Pause2
+@onready var _phrase_static: HBoxContainer = $Card1/Box/Phrase
+@onready var _phrase_demo: HBoxContainer = $Card2/Box/Demo/Col/Phrase
+@onready var _keyboard: Control = $Card2/Box/Demo/Col/Keyboard
 
 var _active := false
 var _loop_token := 0
 var _paused := false
 var _tweens: Array[Tween] = []
+var _assign_letter := "A"
+var _assign_tiles: Array[VBoxContainer] = []
+var _assign_key: Panel
 
 
 func _ready() -> void:
@@ -51,6 +58,18 @@ func apply_locale() -> void:
 	_caption_1.text = tr("TutC1Caption")
 	_title_2.text = tr("TutC2Title").to_upper()
 	_body_2.text = tr("TutC2Body")
+	var word := LocaleDemo.demo_word()
+	var repeats := LocaleDemo.repeating_letters(word)
+	_assign_letter = repeats[0] if repeats.size() > 0 else word.substr(0, 1)
+	LocaleDemo.fill_phrase(_phrase_static, word, _assign_letter)
+	LocaleDemo.fill_phrase(_phrase_demo, word, _assign_letter)
+	_assign_tiles = LocaleDemo.tiles_with_letter(LocaleDemo.collect_tiles(_phrase_demo), _assign_letter)
+	if _assign_tiles.is_empty():
+		_assign_tiles = [_demo_a1, _demo_a2]
+	_assign_key = LocaleDemo.find_key(_keyboard, _assign_letter)
+	if _assign_key == null:
+		_assign_key = _key_a
+	LocaleDemo.sync_keyboard(_keyboard)
 
 
 func set_active(active: bool) -> void:
@@ -68,7 +87,7 @@ func _on_visibility_changed() -> void:
 
 
 func _a_tiles() -> Array[VBoxContainer]:
-	return [_demo_a1, _demo_a2]
+	return _assign_tiles
 
 
 func _tile_panel(tile: VBoxContainer) -> Panel:
@@ -93,7 +112,7 @@ func _run_loop(token: int) -> void:
 		await _pause(PAUSE_START)
 		if not _still(token):
 			return
-		await _move_hand(_tile_panel(_demo_a1))
+		await _move_hand(_tile_panel(_a_tiles()[0] if not _a_tiles().is_empty() else _demo_a1))
 		if not _still(token):
 			return
 		await _tap_hand()
@@ -101,10 +120,11 @@ func _run_loop(token: int) -> void:
 		await _pause(PAUSE_MID)
 		if not _still(token):
 			return
-		await _move_hand(_key_a)
-		if not _still(token):
-			return
-		_key_a.add_theme_stylebox_override("panel", style_key_pressed)
+		if _assign_key:
+			await _move_hand(_assign_key)
+			if not _still(token):
+				return
+			_assign_key.add_theme_stylebox_override("panel", style_key_pressed)
 		await _tap_hand()
 		_fill_a_letters()
 		await _pause(PAUSE_END)
@@ -120,7 +140,9 @@ func _reset_demo() -> void:
 		_tile_letter(tile).text = ""
 		_tile_panel(tile).add_theme_stylebox_override("panel", style_tile_normal)
 	_key_a.add_theme_stylebox_override("panel", style_key_normal)
-	_hand.position = _hand_pos(_tile_panel(_demo_a1))
+	if _assign_key and _assign_key != _key_a:
+		_assign_key.add_theme_stylebox_override("panel", style_key_normal)
+	_hand.position = _hand_pos(_tile_panel(_a_tiles()[0]) if not _a_tiles().is_empty() else _tile_panel(_demo_a1))
 
 
 func _select_a_cells(selected: bool) -> void:
@@ -131,9 +153,10 @@ func _select_a_cells(selected: bool) -> void:
 
 func _fill_a_letters() -> void:
 	for tile in _a_tiles():
-		_tile_letter(tile).text = "A"
+		_tile_letter(tile).text = _assign_letter
 		_tile_panel(tile).add_theme_stylebox_override("panel", style_tile_normal)
-	_key_a.add_theme_stylebox_override("panel", style_key_used)
+	if _assign_key:
+		_assign_key.add_theme_stylebox_override("panel", style_key_used)
 
 
 func _hand_pos(target: Control) -> Vector2:
