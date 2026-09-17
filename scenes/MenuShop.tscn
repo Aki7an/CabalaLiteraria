@@ -128,7 +128,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.38, 0.26, 0.78)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 32
-text = "Más contenido para CifraLetra"
+text = "Una compra sin anuncios"
 horizontal_alignment = 1
 
 [node name="LineR" type="ColorRect" parent="Header/TaglineRow" unique_id=1120604091]
@@ -179,7 +179,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 56
-text = "Compra el juego base"
+text = "Quita los anuncios"
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -193,7 +193,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.48, 0.36, 0.26, 0.82)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 40
-text = "Desbloquea los puzles que aparecen con candado y accede al reto diario."
+text = "Compras la eliminación de los anuncios en toda la app: puzles, retos diarios y futuras actualizaciones."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -204,7 +204,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.48, 0.36, 0.26, 0.82)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 40
-text = "Desbloquea los puzles que ahora aparecen con candado."
+text = "Compras la eliminación de los anuncios en toda la app: puzles, retos diarios y futuras actualizaciones."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -374,11 +374,12 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 42
-text = "Reto diario incluido"
+text = "También los retos diarios"
 vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="RowOst" type="HBoxContainer" parent="Scroll/Body/OfferCard/Margin/Col/Features/Stats/StatsIndent/List" unique_id=202800796]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 18
 
@@ -427,7 +428,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.48, 0.36, 0.26, 0.82)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 38
-text = "Al comprar el juego se quitan todos los anuncios. BSO completa incluida y descargable."
+text = "Una sola compra quita los anuncios para siempre: en todos los puzles, en los retos diarios y en las actualizaciones futuras."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -468,7 +469,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 48
-text = "Desbloquear"
+text = "Comprar"
 vertical_alignment = 1
 
 [node name="LabelBuyPrice" type="Label" parent="Scroll/Body/OfferCard/Margin/Col/ButtonBuy/BuyRow" unique_id=5273480]
@@ -487,7 +488,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.18, 0.55, 0.32, 1)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 40
-text = "Ya tienes el juego completo."
+text = "Anuncios desactivados en toda la app. Gracias por tu apoyo."
 horizontal_alignment = 1
 autowrap_mode = 3
 

@@ -171,7 +171,7 @@ func _erase_letter() -> void:
 		GameManager.frase_original,
 		GameManager.recoger_letras_mostradas()
 	)
-	SoundManager.play("LoseLive")
+	SoundManager.play("Erase")
 	SignalManager.update_cambios.emit()
 	SignalManager.update_rubber.emit()
 	PuzzleSaveManager.request_autosave()

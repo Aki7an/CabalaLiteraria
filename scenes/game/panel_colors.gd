@@ -113,6 +113,7 @@ func _on_btn_erase_pressed() -> void:
 			"kind": "color",
 			"numero": GameManager.celda_seleccionada_numero,
 		})
+		SoundManager.play("Erase")
 		SignalManager.update_rubber.emit()
 		return
 

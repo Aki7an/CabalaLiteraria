@@ -62,7 +62,7 @@ func submit_if_consented() -> void:
 	if not finished:
 		finish_session()
 	_pending_submit = true
-	_submit_async()
+	await _submit_async()
 
 
 func build_payload() -> Dictionary:
@@ -77,6 +77,7 @@ func build_payload() -> Dictionary:
 		"locale": TranslationServer.get_locale(),
 		"client_ver": str(ProjectSettings.get_setting("application/config/version", "")),
 		"platform": OS.get_name(),
+		"playfab_id": str(PlayFabTools.playfab_id) if typeof(PlayFabTools) != TYPE_NIL else "",
 		"events": events.duplicate(true),
 	}
 
@@ -107,7 +108,10 @@ func _submit_async() -> void:
 	if typeof(PlayFabTools) == TYPE_NIL:
 		discard_session()
 		return
-	await PlayFabTools.send_puzzle_trace(payload)
+	var sheets_ok := await PlayFabTools.export_trace_to_google_sheets(payload)
+	print("Google Sheets export: ", sheets_ok)
+	var playfab_ok := await PlayFabTools.send_puzzle_trace(payload)
+	print("PlayFab trace: ", playfab_ok)
 	discard_session()
 
 

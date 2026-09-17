@@ -33,6 +33,8 @@ func _ready() -> void:
 	_refresh_purchase_state()
 	if not SignalManager.full_game_changed.is_connected(_refresh_purchase_state):
 		SignalManager.full_game_changed.connect(_refresh_purchase_state)
+	if not SignalManager.store_price_changed.is_connected(_apply_store_price):
+		SignalManager.store_price_changed.connect(_apply_store_price)
 
 
 func _exit_tree() -> void:
@@ -50,12 +52,20 @@ func _refresh_copy() -> void:
 	label_quick.text = _fill(_t("ShopQuick", _tpl_quick), counts.quick)
 	label_crypto.text = _fill(_t("ShopCryptograms", _tpl_crypto), counts.crypto)
 	label_daily.text = _t("ShopDailyIncluded", label_daily.text)
-	label_ost.text = _t("ShopSoundtrackTitle", label_ost.text)
+	if label_ost:
+		var ost_row := label_ost.get_parent() as Control
+		if ost_row:
+			ost_row.visible = false
 	extra_soundtrack.text = _t("ShopFinalNote", extra_soundtrack.text)
 	button_restore.text = _t("ShopRestore", button_restore.text)
 	label_owned.text = _t("ShopOwned", label_owned.text)
 	label_buy_verb.text = _t("ShopUnlockVerb", label_buy_verb.text)
-	label_buy_price.text = _t("ShopPrice", label_buy_price.text)
+	_apply_store_price()
+
+
+func _apply_store_price() -> void:
+	if label_buy_price:
+		label_buy_price.text = StoreManager.price_text()
 
 
 func _refresh_purchase_state() -> void:

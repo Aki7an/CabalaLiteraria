@@ -103,6 +103,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
+	if event.keycode == KEY_0 or event.keycode == KEY_KP_0:
+		if not OS.is_debug_build():
+			return
+		get_viewport().set_input_as_handled()
+		_on_game_finished()
+		return
 	if _has_blocking_overlay():
 		return
 	var letter := _letter_from_key(event as InputEventKey)

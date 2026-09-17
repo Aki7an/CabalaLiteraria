@@ -15,6 +15,8 @@ var _rewarded_waiting := false
 var _rewarded_earned := false
 var _rewarded_closed := false
 var _mock_layer: CanvasLayer = null
+var _mobile_init_started := false
+var _ump_updated := false
 
 
 func _ready() -> void:
@@ -22,11 +24,20 @@ func _ready() -> void:
 	if not SignalManager.full_game_changed.is_connected(_on_full_game_changed):
 		SignalManager.full_game_changed.connect(_on_full_game_changed)
 	if ads_removed():
+		print("[AdMob] skipped: full game unlocked")
 		return
+	AdsConfig.warn_if_misconfigured()
+	print("[AdMob] test=%s interstitial=%s rewarded=%s" % [
+		AdsConfig.using_test_ads(),
+		AdsConfig.interstitial_unit_id(),
+		AdsConfig.rewarded_unit_id()
+	])
 	if OS.has_feature("web"):
 		_init_web()
 	elif _has_mobile_ads():
 		_init_mobile()
+	else:
+		print("[AdMob] native plugin not present; editor uses simulated ads")
 
 
 func ads_removed() -> bool:
@@ -34,7 +45,7 @@ func ads_removed() -> bool:
 
 
 func has_daily_access() -> bool:
-	return GameManager.has_full_game() or PlayerPrefs.has_daily_reward_today()
+	return true
 
 
 func show_interstitial_after_puzzle() -> void:
@@ -107,7 +118,7 @@ func _on_full_game_changed() -> void:
 
 
 func _can_mock() -> bool:
-	return OS.has_feature("editor") or OS.is_debug_build()
+	return OS.has_feature("editor")
 
 
 func _has_mobile_ads() -> bool:
@@ -194,11 +205,82 @@ func _present_web_rewarded() -> bool:
 
 func _init_mobile() -> void:
 	_mobile_keep.clear()
+	_mobile_init_started = false
+	_ump_updated = false
+	_request_ump_then_initialize()
+
+
+func _request_ump_then_initialize() -> void:
+	if ads_removed():
+		return
+	if not Engine.has_singleton("PoingGodotAdMobConsentInformation"):
+		print("[AdMob] UMP plugin missing, initializing SDK")
+		_finish_mobile_init()
+		return
+	if not ClassDB.class_exists("ConsentInformation") or not ClassDB.class_exists("ConsentRequestParameters"):
+		_finish_mobile_init()
+		return
+	var info: Object = ClassDB.instantiate("ConsentInformation")
+	var params: Object = ClassDB.instantiate("ConsentRequestParameters")
+	if info == null or params == null:
+		_finish_mobile_init()
+		return
+	params.tag_for_under_age_of_consent = false
+	_mobile_keep.append(info)
+	_mobile_keep.append(params)
+	var on_ok := func() -> void:
+		_on_consent_info_updated(info)
+	var on_fail := func(_err) -> void:
+		push_warning("[AdMob] UMP update failed")
+		_ump_updated = true
+		_finish_mobile_init()
+	info.update(params, on_ok, on_fail)
+	var elapsed := 0.0
+	while not _ump_updated and elapsed < AdsConfig.UMP_UPDATE_TIMEOUT_SEC:
+		await get_tree().process_frame
+		elapsed += get_process_delta_time()
+	if not _ump_updated:
+		push_warning("[AdMob] UMP update timed out")
+		_finish_mobile_init()
+
+
+func _on_consent_info_updated(info: Object) -> void:
+	_ump_updated = true
+	if _mobile_init_started or ads_removed() or info == null:
+		return
+	var status: int = 0
+	if info.has_method("get_consent_status"):
+		status = int(info.call("get_consent_status"))
+	print("[AdMob] UMP consent status=", status)
+	var form_needed := status == 2
+	var form_available := info.has_method("get_is_consent_form_available") and bool(info.call("get_is_consent_form_available"))
+	if form_needed and form_available:
+		var on_form := func(form: Object) -> void:
+			if form == null:
+				_finish_mobile_init()
+				return
+			_mobile_keep.append(form)
+			var on_dismissed := func(_err) -> void:
+				_finish_mobile_init()
+			form.call("show", on_dismissed)
+		var on_form_fail := func(_err) -> void:
+			push_warning("[AdMob] consent form failed to load")
+			_finish_mobile_init()
+		UserMessagingPlatform.load_consent_form(on_form, on_form_fail)
+		return
+	_finish_mobile_init()
+
+
+func _finish_mobile_init() -> void:
+	if _mobile_init_started or ads_removed():
+		return
+	_mobile_init_started = true
 	var listener: Object = null
 	if ClassDB.class_exists("OnInitializationCompleteListener"):
 		listener = ClassDB.instantiate("OnInitializationCompleteListener") as Object
 		if listener:
 			listener.on_initialization_complete = func(_status) -> void:
+				print("[AdMob] SDK initialized")
 				_mobile_ready = true
 				_load_interstitial()
 				_load_rewarded()
@@ -232,16 +314,19 @@ func _load_interstitial() -> void:
 	if callback == null:
 		return
 	callback.on_ad_loaded = func(ad: Object) -> void:
+		print("[AdMob] interstitial loaded")
 		_interstitial_ad = ad
 		_bind_interstitial_callbacks(ad)
-	callback.on_ad_failed_to_load = func(_err) -> void:
+	callback.on_ad_failed_to_load = func(err) -> void:
 		_interstitial_ad = null
+		push_warning("[AdMob] interstitial failed to load: %s" % _ad_error_text(err))
 	_mobile_keep.append(callback)
 	var loader: Object = ClassDB.instantiate("InterstitialAdLoader")
 	var request: Object = _new_ad_request()
 	if loader == null or request == null:
 		return
 	_mobile_keep.append(loader)
+	print("[AdMob] loading interstitial %s" % AdsConfig.interstitial_unit_id())
 	loader.load(AdsConfig.interstitial_unit_id(), request, callback)
 
 
@@ -252,13 +337,17 @@ func _bind_interstitial_callbacks(ad: Object) -> void:
 	if cb == null:
 		return
 	cb.on_ad_dismissed_full_screen_content = func() -> void:
+		print("[AdMob] interstitial dismissed")
 		_interstitial_shown = true
 		_interstitial_waiting = false
+		_destroy_ad(_interstitial_ad)
 		_interstitial_ad = null
 		_load_interstitial()
-	cb.on_ad_failed_to_show_full_screen_content = func(_err) -> void:
+	cb.on_ad_failed_to_show_full_screen_content = func(err) -> void:
+		push_warning("[AdMob] interstitial failed to show: %s" % _ad_error_text(err))
 		_interstitial_shown = false
 		_interstitial_waiting = false
+		_destroy_ad(_interstitial_ad)
 		_interstitial_ad = null
 		_load_interstitial()
 	ad.full_screen_content_callback = cb
@@ -298,16 +387,19 @@ func _load_rewarded() -> void:
 	if callback == null:
 		return
 	callback.on_ad_loaded = func(ad: Object) -> void:
+		print("[AdMob] rewarded loaded")
 		_rewarded_ad = ad
 		_bind_rewarded_callbacks(ad)
-	callback.on_ad_failed_to_load = func(_err) -> void:
+	callback.on_ad_failed_to_load = func(err) -> void:
 		_rewarded_ad = null
+		push_warning("[AdMob] rewarded failed to load: %s" % _ad_error_text(err))
 	_mobile_keep.append(callback)
 	var loader: Object = ClassDB.instantiate("RewardedAdLoader")
 	var request: Object = _new_ad_request()
 	if loader == null or request == null:
 		return
 	_mobile_keep.append(loader)
+	print("[AdMob] loading rewarded %s" % AdsConfig.rewarded_unit_id())
 	loader.load(AdsConfig.rewarded_unit_id(), request, callback)
 
 
@@ -318,14 +410,18 @@ func _bind_rewarded_callbacks(ad: Object) -> void:
 		var cb: Object = ClassDB.instantiate("FullScreenContentCallback")
 		if cb:
 			cb.on_ad_dismissed_full_screen_content = func() -> void:
+				print("[AdMob] rewarded dismissed earned=%s" % _rewarded_earned)
 				_rewarded_closed = true
 				_rewarded_waiting = false
+				_destroy_ad(_rewarded_ad)
 				_rewarded_ad = null
 				_load_rewarded()
-			cb.on_ad_failed_to_show_full_screen_content = func(_err) -> void:
+			cb.on_ad_failed_to_show_full_screen_content = func(err) -> void:
+				push_warning("[AdMob] rewarded failed to show: %s" % _ad_error_text(err))
 				_rewarded_earned = false
 				_rewarded_closed = true
 				_rewarded_waiting = false
+				_destroy_ad(_rewarded_ad)
 				_rewarded_ad = null
 				_load_rewarded()
 			ad.full_screen_content_callback = cb
@@ -371,15 +467,28 @@ func _present_mobile_rewarded() -> bool:
 	return _rewarded_earned
 
 
+func _destroy_ad(ad: Object) -> void:
+	if ad and ad.has_method("destroy"):
+		ad.call("destroy")
+
+
+func _ad_error_text(err) -> String:
+	if err == null:
+		return "unknown"
+	if typeof(err) == TYPE_OBJECT and err.get("message") != null:
+		return str(err.message)
+	return str(err)
+
+
 func _destroy_mobile_ads() -> void:
-	if _interstitial_ad and _interstitial_ad.has_method("destroy"):
-		_interstitial_ad.call("destroy")
-	if _rewarded_ad and _rewarded_ad.has_method("destroy"):
-		_rewarded_ad.call("destroy")
+	_destroy_ad(_interstitial_ad)
+	_destroy_ad(_rewarded_ad)
 	_interstitial_ad = null
 	_rewarded_ad = null
 	_mobile_keep.clear()
 	_mobile_ready = false
+	_mobile_init_started = false
+	_ump_updated = false
 
 
 # --- Editor / debug placeholder ------------------------------------------

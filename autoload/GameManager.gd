@@ -453,7 +453,7 @@ func has_full_game() -> bool:
 
 
 func has_daily_access() -> bool:
-	return has_full_game() or PlayerPrefs.has_daily_reward_today()
+	return true
 
 
 func unlock_full_game() -> void:
@@ -490,12 +490,8 @@ func reset_player_data() -> void:
 	HistoryManager.stats_updated.emit()
 
 
-func is_puzzle_playable(item: Dictionary) -> bool:
-	if has_full_game():
-		return true
-	if is_daily_puzzle(item):
-		return false
-	return bool(_free_puzzle_ids.get(int(item.get("index", -1)), false))
+func is_puzzle_playable(_item: Dictionary) -> bool:
+	return true
 
 
 func rebuild_free_puzzle_ids() -> void:

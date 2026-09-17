@@ -11,6 +11,8 @@ var _seed_run_nonce: String = ""  # identificador único de esta ejecución
 
 const LEADERBOARD_NAME: String = "Score"  # nombre de la estadística
 const TRACE_CHUNK_CHARS := 8500
+const GOOGLE_SHEETS_WEBHOOK := "https://script.google.com/macros/s/AKfycbxA10AppJe_JsGaI9XkYVpVto7RBIYhQH2NbEjxegi4CItgSSPOPYDJL9wJqajsVk8tA/exec"
+const GOOGLE_SHEETS_KEY := "cl-partidas-7f3a9c2e"
 
 ## Ajusta tu TitleId aquí o desde fuera (set_title_id)
 @export var TITLE_ID: String = "1BC2FD"
@@ -20,6 +22,9 @@ const TRACE_CHUNK_CHARS := 8500
 @export var playfab_id: String = _get_device_custom_id()
 
 var newly_created: bool = false
+var language_cache: Dictionary = {}
+var leaderboard_cache: Dictionary = {}
+const LEADERBOARD_CACHE_MS := 25000
 
 @onready var http: HTTPRequest = HTTPRequest.new()
 
@@ -203,23 +208,109 @@ func sync_player_language(code: String = "") -> void:
 	var lang := language_code_from_locale(code)
 	if lang == "":
 		return
+	if playfab_id != "":
+		language_cache[playfab_id] = lang
 	await _update_public_user_data({LANGUAGE_DATA_KEY: lang})
 
 
 func fetch_player_languages(playfab_ids: Array) -> Dictionary:
-	var languages := {}
 	var unique: Array[String] = []
 	for id_value in playfab_ids:
 		var id := str(id_value).strip_edges()
 		if id == "" or unique.has(id):
 			continue
 		unique.append(id)
+	var missing: Array[String] = []
+	var languages := {}
 	for id in unique:
-		languages[id] = await _fetch_one_player_language(id)
+		if language_cache.has(id):
+			languages[id] = str(language_cache[id])
+		else:
+			missing.append(id)
+	if not missing.is_empty():
+		await _fetch_languages_parallel(missing)
+		for id in missing:
+			languages[id] = str(language_cache.get(id, ""))
 	return languages
 
 
+func cached_player_languages(playfab_ids: Array) -> Dictionary:
+	var languages := {}
+	for id_value in playfab_ids:
+		var id := str(id_value).strip_edges()
+		if id == "":
+			continue
+		if language_cache.has(id):
+			languages[id] = str(language_cache[id])
+	return languages
+
+
+func get_cached_leaderboard(statistic: String) -> Dictionary:
+	var entry: Variant = leaderboard_cache.get(statistic, {})
+	if not (entry is Dictionary) or entry.is_empty():
+		return {}
+	if Time.get_ticks_msec() - int(entry.get("at_ms", 0)) > LEADERBOARD_CACHE_MS:
+		return {}
+	return entry
+
+
+func store_cached_leaderboard(statistic: String, top: Dictionary, around: Dictionary) -> void:
+	leaderboard_cache[statistic] = {
+		"at_ms": Time.get_ticks_msec(),
+		"top": top,
+		"around": around,
+	}
+
+
+func _fetch_languages_parallel(ids: Array) -> void:
+	if ids.is_empty() or not is_logged_in():
+		return
+	var state := {"left": ids.size()}
+	for id_value in ids:
+		var target := str(id_value)
+		var request := HTTPRequest.new()
+		add_child(request)
+		request.timeout = 10
+		var on_done := func(_result: int, http_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+			language_cache[target] = _language_from_combined_info_text(
+				body.get_string_from_utf8(),
+				http_code
+			)
+			state["left"] = int(state["left"]) - 1
+			request.queue_free()
+		request.request_completed.connect(on_done, CONNECT_ONE_SHOT)
+		var err := request.request(
+			"https://%s.playfabapi.com/Client/GetPlayerCombinedInfo" % TITLE_ID,
+			PackedStringArray([
+				"Content-Type: application/json",
+				"Accept: application/json",
+				"Accept-Encoding: identity",
+				"X-Authorization: " + session_ticket,
+				"X-ReportErrorAsSuccess: true",
+			]),
+			HTTPClient.METHOD_POST,
+			JSON.stringify({
+				"PlayFabId": target,
+				"InfoRequestParameters": {
+					"GetUserData": true,
+					"UserDataKeys": [LANGUAGE_DATA_KEY],
+					"GetPlayerStatistics": true,
+					"PlayerStatisticNames": [LANGUAGE_STAT_NAME],
+				},
+			})
+		)
+		if err != OK:
+			language_cache[target] = ""
+			state["left"] = int(state["left"]) - 1
+			request.queue_free()
+	var started := Time.get_ticks_msec()
+	while int(state["left"]) > 0 and Time.get_ticks_msec() - started < 12000:
+		await get_tree().process_frame
+
+
 func _fetch_one_player_language(target_id: String) -> String:
+	if language_cache.has(target_id):
+		return str(language_cache[target_id])
 	var json := await _client_post_json("GetPlayerCombinedInfo", {
 		"PlayFabId": target_id,
 		"InfoRequestParameters": {
@@ -229,6 +320,22 @@ func _fetch_one_player_language(target_id: String) -> String:
 			"PlayerStatisticNames": [LANGUAGE_STAT_NAME],
 		},
 	})
+	var lang := _language_from_combined_info_json(json)
+	language_cache[target_id] = lang
+	return lang
+
+
+func _language_from_combined_info_text(text: String, http_code: int) -> String:
+	var parsed: Variant = JSON.parse_string(text)
+	if not (parsed is Dictionary):
+		return ""
+	var json: Dictionary = parsed
+	if int(json.get("code", http_code)) != 200:
+		return ""
+	return _language_from_combined_info_json(json)
+
+
+func _language_from_combined_info_json(json: Dictionary) -> String:
 	if json.is_empty():
 		return ""
 	var data: Variant = json.get("data", {})
@@ -669,6 +776,67 @@ func send_puzzle_trace(payload: Dictionary) -> bool:
 		if not sent:
 			ok = false
 	return ok
+
+
+func export_trace_to_google_sheets(payload: Dictionary) -> bool:
+	if GOOGLE_SHEETS_WEBHOOK.strip_edges() == "":
+		return false
+	var url := "%s?k=%s" % [GOOGLE_SHEETS_WEBHOOK, GOOGLE_SHEETS_KEY]
+	var body := JSON.stringify(payload)
+	for _hop in 6:
+		var request := HTTPRequest.new()
+		add_child(request)
+		request.timeout = 45
+		request.max_redirects = 0
+		var err := request.request(
+			url,
+			PackedStringArray([
+				"Content-Type: application/json",
+				"Accept: application/json",
+			]),
+			HTTPClient.METHOD_POST,
+			body
+		)
+		if err != OK:
+			request.queue_free()
+			push_warning("No se pudo enviar la traza a Google Sheets.")
+			return false
+		var response: Array = await request.request_completed
+		request.queue_free()
+		var http_code := int(response[1])
+		var headers: PackedStringArray = response[2]
+		var text := (response[3] as PackedByteArray).get_string_from_utf8()
+		if http_code >= 300 and http_code < 400:
+			var location := _http_header_value(headers, "Location")
+			if location.is_empty():
+				push_warning("Google Sheets redirigió sin Location (http=%d)." % http_code)
+				return false
+			if location.begins_with("/"):
+				location = "https://script.google.com" + location
+			url = location
+			continue
+		if http_code < 200 or http_code >= 400:
+			push_warning("Google Sheets rechazó la traza (http=%d): %s" % [
+				http_code,
+				text.substr(0, 180),
+			])
+			return false
+		if text.find("\"ok\":true") >= 0 or text.find("\"ok\": true") >= 0:
+			return true
+		if text.find("<html") >= 0 or text.find("Sign in") >= 0:
+			push_warning("Google Sheets devolvió login HTML. Revisa que la app web tenga acceso 'Cualquier usuario'.")
+			return false
+		return true
+	push_warning("Google Sheets: demasiadas redirecciones.")
+	return false
+
+
+func _http_header_value(headers: PackedStringArray, header_name: String) -> String:
+	var needle := header_name.to_lower() + ":"
+	for header in headers:
+		if header.to_lower().begins_with(needle):
+			return header.substr(header.find(":") + 1).strip_edges()
+	return ""
 
 
 func _chunk_trace_events(events: Array) -> Array:

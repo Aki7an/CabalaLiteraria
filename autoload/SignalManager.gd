@@ -29,6 +29,7 @@ signal fit_text
 signal app_version_changed(version_text: String)
 signal audio_prefs_changed
 signal full_game_changed
+signal store_price_changed
 signal daily_puzzle_changed
 
 signal update_score

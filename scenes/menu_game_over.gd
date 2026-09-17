@@ -6,6 +6,9 @@ const SHARE_DIALOG := preload("res://scenes/share_solve_dialog.gd")
 const STAR_EMPTY := Color(0.62, 0.51, 0.34, 0.28)
 const GAP := 24.0
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
+const TYPING_SFX := preload("res://audio/Modular UI - Tech Typing-003.ogg")
+const RESOLVED_HIT_SFX := preload("res://audio/HitSolid_SFXB.2355.wav")
+const BANNER_CHIME_SFX := preload("res://audio/MultimediaChime_SFXB.2894.wav")
 const INTRO_CONTINUE_AT := 5.0
 
 @onready var main_card: Panel = $MainCard
@@ -47,6 +50,7 @@ var _drag_active := false
 var _drag_origin := Vector2.ZERO
 var _drag_scroll_origin := 0
 var _share_asked := false
+var _typing_sfx: AudioStreamPlayer
 
 
 func _ready() -> void:
@@ -308,11 +312,55 @@ func _mix_reveal(source: String, ratio: float) -> String:
 	return out
 
 
+func _exit_tree() -> void:
+	_stop_phrase_typing_sfx()
+
+
+func _start_phrase_typing_sfx() -> void:
+	_stop_phrase_typing_sfx()
+	var stream := TYPING_SFX.duplicate()
+	if stream is AudioStreamOggVorbis:
+		(stream as AudioStreamOggVorbis).loop = true
+	_typing_sfx = AudioStreamPlayer.new()
+	_typing_sfx.bus = "SoundFx"
+	_typing_sfx.stream = stream
+	_typing_sfx.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(_typing_sfx)
+	_typing_sfx.play()
+
+
+func _stop_phrase_typing_sfx() -> void:
+	if is_instance_valid(_typing_sfx):
+		_typing_sfx.stop()
+		_typing_sfx.queue_free()
+	_typing_sfx = null
+
+
 func _play_paper_hit() -> void:
 	if SoundManager.has_node("PaperStamp"):
 		SoundManager.play("PaperStamp")
 	else:
 		SoundManager.play("ClickCelda")
+
+
+func _play_resolved_hit() -> void:
+	_play_oneshot_sfx(RESOLVED_HIT_SFX)
+
+
+func _play_banner_chime() -> void:
+	_play_oneshot_sfx(BANNER_CHIME_SFX, -10.0)
+
+
+func _play_oneshot_sfx(stream: AudioStream, volume_db := 0.0) -> void:
+	if stream == null:
+		return
+	var player := AudioStreamPlayer.new()
+	player.bus = "SoundFx"
+	player.stream = stream
+	player.volume_db = volume_db
+	player.finished.connect(player.queue_free)
+	add_child(player)
+	player.play()
 
 
 func _play_continue_at(delay_s: float) -> void:
@@ -440,6 +488,7 @@ func _play_victory_intro(earned: int, maximum: int) -> void:
 
 
 func _animate_decipher_wipe() -> Signal:
+	_start_phrase_typing_sfx()
 	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.tween_method(_apply_reveal, 0.0, 1.0, 1.60)\
@@ -451,6 +500,7 @@ func _animate_decipher_wipe() -> Signal:
 		tween.tween_property(_gleam, "modulate:a", 0.0, 1.60)\
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.finished.connect(func() -> void:
+		_stop_phrase_typing_sfx()
 		_set_bbcode_phrase(_phrase)
 		if _gleam:
 			_gleam.queue_free()
@@ -481,19 +531,26 @@ func _animate_stamp() -> void:
 		return
 	var rest_y := _stamp.position.y
 	_stamp.position.y = rest_y - 64.0
+	const DROP_S := 0.72
+	const SQUASH_S := 0.10
+	const SETTLE_S := 0.18
 	var tween := create_tween()
 	tween.tween_property(_stamp, "modulate:a", 1.0, 0.22)
-	tween.parallel().tween_property(_stamp, "position:y", rest_y, 0.72)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	tween.parallel().tween_property(_stamp, "scale", Vector2.ONE, 0.72)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(_stamp, "position:y", rest_y, DROP_S)\
+		.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(_stamp, "scale", Vector2.ONE, DROP_S)\
+		.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
 	tween.tween_callback(_play_paper_hit)
-	tween.tween_property(_stamp, "scale", Vector2(0.985, 1.02), 0.10)
-	tween.tween_property(_stamp, "scale", Vector2.ONE, 0.18)\
+	tween.tween_property(_stamp, "scale", Vector2(0.985, 1.02), SQUASH_S)
+	tween.tween_property(_stamp, "scale", Vector2.ONE, SETTLE_S)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	var sfx := create_tween()
+	sfx.tween_interval(0.50)
+	sfx.tween_callback(_play_resolved_hit)
 
 
 func _animate_banner() -> void:
+	_play_banner_chime()
 	var rest: Vector2 = _banner_rest.get("banner", banner.position)
 	var rest_left: Vector2 = _banner_rest.get("left", banner_left.position)
 	var rest_right: Vector2 = _banner_rest.get("right", banner_right.position)
@@ -594,7 +651,7 @@ func _ask_share_if_needed() -> void:
 
 func _confirm_share_then_go(next_scene: String) -> void:
 	await _ask_share_if_needed()
-	EventLoggerAutoload.submit_if_consented()
+	await EventLoggerAutoload.submit_if_consented()
 	await AdManager.show_interstitial_after_puzzle()
 	TransitionScreen.transition_to_black()
 	await SignalManager.on_transition_finished

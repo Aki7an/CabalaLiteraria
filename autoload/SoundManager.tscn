@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://5jpc6ghf8igj"]
+[gd_scene load_steps=10 format=3 uid="uid://5jpc6ghf8igj"]
 
 [ext_resource type="AudioStream" uid="uid://c47hgqmb8006l" path="res://audio/click_celda.wav" id="1_08ara"]
 [ext_resource type="Script" uid="uid://b63w0yroiwewt" path="res://autoload/sound_manager.gd" id="1_k2nfr"]
 [ext_resource type="Script" uid="uid://ceyow7w5ylff1" path="res://audio/polyphonic.gd" id="3_bacxp"]
-[ext_resource type="AudioStream" uid="uid://dm5d1grbwwmpf" path="res://audio/404743__owlstorm__retro-video-game-sfx-fail.wav" id="4_3wxfx"]
+[ext_resource type="AudioStream" path="res://audio/MultimediaError_SFXB.2941.wav" id="4_3wxfx"]
 [ext_resource type="AudioStream" uid="uid://ccue1wtwp0vhd" path="res://audio/Campana_Hotel.ogg" id="5_34vgw"]
 [ext_resource type="AudioStream" uid="uid://dqlvgthika73o" path="res://audio/GameOver.wav" id="5_u0byo"]
 [ext_resource type="AudioStream" uid="uid://54dftxjrq6yh" path="res://audio/sucess.ogg" id="6_34vgw"]
 [ext_resource type="AudioStream" uid="uid://wtp3d1fdj1n5" path="res://audio/ButtonClick.ogg" id="7_34vgw"]
+[ext_resource type="AudioStream" path="res://audio/DryEraseBoardErase_SFXB.3058.ogg" id="8_erase"]
 
 [node name="SoundManager" type="Node"]
 script = ExtResource("1_k2nfr")
@@ -64,5 +65,10 @@ script = ExtResource("3_bacxp")
 stream = ExtResource("1_08ara")
 volume_db = 2.0
 pitch_scale = 0.62
+bus = &"SoundFx"
+script = ExtResource("3_bacxp")
+
+[node name="Erase" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_erase")
 bus = &"SoundFx"
 script = ExtResource("3_bacxp")

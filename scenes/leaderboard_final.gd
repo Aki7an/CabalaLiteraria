@@ -57,6 +57,9 @@ var _loading := false
 var _player_languages: Dictionary = {}
 var _category_editor_modulate: Dictionary = {}
 var _category_editor_styles: Dictionary = {}
+var _load_token := 0
+var _last_top_entries: Array = []
+var _last_around_entries: Array = []
 
 
 func _ready() -> void:
@@ -88,6 +91,10 @@ func _ready() -> void:
 	_loading = true
 	_show_loading_status()
 	_apply_view()
+	get_tree().create_timer(0.01).timeout.connect(
+		_submit_rankings_in_background,
+		CONNECT_ONE_SHOT
+	)
 	_load_online_ranking()
 
 
@@ -360,64 +367,106 @@ func _set_filters_disabled(disabled: bool) -> void:
 		button.disabled = disabled
 
 
+func _submit_rankings_in_background() -> void:
+	if typeof(PlayFabTools) == TYPE_NIL:
+		return
+	await PlayFabTools.submit_competitive_rankings(GameManager.player_name)
+
+
 func _show_loading_status() -> void:
 	online_status.visible = true
 	online_status.text = tr("RankLoading")
 
 
+func _wait_for_playfab_login() -> bool:
+	if typeof(PlayFabTools) == TYPE_NIL:
+		return false
+	if PlayFabTools.is_logged_in():
+		return true
+	var started := Time.get_ticks_msec()
+	while not PlayFabTools.is_logged_in() and Time.get_ticks_msec() - started < 2500:
+		await get_tree().create_timer(0.05).timeout
+	return PlayFabTools.is_logged_in()
+
+
 func _load_online_ranking() -> void:
+	_load_token += 1
+	var token := _load_token
 	_loading = true
 	_set_filters_disabled(true)
-	_clear_rows(online_rows)
-	_clear_rows(around_rows)
-	_show_loading_status()
-	_apply_view()
-
 	if typeof(PlayFabTools) == TYPE_NIL:
 		_show_online_unavailable()
 		return
-	if not PlayFabTools.is_logged_in():
-		for attempt in 50:
-			if PlayFabTools.is_logged_in():
-				break
-			await get_tree().create_timer(0.2).timeout
-	if not PlayFabTools.is_logged_in():
-		_show_online_unavailable()
-		return
-
-	await PlayFabTools.submit_competitive_rankings(GameManager.player_name)
 	var statistic: String = PlayFabTools.competitive_stat_name(
 		_category_filter,
 		_mode_filter
 	)
-	var top_result := await _fetch_leaderboard("GetLeaderboard", statistic, TOP_ROWS)
-	var around_result := await _fetch_leaderboard(
-		"GetLeaderboardAroundPlayer",
-		statistic,
-		AROUND_ROWS
-	)
-	if (
-		bool(top_result.get("ok", false))
-		and (top_result.get("entries", []) as Array).is_empty()
-		and not bool(around_result.get("ok", false))
-	):
-		await get_tree().create_timer(0.4).timeout
-		around_result = await _fetch_leaderboard(
-			"GetLeaderboardAroundPlayer",
-			statistic,
-			AROUND_ROWS
+	var cached: Dictionary = PlayFabTools.get_cached_leaderboard(statistic)
+	if not cached.is_empty():
+		_paint_rankings(
+			cached.get("top", {"ok": false, "entries": []}),
+			cached.get("around", {"ok": false, "entries": []}),
+			false
 		)
-		top_result = await _fetch_leaderboard("GetLeaderboard", statistic, TOP_ROWS)
-	if not bool(top_result.get("ok", false)) and not bool(around_result.get("ok", false)):
-		_show_online_unavailable()
+		_finish_loading()
+	else:
+		_clear_rows(online_rows)
+		_clear_rows(around_rows)
+		_show_loading_status()
+		_apply_view()
+
+	if not await _wait_for_playfab_login():
+		if token != _load_token:
+			return
+		if cached.is_empty():
+			_show_online_unavailable()
+		else:
+			_finish_loading()
+		return
+	if token != _load_token:
 		return
 
+	var fetched: Dictionary = await _fetch_leaderboards_parallel(statistic)
+	if token != _load_token:
+		return
+	var top_result: Dictionary = fetched.get("top", {"ok": false, "entries": []})
+	var around_result: Dictionary = fetched.get("around", {"ok": false, "entries": []})
+	if not bool(top_result.get("ok", false)) and not bool(around_result.get("ok", false)):
+		if cached.is_empty():
+			_show_online_unavailable()
+		else:
+			_finish_loading()
+		return
+
+	PlayFabTools.store_cached_leaderboard(statistic, top_result, around_result)
+	_paint_rankings(top_result, around_result, false)
+	_finish_loading()
+	await _load_player_languages(_last_top_entries, _last_around_entries)
+	if token != _load_token:
+		return
+	_paint_rankings(top_result, around_result, true)
+
+
+func _finish_loading() -> void:
+	_loading = false
+	online_status.visible = false
+	_apply_view()
+	_set_filters_disabled(false)
+
+
+func _paint_rankings(top_result: Dictionary, around_result: Dictionary, keep_view: bool) -> void:
 	var top_entries: Array = top_result.get("entries", [])
-	_my_rank = 0
 	var around_entries: Array = around_result.get("entries", [])
 	if around_entries.is_empty():
 		around_entries = _around_fallback_entries(top_entries)
-	await _load_player_languages(top_entries, around_entries)
+	_last_top_entries = top_entries
+	_last_around_entries = around_entries
+	_player_languages = PlayFabTools.cached_player_languages(
+		_ranking_ids(top_entries, around_entries)
+	)
+	_clear_rows(online_rows)
+	_clear_rows(around_rows)
+	_my_rank = 0
 	for i in mini(TOP_ROWS, top_entries.size()):
 		var top_entry: Dictionary = top_entries[i]
 		_add_competitive_row(online_rows, top_entry, _is_local_player(top_entry))
@@ -435,10 +484,23 @@ func _load_online_ranking() -> void:
 		if _my_rank <= 0:
 			_add_local_player_row(around_rows)
 	_refresh_my_place_label()
-	_loading = false
-	online_status.visible = false
-	_apply_view()
-	_set_filters_disabled(false)
+	if not keep_view:
+		online_status.visible = false
+		_loading = false
+		_apply_view()
+
+
+func _ranking_ids(top_entries: Array, around_entries: Array) -> Array:
+	var ids: Array = []
+	for entry_value in top_entries:
+		if entry_value is Dictionary:
+			ids.append(str(entry_value.get("PlayFabId", "")))
+	for entry_value in around_entries:
+		if entry_value is Dictionary:
+			ids.append(str(entry_value.get("PlayFabId", "")))
+	if typeof(PlayFabTools) != TYPE_NIL and str(PlayFabTools.playfab_id) != "":
+		ids.append(str(PlayFabTools.playfab_id))
+	return ids
 
 
 func _is_local_player(entry: Dictionary) -> bool:
@@ -488,60 +550,79 @@ func _add_local_player_row(container: VBoxContainer) -> void:
 	)
 
 
-func _fetch_leaderboard(
+func _fetch_leaderboards_parallel(statistic: String) -> Dictionary:
+	var state := {
+		"left": 2,
+		"top": {"ok": false, "entries": []},
+		"around": {"ok": false, "entries": []},
+	}
+	_start_leaderboard_request(state, "top", "GetLeaderboard", statistic, TOP_ROWS)
+	_start_leaderboard_request(
+		state,
+		"around",
+		"GetLeaderboardAroundPlayer",
+		statistic,
+		AROUND_ROWS
+	)
+	var started := Time.get_ticks_msec()
+	while int(state["left"]) > 0 and Time.get_ticks_msec() - started < 20000:
+		await get_tree().process_frame
+	return {
+		"top": state["top"],
+		"around": state["around"],
+	}
+
+
+func _start_leaderboard_request(
+	state: Dictionary,
+	slot: String,
 	endpoint: String,
 	statistic: String,
 	max_results: int
-) -> Dictionary:
-	var with_profile := await _fetch_leaderboard_request(
-		endpoint,
-		statistic,
-		max_results,
-		true
-	)
-	if bool(with_profile.get("ok", false)):
-		return with_profile
-	return await _fetch_leaderboard_request(endpoint, statistic, max_results, false)
-
-
-func _fetch_leaderboard_request(
-	endpoint: String,
-	statistic: String,
-	max_results: int,
-	include_profile: bool
-) -> Dictionary:
+) -> void:
 	var request := HTTPRequest.new()
-	request.timeout = 20
+	request.timeout = 12
 	add_child(request)
-	var headers := PackedStringArray([
-		"Content-Type: application/json",
-		"Accept: application/json",
-		"Accept-Encoding: identity",
-		"X-Authorization: " + str(PlayFabTools.session_ticket),
-		"X-ReportErrorAsSuccess: true",
-	])
 	var body := {
 		"StatisticName": statistic,
 		"MaxResultsCount": max_results,
 	}
-	if include_profile:
-		body["ProfileConstraints"] = {
-			"ShowDisplayName": true,
-			"ShowAvatarUrl": true,
-		}
 	if endpoint == "GetLeaderboard":
 		body["StartPosition"] = 0
-	var url := "https://%s.playfabapi.com/Client/%s" % [
-		PlayFabTools.TITLE_ID,
-		endpoint,
-	]
-	if request.request(url, headers, HTTPClient.METHOD_POST, JSON.stringify(body)) != OK:
+	var err := request.request(
+		"https://%s.playfabapi.com/Client/%s" % [PlayFabTools.TITLE_ID, endpoint],
+		PackedStringArray([
+			"Content-Type: application/json",
+			"Accept: application/json",
+			"Accept-Encoding: identity",
+			"X-Authorization: " + str(PlayFabTools.session_ticket),
+			"X-ReportErrorAsSuccess: true",
+		]),
+		HTTPClient.METHOD_POST,
+		JSON.stringify(body)
+	)
+	if err != OK:
+		state["left"] = int(state["left"]) - 1
 		request.queue_free()
-		return {"ok": false, "entries": []}
-	var response: Array = await request.request_completed
-	var http_code := int(response[1])
-	var text := (response[3] as PackedByteArray).get_string_from_utf8()
-	request.queue_free()
+		return
+	var on_done := func(_result: int, http_code: int, _headers: PackedStringArray, response_body: PackedByteArray) -> void:
+		state[slot] = _parse_leaderboard_response(
+			endpoint,
+			statistic,
+			http_code,
+			response_body.get_string_from_utf8()
+		)
+		state["left"] = int(state["left"]) - 1
+		request.queue_free()
+	request.request_completed.connect(on_done, CONNECT_ONE_SHOT)
+
+
+func _parse_leaderboard_response(
+	endpoint: String,
+	statistic: String,
+	http_code: int,
+	text: String
+) -> Dictionary:
 	var parsed: Variant = JSON.parse_string(text)
 	if not (parsed is Dictionary):
 		return {"ok": false, "entries": []}
@@ -608,19 +689,11 @@ func _add_placeholder_row(
 
 
 func _load_player_languages(top_entries: Array, around_entries: Array) -> void:
-	_player_languages = {}
 	if typeof(PlayFabTools) == TYPE_NIL:
 		return
-	var ids: Array = []
-	for entry_value in top_entries:
-		if entry_value is Dictionary:
-			ids.append(str(entry_value.get("PlayFabId", "")))
-	for entry_value in around_entries:
-		if entry_value is Dictionary:
-			ids.append(str(entry_value.get("PlayFabId", "")))
-	if str(PlayFabTools.playfab_id) != "":
-		ids.append(str(PlayFabTools.playfab_id))
-	_player_languages = await PlayFabTools.fetch_player_languages(ids)
+	_player_languages = await PlayFabTools.fetch_player_languages(
+		_ranking_ids(top_entries, around_entries)
+	)
 
 
 func _language_for_id(playfab_id: String) -> String:

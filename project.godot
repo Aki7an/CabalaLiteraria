@@ -16,7 +16,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="CifraLetra"
 config/description="CifraLetra - pasatiempo "
-config/version="0.22"
+config/version="0.23"
 run/main_scene="uid://bvpri1mtnymgf"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="uid://bfx23x7qnu8kq"
@@ -26,6 +26,7 @@ config/icon="uid://bfx23x7qnu8kq"
 PlayerPrefs="*res://autoload/PlayerPrefs.gd"
 GameManager="*res://autoload/GameManager.gd"
 AdManager="*res://autoload/AdManager.gd"
+StoreManager="*res://autoload/StoreManager.gd"
 SoundManager="*res://autoload/SoundManager.tscn"
 SignalManager="*res://autoload/SignalManager.gd"
 TestResolution="*res://autoload/test_resolution.gd"
@@ -72,6 +73,33 @@ pointing/emulate_touch_from_mouse=true
 locale/translations=PackedStringArray("res://data/Traducciones.de.translation", "res://data/Traducciones.en.translation", "res://data/Traducciones.es.translation", "res://data/Traducciones.eu.translation", "res://data/Traducciones.fr.translation", "res://data/Traducciones.it.translation", "res://data/Traducciones.pt.translation")
 locale/fallback="es"
 
+[admob]
+
+general/android/enabled=true
+general/android/app_id="ca-app-pub-4839644126711617~7447184050"
+general/android/enable_r8_optimization=false
+general/android/disable_initialization_optimization=false
+general/android/disable_ad_loading_optimization=false
+general/ios/enabled=true
+general/ios/app_id="ca-app-pub-4839644126711617~1601271488"
+mediation/applovin=false
+mediation/bidmachine=false
+mediation/chartboost=false
+mediation/dtexchange=false
+mediation/imobile=false
+mediation/inmobi=false
+mediation/ironsource=false
+mediation/line=false
+mediation/maio=false
+mediation/meta=false
+mediation/mintegral=false
+mediation/moloco=false
+mediation/mytarget=false
+mediation/pangle=false
+mediation/pubmatic=false
+mediation/unity_ads=false
+mediation/vungle=false
+
 [playfab]
 
 title_id="1BC2FD"
@@ -81,10 +109,3 @@ title_id="1BC2FD"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
-
-[admob]
-
-general/android/enabled=true
-general/android/app_id="ca-app-pub-3940256099942544~3347511713"
-general/ios/enabled=true
-general/ios/app_id="ca-app-pub-3940256099942544~1458002511"
