@@ -120,11 +120,9 @@ func _ready() -> void:
 	for category_id in _category_buttons:
 		var button: Button = _category_buttons[category_id]
 		_category_normal_styles[category_id] = _make_category_style(category_id, false)
-		_ensure_chosen_tag(button)
 	for mode_id in _mode_buttons:
 		var button: Button = _mode_buttons[mode_id]
 		_mode_normal_styles[mode_id] = button.get_theme_stylebox("normal").duplicate()
-		_ensure_chosen_tag(button)
 
 	_play_style_normal = button_play.get_theme_stylebox("normal").duplicate()
 	_play_style_hover = button_play.get_theme_stylebox("hover").duplicate()
@@ -236,37 +234,11 @@ func _update_mode_selection() -> void:
 		button.add_theme_stylebox_override("pressed", style)
 
 
-func _ensure_chosen_tag(button: Button) -> void:
-	if button.get_node_or_null("ChosenTag") != null:
-		return
-	var tag := Label.new()
-	tag.name = "ChosenTag"
-	tag.visible = false
-	tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	tag.position = Vector2(18, 10)
-	tag.size = Vector2(240, 42)
-	tag.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	tag.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	tag.add_theme_color_override("font_color", SELECTED_GREEN)
-	tag.add_theme_font_override("font", FONT_TAG)
-	tag.add_theme_font_size_override("font_size", 28)
-	tag.text = _chosen_tag_text()
-	button.add_child(tag)
-
-
-func _chosen_tag_text() -> String:
-	var text := tr("ChosenTag")
-	if text.is_empty() or text == "ChosenTag":
-		return "ELEGIDA"
-	return text
-
-
 func _set_selected_look(button: Button, is_selected: bool) -> void:
 	var badge := button.get_node_or_null("Selected") as Control
 	var tag := button.get_node_or_null("ChosenTag") as Label
 	if tag:
-		tag.text = _chosen_tag_text()
-		tag.visible = is_selected
+		tag.visible = false
 	if badge == null:
 		return
 	if badge.has_meta("check_tween"):
@@ -275,7 +247,7 @@ func _set_selected_look(button: Button, is_selected: bool) -> void:
 			(previous as Tween).kill()
 	badge.visible = is_selected
 	if badge.size == Vector2.ZERO:
-		badge.pivot_offset = Vector2(30, 30)
+		badge.pivot_offset = Vector2(39, 39)
 	else:
 		badge.pivot_offset = badge.size * 0.5
 	badge.scale = Vector2.ONE
@@ -516,7 +488,3 @@ func _update_localized_copy() -> void:
 	$Panel/ButtonPlay/Content/Text.text = tr("ChoosePuzzle")
 	$Panel/Header/Brand/Cipher.text = tr("Cipher")
 	$Panel/Header/Brand/Letter.text = tr("Letter")
-	for button in [button_citas_celebres, button_curiosidades, button_efemerides, button_fragmentos_literarios, button_quick, button_cryptogram]:
-		var tag := button.get_node_or_null("ChosenTag") as Label
-		if tag:
-			tag.text = _chosen_tag_text()

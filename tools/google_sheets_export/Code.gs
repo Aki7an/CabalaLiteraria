@@ -108,6 +108,14 @@ function _keyOk(e) {
 	if (e && e.parameter && e.parameter.k) {
 		key = String(e.parameter.k);
 	}
+	if (!key && e && e.postData && e.postData.contents) {
+		try {
+			var parsed = JSON.parse(String(e.postData.contents));
+			if (parsed && typeof parsed === "object") {
+				key = String(parsed.k || parsed.webhook_key || "");
+			}
+		} catch (err) {}
+	}
 	return key === WEBHOOK_KEY;
 }
 

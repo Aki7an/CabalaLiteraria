@@ -363,7 +363,7 @@ func _present_mobile_interstitial() -> void:
 	if _interstitial_ad == null:
 		_load_interstitial()
 		var elapsed := 0.0
-		while _interstitial_ad == null and elapsed < AdsConfig.INTERSTITIAL_TIMEOUT_SEC:
+		while _interstitial_ad == null and elapsed < 2.0:
 			await get_tree().process_frame
 			elapsed += get_process_delta_time()
 	if _interstitial_ad == null:

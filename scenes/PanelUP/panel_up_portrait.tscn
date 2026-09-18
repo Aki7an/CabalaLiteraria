@@ -1,38 +1,13 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene format=3 uid="uid://3ivcwblmuoh0"]
 
-[ext_resource type="Script" path="res://scenes/PanelUP/panel_up_portrait.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://dqwi45y0gomem" path="res://scenes/PanelUP/panel_up_portrait.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
-[ext_resource type="Texture2D" path="res://images/ui_icon_bulb_white.svg" id="4_bulb"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_eye.png" id="5_eye"]
-[ext_resource type="Texture2D" path="res://images/ui_icon_theme_white.svg" id="7_theme"]
-[ext_resource type="PackedScene" path="res://scenes/PanelUP/GameHeader.tscn" id="8_header"]
+[ext_resource type="Texture2D" uid="uid://cbbcrfwtuwu31" path="res://images/ui_icon_bulb_white.svg" id="4_bulb"]
+[ext_resource type="Texture2D" uid="uid://8akietbdjjg2" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_eye.png" id="5_eye"]
+[ext_resource type="Texture2D" uid="uid://c5cqv0a8u1tt" path="res://images/ui_icon_theme_white.svg" id="7_theme"]
+[ext_resource type="PackedScene" uid="uid://d2gfi0jjm57t4" path="res://scenes/PanelUP/GameHeader.tscn" id="8_header"]
 
-[sub_resource type="StyleBoxFlat" id="Style_hint"]
-bg_color = Color(1, 0.72, 0.08, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 10
-border_color = Color(0.82, 0.42, 0.02, 1)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
-shadow_color = Color(0.45, 0.22, 0.02, 0.26)
-shadow_size = 9
-shadow_offset = Vector2(0, 8)
-
-[sub_resource type="StyleBoxFlat" id="Style_hint_pressed"]
-bg_color = Color(0.9, 0.55, 0.04, 1)
-border_width_left = 4
-border_width_top = 10
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.7, 0.34, 0.02, 1)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
 
 [sub_resource type="StyleBoxFlat" id="Style_theme"]
 bg_color = Color(0.12, 0.62, 0.58, 1)
@@ -56,6 +31,33 @@ border_width_top = 10
 border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0.03, 0.3, 0.28, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="Style_hint"]
+bg_color = Color(1, 0.72, 0.08, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 10
+border_color = Color(0.82, 0.42, 0.02, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.45, 0.22, 0.02, 0.26)
+shadow_size = 9
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_hint_pressed"]
+bg_color = Color(0.9, 0.55, 0.04, 1)
+border_width_left = 4
+border_width_top = 10
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.7, 0.34, 0.02, 1)
 corner_radius_top_left = 28
 corner_radius_top_right = 28
 corner_radius_bottom_right = 28
@@ -88,20 +90,31 @@ corner_radius_top_right = 28
 corner_radius_bottom_right = 28
 corner_radius_bottom_left = 28
 
-[sub_resource type="StyleBoxEmpty" id="Style_empty"]
-
-[node name="PanelUPPortrait" type="Panel"]
+[node name="PanelUPPortrait" type="Panel" unique_id=1249232439]
 offset_right = 1174.0
 offset_bottom = 548.0
 theme_override_styles/panel = SubResource("Style_empty")
 script = ExtResource("1_script")
 
-[node name="GameHeader" parent="." instance=ExtResource("8_header")]
+[node name="GameHeader" parent="." unique_id=901576936 instance=ExtResource("8_header")]
 layout_mode = 0
-offset_right = 1174.0
-offset_bottom = 300.0
 
-[node name="ButtonTheme" type="Button" parent="."]
+[node name="CategoryIcon" parent="GameHeader/Margin/Main/Top/CategoryWrap/ButtonCategory" parent_id_path=PackedInt32Array(901576936, 1529828182) index="0" unique_id=2004158255]
+offset_left = -104.0
+offset_right = 101.466675
+offset_bottom = 166.0
+
+[node name="Category" parent="GameHeader/Margin/Main/Top/CategoryWrap/ButtonCategory" parent_id_path=PackedInt32Array(901576936, 1529828182) index="1" unique_id=1483841560]
+offset_top = -86.0
+offset_bottom = -25.0
+
+[node name="Control2" parent="GameHeader/Margin/Main/Top/StarsBlock" parent_id_path=PackedInt32Array(901576936, 192513889) index="3" unique_id=1228162396]
+custom_minimum_size = Vector2(0, 10)
+
+[node name="ModeIcon" parent="GameHeader/Margin/Main/Top/StarsBlock/ModeRow" parent_id_path=PackedInt32Array(901576936, 1576324494) index="0" unique_id=1060925120]
+custom_minimum_size = Vector2(80, 80)
+
+[node name="ButtonTheme" type="Button" parent="." unique_id=1087347642]
 layout_mode = 0
 offset_left = 29.0
 offset_top = 312.0
@@ -109,11 +122,11 @@ offset_right = 374.0
 offset_bottom = 500.0
 focus_mode = 0
 theme_override_styles/normal = SubResource("Style_theme")
-theme_override_styles/hover = SubResource("Style_theme")
 theme_override_styles/pressed = SubResource("Style_theme_pressed")
+theme_override_styles/hover = SubResource("Style_theme")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Icon" type="TextureRect" parent="ButtonTheme"]
+[node name="Icon" type="TextureRect" parent="ButtonTheme" unique_id=1100005522]
 layout_mode = 0
 offset_left = 22.0
 offset_top = 40.0
@@ -124,7 +137,7 @@ texture = ExtResource("7_theme")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Title" type="Label" parent="ButtonTheme"]
+[node name="Title" type="Label" parent="ButtonTheme" unique_id=326858035]
 layout_mode = 0
 offset_left = 118.0
 offset_top = 48.0
@@ -136,7 +149,7 @@ theme_override_font_sizes/font_size = 52
 text = "TEMA"
 vertical_alignment = 1
 
-[node name="Subtitle" type="Label" parent="ButtonTheme"]
+[node name="Subtitle" type="Label" parent="ButtonTheme" unique_id=1810091839]
 visible = false
 layout_mode = 0
 offset_left = 118.0
@@ -150,7 +163,7 @@ text = "Ver imagen del tema"
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="ButtonHint" type="Button" parent="."]
+[node name="ButtonHint" type="Button" parent="." unique_id=848120793]
 layout_mode = 0
 offset_left = 401.0
 offset_top = 312.0
@@ -158,11 +171,11 @@ offset_right = 746.0
 offset_bottom = 500.0
 focus_mode = 0
 theme_override_styles/normal = SubResource("Style_hint")
-theme_override_styles/hover = SubResource("Style_hint")
 theme_override_styles/pressed = SubResource("Style_hint_pressed")
+theme_override_styles/hover = SubResource("Style_hint")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Icon" type="TextureRect" parent="ButtonHint"]
+[node name="Icon" type="TextureRect" parent="ButtonHint" unique_id=260318843]
 layout_mode = 0
 offset_left = 22.0
 offset_top = 40.0
@@ -173,7 +186,7 @@ texture = ExtResource("4_bulb")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Title" type="Label" parent="ButtonHint"]
+[node name="Title" type="Label" parent="ButtonHint" unique_id=2031446069]
 layout_mode = 0
 offset_left = 118.0
 offset_top = 48.0
@@ -187,7 +200,7 @@ theme_override_font_sizes/font_size = 52
 text = "PISTA"
 vertical_alignment = 1
 
-[node name="Subtitle" type="Label" parent="ButtonHint"]
+[node name="Subtitle" type="Label" parent="ButtonHint" unique_id=324493925]
 visible = false
 layout_mode = 0
 offset_left = 118.0
@@ -201,7 +214,7 @@ text = "Ayuda contextual"
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="ButtonReveal" type="Button" parent="."]
+[node name="ButtonReveal" type="Button" parent="." unique_id=128293336]
 layout_mode = 0
 offset_left = 773.0
 offset_top = 312.0
@@ -209,11 +222,11 @@ offset_right = 1145.0
 offset_bottom = 500.0
 focus_mode = 0
 theme_override_styles/normal = SubResource("Style_reveal")
-theme_override_styles/hover = SubResource("Style_reveal")
 theme_override_styles/pressed = SubResource("Style_reveal_pressed")
+theme_override_styles/hover = SubResource("Style_reveal")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Icon" type="TextureRect" parent="ButtonReveal"]
+[node name="Icon" type="TextureRect" parent="ButtonReveal" unique_id=606302192]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 42.0
@@ -224,7 +237,7 @@ texture = ExtResource("5_eye")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Title" type="Label" parent="ButtonReveal"]
+[node name="Title" type="Label" parent="ButtonReveal" unique_id=1925617010]
 layout_mode = 0
 offset_left = 118.0
 offset_top = 48.0

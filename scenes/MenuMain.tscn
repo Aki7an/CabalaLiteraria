@@ -1486,13 +1486,16 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="TodayBadge" type="Panel" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=2075055104]
-visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.58
-anchor_top = 0.02
-anchor_right = 0.98
-anchor_bottom = 0.22
+anchor_left = 0.312
+anchor_top = -0.134
+anchor_right = 0.81700003
+anchor_bottom = 0.13100001
+offset_left = -15.880005
+offset_top = -8.08997
+offset_right = -16.054993
+offset_bottom = -7.854973
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_today_badge")
 
@@ -1505,7 +1508,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 30
 text = "HOY"
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -11,7 +11,7 @@ var _seed_run_nonce: String = ""  # identificador único de esta ejecución
 
 const LEADERBOARD_NAME: String = "Score"  # nombre de la estadística
 const TRACE_CHUNK_CHARS := 8500
-const GOOGLE_SHEETS_WEBHOOK := "https://script.google.com/macros/s/AKfycbxA10AppJe_JsGaI9XkYVpVto7RBIYhQH2NbEjxegi4CItgSSPOPYDJL9wJqajsVk8tA/exec"
+const GOOGLE_SHEETS_WEBHOOK := "https://script.google.com/macros/s/AKfycbwBmExH_Pu04tJNmaUWhrbkDY9NsozWlQyi9Woz1Fkua_Ns3bYboTHM2_L-YuttXcQ4eQ/exec"
 const GOOGLE_SHEETS_KEY := "cl-partidas-7f3a9c2e"
 
 ## Ajusta tu TitleId aquí o desde fuera (set_title_id)
@@ -782,7 +782,10 @@ func export_trace_to_google_sheets(payload: Dictionary) -> bool:
 	if GOOGLE_SHEETS_WEBHOOK.strip_edges() == "":
 		return false
 	var url := "%s?k=%s" % [GOOGLE_SHEETS_WEBHOOK, GOOGLE_SHEETS_KEY]
-	var body := JSON.stringify(payload)
+	var sheets_payload := payload.duplicate(true)
+	sheets_payload["k"] = GOOGLE_SHEETS_KEY
+	sheets_payload["webhook_key"] = GOOGLE_SHEETS_KEY
+	var body := JSON.stringify(sheets_payload)
 	for _hop in 6:
 		var request := HTTPRequest.new()
 		add_child(request)
@@ -813,7 +816,7 @@ func export_trace_to_google_sheets(payload: Dictionary) -> bool:
 				return false
 			if location.begins_with("/"):
 				location = "https://script.google.com" + location
-			url = location
+			url = _sheets_url_with_key(location)
 			continue
 		if http_code < 200 or http_code >= 400:
 			push_warning("Google Sheets rechazó la traza (http=%d): %s" % [
@@ -821,14 +824,26 @@ func export_trace_to_google_sheets(payload: Dictionary) -> bool:
 				text.substr(0, 180),
 			])
 			return false
+		if text.find("\"ok\":false") >= 0 or text.find("\"ok\": false") >= 0:
+			push_warning("Google Sheets devolvió error: %s" % text.substr(0, 180))
+			return false
 		if text.find("\"ok\":true") >= 0 or text.find("\"ok\": true") >= 0:
 			return true
 		if text.find("<html") >= 0 or text.find("Sign in") >= 0:
 			push_warning("Google Sheets devolvió login HTML. Revisa que la app web tenga acceso 'Cualquier usuario'.")
 			return false
-		return true
+		push_warning("Google Sheets respuesta inesperada: %s" % text.substr(0, 180))
+		return false
 	push_warning("Google Sheets: demasiadas redirecciones.")
 	return false
+
+
+func _sheets_url_with_key(raw_url: String) -> String:
+	var url := raw_url.strip_edges()
+	if url.find("k=") >= 0:
+		return url
+	var glue := "&" if url.find("?") >= 0 else "?"
+	return "%s%sk=%s" % [url, glue, GOOGLE_SHEETS_KEY.uri_encode()]
 
 
 func _http_header_value(headers: PackedStringArray, header_name: String) -> String:

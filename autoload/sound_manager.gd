@@ -32,6 +32,11 @@ const MUSIC_FADE_OUT_SEC := 2.0
 const MUSIC_FADE_IN_SEC := 2.0
 const VICTORY_MENU_FADE_IN_SEC := 2.0
 const MUSIC_SILENT_DB := -80.0
+const GREEN_LETTER_SFX := preload("res://audio/Arcade Click Positive 13.ogg")
+const RED_LETTER_SFX := preload("res://audio/Arcade Click Negative 10.ogg")
+const GREEN_LETTER_CLICK_GAP := 0.08
+const GREEN_PITCH_START_ST := -2.0
+const GREEN_PITCH_STEP_ST := 1.0
 
 var _registry: Dictionary[String, SoundEntry] = {}
 var _music_player: AudioStreamPlayer
@@ -48,6 +53,12 @@ var _music_switch_id := 0
 var _switching_music := false
 var _awaiting_celebration := false
 var _pending_fade_in_sec := MUSIC_FADE_IN_SEC
+var _music_duck := 1.0
+var _duck_tween: Tween
+var _green_click: AudioStreamPlayer
+var _green_click_last_at := -1.0
+var _green_pitch_tween: Tween
+var _green_seq_index := 0
 
 func _ready() -> void:
 	_build_registry()
@@ -120,7 +131,9 @@ func _apply_buses() -> void:
 	var music_idx := AudioServer.get_bus_index("Music")
 	var fx_idx := AudioServer.get_bus_index("SoundFx")
 	if music_idx >= 0:
-		AudioServer.set_bus_volume_db(music_idx, slider_to_db(PlayerPrefs.volumen_musica))
+		var music_db := slider_to_db(PlayerPrefs.volumen_musica)
+		music_db += linear_to_db(clampf(_music_duck, 0.0001, 1.0))
+		AudioServer.set_bus_volume_db(music_idx, music_db)
 		AudioServer.set_bus_mute(music_idx, not PlayerPrefs.mute_musica)
 	if fx_idx >= 0:
 		AudioServer.set_bus_volume_db(fx_idx, slider_to_db(PlayerPrefs.volumen_fx))
@@ -132,6 +145,116 @@ func slider_to_db(slider: float) -> float:
 	if slider <= 0.0001:
 		return -80.0
 	return lerpf(-60.0, 0.0, clampf(slider, 0.0, 1.0))
+
+
+func duck_music(linear := 0.5, fade_s := 0.08) -> void:
+	_tween_music_duck(clampf(linear, 0.0, 1.0), fade_s)
+
+
+func unduck_music(fade_s := 0.18) -> void:
+	_tween_music_duck(1.0, fade_s)
+
+
+func _tween_music_duck(linear: float, fade_s: float) -> void:
+	if _duck_tween:
+		_duck_tween.kill()
+		_duck_tween = null
+	if fade_s <= 0.0 or is_equal_approx(_music_duck, linear):
+		_music_duck = linear
+		_apply_buses()
+		return
+	_duck_tween = create_tween()
+	_duck_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_duck_tween.tween_method(_set_music_duck, _music_duck, linear, fade_s)
+
+
+func _set_music_duck(value: float) -> void:
+	_music_duck = value
+	_apply_buses()
+
+
+func begin_green_letter_sequence(_count: int = 0) -> void:
+	_green_seq_index = 0
+	if _green_pitch_tween:
+		_green_pitch_tween.kill()
+		_green_pitch_tween = null
+	_stop_transient_sfx()
+
+
+func _stop_transient_sfx() -> void:
+	var prototypes := {}
+	for entry in _registry.values():
+		var cfg := entry as SoundEntry
+		if cfg != null and cfg.prototype != null:
+			prototypes[cfg.prototype] = true
+	for child in get_children():
+		if child is AudioStreamPlayer2D and not prototypes.has(child):
+			var sfx := child as AudioStreamPlayer2D
+			sfx.stop()
+			sfx.queue_free()
+		elif child is AudioStreamPlayer and child.name.begins_with("ButtonClick"):
+			var click := child as AudioStreamPlayer
+			click.stop()
+			click.queue_free()
+
+
+func play_green_letter_click(force := false) -> void:
+	var now := Time.get_ticks_msec() * 0.001
+	if not force and _green_click_last_at >= 0.0 and now - _green_click_last_at < GREEN_LETTER_CLICK_GAP:
+		return
+	_green_click_last_at = now
+	duck_music(0.5)
+	if _green_click == null or not is_instance_valid(_green_click):
+		_green_click = AudioStreamPlayer.new()
+		_green_click.name = "GreenLetterClick"
+		_green_click.bus = "SoundFx"
+		_green_click.stream = GREEN_LETTER_SFX
+		_green_click.process_mode = Node.PROCESS_MODE_ALWAYS
+		_green_click.finished.connect(_on_green_click_finished)
+		add_child(_green_click)
+	if _green_pitch_tween:
+		_green_pitch_tween.kill()
+		_green_pitch_tween = null
+	_green_click.volume_db = -4.0
+	_green_click.pitch_scale = _semitone_to_pitch(
+		GREEN_PITCH_START_ST + float(_green_seq_index) * GREEN_PITCH_STEP_ST
+	)
+	if _green_click.playing:
+		_green_click.stop()
+	_green_click.play()
+	_green_seq_index += 1
+
+
+func _semitone_to_pitch(semitones: float) -> float:
+	return pow(2.0, semitones / 12.0)
+
+
+func stop_green_letter_clicks() -> void:
+	_green_click_last_at = -1.0
+	_green_seq_index = 0
+	if _green_pitch_tween:
+		_green_pitch_tween.kill()
+		_green_pitch_tween = null
+	if is_instance_valid(_green_click):
+		_green_click.stop()
+		_green_click.queue_free()
+	_green_click = null
+	unduck_music()
+
+
+func _on_green_click_finished() -> void:
+	unduck_music()
+
+
+func play_red_letter_click() -> void:
+	var player := AudioStreamPlayer.new()
+	player.name = "RedLetterClick"
+	player.bus = "SoundFx"
+	player.stream = RED_LETTER_SFX
+	player.process_mode = Node.PROCESS_MODE_ALWAYS
+	player.finished.connect(player.queue_free)
+	add_child(player)
+	player.play()
 
 func is_music_enabled() -> bool:
 	return PlayerPrefs.mute_musica

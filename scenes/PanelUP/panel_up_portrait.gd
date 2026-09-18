@@ -433,11 +433,11 @@ func _on_reveal_pressed() -> void:
 		return
 	if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
 		return
-	SoundManager.play("ButtonClick")
 	SignalManager.puzzle_input.emit("reveal", {})
 	if PlayerPrefs.skip_reveal_dialog:
 		GameManager.reveal_assignment_errors()
 		return
+	SoundManager.play("ButtonClick")
 	_add_overlay(OVERLAY_REVEAL)
 
 

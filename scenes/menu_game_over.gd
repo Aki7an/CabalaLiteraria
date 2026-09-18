@@ -296,6 +296,20 @@ func _set_bbcode_phrase(raw: String) -> void:
 	phrase_label.text = "[center]%s[/center]" % _escape_bbcode(raw)
 
 
+func _set_green_phrase(cutoff: int) -> void:
+	var out := ""
+	for i in _phrase.length():
+		var ch := _phrase.substr(i, 1)
+		var escaped := _escape_bbcode(ch)
+		if not _is_letter(ch):
+			out += escaped
+		elif i < cutoff:
+			out += "[color=#000000]%s[/color]" % escaped
+		else:
+			out += "*"
+	phrase_label.text = "[center]%s[/center]" % out
+
+
 func _is_letter(ch: String) -> bool:
 	return ch.to_upper() != ch.to_lower()
 
@@ -501,7 +515,7 @@ func _animate_decipher_wipe() -> Signal:
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.finished.connect(func() -> void:
 		_stop_phrase_typing_sfx()
-		_set_bbcode_phrase(_phrase)
+		_set_green_phrase(_phrase.length())
 		if _gleam:
 			_gleam.queue_free()
 			_gleam = null
@@ -510,7 +524,8 @@ func _animate_decipher_wipe() -> Signal:
 
 
 func _apply_reveal(ratio: float) -> void:
-	_set_bbcode_phrase(_mix_reveal(_phrase, ratio))
+	var cutoff := int(ceili(float(_phrase.length()) * clampf(ratio, 0.0, 1.0)))
+	_set_green_phrase(cutoff)
 
 
 func _animate_quotes() -> void:

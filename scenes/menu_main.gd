@@ -348,21 +348,36 @@ func _refresh_daily_button() -> void:
 	var lock := button_daily.get_node_or_null("PurchaseLock") as Control
 	if lock:
 		lock.visible = locked
-	var badge := button_daily.get_node_or_null("TodayBadge") as Control
+	var badge := button_daily.get_node_or_null("TodayBadge") as Panel
 	if badge:
-		badge.visible = not locked and not done
+		badge.visible = not locked
 		var badge_label := badge.get_node_or_null("Label") as Label
 		if badge_label:
-			badge_label.text = tr("Today")
+			if done:
+				var done_text := tr("DailyDone")
+				badge_label.text = "HECHO" if done_text == "DailyDone" else done_text
+			else:
+				badge_label.text = tr("Today")
+		_style_daily_badge(badge, done)
 	var stamp := button_daily.get_node_or_null("CompletedStamp") as Control
 	if stamp:
-		stamp.visible = not locked and done
-		var stamp_label := stamp.get_node_or_null("Label") as Label
-		if stamp_label:
-			var done_text := tr("DailyDone")
-			stamp_label.text = "HECHO" if done_text == "DailyDone" else done_text
-		if stamp.visible:
-			call_deferred("_center_stamp_pivot", stamp)
+		stamp.visible = false
+
+
+func _style_daily_badge(badge: Panel, done: bool) -> void:
+	var style := StyleBoxFlat.new()
+	if done:
+		style.bg_color = Color(0.22, 0.62, 0.28, 1)
+		style.shadow_color = Color(0.08, 0.29, 0.12, 0.28)
+	else:
+		style.bg_color = Color(0.82, 0.16, 0.14, 1)
+		style.shadow_color = Color(0.29, 0.12, 0.08, 0.28)
+	style.set_corner_radius_all(18)
+	style.shadow_size = 4
+	style.shadow_offset = Vector2(0, 2)
+	badge.add_theme_stylebox_override("panel", style)
+	badge.offset_left = -36.0 if done else -15.88
+	badge.offset_right = -4.0 if done else -16.05
 
 
 func _show_daily_locked_dialog() -> void:

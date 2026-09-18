@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cgf78xtxi5uo5" path="res://scenes/main/ErrorFeedback.gd" id="2_error"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="3_bg"]
 [ext_resource type="PackedScene" uid="uid://csvvjjmaptuc4" path="res://scenes/game/CanvasJuego.tscn" id="4_board"]
-[ext_resource type="PackedScene" path="res://scenes/PanelUP/panel_up_portrait.tscn" id="5_hud"]
+[ext_resource type="PackedScene" uid="uid://3ivcwblmuoh0" path="res://scenes/PanelUP/panel_up_portrait.tscn" id="5_hud"]
 [ext_resource type="PackedScene" path="res://scenes/game/PanelColorsPortrait.tscn" id="6_colors"]
 [ext_resource type="PackedScene" path="res://scenes/game/panel_letras_portrait.tscn" id="7_letters"]
 [ext_resource type="Script" uid="uid://b3o0jxdhl1rdw" path="res://scenes/main/puzzle_scrollbar.gd" id="11_scroll"]
@@ -144,6 +144,7 @@ offset_right = 1188.0
 offset_bottom = 2622.0
 
 [node name="OverlayHost" type="Control" parent="CanvasLayer" unique_id=1888000777]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

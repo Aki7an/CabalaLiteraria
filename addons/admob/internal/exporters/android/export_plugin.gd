@@ -85,6 +85,17 @@ func _get_android_dependencies_maven_repos(platform: EditorExportPlatform, debug
 	return maven_repos
 
 
+func _get_android_manifest_element_contents(
+	_platform: EditorExportPlatform, _debug: bool
+) -> String:
+	var ads_enabled := _get_setting(ProjectSettingsService.get_android_setting_path("enabled"), true) as bool
+	if not ads_enabled:
+		return ""
+	return """
+	<uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+	"""
+
+
 func _get_android_manifest_application_element_contents(
 	_platform: EditorExportPlatform, _debug: bool
 ) -> String:

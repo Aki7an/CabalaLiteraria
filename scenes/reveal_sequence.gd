@@ -113,8 +113,9 @@ func _run_sequence() -> void:
 	_running = true
 	await get_tree().process_frame
 	_clip_above_keyboard()
-	await _reveal_initial_letters()
 	var assignments := _player_assignments()
+	SoundManager.begin_green_letter_sequence(_count_green_reveal_steps(assignments))
+	await _reveal_initial_letters()
 	_log_reveal_result(assignments)
 	for assignment in assignments:
 		if assignment.get("correct", false):
@@ -123,6 +124,18 @@ func _run_sequence() -> void:
 			await _reveal_wrong(assignment)
 	GameManager.finish_reveal_sequence()
 	queue_free()
+
+
+func _count_green_reveal_steps(assignments: Array[Dictionary]) -> int:
+	var steps := 0
+	for cell in _all_cells():
+		if cell.es_regalo_inicial and not cell.revelada_verde:
+			steps = 1
+			break
+	for assignment in assignments:
+		if assignment.get("correct", false):
+			steps += 1
+	return steps
 
 
 func _reveal_initial_letters() -> void:
@@ -148,7 +161,7 @@ func _reveal_correct(assignment: Dictionary) -> void:
 	var cells := _cells_from(assignment)
 	var letter := str(assignment.get("letter", ""))
 	_feedback_soft()
-	SoundManager.play("ClickLetra")
+	SoundManager.play_green_letter_click(true)
 	await _show_center_letter(letter, LETTER_GREEN, false)
 	GameManager.apply_reveal_correct_number(int(assignment.get("numero", 0)))
 	await _blink_cells(cells)
@@ -160,7 +173,7 @@ func _reveal_wrong(assignment: Dictionary) -> void:
 	var letter := str(assignment.get("letter", ""))
 	var number := int(assignment.get("numero", 0))
 	_feedback_error()
-	SoundManager.play("LoseLive")
+	SoundManager.play_red_letter_click()
 	await _show_center_letter(letter, LETTER_RED, true)
 	GameManager.apply_reveal_wrong_number(number)
 	await _blink_cells(cells)

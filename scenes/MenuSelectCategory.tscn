@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_background"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="4_title_font"]
-[ext_resource type="Texture2D" path="res://images/Ilustres.png" id="5_quotes"]
+[ext_resource type="Texture2D" uid="uid://h4yfkdta261s" path="res://images/Ilustres.png" id="5_quotes"]
 [ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="6_curiosity"]
 [ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="7_calendar"]
 [ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="8_book"]
@@ -92,19 +92,19 @@ shadow_size = 15
 shadow_offset = Vector2(0, 12)
 anti_aliasing_size = 0.5
 
-[sub_resource type="StyleBoxFlat" id="Style_option_selected"]
-bg_color = Color(1, 0.984314, 0.929412, 1)
-border_width_left = 7
-border_width_top = 7
-border_width_right = 7
-border_width_bottom = 9
-border_color = Color(0.0392157, 0.647059, 0.643137, 1)
-corner_radius_top_left = 31
-corner_radius_top_right = 31
-corner_radius_bottom_right = 31
-corner_radius_bottom_left = 31
-shadow_color = Color(0.0392157, 0.498039, 0.498039, 0.16)
-shadow_size = 9
+[sub_resource type="StyleBoxFlat" id="Style_option"]
+bg_color = Color(1, 0.972549, 0.894118, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 8
+border_color = Color(0.741176, 0.576471, 0.337255, 0.5)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_color = Color(0.352941, 0.211765, 0.109804, 0.14)
+shadow_size = 8
 shadow_offset = Vector2(0, 7)
 
 [sub_resource type="StyleBoxFlat" id="Style_option_pressed"]
@@ -134,13 +134,6 @@ shadow_color = Color(0.352941, 0.211765, 0.109804, 0.14)
 shadow_size = 8
 shadow_offset = Vector2(0, 7)
 
-[sub_resource type="StyleBoxFlat" id="Style_top_blue"]
-bg_color = Color(0.447059, 0.721569, 0.917647, 1)
-corner_radius_top_left = 95
-corner_radius_top_right = 95
-corner_radius_bottom_right = 95
-corner_radius_bottom_left = 95
-
 [sub_resource type="StyleBoxFlat" id="Style_progress_background"]
 bg_color = Color(0.270588, 0.196078, 0.121569, 0.16)
 border_width_left = 2
@@ -162,35 +155,13 @@ corner_radius_bottom_left = 23
 
 [sub_resource type="StyleBoxFlat" id="Style_selected_badge"]
 bg_color = Color(0.0392157, 0.647059, 0.643137, 1)
-corner_radius_top_left = 32
-corner_radius_top_right = 32
-corner_radius_bottom_right = 32
-corner_radius_bottom_left = 32
+corner_radius_top_left = 39
+corner_radius_top_right = 39
+corner_radius_bottom_right = 39
+corner_radius_bottom_left = 39
 shadow_color = Color(0.352941, 0.211765, 0.109804, 0.16)
 shadow_size = 4
 shadow_offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxFlat" id="Style_option"]
-bg_color = Color(1, 0.972549, 0.894118, 0.96)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 8
-border_color = Color(0.741176, 0.576471, 0.337255, 0.5)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
-shadow_color = Color(0.352941, 0.211765, 0.109804, 0.14)
-shadow_size = 8
-shadow_offset = Vector2(0, 7)
-
-[sub_resource type="StyleBoxFlat" id="Style_top_yellow"]
-bg_color = Color(1, 0.745098, 0.25098, 1)
-corner_radius_top_left = 95
-corner_radius_top_right = 95
-corner_radius_bottom_right = 95
-corner_radius_bottom_left = 95
 
 [sub_resource type="StyleBoxFlat" id="Style_progress_orange"]
 bg_color = Color(0.760784, 0.388235, 0.117647, 0.9)
@@ -199,26 +170,12 @@ corner_radius_top_right = 23
 corner_radius_bottom_right = 23
 corner_radius_bottom_left = 23
 
-[sub_resource type="StyleBoxFlat" id="Style_top_coral"]
-bg_color = Color(1, 0.466667, 0.345098, 1)
-corner_radius_top_left = 95
-corner_radius_top_right = 95
-corner_radius_bottom_right = 95
-corner_radius_bottom_left = 95
-
 [sub_resource type="StyleBoxFlat" id="Style_progress_coral"]
 bg_color = Color(0.721569, 0.309804, 0.286275, 0.9)
 corner_radius_top_left = 23
 corner_radius_top_right = 23
 corner_radius_bottom_right = 23
 corner_radius_bottom_left = 23
-
-[sub_resource type="StyleBoxFlat" id="Style_top_mint"]
-bg_color = Color(0.607843, 0.835294, 0.65098, 1)
-corner_radius_top_left = 95
-corner_radius_top_right = 95
-corner_radius_bottom_right = 95
-corner_radius_bottom_left = 95
 
 [sub_resource type="StyleBoxFlat" id="Style_progress_mint"]
 bg_color = Color(0.25098, 0.65098, 0.533333, 0.9)
@@ -555,8 +512,6 @@ theme_override_styles/panel = SubResource("Style_empty")
 
 [node name="Icon" type="TextureRect" parent="Panel/CategoryCard/ButtonCitasCelebres/Top" unique_id=804501057]
 layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
 offset_right = 150.0
 offset_bottom = 150.0
 mouse_filter = 2
@@ -611,7 +566,7 @@ layout_mode = 0
 offset_left = 45.0
 offset_top = 349.0
 offset_right = 295.0
-offset_bottom = 359.0
+offset_bottom = 364.0
 mouse_filter = 2
 theme_override_styles/background = SubResource("Style_progress_background")
 theme_override_styles/fill = SubResource("Style_progress_blue")
@@ -635,10 +590,10 @@ vertical_alignment = 1
 [node name="Selected" type="Panel" parent="Panel/CategoryCard/ButtonCitasCelebres" unique_id=1327637118]
 visible = false
 layout_mode = 0
-offset_left = 364.0
-offset_top = -12.0
-offset_right = 424.0
-offset_bottom = 48.0
+offset_left = 355.0
+offset_top = -21.0
+offset_right = 433.0
+offset_bottom = 57.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
@@ -651,7 +606,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 45
+theme_override_font_sizes/font_size = 59
 text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -680,8 +635,6 @@ theme_override_styles/panel = SubResource("Style_empty")
 
 [node name="Icon" type="TextureRect" parent="Panel/CategoryCard/ButtonCuriosidades/Top" unique_id=568640129]
 layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
 offset_right = 150.0
 offset_bottom = 150.0
 mouse_filter = 2
@@ -736,7 +689,7 @@ layout_mode = 0
 offset_left = 45.0
 offset_top = 349.0
 offset_right = 295.0
-offset_bottom = 359.0
+offset_bottom = 364.0
 mouse_filter = 2
 theme_override_styles/background = SubResource("Style_progress_background")
 theme_override_styles/fill = SubResource("Style_progress_orange")
@@ -760,10 +713,10 @@ vertical_alignment = 1
 [node name="Selected" type="Panel" parent="Panel/CategoryCard/ButtonCuriosidades" unique_id=1108882097]
 visible = false
 layout_mode = 0
-offset_left = 364.0
-offset_top = -12.0
-offset_right = 424.0
-offset_bottom = 48.0
+offset_left = 355.0
+offset_top = -21.0
+offset_right = 433.0
+offset_bottom = 57.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
@@ -776,7 +729,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 45
+theme_override_font_sizes/font_size = 59
 text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -805,8 +758,6 @@ theme_override_styles/panel = SubResource("Style_empty")
 
 [node name="Icon" type="TextureRect" parent="Panel/CategoryCard/ButtonEfemerides/Top" unique_id=74085328]
 layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
 offset_right = 150.0
 offset_bottom = 150.0
 mouse_filter = 2
@@ -861,7 +812,7 @@ layout_mode = 0
 offset_left = 45.0
 offset_top = 349.0
 offset_right = 295.0
-offset_bottom = 359.0
+offset_bottom = 364.0
 mouse_filter = 2
 theme_override_styles/background = SubResource("Style_progress_background")
 theme_override_styles/fill = SubResource("Style_progress_coral")
@@ -885,10 +836,10 @@ vertical_alignment = 1
 [node name="Selected" type="Panel" parent="Panel/CategoryCard/ButtonEfemerides" unique_id=1948927934]
 visible = false
 layout_mode = 0
-offset_left = 364.0
-offset_top = -12.0
-offset_right = 424.0
-offset_bottom = 48.0
+offset_left = 355.0
+offset_top = -21.0
+offset_right = 433.0
+offset_bottom = 57.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
@@ -901,7 +852,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 39
+theme_override_font_sizes/font_size = 51
 text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -930,8 +881,6 @@ theme_override_styles/panel = SubResource("Style_empty")
 
 [node name="Icon" type="TextureRect" parent="Panel/CategoryCard/ButtonFragmentosLiterarios/Top" unique_id=1287931999]
 layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
 offset_right = 150.0
 offset_bottom = 150.0
 mouse_filter = 2
@@ -986,7 +935,7 @@ layout_mode = 0
 offset_left = 45.0
 offset_top = 349.0
 offset_right = 295.0
-offset_bottom = 359.0
+offset_bottom = 364.0
 mouse_filter = 2
 theme_override_styles/background = SubResource("Style_progress_background")
 theme_override_styles/fill = SubResource("Style_progress_mint")
@@ -1010,10 +959,10 @@ vertical_alignment = 1
 [node name="Selected" type="Panel" parent="Panel/CategoryCard/ButtonFragmentosLiterarios" unique_id=2046472350]
 visible = false
 layout_mode = 0
-offset_left = 364.0
-offset_top = -12.0
-offset_right = 424.0
-offset_bottom = 48.0
+offset_left = 355.0
+offset_top = -21.0
+offset_right = 433.0
+offset_bottom = 57.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
@@ -1026,7 +975,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 39
+theme_override_font_sizes/font_size = 51
 text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -1123,6 +1072,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Divider" type="HSeparator" parent="Panel/ModeCard/ButtonQuick" unique_id=816640749]
+visible = false
 layout_mode = 0
 offset_left = 25.0
 offset_top = 252.0
@@ -1171,10 +1121,10 @@ vertical_alignment = 1
 [node name="Selected" type="Panel" parent="Panel/ModeCard/ButtonQuick" unique_id=1215162912]
 visible = false
 layout_mode = 0
-offset_left = 364.0
-offset_top = -12.0
-offset_right = 424.0
-offset_bottom = 48.0
+offset_left = 355.0
+offset_top = -21.0
+offset_right = 433.0
+offset_bottom = 57.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
@@ -1187,7 +1137,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 39
+theme_override_font_sizes/font_size = 51
 text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -1242,6 +1192,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Divider" type="HSeparator" parent="Panel/ModeCard/ButtonCryptogram" unique_id=214043425]
+visible = false
 layout_mode = 0
 offset_left = 25.0
 offset_top = 252.0
@@ -1290,10 +1241,10 @@ vertical_alignment = 1
 [node name="Selected" type="Panel" parent="Panel/ModeCard/ButtonCryptogram" unique_id=1412201366]
 visible = false
 layout_mode = 0
-offset_left = 364.0
-offset_top = -12.0
-offset_right = 424.0
-offset_bottom = 48.0
+offset_left = 355.0
+offset_top = -21.0
+offset_right = 433.0
+offset_bottom = 57.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
@@ -1306,7 +1257,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 39
+theme_override_font_sizes/font_size = 51
 text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1

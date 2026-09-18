@@ -30,6 +30,7 @@ const ICON_BROWN := Color(0.55, 0.38, 0.24, 1)
 
 var _item: Dictionary = {}
 var _play_button: Button
+var _play_wrap: CenterContainer
 var _completed_box: VBoxContainer
 
 @onready var brand_cifra: Label = $Header/Brand/Cifra
@@ -43,8 +44,8 @@ var _completed_box: VBoxContainer
 
 
 func _ready() -> void:
-	brand_cifra.text = tr("Cipher")
-	brand_letra.text = tr("Letter")
+	if brand_cifra:
+		brand_cifra.get_parent().visible = false
 	title_label.text = tr("DailyChallenge")
 	tagline_label.text = tr("DailyTagline")
 	version_label.text = "%s %s" % [tr("Version"), PlayerPrefs.version_display()]
@@ -92,11 +93,14 @@ func _build_content() -> void:
 	var spacer := Control.new()
 	spacer.custom_minimum_size = Vector2(0, 24)
 	body.add_child(spacer)
+	_play_wrap = CenterContainer.new()
+	_play_wrap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_play_button = _make_play_button()
+	_play_wrap.add_child(_play_button)
 	_completed_box = _make_completed_box()
-	footer.add_child(_play_button)
+	footer.add_child(_play_wrap)
 	footer.add_child(_completed_box)
-	_play_button.visible = not done
+	_play_wrap.visible = not done
 	_completed_box.visible = done
 	if _item.is_empty():
 		_play_button.disabled = true
@@ -125,13 +129,13 @@ func _date_card(done: bool) -> Panel:
 	var date := Label.new()
 	date.text = GameManager.format_long_date()
 	date.add_theme_font_override("font", FONT_UI)
-	date.add_theme_font_size_override("font_size", 38)
+	date.add_theme_font_size_override("font_size", 42)
 	date.add_theme_color_override("font_color", INK)
 	col.add_child(date)
 	var status := Label.new()
 	status.text = tr("DailyCompletedShort") if done else tr("DailyAvailable")
 	status.add_theme_font_override("font", FONT_UI)
-	status.add_theme_font_size_override("font_size", 36)
+	status.add_theme_font_size_override("font_size", 40)
 	status.add_theme_color_override("font_color", Color(0.18, 0.55, 0.32, 1) if done else INK_SOFT)
 	col.add_child(status)
 	var sparkles := Label.new()
@@ -173,10 +177,8 @@ func _details_card() -> PanelContainer:
 		tr("DailyDifficulty").replace("%s", "").strip_edges(),
 		diff_name
 	], ORANGE))
-	col.add_child(_centered_meta(ICON_CLOCK, tr("DailyEstimated") % (
-		tr("TimeCryptoRange") if is_crypto else tr("TimeQuickRange")
-	), ICON_TEAL))
-	col.add_child(_centered_text(_teaser_for(cat_id), 32, INK_SOFT))
+	col.add_child(_centered_meta(ICON_CLOCK, tr("DailyEstimated") % _daily_time_range(), ICON_TEAL))
+	col.add_child(_centered_text(_teaser_for(cat_id), 36, INK_SOFT))
 	return card
 
 
@@ -228,7 +230,10 @@ func _how_card() -> PanelContainer:
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	col.add_theme_constant_override("separation", 8)
 	margin.add_child(col)
-	col.add_child(_ruled_title(tr("DailyHowTitle")))
+	col.add_child(_ruled_title(tr("DailyHowTitle").to_upper()))
+	var title_gap := Control.new()
+	title_gap.custom_minimum_size = Vector2(0, 20)
+	col.add_child(title_gap)
 	var how4 := tr("DailyHow4")
 	if how4 == "DailyHow4":
 		how4 = "El mismo puzle para todos los jugadores."
@@ -239,20 +244,28 @@ func _how_card() -> PanelContainer:
 			sep.custom_minimum_size = Vector2(0, 2)
 			sep.color = Color(0.9, 0.84, 0.74, 0.35)
 			col.add_child(sep)
-		col.add_child(_centered_text(lines[i], 36, INK))
+		col.add_child(_centered_text(lines[i], 40, INK))
 	return card
 
 
 func _make_play_button() -> Button:
 	var button := Button.new()
-	button.custom_minimum_size = Vector2(0, 132)
-	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var caption := tr("DailyPlay")
+	var font_size := 48
+	var text_w := FONT_UI.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	var side_pad := 56
+	var icon_w := 44
+	var gap := 14
+	button.custom_minimum_size = Vector2(ceili(text_w) + icon_w + gap + side_pad * 2, 120)
+	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	button.focus_mode = Control.FOCUS_NONE
 	button.pressed.connect(_on_play_pressed)
 	var style := StyleBoxFlat.new()
 	style.bg_color = ORANGE
 	style.set_border_width_all(0)
-	style.set_corner_radius_all(66)
+	style.content_margin_left = side_pad
+	style.content_margin_right = side_pad
+	style.set_corner_radius_all(60)
 	style.shadow_color = Color(0.96, 0.51, 0.01, 0.28)
 	style.shadow_size = 10
 	style.shadow_offset = Vector2(0, 6)
@@ -262,12 +275,14 @@ func _make_play_button() -> Button:
 	button.add_theme_stylebox_override("focus", style)
 	var row := HBoxContainer.new()
 	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	row.offset_left = side_pad
+	row.offset_right = -side_pad
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", 16)
+	row.add_theme_constant_override("separation", gap)
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	button.add_child(row)
 	var icon := TextureRect.new()
-	icon.custom_minimum_size = Vector2(48, 48)
+	icon.custom_minimum_size = Vector2(44, 44)
 	icon.texture = ICON_PLAY
 	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -275,9 +290,9 @@ func _make_play_button() -> Button:
 	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(icon)
 	var label := Label.new()
-	label.text = tr("DailyPlay")
+	label.text = caption
 	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 46)
+	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", Color.WHITE)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(label)
@@ -472,7 +487,7 @@ func _centered_meta(icon_tex: Texture2D, text: String, icon_color: Color = INK_S
 	label.text = text
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 34)
+	label.add_theme_font_size_override("font_size", 42)
 	label.add_theme_color_override("font_color", INK)
 	row.add_child(label)
 	return row
@@ -486,7 +501,7 @@ func _ruled_title(text: String) -> HBoxContainer:
 	var label := Label.new()
 	label.text = text
 	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 38)
+	label.add_theme_font_size_override("font_size", 42)
 	label.add_theme_color_override("font_color", INK)
 	row.add_child(label)
 	row.add_child(_rule())
@@ -499,6 +514,11 @@ func _rule() -> ColorRect:
 	line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	line.color = Color(0.78, 0.62, 0.42, 0.5)
 	return line
+
+
+func _daily_time_range() -> String:
+	var value := tr("DailyTimeRange")
+	return "3 – 5 min" if value == "DailyTimeRange" or value.is_empty() else value
 
 
 func _teaser_for(cat_id: String) -> String:

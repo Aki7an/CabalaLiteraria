@@ -5,6 +5,8 @@ const COLOR_RED := Color("8B1E1E")
 const COLOR_INK := Color("3D2B1F")
 const COLOR_CHECK_ON := Color(0.93, 0.84, 0.68, 1)
 const COLOR_CHECK_OFF := Color(1, 0.98, 0.93, 1)
+const ZOOM_S := 0.7
+const ZOOM_FROM := 0.65
 const COPY := {
 	"TutReveal": {
 		"es": "REVELAR", "en": "REVEAL", "de": "AUFDECKEN",
@@ -102,6 +104,9 @@ const COPY := {
 @onready var _cancel: Button = $Center/Card/Margin/Content/Buttons/ButtonCancel
 @onready var _reveal_title: Label = $Center/Card/Margin/Content/Buttons/ButtonReveal/Title
 
+var _closing := false
+var _dim_a := 0.58
+
 
 func _ready() -> void:
 	add_to_group("RevealOverlay")
@@ -109,6 +114,7 @@ func _ready() -> void:
 	_apply_locale()
 	_update_letters()
 	gui_input.connect(_on_background_input)
+	_play_zoom_in()
 
 
 func _apply_locale() -> void:
@@ -170,16 +176,55 @@ func _letters_to_check() -> PackedStringArray:
 	return letters
 
 
+func _play_zoom_in() -> void:
+	_dim_a = color.a
+	color.a = 0.0
+	card.scale = Vector2(ZOOM_FROM, ZOOM_FROM)
+	card.modulate.a = 0.0
+	await get_tree().process_frame
+	if not is_instance_valid(card):
+		return
+	card.pivot_offset = card.size * 0.5
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(card, "scale", Vector2.ONE, ZOOM_S)
+	tween.tween_property(card, "modulate:a", 1.0, ZOOM_S)
+	tween.tween_property(self, "color:a", _dim_a, ZOOM_S)
+
+
+func _dismiss() -> void:
+	if _closing:
+		return
+	_closing = true
+	if is_instance_valid(card):
+		card.pivot_offset = card.size * 0.5
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	if is_instance_valid(card):
+		tween.tween_property(card, "scale", Vector2(ZOOM_FROM, ZOOM_FROM), ZOOM_S)
+		tween.tween_property(card, "modulate:a", 0.0, ZOOM_S)
+	tween.tween_property(self, "color:a", 0.0, ZOOM_S)
+	await tween.finished
+	if is_instance_valid(self):
+		queue_free()
+
+
 func _on_background_input(event: InputEvent) -> void:
+	if _closing:
+		return
 	if not (event is InputEventMouseButton and event.pressed):
 		return
 	if card.get_global_rect().has_point((event as InputEventMouseButton).global_position):
 		return
 	SoundManager.play("ButtonClick")
-	queue_free()
+	await _dismiss()
 
 
 func _on_skip_pressed(_pressed: bool) -> void:
+	if _closing:
+		return
 	SoundManager.play("ButtonClick")
 	var checked := skip_button.button_pressed
 	skip_mark.text = "✓" if checked else ""
@@ -190,14 +235,18 @@ func _on_skip_pressed(_pressed: bool) -> void:
 
 
 func _on_cancel_pressed() -> void:
+	if _closing:
+		return
 	SoundManager.play("ButtonClick")
-	queue_free()
+	await _dismiss()
 
 
 func _on_reveal_pressed() -> void:
+	if _closing:
+		return
 	SoundManager.play("ButtonClick")
 	if skip_button.button_pressed:
 		PlayerPrefs.skip_reveal_dialog = true
 		PlayerPrefs.save_prefs()
-	queue_free()
+	await _dismiss()
 	GameManager.reveal_assignment_errors()
