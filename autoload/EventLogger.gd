@@ -108,8 +108,6 @@ func _submit_async() -> void:
 	if typeof(PlayFabTools) == TYPE_NIL:
 		discard_session()
 		return
-	var sheets_ok := await PlayFabTools.export_trace_to_google_sheets(payload)
-	print("Google Sheets export: ", sheets_ok)
 	var playfab_ok := await PlayFabTools.send_puzzle_trace(payload)
 	print("PlayFab trace: ", playfab_ok)
 	discard_session()

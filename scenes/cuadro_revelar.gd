@@ -106,6 +106,7 @@ const COPY := {
 
 var _closing := false
 var _dim_a := 0.58
+var _skip_blink: Tween
 
 
 func _ready() -> void:
@@ -191,12 +192,37 @@ func _play_zoom_in() -> void:
 	tween.tween_property(card, "scale", Vector2.ONE, ZOOM_S)
 	tween.tween_property(card, "modulate:a", 1.0, ZOOM_S)
 	tween.tween_property(self, "color:a", _dim_a, ZOOM_S)
+	await tween.finished
+	_start_skip_blink()
+
+
+func _start_skip_blink() -> void:
+	if _skip_text == null or _closing:
+		return
+	if is_instance_valid(_skip_blink):
+		_skip_blink.kill()
+	_skip_text.modulate.a = 1.0
+	_skip_blink = create_tween()
+	_skip_blink.set_loops()
+	_skip_blink.set_trans(Tween.TRANS_SINE)
+	_skip_blink.set_ease(Tween.EASE_IN_OUT)
+	_skip_blink.tween_property(_skip_text, "modulate:a", 0.28, 0.45)
+	_skip_blink.tween_property(_skip_text, "modulate:a", 1.0, 0.45)
+
+
+func _stop_skip_blink() -> void:
+	if is_instance_valid(_skip_blink):
+		_skip_blink.kill()
+	_skip_blink = null
+	if _skip_text:
+		_skip_text.modulate.a = 1.0
 
 
 func _dismiss() -> void:
 	if _closing:
 		return
 	_closing = true
+	_stop_skip_blink()
 	if is_instance_valid(card):
 		card.pivot_offset = card.size * 0.5
 	var tween := create_tween()

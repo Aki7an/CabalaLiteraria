@@ -1,8 +1,12 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=32 format=3]
 
 [ext_resource type="Script" path="res://scenes/menu_game_over.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
 [ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="3_star"]
+[ext_resource type="Texture2D" uid="uid://br1sokjc4hmqj" path="res://images/ui_icon_x.svg" id="4_x"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_instagram.svg" id="5_ig"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_facebook.svg" id="6_fb"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_tiktok.svg" id="7_tt"]
 
 [sub_resource type="StyleBoxFlat" id="Style_backdrop"]
 bg_color = Color(0.12, 0.085, 0.045, 0.72)
@@ -158,12 +162,147 @@ shadow_size = 14
 shadow_offset = Vector2(0, 11)
 
 [sub_resource type="StyleBoxFlat" id="Style_feedback_pressed"]
-bg_color = Color(0.05, 0.5, 0.52, 1)
+bg_color = Color(0.06, 0.5, 0.52, 1)
 border_width_left = 6
 border_width_top = 13
 border_width_right = 6
 border_width_bottom = 6
-border_color = Color(0.025, 0.31, 0.34, 1)
+border_color = Color(0.03, 0.3, 0.32, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share"]
+bg_color = Color(0.08, 0.62, 0.64, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.035, 0.36, 0.39, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.02, 0.22, 0.24, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_pressed"]
+bg_color = Color(0.06, 0.5, 0.52, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03, 0.3, 0.32, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_x"]
+bg_color = Color(0.07, 0.07, 0.08, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.02, 0.02, 0.03, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.02, 0.02, 0.03, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_x_pressed"]
+bg_color = Color(0.03, 0.03, 0.04, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.01, 0.01, 0.015, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_ig"]
+bg_color = Color(0.86, 0.22, 0.48, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.58, 0.08, 0.3, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.42, 0.05, 0.18, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_ig_pressed"]
+bg_color = Color(0.72, 0.14, 0.38, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.48, 0.06, 0.24, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_fb"]
+bg_color = Color(0.09, 0.47, 0.95, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.05, 0.3, 0.7, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.04, 0.16, 0.4, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_fb_pressed"]
+bg_color = Color(0.06, 0.36, 0.78, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.04, 0.22, 0.52, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_tt"]
+bg_color = Color(0.08, 0.08, 0.1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.1, 0.78, 0.82, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.02, 0.02, 0.03, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_tt_pressed"]
+bg_color = Color(0.04, 0.04, 0.05, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.08, 0.62, 0.66, 1)
 corner_radius_top_left = 38
 corner_radius_top_right = 38
 corner_radius_bottom_right = 38
@@ -507,5 +646,116 @@ theme_override_styles/pressed = SubResource("Style_feedback_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
 text = "Valora puzle"
 
+[node name="ShareTitle" type="Label" parent="MainCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 36.0
+offset_top = 2010.0
+offset_right = 1110.0
+offset_bottom = 2078.0
+theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+text = "Compartir Resultados en RRSS"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ButtonShareX" type="Button" parent="MainCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 36.0
+offset_top = 2088.0
+offset_right = 286.0
+offset_bottom = 2238.0
+focus_mode = 0
+icon = ExtResource("4_x")
+expand_icon = true
+icon_alignment = 1
+vertical_icon_alignment = 1
+theme_override_constants/icon_max_width = 64
+theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_styles/normal = SubResource("Style_share_x")
+theme_override_styles/hover = SubResource("Style_share_x")
+theme_override_styles/pressed = SubResource("Style_share_x_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+tooltip_text = "X"
+
+[node name="ButtonShareInstagram" type="Button" parent="MainCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 310.0
+offset_top = 2088.0
+offset_right = 560.0
+offset_bottom = 2238.0
+focus_mode = 0
+icon = ExtResource("5_ig")
+expand_icon = true
+icon_alignment = 1
+vertical_icon_alignment = 1
+theme_override_constants/icon_max_width = 64
+theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_styles/normal = SubResource("Style_share_ig")
+theme_override_styles/hover = SubResource("Style_share_ig")
+theme_override_styles/pressed = SubResource("Style_share_ig_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+tooltip_text = "Instagram"
+
+[node name="ButtonShareFacebook" type="Button" parent="MainCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 584.0
+offset_top = 2088.0
+offset_right = 834.0
+offset_bottom = 2238.0
+focus_mode = 0
+icon = ExtResource("6_fb")
+expand_icon = true
+icon_alignment = 1
+vertical_icon_alignment = 1
+theme_override_constants/icon_max_width = 64
+theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_styles/normal = SubResource("Style_share_fb")
+theme_override_styles/hover = SubResource("Style_share_fb")
+theme_override_styles/pressed = SubResource("Style_share_fb_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+tooltip_text = "Facebook"
+
+[node name="ButtonShareTikTok" type="Button" parent="MainCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 858.0
+offset_top = 2088.0
+offset_right = 1110.0
+offset_bottom = 2238.0
+focus_mode = 0
+icon = ExtResource("7_tt")
+expand_icon = true
+icon_alignment = 1
+vertical_icon_alignment = 1
+theme_override_constants/icon_max_width = 64
+theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_styles/normal = SubResource("Style_share_tt")
+theme_override_styles/hover = SubResource("Style_share_tt")
+theme_override_styles/pressed = SubResource("Style_share_tt_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+tooltip_text = "TikTok"
+
 [connection signal="pressed" from="MainCard/ButtonBack" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="MainCard/ButtonFeedback" to="." method="_on_button_feedback_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareX" to="." method="_on_share_x_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareInstagram" to="." method="_on_share_instagram_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareFacebook" to="." method="_on_share_facebook_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareTikTok" to="." method="_on_share_tiktok_pressed"]

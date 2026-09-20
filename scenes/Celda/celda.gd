@@ -2,7 +2,7 @@ extends Control
 class_name Celda
 
 @export var celda_mostrada: bool  = false
-## Locked cells (initial gifts or verified-correct) cannot be selected or changed.
+## Locked cells (initial gifts or verified-correct) cannot change letter; green cells can still receive color.
 @export var bloqueada: bool = false
 ## Gifted at the start of the puzzle (grey). Turns green on reveal.
 @export var es_regalo_inicial: bool = false
@@ -224,7 +224,7 @@ func asignar_letra(order:int) -> void:
 	label_numero.add_theme_font_size_override("font_size",font_size_asignada)
 
 func _on_button_pressed() -> void:
-	if bloqueada:
+	if bloqueada and not revelada_verde:
 		return
 	print("Tocada CELDA con letra:", letra, " y número:", numero, " orden:" , orden)
 		

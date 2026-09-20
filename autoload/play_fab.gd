@@ -11,8 +11,6 @@ var _seed_run_nonce: String = ""  # identificador único de esta ejecución
 
 const LEADERBOARD_NAME: String = "Score"  # nombre de la estadística
 const TRACE_CHUNK_CHARS := 8500
-const GOOGLE_SHEETS_WEBHOOK := "https://script.google.com/macros/s/AKfycbwBmExH_Pu04tJNmaUWhrbkDY9NsozWlQyi9Woz1Fkua_Ns3bYboTHM2_L-YuttXcQ4eQ/exec"
-const GOOGLE_SHEETS_KEY := "cl-partidas-7f3a9c2e"
 
 ## Ajusta tu TitleId aquí o desde fuera (set_title_id)
 @export var TITLE_ID: String = "1BC2FD"
@@ -40,8 +38,10 @@ func _ready() -> void:
 			GameManager.ensure_online_identity()
 			await _update_player_display_name(GameManager.player_name)
 			sync_player_language(GameManager.locale_code())
+		await sync_server_time()
 	else:
 		print("No se pudo iniciar sesión en PlayFab.")
+		await sync_server_time()
 	
 
 
@@ -125,6 +125,7 @@ func login_with_custom_id(custom_id: String, p_create: bool = true) -> bool:
 	session_ticket = str(data["SessionTicket"])
 	playfab_id = str(data.get("PlayFabId", ""))
 	newly_created = bool(data.get("NewlyCreated", false))
+	_apply_http_date_headers(resp_headers)
 
 	# --- Debug/Estado en consola ---
 	print("✅ PlayFab login OK — PlayFabId=%s | NewlyCreated=%s" % [playfab_id, str(newly_created)])
@@ -135,6 +136,141 @@ func login_with_custom_id(custom_id: String, p_create: bool = true) -> bool:
 ## Utilidad: ¿estamos autenticados?
 func is_logged_in() -> bool:
 	return session_ticket != ""
+
+
+func sync_server_time() -> bool:
+	if is_logged_in() and await _sync_time_from_playfab():
+		return true
+	if await _sync_time_from_http_date("https://www.google.com/generate_204"):
+		return true
+	if await _sync_time_from_http_date("https://cloudflare.com"):
+		return true
+	push_warning("No se pudo sincronizar la hora de red; el reto diario usa UTC local.")
+	return false
+
+
+func _sync_time_from_playfab() -> bool:
+	var url := "https://%s.playfabapi.com/Client/GetTime" % TITLE_ID
+	var req := HTTPRequest.new()
+	add_child(req)
+	req.timeout = 12
+	var err := req.request(
+		url,
+		PackedStringArray([
+			"Content-Type: application/json",
+			"Accept: application/json",
+			"Accept-Encoding: identity",
+			"X-Authorization: " + session_ticket,
+			"X-ReportErrorAsSuccess: true",
+		]),
+		HTTPClient.METHOD_POST,
+		"{}"
+	)
+	if err != OK:
+		req.queue_free()
+		return false
+	var r: Array = await req.request_completed
+	req.queue_free()
+	_apply_http_date_headers(r[2])
+	var parsed: Variant = JSON.parse_string((r[3] as PackedByteArray).get_string_from_utf8())
+	if not (parsed is Dictionary):
+		return typeof(GameManager) != TYPE_NIL and GameManager.has_server_time()
+	var json: Dictionary = parsed
+	if int(json.get("code", r[1])) != 200:
+		return typeof(GameManager) != TYPE_NIL and GameManager.has_server_time()
+	var data_any: Variant = json.get("data", {})
+	var data: Dictionary = data_any if data_any is Dictionary else {}
+	var unix := _unix_from_iso8601(str(data.get("Time", "")))
+	if unix <= 0:
+		return typeof(GameManager) != TYPE_NIL and GameManager.has_server_time()
+	_apply_server_unix(unix)
+	print("🕒 PlayFab GetTime UTC unix=%d date=%s" % [unix, GameManager.daily_date_key() if typeof(GameManager) != TYPE_NIL else ""])
+	return true
+
+
+func _sync_time_from_http_date(url: String) -> bool:
+	var req := HTTPRequest.new()
+	add_child(req)
+	req.timeout = 10
+	var err := req.request(url, PackedStringArray(["Accept: */*"]), HTTPClient.METHOD_GET)
+	if err != OK:
+		req.queue_free()
+		return false
+	var r: Array = await req.request_completed
+	req.queue_free()
+	return _apply_http_date_headers(r[2])
+
+
+func _apply_http_date_headers(headers: PackedStringArray) -> bool:
+	for raw in headers:
+		var line := str(raw)
+		if not line.to_lower().begins_with("date:"):
+			continue
+		var unix := _unix_from_http_date(line)
+		if unix > 0:
+			_apply_server_unix(unix)
+			return true
+	return false
+
+
+func _apply_server_unix(unix: int) -> void:
+	if unix > 0 and typeof(GameManager) != TYPE_NIL:
+		GameManager.apply_server_unix(unix)
+
+
+func _unix_from_iso8601(value: String) -> int:
+	var raw := value.strip_edges()
+	if raw.is_empty():
+		return 0
+	raw = raw.replace("Z", "").replace("z", "")
+	if "T" in raw:
+		var head := raw.split("+")[0].split(".")[0]
+		var parts := head.split("T")
+		if parts.size() >= 2:
+			var d := parts[0].split("-")
+			var t := parts[1].split(":")
+			if d.size() >= 3 and t.size() >= 3:
+				return int(Time.get_unix_time_from_datetime_dict({
+					"year": int(d[0]),
+					"month": int(d[1]),
+					"day": int(d[2]),
+					"hour": int(t[0]),
+					"minute": int(t[1]),
+					"second": int(float(t[2])),
+				}))
+	return 0
+
+
+func _unix_from_http_date(header: String) -> int:
+	var s := header.strip_edges()
+	var colon := s.find(":")
+	if colon >= 0:
+		s = s.substr(colon + 1).strip_edges()
+	s = s.replace(",", "")
+	var bits := s.split(" ", false)
+	# Sat 19 Sep 2026 07:57:00 GMT
+	if bits.size() < 5:
+		return 0
+	var months := {
+		"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
+		"Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12,
+	}
+	var day := int(bits[1]) if bits[1].is_valid_int() else int(bits[0])
+	var month_token := bits[2] if bits[1].is_valid_int() else bits[1]
+	var year_token := bits[3] if bits[1].is_valid_int() else bits[2]
+	var time_token := bits[4] if bits[1].is_valid_int() else bits[3]
+	var month := int(months.get(month_token, 0))
+	var hm := time_token.split(":")
+	if month <= 0 or day <= 0 or not year_token.is_valid_int() or hm.size() < 3:
+		return 0
+	return int(Time.get_unix_time_from_datetime_dict({
+		"year": int(year_token),
+		"month": month,
+		"day": day,
+		"hour": int(hm[0]),
+		"minute": int(hm[1]),
+		"second": int(float(hm[2])),
+	}))
 
 
 func sync_player_display_name(player_name: String = "") -> void:
@@ -776,82 +912,6 @@ func send_puzzle_trace(payload: Dictionary) -> bool:
 		if not sent:
 			ok = false
 	return ok
-
-
-func export_trace_to_google_sheets(payload: Dictionary) -> bool:
-	if GOOGLE_SHEETS_WEBHOOK.strip_edges() == "":
-		return false
-	var url := "%s?k=%s" % [GOOGLE_SHEETS_WEBHOOK, GOOGLE_SHEETS_KEY]
-	var sheets_payload := payload.duplicate(true)
-	sheets_payload["k"] = GOOGLE_SHEETS_KEY
-	sheets_payload["webhook_key"] = GOOGLE_SHEETS_KEY
-	var body := JSON.stringify(sheets_payload)
-	for _hop in 6:
-		var request := HTTPRequest.new()
-		add_child(request)
-		request.timeout = 45
-		request.max_redirects = 0
-		var err := request.request(
-			url,
-			PackedStringArray([
-				"Content-Type: application/json",
-				"Accept: application/json",
-			]),
-			HTTPClient.METHOD_POST,
-			body
-		)
-		if err != OK:
-			request.queue_free()
-			push_warning("No se pudo enviar la traza a Google Sheets.")
-			return false
-		var response: Array = await request.request_completed
-		request.queue_free()
-		var http_code := int(response[1])
-		var headers: PackedStringArray = response[2]
-		var text := (response[3] as PackedByteArray).get_string_from_utf8()
-		if http_code >= 300 and http_code < 400:
-			var location := _http_header_value(headers, "Location")
-			if location.is_empty():
-				push_warning("Google Sheets redirigió sin Location (http=%d)." % http_code)
-				return false
-			if location.begins_with("/"):
-				location = "https://script.google.com" + location
-			url = _sheets_url_with_key(location)
-			continue
-		if http_code < 200 or http_code >= 400:
-			push_warning("Google Sheets rechazó la traza (http=%d): %s" % [
-				http_code,
-				text.substr(0, 180),
-			])
-			return false
-		if text.find("\"ok\":false") >= 0 or text.find("\"ok\": false") >= 0:
-			push_warning("Google Sheets devolvió error: %s" % text.substr(0, 180))
-			return false
-		if text.find("\"ok\":true") >= 0 or text.find("\"ok\": true") >= 0:
-			return true
-		if text.find("<html") >= 0 or text.find("Sign in") >= 0:
-			push_warning("Google Sheets devolvió login HTML. Revisa que la app web tenga acceso 'Cualquier usuario'.")
-			return false
-		push_warning("Google Sheets respuesta inesperada: %s" % text.substr(0, 180))
-		return false
-	push_warning("Google Sheets: demasiadas redirecciones.")
-	return false
-
-
-func _sheets_url_with_key(raw_url: String) -> String:
-	var url := raw_url.strip_edges()
-	if url.find("k=") >= 0:
-		return url
-	var glue := "&" if url.find("?") >= 0 else "?"
-	return "%s%sk=%s" % [url, glue, GOOGLE_SHEETS_KEY.uri_encode()]
-
-
-func _http_header_value(headers: PackedStringArray, header_name: String) -> String:
-	var needle := header_name.to_lower() + ":"
-	for header in headers:
-		if header.to_lower().begins_with(needle):
-			return header.substr(header.find(":") + 1).strip_edges()
-	return ""
 
 
 func _chunk_trace_events(events: Array) -> Array:

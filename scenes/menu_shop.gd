@@ -72,7 +72,14 @@ func _refresh_purchase_state() -> void:
 	var owned := GameManager.has_full_game()
 	button_buy.visible = not owned
 	label_owned.visible = owned
+	if button_restore:
+		button_restore.visible = not owned
+		var restore_wrap := button_restore.get_parent() as Control
+		if restore_wrap:
+			restore_wrap.visible = not owned
 	if owned:
+		if label_restore_status:
+			label_restore_status.visible = false
 		if is_instance_valid(_buy_blink):
 			_buy_blink.kill()
 	else:
@@ -129,17 +136,62 @@ func _on_buy_resized() -> void:
 func _on_buy_pressed() -> void:
 	SoundManager.play("ButtonClick")
 	GameManager.button_blink(button_buy)
-	label_restore_status.visible = false
-	GameManager.unlock_full_game()
+	if StoreManager.is_busy() or GameManager.has_full_game():
+		return
+	_set_shop_busy(true)
+	label_restore_status.text = _t("ShopPurchasing", "Procesando compra…")
+	label_restore_status.visible = true
+	var result: Dictionary = await StoreManager.purchase_remove_ads()
+	_set_shop_busy(false)
+	_show_store_result(result, true)
 
 
 func _on_restore_pressed() -> void:
 	SoundManager.play("ButtonClick")
-	if GameManager.restore_full_game():
-		label_restore_status.text = _t("ShopOwned", label_owned.text)
-	else:
-		label_restore_status.text = _t("ShopRestoreNone", "No hay compras que restaurar.")
+	if GameManager.has_full_game():
+		_refresh_purchase_state()
+		return
+	if StoreManager.is_busy():
+		return
+	_set_shop_busy(true)
+	label_restore_status.text = _t("ShopRestoring", "Restaurando compras…")
 	label_restore_status.visible = true
+	var result: Dictionary = await StoreManager.restore_purchases()
+	_set_shop_busy(false)
+	_show_store_result(result, false)
+
+
+func _show_store_result(result: Dictionary, from_purchase: bool) -> void:
+	_refresh_purchase_state()
+	if bool(result.get("ok", false)) or GameManager.has_full_game():
+		_refresh_purchase_state()
+		return
+	if bool(result.get("cancelled", false)):
+		label_restore_status.text = _t("ShopPurchaseCancelled", "Compra cancelada.")
+		label_restore_status.visible = from_purchase
+		return
+	var code := str(result.get("error", ""))
+	if code == "none":
+		label_restore_status.text = _t("ShopRestoreNone", "No hay compras que restaurar.")
+	elif code == "unavailable":
+		label_restore_status.text = _t("ShopPurchaseUnavailable", "Las compras in-app no están disponibles en este dispositivo.")
+	elif code == "invalid_product" or code == "product_not_found":
+		label_restore_status.text = _t("ShopProductInvalid", "Apple no reconoce este producto. Revisa el ID en App Store Connect.")
+	else:
+		label_restore_status.text = _t("ShopPurchaseFailed", "No se ha podido completar la compra.")
+	label_restore_status.visible = true
+
+
+func _set_shop_busy(busy: bool) -> void:
+	if button_buy:
+		button_buy.disabled = busy
+	if button_restore:
+		button_restore.disabled = busy
+	if busy:
+		if is_instance_valid(_buy_blink):
+			_buy_blink.kill()
+	elif not GameManager.has_full_game():
+		_start_buy_blink()
 
 
 func _fill(template: String, value: Variant) -> String:

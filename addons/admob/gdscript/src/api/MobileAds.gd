@@ -23,7 +23,9 @@
 class_name MobileAds
 extends MobileSingletonPlugin
 
-static var _plugin := _get_plugin("PoingGodotAdMob")
+static var _plugin: Object:
+	get:
+		return _live_plugin("PoingGodotAdMob")
 
 static var _current_on_initialization_complete_listener: OnInitializationCompleteListener = null
 static var _current_on_ad_inspector_closed_listener: AdInspectorClosedListener = null
@@ -40,6 +42,8 @@ static func initialize(
 			safe_connect(
 				_plugin, "on_initialization_complete", _on_initialization_complete, CONNECT_ONE_SHOT
 			)
+	else:
+		printerr("[AdMob] MobileAds.initialize skipped: PoingGodotAdMob singleton is missing")
 
 
 static func set_request_configuration(request_configuration: RequestConfiguration) -> void:

@@ -23,7 +23,9 @@
 class_name ConsentInformation
 extends MobileSingletonPlugin
 
-static var _plugin := _get_plugin("PoingGodotAdMobConsentInformation")
+static var _plugin: Object:
+	get:
+		return _live_plugin("PoingGodotAdMobConsentInformation")
 
 enum ConsentStatus { UNKNOWN, NOT_REQUIRED, REQUIRED, OBTAINED }
 

@@ -63,7 +63,7 @@ var _footer_tween: Tween
 var _play_ref_width := 0.0
 var _play_step1_width := 0.0
 var _next_step1_width := 0.0
-var _opening_full_tutorial := false
+var _later_dialog: Control
 var _italic_font: FontVariation
 
 var _header: PanelContainer
@@ -254,7 +254,7 @@ func _has_point(point: Vector2) -> bool:
 
 
 func _gui_input(event: InputEvent) -> void:
-	if _reveal_sequence_running:
+	if _reveal_sequence_running or _later_dialog_open():
 		accept_event()
 		return
 	if not _is_press_event(event):
@@ -263,7 +263,7 @@ func _gui_input(event: InputEvent) -> void:
 	if _step == 6 and _menu_tutorial_demo and _menu_tutorial_demo.visible:
 		var demo := _local_rect(_menu_tutorial_demo).grow(16.0)
 		if demo.size.x > 8.0 and demo.has_point(pos):
-			_open_full_tutorial()
+			_show_tutorial_later_dialog()
 			accept_event()
 			return
 	if _step == 2 and _target_tap_rect().has_point(pos):
@@ -1820,6 +1820,73 @@ func _apply_play_ref_width() -> void:
 	_play.scale = Vector2.ONE
 
 
+func _make_game_menu_button_preview() -> Control:
+	var host := Control.new()
+	host.custom_minimum_size = Vector2(122, 133)
+	host.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	host.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	var panel := Panel.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(1, 0.56, 0.02, 1)
+	style.border_width_left = 5
+	style.border_width_top = 5
+	style.border_width_right = 5
+	style.border_width_bottom = 9
+	style.border_color = Color(0.72, 0.32, 0.02, 1)
+	style.set_corner_radius_all(30)
+	style.shadow_color = Color(0.4, 0.2, 0.03, 0.25)
+	style.shadow_size = 10
+	style.shadow_offset = Vector2(0, 8)
+	panel.add_theme_stylebox_override("panel", style)
+	host.add_child(panel)
+
+	var icon := Label.new()
+	icon.set_anchors_preset(Control.PRESET_FULL_RECT)
+	icon.offset_left = 14.0
+	icon.offset_top = 10.0
+	icon.offset_right = -14.0
+	icon.offset_bottom = -14.0
+	icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	icon.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	icon.add_theme_font_override("font", FONT)
+	icon.add_theme_font_size_override("font_size", 68)
+	icon.add_theme_color_override("font_color", Color(1, 0.976471, 0.909804, 1))
+	icon.text = "☰"
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	host.add_child(icon)
+	return host
+
+
+func _make_exit_to_menu_button_preview() -> Button:
+	var button := Button.new()
+	button.text = _t("ExitToMenu", "⌂   SALIR AL MENÚ")
+	button.focus_mode = Control.FOCUS_NONE
+	button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.custom_minimum_size = Vector2(0, 132)
+	button.add_theme_font_override("font", FONT)
+	button.add_theme_font_size_override("font_size", 36)
+	button.add_theme_color_override("font_color", Color(0.42, 0.26, 0.13, 1))
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(1, 0.982, 0.92, 1)
+	style.set_border_width_all(3)
+	style.border_width_bottom = 7
+	style.border_color = Color(0.66, 0.44, 0.2, 0.48)
+	style.set_corner_radius_all(28)
+	style.content_margin_left = 28
+	style.content_margin_right = 28
+	button.add_theme_stylebox_override("normal", style)
+	button.add_theme_stylebox_override("hover", style)
+	button.add_theme_stylebox_override("pressed", style)
+	button.add_theme_stylebox_override("disabled", style)
+	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	return button
+
+
 func _make_action_button(text: String, primary: bool) -> Button:
 	var button := Button.new()
 	button.text = text
@@ -2004,7 +2071,7 @@ func _make_tutorial_menu_demo() -> Control:
 	host.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	host.mouse_filter = Control.MOUSE_FILTER_STOP
 	host.focus_mode = Control.FOCUS_NONE
-	host.pressed.connect(_open_full_tutorial)
+	host.pressed.connect(_show_tutorial_later_dialog)
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.819608, 0.909804, 0.866667, 1)
 	style.border_width_left = 5
@@ -2234,18 +2301,110 @@ func _on_play() -> void:
 	_finish()
 
 
-func _open_full_tutorial() -> void:
-	if _opening_full_tutorial:
+func _later_dialog_open() -> bool:
+	return _later_dialog != null and is_instance_valid(_later_dialog)
+
+
+func _show_tutorial_later_dialog() -> void:
+	if _later_dialog_open():
 		return
-	_opening_full_tutorial = true
 	SoundManager.play("ButtonClick")
-	_anim_token += 1
-	GameManager.set_go_to_game_disable()
-	TransitionScreen.transition_to_black()
-	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	if not is_inside_tree():
+	var overlay := ColorRect.new()
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	overlay.color = Color(0.08, 0.04, 0.02, 0.58)
+	overlay.z_index = 120
+	add_child(overlay)
+	_later_dialog = overlay
+
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.add_child(center)
+
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(920, 0)
+	card.mouse_filter = Control.MOUSE_FILTER_STOP
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(0.996, 0.973, 0.906, 1)
+	card_style.set_corner_radius_all(36)
+	card_style.set_border_width_all(3)
+	card_style.border_width_bottom = 8
+	card_style.border_color = Color(0.62, 0.42, 0.2, 0.5)
+	card_style.shadow_color = Color(0.14, 0.08, 0.03, 0.34)
+	card_style.shadow_size = 24
+	card_style.shadow_offset = Vector2(0, 17)
+	card.add_theme_stylebox_override("panel", card_style)
+	center.add_child(card)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 48)
+	margin.add_theme_constant_override("margin_right", 48)
+	margin.add_theme_constant_override("margin_top", 44)
+	margin.add_theme_constant_override("margin_bottom", 40)
+	card.add_child(margin)
+
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 28)
+	col.alignment = BoxContainer.ALIGNMENT_CENTER
+	margin.add_child(col)
+
+	var title := Label.new()
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	title.add_theme_font_override("font", FONT)
+	title.add_theme_font_size_override("font_size", 56)
+	title.add_theme_color_override("font_color", INK)
+	title.text = _t("TutBasicLaterTitle", "TUTORIAL")
+	col.add_child(title)
+
+	var body := _make_rich(40, INK)
+	body.bbcode_enabled = false
+	body.text = _t(
+		"TutBasicLaterBody",
+		"Puedes consultar más información y detalles de cómo jugar desde el menú principal, en la opción %s.\n\nTendrás que hacerlo tras terminar esta partida.\n\nRecuerda que puedes salir de la partida desde Menú partida y Salir al menú."
+	) % _t("HowToPlay", "Tutorial")
+	col.add_child(body)
+
+	var previews := VBoxContainer.new()
+	previews.alignment = BoxContainer.ALIGNMENT_CENTER
+	previews.add_theme_constant_override("separation", 22)
+	previews.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	col.add_child(previews)
+	previews.add_child(_make_game_menu_button_preview())
+	previews.add_child(_make_exit_to_menu_button_preview())
+
+	var ok := _make_action_button(_t("OK", "OK"), true)
+	ok.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	ok.custom_minimum_size = Vector2(280, 110)
+	ok.pressed.connect(_dismiss_tutorial_later_dialog)
+	col.add_child(ok)
+
+	overlay.modulate.a = 0.0
+	card.scale = Vector2(0.88, 0.88)
+	await get_tree().process_frame
+	if not is_instance_valid(card):
 		return
-	get_tree().change_scene_to_file("res://scenes/MenuTutorial.tscn")
+	card.pivot_offset = card.size * 0.5
+	var tween := overlay.create_tween()
+	tween.set_parallel(true)
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(overlay, "modulate:a", 1.0, 0.22)
+	tween.tween_property(card, "scale", Vector2.ONE, 0.22)
+
+
+func _dismiss_tutorial_later_dialog() -> void:
+	if not _later_dialog_open():
+		return
+	SoundManager.play("ButtonClick")
+	var overlay := _later_dialog
+	_later_dialog = null
+	var tween := overlay.create_tween()
+	tween.tween_property(overlay, "modulate:a", 0.0, 0.16)
+	await tween.finished
+	if is_instance_valid(overlay):
+		overlay.queue_free()
 
 
 func _sync_skip_from_prefs() -> void:

@@ -23,15 +23,25 @@
 class_name InterstitialAdLoader
 extends MobileSingletonPlugin
 
-static var _plugin = _get_plugin("PoingGodotAdMobInterstitialAd")
+static var _plugin: Object:
+	get:
+		return _live_plugin("PoingGodotAdMobInterstitialAd")
 
 var interstitial_ad_load_callback: InterstitialAdLoadCallback
 var _uid: int
+var _native_created := false
+
+
+func _native() -> Object:
+	var plugin := _plugin
+	if plugin and not _native_created:
+		_uid = plugin.create()
+		_native_created = true
+	return plugin
 
 
 func _init():
-	if _plugin:
-		_uid = _plugin.create()
+	_native()
 
 
 func load(
@@ -39,19 +49,22 @@ func load(
 	ad_request: AdRequest,
 	interstitial_ad_load_callback := InterstitialAdLoadCallback.new()
 ) -> void:
-	if _plugin:
+	var plugin := _native()
+	if plugin:
 		self.interstitial_ad_load_callback = interstitial_ad_load_callback
 		safe_connect(
-			_plugin, "on_interstitial_ad_loaded", _on_interstitial_ad_loaded, CONNECT_DEFERRED
+			plugin, "on_interstitial_ad_loaded", _on_interstitial_ad_loaded, CONNECT_DEFERRED
 		)
 		safe_connect(
-			_plugin,
+			plugin,
 			"on_interstitial_ad_failed_to_load",
 			_on_interstitial_ad_failed_to_load,
 			CONNECT_DEFERRED
 		)
 		reference()
-		_plugin.load(ad_unit_id, ad_request.convert_to_dictionary(), ad_request.keywords, _uid)
+		plugin.load(ad_unit_id, ad_request.convert_to_dictionary(), ad_request.keywords, _uid)
+	else:
+		printerr("[AdMob] InterstitialAdLoader.load skipped: native plugin is missing")
 
 
 func _on_interstitial_ad_loaded(uid: int) -> void:

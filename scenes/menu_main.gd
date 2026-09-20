@@ -13,6 +13,8 @@ extends Control
 @onready var version_label: Label = %VersionLabel
 @onready var stars_quick_count: Label = %StarsQuickCount
 @onready var stars_crypto_count: Label = %StarsCryptoCount
+@onready var stars_quick_icon: TextureRect = $Panel/StarTotals/Rows/QuickRow/Star
+@onready var stars_crypto_icon: TextureRect = $Panel/StarTotals/Rows/CryptoRow/Star
 
 const TITLE_LETTER_GREEN := Color(0.22, 0.62, 0.28, 1)
 const TITLE_SPANISH_LETTERS := 5
@@ -40,6 +42,7 @@ func _ready() -> void:
 	_apply_title_tiles()
 	_update_version_label()
 	_refresh_star_totals()
+	call_deferred("_play_pending_star_collect")
 	_refresh_daily_button()
 	if not SignalManager.full_game_changed.is_connected(_refresh_daily_button):
 		SignalManager.full_game_changed.connect(_refresh_daily_button)
@@ -55,10 +58,32 @@ func _ready() -> void:
 
 func _refresh_star_totals(_unused: Variant = null) -> void:
 	var dashboard: Dictionary = HistoryManager.get_stats_dashboard()
+	var quick := int(dashboard.get("stars_quick", 0))
+	var crypto := int(dashboard.get("stars_cryptogram", 0))
 	if stars_quick_count:
-		stars_quick_count.text = str(int(dashboard.get("stars_quick", 0)))
+		stars_quick_count.text = str(StarCollectOverlay.displayed_total(quick, GameManager.MODE_QUICK))
 	if stars_crypto_count:
-		stars_crypto_count.text = str(int(dashboard.get("stars_cryptogram", 0)))
+		stars_crypto_count.text = str(StarCollectOverlay.displayed_total(crypto, GameManager.MODE_CRYPTOGRAM))
+
+
+func _play_pending_star_collect() -> void:
+	var covering := StarCollectOverlay.is_covering()
+	if covering:
+		StarCollectOverlay.fade_white_cover(StarCollectOverlay.collect_duration())
+	if not StarCollectOverlay.has_pending():
+		if covering:
+			await get_tree().create_timer(0.85).timeout
+		return
+	var is_crypto: bool = StarCollectOverlay.pending_mode == GameManager.MODE_CRYPTOGRAM
+	var icon := stars_crypto_icon if is_crypto else stars_quick_icon
+	var counter := stars_crypto_count if is_crypto else stars_quick_count
+	var dashboard: Dictionary = HistoryManager.get_stats_dashboard()
+	var actual: int = int(dashboard.get("stars_cryptogram" if is_crypto else "stars_quick", 0))
+	var start_value: int = StarCollectOverlay.displayed_total(actual, StarCollectOverlay.pending_mode)
+	if counter:
+		counter.text = str(start_value)
+	await StarCollectOverlay.play_to_target(icon, counter, start_value)
+	_refresh_star_totals()
 
 func _apply_labels() -> void:
 	var tagline := get_node_or_null("Panel/TaglineRow/Tagline") as Label

@@ -1,0 +1,243 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scenes/share_card.gd" id="1_script"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="3_star"]
+[ext_resource type="Texture2D" path="res://images/Icono.png" id="4_icon"]
+
+[sub_resource type="StyleBoxFlat" id="Style_header"]
+bg_color = Color(0.08, 0.62, 0.64, 1)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+
+[sub_resource type="StyleBoxFlat" id="Style_image_frame"]
+bg_color = Color(1, 0.972, 0.88, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 10
+border_color = Color(0.8, 0.62, 0.34, 0.55)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
+
+[sub_resource type="StyleBoxFlat" id="Style_footer"]
+bg_color = Color(1, 0.93, 0.74, 0.55)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[node name="ShareCard" type="ColorRect"]
+custom_minimum_size = Vector2(1080, 1350)
+offset_right = 1080.0
+offset_bottom = 1350.0
+color = Color(1, 0.955, 0.82, 1)
+script = ExtResource("1_script")
+
+[node name="Header" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1080.0
+offset_bottom = 210.0
+theme_override_styles/panel = SubResource("Style_header")
+
+[node name="AppIcon" type="TextureRect" parent="Header"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 36.0
+offset_top = 46.0
+offset_right = 156.0
+offset_bottom = 166.0
+texture = ExtResource("4_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Brand" type="Label" parent="Header"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 176.0
+offset_top = 36.0
+offset_right = 780.0
+offset_bottom = 118.0
+theme_override_colors/font_color = Color(1, 1, 0.93, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 64
+text = "CifraLetra"
+vertical_alignment = 1
+
+[node name="Mode" type="Label" parent="Header"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 176.0
+offset_top = 112.0
+offset_right = 520.0
+offset_bottom = 172.0
+theme_override_colors/font_color = Color(1, 0.96, 0.78, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+text = "Rápido"
+vertical_alignment = 1
+
+[node name="Category" type="Label" parent="Header"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 520.0
+offset_top = 112.0
+offset_right = 860.0
+offset_bottom = 172.0
+theme_override_colors/font_color = Color(1, 0.96, 0.78, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+text = "Citas"
+vertical_alignment = 1
+
+[node name="PuzzleId" type="Label" parent="Header"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 780.0
+offset_top = 48.0
+offset_right = 1044.0
+offset_bottom = 162.0
+theme_override_colors/font_color = Color(1, 1, 0.93, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+text = "ID 1047"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ImageFrame" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 246.0
+offset_right = 1008.0
+offset_bottom = 786.0
+theme_override_styles/panel = SubResource("Style_image_frame")
+
+[node name="ThemeImage" type="TextureRect" parent="ImageFrame"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = -22.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StarsRow" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 140.0
+offset_top = 820.0
+offset_right = 940.0
+offset_bottom = 980.0
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="StarsRow"]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="StarsRow"]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="StarsRow"]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="StarsRow"]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star5" type="TextureRect" parent="StarsRow"]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MetaRow" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 990.0
+offset_right = 990.0
+offset_bottom = 1048.0
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="TimeLabel" type="Label" parent="MetaRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 0.86)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+text = "Tiempo: 1:23"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="HintsLabel" type="Label" parent="MetaRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 0.86)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 34
+text = "Pistas: 0"
+horizontal_alignment = 0
+vertical_alignment = 1
+
+[node name="Footer" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 1072.0
+offset_right = 1008.0
+offset_bottom = 1288.0
+theme_override_styles/panel = SubResource("Style_footer")
+
+[node name="Challenge" type="Label" parent="Footer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 36.0
+offset_top = 22.0
+offset_right = 900.0
+offset_bottom = 138.0
+theme_override_colors/font_color = Color(0.22, 0.14, 0.08, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+text = "¿Puedes descifrarlo mejor que yo?"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Studio" type="Label" parent="Footer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 36.0
+offset_top = 142.0
+offset_right = 900.0
+offset_bottom = 196.0
+theme_override_colors/font_color = Color(0.08, 0.45, 0.48, 0.72)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "Arima Play"
+horizontal_alignment = 1
+vertical_alignment = 1

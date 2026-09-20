@@ -23,7 +23,9 @@
 class_name ConsentForm
 extends MobileSingletonPlugin
 
-static var _plugin := _get_plugin("PoingGodotAdMobUserMessagingPlatform")
+static var _plugin: Object:
+	get:
+		return _live_plugin("PoingGodotAdMobUserMessagingPlatform")
 
 var _uid: int
 

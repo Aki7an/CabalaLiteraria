@@ -37,9 +37,23 @@ const SOURCE_NONE := ""
 const SOURCE_DAILY := "daily"
 const SOURCE_PRACTICE := "practice"
 const PACK_DAILY := "daily"
+## Día 0 del reto diario para todas las instalaciones (UTC).
+const DAILY_EPOCH := {
+	"year": 2026,
+	"month": 9,
+	"day": 1,
+	"hour": 0,
+	"minute": 0,
+	"second": 0,
+}
 var session_source: String = SOURCE_NONE
 var pending_library_puzzle_id: int = -1
 var locked_record_stars: int = -1
+var _server_unix_at_sync: int = 0
+var _ticks_at_sync: int = 0
+var _has_server_time: bool = false
+var _daily_debug_id: int = -1
+var _daily_debug_date: String = ""
 
 
 func is_practice_session() -> bool:
@@ -456,6 +470,12 @@ func has_daily_access() -> bool:
 	return true
 
 
+func needs_daily_ad() -> bool:
+	if has_full_game():
+		return false
+	return not PlayerPrefs.has_daily_reward_today()
+
+
 func unlock_full_game() -> void:
 	if PlayerPrefs.full_game:
 		return
@@ -530,9 +550,42 @@ func _free_content_sort(a: Dictionary, b: Dictionary) -> bool:
 	return int(a.get("index", 0)) < int(b.get("index", 0))
 
 
+func apply_server_unix(server_unix: int) -> void:
+	if server_unix <= 0:
+		return
+	var prev_key := daily_date_key()
+	var first := not _has_server_time
+	_server_unix_at_sync = server_unix
+	_ticks_at_sync = Time.get_ticks_msec()
+	_has_server_time = true
+	if first or daily_date_key() != prev_key:
+		if typeof(SignalManager) != TYPE_NIL:
+			SignalManager.daily_puzzle_changed.emit()
+
+
+func current_unix_utc() -> int:
+	if _has_server_time:
+		var elapsed_sec := int((Time.get_ticks_msec() - _ticks_at_sync) / 1000.0)
+		return _server_unix_at_sync + maxi(elapsed_sec, 0)
+	return int(Time.get_unix_time_from_system())
+
+
+func has_server_time() -> bool:
+	return _has_server_time
+
+
 func daily_date_key() -> String:
-	var date := Time.get_datetime_dict_from_unix_time(int(Time.get_unix_time_from_system()))
+	var date := Time.get_datetime_dict_from_unix_time(current_unix_utc())
 	return "%04d-%02d-%02d" % [int(date.year), int(date.month), int(date.day)]
+
+
+func daily_epoch_unix() -> int:
+	return int(Time.get_unix_time_from_datetime_dict(DAILY_EPOCH))
+
+
+func daily_day_index() -> int:
+	var days := int(floor(float(current_unix_utc() - daily_epoch_unix()) / 86400.0))
+	return maxi(days, 0)
 
 
 func format_long_date(date_key: String = "") -> String:
@@ -564,19 +617,18 @@ func advance_daily_to_next() -> Dictionary:
 	var pool := daily_puzzle_pool()
 	if pool.is_empty():
 		return {}
-	var current_id := -1
-	if typeof(PlayerPrefs) != TYPE_NIL:
-		current_id = PlayerPrefs.daily_puzzle_id_for(daily_date_key())
-	if current_id < 0:
-		current_id = int(todays_daily_item().get("index", -1))
+	var current := todays_daily_item()
+	var current_id := int(current.get("index", -1))
 	var next_i := 0
 	for i in pool.size():
 		if int(pool[i].get("index", -1)) == current_id:
 			next_i = (i + 1) % pool.size()
 			break
 	var next: Dictionary = pool[next_i]
+	_daily_debug_date = daily_date_key()
+	_daily_debug_id = int(next.get("index", -1))
 	if typeof(PlayerPrefs) != TYPE_NIL:
-		PlayerPrefs.lock_daily_puzzle(daily_date_key(), int(next.get("index", -1)))
+		PlayerPrefs.lock_daily_puzzle(_daily_debug_date, _daily_debug_id)
 	return next
 
 
@@ -584,36 +636,25 @@ func todays_daily_item() -> Dictionary:
 	if frases_db.is_empty():
 		cargar_frases_desde_json()
 	var date_key := daily_date_key()
-	var stored_id := PlayerPrefs.daily_puzzle_id_for(date_key)
-	if stored_id >= 0:
-		var stored := get_phrase_item(stored_id)
-		if not stored.is_empty() and is_daily_puzzle(stored):
-			return stored
+	if _daily_debug_id >= 0 and _daily_debug_date == date_key:
+		var debug_item := get_phrase_item(_daily_debug_id)
+		if not debug_item.is_empty() and is_daily_puzzle(debug_item):
+			return debug_item
 	var item := _pick_daily_item(date_key)
-	if not item.is_empty():
-		PlayerPrefs.lock_daily_puzzle(date_key, int(item.get("index", -1)))
+	if not item.is_empty() and _has_server_time and typeof(PlayerPrefs) != TYPE_NIL:
+		var puzzle_id := int(item.get("index", -1))
+		if PlayerPrefs.daily_puzzle_id_for(date_key) != puzzle_id:
+			PlayerPrefs.lock_daily_puzzle(date_key, puzzle_id)
 	return item
 
 
-func _pick_daily_item(date_key: String) -> Dictionary:
-	var pool: Array = []
-	var unseen: Array = []
-	for item in frases_db:
-		if not (item is Dictionary) or not is_daily_puzzle(item):
-			continue
-		pool.append(item)
-		var puzzle_id := int(item.get("index", -1))
-		if typeof(PlayerPrefs) == TYPE_NIL or not PlayerPrefs.is_daily_discovered(puzzle_id):
-			unseen.append(item)
-	var use: Array = unseen if not unseen.is_empty() else pool
-	if use.is_empty():
+func _pick_daily_item(_date_key: String) -> Dictionary:
+	var pool := daily_puzzle_pool()
+	if pool.is_empty():
 		return {}
-	use.sort_custom(func(a, b): return int(a.get("index", 0)) < int(b.get("index", 0)))
-	var seed := "%s|%s" % [date_key, locale_code()]
-	var hashed := 2166136261
-	for i in seed.length():
-		hashed = ((hashed ^ seed.unicode_at(i)) * 16777619) & 0x7fffffff
-	return use[hashed % use.size()]
+	if not _has_server_time:
+		return pool[0]
+	return pool[daily_day_index() % pool.size()]
 
 
 func get_phrase_item(puzzle_id: int) -> Dictionary:
@@ -1192,8 +1233,25 @@ func apply_reveal_correct_number(number: int) -> void:
 		cell.mostrar_letra()
 	if letter != "":
 		mark_keyboard_letter(letter, true)
+		_clear_unverified_letter_except_number(letter, number)
 	_clear_fill_color_slots_for_numbers({number: true})
 	_penalized_reveal_errors.erase(number)
+
+
+## A confirmed letter maps to one cipher number. Remove leftover failed
+## (red) copies so those cells can receive a different letter.
+func _clear_unverified_letter_except_number(letter: String, keep_number: int) -> void:
+	var key := letter.strip_edges().to_upper()
+	if key == "":
+		return
+	for node: Node in get_tree().get_nodes_in_group("Celda"):
+		if not node is Celda:
+			continue
+		var cell := node as Celda
+		if cell.bloqueada or cell.numero == keep_number:
+			continue
+		if cell.letter_user.strip_edges().to_upper() == key:
+			cell.limpiar_letra_usuario()
 
 
 func apply_reveal_wrong_number(number: int) -> void:
@@ -1401,6 +1459,7 @@ func pinta_celdas(numero_en_celda: int, color_a_pintar: int) -> void:
 		if lista_celdas[i].numero == numero_en_celda:
 			lista_celdas[i].cambia_color(color_a_pintar)
 	PuzzleSaveManager.request_autosave()
+	SignalManager.update_rubber.emit()
 
 
 ## Removes the annotation color from every cell sharing the cipher number.
@@ -1511,6 +1570,11 @@ func update_numero_letras_reveladas(check_solution: bool = false) -> void:
 		
 		if frase_usuario == "".join(lista_letras_frase_original_sin_espacios_ni_puntuacion):
 			print ("GAME WINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN")
+			print("[AdMob] win mode=%s source=%s full_game=%s" % [
+				game_mode_actual,
+				session_source,
+				has_full_game()
+			])
 			if dificultad_actual == 1 and GameManager.level_normal_unlocked == false	:
 				# unlock dificult NORMAL
 				set_level_normal_unlocked(true)
@@ -2066,7 +2130,12 @@ func set_dificultad_ultima_partida(dificultad_ultima: int) -> void:
 ## Devuelve true si hay al menos una celda editable con letra puesta.
 func hay_letra_que_borrar() -> bool:
 	for c in get_tree().get_nodes_in_group("Celda"):
-		if (c.letter_user != "" or c.color_id != 0) and not c.bloqueada:
+		if not c is Celda:
+			continue
+		var cell := c as Celda
+		if cell.color_id != 0:
+			return true
+		if cell.letter_user != "" and not cell.bloqueada:
 			return true
 	return false
 

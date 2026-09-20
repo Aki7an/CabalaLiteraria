@@ -1,10 +1,9 @@
 extends RefCounted
 
 ## AdMob / AdSense IDs.
-## Keep USE_TEST_ADS true until Play Console + AdMob are linked.
-## App IDs must also match Project Settings → Admob → Android/iOS → App Id
-## (that value is what the export writes into the AndroidManifest).
-const USE_TEST_ADS := true
+## Production units on iOS/Android. App IDs must also match
+## Project Settings → Admob → Android/iOS → App Id.
+const USE_TEST_ADS := false
 const H5_TEST_MODE := true
 
 const TEST_APP_ID_ANDROID := "ca-app-pub-3940256099942544~3347511713"
@@ -32,6 +31,10 @@ const REWARDED_TIMEOUT_SEC := 25.0
 const MOCK_INTERSTITIAL_SEC := 1.4
 const MOCK_REWARDED_SEC := 2.0
 const UMP_UPDATE_TIMEOUT_SEC := 8.0
+
+## Leave empty for live ads. Google test-device hashes force sample creatives.
+const TEST_DEVICE_IDS: Array[String] = [
+]
 
 
 static func is_ios() -> bool:

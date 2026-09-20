@@ -23,7 +23,9 @@
 class_name RewardedAd
 extends MobileSingletonPlugin
 
-static var _plugin = _get_plugin("PoingGodotAdMobRewardedAd")
+static var _plugin: Object:
+	get:
+		return _live_plugin("PoingGodotAdMobRewardedAd")
 var full_screen_content_callback := FullScreenContentCallback.new()
 var on_ad_paid: Callable = func(_ad_value: AdValue): pass
 

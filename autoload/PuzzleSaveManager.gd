@@ -2,7 +2,7 @@ extends Node
 
 const SAVE_PATH := "user://puzzle_states.json"
 const SAVE_VERSION := 1
-const DEBUG_NEARLY_SOLVED_ID := 3075
+const DEBUG_NEARLY_SOLVED_IDS: Array[int] = [3064, 3065, 3066, 3067]
 const DEBUG_NEARLY_SOLVED_LETTER := "A"
 
 var _states: Dictionary = {}
@@ -83,7 +83,7 @@ func restore_current_puzzle() -> void:
 
 
 func _is_debug_nearly_solved(puzzle_id: int) -> bool:
-	return OS.is_debug_build() and puzzle_id == DEBUG_NEARLY_SOLVED_ID
+	return OS.is_debug_build() and DEBUG_NEARLY_SOLVED_IDS.has(puzzle_id)
 
 
 ## Debug only: leave the debug puzzle with letter A unassigned so one tap solves it.
@@ -130,8 +130,14 @@ func _apply_debug_nearly_solved() -> void:
 func _reopen_debug_nearly_solved() -> void:
 	if not OS.is_debug_build():
 		return
-	var key := str(DEBUG_NEARLY_SOLVED_ID)
-	var state: Dictionary = get_puzzle_state(DEBUG_NEARLY_SOLVED_ID)
+	for puzzle_id in DEBUG_NEARLY_SOLVED_IDS:
+		_reopen_debug_nearly_solved_id(puzzle_id)
+	_write_to_disk()
+
+
+func _reopen_debug_nearly_solved_id(puzzle_id: int) -> void:
+	var key := str(puzzle_id)
+	var state: Dictionary = get_puzzle_state(puzzle_id)
 	if state.is_empty():
 		state = {
 			"status": "in_progress",
@@ -148,10 +154,10 @@ func _reopen_debug_nearly_solved() -> void:
 	var meta: Dictionary = state.get("meta", {})
 	if meta is Dictionary:
 		meta.erase("completed_at")
-		var leftover := _debug_letter_count(DEBUG_NEARLY_SOLVED_ID, DEBUG_NEARLY_SOLVED_LETTER)
+		var leftover := _debug_letter_count(puzzle_id, DEBUG_NEARLY_SOLVED_LETTER)
 		var total := int(meta.get("letters_total", 0))
 		if total <= 0:
-			total = _debug_playable_letter_count(DEBUG_NEARLY_SOLVED_ID)
+			total = _debug_playable_letter_count(puzzle_id)
 		meta["letters_filled"] = maxi(total - leftover, 0)
 		meta["letters_total"] = total
 		state["meta"] = meta
@@ -172,7 +178,6 @@ func _reopen_debug_nearly_solved() -> void:
 			resolution["selected_number"] = leave_number
 			state["resolution"] = resolution
 	_states[key] = state
-	_write_to_disk()
 
 
 func _debug_playable_letter_count(puzzle_id: int) -> int:

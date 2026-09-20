@@ -23,7 +23,9 @@
 class_name UserMessagingPlatform
 extends MobileSingletonPlugin
 
-static var _plugin := _get_plugin("PoingGodotAdMobUserMessagingPlatform")
+static var _plugin: Object:
+	get:
+		return _live_plugin("PoingGodotAdMobUserMessagingPlatform")
 
 static var consent_information := ConsentInformation.new()
 

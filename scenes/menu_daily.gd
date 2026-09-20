@@ -2,518 +2,247 @@ extends Control
 
 const PATH_MAIN := "res://scenes/MenuMain.tscn"
 const PATH_SHOP := "res://scenes/MenuShop.tscn"
-const PATH_APP := "res://scenes/App.tscn"
 const PATH_LIBRARY := "res://scenes/MenuLibrary.tscn"
-const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
 const ICON_CITA: Texture2D = preload("res://images/Ilustres.png")
 const ICON_EFEM: Texture2D = preload("res://images/Efemerides.png")
 const ICON_CURIO: Texture2D = preload("res://images/Adivinanza.png")
 const ICON_FRAG: Texture2D = preload("res://images/FragmentosLiterarios.png")
 const ICON_QUICK: Texture2D = preload("res://images/mode_quick.svg")
 const ICON_CRYPTO: Texture2D = preload("res://images/CriptogramaIcono.png")
-const ICON_DAILY: Texture2D = preload("res://images/ui_icon_daily.svg")
-const ICON_LIBRARY: Texture2D = preload("res://images/ui_icon_library.svg")
-const ICON_CLOCK: Texture2D = preload("res://images/stats_icon_clock.svg")
 const ICON_PLAY: Texture2D = preload("res://GUI/BotonPlaySimboloTextura.png")
-const ICON_BULB: Texture2D = preload("res://images/ui_icon_bulb_white.svg")
-const ICON_SIGNAL: Texture2D = preload("res://images/ui_icon_signal.svg")
-const ICON_PEOPLE: Texture2D = preload("res://images/ui_icon_people.svg")
+const ICON_VIDEO: Texture2D = preload("res://images/ui_icon_video.svg")
 const STAR_ON: Texture2D = preload("res://images/estrella_plano.png")
 const STAR_OFF: Texture2D = preload("res://images/contorno_estrella.png")
-const INK := Color(0.22, 0.16, 0.1, 1)
-const INK_SOFT := Color(0.48, 0.36, 0.26, 0.82)
-const TEAL := Color(0.31, 0.74, 0.76, 1)
-const ORANGE := Color(0.96, 0.51, 0.01, 1)
-const CARD_WHITE := Color(1, 0.997, 0.992, 1)
-const ICON_TEAL := Color(0.22, 0.62, 0.66, 1)
-const ICON_BROWN := Color(0.55, 0.38, 0.24, 1)
+const STAR_ON_CRYPTO := Color(1, 0.55, 0.14, 1)
+const STAR_ON_QUICK := Color(1, 0.84, 0.18, 1)
+const STAR_OFF_TINT := Color(0.62, 0.52, 0.46, 0.38)
+const AD_FAIL := Color(0.78, 0.18, 0.14, 1)
 
 var _item: Dictionary = {}
-var _play_button: Button
-var _play_wrap: CenterContainer
-var _completed_box: VBoxContainer
+var _needs_ad := false
+var _ad_busy := false
+var _offline_blink: Tween
+var _thanks_color := Color(0.48, 0.36, 0.26, 0.82)
 
-@onready var brand_cifra: Label = $Header/Brand/Cifra
-@onready var brand_letra: Label = $Header/Brand/Letra
-@onready var title_label: Label = $Header/Title
-@onready var tagline_label: Label = $Header/TaglineRow/Tagline
-@onready var body: VBoxContainer = $Scroll/Body
-@onready var footer: VBoxContainer = $Footer
+@onready var title_label: Label = %Title
+@onready var tagline_label: Label = %Tagline
+@onready var date_label: Label = %DateLabel
+@onready var status_available: Label = %StatusAvailable
+@onready var status_done: Label = %StatusDone
+@onready var image_block: CenterContainer = %ImageBlock
+@onready var image_frame: Panel = %ImageFrame
+@onready var puzzle_image: TextureRect = %PuzzleImage
+@onready var completed_stamp: Panel = %CompletedStamp
+@onready var type_icon: TextureRect = %TypeIcon
+@onready var type_label: Label = %TypeLabel
+@onready var diff_label: Label = %DiffLabel
+@onready var time_label: Label = %TimeLabel
+@onready var teaser: Label = %Teaser
+@onready var ad_card: Control = %AdCard
+@onready var ad_warning: Label = %AdWarning
+@onready var ad_thanks: Label = %AdThanks
+@onready var play_wrap: Control = %PlayWrap
+@onready var play_button: Button = %PlayButton
+@onready var play_icon: TextureRect = %PlayIcon
+@onready var play_caption: Label = %PlayCaption
+@onready var completed_box: Control = %CompletedBox
+@onready var view_sheet: Button = %ViewSheet
+@onready var offline_banner: Label = %OfflineBanner
 @onready var version_label: Label = $Version
 @onready var lock_overlay: Control = $LockOverlay
+@onready var how_title: Label = %HowTitle
+@onready var how1: Label = %How1
+@onready var how2: Label = %How2
+@onready var how3: Label = %How3
+@onready var how4: Label = %How4
+@onready var stars: Array[TextureRect] = [%Star1, %Star2, %Star3, %Star4, %Star5]
 
 
 func _ready() -> void:
-	if brand_cifra:
-		brand_cifra.get_parent().visible = false
-	title_label.text = tr("DailyChallenge")
-	tagline_label.text = tr("DailyTagline")
-	version_label.text = "%s %s" % [tr("Version"), PlayerPrefs.version_display()]
-	version_label.visible = false
-	_style_back_button()
+	_apply_static_texts()
+	if ad_thanks:
+		_thanks_color = ad_thanks.get_theme_color("font_color")
+	if image_block and not image_block.resized.is_connected(_fit_image_frame):
+		image_block.resized.connect(_fit_image_frame)
+	if not SignalManager.full_game_changed.is_connected(_refresh_content):
+		SignalManager.full_game_changed.connect(_refresh_content)
+	if not SignalManager.daily_puzzle_changed.is_connected(_refresh_content):
+		SignalManager.daily_puzzle_changed.connect(_refresh_content)
+	_refresh_content()
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(_offline_blink):
+		_offline_blink.kill()
+
+
+func _apply_static_texts() -> void:
+	if title_label:
+		title_label.text = tr("DailyChallenge")
+	if tagline_label:
+		tagline_label.text = tr("DailyTagline")
+	if how_title:
+		how_title.text = tr("DailyHowTitle").to_upper()
+	if how1:
+		how1.text = tr("DailyHow1")
+	if how2:
+		how2.text = tr("DailyHow2")
+	if how3:
+		how3.text = tr("DailyHow3")
+	if how4:
+		how4.text = _t("DailyHow4", "El mismo puzle para todos los jugadores.")
+	if status_available:
+		status_available.text = tr("DailyAvailable")
+	if status_done:
+		status_done.text = tr("DailyCompletedShort")
+	if ad_warning:
+		ad_warning.text = _t("DailyAdWarning", "Mira un breve anuncio\npara desbloquear el reto de hoy.")
+	if ad_thanks:
+		ad_thanks.text = _t("DailyAdThanks", "Apoyas el desarrollo de CifraLetra. ¡Gracias!")
+	if view_sheet:
+		view_sheet.text = tr("DailyViewSheet")
+	if offline_banner:
+		offline_banner.text = _t("DailyOffline", "FUERA DE LÍNEA")
+	if version_label:
+		version_label.text = "%s %s" % [tr("Version"), PlayerPrefs.version_display()]
+	var stamp_label := completed_stamp.get_node_or_null("StampLabel") as Label if completed_stamp else null
+	if stamp_label:
+		stamp_label.text = tr("DailyCompletedShort").to_upper()
 	_apply_lock_texts()
-	if not SignalManager.full_game_changed.is_connected(_refresh_purchase_lock):
-		SignalManager.full_game_changed.connect(_refresh_purchase_lock)
-	if not SignalManager.daily_puzzle_changed.is_connected(_on_daily_puzzle_changed):
-		SignalManager.daily_puzzle_changed.connect(_on_daily_puzzle_changed)
-	_refresh_purchase_lock()
 
 
-func _refresh_purchase_lock() -> void:
-	_apply_lock_texts()
-	if not GameManager.has_daily_access():
-		$Scroll.visible = false
-		footer.visible = false
-		lock_overlay.visible = true
-		return
-	lock_overlay.visible = false
-	$Scroll.visible = true
-	footer.visible = true
+func _refresh_content(_unused: Variant = null) -> void:
 	_item = GameManager.todays_daily_item()
-	_build_content()
+	var done := (
+		PlayerPrefs.is_daily_completed_today()
+		and PlayerPrefs.daily_puzzle_id == int(_item.get("index", -1))
+	)
+	_needs_ad = (not done) and GameManager.needs_daily_ad()
+	if date_label:
+		date_label.text = GameManager.format_long_date()
+	if status_available:
+		status_available.visible = not done
+	if status_done:
+		status_done.visible = done
+	if completed_stamp:
+		completed_stamp.visible = done
+		if image_frame:
+			image_frame.clip_contents = not done
+	_fill_image()
+	_fill_details()
+	_fill_stars(done)
+	if ad_card:
+		ad_card.visible = _needs_ad
+	if play_wrap:
+		play_wrap.visible = not done
+	if completed_box:
+		completed_box.visible = done
+	_apply_play_button(_needs_ad)
+	if play_button:
+		play_button.disabled = _item.is_empty()
+	if ad_thanks:
+		ad_thanks.add_theme_color_override("font_color", _thanks_color)
+		ad_thanks.text = _t("DailyAdThanks", "Apoyas el desarrollo de CifraLetra. ¡Gracias!")
+	_refresh_offline_banner()
+	_fit_image_frame()
 
 
-func _on_daily_puzzle_changed() -> void:
-	if not GameManager.has_daily_access():
+func _fill_image() -> void:
+	if puzzle_image == null:
 		return
-	_item = GameManager.todays_daily_item()
-	_build_content()
+	var cat_id := str(_item.get("category", ""))
+	var path := GameManager.find_level_image_path(int(_item.get("image_number", -1)))
+	var tex: Texture2D = _category_icon_for(cat_id)
+	if path != "":
+		var loaded := load(path) as Texture2D
+		if loaded:
+			tex = loaded
+	puzzle_image.texture = tex
 
 
-func _build_content() -> void:
-	for child in body.get_children():
-		child.queue_free()
-	for child in footer.get_children():
-		child.queue_free()
-	var done := PlayerPrefs.is_daily_completed_today()
-	body.add_child(_date_card(done))
-	body.add_child(_how_card())
-	body.add_child(_image_block(done))
-	body.add_child(_details_card())
-	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(0, 24)
-	body.add_child(spacer)
-	_play_wrap = CenterContainer.new()
-	_play_wrap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_play_button = _make_play_button()
-	_play_wrap.add_child(_play_button)
-	_completed_box = _make_completed_box()
-	footer.add_child(_play_wrap)
-	footer.add_child(_completed_box)
-	_play_wrap.visible = not done
-	_completed_box.visible = done
-	if _item.is_empty():
-		_play_button.disabled = true
-
-
-func _date_card(done: bool) -> Panel:
-	var card := Panel.new()
-	card.custom_minimum_size = Vector2(0, 196)
-	card.add_theme_stylebox_override("panel", _white_card_style())
-	var row := HBoxContainer.new()
-	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	row.offset_left = 28
-	row.offset_right = -28
-	row.add_theme_constant_override("separation", 20)
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	card.add_child(row)
-	var icon := _circle_icon(ICON_DAILY, 128, Color(0.9, 0.97, 0.97, 1), Color.WHITE, 0.14)
-	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(icon)
-	var col := VBoxContainer.new()
-	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	col.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	col.alignment = BoxContainer.ALIGNMENT_CENTER
-	col.add_theme_constant_override("separation", 6)
-	row.add_child(col)
-	var date := Label.new()
-	date.text = GameManager.format_long_date()
-	date.add_theme_font_override("font", FONT_UI)
-	date.add_theme_font_size_override("font_size", 42)
-	date.add_theme_color_override("font_color", INK)
-	col.add_child(date)
-	var status := Label.new()
-	status.text = tr("DailyCompletedShort") if done else tr("DailyAvailable")
-	status.add_theme_font_override("font", FONT_UI)
-	status.add_theme_font_size_override("font_size", 40)
-	status.add_theme_color_override("font_color", Color(0.18, 0.55, 0.32, 1) if done else INK_SOFT)
-	col.add_child(status)
-	var sparkles := Label.new()
-	sparkles.text = "✦"
-	sparkles.add_theme_font_size_override("font_size", 40)
-	sparkles.add_theme_color_override("font_color", Color(0.98, 0.78, 0.28, 1))
-	sparkles.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	sparkles.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(sparkles)
-	return card
-
-
-func _image_block(done: bool) -> CenterContainer:
-	return _square_image(str(_item.get("category", "")), done)
-
-
-func _details_card() -> PanelContainer:
-	var card := PanelContainer.new()
-	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	card.add_theme_stylebox_override("panel", _white_card_style())
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 32)
-	margin.add_theme_constant_override("margin_right", 32)
-	margin.add_theme_constant_override("margin_top", 28)
-	margin.add_theme_constant_override("margin_bottom", 28)
-	card.add_child(margin)
-	var col := VBoxContainer.new()
-	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	col.add_theme_constant_override("separation", 16)
-	margin.add_child(col)
+func _fill_details() -> void:
 	var cat_id := str(_item.get("category", ""))
 	var mode := GameManager.level_game_mode(_item)
 	var is_crypto := mode == GameManager.MODE_CRYPTOGRAM
 	var diff_name := tr("Medium") if int(_item.get("difficulty", 1)) == 2 else GameManager.difficulty_display_name(int(_item.get("difficulty", 1)))
-	col.add_child(_centered_meta(ICON_CRYPTO if is_crypto else ICON_QUICK, tr("DailyType") % (
-		tr("Cryptogram") if is_crypto else tr("Quick")
-	), INK_SOFT))
-	col.add_child(_centered_meta(ICON_SIGNAL, "%s %s" % [
-		tr("DailyDifficulty").replace("%s", "").strip_edges(),
-		diff_name
-	], ORANGE))
-	col.add_child(_centered_meta(ICON_CLOCK, tr("DailyEstimated") % _daily_time_range(), ICON_TEAL))
-	col.add_child(_centered_text(_teaser_for(cat_id), 36, INK_SOFT))
-	return card
+	if type_icon:
+		type_icon.texture = ICON_CRYPTO if is_crypto else ICON_QUICK
+	if type_label:
+		type_label.text = tr("DailyType") % (tr("Cryptogram") if is_crypto else tr("Quick"))
+	if diff_label:
+		diff_label.text = "%s %s" % [tr("DailyDifficulty").replace("%s", "").strip_edges(), diff_name]
+	if time_label:
+		time_label.text = tr("DailyEstimated") % _daily_time_range()
+	if teaser:
+		teaser.text = _teaser_for(cat_id)
 
 
-func _square_image(cat_id: String, done: bool) -> CenterContainer:
-	var wrap := CenterContainer.new()
-	wrap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var frame := Panel.new()
-	frame.clip_contents = true
-	frame.custom_minimum_size = Vector2(760, 760)
-	var frame_style := StyleBoxFlat.new()
-	frame_style.bg_color = Color(0.93, 0.9, 0.86, 1)
-	frame_style.set_corner_radius_all(28)
-	frame.add_theme_stylebox_override("panel", frame_style)
-	var image := TextureRect.new()
-	image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	image.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var path := GameManager.find_level_image_path(int(_item.get("image_number", -1)))
-	if path != "":
-		var tex := load(path) as Texture2D
-		image.texture = tex if tex else _category_icon_for(cat_id)
-	else:
-		image.texture = _category_icon_for(cat_id)
-	frame.add_child(image)
-	if done:
-		frame.clip_contents = false
-		frame.add_child(_completed_stamp(Vector2(280, 88), 30))
-	wrap.add_child(frame)
-	wrap.resized.connect(func() -> void:
-		var side := mini(int(wrap.size.x), 820)
-		if side > 1:
-			frame.custom_minimum_size = Vector2(side, side)
-	)
-	return wrap
-
-
-func _how_card() -> PanelContainer:
-	var card := PanelContainer.new()
-	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	card.add_theme_stylebox_override("panel", _white_card_style())
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 28)
-	margin.add_theme_constant_override("margin_right", 28)
-	margin.add_theme_constant_override("margin_top", 22)
-	margin.add_theme_constant_override("margin_bottom", 22)
-	card.add_child(margin)
-	var col := VBoxContainer.new()
-	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	col.add_theme_constant_override("separation", 8)
-	margin.add_child(col)
-	col.add_child(_ruled_title(tr("DailyHowTitle").to_upper()))
-	var title_gap := Control.new()
-	title_gap.custom_minimum_size = Vector2(0, 20)
-	col.add_child(title_gap)
-	var how4 := tr("DailyHow4")
-	if how4 == "DailyHow4":
-		how4 = "El mismo puzle para todos los jugadores."
-	var lines := [tr("DailyHow1"), tr("DailyHow2"), tr("DailyHow3"), how4]
-	for i in lines.size():
-		if i > 0:
-			var sep := ColorRect.new()
-			sep.custom_minimum_size = Vector2(0, 2)
-			sep.color = Color(0.9, 0.84, 0.74, 0.35)
-			col.add_child(sep)
-		col.add_child(_centered_text(lines[i], 40, INK))
-	return card
-
-
-func _make_play_button() -> Button:
-	var button := Button.new()
-	var caption := tr("DailyPlay")
-	var font_size := 48
-	var text_w := FONT_UI.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-	var side_pad := 56
-	var icon_w := 44
-	var gap := 14
-	button.custom_minimum_size = Vector2(ceili(text_w) + icon_w + gap + side_pad * 2, 120)
-	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	button.focus_mode = Control.FOCUS_NONE
-	button.pressed.connect(_on_play_pressed)
-	var style := StyleBoxFlat.new()
-	style.bg_color = ORANGE
-	style.set_border_width_all(0)
-	style.content_margin_left = side_pad
-	style.content_margin_right = side_pad
-	style.set_corner_radius_all(60)
-	style.shadow_color = Color(0.96, 0.51, 0.01, 0.28)
-	style.shadow_size = 10
-	style.shadow_offset = Vector2(0, 6)
-	button.add_theme_stylebox_override("normal", style)
-	button.add_theme_stylebox_override("hover", style)
-	button.add_theme_stylebox_override("pressed", style)
-	button.add_theme_stylebox_override("focus", style)
-	var row := HBoxContainer.new()
-	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	row.offset_left = side_pad
-	row.offset_right = -side_pad
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", gap)
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	button.add_child(row)
-	var icon := TextureRect.new()
-	icon.custom_minimum_size = Vector2(44, 44)
-	icon.texture = ICON_PLAY
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.modulate = Color.WHITE
-	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_child(icon)
-	var label := Label.new()
-	label.text = caption
-	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", font_size)
-	label.add_theme_color_override("font_color", Color.WHITE)
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_child(label)
-	return button
-
-
-func _make_completed_box() -> VBoxContainer:
-	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 14)
-	var title := Label.new()
-	title.visible = false
-	box.add_child(title)
-	var stars := HBoxContainer.new()
-	stars.alignment = BoxContainer.ALIGNMENT_CENTER
-	stars.add_theme_constant_override("separation", 8)
-	box.add_child(stars)
+func _fill_stars(done: bool) -> void:
+	if not done:
+		return
 	var mode := GameManager.level_game_mode(_item)
 	var is_crypto := mode == GameManager.MODE_CRYPTOGRAM
 	var total := clampi(int(_item.get("difficulty", 1)), 1, 5)
 	var got := clampi(int(PlayerPrefs.daily_stars), 0, total)
-	for i in range(total):
-		var star := TextureRect.new()
-		star.custom_minimum_size = Vector2(58, 58)
-		star.texture = STAR_ON if i < got else STAR_OFF
-		star.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		star.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	for i in stars.size():
+		var star := stars[i]
+		if star == null:
+			continue
+		star.visible = i < total
 		if i < got:
-			star.modulate = Color(1, 0.55, 0.14, 1) if is_crypto else Color(1, 0.84, 0.18, 1)
+			star.texture = STAR_ON
+			star.modulate = STAR_ON_CRYPTO if is_crypto else STAR_ON_QUICK
 		else:
-			star.modulate = Color(0.62, 0.52, 0.46, 0.38)
-		stars.add_child(star)
-	var view := Button.new()
-	view.custom_minimum_size = Vector2(0, 104)
-	view.focus_mode = Control.FOCUS_NONE
-	view.text = tr("DailyViewSheet")
-	view.add_theme_font_override("font", FONT_UI)
-	view.add_theme_font_size_override("font_size", 38)
-	view.add_theme_color_override("font_color", INK)
-	var style := StyleBoxFlat.new()
-	style.bg_color = CARD_WHITE
-	style.border_color = Color(0.9, 0.84, 0.76, 0.8)
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(28)
-	style.shadow_color = Color(0.32, 0.2, 0.12, 0.08)
-	style.shadow_size = 8
-	style.shadow_offset = Vector2(0, 4)
-	view.add_theme_stylebox_override("normal", style)
-	view.add_theme_stylebox_override("hover", style)
-	view.add_theme_stylebox_override("pressed", style)
-	view.pressed.connect(_on_view_sheet_pressed)
-	box.add_child(view)
-	return box
+			star.texture = STAR_OFF
+			star.modulate = STAR_OFF_TINT
 
 
-func _completed_stamp(stamp_size: Vector2, font_size: int) -> Panel:
-	var stamp := Panel.new()
-	stamp.name = "CompletedStamp"
-	stamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	stamp.custom_minimum_size = stamp_size
-	stamp.size = stamp_size
-	stamp.position = Vector2(16, 96)
-	stamp.pivot_offset = stamp_size * 0.5
-	stamp.rotation = deg_to_rad(-22.0)
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.16, 0.5, 0.3, 0.16)
-	style.border_color = Color(0.16, 0.5, 0.3, 0.92)
-	style.set_border_width_all(6)
-	style.set_corner_radius_all(8)
-	stamp.add_theme_stylebox_override("panel", style)
-	var inner := Panel.new()
-	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	inner.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	inner.offset_left = 7
-	inner.offset_top = 6
-	inner.offset_right = -7
-	inner.offset_bottom = -6
-	var inner_style := StyleBoxFlat.new()
-	inner_style.bg_color = Color(0, 0, 0, 0)
-	inner_style.border_color = Color(0.16, 0.5, 0.3, 0.88)
-	inner_style.set_border_width_all(3)
-	inner_style.set_corner_radius_all(4)
-	inner.add_theme_stylebox_override("panel", inner_style)
-	stamp.add_child(inner)
-	var label := Label.new()
-	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	label.text = tr("DailyCompletedShort").to_upper()
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", font_size)
-	label.add_theme_color_override("font_color", Color(0.14, 0.46, 0.28, 0.95))
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	stamp.add_child(label)
-	return stamp
+func _apply_play_button(watch_ad: bool) -> void:
+	if play_icon:
+		play_icon.texture = ICON_VIDEO if watch_ad else ICON_PLAY
+	if play_caption:
+		play_caption.text = _t("DailyWatchAdPlay", "VER ANUNCIO Y JUGAR") if watch_ad else tr("DailyPlay")
 
 
-func _hoy_badge(done: bool) -> Panel:
-	var badge := Panel.new()
-	badge.custom_minimum_size = Vector2(184, 84)
-	badge.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.18, 0.55, 0.32, 1) if done else TEAL
-	style.set_corner_radius_all(42)
-	badge.add_theme_stylebox_override("panel", style)
-	var label := Label.new()
-	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	label.text = "✓" if done else tr("Today")
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 40)
-	label.add_theme_color_override("font_color", Color.WHITE)
-	badge.add_child(label)
-	return badge
+func _fit_image_frame() -> void:
+	if image_block == null or image_frame == null:
+		return
+	var side := mini(int(image_block.size.x), 820)
+	if side > 1:
+		image_frame.custom_minimum_size = Vector2(side, side)
 
 
-func _meta_row(icon_tex: Texture2D, text: String, icon_color: Color = INK_SOFT) -> HBoxContainer:
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 12)
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	var icon := TextureRect.new()
-	icon.custom_minimum_size = Vector2(40, 40)
-	icon.texture = icon_tex
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.modulate = icon_color
-	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(icon)
-	var label := Label.new()
-	label.text = text
-	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 36)
-	label.add_theme_color_override("font_color", INK_SOFT)
-	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(label)
-	return row
+func _refresh_offline_banner() -> void:
+	if offline_banner == null:
+		return
+	var offline := GameManager.has_daily_access() and not GameManager.has_server_time()
+	offline_banner.visible = offline
+	if offline:
+		_start_offline_blink()
+	else:
+		_stop_offline_blink()
 
 
-func _difficulty_row(difficulty: int) -> HBoxContainer:
-	var name := tr("Medium") if difficulty == 2 else GameManager.difficulty_display_name(difficulty)
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 12)
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	var icon := TextureRect.new()
-	icon.custom_minimum_size = Vector2(40, 40)
-	icon.texture = ICON_SIGNAL
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(icon)
-	var label := RichTextLabel.new()
-	label.bbcode_enabled = true
-	label.fit_content = true
-	label.scroll_active = false
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	label.add_theme_font_override("normal_font", FONT_UI)
-	label.add_theme_font_size_override("normal_font_size", 36)
-	label.add_theme_color_override("default_color", INK_SOFT)
-	label.text = "%s [color=#F58220]%s[/color]" % [tr("DailyDifficulty").replace("%s", "").strip_edges(), name]
-	row.add_child(label)
-	return row
+func _start_offline_blink() -> void:
+	if offline_banner == null:
+		return
+	if is_instance_valid(_offline_blink):
+		_offline_blink.kill()
+	offline_banner.modulate = Color.WHITE
+	_offline_blink = create_tween()
+	_offline_blink.set_loops()
+	_offline_blink.set_trans(Tween.TRANS_SINE)
+	_offline_blink.set_ease(Tween.EASE_IN_OUT)
+	_offline_blink.tween_property(offline_banner, "modulate:a", 0.12, 0.42)
+	_offline_blink.tween_property(offline_banner, "modulate:a", 1.0, 0.42)
 
 
-func _centered_text(text: String, font_size: int, color: Color) -> Label:
-	var label := Label.new()
-	label.text = text
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	label.custom_minimum_size = Vector2(0, 56)
-	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", font_size)
-	label.add_theme_color_override("font_color", color)
-	return label
-
-
-func _centered_meta(icon_tex: Texture2D, text: String, icon_color: Color = INK_SOFT) -> HBoxContainer:
-	var row := HBoxContainer.new()
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", 12)
-	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var icon := TextureRect.new()
-	icon.custom_minimum_size = Vector2(36, 36)
-	icon.texture = icon_tex
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.modulate = icon_color
-	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(icon)
-	var label := Label.new()
-	label.text = text
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 42)
-	label.add_theme_color_override("font_color", INK)
-	row.add_child(label)
-	return row
-
-
-func _ruled_title(text: String) -> HBoxContainer:
-	var row := HBoxContainer.new()
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", 14)
-	row.add_child(_rule())
-	var label := Label.new()
-	label.text = text
-	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 42)
-	label.add_theme_color_override("font_color", INK)
-	row.add_child(label)
-	row.add_child(_rule())
-	return row
-
-
-func _rule() -> ColorRect:
-	var line := ColorRect.new()
-	line.custom_minimum_size = Vector2(80, 3)
-	line.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	line.color = Color(0.78, 0.62, 0.42, 0.5)
-	return line
+func _stop_offline_blink() -> void:
+	if is_instance_valid(_offline_blink):
+		_offline_blink.kill()
+	_offline_blink = null
+	if offline_banner:
+		offline_banner.modulate = Color.WHITE
 
 
 func _daily_time_range() -> String:
@@ -547,67 +276,9 @@ func _category_icon_for(cat_id: String) -> Texture2D:
 			return ICON_CITA
 
 
-func _white_card_style() -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = CARD_WHITE
-	style.border_color = Color(0.9, 0.84, 0.76, 0.7)
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(28)
-	style.shadow_color = Color(0.32, 0.2, 0.12, 0.08)
-	style.shadow_size = 12
-	style.shadow_offset = Vector2(0, 5)
-	return style
-
-
-func _circle_icon(tex: Texture2D, size: float, bg: Color, icon_mod: Color, pad: float = 0.2) -> Panel:
-	var wrap := Panel.new()
-	wrap.custom_minimum_size = Vector2(size, size)
-	wrap.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var style := StyleBoxFlat.new()
-	style.bg_color = bg
-	style.set_corner_radius_all(int(size * 0.5))
-	wrap.add_theme_stylebox_override("panel", style)
-	var icon := TextureRect.new()
-	icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var margin := size * pad
-	icon.offset_left = margin
-	icon.offset_top = margin
-	icon.offset_right = -margin
-	icon.offset_bottom = -margin
-	icon.texture = tex
-	icon.modulate = icon_mod
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	wrap.add_child(icon)
-	return wrap
-
-
-func _style_back_button() -> void:
-	var back := $Header/ButtonBack as Button
-	if back == null:
-		return
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(1, 1, 1, 1)
-	style.set_border_width_all(0)
-	style.set_corner_radius_all(80)
-	style.shadow_color = Color(0.22, 0.16, 0.1, 0.1)
-	style.shadow_size = 8
-	style.shadow_offset = Vector2(0, 3)
-	back.add_theme_stylebox_override("normal", style)
-	back.add_theme_stylebox_override("hover", style)
-	var pressed := style.duplicate() as StyleBoxFlat
-	pressed.bg_color = Color(0.97, 0.95, 0.92, 1)
-	back.add_theme_stylebox_override("pressed", pressed)
-	back.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	var arrow := back.get_node_or_null("ArrowIcon")
-	if arrow:
-		arrow.set("line_color", Color(0.55, 0.5, 0.46, 1))
-		arrow.set("stroke_width", 11.0)
-
-
 func _apply_lock_texts() -> void:
+	if lock_overlay == null:
+		return
 	var lock_title := lock_overlay.get_node_or_null("Card/Title") as Label
 	var lock_body := lock_overlay.get_node_or_null("Card/Body") as Label
 	var unlock_btn := lock_overlay.get_node_or_null("Card/Unlock") as Button
@@ -632,6 +303,11 @@ func _go_to(path: String) -> void:
 	get_tree().change_scene_to_file(path)
 
 
+func _t(key: String, fallback: String) -> String:
+	var value := tr(key)
+	return fallback if value == key or value.is_empty() else value
+
+
 func _on_button_back_pressed() -> void:
 	_go_to(PATH_MAIN)
 
@@ -640,14 +316,13 @@ func _on_shop_pressed() -> void:
 	_go_to(PATH_SHOP)
 
 
-func _t(key: String, fallback: String) -> String:
-	var value := tr(key)
-	return fallback if value == key or value.is_empty() else value
+func _on_lock_back_pressed() -> void:
+	_go_to(PATH_MAIN)
 
 
 func _on_unlock_pressed() -> void:
 	if GameManager.has_daily_access():
-		_refresh_purchase_lock()
+		_refresh_content()
 		return
 	var unlock_btn := lock_overlay.get_node_or_null("Card/Unlock") as Button
 	if unlock_btn:
@@ -658,16 +333,12 @@ func _on_unlock_pressed() -> void:
 		unlock_btn.disabled = false
 	if ok:
 		PlayerPrefs.mark_daily_rewarded_today()
-		_refresh_purchase_lock()
+		_refresh_content()
 		return
 	_apply_lock_texts()
 	var lock_body := lock_overlay.get_node_or_null("Card/Body") as Label
 	if lock_body:
 		lock_body.text = _t("DailyAdFailed", "No hay anuncio disponible. Inténtalo de nuevo o compra el juego.")
-
-
-func _on_lock_back_pressed() -> void:
-	_go_to(PATH_MAIN)
 
 
 func _on_view_sheet_pressed() -> void:
@@ -679,12 +350,29 @@ func _on_view_sheet_pressed() -> void:
 
 
 func _on_play_pressed() -> void:
+	if _ad_busy:
+		return
 	if _item.is_empty() or PlayerPrefs.is_daily_completed_today():
 		return
-	if not GameManager.has_daily_access():
-		_refresh_purchase_lock()
-		return
 	SoundManager.play("ButtonClick")
+	if _needs_ad or GameManager.needs_daily_ad():
+		_ad_busy = true
+		if play_button:
+			play_button.disabled = true
+		if play_caption:
+			play_caption.text = _t("DailyAdLoading", "Cargando anuncio...")
+		var ok: bool = await AdManager.show_rewarded()
+		_ad_busy = false
+		if not ok:
+			if play_button:
+				play_button.disabled = false
+			_apply_play_button(true)
+			if ad_thanks:
+				ad_thanks.text = _t("DailyAdFailed", "No hay anuncio disponible. Inténtalo de nuevo o compra el juego.")
+				ad_thanks.add_theme_color_override("font_color", AD_FAIL)
+			return
+		PlayerPrefs.mark_daily_rewarded_today()
+		_needs_ad = false
 	var puzzle_id := int(_item.get("index", -1))
 	if puzzle_id < 0:
 		return
@@ -696,8 +384,8 @@ func _on_play_pressed() -> void:
 	GameManager.seleccionar_por_index(puzzle_id)
 	PuzzleSaveManager.prepare_current_puzzle_cipher()
 	GameManager.set_go_to_game_disable()
-	if _play_button:
-		_play_button.disabled = true
+	if play_button:
+		play_button.disabled = true
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	GameManager.launch_prepared_game()

@@ -480,9 +480,15 @@ func _on_game_finished() -> void:
 	if not GameManager.partida_terminada:
 		GameManager._game_finished()
 	EventLoggerAutoload.finish_session()
+	var mode := GameManager.game_mode_actual
+	var key := "stars_cryptogram" if mode == GameManager.MODE_CRYPTOGRAM else "stars_quick"
+	var before := int(HistoryManager.get_stats_dashboard().get(key, 0))
 	if not GameManager.is_practice_session():
 		HistoryManager.add_result(GameManager.player_name, GameManager.score)
 		PlayFabTools.submit_competitive_rankings(GameManager.player_name)
+	var after := int(HistoryManager.get_stats_dashboard().get(key, 0))
+	StarCollectOverlay.remember_counter(mode, before, after)
+	AdManager.note_puzzle_completed_for_ads()
 	SoundManager.play("ButtonClick")
 	_add_overlay(OVERLAY_RESULTS)
 

@@ -162,7 +162,10 @@ func _register_cpp_initialization(enabled_libs: Array[Library]) -> void:
 	var cpp_code := """
 {definition_code}
 
+#include <stdio.h>
+
 void godot_apple_embedded_plugins_initialize() {{
+	printf("[AdMob] native register plugins\\n");
 {init_calls}
     extern void godot_apple_embedded_plugins_initialize_admob();
     godot_apple_embedded_plugins_initialize_admob();

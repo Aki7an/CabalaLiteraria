@@ -43,7 +43,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="CifraLetra"
 config/description="CifraLetra - pasatiempo "
-config/version="0.25"
+config/version="0.26"
 run/main_scene="uid://bvpri1mtnymgf"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://images/Icono.png"
@@ -53,7 +53,9 @@ config/icon="res://images/Icono.png"
 PlayerPrefs="*res://autoload/PlayerPrefs.gd"
 GameManager="*res://autoload/GameManager.gd"
 AdManager="*res://autoload/AdManager.gd"
+StarCollectOverlay="*res://autoload/StarCollectOverlay.gd"
 StoreManager="*res://autoload/StoreManager.gd"
+ShareManager="*res://autoload/ShareManager.gd"
 SoundManager="*res://autoload/SoundManager.tscn"
 SignalManager="*res://autoload/SignalManager.gd"
 TestResolution="*res://autoload/test_resolution.gd"
@@ -76,7 +78,7 @@ window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/alignment-tool/plugin.cfg", "res://addons/admob/plugin.cfg")
+enabled=PackedStringArray("res://addons/alignment-tool/plugin.cfg", "res://addons/admob/plugin.cfg", "res://addons/cifraletra_iap/plugin.cfg")
 
 [input]
 

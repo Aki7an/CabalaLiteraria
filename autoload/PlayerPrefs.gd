@@ -6,7 +6,7 @@ var volumen_fx: float = 0.8
 var mute_musica: bool = true
 var mute_fx: bool = true
 var mostrar_tuto_antes_partida: bool = true
-## Displayed as "Beta 0.XX". Starts at 1 → Beta 0.01. F2 increases by 1.
+## Displayed as "0.XX". Starts at 1 → 0.01. F2 increases by 1.
 ## Source of truth is project.godot + data/app_version.json so exports and Git stay in sync.
 var app_version_code: int = 1
 
@@ -41,7 +41,7 @@ func _ready() -> void:
 
 
 func version_display() -> String:
-	return "Beta 0.%02d" % maxi(app_version_code, 1)
+	return version_name()
 
 
 func version_name() -> String:
@@ -270,7 +270,9 @@ func load_prefs() -> void:
 
 
 func today_date_key() -> String:
-	var date := Time.get_date_dict_from_system()
+	if typeof(GameManager) != TYPE_NIL:
+		return GameManager.daily_date_key()
+	var date := Time.get_datetime_dict_from_unix_time(int(Time.get_unix_time_from_system()))
 	return "%04d-%02d-%02d" % [int(date.year), int(date.month), int(date.day)]
 
 

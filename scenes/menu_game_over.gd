@@ -9,6 +9,7 @@ const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
 const TYPING_SFX := preload("res://audio/Modular UI - Tech Typing-003.ogg")
 const RESOLVED_HIT_SFX := preload("res://audio/HitSolid_SFXB.2355.wav")
 const BANNER_CHIME_SFX := preload("res://audio/MultimediaChime_SFXB.2894.wav")
+const STAR_OUTLINE: Texture2D = preload("res://images/contorno_estrella.png")
 const INTRO_CONTINUE_AT := 5.0
 
 @onready var main_card: Panel = $MainCard
@@ -29,6 +30,11 @@ const INTRO_CONTINUE_AT := 5.0
 @onready var info_card: Panel = $MainCard/StarsCard/InfoCard
 @onready var continue_button: Button = $MainCard/ButtonBack
 @onready var feedback_button: Button = $MainCard/ButtonFeedback
+@onready var share_title: Label = $MainCard/ShareTitle
+@onready var share_x_button: Button = $MainCard/ButtonShareX
+@onready var share_ig_button: Button = $MainCard/ButtonShareInstagram
+@onready var share_fb_button: Button = $MainCard/ButtonShareFacebook
+@onready var share_tt_button: Button = $MainCard/ButtonShareTikTok
 @onready var description_label: RichTextLabel = $MainCard/StarsCard/InfoCard/Description
 @onready var time_text: Label = $MainCard/StarsCard/TimePill/TimeText
 @onready var stars: Array[TextureRect] = [
@@ -51,6 +57,10 @@ var _drag_origin := Vector2.ZERO
 var _drag_scroll_origin := 0
 var _share_asked := false
 var _typing_sfx: AudioStreamPlayer
+var _earned := 0
+var _maximum := 0
+var _leaving := false
+var _continue_blink: Tween
 
 
 func _ready() -> void:
@@ -70,6 +80,8 @@ func _ready() -> void:
 	var earned: int = clampi(GameManager.puzzle_stars, 0, maximum)
 	if GameManager.is_practice_session() and GameManager.locked_record_stars >= 0:
 		earned = clampi(GameManager.locked_record_stars, 0, maximum)
+	_earned = earned
+	_maximum = maximum
 	if time_text:
 		var elapsed := _format_play_time(int(GameManager.tiempo_partida))
 		var template := tr("TimeTaken")
@@ -92,8 +104,8 @@ func _ready() -> void:
 	for star in stars:
 		star.pivot_offset = star.size * 0.5
 	_prepare_intro_pose()
-	_play_continue_at(INTRO_CONTINUE_AT)
 	await _play_victory_intro(earned, maximum)
+	_play_continue_at(0.12)
 	await _ask_share_if_needed()
 
 
@@ -107,9 +119,24 @@ func _apply_locale() -> void:
 		solved_label.text = tr("DailyCompleted") if is_daily else tr("You've solved the sentence")
 	if stars_title:
 		stars_title.text = tr("StarsEarned")
-	continue_button.text = tr("CONTINUE")
+	continue_button.text = tr("RecogerEstrellas")
+	continue_button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	continue_button.add_theme_font_size_override("font_size", 40)
 	if feedback_button:
 		feedback_button.text = tr("RatePuzzle")
+	if share_title:
+		share_title.text = tr("ShareSocialTitle")
+		share_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	for button in _share_social_buttons():
+		button.text = ""
+	if share_x_button:
+		share_x_button.tooltip_text = tr("ShareOnX")
+	if share_ig_button:
+		share_ig_button.tooltip_text = tr("ShareOnInstagram")
+	if share_fb_button:
+		share_fb_button.tooltip_text = tr("ShareOnFacebook")
+	if share_tt_button:
+		share_tt_button.tooltip_text = tr("ShareOnTikTok")
 
 
 func _escape_bbcode(text: String) -> String:
@@ -183,16 +210,31 @@ func _layout_top_down() -> void:
 	phrase_card.position.y = y
 	stars_card.position.y = phrase_card.position.y + phrase_card.size.y + GAP
 	var button_h := continue_button.size.y
-	var button_y := main_card.size.y - button_h - 36.0
+	var share_h := 140.0
 	var margin := 36.0
 	var gap := 20.0
 	var available := main_card.size.x - margin * 2.0
-	var continue_w := minf(400.0, available * 0.40)
+	var continue_w := minf(640.0, available * 0.58)
 	var feedback_w := available - gap - continue_w
+	var bottom_y := main_card.size.y - button_h - 36.0
+	var social_buttons := _share_social_buttons()
+	var social_n := social_buttons.size()
+	var social_gap := 16.0
+	var title_h := 68.0
+	var share_y := bottom_y - gap - share_h
+	if social_n > 0:
+		var btn_w := (available - social_gap * float(social_n - 1)) / float(social_n)
+		for i in range(social_n):
+			var button := social_buttons[i]
+			button.position = Vector2(margin + float(i) * (btn_w + social_gap), share_y)
+			button.size = Vector2(btn_w, share_h)
+	if share_title:
+		share_title.position = Vector2(margin, share_y - 10.0 - title_h)
+		share_title.size = Vector2(available, title_h)
 	if feedback_button:
-		feedback_button.position = Vector2(margin, button_y)
+		feedback_button.position = Vector2(margin, bottom_y)
 		feedback_button.size = Vector2(feedback_w, button_h)
-	continue_button.position = Vector2(margin + feedback_w + gap, button_y)
+	continue_button.position = Vector2(margin + feedback_w + gap, bottom_y)
 	continue_button.size = Vector2(continue_w, button_h)
 
 
@@ -208,6 +250,11 @@ func _body_scroll_nodes() -> Array[Control]:
 func _install_body_scroll() -> void:
 	var top := banner.position.y + banner.size.y + 6.0
 	var bottom := continue_button.position.y - GAP
+	if share_title:
+		bottom = minf(bottom, share_title.position.y - GAP)
+	else:
+		for button in _share_social_buttons():
+			bottom = minf(bottom, button.position.y - GAP)
 	var viewport_height := bottom - top
 	if viewport_height < 160.0:
 		return
@@ -245,9 +292,11 @@ func _install_body_scroll() -> void:
 	)
 	main_card.add_child(scroll)
 	_body_scroll = scroll
-	for node in [banner, banner_left, banner_right, confetti_left, confetti_right, continue_button, feedback_button]:
+	for node in [banner, banner_left, banner_right, confetti_left, confetti_right, continue_button, feedback_button, share_title]:
 		if node:
 			node.z_index = 8
+	for button in _share_social_buttons():
+		button.z_index = 8
 
 
 func _input(event: InputEvent) -> void:
@@ -271,6 +320,11 @@ func _handle_body_drag_press(pressed: bool, position: Vector2) -> void:
 			return
 		if feedback_button and feedback_button.get_global_rect().has_point(position):
 			return
+		if share_title and share_title.get_global_rect().has_point(position):
+			return
+		for button in _share_social_buttons():
+			if button.get_global_rect().has_point(position):
+				return
 		_drag_held = true
 		_drag_active = false
 		_drag_origin = position
@@ -386,6 +440,7 @@ func _play_continue_at(delay_s: float) -> void:
 	if feedback_button:
 		feedback_button.disabled = false
 		feedback_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	_set_share_buttons_disabled(false)
 	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(continue_button, "modulate:a", 1.0, 0.36)\
@@ -393,6 +448,14 @@ func _play_continue_at(delay_s: float) -> void:
 	if feedback_button:
 		tween.tween_property(feedback_button, "modulate:a", 1.0, 0.36)\
 			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	if share_title:
+		tween.tween_property(share_title, "modulate:a", 1.0, 0.36)\
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	for button in _share_social_buttons():
+		tween.tween_property(button, "modulate:a", 1.0, 0.36)\
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	await tween.finished
+	_start_continue_blink()
 
 
 func _hide_node(node: CanvasItem, alpha := 0.0) -> void:
@@ -435,6 +498,12 @@ func _prepare_intro_pose() -> void:
 		feedback_button.modulate.a = 0.0
 		feedback_button.disabled = true
 		feedback_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if share_title:
+		share_title.modulate.a = 0.0
+	for button in _share_social_buttons():
+		button.modulate.a = 0.0
+		button.disabled = true
+		button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	_stamp = _make_stamp()
 	phrase_card.add_child(_stamp)
@@ -611,7 +680,8 @@ func _animate_stars_intro(earned: int, maximum: int) -> void:
 				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 			_flash_star(star)
 		else:
-			star.self_modulate = STAR_EMPTY
+			star.texture = STAR_OUTLINE
+			star.self_modulate = Color(0.72, 0.58, 0.38, 0.55)
 			tween.tween_property(star, "modulate:a", 1.0, 0.40)
 
 
@@ -645,9 +715,90 @@ func _animate_info_intro() -> void:
 	await tween.finished
 
 
+func _start_continue_blink() -> void:
+	if _leaving or continue_button == null or not is_instance_valid(continue_button):
+		return
+	if is_instance_valid(_continue_blink):
+		_continue_blink.kill()
+	continue_button.pivot_offset = continue_button.size * 0.5
+	_continue_blink = create_tween()
+	_continue_blink.set_loops()
+	_continue_blink.set_trans(Tween.TRANS_SINE)
+	_continue_blink.set_ease(Tween.EASE_IN_OUT)
+	_continue_blink.tween_property(continue_button, "scale", Vector2(1.06, 1.06), 0.45)
+	_continue_blink.tween_property(continue_button, "scale", Vector2.ONE, 0.45)
+
+
+func _stop_continue_blink() -> void:
+	if is_instance_valid(_continue_blink):
+		_continue_blink.kill()
+	_continue_blink = null
+	if continue_button:
+		continue_button.scale = Vector2.ONE
+
+
 func _on_button_back_pressed() -> void:
+	if _leaving:
+		return
+	_leaving = true
+	_stop_continue_blink()
 	SoundManager.play("ButtonClick")
-	await _confirm_share_then_go(SCENE_MENU_MAIN)
+	continue_button.disabled = true
+	if feedback_button:
+		feedback_button.disabled = true
+	_set_share_buttons_disabled(true)
+	await _ask_share_if_needed()
+	var collect_count := _earned
+	if GameManager.is_practice_session():
+		collect_count = 0
+	if collect_count > 0:
+		StarCollectOverlay.capture_earned(stars, collect_count, GameManager.game_mode_actual)
+	StarCollectOverlay.show_white_cover()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await AdManager.show_interstitial_after_puzzle()
+	await EventLoggerAutoload.submit_if_consented()
+	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
+
+
+func _on_share_x_pressed() -> void:
+	await _share_to("x")
+
+
+func _on_share_instagram_pressed() -> void:
+	await _share_to("instagram")
+
+
+func _on_share_facebook_pressed() -> void:
+	await _share_to("facebook")
+
+
+func _on_share_tiktok_pressed() -> void:
+	await _share_to("tiktok")
+
+
+func _share_to(network: String) -> void:
+	if _leaving or ShareManager.is_busy():
+		return
+	SoundManager.play("ButtonClick")
+	_set_share_buttons_disabled(true)
+	await ShareManager.share_current_result_to_network(network)
+	if not _leaving:
+		_set_share_buttons_disabled(false)
+
+
+func _share_social_buttons() -> Array[Button]:
+	var buttons: Array[Button] = []
+	for button in [share_x_button, share_ig_button, share_fb_button, share_tt_button]:
+		if button:
+			buttons.append(button)
+	return buttons
+
+
+func _set_share_buttons_disabled(disabled: bool) -> void:
+	for button in _share_social_buttons():
+		button.disabled = disabled
+		button.mouse_filter = Control.MOUSE_FILTER_IGNORE if disabled else Control.MOUSE_FILTER_STOP
 
 
 func _on_button_feedback_pressed() -> void:
@@ -665,9 +816,11 @@ func _ask_share_if_needed() -> void:
 
 
 func _confirm_share_then_go(next_scene: String) -> void:
+	if _leaving:
+		return
+	_leaving = true
 	await _ask_share_if_needed()
 	await EventLoggerAutoload.submit_if_consented()
-	await AdManager.show_interstitial_after_puzzle()
 	TransitionScreen.transition_to_black()
 	await SignalManager.on_transition_finished
 	get_tree().change_scene_to_file(next_scene)

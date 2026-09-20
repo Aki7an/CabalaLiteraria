@@ -269,8 +269,6 @@ alignment = 1
 
 [node name="TimeIcon" parent="Margin/Main/Top/TimerRow" unique_id=1681202910 instance=ExtResource("5_hourglass")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(135, 135)
-layout_mode = 2
 size_flags_vertical = 4
 
 [node name="TimeValue" type="Label" parent="Margin/Main/Top/TimerRow" unique_id=322042263]

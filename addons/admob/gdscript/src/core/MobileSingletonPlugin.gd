@@ -23,9 +23,16 @@
 class_name MobileSingletonPlugin
 
 
-static func _get_plugin(plugin_name: String, is_required := true) -> Object:
+static func _live_plugin(plugin_name: String) -> Object:
 	if Engine.has_singleton(plugin_name):
 		return Engine.get_singleton(plugin_name)
+	return null
+
+
+static func _get_plugin(plugin_name: String, is_required := true) -> Object:
+	var plugin := _live_plugin(plugin_name)
+	if plugin:
+		return plugin
 
 	var os_name := OS.get_name()
 	if os_name != "Android" and os_name != "iOS":
