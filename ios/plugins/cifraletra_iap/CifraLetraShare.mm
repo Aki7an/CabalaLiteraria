@@ -137,6 +137,7 @@ static NSString *const kShareInbox = @"cifraletra_share_inbox.json";
 			}
 		}
 	}
+	[self copyCardToPasteboard:image text:text];
 	if (image) {
 		[items addObject:image];
 	}
@@ -243,8 +244,8 @@ static NSString *const kShareInbox = @"cifraletra_share_inbox.json";
 		[self presentToFacebook:image text:text url:url];
 		return;
 	}
-	if ([target isEqualToString:@"tiktok"]) {
-		[self presentToTikTok:image text:text];
+	if ([target isEqualToString:@"tiktok"] || [target isEqualToString:@"more"]) {
+		[self presentImage:imagePath text:text];
 		return;
 	}
 	[self presentImage:imagePath text:text];

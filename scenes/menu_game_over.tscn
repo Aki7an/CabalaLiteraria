@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3]
+[gd_scene load_steps=31 format=3]
 
 [ext_resource type="Script" path="res://scenes/menu_game_over.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://br1sokjc4hmqj" path="res://images/ui_icon_x.svg" id="4_x"]
 [ext_resource type="Texture2D" path="res://images/ui_icon_instagram.svg" id="5_ig"]
 [ext_resource type="Texture2D" path="res://images/ui_icon_facebook.svg" id="6_fb"]
-[ext_resource type="Texture2D" path="res://images/ui_icon_tiktok.svg" id="7_tt"]
 
 [sub_resource type="StyleBoxFlat" id="Style_backdrop"]
 bg_color = Color(0.12, 0.085, 0.045, 0.72)
@@ -282,27 +281,27 @@ corner_radius_bottom_right = 38
 corner_radius_bottom_left = 38
 
 [sub_resource type="StyleBoxFlat" id="Style_share_tt"]
-bg_color = Color(0.08, 0.08, 0.1, 1)
+bg_color = Color(1, 0.53, 0.08, 1)
 border_width_left = 6
 border_width_top = 6
 border_width_right = 6
 border_width_bottom = 13
-border_color = Color(0.1, 0.78, 0.82, 1)
+border_color = Color(0.74, 0.3, 0.025, 1)
 corner_radius_top_left = 38
 corner_radius_top_right = 38
 corner_radius_bottom_right = 38
 corner_radius_bottom_left = 38
-shadow_color = Color(0.02, 0.02, 0.03, 0.28)
+shadow_color = Color(0.45, 0.18, 0.02, 0.28)
 shadow_size = 12
 shadow_offset = Vector2(0, 10)
 
 [sub_resource type="StyleBoxFlat" id="Style_share_tt_pressed"]
-bg_color = Color(0.04, 0.04, 0.05, 1)
+bg_color = Color(0.9, 0.4, 0.045, 1)
 border_width_left = 6
 border_width_top = 13
 border_width_right = 6
 border_width_bottom = 6
-border_color = Color(0.08, 0.62, 0.66, 1)
+border_color = Color(0.62, 0.22, 0.02, 1)
 corner_radius_top_left = 38
 corner_radius_top_right = 38
 corner_radius_bottom_right = 38
@@ -730,7 +729,7 @@ theme_override_styles/pressed = SubResource("Style_share_fb_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
 tooltip_text = "Facebook"
 
-[node name="ButtonShareTikTok" type="Button" parent="MainCard"]
+[node name="ButtonShareMore" type="Button" parent="MainCard"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 858.0
@@ -738,24 +737,22 @@ offset_top = 2088.0
 offset_right = 1110.0
 offset_bottom = 2238.0
 focus_mode = 0
-icon = ExtResource("7_tt")
-expand_icon = true
-icon_alignment = 1
-vertical_icon_alignment = 1
-theme_override_constants/icon_max_width = 64
-theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
-theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
-theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
-theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 88
+theme_override_colors/font_color = Color(1, 1, 0.96, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 0.96, 0.45)
 theme_override_styles/normal = SubResource("Style_share_tt")
 theme_override_styles/hover = SubResource("Style_share_tt")
 theme_override_styles/pressed = SubResource("Style_share_tt_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
-tooltip_text = "TikTok"
+text = "···"
+tooltip_text = "Más redes"
 
 [connection signal="pressed" from="MainCard/ButtonBack" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="MainCard/ButtonFeedback" to="." method="_on_button_feedback_pressed"]
 [connection signal="pressed" from="MainCard/ButtonShareX" to="." method="_on_share_x_pressed"]
 [connection signal="pressed" from="MainCard/ButtonShareInstagram" to="." method="_on_share_instagram_pressed"]
 [connection signal="pressed" from="MainCard/ButtonShareFacebook" to="." method="_on_share_facebook_pressed"]
-[connection signal="pressed" from="MainCard/ButtonShareTikTok" to="." method="_on_share_tiktok_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareMore" to="." method="_on_share_more_pressed"]

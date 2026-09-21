@@ -8,11 +8,20 @@ const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
 const EXAMPLE_PATH := "res://images/x_paste_example.png"
 const COLOR_INK := Color(0.24, 0.17, 0.12, 1)
 
+var kind := "x"
 var _closed := false
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	offset_left = 0
+	offset_top = 0
+	offset_right = 0
+	offset_bottom = 0
+	var view := get_viewport_rect().size
+	if view.x > 0.0 and view.y > 0.0:
+		size = view
 	color = Color(0.08, 0.04, 0.02, 0.58)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	z_index = 200
@@ -44,7 +53,7 @@ func _build() -> void:
 	margin.add_child(col)
 
 	var title := Label.new()
-	title.text = _t("ShareXPasteTitle", "Compartir en X")
+	title.text = _title_text()
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title.add_theme_font_override("font", FONT_TITLE)
@@ -53,10 +62,7 @@ func _build() -> void:
 	col.add_child(title)
 
 	var body := Label.new()
-	body.text = _t(
-		"ShareXPasteBody",
-		"El mensaje y la imagen están en el portapapeles.\n\nEn X, pulsa en nuevo post y luego pega."
-	)
+	body.text = _body_text()
 	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.add_theme_font_override("font", FONT_BODY)
@@ -64,13 +70,14 @@ func _build() -> void:
 	body.add_theme_color_override("font_color", COLOR_INK)
 	col.add_child(body)
 
-	var picture := TextureRect.new()
-	picture.texture = _example_texture()
-	picture.custom_minimum_size = Vector2(0, 620)
-	picture.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
-	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	col.add_child(picture)
+	if _shows_example():
+		var picture := TextureRect.new()
+		picture.texture = _example_texture()
+		picture.custom_minimum_size = Vector2(0, 620)
+		picture.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		col.add_child(picture)
 
 	var actions := HBoxContainer.new()
 	actions.add_theme_constant_override("separation", 24)
@@ -108,6 +115,39 @@ func _close(confirmed: bool) -> void:
 	SoundManager.play("ButtonClick")
 	finished.emit(confirmed)
 	queue_free()
+
+
+func _title_text() -> String:
+	match kind:
+		"facebook":
+			return _t("ShareFacebookPasteTitle", "Compartir en Facebook")
+		"more":
+			return _t("ShareMorePasteTitle", "Compartir")
+		_:
+			return _t("ShareXPasteTitle", "Compartir en X")
+
+
+func _body_text() -> String:
+	match kind:
+		"facebook":
+			return _t(
+				"ShareFacebookPasteBody",
+				"La tarjeta y el texto están en el portapapeles.\n\nEn Facebook, pégalos en el mensaje a publicar."
+			)
+		"more":
+			return _t(
+				"ShareMorePasteBody",
+				"El mensaje está en el portapapeles.\n\nPégalo al compartir en la red que elijas."
+			)
+		_:
+			return _t(
+				"ShareXPasteBody",
+				"La tarjeta y el texto están en el portapapeles.\n\nEn X, pégalos en el mensaje a publicar."
+			)
+
+
+func _shows_example() -> bool:
+	return kind == "x"
 
 
 func _example_texture() -> Texture2D:

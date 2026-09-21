@@ -6,7 +6,7 @@ var volumen_fx: float = 0.8
 var mute_musica: bool = true
 var mute_fx: bool = true
 var mostrar_tuto_antes_partida: bool = true
-## Displayed as "0.XX". Starts at 1 → 0.01. F2 increases by 1.
+## Displayed as "1.0.X". Starts at 1 → 1.0.1. F2 increases X by 1.
 ## Source of truth is project.godot + data/app_version.json so exports and Git stay in sync.
 var app_version_code: int = 1
 
@@ -45,7 +45,11 @@ func version_display() -> String:
 
 
 func version_name() -> String:
-	return "0.%02d" % maxi(app_version_code, 1)
+	return "1.0.%d" % maxi(app_version_code, 1)
+
+
+func store_version_code() -> int:
+	return 1000 + maxi(app_version_code, 1)
 
 
 func bump_app_version() -> void:
@@ -71,12 +75,12 @@ func save_version_file() -> void:
 	if not OS.has_feature("editor"):
 		return
 	var code := maxi(app_version_code, 1)
-	var name := "0.%02d" % code
+	var name := version_name()
 	_write_text(VERSION_JSON_PATH, JSON.stringify({"code": code}, "\t") + "\n")
 	_write_text(VERSION_TXT_PATH, "%d\n" % code)
 	_sync_project_settings(name)
 	_sync_project_file(name)
-	_sync_export_presets(code, name)
+	_sync_export_presets(store_version_code(), name)
 
 
 func _code_from_project_settings() -> int:
@@ -178,11 +182,6 @@ func _write_text(path: String, contents: String) -> void:
 
 # Guardar en disco
 func save_prefs() -> void:
-	if GameManager.mostrar_tuto_antes_partida != null:
-		mostrar_tuto_antes_partida = GameManager.mostrar_tuto_antes_partida
-	else:
-		mostrar_tuto_antes_partida = true
-		
 	var cfg := ConfigFile.new()
 	cfg.load(SAVE_PATH)
 	cfg.set_value("general", "idioma", idioma)
@@ -190,6 +189,7 @@ func save_prefs() -> void:
 	cfg.set_value("general", "guest_online_id", GameManager.guest_online_id)
 	cfg.set_value("general", "online_name_chosen", GameManager.online_name_chosen)
 	cfg.set_value("general", "mostrar_tutorial_antes_de_partida", mostrar_tuto_antes_partida)
+	cfg.set_value("general", "tutorial_before_play_on_v026", true)
 	cfg.set_value("audio", "volumen_musica", volumen_musica)
 	cfg.set_value("audio", "volumen_fx", volumen_fx)
 	cfg.set_value("audio", "mute_musica", mute_musica)
@@ -253,13 +253,18 @@ func load_prefs() -> void:
 		full_game = bool(cfg.get_value("shop", "full_game", full_game))
 		ads_quick_streak = int(cfg.get_value("ads", "quick_streak", ads_quick_streak))
 		daily_rewarded_date = str(cfg.get_value("ads", "daily_rewarded_date", daily_rewarded_date))
-		
-		if mostrar_tuto_antes_partida:
-			GameManager.set_mostrar_tuto_antes_partida_enable()
-		else:
-			GameManager.set_mostrar_tuto_antes_partida_disable()
 
-	if GameManager.ensure_online_identity():
+	var migrated_tutorial := err == OK and bool(cfg.get_value("general", "tutorial_before_play_on_v026", false))
+	if not migrated_tutorial:
+		mostrar_tuto_antes_partida = true
+
+	if mostrar_tuto_antes_partida:
+		GameManager.set_mostrar_tuto_antes_partida_enable()
+	else:
+		GameManager.set_mostrar_tuto_antes_partida_disable()
+
+	var identity_changed := GameManager.ensure_online_identity()
+	if not migrated_tutorial or identity_changed:
 		save_prefs()
 
 	var locale := idioma.strip_edges()

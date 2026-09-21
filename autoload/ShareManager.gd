@@ -27,14 +27,14 @@ func _share_result(target: String) -> bool:
 	if _busy:
 		return false
 	_busy = true
+	if _needs_paste_dialog(target) and not await _confirm_paste(target):
+		_busy = false
+		return false
 	var payload := build_payload()
 	var png_path := await render_png(payload)
 	var text := _social_share_text(payload)
 	var ok := false
 	if png_path != "":
-		if target == "x" and not await _confirm_x_paste():
-			_busy = false
-			return false
 		ok = await _present_share(png_path, text, target)
 	_busy = false
 	return ok
@@ -104,11 +104,25 @@ func _present_share(image_path: String, text: String, target := "") -> bool:
 		return _share_ios(image_path, text, target)
 	if OS.get_name() == "Android":
 		if target == "x":
-			return _share_android_x_clipboard(image_path, text)
+			return _share_android_clipboard_then_open(
+				image_path,
+				text,
+				ShareConfig.TWITTER_PACKAGE_ANDROID,
+				"twitter://post?message=",
+				"https://x.com/compose/post"
+			)
+		if target == "facebook":
+			return _share_android_clipboard_then_open(
+				image_path,
+				text,
+				ShareConfig.FACEBOOK_PACKAGE_ANDROID,
+				"fb://",
+				"https://www.facebook.com/sharer/sharer.php?u=%s" % ShareConfig.store_url().uri_encode()
+			)
 		return _share_android(image_path, text, target)
+	DisplayServer.clipboard_set(text)
 	OS.shell_open(image_path)
 	if target == "x":
-		DisplayServer.clipboard_set(text)
 		OS.shell_open("https://x.com/compose/post")
 	elif target == "facebook":
 		OS.shell_open("https://www.facebook.com/sharer/sharer.php?u=%s" % ShareConfig.store_url().uri_encode())
@@ -142,25 +156,42 @@ func _share_ios(image_path: String, text: String, target := "") -> bool:
 	return true
 
 
-func _confirm_x_paste() -> bool:
-	var dialog: ColorRect = X_PASTE_DIALOG.new()
-	var host := get_tree().root
+func _needs_paste_dialog(target: String) -> bool:
+	return target == "x" or target == "facebook" or target == "more" or target == ""
+
+
+func _confirm_paste(target: String) -> bool:
+	var layer := CanvasLayer.new()
+	layer.layer = 320
+	layer.process_mode = Node.PROCESS_MODE_ALWAYS
+	var dialog := X_PASTE_DIALOG.new()
+	dialog.kind = "more" if target == "" else target
+	var host: Node = get_tree().current_scene
 	if host == null:
-		return true
-	host.add_child(dialog)
+		host = self
+	host.add_child(layer)
+	layer.add_child(dialog)
 	var confirmed: Variant = await dialog.finished
+	if is_instance_valid(layer):
+		layer.queue_free()
 	return bool(confirmed)
 
 
-func _share_android_x_clipboard(image_path: String, text: String) -> bool:
+func _share_android_clipboard_then_open(
+	image_path: String,
+	text: String,
+	package_name: String,
+	app_url: String,
+	web_url: String
+) -> bool:
 	DisplayServer.clipboard_set(text)
 	if not Engine.has_singleton("AndroidRuntime"):
-		OS.shell_open("https://x.com/compose/post")
+		OS.shell_open(web_url)
 		return true
 	var android_runtime: Object = Engine.get_singleton("AndroidRuntime")
 	var activity: Variant = android_runtime.getActivity()
 	if activity == null:
-		OS.shell_open("https://x.com/compose/post")
+		OS.shell_open(web_url)
 		return true
 	var share_path := _android_share_copy(image_path)
 	var Intent := JavaClassWrapper.wrap("android.content.Intent")
@@ -178,30 +209,42 @@ func _share_android_x_clipboard(image_path: String, text: String) -> bool:
 		)
 		if JavaClassWrapper.get_exception() != null:
 			uri = null
-	var open_x := func() -> void:
-		if uri != null and ClipData != null:
-			activity.grantUriPermission(
-				ShareConfig.TWITTER_PACKAGE_ANDROID,
-				uri,
-				Intent.FLAG_GRANT_READ_URI_PERMISSION
-			)
-			var clip: Variant = ClipData.newUri(activity.getContentResolver(), "CifraLetra", uri)
-			if JavaClassWrapper.get_exception() == null and clip != null and text != "":
-				var ClipItem := JavaClassWrapper.wrap("android.content.ClipData$Item")
-				if ClipItem != null:
-					clip.addItem(ClipItem.Item(text))
-			var clipboard: Variant = activity.getSystemService("clipboard")
-			if clipboard != null and clip != null and JavaClassWrapper.get_exception() == null:
-				clipboard.setPrimaryClip(clip)
-		var view_intent: Variant = Intent.Intent(Intent.ACTION_VIEW, Uri.parse("twitter://post?message="))
-		view_intent.setPackage(ShareConfig.TWITTER_PACKAGE_ANDROID)
+	var open_app := func() -> void:
+		_copy_android_clip(activity, uri, text, package_name, Intent, ClipData)
+		var view_intent: Variant = Intent.Intent(Intent.ACTION_VIEW, Uri.parse(app_url))
+		if package_name != "":
+			view_intent.setPackage(package_name)
 		activity.startActivity(view_intent)
 		if JavaClassWrapper.get_exception() != null:
 			view_intent.setPackage("")
-			view_intent.setData(Uri.parse("https://x.com/compose/post"))
+			view_intent.setData(Uri.parse(web_url))
 			activity.startActivity(view_intent)
-	activity.runOnUiThread(android_runtime.createRunnableFromGodotCallable(open_x))
+	activity.runOnUiThread(android_runtime.createRunnableFromGodotCallable(open_app))
 	return true
+
+
+func _copy_android_clip(
+	activity: Variant,
+	uri: Variant,
+	text: String,
+	package_name: String,
+	Intent: Variant,
+	ClipData: Variant
+) -> void:
+	if uri == null or ClipData == null or activity == null:
+		return
+	if package_name != "":
+		activity.grantUriPermission(package_name, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+	var clip: Variant = ClipData.newUri(activity.getContentResolver(), "CifraLetra", uri)
+	if JavaClassWrapper.get_exception() != null or clip == null:
+		return
+	if text != "":
+		var ClipItem := JavaClassWrapper.wrap("android.content.ClipData$Item")
+		if ClipItem != null:
+			clip.addItem(ClipItem.Item(text))
+	var clipboard: Variant = activity.getSystemService("clipboard")
+	if clipboard != null and JavaClassWrapper.get_exception() == null:
+		clipboard.setPrimaryClip(clip)
 
 
 func _share_android(image_path: String, text: String, target := "") -> bool:
@@ -229,7 +272,9 @@ func _share_android(image_path: String, text: String, target := "") -> bool:
 		if exception != null:
 			push_warning("ShareManager: FileProvider failed, sharing text only.")
 			uri = null
+	DisplayServer.clipboard_set(text)
 	var share := func() -> void:
+		_copy_android_clip(activity, uri, text, ShareConfig.android_package(target), Intent, ClipData)
 		var intent: Variant = Intent.Intent()
 		intent.setAction(Intent.ACTION_SEND)
 		if uri != null:

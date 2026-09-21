@@ -941,6 +941,23 @@ func _write_player_event(event_name: String, body: Dictionary) -> bool:
 	})
 	return not json.is_empty()
 
+
+func log_anonymous_event(event_name: String, extra: Dictionary = {}) -> void:
+	_log_anonymous_event_async(event_name, extra)
+
+
+func _log_anonymous_event_async(event_name: String, extra: Dictionary) -> void:
+	if event_name.strip_edges() == "":
+		return
+	if not is_logged_in():
+		return
+	var body := extra.duplicate(true)
+	body["platform"] = OS.get_name()
+	body["locale"] = TranslationServer.get_locale()
+	body["client_ver"] = str(ProjectSettings.get_setting("application/config/version", ""))
+	var ok := await _write_player_event(event_name, body)
+	print("[PlayFab] event ", event_name, " ok=", ok)
+
 # Devuelve la posición (1-based) del jugador en "Score_Facil".
 # Requiere estar logeado (PlayFabLogin.is_logged_in()).
 # Retorna -1 si falla o si no hay entrada.

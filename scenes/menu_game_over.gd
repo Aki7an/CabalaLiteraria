@@ -34,7 +34,7 @@ const INTRO_CONTINUE_AT := 5.0
 @onready var share_x_button: Button = $MainCard/ButtonShareX
 @onready var share_ig_button: Button = $MainCard/ButtonShareInstagram
 @onready var share_fb_button: Button = $MainCard/ButtonShareFacebook
-@onready var share_tt_button: Button = $MainCard/ButtonShareTikTok
+@onready var share_more_button: Button = $MainCard/ButtonShareMore
 @onready var description_label: RichTextLabel = $MainCard/StarsCard/InfoCard/Description
 @onready var time_text: Label = $MainCard/StarsCard/TimePill/TimeText
 @onready var stars: Array[TextureRect] = [
@@ -128,15 +128,17 @@ func _apply_locale() -> void:
 		share_title.text = tr("ShareSocialTitle")
 		share_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for button in _share_social_buttons():
-		button.text = ""
+		if button != share_more_button:
+			button.text = ""
 	if share_x_button:
 		share_x_button.tooltip_text = tr("ShareOnX")
 	if share_ig_button:
 		share_ig_button.tooltip_text = tr("ShareOnInstagram")
 	if share_fb_button:
 		share_fb_button.tooltip_text = tr("ShareOnFacebook")
-	if share_tt_button:
-		share_tt_button.tooltip_text = tr("ShareOnTikTok")
+	if share_more_button:
+		share_more_button.text = "···"
+		share_more_button.tooltip_text = tr("ShareMore")
 
 
 func _escape_bbcode(text: String) -> String:
@@ -773,23 +775,42 @@ func _on_share_facebook_pressed() -> void:
 	await _share_to("facebook")
 
 
-func _on_share_tiktok_pressed() -> void:
-	await _share_to("tiktok")
+func _on_share_more_pressed() -> void:
+	await _share_to("more")
 
 
 func _share_to(network: String) -> void:
 	if _leaving or ShareManager.is_busy():
 		return
 	SoundManager.play("ButtonClick")
+	_log_share_press(network)
 	_set_share_buttons_disabled(true)
 	await ShareManager.share_current_result_to_network(network)
-	if not _leaving:
+	if is_instance_valid(self) and not _leaving:
 		_set_share_buttons_disabled(false)
+
+
+func _log_share_press(network: String) -> void:
+	if typeof(PlayFabTools) == TYPE_NIL:
+		return
+	var extra := {
+		"network": network,
+		"puzzle_id": int(GameManager.id_frase) if typeof(GameManager) != TYPE_NIL else -1,
+		"source": str(GameManager.session_source) if typeof(GameManager) != TYPE_NIL else "",
+	}
+	PlayFabTools.log_anonymous_event("share_opened", extra)
+	match network:
+		"x":
+			PlayFabTools.log_anonymous_event("share_x", extra)
+		"instagram":
+			PlayFabTools.log_anonymous_event("share_instagram", extra)
+		"facebook":
+			PlayFabTools.log_anonymous_event("share_facebook", extra)
 
 
 func _share_social_buttons() -> Array[Button]:
 	var buttons: Array[Button] = []
-	for button in [share_x_button, share_ig_button, share_fb_button, share_tt_button]:
+	for button in [share_x_button, share_ig_button, share_fb_button, share_more_button]:
 		if button:
 			buttons.append(button)
 	return buttons

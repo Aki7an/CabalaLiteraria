@@ -177,7 +177,7 @@ var hint_runtime_vowel_tokens: PackedStringArray = PackedStringArray()
 	Color(1.0, 0.6, 0.8)    # Rosa pastel  
 ]
 
-@export var mostrar_tuto_antes_partida :bool
+@export var mostrar_tuto_antes_partida: bool = true
 
 # Not used
 @export var lista_comentarios_colores := ["-", "-", "-", "-", "-" ]
