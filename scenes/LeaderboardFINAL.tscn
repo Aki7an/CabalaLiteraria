@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://c3sofhyrdkn54" path="res://images/CriptogramaIcono.png" id="12_cryptogram"]
 [ext_resource type="Texture2D" uid="uid://ceedgay116g77" path="res://images/Infoed.png" id="13_8uxnf"]
 [ext_resource type="FontFile" uid="uid://cgq34g30v2a07" path="res://fonts/Fonts/Rubik-SemiBold.ttf" id="14_rubik"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="15_star"]
 
 [sub_resource type="StyleBoxFlat" id="Style_background"]
 bg_color = Color(0.984, 0.949, 0.865, 1)
@@ -627,15 +628,29 @@ text = "PUZLES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Average" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=980667571]
+[node name="Average" type="HBoxContainer" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=980667571]
 custom_minimum_size = Vector2(168, 56)
 layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Star" type="TextureRect" parent="MainCard/AroundFrame/TableBody/TableHeader/Average"]
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("15_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader/Average"]
+layout_mode = 2
+size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.79, 0.33, 0.1, 1)
 theme_override_constants/line_spacing = 8
 theme_override_fonts/font = SubResource("Font_table_header")
 theme_override_font_sizes/font_size = 36
-text = "★/PUZLE"
-horizontal_alignment = 1
+text = "/PUZLE"
 vertical_alignment = 1
 
 [node name="Aids" type="Label" parent="MainCard/AroundFrame/TableBody/TableHeader" unique_id=885789561]

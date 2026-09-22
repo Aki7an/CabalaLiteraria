@@ -20,6 +20,7 @@ const MEDAL_TEXTURES := [
 	preload("res://images/leaderboard_medal_silver.svg"),
 	preload("res://images/leaderboard_medal_bronze.svg"),
 ]
+const STAR_TEXTURE: Texture2D = preload("res://images/estrella_plano.png")
 
 @onready var button_back: Button = %ButtonBack
 @onready var online_rows: VBoxContainer = %OnlineRows
@@ -118,7 +119,7 @@ func _apply_locale() -> void:
 	header.get_node("Player").text = tr("RankPlayer")
 	header.get_node("Stars").text = tr("RankStars")
 	header.get_node("Puzzles").text = tr("RankPuzzles")
-	header.get_node("Average").text = tr("RankStarsPer")
+	header.get_node("Average/Text").text = tr("RankStarsPer").replace("★", "").strip_edges()
 	_refresh_my_place_label()
 
 
@@ -797,10 +798,19 @@ func _make_stars_value(stars: int) -> HBoxContainer:
 	var number := _make_label(str(stars), 42, HORIZONTAL_ALIGNMENT_RIGHT)
 	number.add_theme_color_override("font_color", COLOR_ORANGE)
 	value.add_child(number)
-	var star := _make_label("★", 56, HORIZONTAL_ALIGNMENT_LEFT)
-	star.add_theme_color_override("font_color", GameManager.star_fill_color(_mode_filter))
-	value.add_child(star)
+	value.add_child(_make_star_icon(40, GameManager.star_fill_color(_mode_filter)))
 	return value
+
+
+func _make_star_icon(px: float, color: Color) -> TextureRect:
+	var star := TextureRect.new()
+	star.texture = STAR_TEXTURE
+	star.custom_minimum_size = Vector2(px, px)
+	star.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	star.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	star.modulate = color
+	star.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return star
 
 
 func _player_row_colors() -> Dictionary:

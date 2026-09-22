@@ -71,7 +71,7 @@ const COPY := {
 	"TutReveal": {
 		"es": "REVELAR",
 		"en": "REVEAL",
-		"de": "AUFDECKEN",
+		"de": "LÖSEN",
 		"fr": "RÉVÉLER",
 		"eu": "AGERTU",
 		"it": "RIVELA",

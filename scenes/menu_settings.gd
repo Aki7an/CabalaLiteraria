@@ -76,7 +76,7 @@ const LOCALIZED_COPY := {
 		"reset": "WERTE ZURÜCKSETZEN",
 		"game_title": "SPIEL",
 		"tutorial": "Tutorial vor dem Spielen anzeigen.",
-		"reveal": "Erklärung der REVELAR-Taste anzeigen.",
+		"reveal": "Erklärung der LÖSEN-Taste anzeigen.",
 		"share": "Lösedaten mit dem Entwickler teilen.",
 	},
 	"fr": {

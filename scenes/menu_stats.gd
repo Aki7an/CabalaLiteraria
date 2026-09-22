@@ -6,6 +6,7 @@ const MODE_CRYPTOGRAM := "cryptogram"
 const COLOR_INK := Color(0.325, 0.2, 0.125, 1)
 const COLOR_STAR_QUICK := Color(1.0, 0.82, 0.12, 1)
 const COLOR_STAR_CRYPTO := Color(1.0, 0.48, 0.08, 1)
+const STAR_TEX := "res://images/estrella_plano.png"
 const CATEGORY_ROWS := {
 	"RowCita": "cita",
 	"RowEfemeride": "efemeride",
@@ -191,14 +192,12 @@ func _set_cat_stars(node: Node, data: Dictionary, star_color: Color) -> void:
 	_set_star_line(node, plain, star_color)
 
 
-func _set_star_line(node: Node, raw: String, star_color: Color) -> void:
+func _set_star_line(node: Node, raw: String, _star_color: Color) -> void:
 	if node == null:
 		return
-	var has_star := "★" in raw
 	var numbers := raw.replace("★", "").strip_edges()
 	if numbers.is_empty():
 		numbers = raw
-	var star := " ★" if (not has_star or raw.contains(" ★")) else "★"
 	var base_size := 38
 	if node is RichTextLabel:
 		base_size = (node as RichTextLabel).get_theme_font_size("normal_font_size")
@@ -206,13 +205,13 @@ func _set_star_line(node: Node, raw: String, star_color: Color) -> void:
 		base_size = (node as Label).get_theme_font_size("font_size")
 	if base_size <= 0:
 		base_size = 38
-	var star_size := int(round(float(base_size) * 1.5))
-	var bb := "[color=#%s]%s[/color][color=#%s][font_size=%d]%s[/font_size][/color]" % [
+	var star_size := maxi(28, int(round(float(base_size) * 1.15)))
+	var bb := "[color=#%s]%s[/color] [img=%dx%d]%s[/img]" % [
 		COLOR_INK.to_html(false),
 		numbers,
-		star_color.to_html(false),
 		star_size,
-		star,
+		star_size,
+		STAR_TEX,
 	]
 	if node is RichTextLabel:
 		var rtl := node as RichTextLabel
@@ -223,7 +222,7 @@ func _set_star_line(node: Node, raw: String, star_color: Color) -> void:
 		rtl.text = bb
 		return
 	if node is Label:
-		(node as Label).text = numbers + star
+		(node as Label).text = numbers
 		(node as Label).add_theme_color_override("font_color", COLOR_INK)
 
 

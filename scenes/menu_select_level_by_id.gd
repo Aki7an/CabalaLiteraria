@@ -136,7 +136,7 @@ const LOCALIZED_COPY := {
 	"de": {
 		"title": "Sammlung",
 		"quick": "Schnell",
-		"cryptogram": "Herausforderung",
+		"cryptogram": "Knifflig",
 		"progress": "%d von %d entdeckt",
 		"random": "Zufällig wählen",
 		"tap_puzzle": "Wähle ein Rätsel",

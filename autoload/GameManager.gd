@@ -257,7 +257,7 @@ func normalize_category(raw: String) -> String:
 	match key:
 		"efemeride", "efemerides", "event", "events", "ereignis", "gertaera", "evenement", "evento":
 			return CAT_EFEMERIDE
-		"cita", "citas", "cita celebre", "personajes", "personaje", "personalidades", "personalidad", "ilustres", "ilustre", "characters", "appointment", "famous quote", "famous quotes", "citation", "citation celebre", "zitat", "aipu", "aipu ospetsua", "citazione", "citazione celebre", "citacao", "citacao celebre":
+		"cita", "citas", "cita celebre", "personajes", "personaje", "personalidades", "personalidad", "ilustres", "ilustre", "personen", "beruhmtheiten", "characters", "appointment", "famous quote", "famous quotes", "citation", "citation celebre", "zitat", "aipu", "aipu ospetsua", "citazione", "citazione celebre", "citacao", "citacao celebre":
 			return CAT_CITA
 		"curiosidades", "curiosities", "curiosites", "kuriositaten", "kuriositateak", "curiosita":
 			return CAT_CURIOSIDADES

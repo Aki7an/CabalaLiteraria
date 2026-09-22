@@ -9,7 +9,7 @@ const ZOOM_S := 0.7
 const ZOOM_FROM := 0.65
 const COPY := {
 	"TutReveal": {
-		"es": "REVELAR", "en": "REVEAL", "de": "AUFDECKEN",
+		"es": "REVELAR", "en": "REVEAL", "de": "LÖSEN",
 		"fr": "RÉVÉLER", "eu": "AGERTU", "it": "RIVELA", "pt": "REVELAR",
 	},
 	"RevealDlgIntro": {
@@ -77,7 +77,7 @@ const COPY := {
 	"RevealDlgSkip": {
 		"es": "No mostrar este cuadro en el futuro y revelar directamente",
 		"en": "Don't show this dialog again and reveal directly",
-		"de": "Dieses Fenster künftig nicht mehr anzeigen und direkt aufdecken",
+		"de": "Dieses Fenster künftig nicht mehr anzeigen und direkt lösen",
 		"fr": "Ne plus afficher cette fenêtre et révéler directement",
 		"eu": "Ez erakutsi berriro koadro hau eta agertu zuzenean",
 		"it": "Non mostrare più questa finestra e rivela direttamente",

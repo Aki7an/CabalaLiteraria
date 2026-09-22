@@ -72,7 +72,7 @@ const LOCALIZED_COPY := {
 		"mode": "Wähle deine Spielart",
 		"quick": "Schnell",
 		"quick_description": "Entschlüssle kurze, direkte Sätze.",
-		"cryptogram": "Herausforderung",
+		"cryptogram": "Knifflig",
 		"cryptogram_description": "Löse längere und vollständige Texte.",
 	},
 	"fr": {
