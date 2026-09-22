@@ -4,6 +4,9 @@ const StoreConfig := preload("res://store/store_config.gd")
 
 var _price := ""
 var _android: Object = null
+var _android_product_ready := false
+var _android_purchase_option_id := ""
+var _android_offer_id := ""
 var _ios: Object = null
 var _querying := false
 var _busy := false
@@ -90,22 +93,21 @@ func _query_store_price() -> void:
 
 func _connect_android() -> void:
 	if not Engine.has_singleton("GodotGooglePlayBilling"):
+		push_warning("[IAP] GodotGooglePlayBilling singleton is not available.")
 		return
-	_android = Engine.get_singleton("GodotGooglePlayBilling")
+	if _android != null:
+		return
+	_android = BillingClient.new()
 	if _android == null:
 		return
+	add_child(_android)
 	_connect_if_present(_android, "connected", _on_android_connected)
 	_connect_if_present(_android, "connect_error", _on_android_failed)
 	_connect_if_present(_android, "disconnected", _on_android_failed)
-	_connect_if_present(_android, "product_details_query_completed", _on_android_products)
-	_connect_if_present(_android, "product_details_query_error", _on_android_failed)
-	_connect_if_present(_android, "sku_details_query_completed", _on_android_products)
-	_connect_if_present(_android, "sku_details_query_error", _on_android_failed)
-	_connect_if_present(_android, "purchase_success", _on_android_purchase_ok)
-	_connect_if_present(_android, "purchases_updated", _on_android_purchases_updated)
-	_connect_if_present(_android, "purchase_error", _on_android_purchase_error)
-	_connect_if_present(_android, "purchase_query_completed", _on_android_purchases_updated)
+	_connect_if_present(_android, "query_product_details_response", _on_android_products)
 	_connect_if_present(_android, "query_purchases_response", _on_android_purchases_updated)
+	_connect_if_present(_android, "on_purchase_updated", _on_android_purchase_updated)
+	_connect_if_present(_android, "acknowledge_purchase_response", _on_android_acknowledged)
 
 
 func _start_android_query() -> bool:
@@ -114,8 +116,11 @@ func _start_android_query() -> bool:
 	if _android == null:
 		return false
 	_querying = true
-	if _android.has_method("startConnection"):
-		_android.startConnection()
+	if _android.has_method("is_ready") and _android.is_ready():
+		_query_android_product()
+	elif _android.has_method("get_connection_state") \
+			and int(_android.get_connection_state()) == BillingClient.ConnectionState.CONNECTING:
+		pass
 	elif _android.has_method("start_connection"):
 		_android.start_connection()
 	else:
@@ -126,39 +131,199 @@ func _start_android_query() -> bool:
 
 
 func _on_android_connected(_a: Variant = null, _b: Variant = null, _c: Variant = null) -> void:
+	print("[IAP] Google Play Billing connected.")
+	_query_android_product()
+	if _wait_kind == "restore":
+		_query_android_purchases()
+
+
+func _query_android_product() -> void:
 	var ids := PackedStringArray([StoreConfig.remove_ads_id()])
-	if _android != null and _android.has_method("queryProductDetails"):
-		_android.queryProductDetails(ids, "inapp")
-	elif _android != null and _android.has_method("querySkuDetails"):
-		_android.querySkuDetails(ids, "inapp")
+	if _android != null and _android.has_method("query_product_details"):
+		_android.query_product_details(ids, BillingClient.ProductType.INAPP)
 	else:
 		_finish_query("")
 
 
-func _on_android_products(products: Variant = null, _extra: Variant = null) -> void:
-	_finish_query(_extract_price(products))
+func _on_android_products(products: Variant = null, extra: Variant = null) -> void:
+	var response := _android_payload_to_dict(products, extra)
+	var response_code := int(response.get("response_code", BillingClient.BillingResponseCode.ERROR))
+	var found := _capture_android_purchase_option(response)
+	var price := _extract_price(response)
+	_android_product_ready = (
+		response_code == BillingClient.BillingResponseCode.OK
+		and found
+	)
+	print("[IAP] products ready=", _android_product_ready, " price=", price, " option=", _android_purchase_option_id, " payload=", response)
+	if not _android_product_ready:
+		push_warning("[IAP] product query failed: %s" % str(response))
+	_finish_query(price if _android_product_ready or price != "" else "")
+
+
+func _android_payload_to_dict(primary: Variant, extra: Variant = null) -> Dictionary:
+	if primary is Dictionary:
+		return primary
+	if extra is Dictionary:
+		return extra
+	var response := {}
+	if primary is Array:
+		response["product_details"] = primary
+		response["response_code"] = BillingClient.BillingResponseCode.OK
+	elif extra is Array:
+		response["product_details"] = extra
+		response["response_code"] = BillingClient.BillingResponseCode.OK
+	return response
+
+
+func _capture_android_purchase_option(response: Dictionary) -> bool:
+	_android_purchase_option_id = ""
+	_android_offer_id = ""
+	var products: Variant = _first_array(response, [
+		"product_details",
+		"productDetails",
+		"products",
+	])
+	if not (products is Array):
+		return _payload_has_remove_ads(response)
+	var wanted := StoreConfig.remove_ads_id()
+	for product_variant in products:
+		if not (product_variant is Dictionary):
+			continue
+		var product := product_variant as Dictionary
+		var product_id := str(_dict_value(product, ["product_id", "productId", "id"], ""))
+		if product_id != "" and product_id != wanted:
+			continue
+		if product_id == "" and not _payload_has_remove_ads(product):
+			continue
+		var offers: Variant = _first_array(product, [
+			"one_time_purchase_offer_details_list",
+			"oneTimePurchaseOfferDetailsList",
+			"purchase_options",
+			"purchaseOptions",
+		])
+		if not (offers is Array) or (offers as Array).is_empty():
+			var single: Variant = _dict_value(product, [
+				"one_time_purchase_offer_details",
+				"oneTimePurchaseOfferDetails",
+			], {})
+			if single is Dictionary and not (single as Dictionary).is_empty():
+				offers = [single]
+		if offers is Array and not (offers as Array).is_empty():
+			var selected: Dictionary = {}
+			for offer_variant in offers:
+				if not (offer_variant is Dictionary):
+					continue
+				var offer := offer_variant as Dictionary
+				if str(_dict_value(offer, ["offer_id", "offerId"], "")).is_empty():
+					selected = offer
+					break
+			if selected.is_empty() and (offers as Array)[0] is Dictionary:
+				selected = (offers as Array)[0] as Dictionary
+			_android_purchase_option_id = str(_dict_value(selected, [
+				"purchase_option_id",
+				"purchaseOptionId",
+			], ""))
+			# Never send offerToken here: Billing treats it as a real offer_id and rejects the flow.
+			_android_offer_id = str(_dict_value(selected, [
+				"offer_id",
+				"offerId",
+			], ""))
+		if _android_purchase_option_id.is_empty():
+			_android_purchase_option_id = StoreConfig.PRODUCT_OPTION_ANDROID
+		return true
+	return _payload_has_remove_ads(response)
+
+
+func _first_array(data: Dictionary, keys: Array) -> Variant:
+	for key in keys:
+		var value: Variant = data.get(key, null)
+		if value is Array:
+			return value
+	return null
+
+
+func _dict_value(data: Dictionary, keys: Array, fallback: Variant = "") -> Variant:
+	for key in keys:
+		if data.has(key) and str(data[key]) != "":
+			return data[key]
+	return fallback
 
 
 func _on_android_failed(_a: Variant = null, _b: Variant = null, _c: Variant = null) -> void:
+	push_warning("[IAP] Google Play Billing error: %s %s" % [str(_a), str(_b)])
 	_finish_query("")
+	if _wait_kind != "":
+		_finish_wait(_fail_result(str(_b) if _b != null else "billing_connection_failed"))
 
 
-func _on_android_purchase_ok(_a: Variant = null, _b: Variant = null, _c: Variant = null) -> void:
-	_grant_full_game()
-	_finish_wait({"ok": true, "cancelled": false, "error": "", "owned": true})
-
-
-func _on_android_purchase_error(_a: Variant = null, _b: Variant = null, _c: Variant = null) -> void:
-	var message := str(_a) if _a != null else "purchase_failed"
-	var cancelled := message.to_lower().contains("cancel")
-	_finish_wait({"ok": false, "cancelled": cancelled, "error": message, "owned": false})
+func _on_android_purchase_updated(payload: Variant = null) -> void:
+	var response: Dictionary = payload if payload is Dictionary else {}
+	var response_code := int(response.get("response_code", BillingClient.BillingResponseCode.ERROR))
+	if response_code == BillingClient.BillingResponseCode.USER_CANCELED:
+		_finish_wait(_fail_result("cancelled"))
+		return
+	if response_code != BillingClient.BillingResponseCode.OK:
+		var message := str(response.get("debug_message", "purchase_failed"))
+		push_warning("[IAP] purchase failed: %s" % message)
+		_finish_wait(_fail_result(message))
+		return
+	if _grant_android_purchase_from_response(response):
+		_finish_wait(_ok_result())
+	elif _wait_kind == "purchase":
+		_finish_wait(_fail_result("pending"))
 
 
 func _on_android_purchases_updated(payload: Variant = null, _extra: Variant = null) -> void:
-	if _payload_has_remove_ads(payload):
-		_grant_full_game()
+	var response: Dictionary = payload if payload is Dictionary else {}
+	var response_code := int(response.get("response_code", BillingClient.BillingResponseCode.ERROR))
+	if response_code != BillingClient.BillingResponseCode.OK:
+		var message := str(response.get("debug_message", "restore_failed"))
+		push_warning("[IAP] purchase query failed: %s" % message)
+		if _wait_kind == "restore":
+			_finish_wait(_fail_result(message))
+		return
+	if _grant_android_purchase_from_response(response):
 		if _wait_kind == "restore" or _wait_kind == "purchase":
 			_finish_wait(_ok_result())
+	elif _wait_kind == "restore":
+		_finish_wait(_fail_result("none"))
+
+
+func _grant_android_purchase_from_response(response: Dictionary) -> bool:
+	var purchases: Variant = response.get("purchases", [])
+	if not (purchases is Array):
+		return false
+	for purchase_variant in purchases:
+		if not purchase_variant is Dictionary:
+			continue
+		var purchase := purchase_variant as Dictionary
+		if not _purchase_contains_remove_ads(purchase):
+			continue
+		if int(purchase.get("purchase_state", BillingClient.PurchaseState.UNSPECIFIED_STATE)) \
+				!= BillingClient.PurchaseState.PURCHASED:
+			continue
+		_grant_full_game()
+		if not bool(purchase.get("is_acknowledged", false)):
+			var token := str(purchase.get("purchase_token", ""))
+			if token != "" and _android != null and _android.has_method("acknowledge_purchase"):
+				_android.acknowledge_purchase(token)
+		return true
+	return false
+
+
+func _purchase_contains_remove_ads(purchase: Dictionary) -> bool:
+	var ids: Variant = purchase.get("product_ids", [])
+	if ids is PackedStringArray or ids is Array:
+		for product_id in ids:
+			if str(product_id) == StoreConfig.remove_ads_id():
+				return true
+	return str(purchase.get("product_id", "")) == StoreConfig.remove_ads_id()
+
+
+func _on_android_acknowledged(response: Dictionary) -> void:
+	if int(response.get("response_code", BillingClient.BillingResponseCode.ERROR)) \
+			!= BillingClient.BillingResponseCode.OK:
+		push_warning("[IAP] purchase acknowledgement failed: %s" % str(response))
 
 
 func _start_ios_query() -> bool:
@@ -353,18 +518,39 @@ func _restore_ios() -> Dictionary:
 func _purchase_android() -> Dictionary:
 	if _android == null:
 		return _fail_result("unavailable")
+	if not await _ensure_android_product_ready():
+		return _fail_result("product_unavailable")
 	_busy = true
 	_wait_kind = "purchase"
 	_wait_result = {}
 	var product_id := StoreConfig.remove_ads_id()
-	if _android.has_method("purchase"):
-		_android.purchase(product_id)
-	elif _android.has_method("purchaseItem"):
-		_android.purchaseItem(product_id, "inapp")
-	else:
+	if not _android.has_method("purchase"):
 		_busy = false
 		_wait_kind = ""
 		return _fail_result("unavailable")
+	var option_id := _android_purchase_option_id
+	if option_id.is_empty():
+		option_id = StoreConfig.PRODUCT_OPTION_ANDROID
+	print("[IAP] purchase ", product_id, " option=", option_id, " offer=", _android_offer_id)
+	var launch_result: Variant = _android.purchase(
+		product_id,
+		option_id,
+		""
+	)
+	if launch_result is Dictionary:
+		var code := int((launch_result as Dictionary).get(
+			"response_code",
+			BillingClient.BillingResponseCode.OK
+		))
+		if code == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED:
+			_query_android_purchases()
+		elif code != BillingClient.BillingResponseCode.OK:
+			_busy = false
+			_wait_kind = ""
+			return _fail_result(str((launch_result as Dictionary).get(
+				"debug_message",
+				"purchase_failed"
+			)))
 	return await _await_store(StoreConfig.PURCHASE_TIMEOUT_SEC)
 
 
@@ -374,10 +560,10 @@ func _restore_android() -> Dictionary:
 	_busy = true
 	_wait_kind = "restore"
 	_wait_result = {}
-	if _android.has_method("queryPurchases"):
-		_android.queryPurchases("inapp")
-	elif _android.has_method("queryPurchasesAsync"):
-		_android.queryPurchasesAsync("inapp")
+	if _android.has_method("is_ready") and _android.is_ready():
+		_query_android_purchases()
+	elif _android.has_method("start_connection"):
+		_android.start_connection()
 	else:
 		_busy = false
 		_wait_kind = ""
@@ -385,6 +571,27 @@ func _restore_android() -> Dictionary:
 			return _ok_result()
 		return _fail_result("none")
 	return await _await_store(StoreConfig.QUERY_TIMEOUT_SEC)
+
+
+func _ensure_android_product_ready() -> bool:
+	if _android_product_ready:
+		return true
+	if not _querying:
+		_start_android_query()
+	var started_at := Time.get_ticks_msec()
+	var max_ms := int(StoreConfig.QUERY_TIMEOUT_SEC * 1000.0)
+	while not _android_product_ready and _querying:
+		await get_tree().process_frame
+		if Time.get_ticks_msec() - started_at >= max_ms:
+			break
+	return _android_product_ready
+
+
+func _query_android_purchases() -> void:
+	if _android != null and _android.has_method("query_purchases"):
+		_android.query_purchases(BillingClient.ProductType.INAPP)
+	elif _wait_kind == "restore":
+		_finish_wait(_fail_result("unavailable"))
 
 
 func _await_store(timeout_sec: float) -> Dictionary:
@@ -478,16 +685,26 @@ func _extract_price(payload: Variant) -> String:
 
 
 func _price_from_dict(data: Dictionary) -> String:
-	for key in ["formatted_price", "localized_price", "localizedPrice", "price"]:
+	for key in ["formatted_price", "formattedPrice", "localized_price", "localizedPrice", "price"]:
 		var value := str(data.get(key, "")).strip_edges()
 		if value != "" and not _looks_like_product_id(value):
 			return value
-	var offer: Variant = data.get("one_time_purchase_offer_details", {})
+	var offer: Variant = data.get("one_time_purchase_offer_details", data.get("oneTimePurchaseOfferDetails", {}))
 	if offer is Dictionary:
 		var formatted := str(offer.get("formatted_price", "")).strip_edges()
 		if formatted != "":
 			return formatted
-	for key in ["localized_prices", "prices", "products"]:
+	for key in [
+		"localized_prices",
+		"prices",
+		"products",
+		"product_details",
+		"purchaseOptions",
+		"one_time_purchase_offer_details",
+		"oneTimePurchaseOfferDetails",
+		"one_time_purchase_offer_details_list",
+		"oneTimePurchaseOfferDetailsList",
+	]:
 		var found := _extract_price(data.get(key, null))
 		if found != "":
 			return found

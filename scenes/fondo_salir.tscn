@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/fondo_salir.gd" id="1_script"]
 [ext_resource type="FontVariation" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
-[ext_resource type="FontFile" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="3_title"]
+[ext_resource type="FontVariation" uid="uid://bhfo1jcrwhcei" path="res://Font_titulos.tres" id="3_title"]
 [ext_resource type="Texture2D" uid="uid://dslqrdlfkvkm0" path="res://images/settings.png" id="4_settings"]
 
 [sub_resource type="StyleBoxFlat" id="Style_card"]

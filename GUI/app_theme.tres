@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://bcrli8j8rcjl1"]
+
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="1_font"]
+
+[resource]
+default_font = ExtResource("1_font")
+default_font_size = 36

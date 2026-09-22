@@ -120,7 +120,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _has_blocking_overlay() -> bool:
-	for group_name in ["HintsOverlay", "RevealOverlay", "RevealSequence", "BoardFillPrompt", "ShareSolveDialog", "GameMenu"]:
+	for group_name in ["HintsOverlay", "RevealOverlay", "RevealSequence", "BoardFillPrompt", "ShareSolveDialog", "GameMenu", "LevelStartIntro"]:
 		if not get_tree().get_nodes_in_group(group_name).is_empty():
 			return true
 	return false
@@ -211,14 +211,6 @@ func _connect_action_button(button: Button, callback: Callable) -> void:
 	button.mouse_filter = Control.MOUSE_FILTER_STOP
 	if not button.pressed.is_connected(callback):
 		button.pressed.connect(callback)
-	if not button.gui_input.is_connected(_on_action_button_gui_input):
-		button.gui_input.connect(_on_action_button_gui_input.bind(callback))
-
-
-func _on_action_button_gui_input(event: InputEvent, callback: Callable) -> void:
-	if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed:
-		callback.call()
-		accept_event()
 
 
 func resume_saved_time() -> void:
@@ -228,6 +220,17 @@ func resume_saved_time() -> void:
 	_shown_minute = -1
 	_update_timer_label(float(GameManager.tiempo_partida))
 	_suppress_minute_fx = false
+
+
+func pause_play_clock() -> void:
+	GameManager.set_tiempo_partida(_elapsed_play_seconds())
+	_pause_ms = Time.get_ticks_msec()
+
+
+func resume_play_clock() -> void:
+	if _pause_ms > 0:
+		_start_ms += Time.get_ticks_msec() - _pause_ms
+		_pause_ms = 0
 
 
 func sync_play_time() -> void:
@@ -322,6 +325,17 @@ func _apply_practice_lock() -> void:
 	lock.offset_right = 40.0
 	lock.offset_bottom = 40.0
 	frame.add_child(lock)
+
+
+func puzzle_star_slots() -> Array[TextureRect]:
+	if stars.is_empty():
+		_bind_header_nodes()
+	var slots: Array[TextureRect] = []
+	var maximum := GameManager.get_puzzle_difficulty_stars()
+	for index in range(mini(stars.size(), maximum)):
+		if stars[index]:
+			slots.append(stars[index])
+	return slots
 
 
 func _update_stars(_value: int = -1) -> void:

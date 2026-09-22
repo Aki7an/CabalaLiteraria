@@ -121,8 +121,6 @@ func _apply_debug_nearly_solved() -> void:
 		elif key == leave:
 			keyboard_letter.mark_as_unassigned()
 	if first_empty != null:
-		first_empty.deselect_all_cels()
-		first_empty.celda_selected.visible = true
 		GameManager.set_celda_seleccionada(first_empty.orden, first_empty.numero)
 		GameManager.set_selected_letter_user("")
 

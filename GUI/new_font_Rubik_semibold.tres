@@ -1,6 +1,15 @@
-[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://b30tgh5qseyh0"]
+[gd_resource type="FontVariation" format=3 uid="uid://b30tgh5qseyh0"]
 
-[ext_resource type="FontFile" uid="uid://is08ue42opgl" path="res://fonts/Fonts/Rubik-SemiBold.ttf" id="1_l0nu7"]
+[ext_resource type="FontFile" uid="uid://cgq34g30v2a07" path="res://fonts/Fonts/Rubik-SemiBold.ttf" id="1_l0nu7"]
+[ext_resource type="FontFile" uid="uid://d3jg83nbfug5a" path="res://fonts/Fonts/Source_Sans_3/static/SourceSans3-Bold.ttf" id="2_src"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="3_mon"]
+[ext_resource type="FontFile" uid="uid://eyexi5shcu1l" path="res://fonts/Fonts/NotoSansSymbols/NotoSansSymbols-UI.ttf" id="4_sym"]
 
 [resource]
+fallbacks = Array[Font]([ExtResource("2_src"), ExtResource("3_mon"), ExtResource("4_sym")])
 base_font = ExtResource("1_l0nu7")
+opentype_features = {
+1668049012: 0,
+1668050279: 0,
+1818848613: 0
+}

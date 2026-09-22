@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c35i4wdcl1b5f" path="res://scenes/Celda/celda.gd" id="1_omubc"]
 [ext_resource type="Script" uid="uid://der44llrh0ywt" path="res://scenes/Blink_Label.gd" id="2_of430"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d3qfr"]
 bg_color = Color(0.975, 0.965, 0.945, 1)
@@ -23,6 +24,9 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_of430"]
 bg_color = Color(0.769222, 0.769996, 0.302051, 1)
 
+[sub_resource type="Theme" id="Theme_font"]
+default_font = ExtResource("3_font")
+
 [node name="Celda" type="Control" unique_id=945296634 groups=["Celda"]]
 custom_minimum_size = Vector2(60, 120)
 layout_mode = 3
@@ -33,6 +37,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_omubc")
+theme = SubResource("Theme_font")
 metadata/_edit_use_anchors_ = true
 
 [node name="Fondo" type="Panel" parent="." unique_id=752395006]

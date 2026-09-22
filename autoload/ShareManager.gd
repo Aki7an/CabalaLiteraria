@@ -305,9 +305,13 @@ func _share_android(image_path: String, text: String, target := "") -> bool:
 
 
 func _android_share_copy(image_path: String) -> String:
-	var cache := OS.get_cache_dir().path_join(ShareConfig.PNG_NAME)
-	if DirAccess.copy_absolute(image_path, cache) == OK:
-		return cache
+	# Godot already exposes getFilesDir() via FileProvider (@xml/godot_provider_paths).
+	# Keep the PNG there; cache-path is not in Godot's provider XML.
+	var files_path := OS.get_user_data_dir().path_join(ShareConfig.PNG_NAME)
+	if image_path == files_path or not FileAccess.file_exists(image_path):
+		return image_path
+	if DirAccess.copy_absolute(image_path, files_path) == OK:
+		return files_path
 	return image_path
 
 

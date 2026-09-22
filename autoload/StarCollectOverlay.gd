@@ -182,6 +182,47 @@ func _process(delta: float) -> void:
 		i += 1
 
 
+func play_to_slots(targets: Array) -> void:
+	if _playing:
+		return
+	_playing = true
+	if _ghosts.is_empty() or targets.is_empty():
+		clear()
+		return
+	await get_tree().process_frame
+	await get_tree().process_frame
+	await get_tree().create_timer(PRE_FLY_SEC).timeout
+	for i in range(_ghosts.size()):
+		if i > 0:
+			await get_tree().create_timer(STAGGER_SEC).timeout
+		var ghost := _ghosts[i]
+		var target: Control = targets[i] if i < targets.size() else null
+		if not is_instance_valid(ghost) or target == null or not is_instance_valid(target):
+			continue
+		var target_rect := target.get_global_rect()
+		await _fly_star(ghost, target_rect.get_center(), target_rect.size)
+		pending_count = maxi(0, pending_count - 1)
+		_reveal_slot(target)
+		if is_instance_valid(ghost):
+			ghost.queue_free()
+	_ghosts.clear()
+	pending_count = 0
+	from_total = -1
+	to_total = -1
+	pending_mode = ""
+	_playing = false
+
+
+func _reveal_slot(target: Control) -> void:
+	if target == null or not is_instance_valid(target):
+		return
+	target.modulate.a = 1.0
+	target.visible = true
+	_play_chime()
+	_flash_node(target)
+	_scale_blink(target)
+
+
 func play_to_target(target: Control, counter: Label, start_value: int) -> void:
 	if _playing:
 		return

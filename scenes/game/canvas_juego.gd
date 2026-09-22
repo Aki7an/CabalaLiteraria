@@ -569,10 +569,9 @@ func reset_zoom_scale() -> void:
 func deselect_all_cels() -> void:
 	if get_tree() == null:
 		return
-	
 	for c in get_tree().get_nodes_in_group("Celda"):
-		if is_instance_valid(c) and c.has_node("CeldaSelected"):
-			c.celda_selected.visible = false
+		if is_instance_valid(c) and c is Celda:
+			(c as Celda).deselect_cell()
 	 
 func _move_canvas(wide:int) -> void:
 	var v:float = position.y - wide

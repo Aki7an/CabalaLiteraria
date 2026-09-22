@@ -5,7 +5,6 @@ const SRC_IAP_MM := "res://ios/plugins/cifraletra_iap/CifraLetraIAP.mm"
 const SRC_IAP_H := "res://ios/plugins/cifraletra_iap/cifraletra_iap.h"
 const SRC_SHARE_MM := "res://ios/plugins/cifraletra_iap/CifraLetraShare.mm"
 const SRC_SHARE_H := "res://ios/plugins/cifraletra_iap/cifraletra_share.h"
-const SRC_FILE_PATHS := "res://addons/cifraletra_iap/android/cifraletra_file_paths.xml"
 const BUILD_IAP := "C1F4A1EA0000000000000001"
 const FILE_IAP := "C1F4A1EA0000000000000002"
 const FILE_IAP_H := "C1F4A1EA0000000000000004"
@@ -32,21 +31,25 @@ func _export_begin(features: PackedStringArray, _is_debug: bool, path: String, _
 		_add_linker_flags("-framework StoreKit")
 		_add_linker_flags("-framework UIKit")
 	if features.has("android"):
-		_install_android_file_paths()
+		_ensure_asset_pack_ad_id()
 
 
-func _get_android_manifest_application_element_contents(_platform: EditorExportPlatform, _debug: bool) -> String:
-	return """
-<provider
-	android:name="androidx.core.content.FileProvider"
-	android:authorities="${applicationId}.fileprovider"
-	android:exported="false"
-	android:grantUriPermissions="true">
-	<meta-data
-		android:name="android.support.FILE_PROVIDER_PATHS"
-		android:resource="@xml/cifraletra_file_paths" />
-</provider>
+func _ensure_asset_pack_ad_id() -> void:
+	# Play Console checks every AAB module. Godot's install-time asset pack
+	# ships its own manifest without AD_ID; write it on each Android export.
+	var dest_dir := ProjectSettings.globalize_path("res://android/build/assetPackInstallTime/src/main")
+	if dest_dir == "" or not DirAccess.dir_exists_absolute(ProjectSettings.globalize_path("res://android/build")):
+		return
+	DirAccess.make_dir_recursive_absolute(dest_dir)
+	var dest := dest_dir.path_join("AndroidManifest.xml")
+	var contents := """<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\">
+	<uses-permission android:name=\"com.google.android.gms.permission.AD_ID\" />
+</manifest>
 """
+	var file := FileAccess.open(dest, FileAccess.WRITE)
+	if file:
+		file.store_string(contents)
 
 
 func _end_generate_apple_embedded_project(path: String, _will_build_archive: bool) -> void:
@@ -58,15 +61,6 @@ func _export_end() -> void:
 	_pending_export_path = ""
 	if path.ends_with(".xcodeproj") or path.get_extension() == "ipa":
 		_install_native_sources(path)
-
-
-func _install_android_file_paths() -> void:
-	var src := ProjectSettings.globalize_path(SRC_FILE_PATHS)
-	if not FileAccess.file_exists(src):
-		return
-	var dest_dir := ProjectSettings.globalize_path("res://android/build/res/xml")
-	DirAccess.make_dir_recursive_absolute(dest_dir)
-	DirAccess.copy_absolute(src, dest_dir.path_join("cifraletra_file_paths.xml"))
 
 
 func _install_native_sources(path: String) -> void:

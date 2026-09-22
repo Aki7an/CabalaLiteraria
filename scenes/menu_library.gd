@@ -70,6 +70,8 @@ func _ready() -> void:
 	ficha_sources_title.text = tr("Sources")
 	index_scroll.scroll_deadzone = 16
 	ficha_scroll.scroll_deadzone = 16
+	ScrollOverflowHint.attach(index_scroll)
+	ScrollOverflowHint.attach(ficha_scroll)
 	_setup_ficha_layout()
 	_rebuild_index()
 	_open_pending_ficha()

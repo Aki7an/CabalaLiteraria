@@ -2,6 +2,7 @@ extends RefCounted
 
 ## Product IDs must match App Store Connect / Google Play Console.
 const PRODUCT_REMOVE_ADS_ANDROID := "cifraletra_remove_ads"
+const PRODUCT_OPTION_ANDROID := "remove-ads"
 const PRODUCT_REMOVE_ADS_IOS := "com.aki7an.cifraletra.removeads"
 const FALLBACK_PRICE := "2,99 €"
 const QUERY_TIMEOUT_SEC := 8.0

@@ -135,7 +135,7 @@ var hint_runtime_vowel_tokens: PackedStringArray = PackedStringArray()
 
 @export var EXCLUIR: Array = [
 	"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
-	",", ".", ";", ":", "-", "—", "–", " ", "\n", "\t",
+	",", ".", ";", ":", "-", "—", "–", "−", "‑", "‒", "―", " ", "\n", "\t",
 	"?", "¿", "¡", "!", "#", "@", "$", "%", "&", "/",
 	"(", ")", "[", "]", "=", "+", "*", "}", "{", "<", ">",
 	"_", "\\", "|", "~", "º", "°", "`", "´", "^", "«", "»",
@@ -1450,6 +1450,20 @@ func show_letter_error(cell_numbero: int) -> void:
 func set_celda_seleccionada(orden_celda:int, numero_celda:int) -> void:
 	selected_celda_number = orden_celda
 	celda_seleccionada_numero = numero_celda
+	highlight_cells_with_number(numero_celda, orden_celda)
+
+
+func highlight_cells_with_number(numero_celda: int, orden_celda: int = -1) -> void:
+	var tree := get_tree()
+	if tree == null:
+		return
+	var valid := numero_celda > 0 and numero_celda < 100
+	for node in tree.get_nodes_in_group("Celda"):
+		if not node is Celda:
+			continue
+		var cell := node as Celda
+		var same_number := valid and cell.numero == numero_celda
+		cell.set_number_highlight(same_number, same_number and cell.orden == orden_celda)
 	
 func pinta_celdas(numero_en_celda: int, color_a_pintar: int) -> void:
 	#print("ITERACIONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN")

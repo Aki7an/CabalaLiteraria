@@ -21,6 +21,7 @@ const RIBBON_WIDTH := 72.0
 var _card: Panel
 var _chosen_hint := 0
 var _result_sent := false
+var _block_outside := true
 
 
 func _ready() -> void:
@@ -32,6 +33,7 @@ func _ready() -> void:
 	_build()
 	gui_input.connect(_on_background_input)
 	tree_exiting.connect(_emit_hint_result)
+	_unlock_outside_after_release()
 
 
 func _build() -> void:
@@ -358,7 +360,19 @@ func _emit_hint_result() -> void:
 	})
 
 
+func _unlock_outside_after_release() -> void:
+	while Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		await get_tree().process_frame
+		if not is_instance_valid(self):
+			return
+	await get_tree().process_frame
+	if is_instance_valid(self):
+		_block_outside = false
+
+
 func _on_background_input(event: InputEvent) -> void:
+	if _block_outside:
+		return
 	if not (event is InputEventMouseButton and event.pressed):
 		return
 	if _card != null and _card.get_global_rect().has_point((event as InputEventMouseButton).global_position):

@@ -26,6 +26,9 @@ var _tpl_crypto := ""
 
 
 func _ready() -> void:
+	var shop_scroll := get_node_or_null("Scroll") as ScrollContainer
+	if shop_scroll:
+		ScrollOverflowHint.attach(shop_scroll)
 	_tpl_puzzles = label_puzzles.text
 	_tpl_quick = label_quick.text
 	_tpl_crypto = label_crypto.text
@@ -178,7 +181,8 @@ func _show_store_result(result: Dictionary, from_purchase: bool) -> void:
 	elif code == "invalid_product" or code == "product_not_found":
 		label_restore_status.text = _t("ShopProductInvalid", "Apple no reconoce este producto. Revisa el ID en App Store Connect.")
 	else:
-		label_restore_status.text = _t("ShopPurchaseFailed", "No se ha podido completar la compra.")
+		var failed := _t("ShopPurchaseFailed", "No se ha podido completar la compra.")
+		label_restore_status.text = failed if code.is_empty() else "%s (%s)" % [failed, code]
 	label_restore_status.visible = true
 
 

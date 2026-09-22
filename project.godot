@@ -43,7 +43,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="CifraLetra"
 config/description="CifraLetra - pasatiempo "
-config/version="1.0.1"
+config/version="1.0.2"
 run/main_scene="uid://bvpri1mtnymgf"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://images/Icono.png"
@@ -65,6 +65,7 @@ PuzzleSaveManager="*res://autoload/PuzzleSaveManager.gd"
 PlayFabTools="*res://autoload/PlayFab.tscn"
 Analyzer="*res://autoload/Analyzer.gd"
 EventLoggerAutoload="*res://autoload/EventLogger.gd"
+ScrollHintService="*res://autoload/ScrollHintService.gd"
 
 [display]
 
@@ -78,7 +79,7 @@ window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/alignment-tool/plugin.cfg", "res://addons/admob/plugin.cfg", "res://addons/cifraletra_iap/plugin.cfg")
+enabled=PackedStringArray("res://addons/alignment-tool/plugin.cfg", "res://addons/admob/plugin.cfg", "res://addons/cifraletra_iap/plugin.cfg", "res://addons/GodotGooglePlayBilling/plugin.cfg")
 
 [input]
 
@@ -96,6 +97,12 @@ dev_force_landscape={
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+
+[gui]
+
+theme/custom="res://GUI/app_theme.tres"
+theme/custom_font="res://GUI/new_font_Rubik_semibold.tres"
+theme/default_font_subpixel_positioning=0
 
 [internationalization]
 

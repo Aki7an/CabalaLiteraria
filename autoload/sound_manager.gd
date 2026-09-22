@@ -37,6 +37,12 @@ const RED_LETTER_SFX := preload("res://audio/Arcade Click Negative 10.ogg")
 const GREEN_LETTER_CLICK_GAP := 0.08
 const GREEN_PITCH_START_ST := -2.0
 const GREEN_PITCH_STEP_ST := 1.0
+const GREEN_VOLUME_START_DB := -4.0
+const GREEN_VOLUME_END_MULT := 1.5
+const GREEN_DELAY_TIME_SEC := 0.7
+const GREEN_DELAY_BOUNCES := 3
+const GREEN_DELAY_FEEDBACK := 0.7
+const GREEN_ALPHABET_FALLBACK := 27
 
 var _registry: Dictionary[String, SoundEntry] = {}
 var _music_player: AudioStreamPlayer
@@ -55,10 +61,11 @@ var _awaiting_celebration := false
 var _pending_fade_in_sec := MUSIC_FADE_IN_SEC
 var _music_duck := 1.0
 var _duck_tween: Tween
-var _green_click: AudioStreamPlayer
 var _green_click_last_at := -1.0
 var _green_pitch_tween: Tween
 var _green_seq_index := 0
+var _green_delay_token := 0
+var _green_voices: Array[AudioStreamPlayer] = []
 
 func _ready() -> void:
 	_build_registry()
@@ -175,6 +182,7 @@ func _set_music_duck(value: float) -> void:
 
 func begin_green_letter_sequence(_count: int = 0) -> void:
 	_green_seq_index = 0
+	_clear_green_voices()
 	if _green_pitch_tween:
 		_green_pitch_tween.kill()
 		_green_pitch_tween = null
@@ -203,26 +211,87 @@ func play_green_letter_click(force := false) -> void:
 	if not force and _green_click_last_at >= 0.0 and now - _green_click_last_at < GREEN_LETTER_CLICK_GAP:
 		return
 	_green_click_last_at = now
-	duck_music(0.5)
-	if _green_click == null or not is_instance_valid(_green_click):
-		_green_click = AudioStreamPlayer.new()
-		_green_click.name = "GreenLetterClick"
-		_green_click.bus = "SoundFx"
-		_green_click.stream = GREEN_LETTER_SFX
-		_green_click.process_mode = Node.PROCESS_MODE_ALWAYS
-		_green_click.finished.connect(_on_green_click_finished)
-		add_child(_green_click)
 	if _green_pitch_tween:
 		_green_pitch_tween.kill()
 		_green_pitch_tween = null
-	_green_click.volume_db = -4.0
-	_green_click.pitch_scale = _semitone_to_pitch(
+	var progress := _green_letter_progress()
+	var pitch := _semitone_to_pitch(
 		GREEN_PITCH_START_ST + float(_green_seq_index) * GREEN_PITCH_STEP_ST
 	)
-	if _green_click.playing:
-		_green_click.stop()
-	_green_click.play()
+	var volume_db := _green_letter_volume_db(progress)
+	duck_music(0.5)
+	_spawn_green_voice(volume_db, pitch)
+	_schedule_green_delay(volume_db, pitch, progress)
 	_green_seq_index += 1
+
+
+func _green_letter_progress() -> float:
+	var letters := _green_alphabet_count()
+	if letters <= 1:
+		return 0.0
+	return clampf(float(_green_seq_index) / float(letters - 1), 0.0, 1.0)
+
+
+func _green_alphabet_count() -> int:
+	if typeof(GameManager) != TYPE_NIL and GameManager.letters_aphabet_array.size() > 1:
+		return GameManager.letters_aphabet_array.size()
+	return GREEN_ALPHABET_FALLBACK
+
+
+func _green_letter_volume_db(progress: float) -> float:
+	var linear := db_to_linear(GREEN_VOLUME_START_DB)
+	linear *= 1.0 + (GREEN_VOLUME_END_MULT - 1.0) * progress
+	return linear_to_db(maxf(linear, 0.0001))
+
+
+func _schedule_green_delay(volume_db: float, pitch: float, wet: float) -> void:
+	if wet <= 0.001:
+		return
+	var token := _green_delay_token
+	var tree := get_tree()
+	if tree == null:
+		return
+	var dry_lin := db_to_linear(volume_db)
+	for bounce in range(1, GREEN_DELAY_BOUNCES + 1):
+		var bounce_lin := dry_lin * wet * pow(GREEN_DELAY_FEEDBACK, float(bounce))
+		if bounce_lin <= 0.0001:
+			continue
+		var bounce_db := linear_to_db(bounce_lin)
+		var delay_sec := GREEN_DELAY_TIME_SEC * float(bounce)
+		tree.create_timer(delay_sec).timeout.connect(
+			func() -> void:
+				if token != _green_delay_token:
+					return
+				_spawn_green_voice(bounce_db, pitch)
+		)
+
+
+func _spawn_green_voice(volume_db: float, pitch: float) -> void:
+	var player := AudioStreamPlayer.new()
+	player.name = "GreenLetterClick"
+	player.bus = "SoundFx"
+	player.stream = GREEN_LETTER_SFX
+	player.process_mode = Node.PROCESS_MODE_ALWAYS
+	player.volume_db = volume_db
+	player.pitch_scale = pitch
+	player.finished.connect(func() -> void:
+		_green_voices.erase(player)
+		player.queue_free()
+		if _green_voices.is_empty():
+			unduck_music()
+	)
+	add_child(player)
+	_green_voices.append(player)
+	player.play()
+
+
+func _clear_green_voices() -> void:
+	_green_delay_token += 1
+	for player in _green_voices:
+		if is_instance_valid(player):
+			player.stop()
+			player.queue_free()
+	_green_voices.clear()
 
 
 func _semitone_to_pitch(semitones: float) -> float:
@@ -235,14 +304,7 @@ func stop_green_letter_clicks() -> void:
 	if _green_pitch_tween:
 		_green_pitch_tween.kill()
 		_green_pitch_tween = null
-	if is_instance_valid(_green_click):
-		_green_click.stop()
-		_green_click.queue_free()
-	_green_click = null
-	unduck_music()
-
-
-func _on_green_click_finished() -> void:
+	_clear_green_voices()
 	unduck_music()
 
 

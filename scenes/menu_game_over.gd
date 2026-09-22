@@ -138,6 +138,8 @@ func _apply_locale() -> void:
 		share_fb_button.tooltip_text = tr("ShareOnFacebook")
 	if share_more_button:
 		share_more_button.text = "···"
+		share_more_button.clip_text = true
+		share_more_button.add_theme_font_size_override("font_size", 52)
 		share_more_button.tooltip_text = tr("ShareMore")
 
 
@@ -214,9 +216,9 @@ func _layout_top_down() -> void:
 	var button_h := continue_button.size.y
 	var share_h := 140.0
 	var margin := 36.0
-	var gap := 20.0
+	var gap := 40.0
 	var available := main_card.size.x - margin * 2.0
-	var continue_w := minf(640.0, available * 0.58)
+	var continue_w := minf(540.0, available * 0.50)
 	var feedback_w := available - gap - continue_w
 	var bottom_y := main_card.size.y - button_h - 36.0
 	var social_buttons := _share_social_buttons()
@@ -228,6 +230,7 @@ func _layout_top_down() -> void:
 		var btn_w := (available - social_gap * float(social_n - 1)) / float(social_n)
 		for i in range(social_n):
 			var button := social_buttons[i]
+			button.custom_minimum_size = Vector2(btn_w, share_h)
 			button.position = Vector2(margin + float(i) * (btn_w + social_gap), share_y)
 			button.size = Vector2(btn_w, share_h)
 	if share_title:
@@ -238,6 +241,7 @@ func _layout_top_down() -> void:
 		feedback_button.size = Vector2(feedback_w, button_h)
 	continue_button.position = Vector2(margin + feedback_w + gap, bottom_y)
 	continue_button.size = Vector2(continue_w, button_h)
+	continue_button.pivot_offset = continue_button.size * 0.5
 
 
 func _body_scroll_nodes() -> Array[Control]:
@@ -294,6 +298,7 @@ func _install_body_scroll() -> void:
 	)
 	main_card.add_child(scroll)
 	_body_scroll = scroll
+	ScrollOverflowHint.attach(scroll)
 	for node in [banner, banner_left, banner_right, confetti_left, confetti_right, continue_button, feedback_button, share_title]:
 		if node:
 			node.z_index = 8

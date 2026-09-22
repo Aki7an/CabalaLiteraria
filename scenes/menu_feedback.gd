@@ -51,6 +51,7 @@ func _ready() -> void:
 	_apply_locks()
 	_build_issue_chips()
 	scroll.scroll_deadzone = 16
+	ScrollOverflowHint.attach(scroll)
 	_make_rows_drag_through($Card/Scroll/Rows)
 	comment_edit.focus_entered.connect(_on_comment_focus_entered)
 	comment_edit.focus_exited.connect(_on_comment_focus_exited)

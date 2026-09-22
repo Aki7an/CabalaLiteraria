@@ -105,6 +105,7 @@ const COPY := {
 @onready var _reveal_title: Label = $Center/Card/Margin/Content/Buttons/ButtonReveal/Title
 
 var _closing := false
+var _block_outside := true
 var _dim_a := 0.58
 var _skip_blink: Tween
 
@@ -116,6 +117,7 @@ func _ready() -> void:
 	_update_letters()
 	gui_input.connect(_on_background_input)
 	_play_zoom_in()
+	_unlock_outside_after_release()
 
 
 func _apply_locale() -> void:
@@ -237,8 +239,18 @@ func _dismiss() -> void:
 		queue_free()
 
 
+func _unlock_outside_after_release() -> void:
+	while Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		await get_tree().process_frame
+		if not is_instance_valid(self):
+			return
+	await get_tree().process_frame
+	if is_instance_valid(self):
+		_block_outside = false
+
+
 func _on_background_input(event: InputEvent) -> void:
-	if _closing:
+	if _closing or _block_outside:
 		return
 	if not (event is InputEventMouseButton and event.pressed):
 		return

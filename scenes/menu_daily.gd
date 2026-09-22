@@ -59,6 +59,9 @@ var _thanks_color := Color(0.48, 0.36, 0.26, 0.82)
 
 
 func _ready() -> void:
+	var daily_scroll := get_node_or_null("%Scroll") as ScrollContainer
+	if daily_scroll:
+		ScrollOverflowHint.attach(daily_scroll)
 	_apply_static_texts()
 	if ad_thanks:
 		_thanks_color = ad_thanks.get_theme_color("font_color")

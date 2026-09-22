@@ -60,6 +60,7 @@ func _ready() -> void:
 	if sample:
 		_tpl_cat_stars = str(sample.get("text"))
 	_refresh()
+	ScrollOverflowHint.attach(_scroll)
 	if not HistoryManager.stats_updated.is_connected(_on_stats_updated):
 		HistoryManager.stats_updated.connect(_on_stats_updated)
 	if not resized.is_connected(_schedule_fit):

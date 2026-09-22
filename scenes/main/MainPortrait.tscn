@@ -87,7 +87,7 @@ offset_bottom = 565.0
 [node name="BoardFrame" type="Panel" parent="CanvasLayer" unique_id=796210902]
 clip_contents = true
 offset_left = 18.0
-offset_top = 590.0
+offset_top = 539.0
 offset_right = 1188.0
 offset_bottom = 1730.0
 theme_override_styles/panel = SubResource("Style_board_frame")
@@ -97,10 +97,10 @@ layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 21.0
-offset_top = 45.0
+offset_left = 14.0
+offset_top = 11.0
 offset_right = 1084.0
-offset_bottom = 1110.0
+offset_bottom = 1182.0
 grow_horizontal = 1
 grow_vertical = 1
 theme_override_styles/panel = SubResource("Style_board_inner")
@@ -108,9 +108,9 @@ theme_override_styles/panel = SubResource("Style_board_inner")
 [node name="ScrollRail" type="Panel" parent="CanvasLayer/BoardFrame" unique_id=1643991095]
 layout_mode = 0
 offset_left = 1096.0
-offset_top = 31.0
+offset_top = 10.0
 offset_right = 1156.0
-offset_bottom = 1101.0
+offset_bottom = 1177.0
 theme_override_styles/panel = SubResource("Style_rail")
 script = ExtResource("11_scroll")
 

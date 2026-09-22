@@ -45,6 +45,7 @@ func present_as_overlay() -> void:
 func _ready() -> void:
 	title_label.text = _t("Credits", "CRÉDITOS")
 	scroll.scroll_deadzone = 16
+	ScrollOverflowHint.attach(scroll)
 	_build_content()
 
 

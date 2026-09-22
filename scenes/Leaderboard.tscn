@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_cnd66"]
 [ext_resource type="Theme" uid="uid://c3fsjx2ci160j" path="res://GUI/ButtonPlay.tres" id="3_kvael"]
 [ext_resource type="Theme" uid="uid://dfw7q1ctkms07" path="res://Desplegable.tres" id="5_kvael"]
-[ext_resource type="FontFile" uid="uid://bhfo1jcrwhcei" path="res://Font_titulos.tres" id="5_v0t17"]
+[ext_resource type="Font" uid="uid://bhfo1jcrwhcei" path="res://Font_titulos.tres" id="5_v0t17"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="6_6acgj"]
 [ext_resource type="Script" uid="uid://5mpdten05w3r" path="res://scenes/PanelUP/dificultad.gd" id="6_abj0w"]
 [ext_resource type="Theme" uid="uid://bgrctq4mx0u2g" path="res://Botones.tres" id="7_304n2"]

@@ -9,7 +9,10 @@ const STAR_OFF_TEXTURE: Texture2D = preload("res://images/contorno_estrella.png"
 const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock_gray.svg")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 const COLOR_STAR_EMPTY := Color(0.50, 0.38, 0.24, 0.55)
+const COLOR_RECOMMEND := Color(0.878, 0.443, 0.102, 1)
 const DRAG_THRESHOLD := 14.0
+const RECOMMEND_STAR_LIMIT := 5
+const RECOMMEND_TOP_MARGIN := 132
 
 @export_dir var IMAGES_DIR: String = "res://data/images/"
 @export var FILE_EXTS: PackedStringArray = [".png", ".jpg", ".jpeg", ".webp"]
@@ -19,6 +22,8 @@ const DRAG_THRESHOLD := 14.0
 
 @onready var _grid: GridContainer = $ContentFrame/Scroll/GridWrapper/Grid
 @onready var _scroll: ScrollContainer = $ContentFrame/Scroll
+@onready var _content_frame: Panel = $ContentFrame
+@onready var _progress_card: Panel = $Header/ProgressCard
 @onready var _empty_state: Label = $ContentFrame/EmptyState
 @onready var _title_label: Label = $Header/Title
 @onready var _subtitle_label: Label = $Header/SubtitleRow/Subtitle
@@ -36,6 +41,10 @@ var _drag_held := false
 var _drag_active := false
 var _drag_origin := Vector2.ZERO
 var _drag_scroll_origin := 0
+var _recommend_card: Button
+var _recommend_callout: Control
+var _recommend_blink: Tween
+var _recommend_item: Dictionary = {}
 
 var _scene_to_category: PackedScene
 
@@ -58,7 +67,8 @@ const LOCALIZED_COPY := {
 		"lock_daily": "Hoy ya has repetido un puzle. Vuelve mañana.",
 		"lock_play": "JUGAR AL AZAR",
 		"lock_cancel": "CANCELAR",
-		"lock_ok": "ENTENDIDO"
+		"lock_ok": "ENTENDIDO",
+		"recommended": "Puzle recomendado"
 	},
 	"en": {
 		"title": "Collection",
@@ -78,7 +88,8 @@ const LOCALIZED_COPY := {
 		"lock_daily": "You already replayed a puzzle today. Come back tomorrow.",
 		"lock_play": "PLAY RANDOM",
 		"lock_cancel": "CANCEL",
-		"lock_ok": "GOT IT"
+		"lock_ok": "GOT IT",
+		"recommended": "Recommended puzzle"
 	},
 	"eu": {
 		"title": "Bilduma",
@@ -98,7 +109,8 @@ const LOCALIZED_COPY := {
 		"lock_daily": "Gaur jada puzzle bat errepikatu duzu. Bihar itzuli.",
 		"lock_play": "AUSAZ JOKATU",
 		"lock_cancel": "UTZI",
-		"lock_ok": "ULERTUTA"
+		"lock_ok": "ULERTUTA",
+		"recommended": "Puzzle gomendatua"
 	},
 	"fr": {
 		"title": "Collection",
@@ -118,7 +130,8 @@ const LOCALIZED_COPY := {
 		"lock_daily": "Tu as déjà rejoué un puzzle aujourd'hui. Reviens demain.",
 		"lock_play": "JOUER AU HASARD",
 		"lock_cancel": "ANNULER",
-		"lock_ok": "COMPRIS"
+		"lock_ok": "COMPRIS",
+		"recommended": "Puzzle recommandé"
 	},
 	"de": {
 		"title": "Sammlung",
@@ -138,7 +151,8 @@ const LOCALIZED_COPY := {
 		"lock_daily": "Du hast heute schon ein Rätsel wiederholt. Komm morgen wieder.",
 		"lock_play": "ZUFÄLLIG SPIELEN",
 		"lock_cancel": "ABBRECHEN",
-		"lock_ok": "VERSTANDEN"
+		"lock_ok": "VERSTANDEN",
+		"recommended": "Empfohlenes Rätsel"
 	},
 	"it": {
 		"title": "Collezione",
@@ -158,7 +172,8 @@ const LOCALIZED_COPY := {
 		"lock_daily": "Oggi hai già ripetuto un puzzle. Torna domani.",
 		"lock_play": "GIOCA A CASO",
 		"lock_cancel": "ANNULLA",
-		"lock_ok": "CAPITO"
+		"lock_ok": "CAPITO",
+		"recommended": "Puzzle consigliato"
 	},
 	"pt": {
 		"title": "Coleção",
@@ -178,7 +193,8 @@ const LOCALIZED_COPY := {
 		"lock_daily": "Já repetiste um puzzle hoje. Volta amanhã.",
 		"lock_play": "JOGAR AO ACASO",
 		"lock_cancel": "CANCELAR",
-		"lock_ok": "ENTENDIDO"
+		"lock_ok": "ENTENDIDO",
+		"recommended": "Puzzle recomendado"
 	}
 }
 
@@ -191,6 +207,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 
 	_scroll.scroll_deadzone = 16
+	ScrollOverflowHint.attach(_scroll)
 	if not SignalManager.full_game_changed.is_connected(refresh_from_gamemanager):
 		SignalManager.full_game_changed.connect(refresh_from_gamemanager)
 	if not _populate_from_gamemanager():
@@ -247,7 +264,8 @@ func _process(_delta: float) -> void:
 	for _i in range(amount):
 		var button: Button = _pending_textures.pop_front()
 		_assign_real_texture(button)
-	if _pending_textures.is_empty():
+	_update_recommend_callout_position()
+	if _pending_textures.is_empty() and not is_instance_valid(_recommend_callout):
 		set_process(false)
 
 
@@ -305,11 +323,15 @@ func _populate_from_parsed(parsed: Variant) -> void:
 	_load_completed_ids()
 
 	_visible_items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		var stars_a := _difficulty_to_stars(int(a.get("difficulty", 1)))
+		var stars_b := _difficulty_to_stars(int(b.get("difficulty", 1)))
+		if stars_a != stars_b:
+			return stars_a < stars_b
 		var image_a: int = int(a.get("image_number", 0))
 		var image_b: int = int(b.get("image_number", 0))
-		if image_a == image_b:
-			return int(a.get("difficulty", 1)) < int(b.get("difficulty", 1))
-		return image_a < image_b
+		if image_a != image_b:
+			return image_a < image_b
+		return int(a.get("index", 0)) < int(b.get("index", 0))
 	)
 
 	for item in _visible_items:
@@ -319,7 +341,8 @@ func _populate_from_parsed(parsed: Variant) -> void:
 	_scroll.visible = not _visible_items.is_empty()
 	_random_button.disabled = _visible_items.is_empty()
 	_update_header_progress()
-	set_process(not _pending_textures.is_empty())
+	_maybe_show_recommended()
+	set_process(not _pending_textures.is_empty() or is_instance_valid(_recommend_callout))
 
 
 func _passes_filters(item: Dictionary) -> bool:
@@ -1089,12 +1112,260 @@ func _copy(key: String) -> String:
 		"progress": "ProgressDiscovered",
 		"random": "ChooseRandom",
 		"empty": "NoLevels",
+		"recommended": "RecommendedPuzzle",
 	}
 	if MAP.has(key):
-		return tr(MAP[key])
+		var translated := tr(MAP[key])
+		if translated != MAP[key]:
+			return translated
 	var locale: String = TranslationServer.get_locale().left(2).to_lower()
 	var translations: Dictionary = LOCALIZED_COPY.get(locale, LOCALIZED_COPY["es"])
 	return str(translations.get(key, LOCALIZED_COPY["es"].get(key, key)))
+
+
+func _player_total_stars() -> int:
+	if typeof(HistoryManager) == TYPE_NIL:
+		return 0
+	var dashboard: Dictionary = HistoryManager.get_stats_dashboard()
+	return int(dashboard.get("stars_quick", 0)) + int(dashboard.get("stars_cryptogram", 0))
+
+
+func _find_recommended_item() -> Dictionary:
+	var best: Dictionary = {}
+	var best_stars := 99
+	var best_status := 99
+	var best_image := 999999
+	var best_index := 999999
+	for item in _visible_items:
+		if not GameManager.is_puzzle_playable(item):
+			continue
+		var puzzle_id := int(item.get("index", -1))
+		var status := _puzzle_status(puzzle_id)
+		if status == "completed":
+			continue
+		var stars := _difficulty_to_stars(int(item.get("difficulty", 1)))
+		var status_rank := 1 if status == "in_progress" else 0
+		var image_number := int(item.get("image_number", 0))
+		if (
+			stars < best_stars
+			or (stars == best_stars and status_rank < best_status)
+			or (stars == best_stars and status_rank == best_status and image_number < best_image)
+			or (
+				stars == best_stars
+				and status_rank == best_status
+				and image_number == best_image
+				and puzzle_id < best_index
+			)
+		):
+			best = item
+			best_stars = stars
+			best_status = status_rank
+			best_image = image_number
+			best_index = puzzle_id
+	return best
+
+
+func _maybe_show_recommended() -> void:
+	_clear_recommend_hint()
+	if _player_total_stars() >= RECOMMEND_STAR_LIMIT:
+		return
+	var item := _find_recommended_item()
+	if item.is_empty():
+		return
+	var card := _grid.get_node_or_null("Level_%d" % int(item.get("index", -1))) as Button
+	if card == null:
+		return
+	_recommend_item = item
+	_recommend_card = card
+	_style_recommended_card(card)
+	if card.get_index() < _grid.columns:
+		_set_grid_recommend_margin(RECOMMEND_TOP_MARGIN)
+	_recommend_callout = _create_recommend_callout()
+	_content_frame.add_child(_recommend_callout)
+	set_process(true)
+	call_deferred("_place_recommend_hint")
+
+
+func _place_recommend_hint() -> void:
+	if not is_instance_valid(_recommend_card):
+		return
+	if _recommend_card.get_index() < _grid.columns:
+		_set_grid_recommend_margin(RECOMMEND_TOP_MARGIN)
+	_recommend_card.pivot_offset = _recommend_card.size * 0.5
+	_start_recommend_blink(_recommend_card)
+	if is_instance_valid(_scroll):
+		_scroll.scroll_vertical = maxi(0, int(_recommend_card.position.y) - 24)
+	call_deferred("_update_recommend_callout_position")
+
+
+func _style_recommended_card(card: Button) -> void:
+	var style := _make_recommend_card_style()
+	card.add_theme_stylebox_override("normal", style)
+	card.add_theme_stylebox_override("hover", style)
+	card.add_theme_stylebox_override("pressed", _make_card_pressed_style())
+
+
+func _make_recommend_card_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(1, 0.965, 0.82, 1)
+	style.border_color = COLOR_RECOMMEND
+	style.set_border_width_all(7)
+	style.set_corner_radius_all(28)
+	style.shadow_color = Color(0.88, 0.44, 0.10, 0.38)
+	style.shadow_size = 18
+	style.shadow_offset = Vector2(0, 10)
+	return style
+
+
+func _start_recommend_blink(card: Button) -> void:
+	if is_instance_valid(_recommend_blink):
+		_recommend_blink.kill()
+	card.pivot_offset = card.size * 0.5
+	_recommend_blink = create_tween()
+	_recommend_blink.set_loops()
+	_recommend_blink.set_trans(Tween.TRANS_SINE)
+	_recommend_blink.set_ease(Tween.EASE_IN_OUT)
+	_recommend_blink.tween_property(card, "modulate", Color(1.18, 1.04, 0.72, 1), 0.42)
+	_recommend_blink.parallel().tween_property(card, "scale", Vector2(1.04, 1.04), 0.42)
+	_recommend_blink.tween_property(card, "modulate", Color.WHITE, 0.42)
+	_recommend_blink.parallel().tween_property(card, "scale", Vector2.ONE, 0.42)
+
+
+func _create_recommend_callout() -> Control:
+	var root := Button.new()
+	root.name = "RecommendCallout"
+	root.custom_minimum_size = Vector2(392, 124)
+	root.size = Vector2(392, 124)
+	root.focus_mode = Control.FOCUS_NONE
+	root.mouse_filter = Control.MOUSE_FILTER_STOP
+	root.z_index = 40
+	root.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+	root.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
+	root.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
+	root.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	root.pressed.connect(_on_recommend_callout_pressed)
+
+	var box := Panel.new()
+	box.name = "Box"
+	box.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	box.offset_bottom = 90
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var box_style := StyleBoxFlat.new()
+	box_style.bg_color = Color(0.996, 0.941, 0.776, 1)
+	box_style.border_color = COLOR_RECOMMEND
+	box_style.set_border_width_all(5)
+	box_style.set_corner_radius_all(28)
+	box_style.shadow_color = Color(0.41, 0.22, 0.05, 0.28)
+	box_style.shadow_size = 12
+	box_style.shadow_offset = Vector2(0, 6)
+	box.add_theme_stylebox_override("panel", box_style)
+	root.add_child(box)
+
+	var label := Label.new()
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	label.text = _copy("recommended")
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	label.add_theme_font_size_override("font_size", 34)
+	label.add_theme_color_override("font_color", Color(0.42, 0.18, 0.05, 1))
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(label)
+
+	var arrow_border := Polygon2D.new()
+	arrow_border.color = COLOR_RECOMMEND
+	arrow_border.polygon = PackedVector2Array([
+		Vector2(-24, 0),
+		Vector2(24, 0),
+		Vector2(0, 30),
+	])
+	arrow_border.position = Vector2(196, 86)
+	root.add_child(arrow_border)
+
+	var arrow_fill := Polygon2D.new()
+	arrow_fill.color = Color(0.996, 0.941, 0.776, 1)
+	arrow_fill.polygon = PackedVector2Array([
+		Vector2(-16, 0),
+		Vector2(16, 0),
+		Vector2(0, 20),
+	])
+	arrow_fill.position = Vector2(196, 86)
+	root.add_child(arrow_fill)
+
+	var pulse := root.create_tween()
+	pulse.set_loops()
+	pulse.set_trans(Tween.TRANS_SINE)
+	pulse.set_ease(Tween.EASE_IN_OUT)
+	pulse.tween_property(root, "modulate:a", 0.72, 0.42)
+	pulse.tween_property(root, "modulate:a", 1.0, 0.42)
+	return root
+
+
+func _on_recommend_callout_pressed() -> void:
+	if _drag_active or _recommend_item.is_empty():
+		return
+	_on_level_pressed(_recommend_item)
+
+
+func _recommend_min_y() -> float:
+	var min_y := 0.0
+	if is_instance_valid(_content_frame):
+		min_y = _content_frame.get_global_rect().position.y + 8.0
+	if is_instance_valid(_progress_card):
+		min_y = maxf(min_y, _progress_card.get_global_rect().end.y + 10.0)
+	return min_y
+
+
+func _update_recommend_callout_position() -> void:
+	if not is_instance_valid(_recommend_callout) or not is_instance_valid(_recommend_card):
+		return
+	if not is_instance_valid(_scroll):
+		return
+	var card_rect := _recommend_card.get_global_rect()
+	var scroll_rect := _scroll.get_global_rect()
+	var visible := card_rect.intersects(scroll_rect)
+	_recommend_callout.visible = visible
+	if not visible:
+		return
+	var callout_size := _recommend_callout.size
+	if callout_size == Vector2.ZERO:
+		callout_size = _recommend_callout.custom_minimum_size
+	var pos := Vector2(
+		card_rect.position.x + (card_rect.size.x - callout_size.x) * 0.5,
+		card_rect.position.y - callout_size.y + 22.0
+	)
+	pos.y = maxf(pos.y, _recommend_min_y())
+	if is_instance_valid(_content_frame):
+		var content_rect := _content_frame.get_global_rect()
+		pos.x = clampf(
+			pos.x,
+			content_rect.position.x + 8.0,
+			maxf(content_rect.position.x + 8.0, content_rect.end.x - callout_size.x - 8.0)
+		)
+	_recommend_callout.global_position = pos
+
+
+func _set_grid_recommend_margin(extra: int) -> void:
+	var wrapper := _grid.get_parent() as MarginContainer
+	if wrapper == null:
+		return
+	wrapper.add_theme_constant_override("margin_top", 10 + extra)
+
+
+func _clear_recommend_hint() -> void:
+	if is_instance_valid(_recommend_blink):
+		_recommend_blink.kill()
+	_recommend_blink = null
+	if is_instance_valid(_recommend_card):
+		_recommend_card.modulate = Color.WHITE
+		_recommend_card.scale = Vector2.ONE
+	_recommend_card = null
+	_recommend_item = {}
+	if is_instance_valid(_recommend_callout):
+		_recommend_callout.queue_free()
+	_recommend_callout = null
+	_set_grid_recommend_margin(0)
 
 
 func _difficulty_to_stars(difficulty: int) -> int:
@@ -1178,6 +1449,7 @@ func _load_and_populate_from_path(path: String) -> void:
 
 
 func _clear_grid_children() -> void:
+	_clear_recommend_hint()
 	for child in _grid.get_children():
 		child.queue_free()
 
