@@ -91,6 +91,20 @@ func _build_registry() -> void:
 			entry.poly = poly
 			_registry[name_key] = entry
 
+func play_whoosh(pitch_scale: float = 1.0, volume_db: float = -8.0) -> void:
+	var cfg := _registry.get("Whoosh") as SoundEntry
+	if cfg == null:
+		push_warning("Sonido no registrado: Whoosh")
+		return
+	var p := cfg.prototype.duplicate(DUPLICATE_SCRIPTS) as AudioStreamPlayer2D
+	add_child(p)
+	p.pitch_scale = clampf(pitch_scale, 0.7, 1.6)
+	p.volume_db = volume_db
+	p.bus = "SoundFx"
+	p.play()
+	p.finished.connect(func() -> void: p.queue_free())
+
+
 func play(name: String, override_bus: String = "") -> void:
 	var cfg := _registry.get(name) as SoundEntry
 	if cfg == null:

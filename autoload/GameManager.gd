@@ -47,6 +47,7 @@ const DAILY_EPOCH := {
 	"second": 0,
 }
 var session_source: String = SOURCE_NONE
+var main_menu_intro_played: bool = false
 var pending_library_puzzle_id: int = -1
 var locked_record_stars: int = -1
 var _server_unix_at_sync: int = 0

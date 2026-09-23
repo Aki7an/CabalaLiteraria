@@ -30,6 +30,7 @@ const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
 const PATH_SHOP := "res://scenes/MenuShop.tscn"
 
 var _title_letter_font: FontVariation
+var _play_blink_token := 0
 
 func _ready() -> void:
 	SoundManager.apply_audio_prefs()
@@ -39,10 +40,11 @@ func _ready() -> void:
 	GameManager.session_source = GameManager.SOURCE_NONE
 	GameManager.locked_record_stars = -1
 	_apply_labels()
-	_apply_title_tiles()
 	_update_version_label()
 	_refresh_star_totals()
-	call_deferred("_play_pending_star_collect")
+	if _should_play_main_intro():
+		_prepare_intro_hidden()
+	call_deferred("_boot_visuals")
 	_refresh_daily_button()
 	if not SignalManager.full_game_changed.is_connected(_refresh_daily_button):
 		SignalManager.full_game_changed.connect(_refresh_daily_button)
@@ -156,6 +158,7 @@ func _apply_title_tiles() -> void:
 	_layout_title_row(cipher_row)
 	if letter_row:
 		_layout_title_row(letter_row)
+	await get_tree().process_frame
 
 
 func _ensure_letter_row(cipher_row: HBoxContainer) -> HBoxContainer:
@@ -222,19 +225,13 @@ func _fill_tile_row(row: HBoxContainer, word: String, revealed_green: bool) -> v
 			number_label.add_theme_font_size_override("font_size", number_size)
 
 
-func _layout_title_row(row: HBoxContainer) -> void:
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+func _title_row_metrics(row: HBoxContainer) -> Dictionary:
 	var parent := row.get_parent() as Control
 	var available := parent.size.x if parent != null else row.size.x
 	available = maxf(available - TITLE_SAFETY_PX * 2.0, 1.0)
-	var visible_tiles: Array[Control] = []
-	for child in row.get_children():
-		if child is Control and (child as Control).visible:
-			visible_tiles.append(child)
-	if visible_tiles.is_empty():
-		return
-	var count := visible_tiles.size()
+	var count := _visible_tiles(row).size()
+	if count <= 0:
+		return {"width": 0.0, "letter": TITLE_LETTER_SIZE, "number": TITLE_NUMBER_SIZE}
 	var sep := float(row.get_theme_constant("separation"))
 	var spanish_max := (
 		(available - sep * float(TITLE_SPANISH_LETTERS - 1))
@@ -243,12 +240,30 @@ func _layout_title_row(row: HBoxContainer) -> void:
 	)
 	var fit_width := (available - sep * float(count - 1)) / float(count)
 	var tile_width := minf(fit_width, spanish_max)
-	var font_scale := clampf(tile_width / spanish_max, 0.42, 1.0)
-	var letter_size := maxi(roundi(float(TITLE_LETTER_SIZE) * font_scale), 32)
-	var number_size := maxi(roundi(float(TITLE_NUMBER_SIZE) * font_scale), 16)
+	var font_scale := clampf(tile_width / maxf(spanish_max, 1.0), 0.42, 1.0)
+	return {
+		"width": tile_width,
+		"letter": maxi(roundi(float(TITLE_LETTER_SIZE) * font_scale), 32),
+		"number": maxi(roundi(float(TITLE_NUMBER_SIZE) * font_scale), 16),
+	}
+
+
+func _layout_title_row(row: HBoxContainer) -> void:
+	if row == null:
+		return
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var visible_tiles := _visible_tiles(row)
+	if visible_tiles.is_empty():
+		return
+	var metrics := _title_row_metrics(row)
+	var tile_width: float = metrics["width"]
+	var letter_size: int = metrics["letter"]
+	var number_size: int = metrics["number"]
 	for tile in visible_tiles:
 		tile.size_flags_horizontal = 0
 		tile.custom_minimum_size.x = tile_width
+		tile.size.x = tile_width
 		tile.clip_contents = true
 		var letter_label := tile.find_child("Letter", true, false) as Label
 		var number_label := tile.find_child("Number", true, false) as Label
@@ -332,6 +347,7 @@ func _on_button_fx_pressed() -> void:
 
 
 func _go_to(path: String, blink_node: Control = null) -> void:
+	_play_blink_token += 1
 	TransitionScreen.transition_to_black()
 	if blink_node is Button:
 		GameManager.button_blink(blink_node)
@@ -535,3 +551,421 @@ func _on_button_stats_pressed() -> void:
 func _on_button_tutorial_pressed() -> void:
 	GameManager.set_go_to_game_disable()
 	_go_to("res://scenes/MenuTutorial.tscn", button_tutorial)
+
+
+func _boot_visuals() -> void:
+	await _apply_title_tiles()
+	if _should_play_main_intro():
+		await _play_main_intro()
+		GameManager.main_menu_intro_played = true
+	await _play_pending_star_collect()
+	_start_play_blink_loop()
+
+
+func _should_play_main_intro() -> bool:
+	if Engine.has_meta("store_screenshot"):
+		return false
+	if GameManager.main_menu_intro_played:
+		return false
+	if StarCollectOverlay.has_pending() or StarCollectOverlay.is_covering():
+		return false
+	return true
+
+
+func _intro_chrome() -> Array[Control]:
+	var nodes: Array[Control] = []
+	for node in [
+		$Panel/StarTotals,
+		button_fx,
+		button_music,
+		button_settings,
+		$Panel/PlayWrap,
+		$Panel/Shortcuts,
+		$Panel/Actions,
+		version_label,
+	]:
+		if node is Control:
+			nodes.append(node)
+	return nodes
+
+
+func _prepare_intro_hidden() -> void:
+	for node in _intro_chrome():
+		node.modulate.a = 0.0
+		if node != get_node_or_null("Panel/PlayWrap"):
+			node.visible = false
+	var tagline := get_node_or_null("Panel/TaglineRow") as Control
+	if tagline:
+		tagline.modulate.a = 0.0
+	if button_play:
+		button_play.disabled = true
+		button_play.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+func _play_main_intro() -> void:
+	var panel := $Panel as Control
+	if panel:
+		panel.clip_contents = false
+	var wash := _ensure_intro_wash()
+	var words := _ensure_intro_words()
+	var blocker := _ensure_intro_blocker()
+	var cipher_row := _title_cipher_row()
+	var letter_row := get_node_or_null("Panel/TitleBlock/ShowcaseLetra") as HBoxContainer
+	_set_row_tiles_alpha(cipher_row, 0.0)
+	_set_row_tiles_alpha(letter_row, 0.0)
+	if wash:
+		wash.modulate.a = 1.0
+		var wash_tw := create_tween()
+		wash_tw.tween_property(wash, "modulate:a", 0.0, 2.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_layout_title_row(cipher_row)
+	_layout_title_row(letter_row)
+	await get_tree().process_frame
+	var cipher_size := _row_final_tile_size(cipher_row)
+	var letter_size := _row_final_tile_size(letter_row)
+	_lock_title_tile_size(cipher_row, cipher_size)
+	_lock_title_tile_size(letter_row, letter_size)
+	await get_tree().process_frame
+	await _animate_title_row(cipher_row, 1.0, cipher_size)
+	await _animate_title_row(letter_row, -1.0, letter_size)
+	_layout_title_row(cipher_row)
+	_layout_title_row(letter_row)
+	_lock_title_tile_size(cipher_row, _row_final_tile_size(cipher_row))
+	_lock_title_tile_size(letter_row, _row_final_tile_size(letter_row))
+	await _fade_control(get_node_or_null("Panel/TaglineRow") as Control, 1.0, 0.28)
+	await _fade_intro_words(words, true)
+	await get_tree().create_timer(1.35).timeout
+	await _fade_intro_words(words, false)
+	if words:
+		words.visible = false
+	await _slide_chrome_in()
+	await _animate_play_entrance()
+	if wash:
+		wash.queue_free()
+	var overlay := $Panel.get_node_or_null("IntroOverlay")
+	if overlay:
+		overlay.queue_free()
+	if blocker:
+		blocker.queue_free()
+	if panel:
+		panel.clip_contents = true
+	if button_play:
+		button_play.disabled = false
+		button_play.mouse_filter = Control.MOUSE_FILTER_STOP
+	var stars := get_node_or_null("Panel/StarTotals") as Control
+	if stars:
+		stars.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+func _ensure_intro_wash() -> ColorRect:
+	var panel := $Panel as Control
+	var existing := panel.get_node_or_null("IntroWash") as ColorRect
+	if existing:
+		return existing
+	var wash := ColorRect.new()
+	wash.name = "IntroWash"
+	wash.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	wash.color = Color.WHITE
+	wash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.add_child(wash)
+	var fondo := panel.get_node_or_null("Fondo2")
+	if fondo:
+		panel.move_child(wash, fondo.get_index() + 1)
+	return wash
+
+
+func _ensure_intro_blocker() -> ColorRect:
+	var existing := get_node_or_null("IntroBlocker") as ColorRect
+	if existing:
+		return existing
+	var blocker := ColorRect.new()
+	blocker.name = "IntroBlocker"
+	blocker.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	blocker.color = Color(0, 0, 0, 0)
+	blocker.mouse_filter = Control.MOUSE_FILTER_STOP
+	blocker.z_index = 40
+	add_child(blocker)
+	return blocker
+
+
+func _ensure_intro_words() -> VBoxContainer:
+	var panel := $Panel as Control
+	var existing := panel.get_node_or_null("IntroWords") as VBoxContainer
+	if existing:
+		existing.visible = true
+		return existing
+	var box := VBoxContainer.new()
+	box.name = "IntroWords"
+	box.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	box.anchor_left = 0.08
+	box.anchor_right = 0.92
+	box.anchor_top = 0.408
+	box.anchor_bottom = 0.678
+	box.offset_left = 0.0
+	box.offset_right = 0.0
+	box.offset_top = 0.0
+	box.offset_bottom = 0.0
+	box.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	box.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.add_theme_constant_override("separation", 8)
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var keys := ["IntroObserve", "IntroDecipher", "IntroDiscover"]
+	var fallbacks := ["OBSERVA", "DESCIFRA", "DESCUBRE"]
+	for i in keys.size():
+		var label := Label.new()
+		label.name = keys[i]
+		label.text = tr(keys[i])
+		if label.text == keys[i]:
+			label.text = fallbacks[i]
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		_style_title_letter(label, TITLE_LETTER_SIZE, Color(0.364706, 0.25098, 0.215686, 1))
+		label.modulate.a = 0.0
+		box.add_child(label)
+	panel.add_child(box)
+	return box
+
+
+func _title_cipher_row() -> HBoxContainer:
+	var row := get_node_or_null("%Showcase") as HBoxContainer
+	if row == null:
+		row = get_node_or_null("Panel/TitleBlock/Showcase") as HBoxContainer
+	return row
+
+
+func _visible_tiles(row: HBoxContainer) -> Array[Control]:
+	var tiles: Array[Control] = []
+	if row == null:
+		return tiles
+	for child in row.get_children():
+		if child is Control and (child as Control).visible:
+			tiles.append(child)
+	return tiles
+
+
+func _set_row_tiles_alpha(row: HBoxContainer, alpha: float) -> void:
+	for tile in _visible_tiles(row):
+		tile.modulate.a = alpha
+
+
+func _row_final_tile_size(row: HBoxContainer) -> Vector2:
+	if row == null:
+		return Vector2.ZERO
+	var metrics := _title_row_metrics(row)
+	var width: float = metrics["width"]
+	var tiles := _visible_tiles(row)
+	var height := 0.0
+	if not tiles.is_empty():
+		height = maxf(tiles[0].size.y, tiles[0].custom_minimum_size.y)
+	if width < 1.0 and not tiles.is_empty():
+		width = tiles[0].custom_minimum_size.x
+	if width < 1.0 and not tiles.is_empty():
+		width = tiles[0].size.x
+	if height < 1.0:
+		height = width
+	return Vector2(width, height)
+
+
+func _lock_title_tile_size(row: HBoxContainer, tile_size: Vector2) -> void:
+	if row == null or tile_size.x < 1.0 or tile_size.y < 1.0:
+		return
+	for tile in _visible_tiles(row):
+		tile.size_flags_horizontal = 0
+		tile.custom_minimum_size = tile_size
+		tile.size = tile_size
+
+
+func _intro_overlay() -> Control:
+	var panel := $Panel as Control
+	var existing := panel.get_node_or_null("IntroOverlay") as Control
+	if existing:
+		return existing
+	var overlay := Control.new()
+	overlay.name = "IntroOverlay"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.z_index = 8
+	panel.add_child(overlay)
+	return overlay
+
+
+func _animate_title_row(row: HBoxContainer, direction: float, tile_size: Vector2) -> void:
+	var tiles := _visible_tiles(row)
+	if tiles.is_empty():
+		return
+	if direction < 0.0:
+		tiles.reverse()
+		SoundManager.play("IntroLetra")
+	else:
+		SoundManager.play("IntroCifra")
+	var overlay := _intro_overlay()
+	var travel := size.x * 0.78
+	var jobs: Array[Dictionary] = []
+	for tile in tiles:
+		var parent := tile.get_parent()
+		var dummy := Control.new()
+		dummy.name = "TileSlot"
+		dummy.custom_minimum_size = tile_size
+		dummy.size_flags_horizontal = 0
+		dummy.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var dest := tile.global_position
+		var idx := tile.get_index()
+		parent.add_child(dummy)
+		parent.move_child(dummy, idx)
+		tile.reparent(overlay)
+		tile.set_anchors_preset(Control.PRESET_TOP_LEFT)
+		tile.size_flags_horizontal = 0
+		tile.custom_minimum_size = tile_size
+		tile.size = tile_size
+		tile.modulate.a = 0.0
+		tile.global_position = Vector2(dest.x + travel * direction, dest.y)
+		jobs.append({
+			"tile": tile,
+			"dummy": dummy,
+			"parent": parent,
+			"dest": dest,
+		})
+	var last: Tween = null
+	for i in jobs.size():
+		var tile: Control = jobs[i]["tile"]
+		var dest: Vector2 = jobs[i]["dest"]
+		var tw := create_tween()
+		tw.tween_callback(func() -> void:
+			if is_instance_valid(tile):
+				tile.modulate.a = 1.0
+				tile.size = tile_size
+		).set_delay(float(i) * 0.075)
+		tw.tween_property(tile, "global_position", dest, 0.36).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		last = tw
+	if last:
+		await last.finished
+	for job in jobs:
+		var tile: Control = job["tile"]
+		var dummy: Control = job["dummy"]
+		var parent: Node = job["parent"]
+		if is_instance_valid(tile) and is_instance_valid(parent):
+			var idx := dummy.get_index() if is_instance_valid(dummy) else parent.get_child_count()
+			tile.reparent(parent)
+			parent.move_child(tile, idx)
+			tile.custom_minimum_size = tile_size
+			tile.size = tile_size
+			tile.modulate.a = 1.0
+		if is_instance_valid(dummy):
+			dummy.free()
+
+
+func _fade_control(node: Control, alpha: float, duration: float) -> void:
+	if node == null:
+		return
+	var tw := create_tween()
+	tw.tween_property(node, "modulate:a", alpha, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	await tw.finished
+
+
+func _fade_intro_words(box: VBoxContainer, appearing: bool) -> void:
+	if box == null:
+		return
+	var last: Tween = null
+	for i in box.get_child_count():
+		var label := box.get_child(i) as CanvasItem
+		if label == null:
+			continue
+		var tw := create_tween()
+		var target := 1.0 if appearing else 0.0
+		if appearing:
+			var word_sfx := ["IntroWordObserva", "IntroWordDescifra", "IntroWordDescubre"]
+			if i < word_sfx.size():
+				SoundManager.play(word_sfx[i])
+		tw.tween_property(label, "modulate:a", target, 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		last = tw
+		if i < box.get_child_count() - 1:
+			await get_tree().create_timer(0.12).timeout
+	if last:
+		await last.finished
+
+
+func _slide_chrome_in() -> void:
+	var from_above: Array[Control] = []
+	for node in [$Panel/StarTotals, button_fx, button_music, button_settings]:
+		if node is Control:
+			from_above.append(node)
+	var from_below: Array[Control] = []
+	for node in [$Panel/Shortcuts, $Panel/Actions, version_label]:
+		if node is Control:
+			from_below.append(node)
+	var play_wrap := get_node_or_null("Panel/PlayWrap") as Control
+	if play_wrap:
+		play_wrap.modulate.a = 0.0
+	for node in from_above + from_below:
+		node.visible = true
+	SoundManager.play("IntroButtons")
+	var tw := create_tween()
+	tw.set_parallel(true)
+	for node in from_above:
+		_tween_slide(tw, node, Vector2(0, -220), 0.48)
+	for node in from_below:
+		_tween_slide(tw, node, Vector2(0, 280), 0.48)
+	await tw.finished
+	for node in from_above + from_below:
+		if is_instance_valid(node):
+			node.modulate.a = 1.0
+
+
+func _tween_slide(tw: Tween, node: Control, offset: Vector2, duration: float) -> void:
+	if node == null:
+		return
+	var dest := node.position
+	node.modulate.a = 1.0
+	node.position = dest + offset
+	tw.tween_property(node, "position", dest, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+
+func _animate_play_entrance() -> void:
+	var wrap := get_node_or_null("Panel/PlayWrap") as Control
+	if wrap == null or button_play == null:
+		return
+	wrap.modulate.a = 1.0
+	var dest := wrap.position
+	wrap.position = Vector2(dest.x - size.x, dest.y)
+	SoundManager.play("IntroJugar")
+	var overs := [78.0, 42.0, 20.0, 8.0]
+	var tw := create_tween()
+	tw.tween_property(wrap, "position:x", dest.x + overs[0], 0.42).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tw.tween_property(wrap, "position:x", dest.x - overs[1], 0.14).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(wrap, "position:x", dest.x + overs[2], 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(wrap, "position:x", dest.x - overs[3], 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(wrap, "position:x", dest.x, 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	await tw.finished
+	wrap.position = dest
+	button_play.modulate.a = 1.0
+	await _blink_play_scale()
+
+
+func _start_play_blink_loop() -> void:
+	_play_blink_token += 1
+	var token := _play_blink_token
+	_run_play_blink_loop(token)
+
+
+func _run_play_blink_loop(token: int) -> void:
+	while is_inside_tree() and token == _play_blink_token:
+		await get_tree().create_timer(10.0).timeout
+		if token != _play_blink_token or not is_inside_tree():
+			return
+		if button_play == null or not button_play.is_visible_in_tree() or button_play.disabled:
+			continue
+		await _blink_play_scale()
+
+
+func _blink_play_scale() -> void:
+	if button_play == null or not is_instance_valid(button_play):
+		return
+	button_play.pivot_offset = button_play.size * 0.5
+	button_play.scale = Vector2.ONE
+	for _i in 2:
+		SoundManager.play("IntroJugarBlink")
+		var blink := create_tween()
+		blink.tween_property(button_play, "scale", Vector2(1.1, 1.1), 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		blink.tween_property(button_play, "scale", Vector2.ONE, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		await blink.finished
