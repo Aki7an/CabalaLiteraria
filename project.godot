@@ -81,6 +81,12 @@ window/handheld/orientation=1
 
 enabled=PackedStringArray("res://addons/alignment-tool/plugin.cfg", "res://addons/admob/plugin.cfg", "res://addons/cifraletra_iap/plugin.cfg", "res://addons/GodotGooglePlayBilling/plugin.cfg")
 
+[gui]
+
+theme/default_font_subpixel_positioning=0
+theme/custom="res://GUI/app_theme.tres"
+theme/custom_font="res://GUI/new_font_Rubik_semibold.tres"
+
 [input]
 
 dev_force_portrait={
@@ -97,12 +103,6 @@ dev_force_landscape={
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
-
-[gui]
-
-theme/custom="res://GUI/app_theme.tres"
-theme/custom_font="res://GUI/new_font_Rubik_semibold.tres"
-theme/default_font_subpixel_positioning=0
 
 [internationalization]
 

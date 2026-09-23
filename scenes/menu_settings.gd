@@ -134,7 +134,7 @@ func _ready() -> void:
 	_refresh_audio_controls()
 	if not SignalManager.audio_prefs_changed.is_connected(_refresh_audio_controls):
 		SignalManager.audio_prefs_changed.connect(_refresh_audio_controls)
-	check_button_tutorial.button_pressed = PlayerPrefs.mostrar_tuto_antes_partida
+	check_button_tutorial.button_pressed = not PlayerPrefs.onboarding_completed
 	check_button_reveal.button_pressed = not PlayerPrefs.skip_reveal_dialog
 	check_button_share.button_pressed = PlayerPrefs.share_solve_data
 	_update_language_selection()

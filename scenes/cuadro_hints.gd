@@ -116,12 +116,13 @@ func _ready():
 
 
 func set_texture_from_index(texrect: TextureRect, index: int) -> void:
-	var path := "%s/image%d.png" % [IMG_DIR, index]  # nombre+ext en minúsculas
+	var path := GameManager.find_level_image_path(index)
+	if path.is_empty():
+		path = "%s/image%d.png" % [IMG_DIR, index]
 	if ResourceLoader.exists(path):
-		var tex := load(path)  # CompressedTexture2D importada -> no bloquea tanto
+		var tex := load(path)
 		if tex is Texture2D:
 			texrect.texture = tex
-			
 		else:
 			push_warning("El recurso no es Texture2D: %s" % path)
 	else:

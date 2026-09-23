@@ -70,10 +70,15 @@ func _ready() -> void:
 	if _phrase == "":
 		_phrase = GameManager.frase_original.strip_edges()
 	phrase_label.text = "[center]%s[/center]" % _escape_bbcode(_phrase)
-	category_label.text = "— %s —" % GameManager.category_display_name()
+	if GameManager.is_onboarding_session():
+		category_label.text = "— CifraLetra —"
+	else:
+		category_label.text = "— %s —" % GameManager.category_display_name()
 	var info := GameManager.descripcion_final_actual.strip_edges()
 	if info == "":
 		info = tr("PuzzleCompleteFallback")
+	if GameManager.is_onboarding_session():
+		info = _onboarding_paragraphs(info)
 	description_label.text = "[center]%s[/center]" % _escape_bbcode(info)
 
 	var maximum := GameManager.get_puzzle_difficulty_stars()
@@ -106,7 +111,8 @@ func _ready() -> void:
 	_prepare_intro_pose()
 	await _play_victory_intro(earned, maximum)
 	_play_continue_at(0.12)
-	await _ask_share_if_needed()
+	if not GameManager.is_onboarding_session():
+		await _ask_share_if_needed()
 
 
 func _apply_locale() -> void:
@@ -119,12 +125,17 @@ func _apply_locale() -> void:
 		solved_label.text = tr("DailyCompleted") if is_daily else tr("You've solved the sentence")
 	if stars_title:
 		stars_title.text = tr("StarsEarned")
-	continue_button.text = tr("RecogerEstrellas")
+	continue_button.text = tr("ContinueAction") if GameManager.is_onboarding_session() else tr("RecogerEstrellas")
 	continue_button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	continue_button.add_theme_font_size_override("font_size", 40)
+	continue_button.add_theme_font_size_override(
+		"font_size",
+		36 if GameManager.is_onboarding_session() else 58
+	)
 	if feedback_button:
+		feedback_button.visible = not GameManager.is_onboarding_session()
 		feedback_button.text = tr("RatePuzzle")
 	if share_title:
+		share_title.visible = not GameManager.is_onboarding_session()
 		share_title.text = tr("ShareSocialTitle")
 		share_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	for button in _share_social_buttons():
@@ -145,6 +156,27 @@ func _apply_locale() -> void:
 
 func _escape_bbcode(text: String) -> String:
 	return text.replace("[", "[lb]")
+
+
+func _onboarding_paragraphs(text: String) -> String:
+	var sentences: PackedStringArray = []
+	var current := ""
+	var i := 0
+	while i < text.length():
+		var ch := text.substr(i, 1)
+		current += ch
+		if ch == ".":
+			var j := i + 1
+			while j < text.length() and text.substr(j, 1) == " ":
+				j += 1
+			sentences.append(current.strip_edges())
+			current = ""
+			i = j
+			continue
+		i += 1
+	if current.strip_edges() != "":
+		sentences.append(current.strip_edges())
+	return "\n".join(sentences)
 
 
 func _format_play_time(total_sec: int) -> String:
@@ -221,6 +253,24 @@ func _layout_top_down() -> void:
 	var continue_w := minf(540.0, available * 0.50)
 	var feedback_w := available - gap - continue_w
 	var bottom_y := main_card.size.y - button_h - 36.0
+	if GameManager.is_onboarding_session():
+		if feedback_button:
+			feedback_button.visible = false
+		if share_title:
+			share_title.visible = false
+		for button in [share_x_button, share_ig_button, share_fb_button, share_more_button]:
+			if button:
+				button.visible = false
+		var onboarding_h := 108.0
+		var onboarding_w := minf(420.0, available * 0.58)
+		continue_button.custom_minimum_size = Vector2(onboarding_w, onboarding_h)
+		continue_button.size = Vector2(onboarding_w, onboarding_h)
+		continue_button.position = Vector2(
+			(main_card.size.x - onboarding_w) * 0.5,
+			main_card.size.y - onboarding_h - 48.0
+		)
+		continue_button.pivot_offset = continue_button.size * 0.5
+		return
 	var social_buttons := _share_social_buttons()
 	var social_n := social_buttons.size()
 	var social_gap := 16.0
@@ -256,11 +306,12 @@ func _body_scroll_nodes() -> Array[Control]:
 func _install_body_scroll() -> void:
 	var top := banner.position.y + banner.size.y + 6.0
 	var bottom := continue_button.position.y - GAP
-	if share_title:
+	if share_title and share_title.visible:
 		bottom = minf(bottom, share_title.position.y - GAP)
-	else:
+	elif not GameManager.is_onboarding_session():
 		for button in _share_social_buttons():
-			bottom = minf(bottom, button.position.y - GAP)
+			if button.visible:
+				bottom = minf(bottom, button.position.y - GAP)
 	var viewport_height := bottom - top
 	if viewport_height < 160.0:
 		return
@@ -754,9 +805,12 @@ func _on_button_back_pressed() -> void:
 	if feedback_button:
 		feedback_button.disabled = true
 	_set_share_buttons_disabled(true)
+	if GameManager.is_onboarding_session():
+		await _leave_onboarding()
+		return
 	await _ask_share_if_needed()
 	var collect_count := _earned
-	if GameManager.is_practice_session():
+	if GameManager.skips_progress():
 		collect_count = 0
 	if collect_count > 0:
 		StarCollectOverlay.capture_earned(stars, collect_count, GameManager.game_mode_actual)
@@ -765,6 +819,19 @@ func _on_button_back_pressed() -> void:
 	await get_tree().process_frame
 	await AdManager.show_interstitial_after_puzzle()
 	await EventLoggerAutoload.submit_if_consented()
+	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
+
+
+func _leave_onboarding() -> void:
+	TransitionScreen.transition_to_black()
+	await TransitionScreen._on_animation_finished("fade_to_black", 1)
+	if GameManager.onboarding_stage <= 1:
+		GameManager.prepare_onboarding_puzzle(2)
+		GameManager.launch_prepared_game()
+		return
+	PlayerPrefs.set_onboarding_completed(true)
+	GameManager.session_source = GameManager.SOURCE_NONE
+	GameManager.onboarding_stage = 0
 	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
 
 
@@ -814,6 +881,11 @@ func _log_share_press(network: String) -> void:
 
 
 func _share_social_buttons() -> Array[Button]:
+	if GameManager.is_onboarding_session():
+		for button in [share_x_button, share_ig_button, share_fb_button, share_more_button]:
+			if button:
+				button.visible = false
+		return []
 	var buttons: Array[Button] = []
 	for button in [share_x_button, share_ig_button, share_fb_button, share_more_button]:
 		if button:
@@ -833,6 +905,8 @@ func _on_button_feedback_pressed() -> void:
 
 
 func _ask_share_if_needed() -> void:
+	if GameManager.is_onboarding_session():
+		return
 	if _share_asked or PlayerPrefs.hide_share_solve_dialog:
 		return
 	_share_asked = true

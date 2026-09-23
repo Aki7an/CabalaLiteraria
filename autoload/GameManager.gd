@@ -36,7 +36,13 @@ var allow_completed_replay := false
 const SOURCE_NONE := ""
 const SOURCE_DAILY := "daily"
 const SOURCE_PRACTICE := "practice"
+const SOURCE_ONBOARDING := "onboarding"
 const PACK_DAILY := "daily"
+const ONBOARDING_PHRASE_1 := "CifraLetra es un juego de Criptogramas. Cada número representa una letra y los números iguales son siempre la misma letra. Descubre el código y descifra la frase."
+const ONBOARDING_PHRASE_2 := "Mira · Descifra · Descubre. La imagen te da una pista sobre el tema. Observa las palabras, busca las vocales y prueba tus hipótesis. Cada letra que descubras te acercará a la solución."
+const ONBOARDING_ID_PUZZLE_1 := -9001
+const ONBOARDING_ID_PUZZLE_2 := -9002
+var onboarding_stage: int = 0
 ## Día 0 del reto diario para todas las instalaciones (UTC).
 const DAILY_EPOCH := {
 	"year": 2026,
@@ -59,6 +65,14 @@ var _daily_debug_date: String = ""
 
 func is_practice_session() -> bool:
 	return session_source == SOURCE_PRACTICE
+
+
+func is_onboarding_session() -> bool:
+	return session_source == SOURCE_ONBOARDING
+
+
+func skips_progress() -> bool:
+	return is_practice_session() or is_onboarding_session()
 
 
 func is_daily_puzzle(item: Dictionary) -> bool:
@@ -666,6 +680,8 @@ func get_phrase_item(puzzle_id: int) -> Dictionary:
 
 
 func find_level_image_path(image_number: int) -> String:
+	if image_number == ONBOARDING_ID_PUZZLE_2:
+		return onboarding_theme_image_path()
 	if image_number < 0:
 		return ""
 	var stems := [
@@ -736,6 +752,107 @@ func launch_prepared_game() -> void:
 	set_go_to_game_disable()
 	SignalManager.partida_iniciada.emit()
 	get_tree().change_scene_to_file("res://scenes/App.tscn")
+
+
+func gifts_leaving_letters(phrase: String, leave_count: int, leave_vowels: int = 1, filled_word: String = "") -> String:
+	var unique: Array[String] = []
+	for index in phrase.length():
+		var key := _hint_letter_key(phrase.substr(index, 1))
+		if key.is_empty() or is_excluded_character(key) or not is_playable_letter(key):
+			continue
+		if not unique.has(key):
+			unique.append(key)
+	var must_fill: Dictionary = {}
+	for index in filled_word.length():
+		var fill_key := _hint_letter_key(filled_word.substr(index, 1))
+		if fill_key.is_empty() or is_excluded_character(fill_key) or not is_playable_letter(fill_key):
+			continue
+		must_fill[fill_key] = true
+	var vowels := ["A", "E", "I", "O", "U"]
+	var leave: Array[String] = []
+	for vowel in vowels:
+		if unique.has(vowel) and not must_fill.has(vowel) and leave.size() < leave_vowels:
+			leave.append(vowel)
+	for key in unique:
+		if leave.has(key) or vowels.has(key) or must_fill.has(key):
+			continue
+		if leave.size() >= leave_count:
+			break
+		leave.append(key)
+	for key in unique:
+		if leave.size() >= leave_count:
+			break
+		if not leave.has(key) and not must_fill.has(key):
+			leave.append(key)
+	var gifts := ""
+	for key in unique:
+		if not leave.has(key):
+			gifts += key
+	return gifts
+
+
+func onboarding_category_list() -> String:
+	var names: PackedStringArray = PackedStringArray()
+	for cat_id in all_category_ids():
+		names.append(category_display_name(cat_id))
+	return ", ".join(names)
+
+
+func onboarding_victory_text(stage: int) -> String:
+	if stage <= 1:
+		return tr("OnboardingVictory1")
+	return tr("OnboardingVictory2") % onboarding_category_list()
+
+
+func prepare_onboarding_puzzle(stage: int) -> void:
+	session_source = SOURCE_ONBOARDING
+	onboarding_stage = 1 if stage <= 1 else 2
+	reset_game_paremeters()
+	resetear_partida_terminada()
+	reset_numero_letras_reveladas()
+	board_fill_prompt_shown = false
+	set_game_mode_actual(MODE_QUICK)
+	set_dificultad_actual(1)
+	if onboarding_stage == 1:
+		id_frase = ONBOARDING_ID_PUZZLE_1
+		id_image = -1
+		frase_original_til = ONBOARDING_PHRASE_1
+		frase_original = normalizar_frase_idioma(frase_original_til, locale_code())
+		categoria_actual = CAT_CURIOSIDADES
+		letras_iniciales = gifts_leaving_letters(frase_original, 4, 1, "CIFRALETRA")
+		descripcion_final_actual = onboarding_victory_text(1)
+		hint_1 = ""
+		hint_2 = ""
+		hint_3 = ""
+		hint_4 = ""
+		_inicializar_datos()
+		_inicializar_lista_numeros_original()
+		return
+	id_frase = ONBOARDING_ID_PUZZLE_2
+	id_image = ONBOARDING_ID_PUZZLE_2
+	frase_original_til = ONBOARDING_PHRASE_2
+	frase_original = normalizar_frase_idioma(frase_original_til, locale_code())
+	categoria_actual = CAT_CURIOSIDADES
+	letras_iniciales = gifts_leaving_letters(frase_original, 4, 1, "MIRA DESCIFRA DESCUBRE")
+	descripcion_final_actual = onboarding_victory_text(2)
+	hint_1 = ""
+	hint_2 = ""
+	hint_3 = ""
+	hint_4 = ""
+	reset_puzzle_stars()
+	_inicializar_datos()
+	_inicializar_lista_numeros_original()
+
+
+func onboarding_theme_image_path() -> String:
+	var lang := locale_code()
+	var supported := ["es", "en", "de", "fr", "eu", "it", "pt"]
+	if not supported.has(lang):
+		lang = "es"
+	var path := "res://images/onboarding/theme_%s.png" % lang
+	if ResourceLoader.exists(path) or FileAccess.file_exists(path):
+		return path
+	return "res://images/onboarding/theme_es.png"
 	
 func calcula_score() -> void:
 	#
@@ -1590,18 +1707,19 @@ func update_numero_letras_reveladas(check_solution: bool = false) -> void:
 				session_source,
 				has_full_game()
 			])
-			if dificultad_actual == 1 and GameManager.level_normal_unlocked == false	:
-				# unlock dificult NORMAL
-				set_level_normal_unlocked(true)
-				PlayerPrefs.save_prefs()
-			elif dificultad_actual == 2 and GameManager.level_dificil_unlocked == false	:
-				# unlock dificult DIFFICULT
-				set_level_dificil_unlocked(true)
-				PlayerPrefs.save_prefs()
-			elif dificultad_actual == 3 and GameManager.level_pro_unlocked == false	:
-				# unlock dificult PRO
-				set_level_pro_unlocked(true)
-				PlayerPrefs.save_prefs()
+			if not is_onboarding_session():
+				if dificultad_actual == 1 and GameManager.level_normal_unlocked == false	:
+					# unlock dificult NORMAL
+					set_level_normal_unlocked(true)
+					PlayerPrefs.save_prefs()
+				elif dificultad_actual == 2 and GameManager.level_dificil_unlocked == false	:
+					# unlock dificult DIFFICULT
+					set_level_dificil_unlocked(true)
+					PlayerPrefs.save_prefs()
+				elif dificultad_actual == 3 and GameManager.level_pro_unlocked == false	:
+					# unlock dificult PRO
+					set_level_pro_unlocked(true)
+					PlayerPrefs.save_prefs()
 			
 			if dificultad_actual == 1:
 				score = score + 30000

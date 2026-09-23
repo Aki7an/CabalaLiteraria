@@ -156,6 +156,9 @@ func _on_back_pressed() -> void:
 
 
 static func find_image_path(image_number: int, index_number: int) -> String:
+	var from_manager := GameManager.find_level_image_path(image_number)
+	if from_manager != "":
+		return from_manager
 	var numbers: Array[int] = [image_number]
 	if index_number != image_number:
 		numbers.append(index_number)

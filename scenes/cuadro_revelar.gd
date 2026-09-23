@@ -105,6 +105,7 @@ const COPY := {
 @onready var _reveal_title: Label = $Center/Card/Margin/Content/Buttons/ButtonReveal/Title
 
 var _closing := false
+var confirmed := false
 var _block_outside := true
 var _dim_a := 0.58
 var _skip_blink: Tween
@@ -282,6 +283,7 @@ func _on_cancel_pressed() -> void:
 func _on_reveal_pressed() -> void:
 	if _closing:
 		return
+	confirmed = true
 	SoundManager.play("ButtonClick")
 	if skip_button.button_pressed:
 		PlayerPrefs.skip_reveal_dialog = true

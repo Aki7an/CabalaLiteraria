@@ -27,6 +27,16 @@ const TITLE_LETTER_EMBOLDEN := 0.85
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
 const FONT_TITLE_LETTER: Font = preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
 const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
+const INTRO_ICON_MIRA: Texture2D = preload("res://images/intro_icon_mira.png")
+const INTRO_ICON_DESCIFRA: Texture2D = preload("res://images/intro_icon_descifra.png")
+const INTRO_ICON_DESCUBRE: Texture2D = preload("res://images/intro_icon_descubre.png")
+const INTRO_WORD_COLORS: Array[Color] = [
+	Color(0.48, 0.24, 0.10, 1),
+	Color(0.82, 0.42, 0.08, 1),
+	Color(0.98, 0.62, 0.12, 1),
+]
+const INTRO_LETTER_SIZE := 108
+const INTRO_ICON_SIZE := 176
 const PATH_SHOP := "res://scenes/MenuShop.tscn"
 
 var _title_letter_font: FontVariation
@@ -361,7 +371,22 @@ func _on_button_settings_pressed() -> void:
 	_go_to("res://scenes/MenuSettings.tscn", button_settings)
 
 func _on_button_play_pressed() -> void:
+	if not PlayerPrefs.onboarding_completed:
+		_start_onboarding()
+		return
 	_go_to("res://scenes/MenuSelectCategory.tscn", button_play)
+
+
+func _start_onboarding() -> void:
+	_play_blink_token += 1
+	TransitionScreen.transition_to_black()
+	if button_play is Button:
+		GameManager.button_blink(button_play)
+	SoundManager.play("ButtonClick")
+	await TransitionScreen._on_animation_finished("fade_to_black", 1)
+	GameManager.prepare_onboarding_puzzle(1)
+	GameManager.launch_prepared_game()
+
 
 func _on_button_shop_pressed() -> void:
 	_go_to("res://scenes/MenuShop.tscn", button_shop)
@@ -687,19 +712,32 @@ func _ensure_intro_blocker() -> ColorRect:
 	return blocker
 
 
-func _ensure_intro_words() -> VBoxContainer:
+func _intro_letter_color(t: float) -> Color:
+	var x := clampf(t, 0.0, 1.0)
+	if x <= 0.5:
+		return INTRO_WORD_COLORS[0].lerp(INTRO_WORD_COLORS[1], x * 2.0)
+	return INTRO_WORD_COLORS[1].lerp(INTRO_WORD_COLORS[2], (x - 0.5) * 2.0)
+
+
+func _intro_word_text(key: String, fallback: String) -> String:
+	var text := tr(key).strip_edges()
+	if text.is_empty() or text == key:
+		text = fallback
+	return text.to_upper()
+
+
+func _ensure_intro_words() -> HBoxContainer:
 	var panel := $Panel as Control
-	var existing := panel.get_node_or_null("IntroWords") as VBoxContainer
+	var existing := panel.get_node_or_null("IntroWords")
 	if existing:
-		existing.visible = true
-		return existing
-	var box := VBoxContainer.new()
+		existing.queue_free()
+	var box := HBoxContainer.new()
 	box.name = "IntroWords"
 	box.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	box.anchor_left = 0.08
-	box.anchor_right = 0.92
-	box.anchor_top = 0.408
-	box.anchor_bottom = 0.678
+	box.anchor_left = 0.04
+	box.anchor_right = 0.96
+	box.anchor_top = 0.372
+	box.anchor_bottom = 0.708
 	box.offset_left = 0.0
 	box.offset_right = 0.0
 	box.offset_top = 0.0
@@ -709,20 +747,55 @@ func _ensure_intro_words() -> VBoxContainer:
 	box.add_theme_constant_override("separation", 8)
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var keys := ["IntroObserve", "IntroDecipher", "IntroDiscover"]
-	var fallbacks := ["OBSERVA", "DESCIFRA", "DESCUBRE"]
+	var fallbacks := ["MIRA", "DESCIFRA", "DESCUBRE"]
+	var icons: Array[Texture2D] = [INTRO_ICON_MIRA, INTRO_ICON_DESCIFRA, INTRO_ICON_DESCUBRE]
+	var words: Array[String] = []
+	var total_letters := 0
+	var max_letters := 1
 	for i in keys.size():
-		var label := Label.new()
-		label.name = keys[i]
-		label.text = tr(keys[i])
-		if label.text == keys[i]:
-			label.text = fallbacks[i]
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		_style_title_letter(label, TITLE_LETTER_SIZE, Color(0.364706, 0.25098, 0.215686, 1))
-		label.modulate.a = 0.0
-		box.add_child(label)
+		var word := _intro_word_text(keys[i], fallbacks[i])
+		words.append(word)
+		total_letters += word.length()
+		max_letters = maxi(max_letters, word.length())
+	var view_w := size.x if size.x > 2.0 else 1206.0
+	var col_w := (view_w * 0.92 - 16.0) / 3.0
+	var letter_size := clampi(int((col_w - 8.0) / float(max_letters) * 1.5), 42, 78)
+	var icon_side := mini(INTRO_ICON_SIZE, int(col_w * 0.62))
+	var letter_index := 0
+	for i in keys.size():
+		var col := VBoxContainer.new()
+		col.name = keys[i]
+		col.alignment = BoxContainer.ALIGNMENT_CENTER
+		col.add_theme_constant_override("separation", 12)
+		col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		col.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		col.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		col.modulate.a = 0.0
+		var icon := TextureRect.new()
+		icon.texture = icons[i]
+		icon.custom_minimum_size = Vector2(icon_side, icon_side)
+		icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		col.add_child(icon)
+		var letters := HBoxContainer.new()
+		letters.alignment = BoxContainer.ALIGNMENT_CENTER
+		letters.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		letters.add_theme_constant_override("separation", 1)
+		letters.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var word: String = words[i]
+		for j in word.length():
+			var t := 0.0 if total_letters <= 1 else float(letter_index) / float(total_letters - 1)
+			var glyph := Label.new()
+			glyph.text = word.substr(j, 1)
+			glyph.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			glyph.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			_style_title_letter(glyph, letter_size, _intro_letter_color(t))
+			letters.add_child(glyph)
+			letter_index += 1
+		col.add_child(letters)
+		box.add_child(col)
 	panel.add_child(box)
 	return box
 
@@ -863,7 +936,7 @@ func _fade_control(node: Control, alpha: float, duration: float) -> void:
 	await tw.finished
 
 
-func _fade_intro_words(box: VBoxContainer, appearing: bool) -> void:
+func _fade_intro_words(box: Control, appearing: bool) -> void:
 	if box == null:
 		return
 	var last: Tween = null

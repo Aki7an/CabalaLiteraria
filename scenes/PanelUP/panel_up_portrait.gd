@@ -381,6 +381,9 @@ func _update_game_mode() -> void:
 
 
 func _on_board_filled() -> void:
+	if GameManager.is_onboarding_session():
+		GameManager.reveal_assignment_errors()
+		return
 	if not get_tree().get_nodes_in_group("BoardFillPrompt").is_empty():
 		return
 	SoundManager.play("ButtonClick")
@@ -448,7 +451,7 @@ func _on_reveal_pressed() -> void:
 	if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
 		return
 	SignalManager.puzzle_input.emit("reveal", {})
-	if PlayerPrefs.skip_reveal_dialog:
+	if PlayerPrefs.skip_reveal_dialog and not GameManager.is_onboarding_session():
 		GameManager.reveal_assignment_errors()
 		return
 	SoundManager.play("ButtonClick")
@@ -497,7 +500,7 @@ func _on_game_finished() -> void:
 	var mode := GameManager.game_mode_actual
 	var key := "stars_cryptogram" if mode == GameManager.MODE_CRYPTOGRAM else "stars_quick"
 	var before := int(HistoryManager.get_stats_dashboard().get(key, 0))
-	if not GameManager.is_practice_session():
+	if not GameManager.skips_progress():
 		HistoryManager.add_result(GameManager.player_name, GameManager.score)
 		PlayFabTools.submit_competitive_rankings(GameManager.player_name)
 	var after := int(HistoryManager.get_stats_dashboard().get(key, 0))
@@ -514,7 +517,7 @@ func _on_game_lost() -> void:
 	GameManager.set_score_ultima_partida(0)
 	GameManager.score = 0
 	SoundManager.play("GameOver")
-	if not GameManager.is_practice_session():
+	if not GameManager.skips_progress():
 		HistoryManager.add_result(GameManager.player_name, 0)
 	_add_overlay(OVERLAY_GAME_OVER)
 

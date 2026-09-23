@@ -1,7 +1,7 @@
 extends Node2D
 
 const scene_to_load = preload("res://scenes/MenuResults.tscn")
-const BASIC_TUTORIAL := preload("res://scenes/basic_start_tutorial.tscn")
+const ONBOARDING_GUIDE := preload("res://scenes/onboarding_guide.tscn")
 const LEVEL_INTRO := preload("res://scenes/level_start_intro.gd")
 
 func _ready():
@@ -19,14 +19,16 @@ func _ready():
 		panel_up.call("resume_saved_time")
 	if panel_up != null and panel_up.has_method("refresh_hud"):
 		panel_up.call("refresh_hud")
-	if show_intro:
+	if GameManager.is_onboarding_session():
+		call_deferred("_show_onboarding_guide")
+	elif show_intro:
 		call_deferred("_show_level_intro")
-	elif PlayerPrefs.mostrar_tuto_antes_partida:
-		call_deferred("_show_basic_tutorial")
 
 
 func _should_show_level_intro() -> bool:
 	if Engine.has_meta("store_screenshot") and bool(Engine.get_meta("store_screenshot")):
+		return false
+	if GameManager.is_onboarding_session():
 		return false
 	if get_tree().get_first_node_in_group("LevelStartIntro"):
 		return false
@@ -39,27 +41,19 @@ func _show_level_intro() -> void:
 	if host == null:
 		return
 	var intro := LEVEL_INTRO.new()
-	intro.finished.connect(_on_level_intro_closed)
 	host.add_child(intro)
 	if intro is Control:
 		intro.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		intro.size = host.size
 
 
-func _on_level_intro_closed() -> void:
-	if not is_inside_tree():
-		return
-	if PlayerPrefs.mostrar_tuto_antes_partida:
-		_show_basic_tutorial()
-
-
-func _show_basic_tutorial() -> void:
-	if get_tree().get_first_node_in_group("BasicStartTutorial"):
+func _show_onboarding_guide() -> void:
+	if get_tree().get_first_node_in_group("OnboardingGuide"):
 		return
 	var host := _overlay_host()
 	if host == null:
 		return
-	host.add_child(BASIC_TUTORIAL.instantiate())
+	host.add_child(ONBOARDING_GUIDE.instantiate())
 
 
 func _overlay_host() -> Control:

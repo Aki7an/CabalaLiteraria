@@ -21,6 +21,8 @@ func _ready() -> void:
 
 
 func begin_current_puzzle() -> void:
+	if GameManager.is_onboarding_session():
+		return
 	var puzzle_id := int(GameManager.id_frase)
 	if puzzle_id < 0:
 		return
@@ -55,6 +57,10 @@ func prepare_current_puzzle_cipher() -> bool:
 
 
 func restore_current_puzzle() -> void:
+	if GameManager.is_onboarding_session():
+		GameManager.update_numero_letras_reveladas()
+		SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
+		return
 	var puzzle_id := int(GameManager.id_frase)
 	var state := get_puzzle_state(puzzle_id)
 	if state.is_empty() or str(state.get("status", "")) == "completed":
@@ -227,7 +233,7 @@ func _flush_autosave() -> void:
 func save_current_now() -> void:
 	if _restoring or not _is_gameplay_active():
 		return
-	if GameManager.tutorial_board_active:
+	if GameManager.tutorial_board_active or GameManager.is_onboarding_session():
 		return
 	_sync_play_time_from_hud()
 	var puzzle_id := int(GameManager.id_frase)
@@ -268,7 +274,7 @@ func reset_resolution_keep_attempt() -> void:
 func mark_completed(puzzle_id: int) -> void:
 	if puzzle_id < 0:
 		return
-	if GameManager.is_practice_session():
+	if GameManager.is_practice_session() or GameManager.is_onboarding_session():
 		return
 	var state: Dictionary = get_puzzle_state(puzzle_id)
 	state["status"] = "completed"

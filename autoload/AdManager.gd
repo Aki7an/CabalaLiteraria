@@ -121,7 +121,7 @@ func show_rewarded() -> bool:
 func note_puzzle_completed_for_ads() -> void:
 	if ads_removed():
 		return
-	if GameManager.is_practice_session():
+	if GameManager.skips_progress():
 		return
 	if GameManager.session_source == GameManager.SOURCE_DAILY:
 		return
@@ -138,7 +138,7 @@ func note_puzzle_completed_for_ads() -> void:
 func _should_show_interstitial() -> bool:
 	if ads_removed():
 		return false
-	if GameManager.is_practice_session():
+	if GameManager.skips_progress():
 		return false
 	if GameManager.session_source == GameManager.SOURCE_DAILY:
 		return false
