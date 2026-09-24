@@ -1,0 +1,235 @@
+[gd_scene format=3 uid="uid://d0q2sjp54c1qx"]
+
+[ext_resource type="Script" uid="uid://bh0l3dejqqgju" path="res://scenes/intro_words.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dqj61r51ppfye" path="res://images/intro_icon_mira.png" id="2_mira"]
+[ext_resource type="Texture2D" uid="uid://bo0btrcdigqiq" path="res://images/intro_icon_descifra.png" id="3_descifra"]
+[ext_resource type="Texture2D" uid="uid://brvamchjeaefd" path="res://images/intro_icon_descubre.png" id="4_descubre"]
+
+[node name="IntroWords" type="Control" unique_id=623288242]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Rows" type="VBoxContainer" parent="." unique_id=709475704]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="IntroObserve" type="HBoxContainer" parent="Rows" unique_id=387110453]
+custom_minimum_size = Vector2(0, 176)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="IconWrap" type="Control" parent="Rows/IntroObserve" unique_id=1782424058]
+layout_mode = 2
+custom_minimum_size = Vector2(176, 176)
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Rows/IntroObserve/IconWrap" unique_id=154813233]
+custom_minimum_size = Vector2(176, 176)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = -88.0
+offset_right = 88.0
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_mira")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="WordWrap" type="Control" parent="Rows/IntroObserve" unique_id=1920397402]
+layout_mode = 2
+custom_minimum_size = Vector2(420, 176)
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Letters" type="HBoxContainer" parent="Rows/IntroObserve/WordWrap" unique_id=597269934]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -40.0
+offset_right = 2.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="Preview" type="Label" parent="Rows/IntroObserve/WordWrap/Letters" unique_id=159194691]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.42, 0.08, 1)
+theme_override_font_sizes/font_size = 68
+text = "MIRA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Rows" unique_id=928093084]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="IntroDecipher" type="HBoxContainer" parent="Rows" unique_id=885208884]
+custom_minimum_size = Vector2(0, 176)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="IconWrap" type="Control" parent="Rows/IntroDecipher" unique_id=792769042]
+layout_mode = 2
+custom_minimum_size = Vector2(176, 176)
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Rows/IntroDecipher/IconWrap" unique_id=703656680]
+custom_minimum_size = Vector2(176, 176)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = -88.0
+offset_right = 88.0
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_descifra")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="WordWrap" type="Control" parent="Rows/IntroDecipher" unique_id=1698168769]
+layout_mode = 2
+custom_minimum_size = Vector2(420, 176)
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Letters" type="HBoxContainer" parent="Rows/IntroDecipher/WordWrap" unique_id=1802007274]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -40.0
+offset_right = 2.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="Preview" type="Label" parent="Rows/IntroDecipher/WordWrap/Letters" unique_id=1559642946]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.42, 0.08, 1)
+theme_override_font_sizes/font_size = 68
+text = "DESCIFRA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control2" type="Control" parent="Rows" unique_id=1206270427]
+custom_minimum_size = Vector2(30.3, 30)
+layout_mode = 2
+
+[node name="IntroDiscover" type="HBoxContainer" parent="Rows" unique_id=1684595479]
+custom_minimum_size = Vector2(0, 176)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="IconWrap" type="Control" parent="Rows/IntroDiscover" unique_id=1971264680]
+layout_mode = 2
+custom_minimum_size = Vector2(176, 176)
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Rows/IntroDiscover/IconWrap" unique_id=2079604852]
+custom_minimum_size = Vector2(176, 176)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = -88.0
+offset_right = 88.0
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_descubre")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="WordWrap" type="Control" parent="Rows/IntroDiscover" unique_id=22493691]
+layout_mode = 2
+custom_minimum_size = Vector2(420, 176)
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Letters" type="HBoxContainer" parent="Rows/IntroDiscover/WordWrap" unique_id=2041530653]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -40.0
+offset_right = 2.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="Preview" type="Label" parent="Rows/IntroDiscover/WordWrap/Letters" unique_id=289437303]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.42, 0.08, 1)
+theme_override_font_sizes/font_size = 68
+text = "DESCUBRE"
+horizontal_alignment = 1
+vertical_alignment = 1

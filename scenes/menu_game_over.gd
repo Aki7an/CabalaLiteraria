@@ -3,6 +3,7 @@ extends ColorRect
 const SCENE_FEEDBACK := "res://scenes/MenuFeedback.tscn"
 const SCENE_MENU_MAIN := "res://scenes/MenuMain.tscn"
 const SHARE_DIALOG := preload("res://scenes/share_solve_dialog.gd")
+const ONLINE_NAME_DIALOG := preload("res://scenes/online_name_prompt.gd")
 const STAR_EMPTY := Color(0.62, 0.51, 0.34, 0.28)
 const GAP := 24.0
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
@@ -222,6 +223,7 @@ func _fit_stars_card() -> void:
 		100.0
 	)
 	description_label.fit_content = false
+	description_label.position.y = maxf(description_label.position.y, 56.0)
 	description_label.size.y = desired_description_height
 	info_card.size.y = (
 		description_label.position.y
@@ -253,6 +255,7 @@ func _layout_top_down() -> void:
 	var continue_w := minf(540.0, available * 0.50)
 	var feedback_w := available - gap - continue_w
 	var bottom_y := main_card.size.y - button_h - 36.0
+	var show_feedback := feedback_button != null and feedback_button.visible and not GameManager.is_onboarding_session()
 	if GameManager.is_onboarding_session():
 		if feedback_button:
 			feedback_button.visible = false
@@ -286,11 +289,16 @@ func _layout_top_down() -> void:
 	if share_title:
 		share_title.position = Vector2(margin, share_y - 10.0 - title_h)
 		share_title.size = Vector2(available, title_h)
-	if feedback_button:
+	if show_feedback:
 		feedback_button.position = Vector2(margin, bottom_y)
 		feedback_button.size = Vector2(feedback_w, button_h)
-	continue_button.position = Vector2(margin + feedback_w + gap, bottom_y)
-	continue_button.size = Vector2(continue_w, button_h)
+		continue_button.position = Vector2(margin + feedback_w + gap, bottom_y)
+		continue_button.size = Vector2(continue_w, button_h)
+	else:
+		if feedback_button:
+			feedback_button.visible = false
+		continue_button.position = Vector2(margin + feedback_w + gap, bottom_y)
+		continue_button.size = Vector2(continue_w, button_h)
 	continue_button.pivot_offset = continue_button.size * 0.5
 
 
@@ -813,12 +821,13 @@ func _on_button_back_pressed() -> void:
 	if GameManager.skips_progress():
 		collect_count = 0
 	if collect_count > 0:
+		await _ask_online_name_if_needed()
 		StarCollectOverlay.capture_earned(stars, collect_count, GameManager.game_mode_actual)
 	StarCollectOverlay.show_white_cover()
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await AdManager.show_interstitial_after_puzzle()
-	await EventLoggerAutoload.submit_if_consented()
+	await EventLoggerAutoload.submit_if_consented(EventLoggerAutoload.OUTCOME_COMPLETED)
 	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
 
 
@@ -900,8 +909,28 @@ func _set_share_buttons_disabled(disabled: bool) -> void:
 
 
 func _on_button_feedback_pressed() -> void:
+	if _leaving:
+		return
 	SoundManager.play("ButtonClick")
-	await _confirm_share_then_go(SCENE_FEEDBACK)
+	await _ask_share_if_needed()
+	if not is_inside_tree() or _leaving:
+		return
+	var overlay := preload(SCENE_FEEDBACK).instantiate()
+	overlay.set("return_to_rewards", true)
+	add_child(overlay)
+	if overlay is Control:
+		var control := overlay as Control
+		control.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		control.size = size
+		control.z_index = 40
+		control.mouse_filter = Control.MOUSE_FILTER_STOP
+
+
+func _on_feedback_closed() -> void:
+	if feedback_button:
+		feedback_button.visible = false
+	_layout_top_down()
+	_start_continue_blink()
 
 
 func _ask_share_if_needed() -> void:
@@ -915,12 +944,9 @@ func _ask_share_if_needed() -> void:
 	await dialog.finished
 
 
-func _confirm_share_then_go(next_scene: String) -> void:
-	if _leaving:
+func _ask_online_name_if_needed() -> void:
+	if GameManager.has_chosen_online_name():
 		return
-	_leaving = true
-	await _ask_share_if_needed()
-	await EventLoggerAutoload.submit_if_consented()
-	TransitionScreen.transition_to_black()
-	await SignalManager.on_transition_finished
-	get_tree().change_scene_to_file(next_scene)
+	var dialog := ONLINE_NAME_DIALOG.new()
+	add_child(dialog)
+	await dialog.finished

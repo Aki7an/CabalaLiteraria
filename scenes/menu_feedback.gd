@@ -42,6 +42,7 @@ var _time_issue := ""
 var _issue_buttons: Array[Button] = []
 var _chip_off: StyleBoxFlat
 var _chip_on: StyleBoxFlat
+var return_to_rewards := false
 
 
 func _ready() -> void:
@@ -365,14 +366,14 @@ func _on_button_send_pressed() -> void:
 	}
 	var comment := comment_edit.text.strip_edges()
 	await PlayFabTools.send_phrase_feedback(GameManager.id_frase, ratings, comment, true)
-	await _go_main_menu()
+	await _leave_after_feedback()
 
 
 func _on_button_cancel_pressed() -> void:
 	if _busy:
 		return
 	_hide_keyboard()
-	await _go_main_menu()
+	await _leave_after_feedback()
 
 
 func _notification(what: int) -> void:
@@ -438,8 +439,14 @@ func _virtual_keyboard_height() -> float:
 	return kb * get_viewport_rect().size.y / win_h
 
 
-func _go_main_menu() -> void:
+func _leave_after_feedback() -> void:
 	SoundManager.play("ButtonClick")
+	if return_to_rewards:
+		var host := get_parent()
+		queue_free()
+		if host != null and host.has_method("_on_feedback_closed"):
+			host.call("_on_feedback_closed")
+		return
 	TransitionScreen.transition_to_black()
 	await SignalManager.on_transition_finished
 	get_tree().change_scene_to_file(SCENE_MENU_MAIN)

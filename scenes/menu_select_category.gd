@@ -6,6 +6,8 @@ const PATH_SELECT_LEVEL := "res://scenes/MenuSelectLevelByID.tscn"
 const MODE_QUICK := "quick"
 const MODE_CRYPTOGRAM := "cryptogram"
 const SELECTED_GREEN := Color(0.16, 0.72, 0.40, 1)
+const COLOR_COACH := Color(0.878, 0.443, 0.102, 1)
+const PUZZLE_COACH_LIMIT := 4
 const FONT_TAG := preload("res://GUI/new_font_Rubik_semibold.tres")
 
 @onready var button_citas_celebres: Button = $Panel/CategoryCard/ButtonCitasCelebres
@@ -37,6 +39,11 @@ var _play_was_enabled := false
 var _play_style_normal: StyleBox
 var _play_style_hover: StyleBox
 var _play_style_pressed: StyleBox
+var _nudge_quick := false
+var _nudge_categories_on_quick := false
+var _quick_coach_tween: Tween
+var _category_coach_tween: Tween
+var _category_coach_token := 0
 
 const LOCALIZED_COPY := {
 	"es": {
@@ -132,6 +139,10 @@ func _ready() -> void:
 	_update_localized_copy()
 	_update_category_progress()
 	_update_play_button()
+	if _finished_puzzles_excluding_onboarding() < PUZZLE_COACH_LIMIT:
+		_nudge_quick = true
+		_nudge_categories_on_quick = true
+		_start_quick_coach()
 
 
 func _on_button_citas_celebres_pressed() -> void:
@@ -167,12 +178,20 @@ func _on_button_cryptogram_pressed() -> void:
 
 
 func _select_mode(mode_id: String, button: Button) -> void:
+	var blink_categories := _nudge_categories_on_quick and mode_id == MODE_QUICK
+	_stop_quick_coach()
+	if blink_categories:
+		_nudge_categories_on_quick = false
 	selected_mode = mode_id
 	GameManager.button_blink(button)
 	SoundManager.play("ButtonClick")
 	_update_mode_selection()
 	_update_category_progress()
 	_update_play_button()
+	if blink_categories:
+		_blink_category_buttons()
+	else:
+		_stop_category_coach()
 
 
 func _has_full_selection() -> bool:
@@ -232,6 +251,8 @@ func _update_mode_selection() -> void:
 		button.add_theme_stylebox_override("normal", style)
 		button.add_theme_stylebox_override("hover", style)
 		button.add_theme_stylebox_override("pressed", style)
+	if _nudge_quick and selected_mode.is_empty():
+		_apply_quick_coach_style()
 
 
 func _set_selected_look(button: Button, is_selected: bool) -> void:
@@ -488,3 +509,122 @@ func _update_localized_copy() -> void:
 	$Panel/ButtonPlay/Content/Text.text = tr("ChoosePuzzle")
 	$Panel/Header/Brand/Cipher.text = tr("Cipher")
 	$Panel/Header/Brand/Letter.text = tr("Letter")
+
+
+func _finished_puzzles_excluding_onboarding() -> int:
+	if typeof(HistoryManager) == TYPE_NIL:
+		return 0
+	return HistoryManager.count_finished_puzzles_excluding_onboarding()
+
+
+func _start_quick_coach() -> void:
+	if not _nudge_quick or not selected_mode.is_empty():
+		return
+	await get_tree().process_frame
+	if not is_inside_tree() or not _nudge_quick or not selected_mode.is_empty():
+		return
+	_apply_quick_coach_style()
+	_start_quick_coach_blink()
+
+
+func _apply_quick_coach_style() -> void:
+	var style := _make_coach_style()
+	button_quick.add_theme_stylebox_override("normal", style)
+	button_quick.add_theme_stylebox_override("hover", style)
+	button_quick.add_theme_stylebox_override("pressed", style)
+	button_quick.z_index = 2
+
+
+func _make_coach_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(1.0, 0.96, 0.82, 1)
+	style.border_color = COLOR_COACH
+	style.set_border_width_all(8)
+	style.border_width_bottom = 11
+	style.set_corner_radius_all(32)
+	style.shadow_color = Color(0.88, 0.44, 0.10, 0.38)
+	style.shadow_size = 18
+	style.shadow_offset = Vector2(0, 10)
+	return style
+
+
+func _start_quick_coach_blink() -> void:
+	if is_instance_valid(_quick_coach_tween):
+		_quick_coach_tween.kill()
+	button_quick.pivot_offset = button_quick.size * 0.5
+	_quick_coach_tween = create_tween()
+	_quick_coach_tween.set_loops()
+	_quick_coach_tween.set_trans(Tween.TRANS_SINE)
+	_quick_coach_tween.set_ease(Tween.EASE_IN_OUT)
+	_quick_coach_tween.tween_property(button_quick, "modulate", Color(1.18, 1.04, 0.72, 1), 0.42)
+	_quick_coach_tween.parallel().tween_property(button_quick, "scale", Vector2(1.05, 1.05), 0.42)
+	_quick_coach_tween.tween_property(button_quick, "modulate", Color.WHITE, 0.42)
+	_quick_coach_tween.parallel().tween_property(button_quick, "scale", Vector2.ONE, 0.42)
+
+
+func _stop_quick_coach() -> void:
+	_nudge_quick = false
+	if is_instance_valid(_quick_coach_tween):
+		_quick_coach_tween.kill()
+	_quick_coach_tween = null
+	if is_instance_valid(button_quick):
+		button_quick.modulate = Color.WHITE
+		button_quick.scale = Vector2.ONE
+		button_quick.z_index = 0
+
+
+func _category_buttons_list() -> Array[Button]:
+	var buttons: Array[Button] = []
+	for category_id in _category_buttons:
+		var button: Button = _category_buttons[category_id]
+		if is_instance_valid(button):
+			buttons.append(button)
+	return buttons
+
+
+func _blink_category_buttons() -> void:
+	_stop_category_coach()
+	_category_coach_token += 1
+	var token := _category_coach_token
+	await get_tree().create_timer(0.22).timeout
+	if token != _category_coach_token or not is_inside_tree():
+		return
+	var buttons := _category_buttons_list()
+	if buttons.is_empty():
+		return
+	for _i in 2:
+		if token != _category_coach_token or not is_inside_tree():
+			return
+		var up := create_tween()
+		_category_coach_tween = up
+		up.set_parallel(true)
+		up.set_trans(Tween.TRANS_SINE)
+		up.set_ease(Tween.EASE_OUT)
+		for button in buttons:
+			button.pivot_offset = button.size * 0.5
+			up.tween_property(button, "scale", Vector2(1.08, 1.08), 0.12)
+		await up.finished
+		if token != _category_coach_token or not is_inside_tree():
+			return
+		var down := create_tween()
+		_category_coach_tween = down
+		down.set_parallel(true)
+		down.set_trans(Tween.TRANS_SINE)
+		down.set_ease(Tween.EASE_IN)
+		for button in buttons:
+			down.tween_property(button, "scale", Vector2.ONE, 0.12)
+		await down.finished
+	if token == _category_coach_token:
+		_category_coach_tween = null
+		for button in buttons:
+			if is_instance_valid(button):
+				button.scale = Vector2.ONE
+
+
+func _stop_category_coach() -> void:
+	_category_coach_token += 1
+	if is_instance_valid(_category_coach_tween):
+		_category_coach_tween.kill()
+	_category_coach_tween = null
+	for button in _category_buttons_list():
+		button.scale = Vector2.ONE

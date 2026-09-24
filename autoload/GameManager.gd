@@ -33,6 +33,7 @@ var online_name_chosen: bool = false
 const PLAYER_NAME_MAX_LENGTH := 10
 const GUEST_NAME_PREFIX := "ANON"
 var allow_completed_replay := false
+var ranking_replay_session := false
 const SOURCE_NONE := ""
 const SOURCE_DAILY := "daily"
 const SOURCE_PRACTICE := "practice"
@@ -53,6 +54,7 @@ const DAILY_EPOCH := {
 	"second": 0,
 }
 var session_source: String = SOURCE_NONE
+var puzzle_enter_pending: bool = true
 var main_menu_intro_played: bool = false
 var pending_library_puzzle_id: int = -1
 var locked_record_stars: int = -1
@@ -750,6 +752,7 @@ func set_go_to_game_disable() -> void:
 
 func launch_prepared_game() -> void:
 	set_go_to_game_disable()
+	puzzle_enter_pending = true
 	SignalManager.partida_iniciada.emit()
 	get_tree().change_scene_to_file("res://scenes/App.tscn")
 
@@ -1976,19 +1979,19 @@ func seleccionar_por_index(index: int) -> void:
 
 
 func button_blink(button: Button) -> void:
-	if not is_instance_valid(button):
+	button_blink_repeat(button, 1)
+
+
+func button_blink_repeat(button: Button, times: int = 2) -> void:
+	if not is_instance_valid(button) or times <= 0:
 		return
 	button.pivot_offset = button.size * 0.5
-	var t := create_tween()
-	# Escala original
 	var original_scale := button.scale
-	# Escala aumentada (20% más grande, por ejemplo)
 	var big_scale := original_scale * 1.1
-
-	# Aumenta en 0.25 segundos
-	t.tween_property(button, "scale", big_scale, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	# Luego vuelve al tamaño original en otros 0.25 segundos
-	t.tween_property(button, "scale", original_scale, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	var t := create_tween()
+	for i in range(times):
+		t.tween_property(button, "scale", big_scale, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		t.tween_property(button, "scale", original_scale, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
 func button_blink_texture(button: TextureButton) -> void:
 	if not is_instance_valid(button):

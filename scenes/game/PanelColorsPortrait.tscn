@@ -160,6 +160,7 @@ theme_override_styles/focus = SubResource("Style_empty")
 text = "5"
 
 [node name="Button0" type="Button" parent="HBoxContainer"]
+groups = PackedStringArray("EraseButton")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.55

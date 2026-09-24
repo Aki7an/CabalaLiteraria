@@ -411,6 +411,10 @@ func _scale_blink(node: Control) -> void:
 	tween.tween_property(node, "scale", Vector2.ONE, 0.12)
 
 
+func play_chime() -> void:
+	_play_chime()
+
+
 func _play_chime() -> void:
 	if CHIME_SFX == null:
 		return

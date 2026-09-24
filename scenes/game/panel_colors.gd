@@ -18,6 +18,8 @@ extends Panel
 @onready var paginas_abajo = $HBoxContainer/ButtonDown/PaginasAbajo
 
 func _ready() -> void:
+	if not SignalManager.rubber_feedback.is_connected(_on_rubber_feedback):
+		SignalManager.rubber_feedback.connect(_on_rubber_feedback)
 	var erase_label := get_node_or_null("HBoxContainer/Button0/Content/Label") as Label
 	if erase_label:
 		erase_label.text = tr("TutEraseButton")
@@ -34,6 +36,34 @@ func _ready() -> void:
 			style = StyleBoxFlat.new()
 		style.bg_color = GameManager.lista_tonos_colores[i]
 		button.add_theme_stylebox_override("normal", style)
+	_apply_onboarding_color_lock()
+
+
+func _apply_onboarding_color_lock() -> void:
+	if not GameManager.is_onboarding_session() or GameManager.onboarding_stage != 1:
+		return
+	var box := get_node_or_null("HBoxContainer")
+	if box == null:
+		return
+	for i in range(1, 6):
+		var button := box.get_node_or_null("Button%d" % i) as CanvasItem
+		if button:
+			button.modulate = Color(1, 1, 1, 0.42)
+
+
+func _block_onboarding_colors() -> bool:
+	if not GameManager.is_onboarding_session() or GameManager.onboarding_stage != 1:
+		return false
+	var guide := get_tree().get_first_node_in_group("OnboardingGuide")
+	if guide and guide.has_method("show_later_tools_message"):
+		guide.show_later_tools_message()
+		return true
+	return false
+
+func _on_rubber_feedback() -> void:
+	if is_instance_valid(button_0) and button_0.is_in_group("EraseButton"):
+		GameManager.button_blink_repeat(button_0, 2)
+
 
 func _on_button_0_pressed():
 	
@@ -43,6 +73,8 @@ func _on_button_0_pressed():
 
 	
 func _on_button_1_pressed() -> void:
+	if _block_onboarding_colors():
+		return
 	if color1_usado or GameManager.number_1 != 0:
 		#primero borra la casilla anterior de este color
 		GameManager.pinta_celdas(GameManager.number_1,0)
@@ -54,6 +86,8 @@ func _on_button_1_pressed() -> void:
 
 
 func _on_button_2_pressed() -> void:
+	if _block_onboarding_colors():
+		return
 	if color2_usado or GameManager.number_2 != 0:
 		#primero borra la casilla anterior de este color
 		GameManager.pinta_celdas(GameManager.number_2,0)
@@ -65,6 +99,8 @@ func _on_button_2_pressed() -> void:
 
 
 func _on_button_3_pressed() -> void:
+	if _block_onboarding_colors():
+		return
 	if color3_usado or GameManager.number_3 != 0:
 		#primero borra la casilla anterior de este color
 		GameManager.pinta_celdas(GameManager.number_3,0)
@@ -76,6 +112,8 @@ func _on_button_3_pressed() -> void:
 
 	
 func _on_button_4_pressed() -> void:
+	if _block_onboarding_colors():
+		return
 	if color4_usado or GameManager.number_4 != 0:
 		#primero borra la casilla anterior de este color
 		GameManager.pinta_celdas(GameManager.number_4,0)
@@ -86,6 +124,8 @@ func _on_button_4_pressed() -> void:
 	_log_color(4)
 
 func _on_button_5_pressed() -> void:
+	if _block_onboarding_colors():
+		return
 	if color5_usado or GameManager.number_5 != 0:
 		#primero borra la casilla anterior de este color
 		GameManager.pinta_celdas(GameManager.number_5,0)

@@ -2,7 +2,7 @@ extends Node
 
 const SAVE_PATH := "user://puzzle_states.json"
 const SAVE_VERSION := 1
-const DEBUG_NEARLY_SOLVED_IDS: Array[int] = [3064, 3065, 3066, 3067]
+const DEBUG_NEARLY_SOLVED_IDS: Array[int] = []
 const DEBUG_NEARLY_SOLVED_LETTER := "A"
 
 var _states: Dictionary = {}
@@ -251,6 +251,8 @@ func save_current_now() -> void:
 		"meta": _current_meta(),
 	}
 	_write_to_disk()
+	if typeof(EventLoggerAutoload) != TYPE_NIL:
+		EventLoggerAutoload.persist_unfinished()
 
 
 func reset_resolution_keep_attempt() -> void:
@@ -664,5 +666,5 @@ func _write_to_disk() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED:
 		save_current_now()

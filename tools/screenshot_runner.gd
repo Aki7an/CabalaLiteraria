@@ -23,6 +23,7 @@ var _original_tutorial := true
 
 func _ready() -> void:
 	Engine.set_meta("store_screenshot", true)
+	GameManager.puzzle_enter_pending = false
 	_mute_audio()
 	_original_locale = str(PlayerPrefs.idioma)
 	if _original_locale.strip_edges().is_empty():

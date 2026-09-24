@@ -27,20 +27,14 @@ const TITLE_LETTER_EMBOLDEN := 0.85
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
 const FONT_TITLE_LETTER: Font = preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
 const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
-const INTRO_ICON_MIRA: Texture2D = preload("res://images/intro_icon_mira.png")
-const INTRO_ICON_DESCIFRA: Texture2D = preload("res://images/intro_icon_descifra.png")
-const INTRO_ICON_DESCUBRE: Texture2D = preload("res://images/intro_icon_descubre.png")
-const INTRO_WORD_COLORS: Array[Color] = [
-	Color(0.48, 0.24, 0.10, 1),
-	Color(0.82, 0.42, 0.08, 1),
-	Color(0.98, 0.62, 0.12, 1),
-]
-const INTRO_LETTER_SIZE := 108
-const INTRO_ICON_SIZE := 176
 const PATH_SHOP := "res://scenes/MenuShop.tscn"
 
 var _title_letter_font: FontVariation
 var _play_blink_token := 0
+var _intro_token := 0
+var _intro_running := false
+var _intro_rest: Dictionary = {}
+var _intro_tweens: Array[Tween] = []
 
 func _ready() -> void:
 	SoundManager.apply_audio_prefs()
@@ -54,6 +48,8 @@ func _ready() -> void:
 	_refresh_star_totals()
 	if _should_play_main_intro():
 		_prepare_intro_hidden()
+	else:
+		_hide_intro_words()
 	call_deferred("_boot_visuals")
 	_refresh_daily_button()
 	if not SignalManager.full_game_changed.is_connected(_refresh_daily_button):
@@ -343,11 +339,13 @@ func _set_audio_button_state(button: Button, enabled: bool) -> void:
 
 
 func _on_button_music_pressed() -> void:
+	_skip_intro()
 	SoundManager.play("ButtonClick")
 	SoundManager.toggle_music_enabled()
 
 
 func _on_button_fx_pressed() -> void:
+	_skip_intro()
 	var enabling := not SoundManager.is_fx_enabled()
 	if not enabling:
 		SoundManager.play("ButtonClick")
@@ -357,6 +355,7 @@ func _on_button_fx_pressed() -> void:
 
 
 func _go_to(path: String, blink_node: Control = null) -> void:
+	_skip_intro()
 	_play_blink_token += 1
 	TransitionScreen.transition_to_black()
 	if blink_node is Button:
@@ -371,6 +370,7 @@ func _on_button_settings_pressed() -> void:
 	_go_to("res://scenes/MenuSettings.tscn", button_settings)
 
 func _on_button_play_pressed() -> void:
+	_skip_intro()
 	if not PlayerPrefs.onboarding_completed:
 		_start_onboarding()
 		return
@@ -378,6 +378,7 @@ func _on_button_play_pressed() -> void:
 
 
 func _start_onboarding() -> void:
+	_skip_intro()
 	_play_blink_token += 1
 	TransitionScreen.transition_to_black()
 	if button_play is Button:
@@ -615,6 +616,10 @@ func _intro_chrome() -> Array[Control]:
 
 
 func _prepare_intro_hidden() -> void:
+	_intro_running = true
+	_cache_intro_rest()
+	_set_menu_interactive(false)
+	_hide_intro_words()
 	for node in _intro_chrome():
 		node.modulate.a = 0.0
 		if node != get_node_or_null("Panel/PlayWrap"):
@@ -628,57 +633,77 @@ func _prepare_intro_hidden() -> void:
 
 
 func _play_main_intro() -> void:
+	_intro_running = true
+	var token := _intro_token
 	var panel := $Panel as Control
 	if panel:
 		panel.clip_contents = false
 	var wash := _ensure_intro_wash()
 	var words := _ensure_intro_words()
-	var blocker := _ensure_intro_blocker()
 	var cipher_row := _title_cipher_row()
 	var letter_row := get_node_or_null("Panel/TitleBlock/ShowcaseLetra") as HBoxContainer
 	_set_row_tiles_alpha(cipher_row, 0.0)
 	_set_row_tiles_alpha(letter_row, 0.0)
 	if wash:
 		wash.modulate.a = 1.0
-		var wash_tw := create_tween()
+		var wash_tw := _intro_tween()
 		wash_tw.tween_property(wash, "modulate:a", 0.0, 2.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	_layout_title_row(cipher_row)
 	_layout_title_row(letter_row)
 	await get_tree().process_frame
+	if not _intro_alive(token):
+		_finish_intro_cleanup()
+		return
 	var cipher_size := _row_final_tile_size(cipher_row)
 	var letter_size := _row_final_tile_size(letter_row)
 	_lock_title_tile_size(cipher_row, cipher_size)
 	_lock_title_tile_size(letter_row, letter_size)
 	await get_tree().process_frame
+	if not _intro_alive(token):
+		_finish_intro_cleanup()
+		return
 	await _animate_title_row(cipher_row, 1.0, cipher_size)
+	if not _intro_alive(token):
+		_finish_intro_cleanup()
+		return
 	await _animate_title_row(letter_row, -1.0, letter_size)
+	if not _intro_alive(token):
+		_finish_intro_cleanup()
+		return
 	_layout_title_row(cipher_row)
 	_layout_title_row(letter_row)
 	_lock_title_tile_size(cipher_row, _row_final_tile_size(cipher_row))
 	_lock_title_tile_size(letter_row, _row_final_tile_size(letter_row))
 	await _fade_control(get_node_or_null("Panel/TaglineRow") as Control, 1.0, 0.28)
+	if not _intro_alive(token):
+		_finish_intro_cleanup()
+		return
+	await _slide_chrome_in()
+	if not _intro_alive(token):
+		_finish_intro_cleanup()
+		return
 	await _fade_intro_words(words, true)
-	await get_tree().create_timer(1.35).timeout
+	if not _intro_alive(token):
+		_finish_intro_cleanup()
+		return
+	await _await_intro_delay(1.65, token)
+	if not _intro_alive(token):
+		_finish_intro_cleanup()
+		return
 	await _fade_intro_words(words, false)
+	if not _intro_alive(token):
+		_finish_intro_cleanup()
+		return
 	if words:
 		words.visible = false
-	await _slide_chrome_in()
-	await _animate_play_entrance()
-	if wash:
-		wash.queue_free()
-	var overlay := $Panel.get_node_or_null("IntroOverlay")
-	if overlay:
-		overlay.queue_free()
-	if blocker:
-		blocker.queue_free()
-	if panel:
-		panel.clip_contents = true
 	if button_play:
 		button_play.disabled = false
 		button_play.mouse_filter = Control.MOUSE_FILTER_STOP
-	var stars := get_node_or_null("Panel/StarTotals") as Control
-	if stars:
-		stars.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	await _animate_play_entrance()
+	if not _intro_alive(token):
+		_finish_intro_cleanup()
+		return
+	_finish_intro_cleanup()
 
 
 func _ensure_intro_wash() -> ColorRect:
@@ -698,105 +723,146 @@ func _ensure_intro_wash() -> ColorRect:
 	return wash
 
 
-func _ensure_intro_blocker() -> ColorRect:
-	var existing := get_node_or_null("IntroBlocker") as ColorRect
-	if existing:
-		return existing
-	var blocker := ColorRect.new()
-	blocker.name = "IntroBlocker"
-	blocker.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	blocker.color = Color(0, 0, 0, 0)
-	blocker.mouse_filter = Control.MOUSE_FILTER_STOP
-	blocker.z_index = 40
-	add_child(blocker)
-	return blocker
+func _menu_buttons() -> Array[BaseButton]:
+	var buttons: Array[BaseButton] = []
+	for node in [
+		button_settings,
+		button_music,
+		button_fx,
+		button_play,
+		button_shop,
+		button_daily,
+		button_library,
+		button_ranking,
+		button_stats,
+		button_tutorial,
+	]:
+		if node is BaseButton:
+			buttons.append(node)
+	return buttons
 
 
-func _intro_letter_color(t: float) -> Color:
-	var x := clampf(t, 0.0, 1.0)
-	if x <= 0.5:
-		return INTRO_WORD_COLORS[0].lerp(INTRO_WORD_COLORS[1], x * 2.0)
-	return INTRO_WORD_COLORS[1].lerp(INTRO_WORD_COLORS[2], (x - 0.5) * 2.0)
+func _set_menu_interactive(enabled: bool) -> void:
+	for button in _menu_buttons():
+		button.disabled = not enabled
+		button.mouse_filter = Control.MOUSE_FILTER_STOP if enabled else Control.MOUSE_FILTER_IGNORE
 
 
-func _intro_word_text(key: String, fallback: String) -> String:
-	var text := tr(key).strip_edges()
-	if text.is_empty() or text == key:
-		text = fallback
-	return text.to_upper()
+func _intro_alive(token: int) -> bool:
+	return _intro_running and token == _intro_token and is_inside_tree()
 
 
-func _ensure_intro_words() -> HBoxContainer:
+func _intro_tween() -> Tween:
+	var tw := create_tween()
+	_intro_tweens.append(tw)
+	return tw
+
+
+func _kill_intro_tweens() -> void:
+	for tw in _intro_tweens:
+		if tw != null and tw.is_valid():
+			tw.kill()
+	_intro_tweens.clear()
+
+
+func _await_intro_tween(tw: Tween, token: int) -> void:
+	if tw == null:
+		return
+	while _intro_alive(token) and tw.is_valid() and tw.is_running():
+		await get_tree().process_frame
+
+
+func _await_intro_delay(seconds: float, token: int) -> void:
+	var end_ms := Time.get_ticks_msec() + int(seconds * 1000.0)
+	while _intro_alive(token) and Time.get_ticks_msec() < end_ms:
+		await get_tree().process_frame
+
+
+func _cache_intro_rest() -> void:
+	_intro_rest.clear()
+	for node in _intro_chrome():
+		if node:
+			_intro_rest[node] = node.position
+
+
+func _skip_intro() -> void:
+	if not _intro_running:
+		return
+	_intro_token += 1
+	_kill_intro_tweens()
+	_snap_intro_visuals()
+
+
+func _snap_intro_visuals() -> void:
+	GameManager.main_menu_intro_played = true
+	var tagline := get_node_or_null("Panel/TaglineRow") as Control
+	if tagline:
+		tagline.modulate.a = 1.0
+		tagline.visible = true
+	for node in _intro_chrome():
+		if node == null or not is_instance_valid(node):
+			continue
+		node.visible = true
+		node.modulate.a = 1.0
+		if _intro_rest.has(node):
+			node.position = _intro_rest[node]
+	_hide_intro_words()
+	_set_row_tiles_alpha(_title_cipher_row(), 1.0)
+	_set_row_tiles_alpha(get_node_or_null("Panel/TitleBlock/ShowcaseLetra") as HBoxContainer, 1.0)
+	_set_menu_interactive(true)
+	if button_play:
+		button_play.disabled = false
+		button_play.mouse_filter = Control.MOUSE_FILTER_STOP
+		button_play.modulate.a = 1.0
+		button_play.scale = Vector2.ONE
+
+
+func _finish_intro_cleanup() -> void:
+	_intro_running = false
+	_kill_intro_tweens()
+	var wash := $Panel.get_node_or_null("IntroWash")
+	if wash:
+		wash.queue_free()
+	var overlay := $Panel.get_node_or_null("IntroOverlay")
+	if overlay:
+		overlay.queue_free()
+	var blocker := get_node_or_null("IntroBlocker")
+	if blocker:
+		blocker.queue_free()
 	var panel := $Panel as Control
-	var existing := panel.get_node_or_null("IntroWords")
-	if existing:
-		existing.queue_free()
-	var box := HBoxContainer.new()
-	box.name = "IntroWords"
-	box.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	box.anchor_left = 0.04
-	box.anchor_right = 0.96
-	box.anchor_top = 0.372
-	box.anchor_bottom = 0.708
-	box.offset_left = 0.0
-	box.offset_right = 0.0
-	box.offset_top = 0.0
-	box.offset_bottom = 0.0
-	box.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	box.alignment = BoxContainer.ALIGNMENT_CENTER
-	box.add_theme_constant_override("separation", 8)
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var keys := ["IntroObserve", "IntroDecipher", "IntroDiscover"]
-	var fallbacks := ["MIRA", "DESCIFRA", "DESCUBRE"]
-	var icons: Array[Texture2D] = [INTRO_ICON_MIRA, INTRO_ICON_DESCIFRA, INTRO_ICON_DESCUBRE]
-	var words: Array[String] = []
-	var total_letters := 0
-	var max_letters := 1
-	for i in keys.size():
-		var word := _intro_word_text(keys[i], fallbacks[i])
-		words.append(word)
-		total_letters += word.length()
-		max_letters = maxi(max_letters, word.length())
-	var view_w := size.x if size.x > 2.0 else 1206.0
-	var col_w := (view_w * 0.92 - 16.0) / 3.0
-	var letter_size := clampi(int((col_w - 8.0) / float(max_letters) * 1.5), 42, 78)
-	var icon_side := mini(INTRO_ICON_SIZE, int(col_w * 0.62))
-	var letter_index := 0
-	for i in keys.size():
-		var col := VBoxContainer.new()
-		col.name = keys[i]
-		col.alignment = BoxContainer.ALIGNMENT_CENTER
-		col.add_theme_constant_override("separation", 12)
-		col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		col.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		col.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		col.modulate.a = 0.0
-		var icon := TextureRect.new()
-		icon.texture = icons[i]
-		icon.custom_minimum_size = Vector2(icon_side, icon_side)
-		icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		col.add_child(icon)
-		var letters := HBoxContainer.new()
-		letters.alignment = BoxContainer.ALIGNMENT_CENTER
-		letters.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-		letters.add_theme_constant_override("separation", 1)
-		letters.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var word: String = words[i]
-		for j in word.length():
-			var t := 0.0 if total_letters <= 1 else float(letter_index) / float(total_letters - 1)
-			var glyph := Label.new()
-			glyph.text = word.substr(j, 1)
-			glyph.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			glyph.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-			_style_title_letter(glyph, letter_size, _intro_letter_color(t))
-			letters.add_child(glyph)
-			letter_index += 1
-		col.add_child(letters)
-		box.add_child(col)
-	panel.add_child(box)
+	if panel:
+		panel.clip_contents = true
+	_set_menu_interactive(true)
+	if button_play:
+		button_play.disabled = false
+		button_play.mouse_filter = Control.MOUSE_FILTER_STOP
+		button_play.modulate.a = 1.0
+		button_play.scale = Vector2.ONE
+	var stars := get_node_or_null("Panel/StarTotals") as Control
+	if stars:
+		stars.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+func _hide_intro_words() -> void:
+	var words := get_node_or_null("%IntroWords") as Control
+	if words == null:
+		words = get_node_or_null("Panel/IntroWords") as Control
+	if words:
+		words.visible = false
+
+
+func _ensure_intro_words() -> Control:
+	var box := get_node_or_null("%IntroWords") as Control
+	if box == null:
+		box = get_node_or_null("Panel/IntroWords") as Control
+	if box == null:
+		box = preload("res://scenes/IntroWords.tscn").instantiate() as Control
+		box.name = "IntroWords"
+		($Panel as Control).add_child(box)
+	if box.has_method("prepare_intro"):
+		box.call("prepare_intro")
+	else:
+		box.visible = true
 	return box
 
 
@@ -864,6 +930,7 @@ func _intro_overlay() -> Control:
 
 
 func _animate_title_row(row: HBoxContainer, direction: float, tile_size: Vector2) -> void:
+	var token := _intro_token
 	var tiles := _visible_tiles(row)
 	if tiles.is_empty():
 		return
@@ -903,7 +970,7 @@ func _animate_title_row(row: HBoxContainer, direction: float, tile_size: Vector2
 	for i in jobs.size():
 		var tile: Control = jobs[i]["tile"]
 		var dest: Vector2 = jobs[i]["dest"]
-		var tw := create_tween()
+		var tw := _intro_tween()
 		tw.tween_callback(func() -> void:
 			if is_instance_valid(tile):
 				tile.modulate.a = 1.0
@@ -912,7 +979,7 @@ func _animate_title_row(row: HBoxContainer, direction: float, tile_size: Vector2
 		tw.tween_property(tile, "global_position", dest, 0.36).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		last = tw
 	if last:
-		await last.finished
+		await _await_intro_tween(last, token)
 	for job in jobs:
 		var tile: Control = job["tile"]
 		var dummy: Control = job["dummy"]
@@ -931,20 +998,29 @@ func _animate_title_row(row: HBoxContainer, direction: float, tile_size: Vector2
 func _fade_control(node: Control, alpha: float, duration: float) -> void:
 	if node == null:
 		return
-	var tw := create_tween()
+	var token := _intro_token
+	var tw := _intro_tween()
 	tw.tween_property(node, "modulate:a", alpha, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	await tw.finished
+	await _await_intro_tween(tw, token)
 
 
 func _fade_intro_words(box: Control, appearing: bool) -> void:
 	if box == null:
 		return
+	var token := _intro_token
+	var rows: Array = []
+	if box.has_method("intro_rows"):
+		rows = box.call("intro_rows")
+	else:
+		rows = box.get_children()
 	var last: Tween = null
-	for i in box.get_child_count():
-		var label := box.get_child(i) as CanvasItem
+	for i in rows.size():
+		if not _intro_alive(token):
+			return
+		var label := rows[i] as CanvasItem
 		if label == null:
 			continue
-		var tw := create_tween()
+		var tw := _intro_tween()
 		var target := 1.0 if appearing else 0.0
 		if appearing:
 			var word_sfx := ["IntroWordObserva", "IntroWordDescifra", "IntroWordDescubre"]
@@ -952,13 +1028,14 @@ func _fade_intro_words(box: Control, appearing: bool) -> void:
 				SoundManager.play(word_sfx[i])
 		tw.tween_property(label, "modulate:a", target, 0.26).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		last = tw
-		if i < box.get_child_count() - 1:
-			await get_tree().create_timer(0.12).timeout
+		if i < rows.size() - 1:
+			await _await_intro_delay(0.12, token)
 	if last:
-		await last.finished
+		await _await_intro_tween(last, token)
 
 
 func _slide_chrome_in() -> void:
+	var token := _intro_token
 	var from_above: Array[Control] = []
 	for node in [$Panel/StarTotals, button_fx, button_music, button_settings]:
 		if node is Control:
@@ -972,14 +1049,20 @@ func _slide_chrome_in() -> void:
 		play_wrap.modulate.a = 0.0
 	for node in from_above + from_below:
 		node.visible = true
+	_set_menu_interactive(true)
+	if button_play:
+		button_play.disabled = true
+		button_play.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	SoundManager.play("IntroButtons")
-	var tw := create_tween()
+	var tw := _intro_tween()
 	tw.set_parallel(true)
 	for node in from_above:
 		_tween_slide(tw, node, Vector2(0, -220), 0.48)
 	for node in from_below:
 		_tween_slide(tw, node, Vector2(0, 280), 0.48)
-	await tw.finished
+	await _await_intro_tween(tw, token)
+	if not _intro_alive(token):
+		return
 	for node in from_above + from_below:
 		if is_instance_valid(node):
 			node.modulate.a = 1.0
@@ -995,6 +1078,7 @@ func _tween_slide(tw: Tween, node: Control, offset: Vector2, duration: float) ->
 
 
 func _animate_play_entrance() -> void:
+	var token := _intro_token
 	var wrap := get_node_or_null("Panel/PlayWrap") as Control
 	if wrap == null or button_play == null:
 		return
@@ -1003,13 +1087,15 @@ func _animate_play_entrance() -> void:
 	wrap.position = Vector2(dest.x - size.x, dest.y)
 	SoundManager.play("IntroJugar")
 	var overs := [78.0, 42.0, 20.0, 8.0]
-	var tw := create_tween()
+	var tw := _intro_tween()
 	tw.tween_property(wrap, "position:x", dest.x + overs[0], 0.42).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tw.tween_property(wrap, "position:x", dest.x - overs[1], 0.14).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tw.tween_property(wrap, "position:x", dest.x + overs[2], 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tw.tween_property(wrap, "position:x", dest.x - overs[3], 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tw.tween_property(wrap, "position:x", dest.x, 0.10).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	await tw.finished
+	await _await_intro_tween(tw, token)
+	if not _intro_alive(token):
+		return
 	wrap.position = dest
 	button_play.modulate.a = 1.0
 	await _blink_play_scale()

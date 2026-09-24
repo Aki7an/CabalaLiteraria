@@ -11,7 +11,7 @@ const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 const COLOR_STAR_EMPTY := Color(0.50, 0.38, 0.24, 0.55)
 const COLOR_RECOMMEND := Color(0.878, 0.443, 0.102, 1)
 const DRAG_THRESHOLD := 14.0
-const RECOMMEND_STAR_LIMIT := 5
+const RECOMMEND_COMPLETED_LIMIT := 4
 const RECOMMEND_TOP_MARGIN := 132
 
 @export_dir var IMAGES_DIR: String = "res://data/images/"
@@ -66,6 +66,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "No hay puzles disponibles para repetir.",
 		"lock_daily": "Hoy ya has repetido un puzle. Vuelve mañana.",
 		"lock_play": "JUGAR AL AZAR",
+		"lock_play_ad": "VER ANUNCIO Y JUGAR",
+		"lock_rank": "La puntuación del puzle que vas a jugar influirá en tu clasificación online.",
+		"lock_ad": "Si estás de acuerdo, tienes que ver un anuncio para jugar.",
 		"lock_cancel": "CANCELAR",
 		"lock_ok": "ENTENDIDO",
 		"recommended": "Puzle recomendado"
@@ -87,6 +90,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "There are no puzzles available to replay.",
 		"lock_daily": "You already replayed a puzzle today. Come back tomorrow.",
 		"lock_play": "PLAY RANDOM",
+		"lock_play_ad": "WATCH AD AND PLAY",
+		"lock_rank": "The score of the puzzle you are about to play will count toward your online ranking.",
+		"lock_ad": "If you agree, you need to watch an ad to play.",
 		"lock_cancel": "CANCEL",
 		"lock_ok": "GOT IT",
 		"recommended": "Recommended puzzle"
@@ -108,6 +114,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "Ez dago errepikatzeko puzzle erabilgarririk.",
 		"lock_daily": "Gaur jada puzzle bat errepikatu duzu. Bihar itzuli.",
 		"lock_play": "AUSAZ JOKATU",
+		"lock_play_ad": "IRAGARKIA IKUSI ETA JOLASTU",
+		"lock_rank": "Jokatuko duzun puzzlearen puntuazioak zure lineako sailkapenean eragingo du.",
+		"lock_ad": "Ados bazaude, iragarki bat ikusi behar duzu jokatzeko.",
 		"lock_cancel": "UTZI",
 		"lock_ok": "ULERTUTA",
 		"recommended": "Puzzle gomendatua"
@@ -129,6 +138,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "Aucun puzzle n'est disponible à rejouer.",
 		"lock_daily": "Tu as déjà rejoué un puzzle aujourd'hui. Reviens demain.",
 		"lock_play": "JOUER AU HASARD",
+		"lock_play_ad": "VOIR LA PUB ET JOUER",
+		"lock_rank": "Le score du puzzle que tu vas jouer comptera dans ton classement en ligne.",
+		"lock_ad": "Si tu es d'accord, tu dois regarder une pub pour jouer.",
 		"lock_cancel": "ANNULER",
 		"lock_ok": "COMPRIS",
 		"recommended": "Puzzle recommandé"
@@ -150,6 +162,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "Es gibt keine Rätsel zum Wiederholen.",
 		"lock_daily": "Du hast heute schon ein Rätsel wiederholt. Komm morgen wieder.",
 		"lock_play": "ZUFÄLLIG SPIELEN",
+		"lock_play_ad": "WERBUNG ANSEHEN UND SPIELEN",
+		"lock_rank": "Die Wertung des Rätsels, das du spielen wirst, zählt für deine Online-Rangliste.",
+		"lock_ad": "Wenn du einverstanden bist, musst du eine Werbung ansehen, um zu spielen.",
 		"lock_cancel": "ABBRECHEN",
 		"lock_ok": "VERSTANDEN",
 		"recommended": "Empfohlenes Rätsel"
@@ -171,6 +186,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "Non ci sono puzzle disponibili da ripetere.",
 		"lock_daily": "Oggi hai già ripetuto un puzzle. Torna domani.",
 		"lock_play": "GIOCA A CASO",
+		"lock_play_ad": "GUARDA ANNUNCIO E GIOCA",
+		"lock_rank": "Il punteggio del puzzle che stai per giocare influirà sulla tua classifica online.",
+		"lock_ad": "Se sei d'accordo, devi guardare un annuncio per giocare.",
 		"lock_cancel": "ANNULLA",
 		"lock_ok": "CAPITO",
 		"recommended": "Puzzle consigliato"
@@ -192,6 +210,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "Não há puzzles disponíveis para repetir.",
 		"lock_daily": "Já repetiste um puzzle hoje. Volta amanhã.",
 		"lock_play": "JOGAR AO ACASO",
+		"lock_play_ad": "VER ANÚNCIO E JOGAR",
+		"lock_rank": "A pontuação do puzzle que vais jogar vai contar para a tua classificação online.",
+		"lock_ad": "Se concordas, tens de ver um anúncio para jogar.",
 		"lock_cancel": "CANCELAR",
 		"lock_ok": "ENTENDIDO",
 		"recommended": "Puzzle recomendado"
@@ -1123,11 +1144,10 @@ func _copy(key: String) -> String:
 	return str(translations.get(key, LOCALIZED_COPY["es"].get(key, key)))
 
 
-func _player_total_stars() -> int:
+func _finished_puzzles_excluding_onboarding() -> int:
 	if typeof(HistoryManager) == TYPE_NIL:
 		return 0
-	var dashboard: Dictionary = HistoryManager.get_stats_dashboard()
-	return int(dashboard.get("stars_quick", 0)) + int(dashboard.get("stars_cryptogram", 0))
+	return HistoryManager.count_finished_puzzles_excluding_onboarding()
 
 
 func _find_recommended_item() -> Dictionary:
@@ -1167,7 +1187,7 @@ func _find_recommended_item() -> Dictionary:
 
 func _maybe_show_recommended() -> void:
 	_clear_recommend_hint()
-	if _player_total_stars() >= RECOMMEND_STAR_LIMIT:
+	if _finished_puzzles_excluding_onboarding() >= RECOMMEND_COMPLETED_LIMIT:
 		return
 	var item := _find_recommended_item()
 	if item.is_empty():
@@ -1293,12 +1313,16 @@ func _create_recommend_callout() -> Control:
 	arrow_fill.position = Vector2(196, 86)
 	root.add_child(arrow_fill)
 
+	root.pivot_offset = root.size * 0.5
+	root.modulate = Color.WHITE
 	var pulse := root.create_tween()
 	pulse.set_loops()
 	pulse.set_trans(Tween.TRANS_SINE)
 	pulse.set_ease(Tween.EASE_IN_OUT)
-	pulse.tween_property(root, "modulate:a", 0.72, 0.42)
-	pulse.tween_property(root, "modulate:a", 1.0, 0.42)
+	pulse.tween_property(root, "scale", Vector2(1.04, 1.04), 0.42)
+	pulse.parallel().tween_property(root, "modulate", Color(1.18, 1.04, 0.72, 1), 0.42)
+	pulse.tween_property(root, "scale", Vector2.ONE, 0.42)
+	pulse.parallel().tween_property(root, "modulate", Color.WHITE, 0.42)
 	return root
 
 

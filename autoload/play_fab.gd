@@ -629,13 +629,30 @@ func submit_player_score(score: int, player_name: String = "", stat_name: String
 	return true
 
 
-## Packed ranking for PlayFab int32:
-## stars * 1_000_000 + (99 - puzzles) * 10_000 + (99 - aids) * 100 + (99 - failed)
-const COMPETITIVE_STAR_PLACE := 1_000_000
-const COMPETITIVE_PUZZLE_PLACE := 10_000
-const COMPETITIVE_AID_PLACE := 100
-const COMPETITIVE_COUNT_MAX := 99
-const COMPETITIVE_STAR_MAX := 2047
+## Packed ranking for PlayFab signed int32 (CompetitiveV3).
+## Order: more stars, fewer puzzles, fewer aids, fewer failed letters,
+## fewer erasers, fewer revealed letters, less play time.
+## stars * 4_000_000
+## + (99 - puzzles) * 40_000
+## + (19 - aids) * 2_000
+## + (7 - failed) * 250
+## + (4 - erasers) * 50
+## + (4 - revealed) * 10
+## + (9 - time_bucket)   time_bucket = clamp(minutes / 15, 0, 9)
+const COMPETITIVE_STAR_PLACE := 4_000_000
+const COMPETITIVE_PUZZLE_PLACE := 40_000
+const COMPETITIVE_AID_PLACE := 2_000
+const COMPETITIVE_FAILED_PLACE := 250
+const COMPETITIVE_ERASER_PLACE := 50
+const COMPETITIVE_REVEALED_PLACE := 10
+const COMPETITIVE_STAR_MAX := 500
+const COMPETITIVE_PUZZLE_MAX := 99
+const COMPETITIVE_AID_MAX := 19
+const COMPETITIVE_FAILED_MAX := 7
+const COMPETITIVE_ERASER_MAX := 4
+const COMPETITIVE_REVEALED_MAX := 4
+const COMPETITIVE_TIME_MAX := 9
+const COMPETITIVE_TIME_BUCKET_SEC := 900
 
 
 func competitive_stat_name(category_filter: String, mode_filter: String) -> String:
@@ -652,30 +669,50 @@ func competitive_stat_name(category_filter: String, mode_filter: String) -> Stri
 			mode = "Cryptogram"
 		_:
 			mode = "All"
-	return "CompetitiveV2_%s_%s" % [category, mode]
+	return "CompetitiveV3_%s_%s" % [category, mode]
+
+
+func _competitive_inv(value: int, maximum: int) -> int:
+	return maximum - clampi(value, 0, maximum)
+
+
+func _competitive_time_bucket(time_sec: int) -> int:
+	return clampi(int(maxi(time_sec, 0) / COMPETITIVE_TIME_BUCKET_SEC), 0, COMPETITIVE_TIME_MAX)
 
 
 func encode_competitive_record(record: Dictionary) -> int:
 	var stars := clampi(int(record.get("stars_earned", 0)), 0, COMPETITIVE_STAR_MAX)
-	var puzzles := clampi(int(record.get("completed", 0)), 0, COMPETITIVE_COUNT_MAX)
-	var aids := clampi(int(record.get("aids_used", 0)), 0, COMPETITIVE_COUNT_MAX)
-	var failed := clampi(int(record.get("failed_letters", 0)), 0, COMPETITIVE_COUNT_MAX)
+	var puzzles := clampi(int(record.get("completed", 0)), 0, COMPETITIVE_PUZZLE_MAX)
+	var aids := clampi(int(record.get("aids_used", 0)), 0, COMPETITIVE_AID_MAX)
+	var failed := clampi(int(record.get("failed_letters", 0)), 0, COMPETITIVE_FAILED_MAX)
+	var erasers := clampi(int(record.get("erasers_used", 0)), 0, COMPETITIVE_ERASER_MAX)
+	var revealed := clampi(int(record.get("revealed_letters", 0)), 0, COMPETITIVE_REVEALED_MAX)
+	var time_bucket := _competitive_time_bucket(int(record.get("time_sec", 0)))
 	return (
 		stars * COMPETITIVE_STAR_PLACE
-		+ (COMPETITIVE_COUNT_MAX - puzzles) * COMPETITIVE_PUZZLE_PLACE
-		+ (COMPETITIVE_COUNT_MAX - aids) * COMPETITIVE_AID_PLACE
-		+ (COMPETITIVE_COUNT_MAX - failed)
+		+ _competitive_inv(puzzles, COMPETITIVE_PUZZLE_MAX) * COMPETITIVE_PUZZLE_PLACE
+		+ _competitive_inv(aids, COMPETITIVE_AID_MAX) * COMPETITIVE_AID_PLACE
+		+ _competitive_inv(failed, COMPETITIVE_FAILED_MAX) * COMPETITIVE_FAILED_PLACE
+		+ _competitive_inv(erasers, COMPETITIVE_ERASER_MAX) * COMPETITIVE_ERASER_PLACE
+		+ _competitive_inv(revealed, COMPETITIVE_REVEALED_MAX) * COMPETITIVE_REVEALED_PLACE
+		+ _competitive_inv(time_bucket, COMPETITIVE_TIME_MAX)
 	)
 
 
 func decode_competitive_value(value: int) -> Dictionary:
 	var remaining := maxi(value, 0)
-	var failed := COMPETITIVE_COUNT_MAX - (remaining % COMPETITIVE_AID_PLACE)
-	remaining = int(remaining / COMPETITIVE_AID_PLACE)
-	var aids := COMPETITIVE_COUNT_MAX - (remaining % COMPETITIVE_AID_PLACE)
-	remaining = int(remaining / COMPETITIVE_AID_PLACE)
-	var puzzles := COMPETITIVE_COUNT_MAX - (remaining % COMPETITIVE_AID_PLACE)
-	var stars := int(remaining / COMPETITIVE_AID_PLACE)
+	var stars := int(remaining / COMPETITIVE_STAR_PLACE)
+	remaining = remaining % COMPETITIVE_STAR_PLACE
+	var puzzles := COMPETITIVE_PUZZLE_MAX - int(remaining / COMPETITIVE_PUZZLE_PLACE)
+	remaining = remaining % COMPETITIVE_PUZZLE_PLACE
+	var aids := COMPETITIVE_AID_MAX - int(remaining / COMPETITIVE_AID_PLACE)
+	remaining = remaining % COMPETITIVE_AID_PLACE
+	var failed := COMPETITIVE_FAILED_MAX - int(remaining / COMPETITIVE_FAILED_PLACE)
+	remaining = remaining % COMPETITIVE_FAILED_PLACE
+	var erasers := COMPETITIVE_ERASER_MAX - int(remaining / COMPETITIVE_ERASER_PLACE)
+	remaining = remaining % COMPETITIVE_ERASER_PLACE
+	var revealed := COMPETITIVE_REVEALED_MAX - int(remaining / COMPETITIVE_REVEALED_PLACE)
+	var time_bucket := COMPETITIVE_TIME_MAX - (remaining % COMPETITIVE_REVEALED_PLACE)
 	var hundredths := 0
 	if puzzles > 0:
 		hundredths = int(round(float(stars) * 100.0 / float(puzzles)))
@@ -685,6 +722,9 @@ func decode_competitive_value(value: int) -> Dictionary:
 		"completed": puzzles,
 		"aids_used": aids,
 		"failed_letters": failed,
+		"erasers_used": erasers,
+		"revealed_letters": revealed,
+		"time_bucket": time_bucket,
 	}
 
 

@@ -546,42 +546,56 @@ RankTopPlaces,PRIMEROS PUESTOS,TOP RANKS,SPITZENPLÄTZE,PREMIERS,LEHEN POSTUAK,P
 RankMyPlace,MI PUESTO · #%s,MY RANK · #%s,MEIN PLATZ · #%s,MA PLACE · #%s,NIRE POSTUA · #%s,IL MIO POSTO · #%s,O MEU LUGAR · #%s
 RankYouTag,(tú),(you),(du),(toi),(zu),(tu),(tu)
 RankUpdateNote,✦   La clasificación se actualiza al completar un puzle.,✦   The ranking updates when you complete a puzzle.,✦   Die Rangliste wird nach einem gelösten Rätsel aktualisiert.,✦   Le classement se met à jour quand tu termines un puzzle.,✦   Sailkapena puzzle bat osatzean eguneratzen da.,✦   La classifica si aggiorna al completare un puzzle.,✦   A classificação atualiza-se ao completar um puzzle.
-RankRules,"La clasificación se basa en [color=#e55816]ESTRELLAS TOTALES[/color] obtenidas.
-
-Desempates (en este orden):
-1.  Más estrellas en menos número de puzles hechos (estrellas/puzle)
-2.  Menor número de ayudas utilizadas
-3.  Menor número de letras reveladas falladas","The ranking is based on [color=#e55816]TOTAL STARS[/color] earned.
-
-Tie-breakers (in this order):
-1.  More stars in fewer puzzles played (stars/puzzle)
-2.  Fewer hints used
-3.  Fewer failed revealed letters","Die Rangliste basiert auf den [color=#e55816]GESAMTSTERNEN[/color].
-
-Stichentscheide (in dieser Reihenfolge):
-1.  Mehr Sterne in weniger gespielten Rätseln (Sterne/Rätsel)
-2.  Weniger verwendete Hilfen
-3.  Weniger falsch aufgedeckte Buchstaben","Le classement est basé sur les [color=#e55816]ÉTOILES TOTALES[/color] obtenues.
-
-Départages (dans cet ordre) :
-1.  Plus d'étoiles en moins de puzzles joués (étoiles/puzzle)
-2.  Moins d'aides utilisées
-3.  Moins de lettres révélées ratées","Sailkapena lortutako [color=#e55816]IZAR GUZTIETAN[/color] oinarritzen da.
-
-Desberdinketak (ordena honetan):
-1.  Izar gehiago puzzle gutxiagotan (izarrak/puzzle)
-2.  Laguntza gutxiago
-3.  Huts egindako letra agertu gutxiago","La classifica si basa sulle [color=#e55816]STELLE TOTALI[/color] ottenute.
-
-Spareggi (in questo ordine):
-1.  Più stelle in meno puzzle giocati (stelle/puzzle)
-2.  Meno aiuti usati
-3.  Meno lettere rivelate sbagliate","A classificação baseia-se nas [color=#e55816]ESTRELAS TOTAIS[/color] obtidas.
-
-Desempates (nesta ordem):
-1.  Mais estrelas em menos puzzles jogados (estrelas/puzzle)
-2.  Menos ajudas usadas
-3.  Menos letras reveladas falhadas"
+RankRules,"La clasificación se ordena por (en este orden):
+1.  Más [color=#e55816]ESTRELLAS TOTALES[/color]
+2.  Menos puzles
+3.  Menos ayudas consumidas
+4.  Menos letras falladas
+5.  Menos gomas utilizadas
+6.  Menos letras reveladas
+7.  Menos tiempo de partida","The ranking is ordered by (in this order):
+1.  More [color=#e55816]TOTAL STARS[/color]
+2.  Fewer puzzles
+3.  Fewer hints used
+4.  Fewer failed letters
+5.  Fewer erasers used
+6.  Fewer revealed letters
+7.  Less play time","Die Rangliste wird in dieser Reihenfolge ermittelt:
+1.  Mehr [color=#e55816]GESAMTSTERNE[/color]
+2.  Weniger Rätsel
+3.  Weniger verwendete Hilfen
+4.  Weniger falsche Buchstaben
+5.  Weniger verwendete Radiergummis
+6.  Weniger aufgedeckte Buchstaben
+7.  Weniger Spielzeit","Le classement suit cet ordre :
+1.  Plus d'[color=#e55816]ÉTOILES TOTALES[/color]
+2.  Moins de puzzles
+3.  Moins d'aides consommées
+4.  Moins de lettres ratées
+5.  Moins de gommes utilisées
+6.  Moins de lettres révélées
+7.  Moins de temps de partie","Sailkapena ordena honetan egiten da:
+1.  [color=#e55816]IZAR GUZTI[/color] gehiago
+2.  Puzzle gutxiago
+3.  Laguntza gutxiago
+4.  Huts egindako letra gutxiago
+5.  Goma gutxiago
+6.  Agertutako letra gutxiago
+7.  Joko denbora gutxiago","La classifica segue quest'ordine:
+1.  Più [color=#e55816]STELLE TOTALI[/color]
+2.  Meno puzzle
+3.  Meno aiuti usati
+4.  Meno lettere sbagliate
+5.  Meno gomme usate
+6.  Meno lettere rivelate
+7.  Meno tempo di gioco","A classificação segue esta ordem:
+1.  Mais [color=#e55816]ESTRELAS TOTAIS[/color]
+2.  Menos puzzles
+3.  Menos ajudas usadas
+4.  Menos letras falhadas
+5.  Menos borrachas usadas
+6.  Menos letras reveladas
+7.  Menos tempo de partida"
 Options,Opciones,Options,Optionen,Options,Aukerak,Opzioni,Opções
 OnlineName,NOMBRE ONLINE,ONLINE NAME,ONLINE-NAME,NOM EN LIGNE,LINEAKO IZENA,NOME ONLINE,NOME ONLINE
 OnlineNameHelp,Este nombre se mostrará en las clasificaciones y retos online.,This name will be shown in online leaderboards and challenges.,Dieser Name wird in Online-Ranglisten und Herausforderungen angezeigt.,Ce nom apparaîtra dans les classements et défis en ligne.,Izen hau lineako sailkapenetan eta erronketan agertuko da.,Questo nome apparirà nelle classifiche e nelle sfide online.,Este nome aparecerá nas classificações e desafios online.
@@ -614,6 +628,15 @@ PersonalMarks,MARCAS PERSONALES,PERSONAL MARKS,PERSÖNLICHE MARKEN,MARQUES PERSO
 StatsYourProgress,TU PROGRESO,YOUR PROGRESS,DEIN FORTSCHRITT,TA PROGRESSION,ZURE AURRERAPENA,I TUOI PROGRESSI,O TEU PROGRESSO
 StatsByCategory,POR CATEGORÍA,BY CATEGORY,NACH KATEGORIE,PAR CATÉGORIE,KATEGORIAKA,PER CATEGORIA,POR CATEGORIA
 StatsAids,AYUDAS,HINTS,HILFEN,AIDES,LAGUNTZAK,AIUTI,AJUDAS
+StatsPerfQuick,RENDIMIENTO RÁPIDAS,QUICK PERFORMANCE,SCHNELL-LEISTUNG,PERFORMANCE RAPIDES,ERRITMO AZKARRA,RENDIMENTO RAPIDE,RENDIMENTO RÁPIDAS
+StatsPerfCrypto,RENDIMIENTO RETOS,CHALLENGE PERFORMANCE,KNIFFLIG-LEISTUNG,PERFORMANCE DÉFIS,ERRONKA ERRITMOA,RENDIMENTO SFIDE,RENDIMENTO DESAFIOS
+StatsGomas,Gomas,Erasers,Radiergummis,Gommes,Gomak,Gomme,Borrachas
+StatsPlayTimeQuick,Tiempo de juego de rápidas,Quick play time,Spielzeit Schnell,Temps de jeu rapides,Joko denbora azkarrak,Tempo di gioco rapide,Tempo de jogo de rápidas
+StatsPlayTimeCrypto,Tiempo de juego de retos,Challenge play time,Spielzeit Knifflig,Temps de jeu défis,Erronka joko denbora,Tempo di gioco sfide,Tempo de jogo de desafios
+StatsPerfectQuick,Puzles Perfectos Rápidas,Perfect Quick Puzzles,Perfekte Schnell-Rätsel,Puzzles parfaits rapides,Puzzle perfectu azkarrak,Puzzle perfetti rapidi,Puzzles perfeitos rápidas
+StatsPerfectCrypto,Puzles perfectos RETOS,Perfect Challenge Puzzles,Perfekte Knifflig-Rätsel,Puzzles parfaits défis,Puzzle perfectu ERRONKAK,Puzzle perfetti SFIDE,Puzzles perfeitos DESAFIOS
+StatsBestTimeQuick,Mejor tiempo rápidas,Best quick time,Beste Schnell-Zeit,Meilleur temps rapides,Denbora onena azkarrak,Miglior tempo rapide,Melhor tempo rápidas
+StatsBestTimeCrypto,Mejor tiempo retos,Best challenge time,Beste Knifflig-Zeit,Meilleur temps défis,Denbora onena erronkak,Miglior tempo sfide,Melhor tempo desafios
 StatsStarsOf,%d de %d,%d of %d,%d von %d,%d sur %d,%d / %d,%d di %d,%d de %d
 StatsPuzzlesSolved,%d de %d puzles resueltos,%d of %d puzzles solved,%d von %d gelösten Rätseln,%d sur %d puzzles résolus,%d / %d puzzle ebatzita,%d di %d puzzle risolti,%d de %d puzzles resolvidos
 StatsMatchOne,1 partida,1 game,1 Spiel,1 partie,1 partida,1 partita,1 partida
@@ -791,10 +814,12 @@ ContinueAction,CONTINUAR,CONTINUE,WEITER,CONTINUER,JARRAITU,CONTINUA,CONTINUAR
 OnboardingIntroBody,"MIRA · DESCIFRA · DESCUBRE. LA IMAGEN TE DA UNA PISTA SOBRE EL TEMA. OBSERVA LAS PALABRAS, BUSCA LAS VOCALES Y PRUEBA TUS HIPÓTESIS. CADA LETRA QUE DESCUBRAS TE ACERCARÁ A LA SOLUCIÓN.","LOOK · DECIPHER · DISCOVER. THE IMAGE GIVES YOU A CLUE ABOUT THE THEME. OBSERVE THE WORDS, LOOK FOR THE VOWELS AND TEST YOUR GUESSES. EACH LETTER YOU FIND BRINGS YOU CLOSER TO THE SOLUTION.","SCHAU · ENTZIEFERE · ENTDECKE. DAS BILD GIBT DIR EINEN HINWEIS ZUM THEMA. BETRACHTE DIE WÖRTER, SUCHE DIE VOKALE UND PRÜFE DEINE HYPOTHESEN. JEDER BUCHSTABE BRINGT DICH DER LÖSUNG NÄHER.","REGARDE · DÉCHIFFRE · DÉCOUVRE. L’IMAGE TE DONNE UN INDICE SUR LE THÈME. OBSERVE LES MOTS, CHERCHE LES VOYELLES ET TESTE TES HYPOTHÈSES. CHAQUE LETTRE TROUVÉE T’APPROCHE DE LA SOLUTION.","BEGIRATU · DESZIFRATU · AURKITU. IRUDIAK GAIAREN PISTA BAT EMATEN DIZU. BEHATU HITZAK, BILATU BOKALAK ETA PROBATU ZURE HIPOTESIAK. AURKITZEN DUZUN LETRA BAKOITZAK SOLUZIORA HURBILDUKO ZAITU.","GUARDA · DECIFRA · SCOPRI. L’IMMAGINE TI DÀ UN INDIZIO SUL TEMA. OSSERVA LE PAROLE, CERCA LE VOCALI E PROVA LE TUE IPOTESI. OGNI LETTERA CHE SCOPRI TI AVVICINA ALLA SOLUZIONE.","OLHA · DECIFRA · DESCOBRE. A IMAGEM DÁ-TE UMA PISTA SOBRE O TEMA. OBSERVA AS PALAVRAS, PROCURA AS VOGAIS E TESTA AS TUAS HIPÓTESES. CADA LETRA QUE DESCOBRIRES APROXIMA-TE DA SOLUÇÃO."
 OnboardingVictory1,"El botón REVELAR comprueba si las letras que has puesto son correctas. Si aciertas, pasan a verde y no cuesta nada. Si fallas, salen en rojo y restan una estrella.","The REVEAL button checks whether the letters you placed are correct. If you are right, they turn green and there is no cost. If you are wrong, they turn red and you lose a star.","Die Taste LÖSEN prüft, ob die gesetzten Buchstaben stimmen. Wenn sie stimmen, werden sie grün und es kostet nichts. Wenn nicht, werden sie rot und du verlierst einen Stern.","Le bouton RÉVÉLER vérifie si les lettres que tu as placées sont correctes. Si tu as raison, elles passent au vert sans coût. Si tu te trompes, elles passent au rouge et tu perds une étoile.","AGERTU botoiak jarri dituzun letrak zuzenak diren egiaztatzen du. Asmatzen baduzu, berde bihurtzen dira eta ez du kosturik. Huts egiten baduzu, gorri agertzen dira eta izar bat galtzen duzu.","Il pulsante RIVELA controlla se le lettere che hai messo sono corrette. Se indovini diventano verdi e non costa nulla. Se sbagli diventano rosse e perdi una stella.","O botão REVELAR verifica se as letras que puseste estão corretas. Se acertares, passam a verde e não custa nada. Se falhares, ficam vermelhas e perdes uma estrela."
 OnboardingVictory2,"El juego contiene pistas que te pueden ayudar a completar el puzle, pero cuestan estrellas. Con esto ha terminado el tutorial básico. La próxima vez tendrás que elegir la dificultad y la categoría del puzle: %s.","The game includes hints that can help you finish the puzzle, but they cost stars. That completes the basic tutorial. Next time you will choose the difficulty and the puzzle category: %s.","Das Spiel enthält Hinweise, die dir beim Lösen helfen, aber Sterne kosten. Damit ist das Basis-Tutorial beendet. Beim nächsten Mal wählst du Schwierigkeit und Kategorie: %s.","Le jeu contient des indices qui peuvent t’aider à finir le puzzle, mais ils coûtent des étoiles. Le tutoriel de base est terminé. La prochaine fois tu choisiras la difficulté et la catégorie : %s.","Jokoak puzzlea osatzen lagun dezaketen pistak ditu, baina izarretan kobratzen dute. Oinarrizko tutoriala amaitu da. Hurrengoan zailtasuna eta kategoria aukeratu beharko dituzu: %s.","Il gioco contiene indizi che possono aiutarti a completare il puzzle, ma costano stelle. Il tutorial di base è finito. La prossima volta dovrai scegliere difficoltà e categoria: %s.","O jogo contém dicas que te podem ajudar a completar o puzzle, mas custam estrelas. O tutorial básico acabou. Da próxima vez terás de escolher a dificuldade e a categoria do puzzle: %s."
+OnboardingLaterTools,"Estos botones los aprenderás más adelante, cuando ya domines la mecánica básica del juego.","You'll learn what these buttons do later, once you've mastered the basic game mechanics.","Diese Tasten lernst du später kennen, wenn du die Grundmechanik des Spiels beherrschst.","Tu apprendras ce que font ces boutons plus tard, une fois la mécanique de base maîtrisée.","Botoi hauek geroago ikasiko dituzu, jokoaren oinarrizko mekanika menderatu ondoren.","Imparerai a usare questi pulsanti più avanti, quando avrai padroneggiato la meccanica di base.","Vais aprender o que estes botões fazem mais tarde, quando já dominares a mecânica básica do jogo."
 LevelStartTitle,Nivel con %d estrellas,Level with %d stars,Level mit %d Sternen,Niveau à %d étoiles,Maila %d izarrekin,Livello da %d stelle,Nível com %d estrelas
 LevelStartHintsBefore,Recuerda que si tienes dificultades puedes utilizar las,Remember that if you get stuck you can use,"Denk daran: Wenn du nicht weiterkommst, kannst du",Souviens-toi que si tu as des difficultés tu peux utiliser,Gogoratu zailtasunak badituzu erabil ditzakezula,Ricorda che se hai difficoltà puoi usare,Lembra-te de que se tiveres dificuldades podes usar
 LevelStartHintsAfter,"Cada pista vale una estrella, pero te ayudan a terminar el puzle.","Each hint costs one star, but they help you finish the puzzle.","Jeder Hinweis kostet einen Stern, hilft dir aber, das Rätsel zu beenden.","Chaque indice coûte une étoile, mais ils t'aident à terminer le puzzle.","Pista bakoitzak izar bat balio du, baina puzzlea amaitzen laguntzen dizute.","Ogni indizio costa una stella, ma ti aiutano a finire il puzzle.","Cada dica vale uma estrela, mas ajudam-te a terminar o puzzle."
 LevelStartRevealBefore,Recuerda que puedes usar el botón,Remember you can use the,"Denk daran, dass du die Taste",Souviens-toi que tu peux utiliser le bouton,Gogoratu botoi hau erabil dezakezula,Ricorda che puoi usare il pulsante,Lembra-te de que podes usar o botão
 LevelStartRevealAfter,para comprobar si las letras que has puesto son correctas.,button to check whether the letters you placed are correct.,"nutzen kannst, um zu prüfen, ob die gesetzten Buchstaben stimmen.",pour vérifier si les lettres que tu as placées sont correctes.,jarri dituzun letrak zuzenak diren egiaztatzeko.,per controllare se le lettere che hai messo sono corrette.,para verificar se as letras que puseste estão corretas.
 LevelStartPlay,ENTENDIDO,GOT IT,VERSTANDEN,COMPRIS,ULERTUTA,CAPITO,ENTENDIDO
+PuzzleEnterStart,TABLERO PREPARADO,BOARD READY,SPIELFELD BEREIT,PLATEAU PRÊT,TAULA PREST,TAVOLA PRONTA,TABULEIRO PRONTO
 

@@ -366,3 +366,33 @@ func mostrar_letra_especifica(letra_a_mostrar: String) -> void:
 	style.bg_color = color_rellena
 	#style.bg_color = Color(0.795, 0.295, 0.482)
 	panel_celda.add_theme_stylebox_override("panel", style)
+
+
+func hide_letter_visual() -> void:
+	if numero >= 100:
+		return
+	if label_letra:
+		label_letra.visible = false
+
+
+func apply_enter_letter_look(shown: String, orange: Color) -> void:
+	letter_user = shown
+	if label_letra == null:
+		return
+	label_letra.text = shown
+	set_letter_font_size()
+	label_letra.visible = true
+	label_letra.add_theme_color_override("font_color", orange)
+	celda_mostrada = true
+	clip_contents = true
+	if size.x > 1.0:
+		pivot_offset = size * 0.5
+
+
+func finish_enter_letter_look(as_gift: bool) -> void:
+	clip_contents = false
+	scale = Vector2.ONE
+	if as_gift:
+		mostrar_letra_especifica(letter_user if letter_user != "" else letra)
+	elif label_letra:
+		label_letra.add_theme_color_override("font_color", color_font_default)

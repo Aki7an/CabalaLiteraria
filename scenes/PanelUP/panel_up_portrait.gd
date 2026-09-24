@@ -89,6 +89,7 @@ func _ready() -> void:
 		reveal_title.text = tr("TutReveal")
 	_apply_category_color()
 	_apply_practice_lock()
+	_apply_onboarding_tool_lock()
 	refresh_hud()
 	_suppress_minute_fx = true
 	_update_timer_label(0.0)
@@ -289,6 +290,25 @@ func _blink_time_label() -> void:
 	_time_blink_tween.tween_property(time_value, "scale", Vector2.ONE, 0.12)
 
 
+func _apply_onboarding_tool_lock() -> void:
+	if not GameManager.is_onboarding_session() or GameManager.onboarding_stage != 1:
+		return
+	for path in ["ButtonTheme", "ButtonHint", "ButtonReveal"]:
+		var button := get_node_or_null(path) as CanvasItem
+		if button:
+			button.modulate = Color(1, 1, 1, 0.42)
+
+
+func _block_onboarding_advanced() -> bool:
+	if not GameManager.is_onboarding_session() or GameManager.onboarding_stage != 1:
+		return false
+	var guide := get_tree().get_first_node_in_group("OnboardingGuide")
+	if guide and guide.has_method("show_later_tools_message"):
+		guide.show_later_tools_message()
+		return true
+	return false
+
+
 func _apply_practice_lock() -> void:
 	if not GameManager.is_practice_session():
 		return
@@ -391,6 +411,8 @@ func _on_board_filled() -> void:
 
 
 func _on_hint_pressed() -> void:
+	if _block_onboarding_advanced():
+		return
 	if not get_tree().get_nodes_in_group("HintsOverlay").is_empty():
 		return
 	SoundManager.play("ButtonClick")
@@ -399,6 +421,8 @@ func _on_hint_pressed() -> void:
 
 
 func _on_theme_pressed() -> void:
+	if _block_onboarding_advanced():
+		return
 	if not get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty():
 		return
 	SoundManager.play("ButtonClick")
@@ -423,6 +447,8 @@ func _blink_reveal_button() -> void:
 		return
 	if GameManager.partida_terminada:
 		return
+	if GameManager.is_onboarding_session() and GameManager.onboarding_stage == 1:
+		return
 	_stop_reveal_blink()
 	reveal_button.modulate = REVEAL_BLINK_FULL
 	_reveal_blink_tween = create_tween()
@@ -437,10 +463,15 @@ func _stop_reveal_blink() -> void:
 		_reveal_blink_tween.kill()
 	_reveal_blink_tween = null
 	if is_instance_valid(reveal_button):
-		reveal_button.modulate = REVEAL_BLINK_FULL
+		if GameManager.is_onboarding_session() and GameManager.onboarding_stage == 1:
+			reveal_button.modulate = Color(1, 1, 1, 0.42)
+		else:
+			reveal_button.modulate = REVEAL_BLINK_FULL
 
 
 func _on_reveal_pressed() -> void:
+	if _block_onboarding_advanced():
+		return
 	var tutorial := get_tree().get_first_node_in_group("BasicStartTutorial")
 	if tutorial and tutorial.has_method("on_reveal_clicked") and tutorial.on_reveal_clicked():
 		SoundManager.play("ButtonClick")
@@ -496,7 +527,7 @@ func _on_game_finished() -> void:
 	_completion_recorded = true
 	if not GameManager.partida_terminada:
 		GameManager._game_finished()
-	EventLoggerAutoload.finish_session()
+	EventLoggerAutoload.finish_session(EventLoggerAutoload.OUTCOME_COMPLETED)
 	var mode := GameManager.game_mode_actual
 	var key := "stars_cryptogram" if mode == GameManager.MODE_CRYPTOGRAM else "stars_quick"
 	var before := int(HistoryManager.get_stats_dashboard().get(key, 0))
@@ -541,7 +572,10 @@ func _add_overlay(scene: PackedScene) -> void:
 		control.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		control.size = host.size
 		control.mouse_filter = Control.MOUSE_FILTER_STOP
-		control.z_index = 80
+		if overlay.is_in_group("GameMenu"):
+			control.z_index = 120
+		else:
+			control.z_index = 80
 
 
 func _overlay_host() -> Control:
@@ -576,9 +610,10 @@ func _apply_category_color() -> void:
 	if category_button == null:
 		return
 	var category_color: Color = GameManager.category_color()
-	_paint_category_style("normal", category_color, category_color.darkened(0.28))
-	_paint_category_style("hover", category_color.lightened(0.08), category_color.darkened(0.24))
-	_paint_category_style("pressed", category_color.darkened(0.12), category_color.darkened(0.35))
+	var border := Color(1, 1, 1, 0.28)
+	_paint_category_style("normal", category_color, border)
+	_paint_category_style("hover", category_color, border)
+	_paint_category_style("pressed", category_color, border)
 	if category_label:
 		category_label.add_theme_color_override("font_color", Color(1, 1, 1, 1))
 	_apply_category_icon()
@@ -615,4 +650,10 @@ func _paint_category_style(style_name: String, fill: Color, border: Color) -> vo
 		return
 	painted.bg_color = fill
 	painted.border_color = border
+	painted.border_width_left = 3
+	painted.border_width_top = 0
+	painted.border_width_right = 3
+	painted.border_width_bottom = 3
+	painted.shadow_size = 0
+	painted.shadow_offset = Vector2.ZERO
 	category_button.add_theme_stylebox_override(style_name, painted)

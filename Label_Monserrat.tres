@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://ee1jw2q2fqbb"]
 
-[ext_resource type="FontFile" uid="uid://bg87tkoaof74f" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="1_rp3ry"]
+[ext_resource type="FontFile" uid="uid://dhgtsbb1kopcf" path="res://fonts/Fonts/Montserrat/static/Montserrat-Bold.ttf" id="1_rp3ry"]
 
 [sub_resource type="FontVariation" id="FontVariation_5legf"]
 base_font = ExtResource("1_rp3ry")

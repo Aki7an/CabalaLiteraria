@@ -15,6 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://dvwlfem1q7cit" path="res://images/lupa-con-un-ojo-sombra.png" id="15_3t1nt"]
 [ext_resource type="Texture2D" path="res://images/Ilustres.png" id="15_citas"]
 [ext_resource type="Texture2D" uid="uid://cfmtja1j2gkq" path="res://images/error.png" id="16_3t1nt"]
+[ext_resource type="Texture2D" uid="uid://8akietbdjjg2" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_eye.png" id="19_eye"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_eraser.svg" id="20_eraser"]
 [ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="16_efem"]
 [ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="17_curio"]
 [ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="18_frag"]
@@ -275,7 +277,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="StarIcon" type="TextureRect" parent="Panel/Scroll/Content/YourProgress/Box/StarsRow" unique_id=810086022]
-modulate = Color(1, 0.82, 0.12, 1)
+modulate = Color(0.86, 0.12, 0.12, 1)
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
 size_flags_vertical = 4
@@ -844,7 +846,7 @@ theme_override_styles/panel = SubResource("Style_section")
 
 [node name="Box" type="VBoxContainer" parent="Panel/Scroll/Content/Aids" unique_id=1910734226]
 layout_mode = 2
-theme_override_constants/separation = 18
+theme_override_constants/separation = 24
 
 [node name="TitleRow" type="HBoxContainer" parent="Panel/Scroll/Content/Aids/Box" unique_id=1655562595]
 layout_mode = 2
@@ -857,14 +859,30 @@ layout_mode = 2
 size_flags_vertical = 4
 color = Color(0.82, 0.7, 0.52, 0.55)
 
-[node name="TitleAids" type="Label" parent="Panel/Scroll/Content/Aids/Box/TitleRow" unique_id=533696099]
+[node name="TitleCluster" type="HBoxContainer" parent="Panel/Scroll/Content/Aids/Box/TitleRow" unique_id=1847203391]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="TitleIcon" type="TextureRect" parent="Panel/Scroll/Content/Aids/Box/TitleRow/TitleCluster" unique_id=1847203392]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("13_quick")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TitleAids" type="Label" parent="Panel/Scroll/Content/Aids/Box/TitleRow/TitleCluster" unique_id=533696099]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
 theme_override_fonts/font = ExtResource("4_title")
 theme_override_font_sizes/font_size = 40
-text = "AYUDAS"
+text = "RENDIMIENTO RÁPIDAS"
 horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="LineR" type="ColorRect" parent="Panel/Scroll/Content/Aids/Box/TitleRow" unique_id=996174669]
 custom_minimum_size = Vector2(80, 2)
@@ -918,47 +936,6 @@ theme_override_font_sizes/font_size = 36
 text = "Pistas"
 horizontal_alignment = 1
 
-[node name="HintLetters" type="VBoxContainer" parent="Panel/Scroll/Content/Aids/Box/Grid" unique_id=1632486846]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-alignment = 1
-
-[node name="ValueRow" type="HBoxContainer" parent="Panel/Scroll/Content/Aids/Box/Grid/HintLetters" unique_id=307114579]
-layout_mode = 2
-theme_override_constants/separation = 10
-alignment = 1
-
-[node name="Icon" type="TextureRect" parent="Panel/Scroll/Content/Aids/Box/Grid/HintLetters/ValueRow" unique_id=1496052062]
-custom_minimum_size = Vector2(120, 120)
-layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("15_3t1nt")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Control2" type="Control" parent="Panel/Scroll/Content/Aids/Box/Grid/HintLetters/ValueRow" unique_id=1590614589]
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 2
-
-[node name="LabelHintLetters" type="Label" parent="Panel/Scroll/Content/Aids/Box/Grid/HintLetters/ValueRow" unique_id=1157129024]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
-theme_override_fonts/font = ExtResource("4_title")
-theme_override_font_sizes/font_size = 50
-text = "0"
-horizontal_alignment = 1
-
-[node name="HintLettersTitle" type="Label" parent="Panel/Scroll/Content/Aids/Box/Grid/HintLetters" unique_id=78397973]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.3254902, 0.2, 0.1254902, 1)
-theme_override_fonts/font = ExtResource("6_regular")
-theme_override_font_sizes/font_size = 36
-text = "Reveladas"
-horizontal_alignment = 1
-
 [node name="HintFailed" type="VBoxContainer" parent="Panel/Scroll/Content/Aids/Box/Grid" unique_id=1615944242]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1000,6 +977,135 @@ theme_override_fonts/font = ExtResource("6_regular")
 theme_override_font_sizes/font_size = 36
 text = "Fallos"
 horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HintLetters" type="VBoxContainer" parent="Panel/Scroll/Content/Aids/Box/Grid" unique_id=1632486846]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="ValueRow" type="HBoxContainer" parent="Panel/Scroll/Content/Aids/Box/Grid/HintLetters" unique_id=307114579]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Panel/Scroll/Content/Aids/Box/Grid/HintLetters/ValueRow" unique_id=1496052062]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("19_eye")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Control2" type="Control" parent="Panel/Scroll/Content/Aids/Box/Grid/HintLetters/ValueRow" unique_id=1590614589]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+
+[node name="LabelHintLetters" type="Label" parent="Panel/Scroll/Content/Aids/Box/Grid/HintLetters/ValueRow" unique_id=1157129024]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+
+[node name="HintLettersTitle" type="Label" parent="Panel/Scroll/Content/Aids/Box/Grid/HintLetters" unique_id=78397973]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3254902, 0.2, 0.1254902, 1)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 36
+text = "Reveladas"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Grid2" type="HBoxContainer" parent="Panel/Scroll/Content/Aids/Box" unique_id=1888000001]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Gomas" type="VBoxContainer" parent="Panel/Scroll/Content/Aids/Box/Grid2" unique_id=1888000002]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="ValueRow" type="HBoxContainer" parent="Panel/Scroll/Content/Aids/Box/Grid2/Gomas" unique_id=1888000003]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Panel/Scroll/Content/Aids/Box/Grid2/Gomas/ValueRow" unique_id=1888000004]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("20_eraser")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LabelGomas" type="Label" parent="Panel/Scroll/Content/Aids/Box/Grid2/Gomas/ValueRow" unique_id=1888000005]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+
+[node name="GomasTitle" type="Label" parent="Panel/Scroll/Content/Aids/Box/Grid2/Gomas" unique_id=1888000006]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3254902, 0.2, 0.1254902, 1)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 36
+text = "Gomas"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Spacer" type="Control" parent="Panel/Scroll/Content/Aids/Box/Grid2" unique_id=1888000007]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlayTime" type="VBoxContainer" parent="Panel/Scroll/Content/Aids/Box/Grid2" unique_id=1888000008]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="ValueRow" type="HBoxContainer" parent="Panel/Scroll/Content/Aids/Box/Grid2/PlayTime" unique_id=1888000009]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Panel/Scroll/Content/Aids/Box/Grid2/PlayTime/ValueRow" unique_id=1888000010]
+self_modulate = Color(0.3254902, 0.2, 0.1254902, 1)
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("8_clock")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LabelPlayTime" type="Label" parent="Panel/Scroll/Content/Aids/Box/Grid2/PlayTime/ValueRow" unique_id=1888000011]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 42
+text = "—"
+horizontal_alignment = 1
+
+[node name="PlayTimeTitle" type="Label" parent="Panel/Scroll/Content/Aids/Box/Grid2/PlayTime" unique_id=1888000012]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3254902, 0.2, 0.1254902, 1)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 32
+text = "Tiempo de juego de rápidas"
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="Marks" type="PanelContainer" parent="Panel/Scroll/Content" unique_id=864880331]
 layout_mode = 2
@@ -1007,7 +1113,7 @@ theme_override_styles/panel = SubResource("Style_section")
 
 [node name="Box" type="VBoxContainer" parent="Panel/Scroll/Content/Marks" unique_id=268367970]
 layout_mode = 2
-theme_override_constants/separation = 18
+theme_override_constants/separation = 24
 
 [node name="TitleRow" type="HBoxContainer" parent="Panel/Scroll/Content/Marks/Box" unique_id=268618205]
 layout_mode = 2
@@ -1075,8 +1181,9 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.38, 0.28, 0.78)
 theme_override_fonts/font = ExtResource("6_regular")
 theme_override_font_sizes/font_size = 36
-text = "Puzle perfecto"
+text = "Puzles Perfectos Rápidas"
 horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="Fastest" type="VBoxContainer" parent="Panel/Scroll/Content/Marks/Box/Grid" unique_id=1179971793]
 layout_mode = 2
@@ -1113,7 +1220,91 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.38, 0.28, 0.78)
 theme_override_fonts/font = ExtResource("6_regular")
 theme_override_font_sizes/font_size = 36
-text = "Mejor tiempo"
+text = "Mejor tiempo rápidas"
 horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="GridCrypto" type="HBoxContainer" parent="Panel/Scroll/Content/Marks/Box" unique_id=1888000100]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Perfect" type="VBoxContainer" parent="Panel/Scroll/Content/Marks/Box/GridCrypto" unique_id=1888000101]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="ValueRow" type="HBoxContainer" parent="Panel/Scroll/Content/Marks/Box/GridCrypto/Perfect" unique_id=1888000102]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Panel/Scroll/Content/Marks/Box/GridCrypto/Perfect/ValueRow" unique_id=1888000103]
+self_modulate = Color(1, 0.47843137, 0.078431375, 1)
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7_trophy")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PerfectValueCrypto" type="Label" parent="Panel/Scroll/Content/Marks/Box/GridCrypto/Perfect/ValueRow" unique_id=1888000104]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+
+[node name="PerfectTitleCrypto" type="Label" parent="Panel/Scroll/Content/Marks/Box/GridCrypto/Perfect" unique_id=1888000105]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.38, 0.28, 0.78)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 36
+text = "Puzles perfectos RETOS"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Fastest" type="VBoxContainer" parent="Panel/Scroll/Content/Marks/Box/GridCrypto" unique_id=1888000106]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="ValueRow" type="HBoxContainer" parent="Panel/Scroll/Content/Marks/Box/GridCrypto/Fastest" unique_id=1888000107]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Panel/Scroll/Content/Marks/Box/GridCrypto/Fastest/ValueRow" unique_id=1888000108]
+self_modulate = Color(0.3254902, 0.2, 0.1254902, 1)
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("8_clock")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FastestValueCrypto" type="Label" parent="Panel/Scroll/Content/Marks/Box/GridCrypto/Fastest/ValueRow" unique_id=1888000109]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("4_title")
+theme_override_font_sizes/font_size = 50
+text = "—"
+horizontal_alignment = 1
+
+[node name="FastestTitleCrypto" type="Label" parent="Panel/Scroll/Content/Marks/Box/GridCrypto/Fastest" unique_id=1888000110]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.38, 0.28, 0.78)
+theme_override_fonts/font = ExtResource("6_regular")
+theme_override_font_sizes/font_size = 36
+text = "Mejor tiempo retos"
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [connection signal="pressed" from="Panel/Header/ButtonBack" to="." method="_on_button_back_pressed"]

@@ -44,6 +44,8 @@ signal player_name_for_records
 
 signal update_rubber
 
+signal rubber_feedback
+
 signal añade_las_letras_iniciales
 
 signal update_coins 

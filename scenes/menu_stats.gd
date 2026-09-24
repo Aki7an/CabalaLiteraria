@@ -6,7 +6,10 @@ const MODE_CRYPTOGRAM := "cryptogram"
 const COLOR_INK := Color(0.325, 0.2, 0.125, 1)
 const COLOR_STAR_QUICK := Color(1.0, 0.82, 0.12, 1)
 const COLOR_STAR_CRYPTO := Color(1.0, 0.48, 0.08, 1)
-const STAR_TEX := "res://images/estrella_plano.png"
+const COLOR_STAR_TOTAL := Color(0.86, 0.12, 0.12, 1)
+const STAR_TEXTURE: Texture2D = preload("res://images/estrella_plano.png")
+const ICON_QUICK: Texture2D = preload("res://images/mode_quick.svg")
+const ICON_CRYPTO: Texture2D = preload("res://images/CriptogramaIcono.png")
 const CATEGORY_ROWS := {
 	"RowCita": "cita",
 	"RowEfemeride": "efemeride",
@@ -34,17 +37,26 @@ const CATEGORY_ROWS := {
 @onready var _legend_quick: Label = %LegendQuick
 @onready var _legend_crypto: Label = %LegendCrypto
 @onready var _aids_title: Label = %TitleAids
+@onready var _aids_card: PanelContainer = $Panel/Scroll/Content/Aids
 @onready var _hint_used: Label = %LabelHintUsed
 @onready var _hint_used_title: Label = %HintUsedTitle
 @onready var _hint_letters: Label = %LabelHintLetters
 @onready var _hint_letters_title: Label = %HintLettersTitle
 @onready var _hint_failed: Label = %LabelHintFailed
 @onready var _hint_failed_title: Label = %HintFailedTitle
+@onready var _gomas_value: Label = %LabelGomas
+@onready var _gomas_title: Label = %GomasTitle
+@onready var _play_time_value: Label = %LabelPlayTime
+@onready var _play_time_title: Label = %PlayTimeTitle
 @onready var _marks_title: Label = %TitleMarks
 @onready var _perfect_value: Label = %PerfectValue
 @onready var _perfect_title: Label = %PerfectTitle
 @onready var _fastest_value: Label = %FastestValue
 @onready var _fastest_title: Label = %FastestTitle
+@onready var _perfect_crypto: Label = %PerfectValueCrypto
+@onready var _perfect_crypto_title: Label = %PerfectTitleCrypto
+@onready var _fastest_crypto: Label = %FastestValueCrypto
+@onready var _fastest_crypto_title: Label = %FastestTitleCrypto
 @onready var _progress_list: VBoxContainer = %ProgressList
 
 var _dashboard: Dictionary = {}
@@ -61,6 +73,7 @@ func _ready() -> void:
 	if sample:
 		_tpl_cat_stars = str(sample.get("text"))
 	_refresh()
+	_ensure_challenge_card()
 	ScrollOverflowHint.attach(_scroll)
 	if not HistoryManager.stats_updated.is_connected(_on_stats_updated):
 		HistoryManager.stats_updated.connect(_on_stats_updated)
@@ -91,7 +104,8 @@ func _apply_static() -> void:
 	_title_label.text = _t("Stats", _title_label.text).to_upper()
 	_your_progress_title.text = _t("StatsYourProgress", _your_progress_title.text).to_upper()
 	_by_category_title.text = _t("StatsByCategory", _by_category_title.text).to_upper()
-	_aids_title.text = _t("StatsAids", _aids_title.text).to_upper()
+	_aids_title.text = _t("StatsPerfQuick", _aids_title.text).to_upper()
+	_set_title_icon(_aids_card, ICON_QUICK)
 	_marks_title.text = _t("PersonalMarks", _marks_title.text).to_upper()
 	_quick_title.text = _t("Quick", _quick_title.text).to_upper()
 	_crypto_title.text = _t("Cryptogram", _crypto_title.text).to_upper()
@@ -100,8 +114,16 @@ func _apply_static() -> void:
 	_hint_used_title.text = _t("StatsPistas", _hint_used_title.text)
 	_hint_letters_title.text = _t("StatsRevealed", _hint_letters_title.text)
 	_hint_failed_title.text = _t("StatsFails", _hint_failed_title.text)
-	_perfect_title.text = _t("StatsPerfectPuzzle", _perfect_title.text)
-	_fastest_title.text = _t("StatsBestTime", _fastest_title.text)
+	if _gomas_title:
+		_gomas_title.text = _t("StatsGomas", _gomas_title.text)
+	if _play_time_title:
+		_play_time_title.text = _t("StatsPlayTimeQuick", _play_time_title.text)
+	_perfect_title.text = _t("StatsPerfectQuick", _perfect_title.text)
+	_fastest_title.text = _t("StatsBestTimeQuick", _fastest_title.text)
+	if _perfect_crypto_title:
+		_perfect_crypto_title.text = _t("StatsPerfectCrypto", _perfect_crypto_title.text)
+	if _fastest_crypto_title:
+		_fastest_crypto_title.text = _t("StatsBestTimeCrypto", _fastest_crypto_title.text)
 	_set_cat_label("RowCita", GameManager.CAT_CITA)
 	_set_cat_label("RowEfemeride", GameManager.CAT_EFEMERIDE)
 	_set_cat_label("RowCuriosidades", GameManager.CAT_CURIOSIDADES)
@@ -137,6 +159,9 @@ func _apply_hero() -> void:
 	var earned := int(summary.get("earned", 0))
 	var available := int(summary.get("available", 0))
 	_stars_label.text = _fill(_t("StatsStarsOf", _tpl_stars), earned, available)
+	var hero_star := _content.get_node_or_null("YourProgress/Box/StarsRow/StarIcon") as TextureRect
+	if hero_star:
+		hero_star.modulate = COLOR_STAR_TOTAL
 	_star_bar.max_value = 100.0
 	_star_bar.value = float(summary.get("percentage", 0.0))
 	_puzzles_label.text = _fill(
@@ -192,7 +217,7 @@ func _set_cat_stars(node: Node, data: Dictionary, star_color: Color) -> void:
 	_set_star_line(node, plain, star_color)
 
 
-func _set_star_line(node: Node, raw: String, _star_color: Color) -> void:
+func _set_star_line(node: Node, raw: String, star_color: Color) -> void:
 	if node == null:
 		return
 	var numbers := raw.replace("★", "").strip_edges()
@@ -206,20 +231,17 @@ func _set_star_line(node: Node, raw: String, _star_color: Color) -> void:
 	if base_size <= 0:
 		base_size = 38
 	var star_size := maxi(28, int(round(float(base_size) * 1.15)))
-	var bb := "[color=#%s]%s[/color] [img=%dx%d]%s[/img]" % [
-		COLOR_INK.to_html(false),
-		numbers,
-		star_size,
-		star_size,
-		STAR_TEX,
-	]
 	if node is RichTextLabel:
 		var rtl := node as RichTextLabel
 		rtl.bbcode_enabled = true
 		rtl.fit_content = true
 		rtl.scroll_active = false
 		rtl.autowrap_mode = TextServer.AUTOWRAP_OFF
-		rtl.text = bb
+		rtl.clear()
+		rtl.push_color(COLOR_INK)
+		rtl.add_text(numbers + " ")
+		rtl.pop()
+		rtl.add_image(STAR_TEXTURE, star_size, star_size, star_color)
 		return
 	if node is Label:
 		(node as Label).text = numbers
@@ -227,14 +249,76 @@ func _set_star_line(node: Node, raw: String, _star_color: Color) -> void:
 
 
 func _apply_aids() -> void:
-	_hint_used.text = str(int(_dashboard.get("hints_used", 0)))
-	_hint_letters.text = str(int(_dashboard.get("letters_revealed", 0)))
-	_hint_failed.text = str(int(_dashboard.get("letters_failed", 0)))
+	_ensure_challenge_card()
+	var quick: Dictionary = _dashboard.get("perf_quick", {})
+	_hint_used.text = str(int(quick.get("hints", 0)))
+	_hint_failed.text = str(int(quick.get("failed", 0)))
+	_hint_letters.text = str(int(quick.get("revealed", 0)))
+	if _gomas_value:
+		_gomas_value.text = str(int(quick.get("gomas", 0)))
+	if _play_time_value:
+		_play_time_value.text = str(quick.get("time_label", "—"))
+	var crypto_card := _content.get_node_or_null("Challenges")
+	if crypto_card:
+		_fill_perf_card(crypto_card, "StatsPerfCrypto", "StatsPlayTimeCrypto", _dashboard.get("perf_cryptogram", {}))
+
+
+func _fill_perf_card(card: Node, title_key: String, time_key: String, data: Dictionary) -> void:
+	_set_named_label(card, "TitleAids", _t(title_key, "").to_upper())
+	_set_title_icon(card, ICON_CRYPTO if title_key == "StatsPerfCrypto" else ICON_QUICK)
+	_set_named_label(card, "HintUsedTitle", _t("StatsPistas", "Pistas"))
+	_set_named_label(card, "HintFailedTitle", _t("StatsFails", "Fallos"))
+	_set_named_label(card, "HintLettersTitle", _t("StatsRevealed", "Reveladas"))
+	_set_named_label(card, "GomasTitle", _t("StatsGomas", "Gomas"))
+	_set_named_label(card, "PlayTimeTitle", _t(time_key, ""))
+	_set_named_label(card, "LabelHintUsed", str(int(data.get("hints", 0))))
+	_set_named_label(card, "LabelHintFailed", str(int(data.get("failed", 0))))
+	_set_named_label(card, "LabelHintLetters", str(int(data.get("revealed", 0))))
+	_set_named_label(card, "LabelGomas", str(int(data.get("gomas", 0))))
+	_set_named_label(card, "LabelPlayTime", str(data.get("time_label", "—")))
+
+
+func _set_title_icon(card: Node, texture: Texture2D) -> void:
+	if card == null:
+		return
+	var icon := card.find_child("TitleIcon", true, false) as TextureRect
+	if icon:
+		icon.texture = texture
+
+
+func _set_named_label(root: Node, node_name: String, text: String) -> void:
+	if root == null:
+		return
+	var node := root.find_child(node_name, true, false)
+	if node is Label:
+		(node as Label).text = text
+
+
+func _ensure_challenge_card() -> void:
+	if _content == null or _aids_card == null:
+		return
+	if _content.get_node_or_null("Challenges") != null:
+		return
+	var clone := _aids_card.duplicate()
+	clone.name = "Challenges"
+	_clear_unique_names(clone)
+	_content.add_child(clone)
+	_content.move_child(clone, _aids_card.get_index() + 1)
+
+
+func _clear_unique_names(node: Node) -> void:
+	node.unique_name_in_owner = false
+	for child in node.get_children():
+		_clear_unique_names(child)
 
 
 func _apply_marks() -> void:
-	_perfect_value.text = str(int(_dashboard.get("perfect_puzzles", 0)))
-	_fastest_value.text = str(_dashboard.get("fastest_label", "—"))
+	_perfect_value.text = str(int(_dashboard.get("perfect_quick", 0)))
+	_fastest_value.text = str(_dashboard.get("fastest_quick_label", "—"))
+	if _perfect_crypto:
+		_perfect_crypto.text = str(int(_dashboard.get("perfect_cryptogram", 0)))
+	if _fastest_crypto:
+		_fastest_crypto.text = str(_dashboard.get("fastest_cryptogram_label", "—"))
 
 
 func _row_for(rows: Variant, category: String) -> Dictionary:
@@ -298,9 +382,9 @@ func _fit_section_gaps() -> void:
 		visible_n += 1
 	var gaps := maxi(visible_n - 1, 0)
 	var leftover := _scroll.size.y - height
-	var sep := 0
+	var sep := 24
 	if gaps > 0 and leftover > 0.0:
-		sep = mini(36, int(floor(leftover / float(gaps))))
+		sep = maxi(24, mini(36, int(floor(leftover / float(gaps)))))
 	_content.add_theme_constant_override("separation", sep)
 
 

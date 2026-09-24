@@ -25,7 +25,9 @@ var _move_tween: Tween
 const DRAG_THRESHOLD := 8.0  # píxeles para considerar que es drag
 const SCROLL_STEP := 80.0  # píxeles por “tic” de rueda (ajústalo a gusto)
 const STRIPE_WIDTH := 18.0
-const CELL_HEIGHT_RATIO := 1.5
+const TARGET_FULL_ROWS := 7
+const NEXT_ROW_PEEK := 10.0
+const FALLBACK_HEIGHT_RATIO := 1.5
 
 # ------------------ Estado input ------------------
 var tocando: bool = false
@@ -173,16 +175,13 @@ func _rebuild_side_stripes() -> void:
 		c.queue_free()
 
 	# Calcula alturas como en _update_cell_min_heights()
-	var cols: int = max(1, grid_container.columns)
-	var total_w: float = grid_container.size.x
-	var hsep: int = _grid_hsep()
-	var usable_w: float = total_w - float(hsep) * float(cols - 1)
-	if usable_w <= 0.0:
+	var cell_w: float = _cell_width()
+	var cell_h: float = _cell_height()
+	if cell_w <= 0.0 or cell_h <= 0.0:
 		return
-	var cell_w: float = usable_w / float(cols)
-	var cell_h: float = cell_w * CELL_HEIGHT_RATIO
 
 	# Número de filas actuales
+	var cols: int = max(1, grid_container.columns)
 	var filas: int = int(ceil(float(GameManager.TOTAL_CELDAS) / float(cols)))
 
 	# Crea las tiras fila a fila, alternando color
@@ -261,18 +260,16 @@ func reset_grid() -> void:
 	_clamp_canvas_y()
 
 func _update_cell_min_heights() -> void:
-	var cols: int = max(1, grid_container.columns)
-	var total_w: float = grid_container.size.x
-	var hsep: int = _grid_hsep()
-	var usable_w: float = total_w - float(hsep) * float(cols - 1)
-	if usable_w <= 0.0:
+	var cell_w: float = _cell_width()
+	var cell_h: float = _cell_height()
+	if cell_w <= 0.0 or cell_h <= 0.0:
 		return
-	var cell_w: float = usable_w / float(cols)
-	var cell_h: float = cell_w * CELL_HEIGHT_RATIO
+	var ratio: float = cell_w / cell_h
 
 	for child in grid_container.get_children():
 		if child is AspectRatioContainer:
 			var arc := child as AspectRatioContainer
+			arc.ratio = ratio
 			arc.custom_minimum_size = Vector2(cell_w, cell_h)
 		elif child is Control:
 			var c := child as Control
@@ -282,6 +279,8 @@ func _update_cell_min_heights() -> void:
 
 	
 func _añade_las_letras_iniciales() -> void:
+	if GameManager.puzzle_enter_pending:
+		return
 	var celdas := get_tree().get_nodes_in_group("Celda")
 	var initials := GameManager.letras_iniciales.strip_edges()
 	var expects_gifts := GameManager.dificultad_actual <= 2
@@ -497,7 +496,7 @@ func _update_scroll_bounds() -> void:
 func crear_linea_horizontal() -> void:
 	for i in range(GameManager.lista_letras_frase_original.size()):
 		var aspect_container := AspectRatioContainer.new()
-		aspect_container.ratio = 1.0 / CELL_HEIGHT_RATIO
+		aspect_container.ratio = 1.0 / FALLBACK_HEIGHT_RATIO
 		aspect_container.stretch_mode = AspectRatioContainer.STRETCH_WIDTH_CONTROLS_HEIGHT
 		aspect_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		aspect_container.size_flags_vertical   = Control.SIZE_EXPAND_FILL
@@ -595,16 +594,44 @@ func pan_to_y(target_y: float, duration: float = 0.5) -> void:
 	_move_tween.tween_property(self, "position:y", target_y, duration)
 	_move_tween.finished.connect(PuzzleSaveManager.request_autosave)
 
-# --- Cálculo de alto de una fila (celda + separación vertical) ---
-func _row_height() -> float:
+func _cell_width() -> float:
 	var cols: int = max(1, grid_container.columns)
-	var total_w: float = grid_container.size.x
 	var hsep: int = _grid_hsep()
-	var usable_w: float = total_w - float(hsep) * float(cols - 1)
+	var usable_w: float = grid_container.size.x - float(hsep) * float(cols - 1)
 	if usable_w <= 0.0:
 		return 0.0
-	var cell_w: float = usable_w / float(cols)
-	var cell_h: float = cell_w * CELL_HEIGHT_RATIO
+	return usable_w / float(cols)
+
+
+func _visible_grid_height() -> float:
+	var board := get_parent() as Control
+	var grid_top := _rest_y + grid_container.position.y
+	if board == null:
+		return maxf(0.0, size.y - grid_container.position.y)
+	var inset := 0.0
+	var style := board.get_theme_stylebox("panel")
+	if style is StyleBoxFlat:
+		inset = float((style as StyleBoxFlat).border_width_bottom)
+	return maxf(0.0, board.size.y - grid_top - inset)
+
+
+func _cell_height() -> float:
+	var cell_w: float = _cell_width()
+	if cell_w <= 0.0:
+		return 0.0
+	var visible := _visible_grid_height()
+	if visible <= 1.0:
+		return cell_w * FALLBACK_HEIGHT_RATIO
+	var vsep := float(_grid_vsep())
+	var rows := float(TARGET_FULL_ROWS)
+	return maxf((visible - NEXT_ROW_PEEK - vsep * (rows - 1.0)) / rows, 1.0)
+
+
+# --- Cálculo de alto de una fila (celda + separación vertical) ---
+func _row_height() -> float:
+	var cell_h: float = _cell_height()
+	if cell_h <= 0.0:
+		return 0.0
 	return cell_h + float(_grid_vsep())
 
 # --- Mueve el canvas N filas (positivas hacia abajo, negativas hacia arriba) con tween ---
@@ -679,14 +706,7 @@ func move_canvas_juego(
 
 # Alto SOLO de la celda (sin separación)
 func _cell_height_only() -> float:
-	var cols: int = max(1, grid_container.columns)
-	var total_w: float = grid_container.size.x
-	var hsep: int = _grid_hsep()
-	var usable_w: float = total_w - float(hsep) * float(cols - 1)
-	if usable_w <= 0.0:
-		return 0.0
-	var cell_w: float = usable_w / float(cols)
-	return cell_w * CELL_HEIGHT_RATIO
+	return _cell_height()
 
 # Rango de filas potenciales
 func _rows_count() -> int:
