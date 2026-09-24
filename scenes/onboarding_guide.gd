@@ -61,6 +61,7 @@ var _later_button: Button
 var _filter_hidden_for_overlay := false
 var _locked_letters: Dictionary = {}
 var _recovering := false
+var _pan_snap_token := 0
 
 func _ready() -> void:
 	add_to_group("BasicStartTutorial")
@@ -161,6 +162,8 @@ func _process(_delta: float) -> void:
 		_sync_overlay_vs_filter()
 	if _later_tools_visible():
 		return
+	if _state == STATE_CELL or _state == STATE_LETTER:
+		_follow_board_motion()
 	if _state == STATE_THEME_CONTINUE:
 		if get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty():
 			_begin_cells_after_theme()
@@ -198,6 +201,8 @@ func _gui_input(event: InputEvent) -> void:
 	if _state == STATE_REVEAL_READ:
 		return
 	if _is_clear_state() or _state == STATE_THEME_WAIT:
+		return
+	if event is InputEventScreenDrag or event is InputEventMouseMotion:
 		return
 	if not _is_press_event(event):
 		return
@@ -731,7 +736,7 @@ func _press_dialog_reveal() -> void:
 	if overlay != null and overlay.has_method("_on_reveal_pressed"):
 		overlay.call("_on_reveal_pressed")
 	else:
-		GameManager.reveal_assignment_errors()
+		GameManager.reveal_assignment_errors(true)
 	_begin_reveal_wait()
 
 
@@ -741,7 +746,7 @@ func _press_reveal() -> void:
 		panel_up.call("_on_reveal_pressed")
 	else:
 		_start_reveal_read()
-		GameManager.reveal_assignment_errors()
+		GameManager.reveal_assignment_errors(true)
 
 
 func _retry_hud_reveal() -> void:
@@ -1111,17 +1116,51 @@ func _local_rect(node: CanvasItem) -> Rect2:
 	return Rect2(top_left, rect.size)
 
 
+func on_board_pan_ended() -> void:
+	if _state == STATE_INTRO or _state == STATE_DONE or _later_tools_visible():
+		return
+	if _is_reveal_flow() or _is_theme_flow():
+		return
+	_pan_snap_token += 1
+	var token := _pan_snap_token
+	await get_tree().create_timer(0.28).timeout
+	if not is_inside_tree() or token != _pan_snap_token:
+		return
+	_snap_sequence_into_view()
+
+
+func _follow_board_motion() -> void:
+	var before := _hole
+	_refresh_hole()
+	if _hand == null or not _hand.visible or _hole.size.x <= 4.0:
+		return
+	_hand.position += _hole.position - before.position
+
+
+func _snap_sequence_into_view() -> void:
+	if _target_cell == null or not is_instance_valid(_target_cell):
+		return
+	_ensure_cell_visible(_target_cell)
+	_refresh_hole()
+	if _state == STATE_CELL or _state == STATE_LETTER:
+		_point_hand(_hole)
+
+
 func _ensure_cell_visible(cell: Celda) -> void:
-	var canvas := get_tree().get_first_node_in_group("PuzzleCanvas") as Control
+	var canvas := get_tree().get_first_node_in_group("PuzzleCanvas")
 	if canvas == null or cell == null or not is_instance_valid(cell):
 		return
-	var view := canvas.get_global_rect()
+	if canvas.has_method("pan_cell_into_view"):
+		canvas.call("pan_cell_into_view", cell)
+		return
+	var parent_ctrl := (canvas as Control).get_parent() as Control
+	var view := parent_ctrl.get_global_rect() if parent_ctrl else (canvas as Control).get_global_rect()
 	var cell_rect := cell.get_global_rect()
-	var pad := 48.0
+	var pad := 56.0
 	if cell_rect.position.y < view.position.y + pad:
-		canvas.position.y += (view.position.y + pad) - cell_rect.position.y
+		(canvas as Control).position.y += (view.position.y + pad) - cell_rect.position.y
 	elif cell_rect.end.y > view.end.y - pad:
-		canvas.position.y -= cell_rect.end.y - (view.end.y - pad)
+		(canvas as Control).position.y -= cell_rect.end.y - (view.end.y - pad)
 	if canvas.has_method("_clamp_canvas_y"):
 		canvas.call("_clamp_canvas_y")
 

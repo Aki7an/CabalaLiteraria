@@ -655,6 +655,94 @@ func clear_all() -> void:
 	_write_to_disk()
 
 
+func seed_category_replayable(category_id: String) -> void:
+	if typeof(GameManager) == TYPE_NIL or GameManager.frases_db.is_empty():
+		return
+	var completed_at := int(Time.get_unix_time_from_system()) - (50 * 3600)
+	var date := Time.get_datetime_dict_from_unix_time(completed_at)
+	var fecha := {
+		"dia": int(date.get("day", 1)),
+		"mes": int(date.get("month", 1)),
+		"anio": int(date.get("year", 2026)),
+		"iso": "%04d-%02d-%02d" % [
+			int(date.get("year", 2026)),
+			int(date.get("month", 1)),
+			int(date.get("day", 1)),
+		],
+	}
+	var history_entries: Array = []
+	for raw in GameManager.frases_db:
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		var item: Dictionary = raw
+		if not GameManager.categories_match(str(item.get("category", "")), category_id):
+			continue
+		if GameManager.is_daily_puzzle(item):
+			continue
+		var puzzle_id := int(item.get("index", -1))
+		if puzzle_id < 0:
+			continue
+		var difficulty := int(item.get("difficulty", 1))
+		var stars := GameManager.get_puzzle_difficulty_stars(difficulty)
+		var mode := GameManager.level_game_mode(item)
+		var letters_total := _count_item_letters(str(item.get("text", "")))
+		_states[str(puzzle_id)] = {
+			"status": "completed",
+			"resolution": {},
+			"attempt": {
+				"puzzle_stars": stars,
+				"puzzle_max_stars": stars,
+				"tiempo_partida": 180,
+			},
+			"cipher": {},
+			"meta": {
+				"category": GameManager.CAT_EFEMERIDE,
+				"mode": mode,
+				"difficulty": difficulty,
+				"letters_filled": letters_total,
+				"letters_total": letters_total,
+				"tiempo_partida": 180,
+				"completed_at": completed_at,
+				"source": GameManager.SOURCE_NONE,
+			},
+		}
+		history_entries.append({
+			"id": puzzle_id,
+			"fecha": fecha,
+			"jugador_nombre": str(GameManager.player_name),
+			"categoria": GameManager.CAT_EFEMERIDE,
+			"score": 1000,
+			"partida_ganada": true,
+			"tiempo_partida": 180,
+			"dificultad": difficulty,
+			"game_mode": mode,
+			"estrellas": stars,
+			"star_system_version": 2,
+			"consonantes_compradas": 0,
+			"vocales_compradas_AE": 0,
+			"vocales_compradas_IOU": 0,
+			"pistas_consumidas_1": 0,
+			"pistas_consumidas_2": 0,
+			"revelaciones_falladas": 0,
+			"revelaciones_correctas": 0,
+			"gomas_utilizadas": 0,
+			"vidas_perdidas": 0,
+			"completed_unix": completed_at,
+			"source": GameManager.SOURCE_NONE,
+		})
+	_write_to_disk()
+	if typeof(HistoryManager) != TYPE_NIL:
+		HistoryManager.seed_completed_entries(history_entries)
+
+
+func _count_item_letters(text: String) -> int:
+	var count := 0
+	for character in GameManager.normalizar_frase_idioma(text, GameManager.locale_code()):
+		if not GameManager.is_excluded_character(character):
+			count += 1
+	return count
+
+
 func _write_to_disk() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file == null:

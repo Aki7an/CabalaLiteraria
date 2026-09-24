@@ -10,6 +10,7 @@ const COLOR_STAR_TOTAL := Color(0.86, 0.12, 0.12, 1)
 const STAR_TEXTURE: Texture2D = preload("res://images/estrella_plano.png")
 const ICON_QUICK: Texture2D = preload("res://images/mode_quick.svg")
 const ICON_CRYPTO: Texture2D = preload("res://images/CriptogramaIcono.png")
+const DRAG_THRESHOLD := 14.0
 const CATEGORY_ROWS := {
 	"RowCita": "cita",
 	"RowEfemeride": "efemeride",
@@ -64,6 +65,10 @@ var _tpl_stars := ""
 var _tpl_puzzles := ""
 var _tpl_cat_stars := ""
 var _fit_queued := false
+var _drag_held := false
+var _drag_active := false
+var _drag_origin := Vector2.ZERO
+var _drag_scroll_origin := 0
 
 
 func _ready() -> void:
@@ -74,6 +79,11 @@ func _ready() -> void:
 		_tpl_cat_stars = str(sample.get("text"))
 	_refresh()
 	_ensure_challenge_card()
+	if _scroll:
+		_scroll.scroll_deadzone = 16
+		_scroll.mouse_filter = Control.MOUSE_FILTER_STOP
+	if _content:
+		_make_content_drag_through(_content)
 	ScrollOverflowHint.attach(_scroll)
 	if not HistoryManager.stats_updated.is_connected(_on_stats_updated):
 		HistoryManager.stats_updated.connect(_on_stats_updated)
@@ -87,6 +97,53 @@ func _ready() -> void:
 
 func _on_stats_updated() -> void:
 	_refresh()
+
+
+func _input(event: InputEvent) -> void:
+	if not is_instance_valid(_scroll) or not _scroll.visible:
+		return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		_handle_drag_press(event.pressed, event.position)
+	elif event is InputEventMouseMotion and _drag_held:
+		_handle_drag_motion(event.position)
+	elif event is InputEventScreenTouch:
+		_handle_drag_press(event.pressed, event.position)
+	elif event is InputEventScreenDrag and _drag_held:
+		_handle_drag_motion(event.position)
+
+
+func _handle_drag_press(pressed: bool, position: Vector2) -> void:
+	if pressed:
+		if not _scroll.get_global_rect().has_point(position):
+			return
+		_drag_held = true
+		_drag_active = false
+		_drag_origin = position
+		_drag_scroll_origin = _scroll.scroll_vertical
+		return
+	if _drag_active:
+		get_viewport().set_input_as_handled()
+	_drag_held = false
+	_drag_active = false
+
+
+func _handle_drag_motion(position: Vector2) -> void:
+	var delta := position.y - _drag_origin.y
+	if not _drag_active and absf(delta) >= DRAG_THRESHOLD:
+		_drag_active = true
+	if not _drag_active:
+		return
+	_scroll.scroll_vertical = _drag_scroll_origin - int(delta)
+	get_viewport().set_input_as_handled()
+
+
+func _make_content_drag_through(node: Node) -> void:
+	for child in node.get_children():
+		_make_content_drag_through(child)
+	if node is Button:
+		return
+	if node is Control and node != _scroll:
+		(node as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
 func _refresh() -> void:
@@ -106,6 +163,7 @@ func _apply_static() -> void:
 	_by_category_title.text = _t("StatsByCategory", _by_category_title.text).to_upper()
 	_aids_title.text = _t("StatsPerfQuick", _aids_title.text).to_upper()
 	_set_title_icon(_aids_card, ICON_QUICK)
+	_lock_perf_title_row(_aids_card)
 	_marks_title.text = _t("PersonalMarks", _marks_title.text).to_upper()
 	_quick_title.text = _t("Quick", _quick_title.text).to_upper()
 	_crypto_title.text = _t("Cryptogram", _crypto_title.text).to_upper()
@@ -266,6 +324,7 @@ func _apply_aids() -> void:
 func _fill_perf_card(card: Node, title_key: String, time_key: String, data: Dictionary) -> void:
 	_set_named_label(card, "TitleAids", _t(title_key, "").to_upper())
 	_set_title_icon(card, ICON_CRYPTO if title_key == "StatsPerfCrypto" else ICON_QUICK)
+	_lock_perf_title_row(card)
 	_set_named_label(card, "HintUsedTitle", _t("StatsPistas", "Pistas"))
 	_set_named_label(card, "HintFailedTitle", _t("StatsFails", "Fallos"))
 	_set_named_label(card, "HintLettersTitle", _t("StatsRevealed", "Reveladas"))
@@ -286,12 +345,33 @@ func _set_title_icon(card: Node, texture: Texture2D) -> void:
 		icon.texture = texture
 
 
+func _lock_perf_title_row(card: Node) -> void:
+	if card == null:
+		return
+	var cluster := card.find_child("TitleCluster", true, false) as Control
+	if cluster:
+		cluster.size_flags_horizontal = 0
+	var title := card.find_child("TitleAids", true, false) as Label
+	if title:
+		title.autowrap_mode = TextServer.AUTOWRAP_OFF
+		title.clip_text = false
+	for line_name in ["LineL", "LineR"]:
+		var line := card.find_child(line_name, true, false) as Control
+		if line:
+			line.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			line.custom_minimum_size = Vector2(24, line.custom_minimum_size.y)
+
+
 func _set_named_label(root: Node, node_name: String, text: String) -> void:
 	if root == null:
 		return
 	var node := root.find_child(node_name, true, false)
 	if node is Label:
-		(node as Label).text = text
+		var label := node as Label
+		label.text = text
+		if node_name == "TitleAids":
+			label.autowrap_mode = TextServer.AUTOWRAP_OFF
+			label.clip_text = false
 
 
 func _ensure_challenge_card() -> void:
@@ -304,6 +384,7 @@ func _ensure_challenge_card() -> void:
 	_clear_unique_names(clone)
 	_content.add_child(clone)
 	_content.move_child(clone, _aids_card.get_index() + 1)
+	_make_content_drag_through(clone)
 
 
 func _clear_unique_names(node: Node) -> void:

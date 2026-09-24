@@ -38,6 +38,9 @@ const REVEAL_BLINK_STEP := 0.11
 const MODE_ICON_QUICK := preload("res://images/mode_quick.svg")
 const MODE_ICON_CRYPTO := preload("res://images/CriptogramaIcono.png")
 const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
+const STAR_ON: Texture2D = preload("res://images/estrella_plano.png")
+const STAR_OFF: Texture2D = preload("res://images/contorno_estrella.png")
+const COLOR_STAR_EMPTY := Color(0.50, 0.38, 0.24, 0.78)
 
 var _start_ms: int
 var _shown_minute := -1
@@ -368,15 +371,26 @@ func _update_stars(_value: int = -1) -> void:
 		if recorded < 0:
 			recorded = int(PuzzleSaveManager.get_puzzle_summary(int(GameManager.id_frase)).get("stars_remaining", filled))
 		filled = clampi(recorded, 0, maximum)
+	var onboarding := GameManager.is_onboarding_session()
+	if onboarding:
+		filled = 0
 	for index in range(stars.size()):
 		if stars[index] == null:
 			continue
 		stars[index].visible = index < maximum
-		stars[index].self_modulate = (
-			GameManager.star_fill_color()
-			if index < filled
-			else Color(0.72, 0.68, 0.6, 0.32)
-		)
+		var is_filled := index < filled
+		if onboarding:
+			stars[index].texture = STAR_ON if is_filled else STAR_OFF
+			stars[index].self_modulate = (
+				GameManager.star_fill_color() if is_filled else COLOR_STAR_EMPTY
+			)
+		else:
+			stars[index].texture = STAR_ON
+			stars[index].self_modulate = (
+				GameManager.star_fill_color()
+				if is_filled
+				else Color(0.72, 0.68, 0.6, 0.32)
+			)
 
 
 func _update_letters_filled() -> void:
@@ -483,7 +497,7 @@ func _on_reveal_pressed() -> void:
 		return
 	SignalManager.puzzle_input.emit("reveal", {})
 	if PlayerPrefs.skip_reveal_dialog and not GameManager.is_onboarding_session():
-		GameManager.reveal_assignment_errors()
+		GameManager.reveal_assignment_errors(true)
 		return
 	SoundManager.play("ButtonClick")
 	_add_overlay(OVERLAY_REVEAL)

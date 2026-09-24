@@ -330,8 +330,39 @@ func _añade_las_letras_iniciales() -> void:
 # ----------------------------------------------------
 #                     INPUT
 # ----------------------------------------------------
+func _blocks_board_pan() -> bool:
+	if get_tree().get_first_node_in_group("OnboardingGuide") != null:
+		return false
+	return get_tree().get_first_node_in_group("BasicStartTutorial") != null
+
+
+func _notify_onboarding_pan_ended() -> void:
+	var guide := get_tree().get_first_node_in_group("OnboardingGuide")
+	if guide and guide.has_method("on_board_pan_ended"):
+		guide.call("on_board_pan_ended")
+
+
+func pan_cell_into_view(cell: Control, pad: float = 56.0) -> void:
+	if cell == null or not is_instance_valid(cell):
+		return
+	var parent_ctrl := get_parent() as Control
+	var view := parent_ctrl.get_global_rect() if parent_ctrl else get_global_rect()
+	var cell_rect := cell.get_global_rect()
+	var delta := 0.0
+	if cell_rect.size.y + pad * 2.0 >= view.size.y:
+		delta = view.get_center().y - cell_rect.get_center().y
+	elif cell_rect.position.y < view.position.y + pad:
+		delta = (view.position.y + pad) - cell_rect.position.y
+	elif cell_rect.end.y > view.end.y - pad:
+		delta = -(cell_rect.end.y - (view.end.y - pad))
+	if absf(delta) < 1.0:
+		return
+	position.y += delta
+	_clamp_canvas_y()
+
+
 func _input(event: InputEvent) -> void:
-	if get_tree().get_first_node_in_group("BasicStartTutorial"):
+	if _blocks_board_pan():
 		return
 	var pos: Vector2 = _event_pos(event)
 	
@@ -344,12 +375,14 @@ func _input(event: InputEvent) -> void:
 			canvas_juego.position.y -= SCROLL_STEP
 			_clamp_canvas_y()
 			PuzzleSaveManager.request_autosave()
+			_notify_onboarding_pan_ended()
 			accept_event()
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			# rueda abajo -> mover contenido hacia abajo (Y mayor)
 			canvas_juego.position.y += SCROLL_STEP
 			_clamp_canvas_y()
 			PuzzleSaveManager.request_autosave()
+			_notify_onboarding_pan_ended()
 			accept_event()
 
 	if event is InputEventScreenTouch:
@@ -366,6 +399,7 @@ func _input(event: InputEvent) -> void:
 				# Fue drag: ocultar y CONSUMIR el release (evita click fantasma)
 				_input_blocker.hide()
 				accept_event()
+				_notify_onboarding_pan_ended()
 			else:
 				# Fue tap: permitir selección normal
 				_input_blocker.hide()
@@ -555,6 +589,9 @@ func _is_over_canvas(pos: Vector2) -> bool:
 	var hovered := get_viewport().gui_get_hovered_control()
 	if hovered and (hovered == canvas_juego or canvas_juego.is_ancestor_of(hovered)):
 		return true
+	var board := get_parent() as Control
+	if board:
+		return board.get_global_rect().has_point(pos)
 	return canvas_juego.get_global_rect().has_point(pos)
 
 func _event_pos(event: InputEvent) -> Vector2:

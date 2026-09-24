@@ -45,6 +45,7 @@ var _recommend_card: Button
 var _recommend_callout: Control
 var _recommend_blink: Tween
 var _recommend_item: Dictionary = {}
+var _replay_ad_busy := false
 
 var _scene_to_category: PackedScene
 
@@ -66,9 +67,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "No hay puzles disponibles para repetir.",
 		"lock_daily": "Hoy ya has repetido un puzle. Vuelve mañana.",
 		"lock_play": "JUGAR AL AZAR",
-		"lock_play_ad": "VER ANUNCIO Y JUGAR",
+		"lock_play_ad": "VER ANUNCIO REWARDED Y JUGAR",
 		"lock_rank": "La puntuación del puzle que vas a jugar influirá en tu clasificación online.",
-		"lock_ad": "Si estás de acuerdo, tienes que ver un anuncio para jugar.",
+		"lock_ad": "Para jugar este puzle repetido vas a ver un anuncio rewarded.",
 		"lock_cancel": "CANCELAR",
 		"lock_ok": "ENTENDIDO",
 		"recommended": "Puzle recomendado"
@@ -90,9 +91,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "There are no puzzles available to replay.",
 		"lock_daily": "You already replayed a puzzle today. Come back tomorrow.",
 		"lock_play": "PLAY RANDOM",
-		"lock_play_ad": "WATCH AD AND PLAY",
+		"lock_play_ad": "WATCH REWARDED AD AND PLAY",
 		"lock_rank": "The score of the puzzle you are about to play will count toward your online ranking.",
-		"lock_ad": "If you agree, you need to watch an ad to play.",
+		"lock_ad": "To play this repeated puzzle you will watch a rewarded ad.",
 		"lock_cancel": "CANCEL",
 		"lock_ok": "GOT IT",
 		"recommended": "Recommended puzzle"
@@ -114,9 +115,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "Ez dago errepikatzeko puzzle erabilgarririk.",
 		"lock_daily": "Gaur jada puzzle bat errepikatu duzu. Bihar itzuli.",
 		"lock_play": "AUSAZ JOKATU",
-		"lock_play_ad": "IRAGARKIA IKUSI ETA JOLASTU",
+		"lock_play_ad": "IRAGARKI REWARDED IKUSI ETA JOLASTU",
 		"lock_rank": "Jokatuko duzun puzzlearen puntuazioak zure lineako sailkapenean eragingo du.",
-		"lock_ad": "Ados bazaude, iragarki bat ikusi behar duzu jokatzeko.",
+		"lock_ad": "Puzzle errepikatu hau jokatzeko iragarki rewarded bat ikusiko duzu.",
 		"lock_cancel": "UTZI",
 		"lock_ok": "ULERTUTA",
 		"recommended": "Puzzle gomendatua"
@@ -138,9 +139,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "Aucun puzzle n'est disponible à rejouer.",
 		"lock_daily": "Tu as déjà rejoué un puzzle aujourd'hui. Reviens demain.",
 		"lock_play": "JOUER AU HASARD",
-		"lock_play_ad": "VOIR LA PUB ET JOUER",
+		"lock_play_ad": "VOIR LA PUB REWARDED ET JOUER",
 		"lock_rank": "Le score du puzzle que tu vas jouer comptera dans ton classement en ligne.",
-		"lock_ad": "Si tu es d'accord, tu dois regarder une pub pour jouer.",
+		"lock_ad": "Pour jouer ce puzzle répété, tu vas voir une pub rewarded.",
 		"lock_cancel": "ANNULER",
 		"lock_ok": "COMPRIS",
 		"recommended": "Puzzle recommandé"
@@ -162,9 +163,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "Es gibt keine Rätsel zum Wiederholen.",
 		"lock_daily": "Du hast heute schon ein Rätsel wiederholt. Komm morgen wieder.",
 		"lock_play": "ZUFÄLLIG SPIELEN",
-		"lock_play_ad": "WERBUNG ANSEHEN UND SPIELEN",
+		"lock_play_ad": "REWARDED-WERBUNG ANSEHEN UND SPIELEN",
 		"lock_rank": "Die Wertung des Rätsels, das du spielen wirst, zählt für deine Online-Rangliste.",
-		"lock_ad": "Wenn du einverstanden bist, musst du eine Werbung ansehen, um zu spielen.",
+		"lock_ad": "Um dieses wiederholte Rätsel zu spielen, siehst du eine Rewarded-Werbung.",
 		"lock_cancel": "ABBRECHEN",
 		"lock_ok": "VERSTANDEN",
 		"recommended": "Empfohlenes Rätsel"
@@ -186,9 +187,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "Non ci sono puzzle disponibili da ripetere.",
 		"lock_daily": "Oggi hai già ripetuto un puzzle. Torna domani.",
 		"lock_play": "GIOCA A CASO",
-		"lock_play_ad": "GUARDA ANNUNCIO E GIOCA",
+		"lock_play_ad": "GUARDA ANNUNCIO REWARDED E GIOCA",
 		"lock_rank": "Il punteggio del puzzle che stai per giocare influirà sulla tua classifica online.",
-		"lock_ad": "Se sei d'accordo, devi guardare un annuncio per giocare.",
+		"lock_ad": "Per giocare questo puzzle ripetuto vedrai un annuncio rewarded.",
 		"lock_cancel": "ANNULLA",
 		"lock_ok": "CAPITO",
 		"recommended": "Puzzle consigliato"
@@ -210,9 +211,9 @@ const LOCALIZED_COPY := {
 		"lock_empty": "Não há puzzles disponíveis para repetir.",
 		"lock_daily": "Já repetiste um puzzle hoje. Volta amanhã.",
 		"lock_play": "JOGAR AO ACASO",
-		"lock_play_ad": "VER ANÚNCIO E JOGAR",
+		"lock_play_ad": "VER ANÚNCIO REWARDED E JOGAR",
 		"lock_rank": "A pontuação do puzzle que vais jogar vai contar para a tua classificação online.",
-		"lock_ad": "Se concordas, tens de ver um anúncio para jogar.",
+		"lock_ad": "Para jogar este puzzle repetido vais ver um anúncio rewarded.",
 		"lock_cancel": "CANCELAR",
 		"lock_ok": "ENTENDIDO",
 		"recommended": "Puzzle recomendado"
@@ -222,6 +223,9 @@ const LOCALIZED_COPY := {
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	if FileAccess.file_exists("user://reset_replay_today"):
+		PlayerPrefs.reset_completed_replay_today()
+		DirAccess.remove_absolute("user://reset_replay_today")
 	_random_button.disabled = true
 	_load_completed_ids()
 	_update_localized_copy()
@@ -982,8 +986,32 @@ func _show_completed_lock_dialog(from_random := false) -> void:
 		daily.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		inner.add_child(daily)
 
-	var buttons := HBoxContainer.new()
-	buttons.add_theme_constant_override("separation", 28)
+	var needs_ad := can_play and not GameManager.has_full_game()
+	var ad_note := Label.new()
+	ad_note.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	ad_note.add_theme_font_size_override("font_size", 32)
+	ad_note.add_theme_color_override("font_color", Color(0.62, 0.28, 0.1, 1))
+	ad_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ad_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	if can_play:
+		ad_note.text = _copy("lock_ad") if needs_ad else _copy("lock_rank")
+		inner.add_child(ad_note)
+		if needs_ad:
+			var rank := Label.new()
+			rank.add_theme_font_override("font", _title_label.get_theme_font("font"))
+			rank.add_theme_font_size_override("font_size", 28)
+			rank.add_theme_color_override("font_color", Color(0.28, 0.17, 0.1, 0.82))
+			rank.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			rank.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			rank.text = _copy("lock_rank")
+			inner.add_child(rank)
+
+	var buttons: BoxContainer
+	if needs_ad:
+		buttons = VBoxContainer.new()
+	else:
+		buttons = HBoxContainer.new()
+	buttons.add_theme_constant_override("separation", 20 if needs_ad else 28)
 	inner.add_child(buttons)
 
 	var cancel := _make_dialog_button(
@@ -993,29 +1021,34 @@ func _show_completed_lock_dialog(from_random := false) -> void:
 		Color(0.32, 0.18, 0.08, 1)
 	)
 	cancel.pressed.connect(func() -> void:
+		if _replay_ad_busy:
+			return
 		SoundManager.play("ButtonClick")
 		overlay.queue_free()
 	)
-	buttons.add_child(cancel)
 
 	var play := _make_dialog_button(
-		_copy("lock_play"),
+		_copy("lock_play_ad" if needs_ad else "lock_play"),
 		Color(0.18, 0.65, 0.46, 1) if can_play else Color(0.62, 0.58, 0.52, 1),
 		Color(0.1, 0.42, 0.3, 1) if can_play else Color(0.42, 0.38, 0.34, 1),
 		Color.WHITE
 	)
 	play.disabled = not can_play
+	if needs_ad:
+		play.add_theme_font_size_override("font_size", 30)
 	play.pressed.connect(func() -> void:
-		if not can_play or pool.is_empty():
-			return
-		SoundManager.play("ButtonClick")
-		var chosen: Dictionary = pool.pick_random()
-		overlay.queue_free()
-		_on_level_pressed(chosen, true)
+		await _on_replay_play_pressed(overlay, pool, play, cancel, ad_note, needs_ad)
 	)
-	buttons.add_child(play)
+	if needs_ad:
+		buttons.add_child(play)
+		buttons.add_child(cancel)
+	else:
+		buttons.add_child(cancel)
+		buttons.add_child(play)
 
 	overlay.gui_input.connect(func(event: InputEvent) -> void:
+		if _replay_ad_busy:
+			return
 		if not (event is InputEventMouseButton and event.pressed):
 			return
 		var mouse := event as InputEventMouseButton
@@ -1024,6 +1057,48 @@ func _show_completed_lock_dialog(from_random := false) -> void:
 		SoundManager.play("ButtonClick")
 		overlay.queue_free()
 	)
+
+
+func _on_replay_play_pressed(
+	overlay: Control,
+	pool: Array,
+	play: Button,
+	cancel: Button,
+	ad_note: Label,
+	needs_ad: bool
+) -> void:
+	if _replay_ad_busy or pool.is_empty():
+		return
+	SoundManager.play("ButtonClick")
+	if needs_ad:
+		_replay_ad_busy = true
+		play.disabled = true
+		cancel.disabled = true
+		play.text = _tr_ad("DailyAdLoading", "Cargando anuncio...")
+		var ok: bool = await AdManager.show_rewarded()
+		_replay_ad_busy = false
+		if not is_instance_valid(overlay):
+			return
+		if not ok:
+			play.disabled = false
+			cancel.disabled = false
+			play.text = _copy("lock_play_ad")
+			ad_note.text = _tr_ad(
+				"DailyAdFailed",
+				"No hay anuncio disponible. Inténtalo de nuevo o compra el juego."
+			)
+			ad_note.add_theme_color_override("font_color", Color(0.72, 0.22, 0.14, 1))
+			return
+	var chosen: Dictionary = pool.pick_random()
+	overlay.queue_free()
+	_on_level_pressed(chosen, true)
+
+
+func _tr_ad(key: String, fallback: String) -> String:
+	var translated := tr(key)
+	if translated == key or translated.is_empty():
+		return fallback
+	return translated
 
 
 func _replay_thumb_row(pool: Array[Dictionary]) -> HBoxContainer:

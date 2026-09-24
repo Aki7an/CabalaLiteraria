@@ -854,14 +854,15 @@ theme_override_constants/separation = 18
 alignment = 1
 
 [node name="LineL" type="ColorRect" parent="Panel/Scroll/Content/Aids/Box/TitleRow" unique_id=742610320]
-custom_minimum_size = Vector2(80, 2)
+custom_minimum_size = Vector2(24, 2)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 4
 color = Color(0.82, 0.7, 0.52, 0.55)
 
 [node name="TitleCluster" type="HBoxContainer" parent="Panel/Scroll/Content/Aids/Box/TitleRow" unique_id=1847203391]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 theme_override_constants/separation = 14
 alignment = 1
 
@@ -882,11 +883,13 @@ theme_override_fonts/font = ExtResource("4_title")
 theme_override_font_sizes/font_size = 40
 text = "RENDIMIENTO RÁPIDAS"
 horizontal_alignment = 1
-autowrap_mode = 3
+autowrap_mode = 0
+clip_text = false
 
 [node name="LineR" type="ColorRect" parent="Panel/Scroll/Content/Aids/Box/TitleRow" unique_id=996174669]
-custom_minimum_size = Vector2(80, 2)
+custom_minimum_size = Vector2(24, 2)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 4
 color = Color(0.82, 0.7, 0.52, 0.55)
 

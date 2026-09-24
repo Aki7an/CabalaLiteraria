@@ -8,6 +8,8 @@ const MODE_CRYPTOGRAM := "cryptogram"
 const SELECTED_GREEN := Color(0.16, 0.72, 0.40, 1)
 const COLOR_COACH := Color(0.878, 0.443, 0.102, 1)
 const PUZZLE_COACH_LIMIT := 4
+const CATEGORY_BLINK_STRONG := 1.08
+const CATEGORY_BLINK_SOFT := 1.0 + (CATEGORY_BLINK_STRONG - 1.0) * 0.4
 const FONT_TAG := preload("res://GUI/new_font_Rubik_semibold.tres")
 
 @onready var button_citas_celebres: Button = $Panel/CategoryCard/ButtonCitasCelebres
@@ -40,7 +42,6 @@ var _play_style_normal: StyleBox
 var _play_style_hover: StyleBox
 var _play_style_pressed: StyleBox
 var _nudge_quick := false
-var _nudge_categories_on_quick := false
 var _quick_coach_tween: Tween
 var _category_coach_tween: Tween
 var _category_coach_token := 0
@@ -141,7 +142,6 @@ func _ready() -> void:
 	_update_play_button()
 	if _finished_puzzles_excluding_onboarding() < PUZZLE_COACH_LIMIT:
 		_nudge_quick = true
-		_nudge_categories_on_quick = true
 		_start_quick_coach()
 
 
@@ -163,6 +163,7 @@ func _on_button_fragmentos_literarios_pressed() -> void:
 
 func _select_category(category_id: String, button: Button) -> void:
 	categoria = category_id
+	_stop_category_coach()
 	GameManager.button_blink(button)
 	SoundManager.play("ButtonClick")
 	_update_category_selection()
@@ -178,17 +179,14 @@ func _on_button_cryptogram_pressed() -> void:
 
 
 func _select_mode(mode_id: String, button: Button) -> void:
-	var blink_categories := _nudge_categories_on_quick and mode_id == MODE_QUICK
 	_stop_quick_coach()
-	if blink_categories:
-		_nudge_categories_on_quick = false
 	selected_mode = mode_id
 	GameManager.button_blink(button)
 	SoundManager.play("ButtonClick")
 	_update_mode_selection()
 	_update_category_progress()
 	_update_play_button()
-	if blink_categories:
+	if categoria.is_empty():
 		_blink_category_buttons()
 	else:
 		_stop_category_coach()
@@ -593,32 +591,43 @@ func _blink_category_buttons() -> void:
 	if buttons.is_empty():
 		return
 	for _i in 2:
-		if token != _category_coach_token or not is_inside_tree():
+		if not await _pulse_category_buttons(buttons, CATEGORY_BLINK_STRONG, 0.12, token):
 			return
-		var up := create_tween()
-		_category_coach_tween = up
-		up.set_parallel(true)
-		up.set_trans(Tween.TRANS_SINE)
-		up.set_ease(Tween.EASE_OUT)
-		for button in buttons:
+	while token == _category_coach_token and is_inside_tree():
+		if not await _pulse_category_buttons(buttons, CATEGORY_BLINK_SOFT, 0.15, token):
+			return
+
+
+func _pulse_category_buttons(
+	buttons: Array[Button],
+	amount: float,
+	duration: float,
+	token: int
+) -> bool:
+	if token != _category_coach_token or not is_inside_tree():
+		return false
+	var up := create_tween()
+	_category_coach_tween = up
+	up.set_parallel(true)
+	up.set_trans(Tween.TRANS_SINE)
+	up.set_ease(Tween.EASE_OUT)
+	for button in buttons:
+		if is_instance_valid(button):
 			button.pivot_offset = button.size * 0.5
-			up.tween_property(button, "scale", Vector2(1.08, 1.08), 0.12)
-		await up.finished
-		if token != _category_coach_token or not is_inside_tree():
-			return
-		var down := create_tween()
-		_category_coach_tween = down
-		down.set_parallel(true)
-		down.set_trans(Tween.TRANS_SINE)
-		down.set_ease(Tween.EASE_IN)
-		for button in buttons:
-			down.tween_property(button, "scale", Vector2.ONE, 0.12)
-		await down.finished
-	if token == _category_coach_token:
-		_category_coach_tween = null
-		for button in buttons:
-			if is_instance_valid(button):
-				button.scale = Vector2.ONE
+			up.tween_property(button, "scale", Vector2(amount, amount), duration)
+	await up.finished
+	if token != _category_coach_token or not is_inside_tree():
+		return false
+	var down := create_tween()
+	_category_coach_tween = down
+	down.set_parallel(true)
+	down.set_trans(Tween.TRANS_SINE)
+	down.set_ease(Tween.EASE_IN)
+	for button in buttons:
+		if is_instance_valid(button):
+			down.tween_property(button, "scale", Vector2.ONE, duration)
+	await down.finished
+	return token == _category_coach_token and is_inside_tree()
 
 
 func _stop_category_coach() -> void:

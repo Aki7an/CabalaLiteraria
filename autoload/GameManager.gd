@@ -25,6 +25,7 @@ extends Node
 var _penalized_reveal_errors: Dictionary = {}
 var _penalized_hints: Dictionary = {}
 var reveal_errors_count: int = 0
+## Times the player pressed REVEAL during the puzzle, not end-of-game dump.
 var reveal_success_count: int = 0
 
 @export var player_name: String = ""
@@ -367,6 +368,15 @@ func _ready():
 	if FileAccess.file_exists("user://force_reset_progress"):
 		reset_player_data()
 		DirAccess.remove_absolute("user://force_reset_progress")
+	if FileAccess.file_exists("user://seed_efemerides_replay"):
+		PuzzleSaveManager.seed_category_replayable(CAT_EFEMERIDE)
+		DirAccess.remove_absolute("user://seed_efemerides_replay")
+		if typeof(PlayerPrefs) != TYPE_NIL:
+			PlayerPrefs.reset_completed_replay_today()
+	if FileAccess.file_exists("user://reset_replay_today"):
+		if typeof(PlayerPrefs) != TYPE_NIL:
+			PlayerPrefs.reset_completed_replay_today()
+		DirAccess.remove_absolute("user://reset_replay_today")
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -383,8 +393,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_F3:
 			PlayerPrefs.reset_completed_replay_today()
 			get_viewport().set_input_as_handled()
-		elif event.keycode == KEY_F4:
-			lock_full_game()
+		elif event.keycode == KEY_F5:
+			PuzzleSaveManager.seed_category_replayable(CAT_EFEMERIDE)
+			PlayerPrefs.reset_completed_replay_today()
 			get_viewport().set_input_as_handled()
 
 
@@ -1298,12 +1309,14 @@ func _pick_remaining_hint_words() -> PackedStringArray:
 	return picked
 
 
-func reveal_assignment_errors() -> int:
+func reveal_assignment_errors(from_player_button: bool = false) -> int:
 	if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
 		return 0
 	var layer := _game_hud_layer()
 	if layer == null:
 		return 0
+	if from_player_button and not partida_terminada:
+		reveal_success_count += 1
 	var overlay := preload("res://scenes/RevealSequence.tscn").instantiate()
 	layer.add_child(overlay)
 	if overlay is Control:
@@ -1340,16 +1353,12 @@ func mark_keyboard_letter(letter: String, correct: bool) -> void:
 
 func apply_reveal_correct_number(number: int) -> void:
 	var letter := ""
-	var counted := false
 	for node: Node in get_tree().get_nodes_in_group("Celda"):
 		if not node is Celda:
 			continue
 		var cell := node as Celda
 		if cell.numero != number:
 			continue
-		if not cell.bloqueada and not counted:
-			reveal_success_count += 1
-			counted = true
 		letter = cell.letter_user.to_upper()
 		cell.mostrar_letra()
 	if letter != "":

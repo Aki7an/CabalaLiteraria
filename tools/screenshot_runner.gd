@@ -1,8 +1,10 @@
 extends Node
 
 const LOCALES := ["es", "en", "de", "fr", "eu", "it", "pt"]
-const PUZZLE_INDEX := 3066
+const PUZZLE_INDEX := 3069
 const GIRAFFE_INDEX := 1009
+const COLLECTION_DONE_ID := 3064
+const COLLECTION_CONTINUE_ID := 3066
 const OUT_ROOT := "res://Capturas Store/v0.25"
 const VOWELS := ["A", "E", "I", "O", "U"]
 const SCENE_MAIN := "res://scenes/MenuMain.tscn"
@@ -19,6 +21,8 @@ var _current: Node
 var _original_locale := "es"
 var _original_full_game := false
 var _original_tutorial := true
+var _states_backup: Dictionary = {}
+var _history_backup: Array = []
 
 
 func _ready() -> void:
@@ -35,7 +39,9 @@ func _ready() -> void:
 	PlayerPrefs.hide_share_solve_dialog = true
 	GameManager.set_mostrar_tuto_antes_partida_disable()
 	GameManager.session_source = GameManager.SOURCE_NONE
+	_backup_user_progress()
 	await _capture_all()
+	_restore_user_progress()
 	_restore_prefs()
 	get_tree().quit()
 
@@ -59,7 +65,8 @@ func _capture_all() -> void:
 	for locale in LOCALES:
 		print("[screenshots] locale=", locale)
 		GameManager.apply_language(locale)
-		_seed_library_preview()
+		await _wait_phrases_ready()
+		_seed_ilustres_grid()
 		_ensure_giraffe_playable()
 		await _wait_frames(2)
 		var folder := "%s/%s" % [OUT_ROOT, locale]
@@ -94,8 +101,9 @@ func _capture_all() -> void:
 		await _wait_frames(4)
 		await _shot(folder, "05_juego_vocales_reveladas")
 
-		await _show_scene(SCENE_LIBRARY)
-		await _wait_sec(0.50)
+		_prepare_ilustres_quick()
+		var collection := await _show_scene(SCENE_SELECT_LEVEL)
+		await _wait_level_grid(collection)
 		await _shot(folder, "06_coleccion")
 
 		await _show_scene(SCENE_SETTINGS)
@@ -106,14 +114,15 @@ func _capture_all() -> void:
 		GameManager.tiempo_partida = 198
 		GameManager.puzzle_stars = mini(2, GameManager.get_puzzle_difficulty_stars())
 		await _show_scene(SCENE_VICTORY)
-		await _wait_sec(0.70)
+		await _wait_victory_ready()
 		await _shot(folder, "08_victoria")
 
-		await _prepare_giraffe()
+		await _prepare_puzzle()
+		PuzzleSaveManager._states.erase(str(PUZZLE_INDEX))
 		var levels := await _show_scene(SCENE_SELECT_LEVEL)
-		await _wait_sec(0.70)
-		_open_giraffe_preview(levels)
-		await _wait_sec(0.45)
+		await _wait_level_grid(levels)
+		_open_theme_preview(levels, PUZZLE_INDEX)
+		await _wait_theme_preview()
 		await _shot(folder, "09_jirafa_antes")
 
 		await _prepare_giraffe()
@@ -126,8 +135,8 @@ func _capture_all() -> void:
 		await _shot(folder, "10_jirafa_juego")
 
 		await _prepare_curiosities_quick()
-		await _show_scene(SCENE_SELECT_LEVEL)
-		await _wait_sec(0.80)
+		var curiosities := await _show_scene(SCENE_SELECT_LEVEL)
+		await _wait_level_grid(curiosities)
 		await _shot(folder, "11_curiosidades_rapido")
 
 	await _clear_current()
@@ -142,8 +151,32 @@ func _set_tutorial(enabled: bool) -> void:
 		GameManager.set_mostrar_tuto_antes_partida_disable()
 
 
+func _backup_user_progress() -> void:
+	if typeof(PuzzleSaveManager) != TYPE_NIL:
+		_states_backup = PuzzleSaveManager._states.duplicate(true)
+	if typeof(HistoryManager) != TYPE_NIL:
+		_history_backup = HistoryManager._historial.duplicate(true)
+
+
+func _restore_user_progress() -> void:
+	if typeof(PuzzleSaveManager) != TYPE_NIL:
+		PuzzleSaveManager._states = _states_backup.duplicate(true)
+		if PuzzleSaveManager.has_method("_write_to_disk"):
+			PuzzleSaveManager._write_to_disk()
+	if typeof(HistoryManager) != TYPE_NIL:
+		HistoryManager._historial = _history_backup.duplicate(true)
+		if HistoryManager.has_method("_save_history"):
+			HistoryManager._save_history(HistoryManager._historial)
+
+
 func _ensure_giraffe_playable() -> void:
 	PuzzleSaveManager._states.erase(str(GIRAFFE_INDEX))
+
+
+func _prepare_ilustres_quick() -> void:
+	GameManager.set_categoria_actual(GameManager.CAT_CITA)
+	GameManager.set_game_mode_actual(GameManager.MODE_QUICK)
+	GameManager.session_source = GameManager.SOURCE_NONE
 
 
 func _prepare_curiosities_quick() -> void:
@@ -165,19 +198,19 @@ func _item_by_index(puzzle_id: int) -> Dictionary:
 	return {}
 
 
-func _open_giraffe_preview(levels: Node) -> void:
-	var item := _item_by_index(GIRAFFE_INDEX)
+func _open_theme_preview(levels: Node, puzzle_id: int) -> void:
+	var item := _item_by_index(puzzle_id)
 	if item.is_empty() or levels == null:
-		push_error("[screenshots] missing giraffe level %d" % GIRAFFE_INDEX)
+		push_error("[screenshots] missing theme preview %d" % puzzle_id)
 		return
 	GameManager.session_source = GameManager.SOURCE_NONE
 	GameManager.allow_completed_replay = false
-	GameManager.id_frase = GIRAFFE_INDEX
+	GameManager.id_frase = puzzle_id
 	GameManager.set_dificultad_actual(int(item.get("difficulty", 1)))
 	if GameManager.has_method("seleccionar_por_index"):
-		GameManager.seleccionar_por_index(GIRAFFE_INDEX)
+		GameManager.seleccionar_por_index(puzzle_id)
 	else:
-		GameManager.seleccionar_frase_por_indice_db(GIRAFFE_INDEX)
+		GameManager.seleccionar_frase_por_indice_db(puzzle_id)
 	if PuzzleSaveManager.has_method("prepare_current_puzzle_cipher"):
 		PuzzleSaveManager.prepare_current_puzzle_cipher()
 	GameManager.set_go_to_game_disable()
@@ -186,7 +219,7 @@ func _open_giraffe_preview(levels: Node) -> void:
 	preview.set("launch_game_on_start", true)
 	preview.set("image_path", PuzzleThemePreview.find_image_path(
 		int(item.get("image_number", -1)),
-		GIRAFFE_INDEX
+		puzzle_id
 	))
 	levels.add_child(preview)
 
@@ -210,31 +243,50 @@ func _wait_tutorial() -> void:
 	await _wait_sec(0.2)
 
 
-func _seed_library_preview() -> void:
-	var marked := 0
-	for item in GameManager.frases_db:
-		if not (item is Dictionary):
-			continue
-		if GameManager.is_daily_puzzle(item):
-			continue
-		var puzzle_id := int(item.get("index", -1))
-		if puzzle_id < 0:
-			continue
-		PuzzleSaveManager._states[str(puzzle_id)] = {
-			"status": "completed",
-			"meta": {
-				"completed_at": int(Time.get_unix_time_from_system()),
-				"letters_filled": 1,
-				"letters_total": 1,
-				"stars": 2,
-			},
-			"resolution": {},
-			"attempt": {},
-			"cipher": {},
-		}
-		marked += 1
-		if marked >= 10:
-			break
+func _seed_ilustres_grid() -> void:
+	if typeof(HistoryManager) != TYPE_NIL:
+		HistoryManager._historial = []
+	if typeof(PuzzleSaveManager) != TYPE_NIL:
+		PuzzleSaveManager._states = {}
+	_set_puzzle_state(COLLECTION_DONE_ID, "completed", 108, 108, 1, 184)
+	_set_puzzle_state(COLLECTION_CONTINUE_ID, "in_progress", 47, 86, 0, 0)
+	PuzzleSaveManager._states.erase(str(PUZZLE_INDEX))
+
+
+func _set_puzzle_state(
+	puzzle_id: int,
+	status: String,
+	letters_filled: int,
+	letters_total: int,
+	stars: int,
+	tiempo: int
+) -> void:
+	PuzzleSaveManager._states[str(puzzle_id)] = {
+		"status": status,
+		"meta": {
+			"completed_at": int(Time.get_unix_time_from_system()) if status == "completed" else 0,
+			"letters_filled": letters_filled,
+			"letters_total": letters_total,
+			"stars": stars,
+			"tiempo_partida": tiempo,
+		},
+		"resolution": {},
+		"attempt": {
+			"puzzle_stars": stars,
+			"tiempo_partida": tiempo,
+		},
+		"cipher": {},
+	}
+	if status != "completed" or typeof(HistoryManager) == TYPE_NIL:
+		return
+	HistoryManager._historial.append({
+		"id": puzzle_id,
+		"partida_ganada": true,
+		"estrellas": stars,
+		"tiempo_partida_seg": tiempo,
+		"categoria": GameManager.CAT_CITA,
+		"dificultad": 1,
+	})
 
 
 func _prepare_puzzle() -> void:
@@ -334,6 +386,61 @@ func _clear_current() -> void:
 		_current.queue_free()
 		_current = null
 		await _wait_frames(2)
+
+
+func _wait_phrases_ready() -> void:
+	var started := Time.get_ticks_msec()
+	while Time.get_ticks_msec() - started < 5000:
+		if GameManager.frases_db.size() >= 20:
+			await _wait_frames(2)
+			return
+		await get_tree().process_frame
+
+
+func _wait_level_grid(levels: Node) -> void:
+	var started := Time.get_ticks_msec()
+	while Time.get_ticks_msec() - started < 12000:
+		await get_tree().process_frame
+		if levels == null or not is_instance_valid(levels):
+			return
+		var items: Variant = levels.get("_visible_items")
+		var pending: Variant = levels.get("_pending_textures")
+		var n := 0
+		if items is Array:
+			n = (items as Array).size()
+		if n >= 8 and pending is Array and (pending as Array).is_empty():
+			await _wait_frames(16)
+			await RenderingServer.frame_post_draw
+			await RenderingServer.frame_post_draw
+			return
+	await _wait_sec(0.4)
+
+
+func _wait_theme_preview() -> void:
+	var started := Time.get_ticks_msec()
+	while Time.get_ticks_msec() - started < 4000:
+		await get_tree().process_frame
+		var preview := get_tree().get_first_node_in_group("PuzzleThemePreview")
+		if preview == null:
+			continue
+		var image: Variant = preview.get("image")
+		if image is TextureRect and (image as TextureRect).texture != null:
+			await _wait_sec(0.35)
+			return
+	await _wait_sec(0.45)
+
+
+func _wait_victory_ready() -> void:
+	var started := Time.get_ticks_msec()
+	while Time.get_ticks_msec() - started < 14000:
+		await get_tree().create_timer(0.12).timeout
+		if _current == null or not is_instance_valid(_current):
+			return
+		var button: Variant = _current.get("continue_button")
+		if button is CanvasItem and (button as CanvasItem).modulate.a >= 0.98:
+			await _wait_sec(0.55)
+			return
+	await _wait_sec(0.4)
 
 
 func _wait_ranking(rank: Node) -> void:

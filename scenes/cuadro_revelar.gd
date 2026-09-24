@@ -289,4 +289,4 @@ func _on_reveal_pressed() -> void:
 		PlayerPrefs.skip_reveal_dialog = true
 		PlayerPrefs.save_prefs()
 	await _dismiss()
-	GameManager.reveal_assignment_errors()
+	GameManager.reveal_assignment_errors(true)

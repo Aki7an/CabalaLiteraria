@@ -207,6 +207,29 @@ func _calcula_vidas_perdidas() -> int:
 func get_history() -> Array:
 	return _historial.duplicate(true)
 
+
+func seed_completed_entries(entries: Array) -> void:
+	var ids := {}
+	for value in entries:
+		if value is Dictionary:
+			ids[int((value as Dictionary).get("id", -1))] = true
+	if ids.is_empty():
+		return
+	var kept: Array = []
+	for value in _historial:
+		if not (value is Dictionary):
+			continue
+		var entry: Dictionary = value
+		if ids.has(int(entry.get("id", -1))):
+			continue
+		kept.append(entry)
+	for value in entries:
+		if value is Dictionary:
+			kept.append(value)
+	_historial = kept
+	_save_history(_historial)
+	_recompute_stats()
+
 func clear_history() -> void:
 	_historial.clear()
 	_save_history(_historial)

@@ -86,6 +86,8 @@ func _ready() -> void:
 	var earned: int = clampi(GameManager.puzzle_stars, 0, maximum)
 	if GameManager.is_practice_session() and GameManager.locked_record_stars >= 0:
 		earned = clampi(GameManager.locked_record_stars, 0, maximum)
+	if GameManager.is_onboarding_session():
+		earned = 0
 	_earned = earned
 	_maximum = maximum
 	if time_text:
@@ -99,7 +101,11 @@ func _ready() -> void:
 	for index in range(stars.size()):
 		var star := stars[index]
 		star.visible = index < maximum
-		star.self_modulate = STAR_EMPTY
+		if GameManager.is_onboarding_session():
+			star.texture = STAR_OUTLINE
+			star.self_modulate = Color(0.72, 0.58, 0.38, 0.55)
+		else:
+			star.self_modulate = STAR_EMPTY
 		star.scale = Vector2.ONE
 
 	await get_tree().process_frame

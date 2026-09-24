@@ -17,7 +17,10 @@ class_name PuzzleThemePreview
 	$Card/DifficultyStars/Star5
 ]
 
+const STAR_ON: Texture2D = preload("res://images/estrella_plano.png")
+const STAR_OFF: Texture2D = preload("res://images/contorno_estrella.png")
 const STAR_EMPTY := Color(0.7, 0.62, 0.5, 0.32)
+const COLOR_STAR_EMPTY_OUTLINE := Color(0.50, 0.38, 0.24, 0.78)
 const COPY := {
 	"PuzzleThemeTitle": {
 		"es": "TEMA DEL PUZLE",
@@ -97,11 +100,22 @@ func _update_difficulty_stars() -> void:
 		0,
 		maximum
 	)
+	var onboarding := GameManager.is_onboarding_session()
+	if onboarding:
+		remaining = 0
 	for index in range(difficulty_stars.size()):
 		difficulty_stars[index].visible = index < maximum
-		difficulty_stars[index].self_modulate = (
-			GameManager.star_fill_color() if index < remaining else STAR_EMPTY
-		)
+		var is_filled := index < remaining
+		if onboarding:
+			difficulty_stars[index].texture = STAR_ON if is_filled else STAR_OFF
+			difficulty_stars[index].self_modulate = (
+				GameManager.star_fill_color() if is_filled else COLOR_STAR_EMPTY_OUTLINE
+			)
+		else:
+			difficulty_stars[index].texture = STAR_ON
+			difficulty_stars[index].self_modulate = (
+				GameManager.star_fill_color() if is_filled else STAR_EMPTY
+			)
 
 
 func _show_continue_progress(saved: Dictionary) -> void:
