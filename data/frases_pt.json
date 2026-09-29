@@ -42,6 +42,27 @@
 		"test_users": 0
 	},
 	{
+		"index": 116,
+		"image_number": 5,
+		"text": "Em 20 de julho de 1969, a Apollo 11 deixou a sua pegada na Lua.",
+		"letters_init": "",
+		"description_init": "",
+		"description_end": "Neil Armstrong e Buzz Aldrin caminharam na Lua diante de centenas de milhões de pessoas que os viam ao vivo. Pela primeira vez, o ser humano pisava outro mundo. Sem vento que as apague, as suas pegadas continuam lá.",
+		"category": "Evento",
+		"language": "pt",
+		"difficulty": 1,
+		"hint_1": "Alunagem da Apollo 11: a imagem aponta a palavra pegada.",
+		"hint_2": "Palavras que estão na frase:",
+		"hint_3": "",
+		"Longitud frase": 40,
+		"hint_4": "",
+		"game_mode": "quick",
+		"source": "",
+		"difficulty_estimated": 0,
+		"difficulty_measured": 0,
+		"test_users": 0
+	},
+	{
 		"index": 10,
 		"image_number": 9,
 		"text": "Em 9 de novembro de 1989, o Muro de Berlim caiu e milhares de cidadãos cruzaram a fronteira. Aquele dia marcou o início do fim da Guerra Fria e a esperança de uma Europa nova e unida.",

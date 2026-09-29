@@ -1,0 +1,115 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scenes/trailer/blocks/03_mira.gd" id="script"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_backdrop.tscn" id="bg"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_board.tscn" id="board"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_hud.tscn" id="hud"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_theme_card.tscn" id="theme"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_hand.tscn" id="hand"]
+[ext_resource type="FontVariation" path="res://scenes/trailer/parts/trailer_title_font.tres" id="font"]
+[ext_resource type="Theme" path="res://scenes/trailer/parts/trailer_theme.tres" id="ui_theme"]
+
+[node name="03_Mira" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+clip_contents = false
+mouse_filter = 2
+theme = ExtResource("ui_theme")
+script = ExtResource("script")
+
+[node name="Backdrop" parent="." instance=ExtResource("bg")]
+visible = false
+
+[node name="Dim" type="ColorRect" parent="."]
+visible = false
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.08, 0.05, 0.03, 0)
+
+[node name="BoardRig" type="Control" parent="."]
+visible = false
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 416.0
+offset_top = 268.0
+offset_right = 1685.0
+offset_bottom = 828.0
+scale = Vector2(0.94, 0.94)
+pivot_offset = Vector2(634.5, 280.0)
+
+[node name="Board" parent="BoardRig" instance=ExtResource("board")]
+unique_name_in_owner = true
+
+[node name="BoardSlid" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(1036, 268)
+
+[node name="Hud" parent="." instance=ExtResource("hud")]
+visible = false
+unique_name_in_owner = true
+
+[node name="HudSlid" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(520, 0)
+
+[node name="ThemeCard" parent="." instance=ExtResource("theme")]
+unique_name_in_owner = true
+z_index = 16
+modulate = Color(1, 1, 1, 0)
+offset_left = -720.0
+offset_top = 210.0
+offset_right = -100.0
+offset_bottom = 830.0
+
+[node name="ThemeShown" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(80, 210)
+
+[node name="TitleMira" type="Label" parent="."]
+unique_name_in_owner = true
+z_index = 8
+modulate = Color(1, 1, 1, 1)
+layout_mode = 0
+offset_left = -1920.0
+offset_top = 740.0
+offset_right = 0.0
+offset_bottom = 960.0
+theme_override_colors/font_color = Color(0.48, 0.24, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.96, 0.9, 0.82, 0.92)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = ExtResource("font")
+theme_override_font_sizes/font_size = 128
+text = "MIRA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Caption" type="Label" parent="."]
+unique_name_in_owner = true
+z_index = 16
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 360.0
+offset_right = 1280.0
+offset_bottom = 640.0
+theme_override_colors/font_color = Color(0.48, 0.24, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.96, 0.9, 0.82, 0.92)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("font")
+theme_override_font_sizes/font_size = 56
+text = "Cada cifra corresponde a una letra, pero..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Hand" parent="." instance=ExtResource("hand")]
+unique_name_in_owner = true
+visible = false

@@ -61,6 +61,16 @@ var _category_editor_styles: Dictionary = {}
 var _load_token := 0
 var _last_top_entries: Array = []
 var _last_around_entries: Array = []
+var _around_page_start := -1
+var _around_can_up := false
+var _around_can_down := false
+var _around_checked_last := -2
+var _around_probe_for := -2
+var _around_paging := false
+var _around_arrows: Control
+var _around_arrow_up: Button
+var _around_arrow_down: Button
+var _around_arrow_blink: Tween
 
 
 func _ready() -> void:
@@ -85,6 +95,7 @@ func _ready() -> void:
 	button_close_info.pressed.connect(_hide_info)
 	info_overlay.get_node("Dim").gui_input.connect(_on_info_dim_input)
 	button_my_place.pressed.connect(func() -> void: _select_view("around"))
+	_create_around_arrows()
 	_style_info_button()
 	_cache_category_editor_look()
 	_apply_locale()
@@ -140,6 +151,9 @@ func _select_mode(value: String) -> void:
 
 
 func _select_view(value: String) -> void:
+	if value == "around" and _around_page_start >= 0:
+		_return_to_centered_around()
+		return
 	if value == _view:
 		return
 	_view = value
@@ -156,6 +170,7 @@ func _apply_view() -> void:
 		ellipsis.visible = false
 	if _loading:
 		_show_loading_status()
+	_layout_around_arrows()
 
 
 func _show_info() -> void:
@@ -393,6 +408,12 @@ func _wait_for_playfab_login() -> bool:
 func _load_online_ranking() -> void:
 	_load_token += 1
 	var token := _load_token
+	_around_page_start = -1
+	_around_can_up = false
+	_around_can_down = false
+	_around_checked_last = -2
+	_around_probe_for = -2
+	_around_paging = false
 	_loading = true
 	_set_filters_disabled(true)
 	if typeof(PlayFabTools) == TYPE_NIL:
@@ -410,6 +431,7 @@ func _load_online_ranking() -> void:
 			false
 		)
 		_finish_loading()
+		_note_centered_around(statistic, token)
 	else:
 		_clear_rows(online_rows)
 		_clear_rows(around_rows)
@@ -442,10 +464,12 @@ func _load_online_ranking() -> void:
 	PlayFabTools.store_cached_leaderboard(statistic, top_result, around_result)
 	_paint_rankings(top_result, around_result, false)
 	_finish_loading()
+	_note_centered_around(statistic, token)
 	await _load_player_languages(_last_top_entries, _last_around_entries)
 	if token != _load_token:
 		return
 	_paint_rankings(top_result, around_result, true)
+	_note_centered_around(statistic, token)
 
 
 func _finish_loading() -> void:
@@ -484,6 +508,8 @@ func _paint_rankings(top_result: Dictionary, around_result: Dictionary, keep_vie
 			_add_competitive_row(around_rows, entry, is_player, true)
 		if _my_rank <= 0:
 			_add_local_player_row(around_rows)
+	_around_page_start = -1
+	_sync_around_arrows(around_entries, false, around_entries.size() < AROUND_ROWS)
 	_refresh_my_place_label()
 	if not keep_view:
 		online_status.visible = false
@@ -579,7 +605,8 @@ func _start_leaderboard_request(
 	slot: String,
 	endpoint: String,
 	statistic: String,
-	max_results: int
+	max_results: int,
+	start_position: int = 0
 ) -> void:
 	var request := HTTPRequest.new()
 	request.timeout = 12
@@ -589,7 +616,7 @@ func _start_leaderboard_request(
 		"MaxResultsCount": max_results,
 	}
 	if endpoint == "GetLeaderboard":
-		body["StartPosition"] = 0
+		body["StartPosition"] = maxi(0, start_position)
 	var err := request.request(
 		"https://%s.playfabapi.com/Client/%s" % [PlayFabTools.TITLE_ID, endpoint],
 		PackedStringArray([
@@ -901,6 +928,11 @@ func _show_online_unavailable() -> void:
 		_add_placeholder_row(online_rows, i + 1)
 	_add_placeholder_row(around_rows, 0, tr("RankYouOffline"))
 	_my_rank = 0
+	_around_page_start = -1
+	_around_can_up = false
+	_around_can_down = false
+	_around_checked_last = -2
+	_around_probe_for = -2
 	_refresh_my_place_label()
 	_loading = false
 	_apply_view()
@@ -921,6 +953,235 @@ func _format_rank(value: int) -> String:
 		source = source.substr(0, source.length() - 3)
 	chunks.push_front(source)
 	return ".".join(chunks)
+
+
+func _return_to_centered_around() -> void:
+	_view = "around"
+	_update_filter_styles()
+	_load_online_ranking()
+
+
+func _note_centered_around(statistic: String, token: int) -> void:
+	if token != _load_token or _around_page_start >= 0:
+		return
+	if _last_around_entries.size() < AROUND_ROWS or _around_can_down:
+		return
+	var last := _entry_position(_last_around_entries[_last_around_entries.size() - 1])
+	if last == _around_checked_last or last == _around_probe_for:
+		return
+	_around_probe_for = last
+	_probe_more_below(statistic, token, last)
+
+
+func _probe_more_below(statistic: String, token: int, last: int) -> void:
+	var result := await _fetch_leaderboard_range(statistic, last + 1, 1)
+	if token != _load_token or _around_page_start >= 0 or _last_around_entries.is_empty():
+		return
+	if _entry_position(_last_around_entries[_last_around_entries.size() - 1]) != last:
+		return
+	_around_checked_last = last
+	if _around_probe_for == last:
+		_around_probe_for = -2
+	var found: Array = result.get("entries", [])
+	_around_can_down = bool(result.get("ok", false)) and not found.is_empty()
+
+
+func _sync_around_arrows(entries: Array, has_more_below: bool, below_known: bool) -> void:
+	if entries.is_empty():
+		_around_can_up = false
+		_around_can_down = false
+		return
+	var first := _entry_position(entries[0])
+	var last := _entry_position(entries[entries.size() - 1])
+	_around_can_up = first > 0
+	if below_known:
+		_around_can_down = has_more_below
+		_around_checked_last = last
+	elif last != _around_checked_last:
+		_around_can_down = false
+
+
+func _entry_position(entry: Variant) -> int:
+	if entry is Dictionary:
+		return int((entry as Dictionary).get("Position", 0))
+	return 0
+
+
+func _page_around(direction: int) -> void:
+	if _loading or _around_paging or _view != "around" or typeof(PlayFabTools) == TYPE_NIL:
+		return
+	if direction < 0 and not _around_can_up:
+		return
+	if direction > 0 and not _around_can_down:
+		return
+	if _last_around_entries.is_empty():
+		return
+	SoundManager.play("ButtonClick")
+	var first := _entry_position(_last_around_entries[0])
+	var last := _entry_position(_last_around_entries[_last_around_entries.size() - 1])
+	var start := maxi(0, first - AROUND_ROWS) if direction < 0 else last + 1
+	_around_paging = true
+	_load_token += 1
+	var token := _load_token
+	var statistic := PlayFabTools.competitive_stat_name(_category_filter, _mode_filter)
+	var result := await _fetch_leaderboard_range(statistic, start, AROUND_ROWS + 1)
+	if token != _load_token:
+		return
+	var raw: Array = result.get("entries", [])
+	if not bool(result.get("ok", false)) or raw.is_empty():
+		if direction > 0:
+			_around_can_down = false
+			_around_checked_last = last
+		else:
+			_around_can_up = false
+		_around_paging = false
+		return
+	var has_more := raw.size() > AROUND_ROWS
+	var shown: Array = raw.slice(0, AROUND_ROWS)
+	_paint_around_page(shown, has_more)
+	await _load_player_languages([], shown)
+	if token != _load_token:
+		return
+	_paint_around_page(shown, has_more)
+	_around_paging = false
+
+
+func _paint_around_page(entries: Array, has_more_below: bool) -> void:
+	var kept_rank := _my_rank
+	_last_around_entries = entries
+	_player_languages = PlayFabTools.cached_player_languages(_ranking_ids([], entries)) if typeof(PlayFabTools) != TYPE_NIL else {}
+	_clear_rows(around_rows)
+	var found_player := false
+	for entry_value in entries:
+		if not (entry_value is Dictionary):
+			continue
+		var entry: Dictionary = entry_value
+		var is_player := _is_local_player(entry)
+		if is_player:
+			_my_rank = int(entry.get("Position", -1)) + 1
+			found_player = true
+		_add_competitive_row(around_rows, entry, is_player, true)
+	if not found_player:
+		_my_rank = kept_rank
+	_around_page_start = _entry_position(entries[0]) if not entries.is_empty() else -1
+	_sync_around_arrows(entries, has_more_below, true)
+	_refresh_my_place_label()
+	_apply_view()
+
+
+func _fetch_leaderboard_range(statistic: String, start: int, count: int) -> Dictionary:
+	var state := {
+		"left": 1,
+		"page": {"ok": false, "entries": []},
+	}
+	_start_leaderboard_request(state, "page", "GetLeaderboard", statistic, count, start)
+	var started := Time.get_ticks_msec()
+	while int(state["left"]) > 0 and Time.get_ticks_msec() - started < 20000:
+		await get_tree().process_frame
+	return state["page"]
+
+
+func _create_around_arrows() -> void:
+	var host := Control.new()
+	host.name = "AroundArrows"
+	host.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	host.z_index = 45
+	host.set_anchors_preset(Control.PRESET_FULL_RECT)
+	$MainCard.add_child(host)
+	_around_arrows = host
+	_around_arrow_up = _make_around_arrow(-1)
+	_around_arrow_down = _make_around_arrow(1)
+	host.add_child(_around_arrow_up)
+	host.add_child(_around_arrow_down)
+	_around_arrow_blink = create_tween()
+	_around_arrow_blink.set_loops()
+	_around_arrow_blink.set_trans(Tween.TRANS_SINE)
+	_around_arrow_blink.set_ease(Tween.EASE_IN_OUT)
+	_around_arrow_blink.tween_property(host, "modulate", Color(1.12, 1.04, 0.82, 1), 0.42)
+	_around_arrow_blink.tween_property(host, "modulate", Color.WHITE, 0.42)
+	set_process(true)
+
+
+func _process(_delta: float) -> void:
+	_layout_around_arrows()
+
+
+func _layout_around_arrows() -> void:
+	if _around_arrows == null or _around_arrow_up == null or _around_arrow_down == null:
+		return
+	var show_list := (
+		_view == "around"
+		and not _loading
+		and not info_overlay.visible
+		and around_rows.visible
+		and around_rows.get_child_count() > 0
+	)
+	if not show_list:
+		_around_arrow_up.visible = false
+		_around_arrow_down.visible = false
+		_around_arrows.visible = false
+		return
+	var rows_rect := around_rows.get_global_rect()
+	var origin := rows_rect.position - _around_arrows.get_global_rect().position
+	var diameter := 96.0
+	var margin := 20.0
+	var circle := Vector2(diameter, diameter)
+	for button in [_around_arrow_up, _around_arrow_down]:
+		button.custom_minimum_size = circle
+		button.size = circle
+		button.pivot_offset = circle * 0.5
+		var arrow := button.get_child(0) as Polygon2D
+		if arrow:
+			arrow.position = circle * 0.5
+			var tip := diameter * 0.19
+			var base := diameter * 0.15
+			if button == _around_arrow_up:
+				arrow.polygon = PackedVector2Array([
+					Vector2(0, -tip),
+					Vector2(-base, tip * 0.78),
+					Vector2(base, tip * 0.78),
+				])
+			else:
+				arrow.polygon = PackedVector2Array([
+					Vector2(-base, -tip * 0.78),
+					Vector2(base, -tip * 0.78),
+					Vector2(0, tip),
+				])
+	var x := origin.x + rows_rect.size.x - diameter - margin
+	_around_arrow_up.position = Vector2(x, origin.y + margin)
+	_around_arrow_down.position = Vector2(x, origin.y + rows_rect.size.y - diameter - margin)
+	_around_arrow_up.visible = _around_can_up
+	_around_arrow_down.visible = _around_can_down
+	_around_arrows.visible = _around_arrow_up.visible or _around_arrow_down.visible
+
+
+func _make_around_arrow(direction: int) -> Button:
+	var button := Button.new()
+	button.focus_mode = Control.FOCUS_NONE
+	button.mouse_filter = Control.MOUSE_FILTER_STOP
+	button.add_theme_stylebox_override("normal", _around_arrow_style(false))
+	button.add_theme_stylebox_override("hover", _around_arrow_style(true))
+	button.add_theme_stylebox_override("pressed", _around_arrow_style(true))
+	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	button.pressed.connect(func() -> void:
+		_page_around(direction)
+	)
+	var arrow := Polygon2D.new()
+	arrow.color = Color(0.42, 0.18, 0.05, 1)
+	button.add_child(arrow)
+	return button
+
+
+func _around_arrow_style(hovered: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(1, 0.968, 0.84, 1) if hovered else Color(0.996, 0.941, 0.776, 0.96)
+	style.border_color = Color(0.878, 0.443, 0.102, 1)
+	style.set_border_width_all(5)
+	style.set_corner_radius_all(96)
+	style.shadow_color = Color(0.41, 0.22, 0.05, 0.28)
+	style.shadow_size = 10
+	style.shadow_offset = Vector2(0, 5)
+	return style
 
 
 func _on_button_back_pressed() -> void:

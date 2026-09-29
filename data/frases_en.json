@@ -42,6 +42,27 @@
 		"test_users": 0
 	},
 	{
+		"index": 116,
+		"image_number": 5,
+		"text": "On July 20, 1969, Apollo 11 left its footprint on the Moon.",
+		"letters_init": "",
+		"description_init": "",
+		"description_end": "Neil Armstrong and Buzz Aldrin walked on the Moon as hundreds of millions of people watched live. For the first time, humans stood on another world. With no wind to erase them, their footprints are still there.",
+		"category": "Event",
+		"language": "en",
+		"difficulty": 1,
+		"hint_1": "Apollo 11 moon landing: the image points to the word footprint.",
+		"hint_2": "Words that are in the sentence:",
+		"hint_3": "",
+		"Longitud frase": 36,
+		"hint_4": "",
+		"game_mode": "quick",
+		"source": "",
+		"difficulty_estimated": 0,
+		"difficulty_measured": 0,
+		"test_users": 0
+	},
+	{
 		"index": 10,
 		"image_number": 9,
 		"text": "On November 9, 1989, the Berlin Wall opened and thousands of citizens crossed the border crossings. That day marked the beginning of the end of the Cold War and the hope of a new, united Europe.",

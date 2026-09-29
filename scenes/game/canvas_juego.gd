@@ -35,6 +35,10 @@ var dragging: bool = false
 var start_pos: Vector2 = Vector2.ZERO
 var ultima_posicion: Vector2 = Vector2.ZERO
 var _rest_y: float = 0.0
+var _suppress_cell_selection := false
+var _drag_end_queued := false
+var _selection_before_numero := 100
+var _selection_before_orden := 100
 
 
 signal global_position_changed(new_global_pos: Vector2)
@@ -365,7 +369,14 @@ func _input(event: InputEvent) -> void:
 	if _blocks_board_pan():
 		return
 	var pos: Vector2 = _event_pos(event)
-	
+
+	if event is InputEventMouseButton:
+		var drag_button := event as InputEventMouseButton
+		if drag_button.button_index == MOUSE_BUTTON_LEFT and (dragging or _suppress_cell_selection or _drag_end_queued):
+			if not drag_button.pressed:
+				_finish_drag_pointer()
+			accept_event()
+			return
 
 	# Desplazar solo si el puntero/gesto está sobre el canvas
 	if event is InputEventMouseButton and _is_over_canvas(_event_pos(event)):
@@ -384,34 +395,35 @@ func _input(event: InputEvent) -> void:
 			PuzzleSaveManager.request_autosave()
 			_notify_onboarding_pan_ended()
 			accept_event()
+		elif mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
+			_begin_board_gesture(pos)
+		elif mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed and (dragging or _suppress_cell_selection):
+			_finish_drag_pointer()
+			accept_event()
 
 	if event is InputEventScreenTouch:
 		var touch := event as InputEventScreenTouch
+		if touch.pressed and (_suppress_cell_selection or _drag_end_queued):
+			accept_event()
+			return
 		if touch.pressed and _is_over_canvas(pos):
-			tocando = true
-			dragging = false
-			start_pos = pos
-			ultima_posicion = pos
-			# No mostramos el blocker aquí; dejamos pasar el press a las celdas.
+			_begin_board_gesture(pos)
 		elif not touch.pressed and tocando:
-			# Fin del gesto
-			if dragging:
-				# Fue drag: ocultar y CONSUMIR el release (evita click fantasma)
-				_input_blocker.hide()
+			if dragging or _suppress_cell_selection:
+				_finish_drag_pointer()
 				accept_event()
-				_notify_onboarding_pan_ended()
 			else:
-				# Fue tap: permitir selección normal
 				_input_blocker.hide()
 			tocando = false
 			dragging = false
 
 	elif event is InputEventScreenDrag and tocando:
 		var drag := event as InputEventScreenDrag
-		# Activar bloqueo cuando superamos el umbral
 		if not dragging and (pos - start_pos).length() >= DRAG_THRESHOLD:
 			dragging = true
+			_suppress_cell_selection = true
 			_input_blocker.show()
+			_release_dragged_cell_press()
 
 		if dragging:
 			var delta: Vector2 = drag.position - ultima_posicion
@@ -601,6 +613,55 @@ func _event_pos(event: InputEvent) -> Vector2:
 
 func reset_zoom_scale() -> void:
 	canvas_juego.scale = Vector2.ONE
+
+func is_suppressing_cell_selection() -> bool:
+	return dragging or _suppress_cell_selection
+
+
+func _begin_board_gesture(pos: Vector2) -> void:
+	if tocando or _suppress_cell_selection or _drag_end_queued:
+		return
+	tocando = true
+	dragging = false
+	_suppress_cell_selection = false
+	start_pos = pos
+	ultima_posicion = pos
+	_selection_before_numero = int(GameManager.celda_seleccionada_numero)
+	_selection_before_orden = int(GameManager.selected_celda_number)
+
+
+func _finish_drag_pointer() -> void:
+	_suppress_cell_selection = true
+	if _input_blocker:
+		_input_blocker.hide()
+	_release_dragged_cell_press()
+	if _drag_end_queued:
+		return
+	_drag_end_queued = true
+	_notify_onboarding_pan_ended()
+	call_deferred("_end_drag_gesture")
+
+
+func _end_drag_gesture() -> void:
+	_drag_end_queued = false
+	_suppress_cell_selection = false
+	dragging = false
+
+
+func _release_dragged_cell_press() -> void:
+	for node in get_tree().get_nodes_in_group("Celda"):
+		if node is Celda:
+			(node as Celda).release_pointer_press()
+	_restore_selection_before_gesture()
+
+
+func _restore_selection_before_gesture() -> void:
+	var numero := _selection_before_numero
+	if numero <= 0 or numero >= 100:
+		GameManager.reset_cell_select()
+		return
+	GameManager.set_celda_seleccionada(_selection_before_orden, numero)
+
 
 func deselect_all_cels() -> void:
 	if get_tree() == null:

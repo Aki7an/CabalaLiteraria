@@ -1,6 +1,8 @@
 extends ColorRect
 
 const FONT_LETTER: Font = preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
+const FF_ICON: Texture2D = preload("res://images/ui_icon_fast_forward_white.svg")
+const VHS_SHADER: Shader = preload("res://scenes/vhs_fast_forward.gdshader")
 const DIM_COLOR := Color(1, 1, 0.98, 0.62)
 const RED_DIM_COLOR := Color(1, 0.96, 0.96, 0.62)
 const LETTER_GREEN := Color(0.22, 0.62, 0.28, 1)
@@ -13,6 +15,25 @@ const HALO_FADE := 0.10
 ## Center of the letter + halo, as a fraction of screen height measured from the bottom.
 const LETTER_FROM_BOTTOM := 0.66
 const LETTER_BOX := 480.0
+const FF_SPEED := 2.0
+## Circle diameter. Doubled from the 177 px button.
+const FF_BUTTON_DIAMETER := 354.0
+## Gap between the button and the bottom edge of the number board.
+const FF_BUTTON_BOARD_MARGIN := 28.0
+const FF_BUTTON_FADE := 0.16
+## Same orange as the menu button in the header.
+const FF_FACE := Color(1, 0.56, 0.02, 1)
+const FF_EDGE := Color(0.72, 0.32, 0.02, 1)
+const FF_FACE_ON := Color(0.9, 0.4, 0.015, 1)
+const FF_EDGE_ON := Color(0.65, 0.25, 0.01, 1)
+const FF_SHADOW := Color(0.4, 0.2, 0.03, 0.25)
+const FF_ICON_ON := Color(1, 0.98, 0.92, 1)
+## Relative to this overlay (z 80); the raised keyboard sits at 90.
+const VHS_Z := 15
+const FF_BUTTON_Z := 20
+const VHS_BLEED := 48.0
+const VHS_FADE_IN := 0.14
+const VHS_FADE_OUT := 0.2
 
 var _dimmer: ColorRect
 var _halo: Control
@@ -20,6 +41,12 @@ var _letter_label: Label
 var _running := false
 var _keyboard_panel: Control
 var _keyboard_z := 0
+var _ff_button: Button
+var _ff_icon: TextureRect
+var _vhs: ColorRect
+var _vhs_tween: Tween
+var _speed := 1.0
+var _timeline: Array[Tween] = []
 
 
 class WhiteHalo extends Control:
@@ -43,6 +70,7 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	_restore_keyboard()
+	SoundManager.set_letter_fast_forward(false)
 
 
 func _raise_keyboard() -> void:
@@ -103,8 +131,82 @@ func _build() -> void:
 	_letter_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_letter_label.modulate.a = 0.0
 	add_child(_letter_label)
+	_build_vhs_filter()
+	_build_ff_button()
 	resized.connect(_on_resized)
 	_layout_letter_stack()
+
+
+func _build_vhs_filter() -> void:
+	_vhs = ColorRect.new()
+	_vhs.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_vhs.z_index = VHS_Z
+	_vhs.visible = false
+	var material := ShaderMaterial.new()
+	material.shader = VHS_SHADER
+	material.set_shader_parameter("intensity", 0.0)
+	_vhs.material = material
+	add_child(_vhs)
+	_fit_vhs_to_screen()
+
+
+func _fit_vhs_to_screen() -> void:
+	if _vhs == null:
+		return
+	var bleed := Vector2(VHS_BLEED, VHS_BLEED)
+	_vhs.position = -bleed
+	_vhs.size = get_viewport_rect().size + bleed * 2.0
+
+
+func _build_ff_button() -> void:
+	_ff_button = Button.new()
+	_ff_button.toggle_mode = true
+	_ff_button.focus_mode = Control.FOCUS_NONE
+	_ff_button.z_index = FF_BUTTON_Z
+	_ff_button.visible = false
+	var normal := _ff_style(FF_FACE, FF_EDGE, false)
+	var pressed := _ff_style(FF_FACE_ON, FF_EDGE_ON, true)
+	_ff_button.add_theme_stylebox_override("normal", normal)
+	_ff_button.add_theme_stylebox_override("hover", normal)
+	_ff_button.add_theme_stylebox_override("pressed", pressed)
+	_ff_button.add_theme_stylebox_override("hover_pressed", pressed)
+	_ff_button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	_ff_icon = TextureRect.new()
+	_ff_icon.texture = FF_ICON
+	_ff_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_ff_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_ff_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ff_button.add_child(_ff_icon)
+	_layout_ff_icon(false)
+	_ff_button.toggled.connect(_on_ff_toggled)
+	add_child(_ff_button)
+
+
+func _ff_style(face: Color, edge: Color, sunken: bool) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = face
+	style.border_color = edge
+	style.set_border_width_all(5)
+	if sunken:
+		style.border_width_top = 9
+	else:
+		style.border_width_bottom = 9
+		style.shadow_color = FF_SHADOW
+		style.shadow_size = 10
+		style.shadow_offset = Vector2(0, 8)
+	style.set_corner_radius_all(int(FF_BUTTON_DIAMETER))
+	return style
+
+
+## The sunken style moves the face down by the border difference (9 - 4 px).
+func _layout_ff_icon(sunken: bool) -> void:
+	var shift := 4.0 if sunken else 0.0
+	var pad := FF_BUTTON_DIAMETER * 0.24
+	_ff_icon.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_ff_icon.offset_left = pad
+	_ff_icon.offset_top = pad - 2.0 + shift
+	_ff_icon.offset_right = -pad
+	_ff_icon.offset_bottom = -pad - 4.0 + shift
 
 
 func _run_sequence() -> void:
@@ -114,7 +216,10 @@ func _run_sequence() -> void:
 	await get_tree().process_frame
 	_clip_above_keyboard()
 	var assignments := _player_assignments()
-	SoundManager.begin_green_letter_sequence(_count_green_reveal_steps(assignments))
+	var steps := _count_green_reveal_steps(assignments)
+	SoundManager.begin_green_letter_sequence(steps)
+	if steps > 0 or not assignments.is_empty():
+		_show_ff_button()
 	await _reveal_initial_letters()
 	_log_reveal_result(assignments)
 	for assignment in assignments:
@@ -122,8 +227,78 @@ func _run_sequence() -> void:
 			await _reveal_correct(assignment)
 		else:
 			await _reveal_wrong(assignment)
+	await _close_fast_forward()
 	GameManager.finish_reveal_sequence()
 	queue_free()
+
+
+func _show_ff_button() -> void:
+	_ff_button.visible = true
+	_ff_button.modulate.a = 0.0
+	var tween := create_tween()
+	tween.tween_property(_ff_button, "modulate:a", 1.0, FF_BUTTON_FADE)
+
+
+func _close_fast_forward() -> void:
+	if _ff_button == null or not _ff_button.visible:
+		return
+	_ff_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var fade := FF_BUTTON_FADE
+	if _speed != 1.0:
+		_ff_button.set_pressed_no_signal(false)
+		_set_fast_forward(false)
+		fade = maxf(fade, VHS_FADE_OUT)
+	var tween := create_tween()
+	tween.tween_property(_ff_button, "modulate:a", 0.0, fade)
+	await tween.finished
+
+
+func _on_ff_toggled(active: bool) -> void:
+	SoundManager.play("ButtonClick")
+	_set_fast_forward(active)
+
+
+func _set_fast_forward(active: bool) -> void:
+	_speed = FF_SPEED if active else 1.0
+	for tween in _timeline:
+		if tween.is_valid():
+			tween.set_speed_scale(_speed)
+	SoundManager.set_letter_fast_forward(active, FF_SPEED)
+	_layout_ff_icon(active)
+	_ff_icon.modulate = FF_ICON_ON if active else Color.WHITE
+	_fade_vhs(active)
+
+
+func _fade_vhs(active: bool) -> void:
+	if _vhs_tween:
+		_vhs_tween.kill()
+	if active:
+		_vhs.visible = true
+	_vhs_tween = create_tween()
+	_vhs_tween.tween_property(
+		_vhs.material, "shader_parameter/intensity",
+		1.0 if active else 0.0,
+		VHS_FADE_IN if active else VHS_FADE_OUT
+	)
+	if not active:
+		_vhs_tween.tween_callback(_vhs.hide)
+
+
+## Tweens that drive the letter timeline; fast-forward rescales all of them.
+func _sequence_tween() -> Tween:
+	for i in range(_timeline.size() - 1, -1, -1):
+		if not _timeline[i].is_valid():
+			_timeline.remove_at(i)
+	var tween := create_tween()
+	tween.set_speed_scale(_speed)
+	_timeline.append(tween)
+	return tween
+
+
+func _wait(sec: float) -> void:
+	var tween := _sequence_tween()
+	tween.tween_interval(sec)
+	await tween.finished
 
 
 func _count_green_reveal_steps(assignments: Array[Dictionary]) -> int:
@@ -154,7 +329,7 @@ func _reveal_initial_letters() -> void:
 		return
 	await _blink_cells(grey)
 	GameManager.apply_reveal_initials_green(grey)
-	await get_tree().create_timer(0.12).timeout
+	await _wait(0.12)
 
 
 func _reveal_correct(assignment: Dictionary) -> void:
@@ -189,6 +364,7 @@ func _letter_anchor_y() -> float:
 
 func _on_resized() -> void:
 	_layout_letter_stack()
+	_fit_vhs_to_screen()
 	if _letter_label and _letter_label.text != "":
 		_layout_halo(_letter_label.text)
 
@@ -207,6 +383,40 @@ func _layout_letter_stack() -> void:
 	_letter_label.offset_right = half
 	_letter_label.offset_bottom = half
 	_letter_label.pivot_offset = Vector2(half, half)
+	_layout_ff_button()
+
+
+func _layout_ff_button() -> void:
+	if _ff_button == null:
+		return
+	var place := _ff_button_rect()
+	_ff_button.anchor_left = 0.0
+	_ff_button.anchor_top = 0.0
+	_ff_button.anchor_right = 0.0
+	_ff_button.anchor_bottom = 0.0
+	_ff_button.offset_left = place.position.x
+	_ff_button.offset_top = place.position.y
+	_ff_button.offset_right = place.position.x + place.size.x
+	_ff_button.offset_bottom = place.position.y + place.size.y
+
+
+func _ff_button_rect() -> Rect2:
+	var diameter := FF_BUTTON_DIAMETER
+	var board := _board_frame()
+	var center_x := size.x * 0.5
+	var bottom := size.y - FF_BUTTON_BOARD_MARGIN
+	if board != null and board.size.x > 1.0:
+		var origin := get_global_transform().affine_inverse() * board.global_position
+		center_x = origin.x + board.size.x * 0.5
+		bottom = origin.y + board.size.y - FF_BUTTON_BOARD_MARGIN
+	return Rect2(center_x - diameter * 0.5, bottom - diameter, diameter, diameter)
+
+
+func _board_frame() -> Control:
+	var parent_node := get_parent()
+	if parent_node == null:
+		return null
+	return parent_node.get_node_or_null("BoardFrame") as Control
 
 
 func _layout_halo(letter: String) -> void:
@@ -238,7 +448,7 @@ func _show_center_letter(letter: String, tint: Color, shake_letter: bool) -> voi
 	_halo.scale = Vector2(0.18, 0.18)
 	_halo.modulate.a = 0.0
 	var dim := RED_DIM_COLOR if shake_letter else DIM_COLOR
-	var tween := create_tween()
+	var tween := _sequence_tween()
 	tween.set_parallel(true)
 	tween.tween_property(_dimmer, "color", dim, 0.18)
 	tween.tween_property(_halo, "modulate:a", 1.0, HALO_FADE)
@@ -249,7 +459,7 @@ func _show_center_letter(letter: String, tint: Color, shake_letter: bool) -> voi
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	await tween.finished
 	if shake_letter:
-		var punch := create_tween()
+		var punch := _sequence_tween()
 		punch.tween_property(_letter_label, "rotation_degrees", -9.0, 0.06)
 		punch.tween_property(_letter_label, "rotation_degrees", 9.0, 0.08)
 		punch.tween_property(_letter_label, "rotation_degrees", 0.0, 0.07)
@@ -257,7 +467,7 @@ func _show_center_letter(letter: String, tint: Color, shake_letter: bool) -> voi
 
 
 func _hide_center_letter() -> void:
-	var tween := create_tween()
+	var tween := _sequence_tween()
 	tween.set_parallel(true)
 	tween.tween_property(_halo, "modulate:a", 0.0, HALO_FADE)
 	tween.tween_property(_letter_label, "modulate:a", 0.0, 0.22)
@@ -279,7 +489,7 @@ func _blink_cells(cells: Array[Celda]) -> void:
 	for key in keys:
 		if is_instance_valid(key):
 			key.modulate.a = 1.0
-	var tween := create_tween()
+	var tween := _sequence_tween()
 	for _cycle in 2:
 		tween.tween_callback(func() -> void:
 			for cell in cells:

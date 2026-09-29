@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://images/tutorial/hand_pointer.png" id="1_hand"]
+
+[node name="Hand" type="Sprite2D"]
+z_index = 40
+scale = Vector2(0.155, 0.155)
+texture = ExtResource("1_hand")

@@ -36,7 +36,7 @@ func _ready() -> void:
 		print("Listo. Ticket:", PlayFabTools.session_ticket, "ID:", PlayFabTools.playfab_id)
 		if typeof(GameManager) != TYPE_NIL:
 			GameManager.ensure_online_identity()
-			await _update_player_display_name(GameManager.player_name)
+			sync_player_display_name(GameManager.player_name)
 			sync_player_language(GameManager.locale_code())
 		await sync_server_time()
 	else:
@@ -273,13 +273,49 @@ func _unix_from_http_date(header: String) -> int:
 	}))
 
 
+var _pending_display_name := ""
+var _display_name_dirty := false
+var _display_name_pushing := false
+var _display_name_last_ok := false
+
+
 func sync_player_display_name(player_name: String = "") -> void:
+	_queue_display_name(player_name)
+
+
+func await_player_display_name(player_name: String = "") -> bool:
+	_queue_display_name(player_name)
+	while _display_name_pushing:
+		await get_tree().process_frame
+	return _display_name_last_ok
+
+
+func _queue_display_name(player_name: String) -> void:
 	var name := player_name.strip_edges()
 	if name == "" and typeof(GameManager) != TYPE_NIL:
 		name = str(GameManager.player_name).strip_edges()
 	if name == "":
 		return
-	_update_player_display_name(name)
+	_pending_display_name = name
+	_display_name_dirty = true
+	if _display_name_pushing:
+		return
+	_display_name_pushing = true
+	_pump_display_name()
+
+
+func _pump_display_name() -> void:
+	while _display_name_dirty and is_logged_in():
+		_display_name_dirty = false
+		var name := _pending_display_name
+		_display_name_last_ok = await _update_player_display_name(name)
+		if _pending_display_name != name:
+			_display_name_dirty = true
+	var pending_left := _display_name_dirty
+	_display_name_pushing = false
+	if pending_left and is_logged_in():
+		_display_name_pushing = true
+		_pump_display_name()
 
 
 const LANGUAGE_STAT_NAME := "PlayerLanguage"
@@ -577,7 +613,7 @@ func submit_player_score(score: int, player_name: String = "", stat_name: String
 
 	# 2) Si viene nombre, intentar guardarlo como DisplayName (no falla la puntuación si esto falla)
 	if player_name.strip_edges() != "":
-		var ok_name := await _update_player_display_name(player_name)
+		var ok_name := await await_player_display_name(player_name)
 		if not ok_name:
 			push_warning("No se pudo actualizar el DisplayName. Continuo con el envío de puntuación…")
 
@@ -738,7 +774,7 @@ func submit_competitive_rankings(player_name: String = "") -> bool:
 			push_warning("No se pudo enviar la clasificación: PlayFab no inició sesión.")
 			return false
 	if player_name.strip_edges() != "":
-		await _update_player_display_name(player_name)
+		await await_player_display_name(player_name)
 	var language := language_code_from_locale()
 	await sync_player_language(language)
 
@@ -800,9 +836,9 @@ func _update_player_display_name(player_name: String) -> bool:
 	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
 		return false
 
-	# PlayFab suele limitar a 3..25 caracteres (evita nombres vacíos o muy largos)
+	# PlayFab solo acepta nombres de 3 a 25 caracteres.
 	var name := player_name.strip_edges()
-	if name == "":
+	if name.length() < 3:
 		return false
 	if name.length() > 25:
 		name = name.substr(0, 25)

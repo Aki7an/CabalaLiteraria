@@ -43,7 +43,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="CifraLetra"
 config/description="CifraLetra - pasatiempo "
-config/version="1.0.3"
+config/version="1.0.4"
 run/main_scene="uid://bvpri1mtnymgf"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://images/Icono.png"
@@ -74,6 +74,8 @@ window/size/viewport_height=2622
 window/size/initial_position_type=4
 window/size/initial_position=Vector2i(0, 100)
 window/size/always_on_top=true
+window/size/window_width_override=430
+window/size/window_height_override=936
 window/stretch/mode="viewport"
 window/handheld/orientation=1
 

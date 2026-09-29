@@ -44,6 +44,7 @@ const ONBOARDING_PHRASE_1 := "CifraLetra es un juego de Criptogramas. Cada núme
 const ONBOARDING_PHRASE_2 := "Mira · Descifra · Descubre. La imagen te da una pista sobre el tema. Observa las palabras, busca las vocales y prueba tus hipótesis. Cada letra que descubras te acercará a la solución."
 const ONBOARDING_ID_PUZZLE_1 := -9001
 const ONBOARDING_ID_PUZZLE_2 := -9002
+const FIRST_PUZZLE_ID := 116
 var onboarding_stage: int = 0
 ## Día 0 del reto diario para todas las instalaciones (UTC).
 const DAILY_EPOCH := {
@@ -117,6 +118,7 @@ var _free_puzzle_ids: Dictionary = {}
 # Campos extra de la frase activa
 var frase_index_actual: int = -1
 var idioma_actual: String = ""
+var puzzle_locale: String = ""
 var categoria_actual: String = ""
 var dificultad_actual: int = 1
 var game_mode_actual: String = "quick"
@@ -443,6 +445,10 @@ func decrease_live() -> void:
 	SignalManager.update_lives.emit(lives)
 
 func set_calculo_letras_iniciales() -> void:
+	if id_frase == 116:
+		letras_iniciales = InitialLettersPicker.pick_unused_consonants(frase_original, 2) + "J"
+		print ("LETRAS INICIALES CALCULADAS:" ,letras_iniciales)
+		return
 	if letras_iniciales != "" or dificultad_actual ==4:
 		return
 	else:
@@ -818,7 +824,17 @@ func onboarding_victory_text(stage: int) -> String:
 	return tr("OnboardingVictory2") % onboarding_category_list()
 
 
+func suggests_first_puzzle() -> bool:
+	if not PlayerPrefs.onboarding_completed:
+		return false
+	if HistoryManager.count_finished_puzzles_excluding_onboarding() > 0:
+		return false
+	return str(PuzzleSaveManager.get_puzzle_summary(FIRST_PUZZLE_ID).get("status", "new")) != "completed"
+
+
 func prepare_onboarding_puzzle(stage: int) -> void:
+	puzzle_locale = locale_code()
+	letters_aphabet_array = get_letters_for_lang(puzzle_locale)
 	session_source = SOURCE_ONBOARDING
 	onboarding_stage = 1 if stage <= 1 else 2
 	reset_game_paremeters()
@@ -969,20 +985,27 @@ func export_attempt_state() -> Dictionary:
 	}
 
 
+func active_puzzle_locale() -> String:
+	var locked := puzzle_locale.strip_edges().to_lower()
+	return locked if locked != "" else locale_code()
+
+
 func export_cipher_state() -> Dictionary:
 	return {
 		"numbers": lista_numeros.duplicate(),
 		"alphabet": letters_aphabet_array.duplicate(),
-		"locale": locale_code(),
+		"locale": active_puzzle_locale(),
 	}
 
 
 func import_cipher_state(state: Dictionary) -> bool:
 	var saved_numbers: Array = state.get("numbers", [])
 	var saved_alphabet: Array = state.get("alphabet", [])
-	if saved_numbers.is_empty() or saved_numbers.size() != letters_aphabet_array.size():
+	if saved_numbers.is_empty():
 		return false
-	if not saved_alphabet.is_empty() and saved_alphabet != letters_aphabet_array:
+	if not saved_alphabet.is_empty():
+		letters_aphabet_array = saved_alphabet.duplicate()
+	if saved_numbers.size() != letters_aphabet_array.size():
 		return false
 	lista_numeros = saved_numbers.duplicate()
 	_inicializar_lista_numeros_original()
@@ -1783,23 +1806,27 @@ func set_selected_letter_user(letra: String) -> void:
 	selected_letra = letra
 
 
+func phrases_json_path(locale: String) -> String:
+	match locale.strip_edges().to_lower():
+		"en":
+			return frases_json_path_en
+		"eu":
+			return frases_json_path_eu
+		"fr":
+			return frases_json_path_fr
+		"de":
+			return frases_json_path_de
+		"it":
+			return frases_json_path_it
+		"pt":
+			return frases_json_path_pt
+		_:
+			return frases_json_path_es
+
+
 func cargar_frases_desde_json() -> void:
 	var loc := locale_code()
-	match loc:
-		"en":
-			frases_json_path = frases_json_path_en
-		"eu":
-			frases_json_path = frases_json_path_eu
-		"fr":
-			frases_json_path = frases_json_path_fr
-		"de":
-			frases_json_path = frases_json_path_de
-		"it":
-			frases_json_path = frases_json_path_it
-		"pt":
-			frases_json_path = frases_json_path_pt
-		_:
-			frases_json_path = frases_json_path_es
+	frases_json_path = phrases_json_path(loc)
 	
 	frases_db.clear()
 
@@ -1846,29 +1873,9 @@ func cargar_frases_desde_json() -> void:
 		if typeof(item) != TYPE_DICTIONARY:
 			continue
 		var dict := item as Dictionary
-		if not dict.has("text"):
+		var d := _phrase_from_dict(dict, loc, frases_db.size() + 1)
+		if d.is_empty():
 			continue
-
-		var d: Dictionary = {}
-		d.index             = int(dict.get("index", frases_db.size() + 1))
-		d.text              = String(dict.get("text", ""))
-		d.letters_init       = String( dict.get("letters_init", "")).to_upper()
-		#d.letters_total     = int(dict.get("letters_total", 0))
-		#d.letters_discover  = int(dict.get("letters_discover", 0))
-		#d.description_init  = String(dict.get("description", ""))
-		d.description_init  = String(dict.get("description_init", ""))
-		d.description_end   = String(dict.get("description_end", ""))
-		d.source            = String(dict.get("source", ""))
-		d.pack              = String(dict.get("pack", dict.get("collection", "")))
-		d.category          = normalize_category(String(dict.get("category", "")))
-		d.language          = String(dict.get("language", loc)).to_lower()
-		d.difficulty        = int(dict.get("difficulty", 1))
-		d.game_mode         = level_game_mode(dict)
-		d.image_number      = int(dict.get("image_number", -1))
-		d.hint_1            = String(dict.get("hint_1", ""))
-		d.hint_2            = String(dict.get("hint_2", ""))
-		d.hint_3            = String(dict.get("hint_3", ""))
-		d.hint_4            = String(dict.get("hint_4", ""))
 
 		## ---- TIPADO SEGURO DE HINTS ----
 		#var hints_variant = dict.get("hints", [])
@@ -1924,10 +1931,15 @@ func seleccionar_frase_aleatoria() -> void:
 func _aplicar_frase_desde_db(pos: int) -> void:
 	print("pasa por rutina de frase")
 	frase_index_actual = pos
-	var item: Dictionary = frases_db[pos]
+	_aplicar_frase_item(frases_db[pos], locale_code())
 
-	
-	# Inyecta en tu pipeline actual
+
+func _aplicar_frase_item(item: Dictionary, lang: String) -> void:
+	var locked := lang.strip_edges().to_lower()
+	if locked == "":
+		locked = locale_code()
+	puzzle_locale = locked
+	letters_aphabet_array = get_letters_for_lang(locked)
 	id_frase           = int(item.index)
 	frase_original_til = String(item.text)
 	descripcion_final_actual  = String(item.description_end)
@@ -1941,7 +1953,7 @@ func _aplicar_frase_desde_db(pos: int) -> void:
 	hint_3             = String(item.hint_3)
 	hint_4             = String(item.hint_4)
 	
-	frase_original = normalizar_frase_idioma(frase_original_til, locale_code())
+	frase_original = normalizar_frase_idioma(frase_original_til, locked)
 	#descripcion_final_actual = descripcion_final
 	
 	# Reinicia tus estructuras como ya haces
@@ -1978,11 +1990,20 @@ func seleccionar_por_categoria_y_dificultad(cat: String, diff: int) -> void:
 
 func seleccionar_por_index(index: int) -> void:
 	reset_puzzle_stars()
+	var locked := ""
+	if typeof(PuzzleSaveManager) != TYPE_NIL:
+		locked = PuzzleSaveManager.in_progress_locale(index)
+	if locked != "" and locked != locale_code():
+		var saved := phrase_record(index, locked)
+		if not saved.is_empty():
+			_aplicar_frase_item(saved, locked)
+			return
 	# Buscar frases que cumplan el criterio
 	for i in frases_db.size():
 		var item: Dictionary = frases_db[i]
 		if (item.index == index ):
 			_aplicar_frase_desde_db(i)
+			return
 
 
 
@@ -2061,8 +2082,55 @@ func formatear_numero(n: int) -> String:
 	
 	return resultado
 	
+func _puzzle_board_is_open() -> bool:
+	return is_inside_tree() and not get_tree().get_nodes_in_group("PuzzleCanvas").is_empty()
+
+
 func change_letters_aphabet_array() -> void:
+	if _puzzle_board_is_open():
+		return
 	letters_aphabet_array = get_letters_for_lang(locale_code())
+
+
+func phrase_record(index: int, locale: String) -> Dictionary:
+	var path := phrases_json_path(locale)
+	if not FileAccess.file_exists(path):
+		return {}
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	var arr: Array = []
+	if parsed is Array:
+		arr = parsed
+	elif parsed is Dictionary and (parsed as Dictionary).get("phrases") is Array:
+		arr = (parsed as Dictionary).get("phrases")
+	else:
+		return {}
+	for item in arr:
+		if item is Dictionary and int((item as Dictionary).get("index", -1)) == index:
+			return _phrase_from_dict(item, locale, index)
+	return {}
+
+
+func _phrase_from_dict(dict: Dictionary, locale: String, fallback_index: int) -> Dictionary:
+	if not dict.has("text"):
+		return {}
+	var d := {}
+	d.index = int(dict.get("index", fallback_index))
+	d.text = String(dict.get("text", ""))
+	d.letters_init = String(dict.get("letters_init", "")).to_upper()
+	d.description_init = String(dict.get("description_init", ""))
+	d.description_end = String(dict.get("description_end", ""))
+	d.source = String(dict.get("source", ""))
+	d.pack = String(dict.get("pack", dict.get("collection", "")))
+	d.category = normalize_category(String(dict.get("category", "")))
+	d.language = String(dict.get("language", locale)).to_lower()
+	d.difficulty = int(dict.get("difficulty", 1))
+	d.game_mode = level_game_mode(dict)
+	d.image_number = int(dict.get("image_number", -1))
+	d.hint_1 = String(dict.get("hint_1", ""))
+	d.hint_2 = String(dict.get("hint_2", ""))
+	d.hint_3 = String(dict.get("hint_3", ""))
+	d.hint_4 = String(dict.get("hint_4", ""))
+	return d
 
 # Devuelve un Array[String] con las letras (MAYÚSCULAS) del idioma pedido,
 # sin tildes/diacríticos. Puedes ajustar opciones en 'opts'.

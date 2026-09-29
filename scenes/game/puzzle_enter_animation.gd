@@ -5,6 +5,11 @@ const ORANGE := Color(0.96, 0.51, 0.01, 1)
 
 var _layer: Node
 var _rest: Dictionary = {}
+var _include_header: bool = true
+var _include_colors: bool = true
+var _include_letters: bool = true
+var _include_buttons: bool = true
+var _include_keys: bool = true
 
 
 static func should_play() -> bool:
@@ -13,19 +18,27 @@ static func should_play() -> bool:
 	return true
 
 
-func play(layer: CanvasLayer) -> void:
+func play(layer: Node, include_board: bool = true, include_header: bool = true, include_colors: bool = true, include_letters: bool = true, include_buttons: bool = true, include_keys: bool = true) -> void:
 	_layer = layer
+	_include_header = include_header
+	_include_colors = include_colors
+	_include_letters = include_letters
+	_include_buttons = include_buttons
+	_include_keys = include_keys
 	if _layer == null:
 		return
 	var blocker := _make_blocker()
-	_cache_and_hide()
+	_cache_and_hide(include_board)
 	await get_tree().process_frame
 	await get_tree().process_frame
-	_hide_existing_letters()
-	await _play_chrome()
-	await _play_letters()
+	if _include_letters:
+		_hide_existing_letters()
+	await _play_chrome(include_board)
+	if _include_letters:
+		await _play_letters()
 	_restore_all()
-	await _play_finish_shake()
+	if include_board:
+		await _play_finish_shake()
 	if is_instance_valid(blocker):
 		blocker.queue_free()
 	GameManager.puzzle_enter_pending = false
@@ -53,7 +66,7 @@ func _node(path: String) -> Control:
 	return _layer.get_node_or_null(path) as Control
 
 
-func _cache_and_hide() -> void:
+func _cache_and_hide(include_board: bool = true) -> void:
 	var header := _header()
 	var reveal := _node("PanelUP/ButtonReveal")
 	var hint := _node("PanelUP/ButtonHint")
@@ -61,7 +74,33 @@ func _cache_and_hide() -> void:
 	var board := _node("BoardFrame")
 	var colors := _node("PanelColors")
 	var keys := _node("PanelLetras")
-	for node in [header, reveal, hint, theme, board, colors, keys]:
+	var nodes: Array = []
+	if _include_buttons:
+		nodes.append_array([reveal, hint, theme])
+	else:
+		for button in [reveal, hint, theme]:
+			if button:
+				button.visible = false
+				button.modulate.a = 0.0
+	if _include_keys:
+		nodes.append(keys)
+	if _include_header:
+		nodes.append(header)
+	elif header:
+		header.visible = false
+		header.modulate.a = 0.0
+	if _include_colors:
+		nodes.append(colors)
+	elif colors:
+		colors.visible = false
+		colors.modulate.a = 0.0
+	if include_board:
+		nodes.append(board)
+	elif board:
+		_rest[board] = board.position
+		board.visible = true
+		board.modulate.a = 1.0
+	for node in nodes:
 		if node == null:
 			continue
 		_rest[node] = node.position
@@ -88,7 +127,7 @@ func _header() -> Control:
 	return hud
 
 
-func _play_chrome() -> void:
+func _play_chrome(include_board: bool = true) -> void:
 	var board := _node("BoardFrame")
 	var header := _header()
 	var reveal := _node("PanelUP/ButtonReveal")
@@ -97,19 +136,24 @@ func _play_chrome() -> void:
 	var colors := _node("PanelColors")
 	var keys := _node("PanelLetras")
 	SoundManager.play("IntroCifra")
-	await _slide(board, Vector2(1100, 0), 0.42)
-	SoundManager.play("Whoosh")
-	await _slide(header, Vector2(0, -420), 0.30)
-	SoundManager.play("IntroButtons")
-	_slide(reveal, Vector2(-900, 0), 0.28)
-	await get_tree().create_timer(0.08).timeout
-	_slide(hint, Vector2(-900, 0), 0.28)
-	await get_tree().create_timer(0.08).timeout
-	await _slide(theme, Vector2(-900, 0), 0.28)
-	SoundManager.play("Whoosh")
-	await _slide(colors, Vector2(1100, 0), 0.30)
-	SoundManager.play("Whoosh")
-	await _slide(keys, Vector2(0, 700), 0.32)
+	if include_board:
+		await _slide(board, Vector2(1100, 0), 0.42)
+	if _include_header:
+		SoundManager.play("Whoosh")
+		await _slide(header, Vector2(0, -420), 0.30)
+	if _include_buttons:
+		SoundManager.play("IntroButtons")
+		_slide(reveal, Vector2(-900, 0), 0.28)
+		await get_tree().create_timer(0.08).timeout
+		_slide(hint, Vector2(-900, 0), 0.28)
+		await get_tree().create_timer(0.08).timeout
+		await _slide(theme, Vector2(-900, 0), 0.28)
+	if _include_colors:
+		SoundManager.play("Whoosh")
+		await _slide(colors, Vector2(1100, 0), 0.30)
+	if _include_keys:
+		SoundManager.play("Whoosh")
+		await _slide(keys, Vector2(0, 700), 0.32)
 
 
 func _slide(node: Control, from_offset: Vector2, duration: float) -> void:

@@ -39,6 +39,9 @@ var _name_slot_style: StyleBoxFlat
 var _name_slot_style_active: StyleBoxFlat
 var _updating_name := false
 var _updating_audio := false
+var _name_before_edit := ""
+var _name_typed := ""
+var _name_user_edited := false
 
 const NAME_MAX_LENGTH := 10
 
@@ -124,10 +127,12 @@ func _ready() -> void:
 		_normal_language_styles[code] = button.get_theme_stylebox("normal").duplicate()
 
 	nombre.max_length = NAME_MAX_LENGTH
-	nombre.focus_entered.connect(_refresh_name_slots)
+	nombre.focus_entered.connect(_on_nombre_focus_entered)
 	nombre.focus_exited.connect(_on_nombre_focus_exited)
 	_build_name_slots()
 	_set_nombre_text(_sanitize_player_name(GameManager.chosen_online_name_or_empty()))
+	_name_before_edit = nombre.text
+	_name_typed = nombre.text
 	nombre.placeholder_text = ""
 	h_slider_fx.set_value_no_signal(PlayerPrefs.volumen_fx)
 	h_slider_sound.set_value_no_signal(PlayerPrefs.volumen_musica)
@@ -289,11 +294,26 @@ func _set_audio_icon_state(icon: TextureRect, slash: TextureRect, enabled: bool)
 		slash.visible = not enabled
 
 
+func _on_nombre_focus_entered() -> void:
+	if not _name_user_edited:
+		_name_before_edit = nombre.text
+		_name_typed = nombre.text
+	_refresh_name_slots()
+
+
 func _on_nombre_text_changed(new_text: String) -> void:
 	if _updating_name:
 		return
 	var caret := nombre.caret_column
 	var sanitized := _sanitize_player_name(new_text)
+	if _is_spurious_name_restore(sanitized):
+		_set_nombre_text(_name_typed)
+		nombre.caret_column = _name_typed.length()
+		_save_online_name(true)
+		return
+	if sanitized != _name_before_edit:
+		_name_user_edited = true
+	_name_typed = sanitized
 	if sanitized != new_text:
 		var removed := new_text.length() - sanitized.length()
 		_set_nombre_text(sanitized)
@@ -305,6 +325,7 @@ func _on_nombre_text_changed(new_text: String) -> void:
 
 func _on_nombre_text_submitted(new_text: String) -> void:
 	_set_nombre_text(_sanitize_player_name(new_text))
+	_name_typed = nombre.text
 	_save_online_name(true)
 	nombre.release_focus()
 	_refresh_name_slots()
@@ -317,8 +338,19 @@ func _on_nombre_focus_exited() -> void:
 
 func _on_button_edit_pressed() -> void:
 	nombre.grab_focus()
-	nombre.caret_column = nombre.text.length()
+	if nombre.text.is_empty():
+		nombre.caret_column = 0
+	else:
+		nombre.select_all()
 	_refresh_name_slots()
+
+
+func _is_spurious_name_restore(sanitized: String) -> bool:
+	if not _name_user_edited:
+		return false
+	if sanitized != _name_before_edit or sanitized == _name_typed:
+		return false
+	return absi(sanitized.length() - _name_typed.length()) > 1
 
 
 func _on_button_reset_pressed() -> void:
@@ -359,10 +391,15 @@ func _on_check_button_share_pressed() -> void:
 
 
 func _save_online_name(sync_online: bool = false) -> void:
-	GameManager.set_player_name(_sanitize_player_name(nombre.text))
-	PlayerPrefs.save_prefs()
+	var cleaned := _sanitize_player_name(nombre.text)
+	if not GameManager.looks_like_chosen_online_name(cleaned):
+		return
+	var changed := cleaned != GameManager.player_name or not GameManager.online_name_chosen
+	if changed:
+		GameManager.set_player_name(cleaned)
+		PlayerPrefs.save_prefs()
 	if sync_online and typeof(PlayFabTools) != TYPE_NIL:
-		PlayFabTools.sync_player_display_name(GameManager.player_name)
+		PlayFabTools.sync_player_display_name(cleaned)
 
 
 func _sanitize_player_name(text: String) -> String:
@@ -431,6 +468,12 @@ func _refresh_name_slots() -> void:
 		return
 	var value := nombre.text
 	var caret := nombre.caret_column if nombre.has_focus() else -1
+	var replace_all := (
+		nombre.has_focus()
+		and nombre.has_selection()
+		and not value.is_empty()
+		and nombre.get_selected_text() == value
+	)
 	for i in name_slots.get_child_count():
 		var slot := name_slots.get_child(i) as Panel
 		if slot == null:
@@ -443,7 +486,10 @@ func _refresh_name_slots() -> void:
 			else:
 				letter.text = "_"
 				letter.modulate.a = 0.28
-		var is_active := nombre.has_focus() and i == mini(caret, NAME_MAX_LENGTH - 1)
+		var is_active := nombre.has_focus() and (
+			replace_all and i < value.length()
+			or (not replace_all and i == mini(caret, NAME_MAX_LENGTH - 1))
+		)
 		slot.add_theme_stylebox_override(
 			"panel",
 			_name_slot_style_active if is_active else _name_slot_style

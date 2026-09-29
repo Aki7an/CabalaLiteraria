@@ -3,6 +3,8 @@ extends ColorRect
 const PUZZLE_SELECTION := "res://scenes/MenuSelectLevelByID.tscn"
 const SETTINGS_SCENE := preload("res://scenes/MenuSettings.tscn")
 
+var _leaving := false
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
@@ -66,10 +68,12 @@ func _on_button_options_pressed() -> void:
 
 
 func _on_button_salir_pressed() -> void:
+	if _leaving:
+		return
+	_leaving = true
 	SoundManager.play("ButtonClick")
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	PuzzleSaveManager.save_current_now()
-	await EventLoggerAutoload.submit_if_consented(EventLoggerAutoload.OUTCOME_ABANDONED)
 	var tree := get_tree()
 	var leaving_onboarding := GameManager.is_onboarding_session()
 	if leaving_onboarding:
@@ -79,7 +83,9 @@ func _on_button_salir_pressed() -> void:
 				node.queue_free()
 		GameManager.session_source = GameManager.SOURCE_NONE
 		GameManager.onboarding_stage = 0
+	# La subida de la traza usa HTTPRequest, que no avanza con el árbol en pausa.
 	tree.paused = false
+	EventLoggerAutoload.submit_if_consented(EventLoggerAutoload.OUTCOME_ABANDONED)
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	if not is_instance_valid(tree):

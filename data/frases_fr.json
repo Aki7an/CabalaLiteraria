@@ -42,6 +42,27 @@
 		"test_users": 0
 	},
 	{
+		"index": 116,
+		"image_number": 5,
+		"text": "Le 20 juillet 1969, Apollo 11 a laissé son empreinte sur la Lune.",
+		"letters_init": "",
+		"description_init": "",
+		"description_end": "Neil Armstrong et Buzz Aldrin ont marché sur la Lune, suivis en direct par des centaines de millions de personnes. Pour la première fois, l'être humain foulait un autre monde. Sans vent pour les effacer, leurs empreintes sont toujours là.",
+		"category": "Événement",
+		"language": "fr",
+		"difficulty": 1,
+		"hint_1": "Alunissage d'Apollo 11 : l'image désigne le mot empreinte.",
+		"hint_2": "Mots qui sont dans la phrase :",
+		"hint_3": "",
+		"Longitud frase": 42,
+		"hint_4": "",
+		"game_mode": "quick",
+		"source": "",
+		"difficulty_estimated": 0,
+		"difficulty_measured": 0,
+		"test_users": 0
+	},
+	{
 		"index": 10,
 		"image_number": 9,
 		"text": "Le 9 novembre 1989, le mur de Berlin s'est ouvert et des milliers de citoyens ont franchi les frontières. Ce jour a marqué le début de la fin de la Guerre froide et l'espoir d'une Europe nouvelle et unie.",

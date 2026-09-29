@@ -42,6 +42,27 @@
 		"test_users": 0
 	},
 	{
+		"index": 116,
+		"image_number": 5,
+		"text": "Am 20. Juli 1969 hinterließ Apollo 11 seinen Fußabdruck auf dem Mond.",
+		"letters_init": "",
+		"description_init": "",
+		"description_end": "Neil Armstrong und Buzz Aldrin betraten den Mond, während Hunderte Millionen Menschen live zusahen. Zum ersten Mal stand ein Mensch auf einer anderen Welt. Ohne Wind, der sie verweht, sind ihre Fußabdrücke noch heute dort.",
+		"category": "Ereignis",
+		"language": "de",
+		"difficulty": 1,
+		"hint_1": "Apollo-11-Mondlandung: das Bild zeigt auf das Wort Fußabdruck.",
+		"hint_2": "Wörter, die im Satz stehen:",
+		"hint_3": "",
+		"Longitud frase": 48,
+		"hint_4": "",
+		"game_mode": "quick",
+		"source": "",
+		"difficulty_estimated": 0,
+		"difficulty_measured": 0,
+		"test_users": 0
+	},
+	{
 		"index": 10,
 		"image_number": 9,
 		"text": "Am 9. November 1989 öffnete sich die Berliner Mauer und Tausende Bürger überquerten die Grenzübergänge. Dieser Tag markierte den Anfang vom Ende des Kalten Krieges und die Hoffnung auf ein neues, vereintes Europa.",

@@ -7,7 +7,7 @@ const WORD_COLORS: Array[Color] = [
 	Color(0.98, 0.62, 0.12, 1),
 ]
 const KEYS := ["IntroObserve", "IntroDecipher", "IntroDiscover"]
-const FALLBACKS := ["MIRA", "DESCIFRA", "DESCUBRE"]
+const FALLBACKS := ["OBSERVA", "DESCIFRA", "DESCUBRE"]
 
 @export var letter_size: int = 68
 @export var letter_embolden: float = 0.85

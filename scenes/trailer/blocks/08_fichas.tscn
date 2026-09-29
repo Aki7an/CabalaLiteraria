@@ -1,0 +1,131 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scenes/trailer/blocks/08_fichas.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_backdrop.tscn" id="2_bg"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_feature_card.tscn" id="3_card"]
+[ext_resource type="Theme" path="res://scenes/trailer/parts/trailer_theme.tres" id="theme"]
+
+[sub_resource type="StyleBoxFlat" id="Style_orange"]
+bg_color = Color(0.92, 0.48, 0.08, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 18
+shadow_offset = Vector2(0, 12)
+
+[sub_resource type="StyleBoxFlat" id="Style_purple"]
+bg_color = Color(0.38, 0.25, 0.72, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 18
+shadow_offset = Vector2(0, 12)
+
+[sub_resource type="StyleBoxFlat" id="Style_green"]
+bg_color = Color(0.22, 0.62, 0.28, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 18
+shadow_offset = Vector2(0, 12)
+
+[node name="08_Fichas" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+clip_contents = true
+mouse_filter = 2
+theme = ExtResource("theme")
+script = ExtResource("1_script")
+
+[node name="Backdrop" parent="." instance=ExtResource("2_bg")]
+
+[node name="CardsStart" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 80)
+
+[node name="CardsShown" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 0)
+
+[node name="Mosaic" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Features" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Cards" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Idiomas" parent="Cards" instance=ExtResource("3_card")]
+offset_left = 80.0
+offset_top = 360.0
+offset_right = 500.0
+offset_bottom = 720.0
+
+[node name="Puzles" parent="Cards" instance=ExtResource("3_card")]
+offset_left = 540.0
+offset_top = 360.0
+offset_right = 960.0
+offset_bottom = 720.0
+theme_override_styles/panel = SubResource("Style_orange")
+
+[node name="Value" parent="Cards/Puzles" index="0"]
+text = "+100"
+
+[node name="Label" parent="Cards/Puzles" index="1"]
+text = "PUZLES"
+
+[node name="Online" parent="Cards" instance=ExtResource("3_card")]
+offset_left = 1000.0
+offset_top = 360.0
+offset_right = 1420.0
+offset_bottom = 720.0
+theme_override_styles/panel = SubResource("Style_purple")
+
+[node name="Value" parent="Cards/Online" index="0"]
+theme_override_font_sizes/font_size = 40
+text = "CLASIFICACIÓN"
+
+[node name="Label" parent="Cards/Online" index="1"]
+text = "ONLINE"
+
+[node name="Minutos" parent="Cards" instance=ExtResource("3_card")]
+offset_left = 1460.0
+offset_top = 360.0
+offset_right = 1880.0
+offset_bottom = 720.0
+theme_override_styles/panel = SubResource("Style_green")
+
+[node name="Value" parent="Cards/Minutos" index="0"]
+text = "2–5"
+
+[node name="Label" parent="Cards/Minutos" index="1"]
+text = "MINUTOS"

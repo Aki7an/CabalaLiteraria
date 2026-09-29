@@ -42,6 +42,27 @@
 		"test_users": 0
 	},
 	{
+		"index": 116,
+		"image_number": 5,
+		"text": "El 20 de julio de 1969, Apolo 11 dejó su huella en la Luna.",
+		"letters_init": "",
+		"description_init": "",
+		"description_end": "Neil Armstrong y Buzz Aldrin caminaron por la Luna ante cientos de millones de personas que lo seguían en directo. Por primera vez, el ser humano pisaba otro mundo. Sin viento que las borre, sus huellas siguen allí.",
+		"category": "Efeméride",
+		"language": "es",
+		"difficulty": 1,
+		"hint_1": "Efeméride del alunizaje del Apolo 11: la imagen señala la palabra huella.",
+		"hint_2": "Palabras que están en la frase:",
+		"hint_3": "",
+		"Longitud frase": 36,
+		"hint_4": "",
+		"game_mode": "quick",
+		"source": "",
+		"difficulty_estimated": 0,
+		"difficulty_measured": 0,
+		"test_users": 0
+	},
+	{
 		"index": 10,
 		"image_number": 9,
 		"text": "El 9 de noviembre de 1989, el Muro de Berlín se abrió y miles de ciudadanos cruzaron los pasos fronterizos. Aquella jornada marcó el inicio del fin de la Guerra Fría y la esperanza de una nueva Europa unida.",

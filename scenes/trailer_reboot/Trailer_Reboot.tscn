@@ -1,0 +1,216 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scenes/trailer_reboot/reboot_director.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_backdrop.tscn" id="2_bg"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_board.tscn" id="3_board"]
+[ext_resource type="Texture2D" path="res://data/images/image5.png" id="4_moon"]
+[ext_resource type="Texture2D" path="res://images/Icono.png" id="5_icon"]
+
+[sub_resource type="StyleBoxFlat" id="Style_foot"]
+bg_color = Color(0.92, 0.48, 0.08, 0.1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.92, 0.48, 0.08, 0.95)
+corner_radius_top_left = 200
+corner_radius_top_right = 200
+corner_radius_bottom_right = 200
+corner_radius_bottom_left = 200
+
+[sub_resource type="StyleBoxFlat" id="Style_icon"]
+bg_color = Color(0.92, 0.48, 0.08, 1)
+corner_radius_top_left = 68
+corner_radius_top_right = 68
+corner_radius_bottom_right = 68
+corner_radius_bottom_left = 68
+
+[node name="Trailer_Reboot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+clip_contents = true
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Backdrop" parent="." instance=ExtResource("2_bg")]
+
+[node name="ImageLayer" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Moon" type="TextureRect" parent="ImageLayer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+texture = ExtResource("4_moon")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="FootMark" type="Panel" parent="ImageLayer"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 620.0
+offset_top = 680.0
+offset_right = 1080.0
+offset_bottom = 980.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_foot")
+
+[node name="BoardRig" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 120.0
+offset_top = 160.0
+offset_right = 1389.0
+offset_bottom = 720.0
+mouse_filter = 2
+
+[node name="Board" parent="BoardRig" instance=ExtResource("3_board")]
+unique_name_in_owner = true
+
+[node name="Flash" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Mosaic" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="LinkInset" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 48.0
+offset_top = 720.0
+offset_right = 368.0
+offset_bottom = 1040.0
+mouse_filter = 2
+texture = ExtResource("4_moon")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 30
+layout_mode = 0
+offset_left = 80.0
+offset_top = 40.0
+offset_right = 1840.0
+offset_bottom = 160.0
+text = "MIRA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 30
+layout_mode = 0
+offset_left = 160.0
+offset_top = 420.0
+offset_right = 1760.0
+offset_bottom = 640.0
+text = ""
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LogoRoot" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="IconClip" type="Panel" parent="LogoRoot"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 0
+offset_left = 810.0
+offset_top = 88.0
+offset_right = 1110.0
+offset_bottom = 388.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_icon")
+
+[node name="Icon" type="TextureRect" parent="LogoRoot/IconClip"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 300.0
+mouse_filter = 2
+texture = ExtResource("5_icon")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Name" type="Label" parent="LogoRoot"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 160.0
+offset_top = 420.0
+offset_right = 1760.0
+offset_bottom = 530.0
+text = "CifraLetra"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tagline" type="Label" parent="LogoRoot"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 160.0
+offset_top = 530.0
+offset_right = 1760.0
+offset_bottom = 600.0
+text = "MIRA  ·  DESCIFRA  ·  DESCUBRE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Available" type="Label" parent="LogoRoot"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 160.0
+offset_top = 680.0
+offset_right = 1760.0
+offset_bottom = 760.0
+text = "YA DISPONIBLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stores" type="Label" parent="LogoRoot"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 160.0
+offset_top = 760.0
+offset_right = 1760.0
+offset_bottom = 830.0
+text = "App Store   ·   Google Play"
+horizontal_alignment = 1
+vertical_alignment = 1

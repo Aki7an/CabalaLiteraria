@@ -799,19 +799,7 @@ func _update_image() -> void:
 
 
 func _find_image_path(image_number: int) -> String:
-	if image_number < 0:
-		return ""
-	var basename := "%s/image%d" % [IMAGE_DIR, image_number]
-	var extensions := (
-		[".PNG", ".png", ".jpg", ".jpeg", ".webp"]
-		if image_number == 1
-		else [".png", ".PNG", ".jpg", ".jpeg", ".webp"]
-	)
-	for extension in extensions:
-		var path: String = basename + str(extension)
-		if ResourceLoader.exists(path):
-			return path
-	return ""
+	return GameManager.find_level_image_path(image_number)
 
 
 func _image_number_from_filename(filename: String) -> int:

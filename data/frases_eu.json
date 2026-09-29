@@ -42,6 +42,27 @@
 		"test_users": 0
 	},
 	{
+		"index": 116,
+		"image_number": 5,
+		"text": "1969ko uztailaren 20an Apollo 11k bere aztarna utzi zuen Ilargian.",
+		"letters_init": "",
+		"description_init": "",
+		"description_end": "Neil Armstrong eta Buzz Aldrin Ilargian ibili ziren, ehunka milioi pertsonak zuzenean ikusten zituzten bitartean. Lehen aldiz, gizakiak beste mundu bat zapaldu zuen. Haizerik ez dagoenez, haien aztarnak han daude oraindik.",
+		"category": "Gertaera",
+		"language": "eu",
+		"difficulty": 1,
+		"hint_1": "Apollo 11ren ilargiratzea: irudiak aztarna hitza seinalatzen du.",
+		"hint_2": "Esaldiaren hitzak:",
+		"hint_3": "",
+		"Longitud frase": 46,
+		"hint_4": "",
+		"game_mode": "quick",
+		"source": "",
+		"difficulty_estimated": 0,
+		"difficulty_measured": 0,
+		"test_users": 0
+	},
+	{
 		"index": 10,
 		"image_number": 9,
 		"text": "On November 9, 1989, the Berlin Wall opened and thousands of citizens crossed the border crossings. That day marked the beginning of the end of the Cold War and the hope of a new, united Europe.",

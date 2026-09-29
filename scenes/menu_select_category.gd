@@ -135,13 +135,15 @@ func _ready() -> void:
 	_play_style_normal = button_play.get_theme_stylebox("normal").duplicate()
 	_play_style_hover = button_play.get_theme_stylebox("hover").duplicate()
 	_play_style_pressed = button_play.get_theme_stylebox("pressed").duplicate()
+	if _finished_puzzles_excluding_onboarding() < PUZZLE_COACH_LIMIT:
+		_nudge_quick = true
+		selected_mode = MODE_QUICK
 	_update_category_selection()
 	_update_mode_selection()
 	_update_localized_copy()
 	_update_category_progress()
 	_update_play_button()
-	if _finished_puzzles_excluding_onboarding() < PUZZLE_COACH_LIMIT:
-		_nudge_quick = true
+	if _nudge_quick:
 		_start_quick_coach()
 
 
@@ -249,7 +251,7 @@ func _update_mode_selection() -> void:
 		button.add_theme_stylebox_override("normal", style)
 		button.add_theme_stylebox_override("hover", style)
 		button.add_theme_stylebox_override("pressed", style)
-	if _nudge_quick and selected_mode.is_empty():
+	if _nudge_quick and selected_mode == MODE_QUICK:
 		_apply_quick_coach_style()
 
 
@@ -516,10 +518,10 @@ func _finished_puzzles_excluding_onboarding() -> int:
 
 
 func _start_quick_coach() -> void:
-	if not _nudge_quick or not selected_mode.is_empty():
+	if not _nudge_quick or selected_mode != MODE_QUICK:
 		return
 	await get_tree().process_frame
-	if not is_inside_tree() or not _nudge_quick or not selected_mode.is_empty():
+	if not is_inside_tree() or not _nudge_quick or selected_mode != MODE_QUICK:
 		return
 	_apply_quick_coach_style()
 	_start_quick_coach_blink()
@@ -580,6 +582,13 @@ func _category_buttons_list() -> Array[Button]:
 	return buttons
 
 
+func _coached_category_buttons() -> Array[Button]:
+	if selected_mode == MODE_QUICK and GameManager.suggests_first_puzzle():
+		var first_puzzle_category: Array[Button] = [button_efemerides]
+		return first_puzzle_category
+	return _category_buttons_list()
+
+
 func _blink_category_buttons() -> void:
 	_stop_category_coach()
 	_category_coach_token += 1
@@ -587,7 +596,7 @@ func _blink_category_buttons() -> void:
 	await get_tree().create_timer(0.22).timeout
 	if token != _category_coach_token or not is_inside_tree():
 		return
-	var buttons := _category_buttons_list()
+	var buttons := _coached_category_buttons()
 	if buttons.is_empty():
 		return
 	for _i in 2:

@@ -9,15 +9,19 @@ extends ColorRect
 @onready  var longitud: float
 
 func _ready():
-
-	
+	if _is_trailer_scene():
+		visible = false
+		set_process(false)
+		process_mode = Node.PROCESS_MODE_DISABLED
+		return
 	Color_rect_down_position_in_screen = canvas_juego.position.y + color_rect_down.position.y
 	Canvas_juego_position_in_screen = canvas_juego.position.y
 	SignalManager.intro_canvas_juego_tween.connect(_intro_canvas_juego_tween)
 	
 
 func _process(delta) -> void:
-	
+	if _is_trailer_scene():
+		return
 	if Canvas_juego_position_in_screen != canvas_juego.position.y:
 		Canvas_juego_position_in_screen = canvas_juego.position.y
 		Color_rect_down_position_in_screen = canvas_juego.position.y + color_rect_down.position.y
@@ -32,7 +36,21 @@ func _process(delta) -> void:
 		#print ("AJUSTE AJUSTE AJUSTE AJUSTE AJUSTE AJUSTE AJUSTE AJUSTE AJUSTE")
 		canvas_juego.position.y += 20
 		
+func _is_trailer_scene() -> bool:
+	var node: Node = self
+	while node:
+		if str(node.scene_file_path).begins_with("res://scenes/trailer/"):
+			return true
+		node = node.get_parent()
+	var tree := get_tree()
+	if tree != null and tree.current_scene != null:
+		return str(tree.current_scene.scene_file_path).begins_with("res://scenes/trailer/")
+	return false
+
+
 func _intro_canvas_juego_tween() -> void:
+	if _is_trailer_scene():
+		return
 		# retrasa este código
 	canvas_juego.position = Vector2(canvas_juego.position.x, 1400 - color_rect_down.position.y )
 	await get_tree().create_timer(0.8).timeout

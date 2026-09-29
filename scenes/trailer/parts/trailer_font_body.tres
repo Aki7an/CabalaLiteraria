@@ -1,0 +1,8 @@
+[gd_resource type="FontVariation" format=3]
+
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="1_body"]
+
+[resource]
+base_font = ExtResource("1_body")
+spacing_glyph = 0
+spacing_space = 0

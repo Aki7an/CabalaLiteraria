@@ -46,13 +46,29 @@ func begin_current_puzzle() -> void:
 		_write_to_disk()
 
 
+func in_progress_locale(puzzle_id: int) -> String:
+	var state := get_puzzle_state(puzzle_id)
+	if str(state.get("status", "")) != "in_progress":
+		return ""
+	var cipher: Dictionary = state.get("cipher", {})
+	var locale := str(cipher.get("locale", "")).strip_edges().to_lower()
+	if locale == "":
+		var meta: Dictionary = state.get("meta", {})
+		locale = str(meta.get("locale", "")).strip_edges().to_lower()
+	return locale
+
+
 func prepare_current_puzzle_cipher() -> bool:
-	var state := get_puzzle_state(int(GameManager.id_frase))
+	var puzzle_id := int(GameManager.id_frase)
+	var state := get_puzzle_state(puzzle_id)
 	if state.is_empty() or str(state.get("status", "")) != "in_progress":
 		return false
 	var cipher: Dictionary = state.get("cipher", {})
-	if str(cipher.get("locale", GameManager.locale_code())) != GameManager.locale_code():
+	if cipher.is_empty():
 		return false
+	var saved_locale := in_progress_locale(puzzle_id)
+	if saved_locale != "":
+		GameManager.puzzle_locale = saved_locale
 	return GameManager.import_cipher_state(cipher)
 
 
@@ -613,7 +629,7 @@ func _current_meta() -> Dictionary:
 		"category": GameManager.normalize_category(GameManager.categoria_actual),
 		"mode": GameManager.game_mode_actual,
 		"difficulty": int(GameManager.dificultad_actual),
-		"locale": GameManager.locale_code(),
+		"locale": GameManager.active_puzzle_locale(),
 		"letters_filled": int(GameManager.numero_letras_reveladas),
 		"letters_total": int(GameManager.numero_letras_a_revelar_originales),
 		"tiempo_partida": int(GameManager.tiempo_partida),

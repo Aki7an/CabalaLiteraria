@@ -1,0 +1,145 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scenes/trailer/blocks/07_categorias.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_backdrop.tscn" id="2_bg"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_category_card.tscn" id="3_card"]
+[ext_resource type="Theme" path="res://scenes/trailer/parts/trailer_theme.tres" id="theme"]
+[ext_resource type="Texture2D" path="res://images/Adivinanza.png" id="4_curio_icon"]
+[ext_resource type="Texture2D" path="res://data/images/image1060.png" id="5_curio_img"]
+[ext_resource type="Texture2D" path="res://images/Efemerides.png" id="6_efem_icon"]
+[ext_resource type="Texture2D" path="res://data/images/image5.png" id="7_efem_img"]
+[ext_resource type="Texture2D" path="res://images/FragmentosLiterarios.png" id="8_frag_icon"]
+[ext_resource type="Texture2D" path="res://data/images/image3058.png" id="9_frag_img"]
+
+[sub_resource type="StyleBoxFlat" id="Style_curio"]
+bg_color = Color(1, 0.96, 0.9, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.812, 0.463, 0.176, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_size = 16
+shadow_offset = Vector2(0, 10)
+shadow_color = Color(0, 0, 0, 0.18)
+
+[sub_resource type="StyleBoxFlat" id="Style_efem"]
+bg_color = Color(1, 0.96, 0.9, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.812, 0.408, 0.38, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_size = 16
+shadow_offset = Vector2(0, 10)
+shadow_color = Color(0, 0, 0, 0.18)
+
+[sub_resource type="StyleBoxFlat" id="Style_frag"]
+bg_color = Color(1, 0.96, 0.9, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.4, 0.824, 0.698, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_size = 16
+shadow_offset = Vector2(0, 10)
+shadow_color = Color(0, 0, 0, 0.18)
+
+[node name="07_Categorias" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+clip_contents = true
+mouse_filter = 2
+theme = ExtResource("theme")
+script = ExtResource("1_script")
+
+[node name="Backdrop" parent="." instance=ExtResource("2_bg")]
+
+[node name="CardsStart" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-300, 0)
+
+[node name="CardsShown" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 0)
+
+[node name="CardsExit" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(2200, 0)
+
+[node name="Cards" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Personajes" parent="Cards" instance=ExtResource("3_card")]
+offset_left = 70.0
+offset_top = 220.0
+offset_right = 500.0
+offset_bottom = 860.0
+
+[node name="Curiosidades" parent="Cards" instance=ExtResource("3_card")]
+offset_left = 530.0
+offset_top = 220.0
+offset_right = 960.0
+offset_bottom = 860.0
+theme_override_styles/panel = SubResource("Style_curio")
+
+[node name="Title" parent="Cards/Curiosidades" index="1"]
+text = "CURIOSIDADES"
+
+[node name="Icon" parent="Cards/Curiosidades" index="0"]
+texture = ExtResource("4_curio_icon")
+
+[node name="Image" parent="Cards/Curiosidades" index="2"]
+texture = ExtResource("5_curio_img")
+
+[node name="Efemerides" parent="Cards" instance=ExtResource("3_card")]
+offset_left = 990.0
+offset_top = 220.0
+offset_right = 1420.0
+offset_bottom = 860.0
+theme_override_styles/panel = SubResource("Style_efem")
+
+[node name="Title" parent="Cards/Efemerides" index="1"]
+text = "EFEMÉRIDES"
+
+[node name="Icon" parent="Cards/Efemerides" index="0"]
+texture = ExtResource("6_efem_icon")
+
+[node name="Image" parent="Cards/Efemerides" index="2"]
+texture = ExtResource("7_efem_img")
+
+[node name="Literatura" parent="Cards" instance=ExtResource("3_card")]
+offset_left = 1450.0
+offset_top = 220.0
+offset_right = 1880.0
+offset_bottom = 860.0
+theme_override_styles/panel = SubResource("Style_frag")
+
+[node name="Title" parent="Cards/Literatura" index="1"]
+text = "LITERATURA"
+
+[node name="Icon" parent="Cards/Literatura" index="0"]
+texture = ExtResource("8_frag_icon")
+
+[node name="Image" parent="Cards/Literatura" index="2"]
+texture = ExtResource("9_frag_img")

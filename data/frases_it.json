@@ -42,6 +42,27 @@
 		"test_users": 0
 	},
 	{
+		"index": 116,
+		"image_number": 5,
+		"text": "Il 20 luglio 1969 l'Apollo 11 lasciò la sua impronta sulla Luna.",
+		"letters_init": "",
+		"description_init": "",
+		"description_end": "Neil Armstrong e Buzz Aldrin camminarono sulla Luna, seguiti in diretta da centinaia di milioni di persone. Per la prima volta l'essere umano calcava un altro mondo. Senza vento a cancellarle, le loro impronte sono ancora lì.",
+		"category": "Evento",
+		"language": "it",
+		"difficulty": 1,
+		"hint_1": "Allunaggio dell'Apollo 11: l'immagine indica la parola impronta.",
+		"hint_2": "Parole che sono nella frase:",
+		"hint_3": "",
+		"Longitud frase": 44,
+		"hint_4": "",
+		"game_mode": "quick",
+		"source": "",
+		"difficulty_estimated": 0,
+		"difficulty_measured": 0,
+		"test_users": 0
+	},
+	{
 		"index": 10,
 		"image_number": 9,
 		"text": "Il 9 novembre 1989, il Muro di Berlino venne abbattuto e migliaia di cittadini varcarono i valichi di frontiera. Quel giorno segnò l'inizio della fine della Guerra Fredda e la speranza di una nuova Europa unita.",

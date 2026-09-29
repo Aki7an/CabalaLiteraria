@@ -43,6 +43,14 @@ const GREEN_DELAY_TIME_SEC := 0.7
 const GREEN_DELAY_BOUNCES := 3
 const GREEN_DELAY_FEEDBACK := 0.7
 const GREEN_ALPHABET_FALLBACK := 27
+const FAST_FORWARD_LOOP_PATH := "res://audio/vhs_fast_forward_loop.ogg"
+const FAST_FORWARD_LOOP_DB := -10.0
+const FAST_FORWARD_SILENT_DB := -40.0
+const FAST_FORWARD_FADE_IN_SEC := 0.18
+const FAST_FORWARD_FADE_OUT_SEC := 0.22
+## Tape spin-up / spin-down pitch when the loop starts and stops.
+const FAST_FORWARD_SPIN_UP_FROM := 0.55
+const FAST_FORWARD_SPIN_DOWN_TO := 0.5
 
 var _registry: Dictionary[String, SoundEntry] = {}
 var _music_player: AudioStreamPlayer
@@ -66,6 +74,10 @@ var _green_pitch_tween: Tween
 var _green_seq_index := 0
 var _green_delay_token := 0
 var _green_voices: Array[AudioStreamPlayer] = []
+var _letter_speed := 1.0
+var _fast_forward_player: AudioStreamPlayer
+var _fast_forward_tween: Tween
+var _music_blocked := false
 
 func _ready() -> void:
 	_build_registry()
@@ -142,6 +154,9 @@ func set_bus_default(name: String, new_bus: String) -> void:
 
 func apply_audio_prefs() -> void:
 	_apply_buses()
+	if _music_blocked:
+		_stop_background_music_players()
+		return
 	if _music_player and not _music_player.playing and not _switching_music:
 		_resume_current_music()
 	if Engine.get_main_loop() != null:
@@ -155,7 +170,7 @@ func _apply_buses() -> void:
 		var music_db := slider_to_db(PlayerPrefs.volumen_musica)
 		music_db += linear_to_db(clampf(_music_duck, 0.0001, 1.0))
 		AudioServer.set_bus_volume_db(music_idx, music_db)
-		AudioServer.set_bus_mute(music_idx, not PlayerPrefs.mute_musica)
+		AudioServer.set_bus_mute(music_idx, _music_blocked or not PlayerPrefs.mute_musica)
 	if fx_idx >= 0:
 		AudioServer.set_bus_volume_db(fx_idx, slider_to_db(PlayerPrefs.volumen_fx))
 		AudioServer.set_bus_mute(fx_idx, not PlayerPrefs.mute_fx)
@@ -271,7 +286,7 @@ func _schedule_green_delay(volume_db: float, pitch: float, wet: float) -> void:
 		if bounce_lin <= 0.0001:
 			continue
 		var bounce_db := linear_to_db(bounce_lin)
-		var delay_sec := GREEN_DELAY_TIME_SEC * float(bounce)
+		var delay_sec := GREEN_DELAY_TIME_SEC * float(bounce) / _letter_speed
 		tree.create_timer(delay_sec).timeout.connect(
 			func() -> void:
 				if token != _green_delay_token:
@@ -287,7 +302,8 @@ func _spawn_green_voice(volume_db: float, pitch: float) -> void:
 	player.stream = GREEN_LETTER_SFX
 	player.process_mode = Node.PROCESS_MODE_ALWAYS
 	player.volume_db = volume_db
-	player.pitch_scale = pitch
+	player.set_meta("base_pitch", pitch)
+	player.pitch_scale = pitch * _letter_speed
 	player.finished.connect(func() -> void:
 		_green_voices.erase(player)
 		player.queue_free()
@@ -319,7 +335,69 @@ func stop_green_letter_clicks() -> void:
 		_green_pitch_tween.kill()
 		_green_pitch_tween = null
 	_clear_green_voices()
+	set_letter_fast_forward(false)
 	unduck_music()
+
+
+## Reveal fast-forward: letter clicks and their echoes play `speed` times
+## faster while a looping VHS tape sound runs underneath.
+func set_letter_fast_forward(active: bool, speed := 2.0) -> void:
+	_letter_speed = maxf(speed, 0.01) if active else 1.0
+	for player in _green_voices:
+		if is_instance_valid(player):
+			player.pitch_scale = float(player.get_meta("base_pitch", 1.0)) * _letter_speed
+	if active:
+		_start_fast_forward_loop()
+	else:
+		_stop_fast_forward_loop()
+
+
+func _start_fast_forward_loop() -> void:
+	if _fast_forward_player == null:
+		var stream := _load_audio_stream(FAST_FORWARD_LOOP_PATH)
+		if stream == null:
+			return
+		_set_stream_loop(stream, true)
+		_fast_forward_player = AudioStreamPlayer.new()
+		_fast_forward_player.name = "FastForwardLoop"
+		_fast_forward_player.bus = "SoundFx"
+		_fast_forward_player.stream = stream
+		_fast_forward_player.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(_fast_forward_player)
+	_kill_fast_forward_tween()
+	if not _fast_forward_player.playing:
+		_fast_forward_player.volume_db = FAST_FORWARD_SILENT_DB
+		_fast_forward_player.pitch_scale = FAST_FORWARD_SPIN_UP_FROM
+		_fast_forward_player.play()
+	_fast_forward_tween = create_tween().set_parallel(true)
+	_fast_forward_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_fast_forward_tween.tween_property(
+		_fast_forward_player, "volume_db", FAST_FORWARD_LOOP_DB, FAST_FORWARD_FADE_IN_SEC
+	)
+	_fast_forward_tween.tween_property(
+		_fast_forward_player, "pitch_scale", 1.0, FAST_FORWARD_FADE_IN_SEC * 1.5
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+
+func _stop_fast_forward_loop() -> void:
+	if _fast_forward_player == null or not _fast_forward_player.playing:
+		return
+	_kill_fast_forward_tween()
+	_fast_forward_tween = create_tween().set_parallel(true)
+	_fast_forward_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_fast_forward_tween.tween_property(
+		_fast_forward_player, "volume_db", FAST_FORWARD_SILENT_DB, FAST_FORWARD_FADE_OUT_SEC
+	)
+	_fast_forward_tween.tween_property(
+		_fast_forward_player, "pitch_scale", FAST_FORWARD_SPIN_DOWN_TO, FAST_FORWARD_FADE_OUT_SEC
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	_fast_forward_tween.chain().tween_callback(_fast_forward_player.stop)
+
+
+func _kill_fast_forward_tween() -> void:
+	if _fast_forward_tween:
+		_fast_forward_tween.kill()
+		_fast_forward_tween = null
 
 
 func play_red_letter_click() -> void:
@@ -328,6 +406,7 @@ func play_red_letter_click() -> void:
 	player.bus = "SoundFx"
 	player.stream = RED_LETTER_SFX
 	player.process_mode = Node.PROCESS_MODE_ALWAYS
+	player.pitch_scale = _letter_speed
 	player.finished.connect(player.queue_free)
 	add_child(player)
 	player.play()
@@ -400,12 +479,75 @@ func _on_tree_node_added(node: Node) -> void:
 		call_deferred("_sync_music_to_current_scene")
 
 
+func play_trailer_music() -> void:
+	_music_blocked = false
+	var idx := AudioServer.get_bus_index("Music")
+	if idx >= 0:
+		AudioServer.set_bus_mute(idx, false)
+	if _music_player == null:
+		return
+	if _music_player.playing and _music_player.stream != null:
+		return
+	var stream := load("res://audio/music/02_revelation.ogg")
+	if stream is AudioStream:
+		_music_player.stream = stream
+	_music_player.volume_db = -10.0
+	_music_player.play()
+
+
+func trailer_music_swell(db: float = -2.0, sec: float = 0.8) -> void:
+	if _music_player == null:
+		return
+	if _music_tween:
+		_music_tween.kill()
+	_music_tween = create_tween()
+	_music_tween.tween_property(_music_player, "volume_db", db, sec).set_trans(Tween.TRANS_SINE)
+
+
+func trailer_music_close(sec: float = 1.2) -> void:
+	if _music_player == null:
+		return
+	if _music_tween:
+		_music_tween.kill()
+	_music_tween = create_tween()
+	_music_tween.tween_property(_music_player, "volume_db", -6.0, sec).set_trans(Tween.TRANS_SINE)
+
+
+func block_background_music() -> void:
+	_music_blocked = true
+	_stop_background_music_players()
+	var idx := AudioServer.get_bus_index("Music")
+	if idx >= 0:
+		AudioServer.set_bus_mute(idx, true)
+
+
+func _stop_background_music_players() -> void:
+	_music_switch_id += 1
+	_switching_music = false
+	if _music_tween:
+		_music_tween.kill()
+		_music_tween = null
+	if _outgoing_tween:
+		_outgoing_tween.kill()
+		_outgoing_tween = null
+	if _music_player:
+		_music_player.stop()
+	if _outgoing_player:
+		_outgoing_player.stop()
+
+
 func _sync_music_to_current_scene() -> void:
 	var tree := get_tree()
 	if tree == null:
 		return
 	var scene := tree.current_scene
 	var path := scene.scene_file_path if scene != null else ""
+	if path.begins_with("res://scenes/trailer/") or path.contains("trailer_cinematic"):
+		play_trailer_music()
+		return
+	if _music_blocked:
+		block_background_music()
+		return
 	if _is_gameplay_scene(path):
 		_set_music_context(MusicContext.GAME)
 	else:
@@ -475,6 +617,9 @@ func _begin_outgoing_fade(duration: float) -> void:
 
 
 func _set_music_context(context: MusicContext) -> void:
+	if _music_blocked:
+		_stop_background_music_players()
+		return
 	if _music_player == null:
 		return
 	if _music_context == context and (

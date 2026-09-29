@@ -1226,6 +1226,10 @@ func _finished_puzzles_excluding_onboarding() -> int:
 
 
 func _find_recommended_item() -> Dictionary:
+	if GameManager.suggests_first_puzzle():
+		for item in _visible_items:
+			if int(item.get("index", -1)) == GameManager.FIRST_PUZZLE_ID and GameManager.is_puzzle_playable(item):
+				return item
 	var best: Dictionary = {}
 	var best_stars := 99
 	var best_status := 99
@@ -1516,24 +1520,11 @@ func _find_image_path(image_number: int, index_number: int) -> String:
 	var cache_key := "%d:%d" % [image_number, index_number]
 	if _image_path_cache.has(cache_key):
 		return str(_image_path_cache[cache_key])
-	var directory := IMAGES_DIR.trim_suffix("/")
-	var candidate_numbers: Array[int] = [image_number]
-	if index_number != image_number:
-		candidate_numbers.append(index_number)
-	for candidate_number in candidate_numbers:
-		var basename := "image%d" % candidate_number
-		if candidate_number == 1:
-			var uppercase_png := "%s/%s.PNG" % [directory, basename]
-			if ResourceLoader.exists(uppercase_png):
-				_image_path_cache[cache_key] = uppercase_png
-				return uppercase_png
-		for extension in FILE_EXTS:
-			var candidate := "%s/%s%s" % [directory, basename, extension]
-			if ResourceLoader.exists(candidate):
-				_image_path_cache[cache_key] = candidate
-				return candidate
-	_image_path_cache[cache_key] = ""
-	return ""
+	var path := GameManager.find_level_image_path(image_number)
+	if path == "" and index_number >= 0 and index_number != image_number:
+		path = GameManager.find_level_image_path(index_number)
+	_image_path_cache[cache_key] = path
+	return path
 
 
 func _load_and_populate_from_path(path: String) -> void:

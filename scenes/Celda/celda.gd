@@ -67,6 +67,9 @@ func _ready():
 	_inicializar_letra()
 	_inicializar_numero()
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	var button := get_node_or_null("Fondo/Button") as BaseButton
+	if button:
+		button.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
 	SignalManager.update_size_celdas.connect(set_font_size)
 	
 func set_font_size() -> void:
@@ -228,6 +231,8 @@ func asignar_letra(order:int) -> void:
 	label_numero.add_theme_font_size_override("font_size",font_size_asignada)
 
 func _on_button_pressed() -> void:
+	if _board_drag_blocks_selection():
+		return
 	if bloqueada and not revelada_verde:
 		return
 	if letra == " " or numero >= 100:
@@ -295,13 +300,33 @@ func deselect_all_cels() -> void:
 
 func deselect_cell() -> void:
 	set_number_highlight(false)
-		
+
+
+func release_pointer_press() -> void:
+	var button := get_node_or_null("Fondo/Button") as BaseButton
+	if button == null:
+		return
+	button.set_block_signals(true)
+	button.disabled = true
+	button.disabled = false
+	button.set_block_signals(false)
+
+
+func _board_drag_blocks_selection() -> bool:
+	var node: Node = self
+	while node != null:
+		if node.has_method("is_suppressing_cell_selection"):
+			return bool(node.call("is_suppressing_cell_selection"))
+		node = node.get_parent()
+	return false
+
+
 func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		_on_button_pressed()
-		accept_event()
-	elif event is InputEventScreenTouch and event.pressed:
-		_on_button_pressed()
+	if not _board_drag_blocks_selection():
+		return
+	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT) \
+			or event is InputEventScreenTouch \
+			or event is InputEventScreenDrag:
 		accept_event()
 
 ## Player assignment: visible letter, still editable.

@@ -1,0 +1,50 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scenes/trailer/trailer_director.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/blocks/01_pregunta.tscn" id="2_b1"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/blocks/02_espera.tscn" id="3_b2"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/blocks/03_mira.tscn" id="4_b3"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/blocks/04_descifra.tscn" id="5_b4"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/blocks/05_deduce.tscn" id="6_b5"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/blocks/06_descubre.tscn" id="7_b6"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/blocks/07_categorias.tscn" id="8_b7"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/blocks/08_fichas.tscn" id="9_b8"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/blocks/09_logo.tscn" id="10_b9"]
+
+[node name="TrailerDirector" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+clip_contents = true
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Blocks" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="01_Pregunta" parent="Blocks" instance=ExtResource("2_b1")]
+[node name="02_Espera" parent="Blocks" instance=ExtResource("3_b2")]
+visible = false
+[node name="03_Mira" parent="Blocks" instance=ExtResource("4_b3")]
+visible = false
+[node name="04_Descifra" parent="Blocks" instance=ExtResource("5_b4")]
+visible = false
+[node name="05_Deduce" parent="Blocks" instance=ExtResource("6_b5")]
+visible = false
+[node name="06_Descubre" parent="Blocks" instance=ExtResource("7_b6")]
+visible = false
+[node name="07_Categorias" parent="Blocks" instance=ExtResource("8_b7")]
+visible = false
+[node name="08_Fichas" parent="Blocks" instance=ExtResource("9_b8")]
+visible = false
+[node name="09_Logo" parent="Blocks" instance=ExtResource("10_b9")]
+visible = false
