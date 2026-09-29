@@ -3,6 +3,10 @@ extends Node
 
 signal login_succeeded(playfab_id: String, newly_created: bool)
 signal login_failed(error_message: String, http_code: int)
+signal display_name_taken(rejected_name: String)
+
+const DISPLAY_NAME_TAKEN := 1058
+const _DIALOG_FONT: Font = preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
 
 @export var COUNT_PER_TABLE: int = 30
 @export var SLEEP_BETWEEN_CALLS_SEC: float = 0.15  # evita throttling
@@ -20,6 +24,7 @@ const TRACE_CHUNK_CHARS := 8500
 @export var playfab_id: String = _get_device_custom_id()
 
 var newly_created: bool = false
+var _login_finished := false
 var language_cache: Dictionary = {}
 var leaderboard_cache: Dictionary = {}
 const LEADERBOARD_CACHE_MS := 25000
@@ -42,6 +47,7 @@ func _ready() -> void:
 	else:
 		print("No se pudo iniciar sesión en PlayFab.")
 		await sync_server_time()
+	_login_finished = true
 	
 
 
@@ -277,6 +283,7 @@ var _pending_display_name := ""
 var _display_name_dirty := false
 var _display_name_pushing := false
 var _display_name_last_ok := false
+var _last_accepted_display_name := ""
 
 
 func sync_player_display_name(player_name: String = "") -> void:
@@ -288,6 +295,28 @@ func await_player_display_name(player_name: String = "") -> bool:
 	while _display_name_pushing:
 		await get_tree().process_frame
 	return _display_name_last_ok
+
+
+func claim_player_display_name(player_name: String) -> int:
+	var deadline := Time.get_ticks_msec() + 4000
+	while not _login_finished and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	if not is_logged_in():
+		return 0
+	while _display_name_pushing:
+		await get_tree().process_frame
+	var name := player_name.strip_edges()
+	_display_name_pushing = true
+	var code := await _apply_display_name_result(name, false)
+	if code == 200:
+		_display_name_last_ok = true
+		if not _display_name_dirty:
+			_pending_display_name = name
+	_display_name_pushing = false
+	if _display_name_dirty and is_logged_in():
+		_display_name_pushing = true
+		_pump_display_name()
+	return code
 
 
 func _queue_display_name(player_name: String) -> void:
@@ -308,7 +337,8 @@ func _pump_display_name() -> void:
 	while _display_name_dirty and is_logged_in():
 		_display_name_dirty = false
 		var name := _pending_display_name
-		_display_name_last_ok = await _update_player_display_name(name)
+		var code := await _apply_display_name_result(name, true)
+		_display_name_last_ok = code == 200
 		if _pending_display_name != name:
 			_display_name_dirty = true
 	var pending_left := _display_name_dirty
@@ -831,15 +861,117 @@ func submit_competitive_rankings(player_name: String = "") -> bool:
 	return int((parsed as Dictionary).get("code", http_code)) == 200
 
 
+func _apply_display_name_result(name: String, revert_on_taken: bool) -> int:
+	var code := await _update_player_display_name(name)
+	if code == 200:
+		_last_accepted_display_name = name
+		return 200
+	if code != DISPLAY_NAME_TAKEN:
+		return code
+	var owned := _last_accepted_display_name.strip_edges().to_lower()
+	if owned != "" and owned == name.strip_edges().to_lower():
+		return 200
+	if revert_on_taken:
+		_revert_local_display_name(name)
+		display_name_taken.emit(name)
+		show_name_taken_dialog()
+	return DISPLAY_NAME_TAKEN
+
+
+func _revert_local_display_name(rejected: String) -> void:
+	if typeof(GameManager) == TYPE_NIL:
+		return
+	if str(GameManager.player_name).strip_edges().to_lower() != rejected.strip_edges().to_lower():
+		return
+	var fallback := _last_accepted_display_name.strip_edges()
+	if fallback == "" or fallback.to_lower() == rejected.strip_edges().to_lower():
+		GameManager.set_player_name("")
+	else:
+		GameManager.set_player_name(fallback)
+	if typeof(PlayerPrefs) != TYPE_NIL:
+		PlayerPrefs.save_prefs()
+
+
+func show_name_taken_dialog() -> void:
+	if get_node_or_null("NameTakenDialog") != null:
+		return
+	var layer := CanvasLayer.new()
+	layer.name = "NameTakenDialog"
+	layer.layer = 120
+	add_child(layer)
+	var overlay := ColorRect.new()
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.08, 0.04, 0.02, 0.58)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	layer.add_child(overlay)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.add_child(center)
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(980, 0)
+	card.mouse_filter = Control.MOUSE_FILTER_STOP
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(1, 0.965, 0.86, 1)
+	card_style.border_color = Color(0.62, 0.4, 0.16, 0.46)
+	card_style.set_border_width_all(4)
+	card_style.border_width_bottom = 9
+	card_style.set_corner_radius_all(40)
+	card.add_theme_stylebox_override("panel", card_style)
+	center.add_child(card)
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 48)
+	margin.add_theme_constant_override("margin_right", 48)
+	margin.add_theme_constant_override("margin_top", 40)
+	margin.add_theme_constant_override("margin_bottom", 36)
+	card.add_child(margin)
+	var inner := VBoxContainer.new()
+	inner.add_theme_constant_override("separation", 28)
+	margin.add_child(inner)
+	var body := Label.new()
+	body.add_theme_font_override("font", _DIALOG_FONT)
+	body.add_theme_font_size_override("font_size", 40)
+	body.add_theme_color_override("font_color", Color(0.24, 0.14, 0.08, 1))
+	body.text = tr("OnlineNameTaken")
+	if body.text == "OnlineNameTaken":
+		body.text = "Otro usuario ya tiene ese nombre."
+	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inner.add_child(body)
+	var close := Button.new()
+	close.focus_mode = Control.FOCUS_NONE
+	close.custom_minimum_size = Vector2(0, 120)
+	var close_text := tr("OK")
+	close.text = close_text if close_text != "" else "OK"
+	close.add_theme_font_override("font", _DIALOG_FONT)
+	close.add_theme_font_size_override("font_size", 36)
+	close.add_theme_color_override("font_color", Color.WHITE)
+	var close_style := StyleBoxFlat.new()
+	close_style.bg_color = Color(0.96, 0.51, 0.01, 1)
+	close_style.border_color = Color(0.83, 0.41, 0.02, 1)
+	close_style.set_border_width_all(3)
+	close_style.border_width_bottom = 8
+	close_style.set_corner_radius_all(30)
+	close.add_theme_stylebox_override("normal", close_style)
+	close.add_theme_stylebox_override("hover", close_style)
+	close.add_theme_stylebox_override("pressed", close_style)
+	close.pressed.connect(func() -> void:
+		if typeof(SoundManager) != TYPE_NIL:
+			SoundManager.play("ButtonClick")
+		layer.queue_free()
+	)
+	inner.add_child(close)
+
+
 # ----- Helper: fija el DisplayName del jugador en este título -----
-func _update_player_display_name(player_name: String) -> bool:
+func _update_player_display_name(player_name: String) -> int:
 	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
-		return false
+		return 0
 
 	# PlayFab solo acepta nombres de 3 a 25 caracteres.
 	var name := player_name.strip_edges()
 	if name.length() < 3:
-		return false
+		return 0
 	if name.length() > 25:
 		name = name.substr(0, 25)
 
@@ -859,7 +991,7 @@ func _update_player_display_name(player_name: String) -> bool:
 	var err := req.request(url_name, headers, HTTPClient.METHOD_POST, JSON.stringify(body_name))
 	if err != OK:
 		req.queue_free()
-		return false
+		return 0
 
 	var r: Array = await req.request_completed
 	var http_code: int = r[1]
@@ -869,11 +1001,17 @@ func _update_player_display_name(player_name: String) -> bool:
 
 	var parsed: Variant = JSON.parse_string(text)
 	if !(parsed is Dictionary):
-		return false
+		return 0
 
 	var json: Dictionary = parsed
 	var pf_code: int = int(json.get("code", http_code))
-	return pf_code == 200
+	if pf_code == 200:
+		return 200
+	var error_code := int(json.get("errorCode", 0))
+	var error_name := str(json.get("error", ""))
+	if error_code == DISPLAY_NAME_TAKEN or error_name == "NameNotAvailable":
+		return DISPLAY_NAME_TAKEN
+	return 0
 
 
 func _update_public_user_data(data: Dictionary) -> bool:
