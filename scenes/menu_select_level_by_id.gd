@@ -841,9 +841,15 @@ func _show_purchase_lock_dialog() -> void:
 	body.add_theme_font_override("font", _title_label.get_theme_font("font"))
 	body.add_theme_font_size_override("font_size", 36)
 	body.add_theme_color_override("font_color", Color(0.28, 0.17, 0.1, 1))
-	body.text = tr("ShopLockedBody")
-	if body.text == "ShopLockedBody":
-		body.text = "Para jugar a este puzle hay que comprar el juego completo."
+	var web_demo := GameManager.is_web_demo()
+	if web_demo:
+		body.text = tr("WebDemoLockBody")
+		if body.text == "WebDemoLockBody":
+			body.text = "Para jugar a estos puzles, instala la versión de Android o Apple desde las tiendas. El juego es gratuito con anuncios."
+	else:
+		body.text = tr("ShopLockedBody")
+		if body.text == "ShopLockedBody":
+			body.text = "Para jugar a este puzle hay que comprar el juego completo."
 	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	inner.add_child(body)
@@ -861,23 +867,24 @@ func _show_purchase_lock_dialog() -> void:
 		overlay.queue_free()
 	)
 	buttons.add_child(cancel)
-	var shop_text := tr("ShopGoToStore")
-	if shop_text == "ShopGoToStore":
-		shop_text = "Ir a la tienda"
-	var shop := _make_dialog_button(
-		shop_text,
-		Color(0.96, 0.51, 0.01, 1),
-		Color(0.83, 0.41, 0.02, 1),
-		Color.WHITE
-	)
-	shop.pressed.connect(func() -> void:
-		SoundManager.play("ButtonClick")
-		overlay.queue_free()
-		TransitionScreen.transition_to_black()
-		await TransitionScreen._on_animation_finished("fade_to_black", 1)
-		get_tree().change_scene_to_file(PATH_SHOP)
-	)
-	buttons.add_child(shop)
+	if not web_demo:
+		var shop_text := tr("ShopGoToStore")
+		if shop_text == "ShopGoToStore":
+			shop_text = "Ir a la tienda"
+		var shop := _make_dialog_button(
+			shop_text,
+			Color(0.96, 0.51, 0.01, 1),
+			Color(0.83, 0.41, 0.02, 1),
+			Color.WHITE
+		)
+		shop.pressed.connect(func() -> void:
+			SoundManager.play("ButtonClick")
+			overlay.queue_free()
+			TransitionScreen.transition_to_black()
+			await TransitionScreen._on_animation_finished("fade_to_black", 1)
+			get_tree().change_scene_to_file(PATH_SHOP)
+		)
+		buttons.add_child(shop)
 	overlay.gui_input.connect(func(event: InputEvent) -> void:
 		if not (event is InputEventMouseButton and event.pressed):
 			return

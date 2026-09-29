@@ -544,12 +544,22 @@ func reset_player_data() -> void:
 	HistoryManager.stats_updated.emit()
 
 
-func is_puzzle_playable(_item: Dictionary) -> bool:
-	return true
+func is_web_demo() -> bool:
+	return OS.has_feature("web")
+
+
+func is_puzzle_playable(item: Dictionary) -> bool:
+	if not is_web_demo():
+		return true
+	if _free_puzzle_ids.is_empty() and not frases_db.is_empty():
+		rebuild_free_puzzle_ids()
+	return _free_puzzle_ids.has(int(item.get("index", -1)))
 
 
 func rebuild_free_puzzle_ids() -> void:
 	_free_puzzle_ids.clear()
+	if not is_web_demo():
+		return
 	var groups: Dictionary = {}
 	for raw in frases_db:
 		if typeof(raw) != TYPE_DICTIONARY:
@@ -557,22 +567,25 @@ func rebuild_free_puzzle_ids() -> void:
 		var item: Dictionary = raw
 		if is_daily_puzzle(item):
 			continue
-		var key := "%s|%s" % [normalize_category(str(item.get("category", ""))), level_game_mode(item)]
+		var key := normalize_category(str(item.get("category", "")))
+		if key == "":
+			continue
 		if not groups.has(key):
 			groups[key] = []
 		groups[key].append(item)
 	for key in groups.keys():
 		var arr: Array = groups[key]
 		arr.sort_custom(_free_content_sort)
-		var parts := str(key).split("|")
-		var cat := parts[0] if parts.size() > 0 else ""
-		var mode := parts[1] if parts.size() > 1 else ""
-		var quota := 2 if mode == MODE_QUICK and (cat == CAT_CITA or cat == CAT_CURIOSIDADES) else 1
-		for i in range(mini(quota, arr.size())):
-			_free_puzzle_ids[int(arr[i].get("index", -1))] = true
+		if arr.is_empty():
+			continue
+		_free_puzzle_ids[int(arr[0].get("index", -1))] = true
 
 
 func _free_content_sort(a: Dictionary, b: Dictionary) -> bool:
+	var quick_a := level_game_mode(a) == MODE_QUICK
+	var quick_b := level_game_mode(b) == MODE_QUICK
+	if quick_a != quick_b:
+		return quick_a
 	var image_a := int(a.get("image_number", 0))
 	var image_b := int(b.get("image_number", 0))
 	if image_a != image_b:
