@@ -42,6 +42,8 @@ var _updating_audio := false
 var _name_before_edit := ""
 var _name_typed := ""
 var _name_user_edited := false
+var _name_commit_running := false
+var _name_commit_ok := true
 
 const NAME_MAX_LENGTH := 10
 
@@ -144,10 +146,13 @@ func _ready() -> void:
 	check_button_share.button_pressed = PlayerPrefs.share_solve_data
 	_update_language_selection()
 	_start_credits_blink()
+	if typeof(PlayFabTools) != TYPE_NIL and not PlayFabTools.display_name_taken.is_connected(_on_display_name_taken):
+		PlayFabTools.display_name_taken.connect(_on_display_name_taken)
 
 
 func _on_button_back_pressed() -> void:
-	_save_online_name(true)
+	if not await _commit_online_name():
+		return
 	SoundManager.play("ButtonClick")
 	if _is_overlay():
 		queue_free()
@@ -158,7 +163,8 @@ func _on_button_back_pressed() -> void:
 
 
 func _on_button_credits_pressed() -> void:
-	_save_online_name(true)
+	if not await _commit_online_name():
+		return
 	SoundManager.play("ButtonClick")
 	if _is_overlay():
 		var credits := CREDITS_SCENE.instantiate()
@@ -309,7 +315,7 @@ func _on_nombre_text_changed(new_text: String) -> void:
 	if _is_spurious_name_restore(sanitized):
 		_set_nombre_text(_name_typed)
 		nombre.caret_column = _name_typed.length()
-		_save_online_name(true)
+		_commit_online_name()
 		return
 	if sanitized != _name_before_edit:
 		_name_user_edited = true
@@ -326,13 +332,13 @@ func _on_nombre_text_changed(new_text: String) -> void:
 func _on_nombre_text_submitted(new_text: String) -> void:
 	_set_nombre_text(_sanitize_player_name(new_text))
 	_name_typed = nombre.text
-	_save_online_name(true)
+	_commit_online_name()
 	nombre.release_focus()
 	_refresh_name_slots()
 
 
 func _on_nombre_focus_exited() -> void:
-	_save_online_name(true)
+	_commit_online_name()
 	_refresh_name_slots()
 
 
@@ -390,7 +396,7 @@ func _on_check_button_share_pressed() -> void:
 	PlayerPrefs.set_share_solve_data(check_button_share.button_pressed)
 
 
-func _save_online_name(sync_online: bool = false) -> void:
+func _save_online_name() -> void:
 	var cleaned := _sanitize_player_name(nombre.text)
 	if not GameManager.looks_like_chosen_online_name(cleaned):
 		return
@@ -398,8 +404,82 @@ func _save_online_name(sync_online: bool = false) -> void:
 	if changed:
 		GameManager.set_player_name(cleaned)
 		PlayerPrefs.save_prefs()
-	if sync_online and typeof(PlayFabTools) != TYPE_NIL:
+
+
+func _commit_online_name() -> bool:
+	if _name_commit_running:
+		while _name_commit_running:
+			await get_tree().process_frame
+		return _name_commit_ok
+	_name_commit_running = true
+	_name_commit_ok = await _commit_online_name_now()
+	_name_commit_running = false
+	return _name_commit_ok
+
+
+func _commit_online_name_now() -> bool:
+	var cleaned := _sanitize_player_name(nombre.text)
+	if not GameManager.looks_like_chosen_online_name(cleaned):
+		return true
+	var previous := _name_before_edit
+	var same_owner := (
+		previous != ""
+		and cleaned.to_lower() == previous.to_lower()
+		and GameManager.has_chosen_online_name()
+	)
+	if same_owner:
+		if cleaned != GameManager.player_name:
+			GameManager.set_player_name(cleaned)
+			PlayerPrefs.save_prefs()
+		_accept_online_name(cleaned)
+		if typeof(PlayFabTools) != TYPE_NIL:
+			PlayFabTools.sync_player_display_name(cleaned)
+		return true
+	if cleaned.length() >= 3 and typeof(PlayFabTools) != TYPE_NIL:
+		var code := await PlayFabTools.claim_player_display_name(cleaned)
+		if code == PlayFabTools.DISPLAY_NAME_TAKEN:
+			_restore_online_name(previous)
+			PlayFabTools.show_name_taken_dialog()
+			return false
+		if code == 200:
+			GameManager.set_player_name(cleaned)
+			PlayerPrefs.save_prefs()
+			_accept_online_name(cleaned)
+			return true
+	if cleaned != GameManager.player_name or not GameManager.online_name_chosen:
+		GameManager.set_player_name(cleaned)
+		PlayerPrefs.save_prefs()
+	if typeof(PlayFabTools) != TYPE_NIL:
 		PlayFabTools.sync_player_display_name(cleaned)
+	_accept_online_name(cleaned)
+	return true
+
+
+func _accept_online_name(cleaned: String) -> void:
+	_name_user_edited = false
+	_name_before_edit = cleaned
+	_name_typed = cleaned
+
+
+func _restore_online_name(previous: String) -> void:
+	_name_user_edited = false
+	_name_typed = previous
+	_name_before_edit = previous
+	_set_nombre_text(previous)
+	if GameManager.looks_like_chosen_online_name(previous):
+		GameManager.set_player_name(previous)
+	else:
+		GameManager.set_player_name("")
+	PlayerPrefs.save_prefs()
+
+
+func _on_display_name_taken(rejected_name: String) -> void:
+	if _sanitize_player_name(nombre.text).to_lower() != rejected_name.strip_edges().to_lower():
+		return
+	var previous := _name_before_edit
+	if previous.to_lower() == rejected_name.strip_edges().to_lower():
+		previous = ""
+	_restore_online_name(previous)
 
 
 func _sanitize_player_name(text: String) -> String:

@@ -18,6 +18,7 @@ var _name_slot_style: StyleBoxFlat
 var _name_slot_style_active: StyleBoxFlat
 var _updating_name := false
 var _closed := false
+var _checking := false
 var _card_rest_y := 0.0
 var _applied_keyboard_h := -1.0
 
@@ -195,23 +196,37 @@ func _on_nombre_submitted(new_text: String) -> void:
 
 
 func _on_continue_pressed() -> void:
-	if _closed:
+	if _closed or _checking:
+		return
+	_checking = true
+	SoundManager.play("ButtonClick")
+	var accepted := await _save_online_name()
+	_checking = false
+	if not accepted:
 		return
 	_closed = true
-	SoundManager.play("ButtonClick")
-	_save_online_name()
 	finished.emit()
 	queue_free()
 
 
-func _save_online_name() -> void:
+func _save_online_name() -> bool:
 	var cleaned := _sanitize_player_name(_nombre.text)
 	if cleaned == "":
-		return
+		return true
+	if cleaned.length() >= 3 and typeof(PlayFabTools) != TYPE_NIL:
+		var code := await PlayFabTools.claim_player_display_name(cleaned)
+		if code == PlayFabTools.DISPLAY_NAME_TAKEN:
+			PlayFabTools.show_name_taken_dialog()
+			return false
+		if code == 200:
+			GameManager.set_player_name(cleaned)
+			PlayerPrefs.save_prefs()
+			return true
 	GameManager.set_player_name(cleaned)
 	PlayerPrefs.save_prefs()
 	if GameManager.has_chosen_online_name() and typeof(PlayFabTools) != TYPE_NIL:
 		PlayFabTools.sync_player_display_name(GameManager.player_name)
+	return true
 
 
 func _sanitize_player_name(text: String) -> String:

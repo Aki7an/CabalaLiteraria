@@ -56,6 +56,7 @@ class_name Celda
 @onready var color_letra_correcta: Color = Color(0.22, 0.62, 0.28)
 const COLOR_HINT_YELLOW := Color(1.0, 0.86, 0.18, 1.0)
 const COLOR_SAME_NUMBER := Color(1.0, 0.94, 0.68, 1.0)
+const COLOR_SELECTION := Color(0.769222, 0.769996, 0.302051, 1.0)
 
 var _remaining_hint_tween: Tween
 var _remaining_hint_active := false
@@ -243,8 +244,6 @@ func _on_button_pressed() -> void:
 		"numero": numero,
 		"letter": letter_user,
 	})
-	if color_id > 0:
-		GameManager.borrar_color_de_numero(numero)
 	GameManager.set_celda_seleccionada(orden, numero)
 	if letter_user != "":
 		GameManager.set_selected_letter_user(letter_user)
@@ -271,7 +270,9 @@ func set_number_highlight(active: bool, is_primary: bool = false) -> void:
 
 
 func _refresh_fondo() -> void:
-	if _same_number_highlight:
+	if _same_number_highlight and color_id > 0:
+		_set_fondo_color(COLOR_SELECTION)
+	elif _same_number_highlight:
 		_set_fondo_color(_idle_fondo_color().lerp(COLOR_SAME_NUMBER, 0.72))
 	else:
 		_set_fondo_color(_idle_fondo_color())
@@ -387,9 +388,11 @@ func mostrar_letra_especifica(letra_a_mostrar: String) -> void:
 	bloqueada = true
 	es_regalo_inicial = true
 	revelada_verde = false
+	if color_id > 0:
+		_refresh_fondo()
+		return
 	var style = StyleBoxFlat.new()
 	style.bg_color = color_rellena
-	#style.bg_color = Color(0.795, 0.295, 0.482)
 	panel_celda.add_theme_stylebox_override("panel", style)
 
 

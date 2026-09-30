@@ -599,6 +599,7 @@ RankRules,"La clasificación se ordena por (en este orden):
 Options,Opciones,Options,Optionen,Options,Aukerak,Opzioni,Opções
 OnlineName,NOMBRE ONLINE,ONLINE NAME,ONLINE-NAME,NOM EN LIGNE,LINEAKO IZENA,NOME ONLINE,NOME ONLINE
 OnlineNameHelp,Este nombre se mostrará en las clasificaciones y retos online.,This name will be shown in online leaderboards and challenges.,Dieser Name wird in Online-Ranglisten und Herausforderungen angezeigt.,Ce nom apparaîtra dans les classements et défis en ligne.,Izen hau lineako sailkapenetan eta erronketan agertuko da.,Questo nome apparirà nelle classifiche e nelle sfide online.,Este nome aparecerá nas classificações e desafios online.
+OnlineNameTaken,Otro usuario ya tiene ese nombre.,Another player already has that name.,Ein anderer Spieler hat diesen Namen bereits.,Un autre joueur a déjà ce nom.,Beste erabiltzaile batek izen hori du dagoeneko.,Un altro utente ha già questo nome.,Outro jogador já tem esse nome.
 ResetValues,"RESTABLECER
 VALORES","RESET
 VALUES","WERTE

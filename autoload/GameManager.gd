@@ -1629,6 +1629,16 @@ func pinta_celdas(numero_en_celda: int, color_a_pintar: int) -> void:
 	SignalManager.update_rubber.emit()
 
 
+func numero_tiene_letra_asignada(numero_en_celda: int) -> bool:
+	if numero_en_celda <= 0 or numero_en_celda >= 100:
+		return false
+	for cell in lista_celdas:
+		if cell is Celda and cell.numero == numero_en_celda \
+				and cell.letter_user.strip_edges() != "":
+			return true
+	return false
+
+
 ## Removes the annotation color from every cell sharing the cipher number.
 ## Returns true only when that number actually had a color assigned.
 func borrar_color_de_numero(numero_en_celda: int) -> bool:

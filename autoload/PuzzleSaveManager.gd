@@ -561,6 +561,12 @@ func _capture_resolution() -> Dictionary:
 	}
 
 
+func _apply_saved_cell_color(cell: Celda, saved: Dictionary) -> void:
+	var color_id := int(saved.get("color_id", 0))
+	if color_id > 0 and color_id < GameManager.lista_tonos_colores.size():
+		cell.cambia_color(color_id)
+
+
 func _apply_resolution(resolution: Dictionary) -> void:
 	var saved_cells: Dictionary = resolution.get("cells", {})
 	var assigned_letters := {}
@@ -581,6 +587,7 @@ func _apply_resolution(resolution: Dictionary) -> void:
 				cell.numero
 			):
 				cell.mostrar_letra_especifica(saved_initial_letter)
+				_apply_saved_cell_color(cell, saved)
 				continue
 			# Repair saves created when an incorrect use of an initial letter
 			# was mistakenly stored as a locked initial cell.
@@ -598,9 +605,7 @@ func _apply_resolution(resolution: Dictionary) -> void:
 				cell.mostrar_letra_errada()
 			_:
 				cell.limpiar_letra_usuario()
-		var color_id := int(saved.get("color_id", 0))
-		if color_id > 0 and color_id < GameManager.lista_tonos_colores.size():
-			cell.cambia_color(color_id)
+		_apply_saved_cell_color(cell, saved)
 
 	for node in get_tree().get_nodes_in_group("Letra"):
 		if not node is Letra:
