@@ -310,6 +310,16 @@ func reset_completed_replay_today() -> void:
 	save_prefs()
 
 
+func clear_puzzle_records() -> void:
+	last_completed_replay_date = ""
+	daily_date = ""
+	daily_puzzle_id = -1
+	daily_completed = false
+	daily_stars = 0
+	daily_ids = PackedInt32Array()
+	save_prefs()
+
+
 func reset_player_progress() -> void:
 	level_normal_unlocked = false
 	level_dificil_unlocked = false

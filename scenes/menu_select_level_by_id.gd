@@ -222,6 +222,7 @@ const LOCALIZED_COPY := {
 
 
 func _ready() -> void:
+	add_to_group("LevelSelect")
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	if FileAccess.file_exists("user://reset_replay_today"):
 		PlayerPrefs.reset_completed_replay_today()

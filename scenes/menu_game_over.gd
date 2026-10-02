@@ -65,6 +65,7 @@ var _continue_blink: Tween
 
 
 func _ready() -> void:
+	main_card.modulate.a = 0.0
 	SoundManager.play_victory_then_menu_music()
 	_apply_locale()
 	_phrase = GameManager.frase_original_til.strip_edges()
@@ -116,8 +117,13 @@ func _ready() -> void:
 	for star in stars:
 		star.pivot_offset = star.size * 0.5
 	_prepare_intro_pose()
+	main_card.modulate.a = 1.0
 	await _play_victory_intro(earned, maximum)
 	_play_continue_at(0.12)
+	if OS.has_feature("movie"):
+		await get_tree().create_timer(5.0).timeout
+		get_tree().quit()
+		return
 	if not GameManager.is_onboarding_session():
 		await _ask_share_if_needed()
 

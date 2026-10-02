@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cwpp1jnlww7fk" path="res://images/ui_icon_library.svg" id="8_library"]
 [ext_resource type="Texture2D" uid="uid://dxivvuw5oykyh" path="res://images/ui_icon_daily.svg" id="9_daily"]
 [ext_resource type="Texture2D" uid="uid://hqwatbm1ab1y" path="res://images/ui_icon_music_note.svg" id="10_music"]
-[ext_resource type="Texture2D" path="res://images/Ilustres.png" id="11_citas"]
+[ext_resource type="Texture2D" uid="uid://h4yfkdta261s" path="res://images/Ilustres.png" id="11_citas"]
 [ext_resource type="Texture2D" uid="uid://c25usnm18bfu4" path="res://images/Adivinanza.png" id="12_curio"]
 [ext_resource type="Texture2D" uid="uid://cykl552mfrfov" path="res://images/FragmentosLiterarios.png" id="13_frag"]
 [ext_resource type="Texture2D" uid="uid://dmf6eaqeol10t" path="res://images/Efemerides.png" id="14_efem"]
@@ -117,12 +117,6 @@ grow_horizontal = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="LineL" type="ColorRect" parent="Header/TaglineRow" unique_id=306716665]
-custom_minimum_size = Vector2(80, 2)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.82, 0.7, 0.52, 0.55)
-
 [node name="Tagline" type="Label" parent="Header/TaglineRow" unique_id=149269661]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5, 0.38, 0.26, 0.78)
@@ -130,12 +124,6 @@ theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 32
 text = "Una compra sin anuncios"
 horizontal_alignment = 1
-
-[node name="LineR" type="ColorRect" parent="Header/TaglineRow" unique_id=1120604091]
-custom_minimum_size = Vector2(80, 2)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.82, 0.7, 0.52, 0.55)
 
 [node name="Scroll" type="ScrollContainer" parent="." unique_id=1892889596]
 layout_mode = 1

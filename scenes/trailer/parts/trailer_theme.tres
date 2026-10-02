@@ -1,6 +1,6 @@
-[gd_resource type="Theme" format=3]
+[gd_resource type="Theme" format=3 uid="uid://bkrkbi43hemh2"]
 
-[ext_resource type="FontVariation" path="res://scenes/trailer/parts/trailer_font_body.tres" id="1_font"]
+[ext_resource type="FontVariation" uid="uid://bvqo6pp6tcd6f" path="res://scenes/trailer/parts/trailer_font_body.tres" id="1_font"]
 
 [resource]
 default_font = ExtResource("1_font")

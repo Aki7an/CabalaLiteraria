@@ -395,6 +395,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_F3:
 			PlayerPrefs.reset_completed_replay_today()
 			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_F4:
+			reset_all_puzzles_pending()
+			get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_F5:
 			PuzzleSaveManager.seed_category_replayable(CAT_EFEMERIDE)
 			PlayerPrefs.reset_completed_replay_today()
@@ -446,7 +449,11 @@ func decrease_live() -> void:
 
 func set_calculo_letras_iniciales() -> void:
 	if id_frase == 116:
-		letras_iniciales = InitialLettersPicker.pick_unused_consonants(frase_original, 2) + "J"
+		letras_iniciales = InitialLettersPicker.pick_unused_consonants(frase_original, 2)
+		if not letras_iniciales.contains("J"):
+			letras_iniciales += "J"
+		if not letras_iniciales.contains("L"):
+			letras_iniciales += "L"
 		print ("LETRAS INICIALES CALCULADAS:" ,letras_iniciales)
 		return
 	if letras_iniciales != "" or dificultad_actual ==4:
@@ -532,6 +539,22 @@ func lock_full_game() -> void:
 	PlayerPrefs.full_game = false
 	PlayerPrefs.save_prefs()
 	SignalManager.full_game_changed.emit()
+
+
+func reset_all_puzzles_pending() -> void:
+	HistoryManager.clear_history()
+	PuzzleSaveManager.discard_all_progress()
+	if typeof(PlayerPrefs) != TYPE_NIL:
+		PlayerPrefs.clear_puzzle_records()
+	score_ultima_partida = 0
+	if typeof(StarCollectOverlay) != TYPE_NIL:
+		StarCollectOverlay.clear()
+	var tree := get_tree()
+	if tree == null:
+		return
+	for node in tree.get_nodes_in_group("LevelSelect"):
+		if node.has_method("refresh_from_gamemanager"):
+			node.call("refresh_from_gamemanager")
 
 
 func reset_player_data() -> void:

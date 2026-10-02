@@ -8,6 +8,7 @@ const DEBUG_NEARLY_SOLVED_LETTER := "A"
 var _states: Dictionary = {}
 var _save_queued := false
 var _restoring := false
+var _discard_until_new_puzzle := false
 
 
 func _ready() -> void:
@@ -21,6 +22,7 @@ func _ready() -> void:
 
 
 func begin_current_puzzle() -> void:
+	_discard_until_new_puzzle = false
 	if GameManager.is_onboarding_session():
 		return
 	var puzzle_id := int(GameManager.id_frase)
@@ -247,7 +249,7 @@ func _flush_autosave() -> void:
 
 
 func save_current_now() -> void:
-	if _restoring or not _is_gameplay_active():
+	if _discard_until_new_puzzle or _restoring or not _is_gameplay_active():
 		return
 	if GameManager.tutorial_board_active or GameManager.is_onboarding_session():
 		return
@@ -672,6 +674,19 @@ func _load_from_disk() -> void:
 
 func clear_all() -> void:
 	_states.clear()
+	_save_queued = false
+	_write_to_disk()
+
+
+func discard_all_progress() -> void:
+	_states.clear()
+	_save_queued = false
+	_discard_until_new_puzzle = true
+	_write_to_disk()
+
+
+func clear_puzzle_state(puzzle_id: int) -> void:
+	_states.erase(str(puzzle_id))
 	_save_queued = false
 	_write_to_disk()
 

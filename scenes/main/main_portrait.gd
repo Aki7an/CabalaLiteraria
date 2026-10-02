@@ -56,6 +56,8 @@ func _prepare_enter_chrome() -> void:
 func _should_show_level_intro() -> bool:
 	if Engine.has_meta("store_screenshot") and bool(Engine.get_meta("store_screenshot")):
 		return false
+	if Engine.has_meta("video_trailer") and bool(Engine.get_meta("video_trailer")):
+		return false
 	if GameManager.is_onboarding_session():
 		return false
 	if get_tree().get_first_node_in_group("LevelStartIntro"):

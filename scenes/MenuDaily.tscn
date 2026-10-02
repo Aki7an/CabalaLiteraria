@@ -4,14 +4,14 @@
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_fondo"]
 [ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="3_back"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="4_font"]
-[ext_resource type="Texture2D" uid="uid://cm3ghs76ign0n" path="res://images/ui_icon_daily.svg" id="5_daily"]
-[ext_resource type="Texture2D" uid="uid://dbgj5lan5opa2" path="res://images/stats_icon_clock.svg" id="8_clock"]
+[ext_resource type="Texture2D" uid="uid://dxivvuw5oykyh" path="res://images/ui_icon_daily.svg" id="5_daily"]
+[ext_resource type="Texture2D" uid="uid://c1x1ixn8eabtg" path="res://images/stats_icon_clock.svg" id="8_clock"]
 [ext_resource type="Texture2D" uid="uid://c3sofhyrdkn54" path="res://images/CriptogramaIcono.png" id="9_crypto"]
 [ext_resource type="Texture2D" uid="uid://ew4kgatlghnv" path="res://images/Video.png" id="9_pnh40"]
 [ext_resource type="Texture2D" uid="uid://c4fh4envlfe31" path="res://images/video2.png" id="10_e2pfq"]
 [ext_resource type="Texture2D" uid="uid://c87usikhgn8l7" path="res://images/ui_icon_signal.svg" id="11_signal"]
-[ext_resource type="Texture2D" uid="uid://dtpqv75df8tem" path="res://images/estrella_plano.png" id="12_star"]
-[ext_resource type="Texture2D" uid="uid://dyo582xpl3d0m" path="res://images/contorno_estrella.png" id="13_star_off"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="12_star"]
+[ext_resource type="Texture2D" uid="uid://bmxb0omorndri" path="res://images/contorno_estrella.png" id="13_star_off"]
 
 [sub_resource type="StyleBoxFlat" id="Style_bg"]
 bg_color = Color(0.992157, 0.972549, 0.94902, 1)
@@ -242,12 +242,6 @@ grow_horizontal = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="LineL" type="ColorRect" parent="MainCol/Header/TaglineRow" unique_id=439861595]
-custom_minimum_size = Vector2(80, 2)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.82, 0.7, 0.52, 0.55)
-
 [node name="Tagline" type="Label" parent="MainCol/Header/TaglineRow" unique_id=757351576]
 unique_name_in_owner = true
 layout_mode = 2
@@ -256,12 +250,6 @@ theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 36
 text = "El puzle especial de hoy"
 horizontal_alignment = 1
-
-[node name="LineR" type="ColorRect" parent="MainCol/Header/TaglineRow" unique_id=2115202951]
-custom_minimum_size = Vector2(80, 2)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.82, 0.7, 0.52, 0.55)
 
 [node name="ScrollPad" type="MarginContainer" parent="MainCol" unique_id=1512401593]
 layout_mode = 2
@@ -371,12 +359,6 @@ layout_mode = 2
 theme_override_constants/separation = 14
 alignment = 1
 
-[node name="LineL" type="ColorRect" parent="MainCol/ScrollPad/Scroll/Body/HowCard/Col/HowTitleRow" unique_id=1083383142]
-custom_minimum_size = Vector2(80, 3)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.78, 0.62, 0.42, 0.5)
-
 [node name="HowTitle" type="Label" parent="MainCol/ScrollPad/Scroll/Body/HowCard/Col/HowTitleRow" unique_id=1479042108]
 unique_name_in_owner = true
 layout_mode = 2
@@ -384,12 +366,6 @@ theme_override_colors/font_color = Color(0.22, 0.16, 0.1, 1)
 theme_override_fonts/font = ExtResource("4_font")
 theme_override_font_sizes/font_size = 42
 text = "CÓMO FUNCIONA"
-
-[node name="LineR" type="ColorRect" parent="MainCol/ScrollPad/Scroll/Body/HowCard/Col/HowTitleRow" unique_id=1850656168]
-custom_minimum_size = Vector2(80, 3)
-layout_mode = 2
-size_flags_vertical = 4
-color = Color(0.78, 0.62, 0.42, 0.5)
 
 [node name="TitleGap" type="Control" parent="MainCol/ScrollPad/Scroll/Body/HowCard/Col" unique_id=1993316253]
 custom_minimum_size = Vector2(0, 20)

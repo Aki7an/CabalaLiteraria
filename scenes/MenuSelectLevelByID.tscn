@@ -1,40 +1,13 @@
-[gd_scene load_steps=21 format=3 uid="uid://du2hnjcxrr54b"]
+[gd_scene format=3 uid="uid://du2hnjcxrr54b"]
 
 [ext_resource type="Script" uid="uid://dgn8v4ma2syyf" path="res://scenes/menu_select_level_by_id.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/fondo.tscn" id="2_bg"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_bg"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
 [ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="4_back"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_dice_white.png" id="5_dice"]
+[ext_resource type="Texture2D" uid="uid://cvlmitwv2b6n5" path="res://GUI/Library/Demo/Demo_ItemIcon_(OriginalSize)/itemicon_dice_white.png" id="5_dice"]
 
 [sub_resource type="StyleBoxFlat" id="Style_background"]
 bg_color = Color(0.969, 0.888, 0.655, 1)
-
-[sub_resource type="StyleBoxFlat" id="Style_back"]
-bg_color = Color(0.973, 0.82, 0.482, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 7
-border_color = Color(0.729, 0.475, 0.188, 1)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
-shadow_color = Color(0.36, 0.22, 0.08, 0.25)
-shadow_size = 12
-shadow_offset = Vector2(0, 12)
-
-[sub_resource type="StyleBoxFlat" id="Style_back_pressed"]
-bg_color = Color(0.93, 0.718, 0.337, 1)
-border_width_left = 4
-border_width_top = 6
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.69, 0.42, 0.14, 1)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
 
 [sub_resource type="StyleBoxFlat" id="Style_progress_card"]
 bg_color = Color(1, 0.947, 0.79, 0.92)
@@ -92,6 +65,18 @@ shadow_color = Color(0.41, 0.22, 0.05, 0.24)
 shadow_size = 14
 shadow_offset = Vector2(0, 12)
 
+[sub_resource type="StyleBoxFlat" id="Style_random_pressed"]
+bg_color = Color(0.956, 0.837, 0.615, 1)
+border_width_left = 5
+border_width_top = 8
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.78, 0.36, 0.075, 1)
+corner_radius_top_left = 42
+corner_radius_top_right = 42
+corner_radius_bottom_right = 42
+corner_radius_bottom_left = 42
+
 [sub_resource type="StyleBoxFlat" id="Style_random_hover"]
 bg_color = Color(1, 0.968, 0.84, 1)
 border_width_left = 6
@@ -107,28 +92,9 @@ shadow_color = Color(0.41, 0.22, 0.05, 0.27)
 shadow_size = 16
 shadow_offset = Vector2(0, 13)
 
-[sub_resource type="StyleBoxFlat" id="Style_random_pressed"]
-bg_color = Color(0.956, 0.837, 0.615, 1)
-border_width_left = 5
-border_width_top = 8
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0.78, 0.36, 0.075, 1)
-corner_radius_top_left = 42
-corner_radius_top_right = 42
-corner_radius_bottom_right = 42
-corner_radius_bottom_left = 42
-
 [sub_resource type="StyleBoxEmpty" id="Style_empty"]
 
-[sub_resource type="StyleBoxFlat" id="Style_line"]
-bg_color = Color(0.66, 0.49, 0.26, 0.55)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[node name="MenuSelectLevel" type="Control"]
+[node name="MenuSelectLevel" type="Control" unique_id=2116518505]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -137,7 +103,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="Panel" parent="."]
+[node name="Background" type="Panel" parent="." unique_id=1068477277]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -147,24 +113,25 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_background")
 
-[node name="Pattern" parent="Background" instance=ExtResource("2_bg")]
+[node name="Pattern" parent="Background" unique_id=1342231368 instance=ExtResource("2_bg")]
 modulate = Color(1, 1, 1, 0.32)
+layout_mode = 0
 
-[node name="Header" type="Control" parent="."]
+[node name="Header" type="Control" parent="." unique_id=1286591636]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 452.0
 grow_horizontal = 2
 
-[node name="ButtonBack" parent="Header" instance=ExtResource("4_back")]
+[node name="ButtonBack" parent="Header" unique_id=2138269726 instance=ExtResource("4_back")]
 layout_mode = 0
 offset_left = 58.0
 offset_top = 62.0
 offset_right = 204.0
 offset_bottom = 208.0
 
-[node name="Title" type="Label" parent="Header"]
+[node name="Title" type="Label" parent="Header" unique_id=1324886462]
 layout_mode = 0
 offset_left = 248.0
 offset_top = 48.0
@@ -180,7 +147,7 @@ text = "Colección"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SubtitleRow" type="HBoxContainer" parent="Header"]
+[node name="SubtitleRow" type="HBoxContainer" parent="Header" unique_id=126598214]
 layout_mode = 0
 offset_left = 300.0
 offset_top = 180.0
@@ -189,15 +156,7 @@ offset_bottom = 260.0
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="DotLeft" type="Label" parent="Header/SubtitleRow"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.68, 0.51, 0.29, 0.62)
-theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 38
-text = "•"
-vertical_alignment = 1
-
-[node name="Subtitle" type="Label" parent="Header/SubtitleRow"]
+[node name="Subtitle" type="Label" parent="Header/SubtitleRow" unique_id=1713664283]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.53, 0.38, 0.23, 0.78)
 theme_override_fonts/font = ExtResource("3_font")
@@ -206,13 +165,7 @@ text = "Curiosidades · Rápido"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LineRight" type="Panel" parent="Header/SubtitleRow"]
-custom_minimum_size = Vector2(120, 7)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("Style_line")
-
-[node name="ProgressCard" type="Panel" parent="Header"]
+[node name="ProgressCard" type="Panel" parent="Header" unique_id=853854676]
 layout_mode = 0
 offset_left = 258.0
 offset_top = 273.0
@@ -220,7 +173,7 @@ offset_right = 948.0
 offset_bottom = 433.0
 theme_override_styles/panel = SubResource("Style_progress_card")
 
-[node name="ProgressLabel" type="Label" parent="Header/ProgressCard"]
+[node name="ProgressLabel" type="Label" parent="Header/ProgressCard" unique_id=2089762100]
 layout_mode = 0
 offset_left = 44.0
 offset_top = 15.0
@@ -233,7 +186,7 @@ text = "0 de 0 descubiertas"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="Header/ProgressCard"]
+[node name="ProgressBar" type="ProgressBar" parent="Header/ProgressCard" unique_id=327766515]
 layout_mode = 0
 offset_left = 44.0
 offset_top = 91.0
@@ -244,7 +197,7 @@ theme_override_styles/background = SubResource("Style_progress_bg")
 theme_override_styles/fill = SubResource("Style_progress_fill")
 show_percentage = false
 
-[node name="ContentFrame" type="Panel" parent="."]
+[node name="ContentFrame" type="Panel" parent="." unique_id=279624828]
 layout_mode = 0
 offset_left = 38.0
 offset_top = 462.0
@@ -252,7 +205,7 @@ offset_right = 1168.0
 offset_bottom = 2196.0
 theme_override_styles/panel = SubResource("Style_scroll")
 
-[node name="Scroll" type="ScrollContainer" parent="ContentFrame"]
+[node name="Scroll" type="ScrollContainer" parent="ContentFrame" unique_id=1505489072]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -265,7 +218,7 @@ grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
 
-[node name="GridWrapper" type="MarginContainer" parent="ContentFrame/Scroll"]
+[node name="GridWrapper" type="MarginContainer" parent="ContentFrame/Scroll" unique_id=1391454933]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 12
@@ -273,14 +226,14 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 16
 
-[node name="Grid" type="GridContainer" parent="ContentFrame/Scroll/GridWrapper"]
+[node name="Grid" type="GridContainer" parent="ContentFrame/Scroll/GridWrapper" unique_id=84135469]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/h_separation = 22
 theme_override_constants/v_separation = 20
 columns = 3
 
-[node name="EmptyState" type="Label" parent="ContentFrame"]
+[node name="EmptyState" type="Label" parent="ContentFrame" unique_id=1847748139]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -296,7 +249,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="TapHint" type="Label" parent="."]
+[node name="TapHint" type="Label" parent="." unique_id=1361292953]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 80.0
@@ -311,7 +264,7 @@ o"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonRandom" type="Button" parent="."]
+[node name="ButtonRandom" type="Button" parent="." unique_id=1050565035]
 layout_mode = 0
 offset_left = 310.0
 offset_top = 2370.0
@@ -319,11 +272,11 @@ offset_right = 896.0
 offset_bottom = 2555.0
 focus_mode = 0
 theme_override_styles/normal = SubResource("Style_random")
-theme_override_styles/hover = SubResource("Style_random_hover")
 theme_override_styles/pressed = SubResource("Style_random_pressed")
+theme_override_styles/hover = SubResource("Style_random_hover")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Row" type="HBoxContainer" parent="ButtonRandom"]
+[node name="Row" type="HBoxContainer" parent="ButtonRandom" unique_id=2117127670]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -338,15 +291,15 @@ mouse_filter = 2
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="Dice" type="TextureRect" parent="ButtonRandom/Row"]
+[node name="Dice" type="TextureRect" parent="ButtonRandom/Row" unique_id=771513658]
+self_modulate = Color(0.86, 0.38, 0.07, 1)
 custom_minimum_size = Vector2(86, 86)
 layout_mode = 2
-self_modulate = Color(0.86, 0.38, 0.07, 1)
 texture = ExtResource("5_dice")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Text" type="Label" parent="ButtonRandom/Row"]
+[node name="Text" type="Label" parent="ButtonRandom/Row" unique_id=2048879125]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.69, 0.31, 0.075, 1)
 theme_override_fonts/font = ExtResource("3_font")

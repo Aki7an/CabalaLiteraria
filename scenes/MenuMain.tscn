@@ -14,7 +14,6 @@
 [ext_resource type="Texture2D" uid="uid://bc5r1ladqsipe" path="res://images/TutorialShadow.png" id="18_8myay"]
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="21_title"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="22_btnfx"]
-[ext_resource type="Script" uid="uid://tjdclh16sy1s" path="res://scenes/tapered_line.gd" id="26_taper"]
 [ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="27_star"]
 [ext_resource type="Texture2D" uid="uid://hqwatbm1ab1y" path="res://images/ui_icon_music_note.svg" id="28_music"]
 [ext_resource type="Texture2D" uid="uid://dm7gsouiq18gi" path="res://images/ui_icon_speaker.svg" id="29_fx"]
@@ -126,14 +125,6 @@ corner_radius_top_left = 19
 corner_radius_top_right = 19
 corner_radius_bottom_right = 19
 corner_radius_bottom_left = 19
-anti_aliasing_size = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ornament_dot"]
-bg_color = Color(0.737255, 0.552941, 0.333333, 0.72)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 anti_aliasing_size = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile"]
@@ -816,20 +807,6 @@ grow_horizontal = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="LineL" type="Control" parent="Panel/TaglineRow" unique_id=1676412112]
-custom_minimum_size = Vector2(86, 16)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-script = ExtResource("26_taper")
-
-[node name="DotL" type="Panel" parent="Panel/TaglineRow" unique_id=1696478295]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
-
 [node name="SpacerL" type="Control" parent="Panel/TaglineRow" unique_id=520255485]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
@@ -849,22 +826,7 @@ custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="DotR" type="Panel" parent="Panel/TaglineRow" unique_id=2016392330]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
-
-[node name="LineR" type="Control" parent="Panel/TaglineRow" unique_id=1164934531]
-custom_minimum_size = Vector2(86, 16)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-script = ExtResource("26_taper")
-flip_horizontal = true
-
-[node name="IntroWords" parent="Panel" instance=ExtResource("36_intro_words")]
+[node name="IntroWords" parent="Panel" unique_id=1200882567 instance=ExtResource("36_intro_words")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
@@ -872,13 +834,8 @@ anchor_left = 0.04
 anchor_top = 0.372
 anchor_right = 0.96
 anchor_bottom = 0.708
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+offset_top = 41.0
+offset_bottom = 41.0
 
 [node name="TitleBlock" type="VBoxContainer" parent="Panel" unique_id=549680608]
 layout_mode = 1

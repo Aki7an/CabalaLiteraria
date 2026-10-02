@@ -3,27 +3,55 @@
 [ext_resource type="Script" uid="uid://bdisf5rywhk10" path="res://scenes/menu_settings.gd" id="1_settings"]
 [ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_background"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="3_font"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_CountryFlag/Language_Flag_s_01_Esp.png" id="4_es"]
-[ext_resource type="Texture2D" path="res://images/Banderas/euskara_rect.svg" id="5_eu"]
-[ext_resource type="Texture2D" path="res://images/Banderas/usa_rect.svg" id="6_en"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_CountryFlag/Language_Flag_s_01_Prt.png" id="7_pt"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_CountryFlag/Language_Flag_s_01_Ita.png" id="8_it"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_CountryFlag/Language_Flag_s_01_Fra.png" id="9_fr"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_CountryFlag/Language_Flag_s_01_Deu.png" id="10_de"]
+[ext_resource type="Texture2D" uid="uid://dc7115e8xhdru" path="res://GUI/Library/Demo/Demo_CountryFlag/Language_Flag_s_01_Esp.png" id="4_es"]
+[ext_resource type="Texture2D" uid="uid://bynah4gpgeqbt" path="res://images/Banderas/euskara_rect.svg" id="5_eu"]
+[ext_resource type="Texture2D" uid="uid://ble4y7e72asoj" path="res://images/Banderas/usa_rect.svg" id="6_en"]
+[ext_resource type="Texture2D" uid="uid://5bkr0pvdu0pd" path="res://GUI/Library/Demo/Demo_CountryFlag/Language_Flag_s_01_Prt.png" id="7_pt"]
+[ext_resource type="Texture2D" uid="uid://bck56xhvpcta0" path="res://GUI/Library/Demo/Demo_CountryFlag/Language_Flag_s_01_Ita.png" id="8_it"]
+[ext_resource type="Texture2D" uid="uid://h788f0atm668" path="res://GUI/Library/Demo/Demo_CountryFlag/Language_Flag_s_01_Fra.png" id="9_fr"]
+[ext_resource type="Texture2D" uid="uid://ctbqiiekdx2fu" path="res://GUI/Library/Demo/Demo_CountryFlag/Language_Flag_s_01_Deu.png" id="10_de"]
 [ext_resource type="Texture2D" uid="uid://ccw8ctoqdfe68" path="res://images/NotaMusical.png" id="12_music"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Sound.png" id="13_fx"]
+[ext_resource type="Texture2D" uid="uid://cqy4bpk2kyq7o" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Sound.png" id="13_fx"]
 [ext_resource type="Texture2D" uid="uid://bsljpeg6roq0l" path="res://GUI/Library/Frame/Frame_Demo_Light/BasicFrame_Circle_60.png" id="14_knob"]
 [ext_resource type="Texture2D" uid="uid://vmyg7opkn11t" path="res://GUI/Library/Frame/Frame_Demo_Light/BasicFrame_Circle_60_White.png" id="15_knob_hover"]
-[ext_resource type="Script" path="res://scenes/settings_toggle.gd" id="16_toggle"]
-[ext_resource type="Texture2D" path="res://images/ui_icon_mute_slash.svg" id="17_slash"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Arrow_Back.png" id="18_back"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Pencil.png" id="19_pencil"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_User_0.png" id="20_user"]
-[ext_resource type="Texture2D" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Restart.png" id="21_restart"]
+[ext_resource type="Script" uid="uid://bse1h0ednx3co" path="res://scenes/settings_toggle.gd" id="16_toggle"]
+[ext_resource type="Texture2D" uid="uid://dvtuv0l5fovjd" path="res://images/ui_icon_mute_slash.svg" id="17_slash"]
+[ext_resource type="Texture2D" uid="uid://dvpuhswb7cqro" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Pencil.png" id="19_pencil"]
+[ext_resource type="Texture2D" uid="uid://bgfsmox4e8ucn" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_User_0.png" id="20_user"]
+[ext_resource type="Texture2D" uid="uid://4o0wt1leaseb" path="res://GUI/Library/Demo/Demo_Icon/Icon_WhiteIcon_Restart.png" id="21_restart"]
 [ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="22_back_arrow"]
 
 [sub_resource type="StyleBoxFlat" id="Style_bg"]
 bg_color = Color(0.992157, 0.929412, 0.745098, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_credits"]
+bg_color = Color(1, 0.964706, 0.85098, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 7
+border_color = Color(0.819608, 0.654902, 0.403922, 0.66)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+shadow_color = Color(0.352941, 0.211765, 0.109804, 0.18)
+shadow_size = 9
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_credits_pressed"]
+bg_color = Color(0.952941, 0.894118, 0.760784, 1)
+border_width_left = 4
+border_width_top = 9
+border_width_right = 4
+border_width_bottom = 3
+border_color = Color(0.760784, 0.568627, 0.290196, 0.8)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+
+[sub_resource type="StyleBoxEmpty" id="Style_credits_focus"]
 
 [sub_resource type="StyleBoxFlat" id="Style_card"]
 bg_color = Color(1, 0.972549, 0.882353, 0.94)
@@ -71,6 +99,29 @@ shadow_color = Color(0.223529, 0.152941, 0.0980392, 0.18)
 shadow_size = 6
 shadow_offset = Vector2(0, 5)
 
+[sub_resource type="StyleBoxFlat" id="Style_slider"]
+content_margin_top = 9.0
+content_margin_bottom = 9.0
+bg_color = Color(0.74902, 0.721569, 0.627451, 0.58)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_slider_fill"]
+content_margin_top = 9.0
+content_margin_bottom = 9.0
+bg_color = Color(1, 0.65098, 0.0156863, 1)
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(0.858824, 0.454902, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
 [sub_resource type="StyleBoxFlat" id="Style_icon_green"]
 bg_color = Color(0.423529, 0.788235, 0.25098, 1)
 border_width_left = 3
@@ -86,27 +137,6 @@ shadow_color = Color(0.223529, 0.152941, 0.0980392, 0.18)
 shadow_size = 6
 shadow_offset = Vector2(0, 5)
 
-[sub_resource type="StyleBoxFlat" id="Style_slider"]
-bg_color = Color(0.74902, 0.721569, 0.627451, 0.58)
-content_margin_top = 9.0
-content_margin_bottom = 9.0
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBoxFlat" id="Style_slider_fill"]
-bg_color = Color(1, 0.65098, 0.0156863, 1)
-content_margin_top = 9.0
-content_margin_bottom = 9.0
-border_width_top = 2
-border_width_bottom = 2
-border_color = Color(0.858824, 0.454902, 0, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
 [sub_resource type="StyleBoxFlat" id="Style_language"]
 bg_color = Color(1, 0.976471, 0.898039, 0.72)
 border_width_left = 2
@@ -114,21 +144,6 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.764706, 0.623529, 0.4, 0.48)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
-shadow_color = Color(0.352941, 0.211765, 0.109804, 0.12)
-shadow_size = 7
-shadow_offset = Vector2(0, 6)
-
-[sub_resource type="StyleBoxFlat" id="Style_language_hover"]
-bg_color = Color(1, 0.988235, 0.929412, 0.95)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.0784314, 0.639216, 0.639216, 0.68)
 corner_radius_top_left = 28
 corner_radius_top_right = 28
 corner_radius_bottom_right = 28
@@ -149,20 +164,20 @@ corner_radius_top_right = 28
 corner_radius_bottom_right = 28
 corner_radius_bottom_left = 28
 
-[sub_resource type="StyleBoxFlat" id="Style_language_selected"]
-bg_color = Color(1, 0.984314, 0.92549, 1)
-border_width_left = 7
-border_width_top = 7
-border_width_right = 7
-border_width_bottom = 7
-border_color = Color(0.0392157, 0.647059, 0.643137, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
-shadow_color = Color(0.0392157, 0.498039, 0.498039, 0.16)
-shadow_size = 9
-shadow_offset = Vector2(0, 7)
+[sub_resource type="StyleBoxFlat" id="Style_language_hover"]
+bg_color = Color(1, 0.988235, 0.929412, 0.95)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0784314, 0.639216, 0.639216, 0.68)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.352941, 0.211765, 0.109804, 0.12)
+shadow_size = 7
+shadow_offset = Vector2(0, 6)
 
 [sub_resource type="StyleBoxFlat" id="Style_selected_badge"]
 bg_color = Color(0.0392157, 0.647059, 0.643137, 1)
@@ -173,34 +188,6 @@ corner_radius_bottom_left = 28
 shadow_color = Color(0.352941, 0.211765, 0.109804, 0.16)
 shadow_size = 4
 shadow_offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxFlat" id="Style_line_edit"]
-bg_color = Color(1, 0.984314, 0.929412, 0.9)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.745098, 0.596078, 0.376471, 0.54)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
-content_margin_left = 36.0
-content_margin_right = 120.0
-
-[sub_resource type="StyleBoxFlat" id="Style_line_edit_focus"]
-bg_color = Color(1, 0.992157, 0.952941, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.0392157, 0.647059, 0.643137, 1)
-corner_radius_top_left = 28
-corner_radius_top_right = 28
-corner_radius_bottom_right = 28
-corner_radius_bottom_left = 28
-content_margin_left = 34.0
-content_margin_right = 120.0
 
 [sub_resource type="StyleBoxFlat" id="Style_edit_button"]
 bg_color = Color(0.0392157, 0.647059, 0.643137, 1)
@@ -229,33 +216,6 @@ corner_radius_top_right = 22
 corner_radius_bottom_right = 22
 corner_radius_bottom_left = 22
 
-[sub_resource type="StyleBoxFlat" id="Style_back"]
-bg_color = Color(0.454902, 0.27451, 0.137255, 1)
-border_width_left = 7
-border_width_top = 7
-border_width_right = 7
-border_width_bottom = 7
-border_color = Color(0.627451, 0.419608, 0.223529, 1)
-corner_radius_top_left = 70
-corner_radius_top_right = 70
-corner_radius_bottom_right = 70
-corner_radius_bottom_left = 70
-shadow_color = Color(0.231373, 0.133333, 0.0745098, 0.28)
-shadow_size = 9
-shadow_offset = Vector2(0, 8)
-
-[sub_resource type="StyleBoxFlat" id="Style_back_pressed"]
-bg_color = Color(0.376471, 0.219608, 0.105882, 1)
-border_width_left = 7
-border_width_top = 10
-border_width_right = 7
-border_width_bottom = 4
-border_color = Color(0.560784, 0.360784, 0.180392, 1)
-corner_radius_top_left = 70
-corner_radius_top_right = 70
-corner_radius_bottom_right = 70
-corner_radius_bottom_left = 70
-
 [sub_resource type="StyleBoxFlat" id="Style_reset"]
 bg_color = Color(1, 0.960784, 0.85098, 1)
 border_width_left = 3
@@ -282,35 +242,6 @@ corner_radius_top_left = 38
 corner_radius_top_right = 38
 corner_radius_bottom_right = 38
 corner_radius_bottom_left = 38
-
-[sub_resource type="StyleBoxFlat" id="Style_credits"]
-bg_color = Color(1, 0.964706, 0.85098, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 7
-border_color = Color(0.819608, 0.654902, 0.403922, 0.66)
-corner_radius_top_left = 80
-corner_radius_top_right = 80
-corner_radius_bottom_right = 80
-corner_radius_bottom_left = 80
-shadow_color = Color(0.352941, 0.211765, 0.109804, 0.18)
-shadow_size = 9
-shadow_offset = Vector2(0, 8)
-
-[sub_resource type="StyleBoxFlat" id="Style_credits_pressed"]
-bg_color = Color(0.952941, 0.894118, 0.760784, 1)
-border_width_left = 4
-border_width_top = 9
-border_width_right = 4
-border_width_bottom = 3
-border_color = Color(0.760784, 0.568627, 0.290196, 0.8)
-corner_radius_top_left = 80
-corner_radius_top_right = 80
-corner_radius_bottom_right = 80
-corner_radius_bottom_left = 80
-
-[sub_resource type="StyleBoxEmpty" id="Style_credits_focus"]
 
 [sub_resource type="StyleBoxFlat" id="Style_ok"]
 bg_color = Color(1, 0.568627, 0, 1)
@@ -339,9 +270,7 @@ corner_radius_top_right = 42
 corner_radius_bottom_right = 42
 corner_radius_bottom_left = 42
 
-[sub_resource type="StyleBoxEmpty" id="Style_empty"]
-
-[node name="MenuSettings" type="Control"]
+[node name="MenuSettings" type="Control" unique_id=1165890084]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -350,7 +279,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_settings")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=504062770]
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
@@ -360,38 +289,30 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("Style_bg")
 
-[node name="Fondo" parent="Panel" instance=ExtResource("2_background")]
+[node name="Fondo" parent="Panel" unique_id=1212212626 instance=ExtResource("2_background")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Header" type="Control" parent="Panel"]
-layout_mode = 0
+[node name="Header" type="Control" parent="Panel" unique_id=1032347102]
+anchors_preset = 0
 offset_left = 58.0
 offset_top = 62.0
 offset_right = 1148.0
 offset_bottom = 246.0
 
-[node name="ButtonBack" parent="Panel/Header" instance=ExtResource("22_back_arrow")]
+[node name="ButtonBack" parent="Panel/Header" unique_id=518844424 instance=ExtResource("22_back_arrow")]
 layout_mode = 0
 offset_top = 8.0
-offset_right = 146.0
 offset_bottom = 154.0
 
-[node name="TitleLineL" type="ColorRect" parent="Panel/Header"]
-layout_mode = 0
-offset_left = 205.0
-offset_top = 90.0
-offset_right = 320.0
-offset_bottom = 94.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.52)
-
-[node name="Title" type="Label" parent="Panel/Header"]
+[node name="Title" type="Label" parent="Panel/Header" unique_id=75122121]
 layout_mode = 0
 offset_left = 330.0
 offset_top = 2.0
@@ -407,16 +328,7 @@ text = "Opciones"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TitleLineR" type="ColorRect" parent="Panel/Header"]
-layout_mode = 0
-offset_left = 885.0
-offset_top = 90.0
-offset_right = 928.0
-offset_bottom = 94.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.52)
-
-[node name="ButtonCredits" type="Button" parent="Panel/Header"]
+[node name="ButtonCredits" type="Button" parent="Panel/Header" unique_id=893548843]
 custom_minimum_size = Vector2(146, 146)
 layout_mode = 0
 offset_left = 944.0
@@ -426,11 +338,11 @@ offset_bottom = 154.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_credits")
-theme_override_styles/hover = SubResource("Style_credits")
 theme_override_styles/pressed = SubResource("Style_credits_pressed")
+theme_override_styles/hover = SubResource("Style_credits")
 theme_override_styles/focus = SubResource("Style_credits_focus")
 
-[node name="Mark" type="Label" parent="Panel/Header/ButtonCredits"]
+[node name="Mark" type="Label" parent="Panel/Header/ButtonCredits" unique_id=1373418873]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -438,7 +350,6 @@ anchor_bottom = 1.0
 offset_top = -6.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.321569, 0.196078, 0.117647, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 92
@@ -446,7 +357,7 @@ text = "?"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SoundCard" type="Panel" parent="Panel"]
+[node name="SoundCard" type="Panel" parent="Panel" unique_id=466576288]
 layout_mode = 0
 offset_left = 72.0
 offset_top = 634.0
@@ -454,7 +365,7 @@ offset_right = 1134.0
 offset_bottom = 1160.0
 theme_override_styles/panel = SubResource("Style_card")
 
-[node name="TitleLineL" type="ColorRect" parent="Panel/SoundCard"]
+[node name="TitleLineL" type="ColorRect" parent="Panel/SoundCard" unique_id=949066757]
 visible = false
 layout_mode = 0
 offset_left = 356.0
@@ -464,7 +375,7 @@ offset_bottom = 84.0
 mouse_filter = 2
 color = Color(0.713726, 0.505882, 0.258824, 0.58)
 
-[node name="Title" type="Label" parent="Panel/SoundCard"]
+[node name="Title" type="Label" parent="Panel/SoundCard" unique_id=1327212703]
 layout_mode = 0
 offset_left = 438.0
 offset_top = 28.0
@@ -477,7 +388,7 @@ text = "SOUND"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TitleLineR" type="ColorRect" parent="Panel/SoundCard"]
+[node name="TitleLineR" type="ColorRect" parent="Panel/SoundCard" unique_id=1573802204]
 visible = false
 layout_mode = 0
 offset_left = 632.0
@@ -487,79 +398,25 @@ offset_bottom = 84.0
 mouse_filter = 2
 color = Color(0.713726, 0.505882, 0.258824, 0.58)
 
-[node name="BarsLeft1" type="ColorRect" parent="Panel/SoundCard"]
-layout_mode = 0
-offset_left = 350.0
-offset_top = 69.0
-offset_right = 355.0
-offset_bottom = 93.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.62)
-
-[node name="BarsLeft2" type="ColorRect" parent="Panel/SoundCard"]
-layout_mode = 0
-offset_left = 366.0
-offset_top = 58.0
-offset_right = 371.0
-offset_bottom = 104.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.7)
-
-[node name="BarsLeft3" type="ColorRect" parent="Panel/SoundCard"]
-layout_mode = 0
-offset_left = 382.0
-offset_top = 68.0
-offset_right = 387.0
-offset_bottom = 94.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.62)
-
-[node name="BarsRight1" type="ColorRect" parent="Panel/SoundCard"]
-layout_mode = 0
-offset_left = 675.0
-offset_top = 68.0
-offset_right = 680.0
-offset_bottom = 94.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.62)
-
-[node name="BarsRight2" type="ColorRect" parent="Panel/SoundCard"]
-layout_mode = 0
-offset_left = 691.0
-offset_top = 58.0
-offset_right = 696.0
-offset_bottom = 104.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.7)
-
-[node name="BarsRight3" type="ColorRect" parent="Panel/SoundCard"]
-layout_mode = 0
-offset_left = 707.0
-offset_top = 69.0
-offset_right = 712.0
-offset_bottom = 93.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.62)
-
-[node name="SpacerLeft" type="Control" parent="Panel/SoundCard"]
+[node name="SpacerLeft" type="Control" parent="Panel/SoundCard" unique_id=175910150]
 custom_minimum_size = Vector2(28, 1)
-layout_mode = 0
+anchors_preset = 0
 offset_left = 400.0
 offset_top = 58.0
 offset_right = 428.0
 offset_bottom = 104.0
 mouse_filter = 2
 
-[node name="SpacerRight" type="Control" parent="Panel/SoundCard"]
+[node name="SpacerRight" type="Control" parent="Panel/SoundCard" unique_id=1367912862]
 custom_minimum_size = Vector2(28, 1)
-layout_mode = 0
+anchors_preset = 0
 offset_left = 634.0
 offset_top = 58.0
 offset_right = 662.0
 offset_bottom = 104.0
 mouse_filter = 2
 
-[node name="SoundRows" type="Panel" parent="Panel/SoundCard"]
+[node name="SoundRows" type="Panel" parent="Panel/SoundCard" unique_id=1638043350]
 layout_mode = 0
 offset_left = 44.0
 offset_top = 130.0
@@ -567,7 +424,7 @@ offset_right = 1018.0
 offset_bottom = 477.0
 theme_override_styles/panel = SubResource("Style_inner")
 
-[node name="Divider" type="ColorRect" parent="Panel/SoundCard/SoundRows"]
+[node name="Divider" type="ColorRect" parent="Panel/SoundCard/SoundRows" unique_id=597937697]
 layout_mode = 0
 offset_left = 18.0
 offset_top = 173.0
@@ -576,7 +433,7 @@ offset_bottom = 175.0
 mouse_filter = 2
 color = Color(0.65098, 0.501961, 0.290196, 0.25)
 
-[node name="MusicIcon" type="Panel" parent="Panel/SoundCard/SoundRows"]
+[node name="MusicIcon" type="Panel" parent="Panel/SoundCard/SoundRows" unique_id=2131334249]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 28.0
@@ -584,7 +441,7 @@ offset_right = 156.0
 offset_bottom = 147.0
 theme_override_styles/panel = SubResource("Style_icon_blue")
 
-[node name="Texture" type="TextureRect" parent="Panel/SoundCard/SoundRows/MusicIcon"]
+[node name="Texture" type="TextureRect" parent="Panel/SoundCard/SoundRows/MusicIcon" unique_id=1390819013]
 modulate = Color(0.0745098, 0.286275, 0.380392, 1)
 layout_mode = 1
 anchors_preset = 15
@@ -601,7 +458,7 @@ texture = ExtResource("12_music")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Slash" type="TextureRect" parent="Panel/SoundCard/SoundRows/MusicIcon"]
+[node name="Slash" type="TextureRect" parent="Panel/SoundCard/SoundRows/MusicIcon" unique_id=654907947]
 visible = false
 modulate = Color(0.55, 0.16, 0.08, 0.95)
 layout_mode = 1
@@ -619,7 +476,7 @@ texture = ExtResource("17_slash")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MusicLabel" type="Label" parent="Panel/SoundCard/SoundRows"]
+[node name="MusicLabel" type="Label" parent="Panel/SoundCard/SoundRows" unique_id=902146983]
 layout_mode = 0
 offset_left = 183.0
 offset_top = 35.0
@@ -631,7 +488,7 @@ theme_override_font_sizes/font_size = 43
 text = "Music"
 vertical_alignment = 1
 
-[node name="HSliderSound" type="HSlider" parent="Panel/SoundCard/SoundRows"]
+[node name="HSliderSound" type="HSlider" parent="Panel/SoundCard/SoundRows" unique_id=757935157]
 layout_mode = 0
 offset_left = 358.0
 offset_top = 61.0
@@ -647,22 +504,24 @@ max_value = 1.0
 step = 0.01
 value = 0.8
 
-[node name="CheckButtonMusic" type="Button" parent="Panel/SoundCard/SoundRows"]
+[node name="CheckButtonMusic" type="Button" parent="Panel/SoundCard/SoundRows" unique_id=1637597318]
 layout_mode = 0
 offset_left = 790.0
 offset_top = 53.0
 offset_right = 936.0
 offset_bottom = 123.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_empty")
-theme_override_styles/hover = SubResource("Style_empty")
 theme_override_styles/pressed = SubResource("Style_empty")
+theme_override_styles/hover = SubResource("Style_empty")
 theme_override_styles/hover_pressed = SubResource("Style_empty")
 theme_override_styles/focus = SubResource("Style_empty")
-button_pressed = true
 toggle_mode = true
+flat = true
 script = ExtResource("16_toggle")
 
-[node name="FxIcon" type="Panel" parent="Panel/SoundCard/SoundRows"]
+[node name="FxIcon" type="Panel" parent="Panel/SoundCard/SoundRows" unique_id=1470729918]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 201.0
@@ -670,7 +529,7 @@ offset_right = 156.0
 offset_bottom = 320.0
 theme_override_styles/panel = SubResource("Style_icon_green")
 
-[node name="Texture" type="TextureRect" parent="Panel/SoundCard/SoundRows/FxIcon"]
+[node name="Texture" type="TextureRect" parent="Panel/SoundCard/SoundRows/FxIcon" unique_id=429842068]
 modulate = Color(0.0745098, 0.407843, 0.184314, 1)
 layout_mode = 1
 anchors_preset = 15
@@ -687,7 +546,7 @@ texture = ExtResource("13_fx")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Slash" type="TextureRect" parent="Panel/SoundCard/SoundRows/FxIcon"]
+[node name="Slash" type="TextureRect" parent="Panel/SoundCard/SoundRows/FxIcon" unique_id=637979310]
 visible = false
 modulate = Color(0.55, 0.16, 0.08, 0.95)
 layout_mode = 1
@@ -705,7 +564,7 @@ texture = ExtResource("17_slash")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="FxLabel" type="Label" parent="Panel/SoundCard/SoundRows"]
+[node name="FxLabel" type="Label" parent="Panel/SoundCard/SoundRows" unique_id=1144071915]
 layout_mode = 0
 offset_left = 183.0
 offset_top = 208.0
@@ -717,7 +576,7 @@ theme_override_font_sizes/font_size = 43
 text = "Fx"
 vertical_alignment = 1
 
-[node name="HSliderFx" type="HSlider" parent="Panel/SoundCard/SoundRows"]
+[node name="HSliderFx" type="HSlider" parent="Panel/SoundCard/SoundRows" unique_id=274155279]
 layout_mode = 0
 offset_left = 358.0
 offset_top = 234.0
@@ -733,23 +592,24 @@ max_value = 1.0
 step = 0.01
 value = 0.8
 
-[node name="CheckButtonFx" type="Button" parent="Panel/SoundCard/SoundRows"]
+[node name="CheckButtonFx" type="Button" parent="Panel/SoundCard/SoundRows" unique_id=835807951]
 layout_mode = 0
 offset_left = 790.0
 offset_top = 226.0
 offset_right = 936.0
 offset_bottom = 296.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_empty")
-theme_override_styles/hover = SubResource("Style_empty")
 theme_override_styles/pressed = SubResource("Style_empty")
+theme_override_styles/hover = SubResource("Style_empty")
 theme_override_styles/hover_pressed = SubResource("Style_empty")
 theme_override_styles/focus = SubResource("Style_empty")
-button_pressed = true
 toggle_mode = true
+flat = true
 script = ExtResource("16_toggle")
 
-
-[node name="LanguageCard" type="Panel" parent="Panel"]
+[node name="LanguageCard" type="Panel" parent="Panel" unique_id=170511109]
 layout_mode = 0
 offset_left = 72.0
 offset_top = 1206.0
@@ -757,16 +617,7 @@ offset_right = 1134.0
 offset_bottom = 1887.0
 theme_override_styles/panel = SubResource("Style_card")
 
-[node name="TitleLineL" type="ColorRect" parent="Panel/LanguageCard"]
-layout_mode = 0
-offset_left = 327.0
-offset_top = 73.0
-offset_right = 420.0
-offset_bottom = 77.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.58)
-
-[node name="Title" type="Label" parent="Panel/LanguageCard"]
+[node name="Title" type="Label" parent="Panel/LanguageCard" unique_id=779341727]
 layout_mode = 0
 offset_left = 430.0
 offset_top = 22.0
@@ -779,16 +630,7 @@ text = "LANGUAGE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TitleLineR" type="ColorRect" parent="Panel/LanguageCard"]
-layout_mode = 0
-offset_left = 642.0
-offset_top = 73.0
-offset_right = 735.0
-offset_bottom = 77.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.58)
-
-[node name="ButtonEspañol" type="Button" parent="Panel/LanguageCard"]
+[node name="ButtonEspañol" type="Button" parent="Panel/LanguageCard" unique_id=2118435600]
 layout_mode = 0
 offset_left = 39.0
 offset_top = 128.0
@@ -797,11 +639,11 @@ offset_bottom = 366.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_language")
-theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/pressed = SubResource("Style_language_pressed")
+theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonEspañol"]
+[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonEspañol" unique_id=1306198152]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 24.0
@@ -812,22 +654,20 @@ texture = ExtResource("4_es")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonEspañol"]
+[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonEspañol" unique_id=753470710]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 163.0
 offset_right = 222.0
 offset_bottom = 226.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.337255, 0.223529, 0.152941, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 31
 text = "Español"
 horizontal_alignment = 1
 vertical_alignment = 1
-auto_translate_mode = 0
 
-[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonEspañol"]
+[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonEspañol" unique_id=1469085626]
 layout_mode = 0
 offset_left = 180.0
 offset_top = -18.0
@@ -836,14 +676,13 @@ offset_bottom = 38.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
-[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonEspañol/Selected"]
+[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonEspañol/Selected" unique_id=2137771144]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
@@ -851,7 +690,7 @@ text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonEuskera" type="Button" parent="Panel/LanguageCard"]
+[node name="ButtonEuskera" type="Button" parent="Panel/LanguageCard" unique_id=1626788734]
 layout_mode = 0
 offset_left = 290.0
 offset_top = 128.0
@@ -860,11 +699,11 @@ offset_bottom = 366.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_language")
-theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/pressed = SubResource("Style_language_pressed")
+theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonEuskera"]
+[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonEuskera" unique_id=1198725215]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 24.0
@@ -875,22 +714,20 @@ texture = ExtResource("5_eu")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonEuskera"]
+[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonEuskera" unique_id=1866356160]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 163.0
 offset_right = 222.0
 offset_bottom = 226.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.337255, 0.223529, 0.152941, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 31
 text = "Euskara"
 horizontal_alignment = 1
 vertical_alignment = 1
-auto_translate_mode = 0
 
-[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonEuskera"]
+[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonEuskera" unique_id=447848565]
 visible = false
 layout_mode = 0
 offset_left = 180.0
@@ -900,14 +737,13 @@ offset_bottom = 38.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
-[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonEuskera/Selected"]
+[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonEuskera/Selected" unique_id=411995722]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
@@ -915,7 +751,7 @@ text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonIngles" type="Button" parent="Panel/LanguageCard"]
+[node name="ButtonIngles" type="Button" parent="Panel/LanguageCard" unique_id=1747816171]
 layout_mode = 0
 offset_left = 541.0
 offset_top = 128.0
@@ -924,11 +760,11 @@ offset_bottom = 366.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_language")
-theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/pressed = SubResource("Style_language_pressed")
+theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonIngles"]
+[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonIngles" unique_id=952155567]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 24.0
@@ -939,22 +775,20 @@ texture = ExtResource("6_en")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonIngles"]
+[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonIngles" unique_id=1500116278]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 163.0
 offset_right = 222.0
 offset_bottom = 226.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.337255, 0.223529, 0.152941, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 31
 text = "English"
 horizontal_alignment = 1
 vertical_alignment = 1
-auto_translate_mode = 0
 
-[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonIngles"]
+[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonIngles" unique_id=698465039]
 visible = false
 layout_mode = 0
 offset_left = 180.0
@@ -964,14 +798,13 @@ offset_bottom = 38.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
-[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonIngles/Selected"]
+[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonIngles/Selected" unique_id=835670347]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
@@ -979,7 +812,7 @@ text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonPortugues" type="Button" parent="Panel/LanguageCard"]
+[node name="ButtonPortugues" type="Button" parent="Panel/LanguageCard" unique_id=1340944166]
 layout_mode = 0
 offset_left = 792.0
 offset_top = 128.0
@@ -988,11 +821,11 @@ offset_bottom = 366.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_language")
-theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/pressed = SubResource("Style_language_pressed")
+theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonPortugues"]
+[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonPortugues" unique_id=2093133362]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 24.0
@@ -1003,22 +836,20 @@ texture = ExtResource("7_pt")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonPortugues"]
+[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonPortugues" unique_id=805374121]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 163.0
 offset_right = 222.0
 offset_bottom = 226.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.337255, 0.223529, 0.152941, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 31
 text = "Português"
 horizontal_alignment = 1
 vertical_alignment = 1
-auto_translate_mode = 0
 
-[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonPortugues"]
+[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonPortugues" unique_id=1108606088]
 visible = false
 layout_mode = 0
 offset_left = 180.0
@@ -1028,14 +859,13 @@ offset_bottom = 38.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
-[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonPortugues/Selected"]
+[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonPortugues/Selected" unique_id=1121193560]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
@@ -1043,7 +873,7 @@ text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonItaliano" type="Button" parent="Panel/LanguageCard"]
+[node name="ButtonItaliano" type="Button" parent="Panel/LanguageCard" unique_id=552527879]
 layout_mode = 0
 offset_left = 164.0
 offset_top = 398.0
@@ -1052,11 +882,11 @@ offset_bottom = 636.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_language")
-theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/pressed = SubResource("Style_language_pressed")
+theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonItaliano"]
+[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonItaliano" unique_id=1489169404]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 24.0
@@ -1067,22 +897,20 @@ texture = ExtResource("8_it")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonItaliano"]
+[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonItaliano" unique_id=462419571]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 163.0
 offset_right = 222.0
 offset_bottom = 226.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.337255, 0.223529, 0.152941, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 31
 text = "Italiano"
 horizontal_alignment = 1
 vertical_alignment = 1
-auto_translate_mode = 0
 
-[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonItaliano"]
+[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonItaliano" unique_id=1335497319]
 visible = false
 layout_mode = 0
 offset_left = 180.0
@@ -1092,14 +920,13 @@ offset_bottom = 38.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
-[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonItaliano/Selected"]
+[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonItaliano/Selected" unique_id=1999742868]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
@@ -1107,7 +934,7 @@ text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonFrances" type="Button" parent="Panel/LanguageCard"]
+[node name="ButtonFrances" type="Button" parent="Panel/LanguageCard" unique_id=2059911784]
 layout_mode = 0
 offset_left = 416.0
 offset_top = 398.0
@@ -1116,11 +943,11 @@ offset_bottom = 636.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_language")
-theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/pressed = SubResource("Style_language_pressed")
+theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonFrances"]
+[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonFrances" unique_id=257747646]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 24.0
@@ -1131,22 +958,20 @@ texture = ExtResource("9_fr")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonFrances"]
+[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonFrances" unique_id=1955827292]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 163.0
 offset_right = 222.0
 offset_bottom = 226.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.337255, 0.223529, 0.152941, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 31
 text = "Français"
 horizontal_alignment = 1
 vertical_alignment = 1
-auto_translate_mode = 0
 
-[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonFrances"]
+[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonFrances" unique_id=1067698040]
 visible = false
 layout_mode = 0
 offset_left = 180.0
@@ -1156,14 +981,13 @@ offset_bottom = 38.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
-[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonFrances/Selected"]
+[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonFrances/Selected" unique_id=14860184]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
@@ -1171,7 +995,7 @@ text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonAleman" type="Button" parent="Panel/LanguageCard"]
+[node name="ButtonAleman" type="Button" parent="Panel/LanguageCard" unique_id=813697793]
 layout_mode = 0
 offset_left = 668.0
 offset_top = 398.0
@@ -1180,11 +1004,11 @@ offset_bottom = 636.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_language")
-theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/pressed = SubResource("Style_language_pressed")
+theme_override_styles/hover = SubResource("Style_language_hover")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonAleman"]
+[node name="Flag" type="TextureRect" parent="Panel/LanguageCard/ButtonAleman" unique_id=732614259]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 24.0
@@ -1195,22 +1019,20 @@ texture = ExtResource("10_de")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonAleman"]
+[node name="Label" type="Label" parent="Panel/LanguageCard/ButtonAleman" unique_id=2067540338]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 163.0
 offset_right = 222.0
 offset_bottom = 226.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.337255, 0.223529, 0.152941, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 31
 text = "Deutsch"
 horizontal_alignment = 1
 vertical_alignment = 1
-auto_translate_mode = 0
 
-[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonAleman"]
+[node name="Selected" type="Panel" parent="Panel/LanguageCard/ButtonAleman" unique_id=711030446]
 visible = false
 layout_mode = 0
 offset_left = 180.0
@@ -1220,14 +1042,13 @@ offset_bottom = 38.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Style_selected_badge")
 
-[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonAleman/Selected"]
+[node name="Check" type="Label" parent="Panel/LanguageCard/ButtonAleman/Selected" unique_id=2097312874]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(1, 1, 0.929412, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
@@ -1235,7 +1056,7 @@ text = "✓"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OnlineCard" type="Panel" parent="Panel"]
+[node name="OnlineCard" type="Panel" parent="Panel" unique_id=400254887]
 layout_mode = 0
 offset_left = 72.0
 offset_top = 284.0
@@ -1243,16 +1064,7 @@ offset_right = 1134.0
 offset_bottom = 589.0
 theme_override_styles/panel = SubResource("Style_card")
 
-[node name="TitleLineL" type="ColorRect" parent="Panel/OnlineCard"]
-layout_mode = 0
-offset_left = 182.0
-offset_top = 76.0
-offset_right = 300.0
-offset_bottom = 80.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.58)
-
-[node name="Title" type="Label" parent="Panel/OnlineCard"]
+[node name="Title" type="Label" parent="Panel/OnlineCard" unique_id=544888352]
 layout_mode = 0
 offset_left = 312.0
 offset_top = 24.0
@@ -1265,16 +1077,7 @@ text = "NOMBRE ONLINE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TitleLineR" type="ColorRect" parent="Panel/OnlineCard"]
-layout_mode = 0
-offset_left = 762.0
-offset_top = 76.0
-offset_right = 880.0
-offset_bottom = 80.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.58)
-
-[node name="NameSlots" type="HBoxContainer" parent="Panel/OnlineCard"]
+[node name="NameSlots" type="HBoxContainer" parent="Panel/OnlineCard" unique_id=2114234836]
 layout_mode = 0
 offset_left = 72.0
 offset_top = 136.0
@@ -1284,7 +1087,7 @@ mouse_filter = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="Nombre" type="LineEdit" parent="Panel/OnlineCard"]
+[node name="Nombre" type="LineEdit" parent="Panel/OnlineCard" unique_id=432920247]
 layout_mode = 0
 offset_left = 72.0
 offset_top = 136.0
@@ -1298,13 +1101,10 @@ theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("Style_empty")
 theme_override_styles/focus = SubResource("Style_empty")
-placeholder_text = ""
 max_length = 10
-select_all_on_focus = false
-caret_blink = false
 caret_mid_grapheme = true
 
-[node name="ButtonEdit" type="Button" parent="Panel/OnlineCard"]
+[node name="ButtonEdit" type="Button" parent="Panel/OnlineCard" unique_id=1403318933]
 layout_mode = 0
 offset_left = 862.0
 offset_top = 155.0
@@ -1317,11 +1117,11 @@ theme_override_colors/font_pressed_color = Color(0.913725, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("Style_edit_button")
-theme_override_styles/hover = SubResource("Style_edit_button")
 theme_override_styles/pressed = SubResource("Style_edit_button_pressed")
+theme_override_styles/hover = SubResource("Style_edit_button")
 theme_override_styles/focus = SubResource("Style_empty")
 
-[node name="PencilIcon" type="TextureRect" parent="Panel/OnlineCard/ButtonEdit"]
+[node name="PencilIcon" type="TextureRect" parent="Panel/OnlineCard/ButtonEdit" unique_id=312793217]
 layout_mode = 0
 offset_left = 25.0
 offset_top = 21.0
@@ -1332,7 +1132,7 @@ texture = ExtResource("19_pencil")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Info" type="Panel" parent="Panel/OnlineCard"]
+[node name="Info" type="Panel" parent="Panel/OnlineCard" unique_id=1328933841]
 visible = false
 layout_mode = 0
 offset_left = 72.0
@@ -1341,7 +1141,7 @@ offset_right = 990.0
 offset_bottom = 390.0
 theme_override_styles/panel = SubResource("Style_inner")
 
-[node name="Person" type="TextureRect" parent="Panel/OnlineCard/Info"]
+[node name="Person" type="TextureRect" parent="Panel/OnlineCard/Info" unique_id=668905661]
 modulate = Color(0.0392157, 0.647059, 0.643137, 1)
 layout_mode = 0
 offset_left = 24.0
@@ -1353,7 +1153,7 @@ texture = ExtResource("20_user")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Text" type="Label" parent="Panel/OnlineCard/Info"]
+[node name="Text" type="Label" parent="Panel/OnlineCard/Info" unique_id=1500291186]
 layout_mode = 0
 offset_left = 110.0
 offset_top = 4.0
@@ -1366,7 +1166,7 @@ text = "Este nombre se mostrará en las clasificaciones y retos online."
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="GameCard" type="Panel" parent="Panel"]
+[node name="GameCard" type="Panel" parent="Panel" unique_id=67860617]
 layout_mode = 0
 offset_left = 72.0
 offset_top = 1915.0
@@ -1374,16 +1174,7 @@ offset_right = 1134.0
 offset_bottom = 2389.0
 theme_override_styles/panel = SubResource("Style_card")
 
-[node name="TitleLineL" type="ColorRect" parent="Panel/GameCard"]
-layout_mode = 0
-offset_left = 300.0
-offset_top = 68.0
-offset_right = 430.0
-offset_bottom = 72.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.58)
-
-[node name="Title" type="Label" parent="Panel/GameCard"]
+[node name="Title" type="Label" parent="Panel/GameCard" unique_id=237928675]
 layout_mode = 0
 offset_left = 438.0
 offset_top = 16.0
@@ -1396,16 +1187,7 @@ text = "JUEGO"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TitleLineR" type="ColorRect" parent="Panel/GameCard"]
-layout_mode = 0
-offset_left = 632.0
-offset_top = 68.0
-offset_right = 762.0
-offset_bottom = 72.0
-mouse_filter = 2
-color = Color(0.713726, 0.505882, 0.258824, 0.58)
-
-[node name="GameRows" type="Panel" parent="Panel/GameCard"]
+[node name="GameRows" type="Panel" parent="Panel/GameCard" unique_id=1983127491]
 layout_mode = 0
 offset_left = 44.0
 offset_top = 118.0
@@ -1413,7 +1195,7 @@ offset_right = 1018.0
 offset_bottom = 448.0
 theme_override_styles/panel = SubResource("Style_inner")
 
-[node name="Divider" type="ColorRect" parent="Panel/GameCard/GameRows"]
+[node name="Divider" type="ColorRect" parent="Panel/GameCard/GameRows" unique_id=138054441]
 layout_mode = 0
 offset_left = 18.0
 offset_top = 108.0
@@ -1422,7 +1204,7 @@ offset_bottom = 110.0
 mouse_filter = 2
 color = Color(0.65098, 0.501961, 0.290196, 0.25)
 
-[node name="TutorialLabel" type="Label" parent="Panel/GameCard/GameRows"]
+[node name="TutorialLabel" type="Label" parent="Panel/GameCard/GameRows" unique_id=222081939]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 12.0
@@ -1435,22 +1217,24 @@ text = "Mostrar tutorial antes de jugar."
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="CheckButtonTutorial" type="Button" parent="Panel/GameCard/GameRows"]
+[node name="CheckButtonTutorial" type="Button" parent="Panel/GameCard/GameRows" unique_id=1233210511]
 layout_mode = 0
 offset_left = 790.0
 offset_top = 22.0
 offset_right = 936.0
 offset_bottom = 92.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_empty")
-theme_override_styles/hover = SubResource("Style_empty")
 theme_override_styles/pressed = SubResource("Style_empty")
+theme_override_styles/hover = SubResource("Style_empty")
 theme_override_styles/hover_pressed = SubResource("Style_empty")
 theme_override_styles/focus = SubResource("Style_empty")
-button_pressed = true
 toggle_mode = true
+flat = true
 script = ExtResource("16_toggle")
 
-[node name="RevealLabel" type="Label" parent="Panel/GameCard/GameRows"]
+[node name="RevealLabel" type="Label" parent="Panel/GameCard/GameRows" unique_id=1455153726]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 118.0
@@ -1463,22 +1247,24 @@ text = "Mostrar explicación botón REVELAR."
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="CheckButtonReveal" type="Button" parent="Panel/GameCard/GameRows"]
+[node name="CheckButtonReveal" type="Button" parent="Panel/GameCard/GameRows" unique_id=47060609]
 layout_mode = 0
 offset_left = 790.0
 offset_top = 128.0
 offset_right = 936.0
 offset_bottom = 198.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_empty")
-theme_override_styles/hover = SubResource("Style_empty")
 theme_override_styles/pressed = SubResource("Style_empty")
+theme_override_styles/hover = SubResource("Style_empty")
 theme_override_styles/hover_pressed = SubResource("Style_empty")
 theme_override_styles/focus = SubResource("Style_empty")
-button_pressed = true
 toggle_mode = true
+flat = true
 script = ExtResource("16_toggle")
 
-[node name="DividerShare" type="ColorRect" parent="Panel/GameCard/GameRows"]
+[node name="DividerShare" type="ColorRect" parent="Panel/GameCard/GameRows" unique_id=1571467064]
 layout_mode = 0
 offset_left = 18.0
 offset_top = 218.0
@@ -1487,7 +1273,7 @@ offset_bottom = 220.0
 mouse_filter = 2
 color = Color(0.65098, 0.501961, 0.290196, 0.25)
 
-[node name="ShareLabel" type="Label" parent="Panel/GameCard/GameRows"]
+[node name="ShareLabel" type="Label" parent="Panel/GameCard/GameRows" unique_id=34091307]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 228.0
@@ -1500,28 +1286,31 @@ text = "Compartir datos de resolución con el desarrollador."
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="CheckButtonShare" type="Button" parent="Panel/GameCard/GameRows"]
+[node name="CheckButtonShare" type="Button" parent="Panel/GameCard/GameRows" unique_id=1064810039]
 layout_mode = 0
 offset_left = 790.0
 offset_top = 248.0
 offset_right = 936.0
 offset_bottom = 318.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("Style_empty")
-theme_override_styles/hover = SubResource("Style_empty")
 theme_override_styles/pressed = SubResource("Style_empty")
+theme_override_styles/hover = SubResource("Style_empty")
 theme_override_styles/hover_pressed = SubResource("Style_empty")
 theme_override_styles/focus = SubResource("Style_empty")
 toggle_mode = true
+flat = true
 script = ExtResource("16_toggle")
 
-[node name="Footer" type="Control" parent="Panel"]
-layout_mode = 0
+[node name="Footer" type="Control" parent="Panel" unique_id=1563854810]
+anchors_preset = 0
 offset_left = 72.0
 offset_top = 2412.0
 offset_right = 1134.0
 offset_bottom = 2595.0
 
-[node name="ButtonReset" type="Button" parent="Panel/Footer"]
+[node name="ButtonReset" type="Button" parent="Panel/Footer" unique_id=749357437]
 layout_mode = 0
 offset_left = 44.0
 offset_top = 8.0
@@ -1534,12 +1323,12 @@ theme_override_colors/font_pressed_color = Color(0.27451, 0.14902, 0.0784314, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 38
 theme_override_styles/normal = SubResource("Style_reset")
-theme_override_styles/hover = SubResource("Style_reset")
 theme_override_styles/pressed = SubResource("Style_reset_pressed")
+theme_override_styles/hover = SubResource("Style_reset")
 theme_override_styles/focus = SubResource("Style_empty")
 autowrap_mode = 2
 
-[node name="RestartIcon" type="TextureRect" parent="Panel/Footer/ButtonReset"]
+[node name="RestartIcon" type="TextureRect" parent="Panel/Footer/ButtonReset" unique_id=1860679216]
 modulate = Color(0.321569, 0.196078, 0.117647, 1)
 layout_mode = 0
 offset_left = 40.0
@@ -1551,22 +1340,22 @@ texture = ExtResource("21_restart")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Text" type="Label" parent="Panel/Footer/ButtonReset"]
+[node name="Text" type="Label" parent="Panel/Footer/ButtonReset" unique_id=1339175881]
 layout_mode = 0
 offset_left = 134.0
 offset_top = 16.0
 offset_right = 430.0
 offset_bottom = 156.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.321569, 0.196078, 0.117647, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 34
-text = "RESTABLECER\nVALORES"
+text = "RESTABLECER
+VALORES"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="ButtonOk" type="Button" parent="Panel/Footer"]
+[node name="ButtonOk" type="Button" parent="Panel/Footer" unique_id=238253551]
 layout_mode = 0
 offset_left = 562.0
 offset_top = 8.0
@@ -1575,15 +1364,12 @@ offset_bottom = 172.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 0.996078, 0.956863, 1)
-theme_override_colors/font_shadow_color = Color(0.482353, 0.227451, 0, 0.45)
 theme_override_colors/font_pressed_color = Color(1, 0.956863, 0.862745, 1)
-theme_override_constants/shadow_offset_x = 0
-theme_override_constants/shadow_offset_y = 4
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 72
 theme_override_styles/normal = SubResource("Style_ok")
-theme_override_styles/hover = SubResource("Style_ok")
 theme_override_styles/pressed = SubResource("Style_ok_pressed")
+theme_override_styles/hover = SubResource("Style_ok")
 theme_override_styles/focus = SubResource("Style_empty")
 text = "OK"
 
