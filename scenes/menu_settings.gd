@@ -185,16 +185,23 @@ func _on_button_credits_pressed() -> void:
 func _start_credits_blink() -> void:
 	if button_credits == null:
 		return
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
 	if not is_instance_valid(button_credits):
 		return
 	button_credits.pivot_offset = button_credits.size * 0.5
-	await get_tree().create_timer(0.7).timeout
+	var tree := get_tree()
+	if tree == null:
+		return
+	await tree.create_timer(0.7).timeout
 	while is_instance_valid(button_credits):
 		await _pulse_credits_button()
 		if not is_instance_valid(button_credits):
 			return
-		await get_tree().create_timer(CREDITS_BLINK_EVERY).timeout
+		tree = get_tree()
+		if tree == null:
+			return
+		await tree.create_timer(CREDITS_BLINK_EVERY).timeout
 
 
 func _pulse_credits_button() -> void:
@@ -409,7 +416,8 @@ func _save_online_name() -> void:
 func _commit_online_name() -> bool:
 	if _name_commit_running:
 		while _name_commit_running:
-			await get_tree().process_frame
+			if not await GameManager.await_process_frame(self):
+				return false
 		return _name_commit_ok
 	_name_commit_running = true
 	_name_commit_ok = await _commit_online_name_now()

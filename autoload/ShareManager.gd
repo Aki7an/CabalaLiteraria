@@ -48,6 +48,13 @@ func build_payload() -> Dictionary:
 	var stars_earned: int = clampi(GameManager.puzzle_stars, 0, stars_max)
 	if GameManager.is_practice_session() and GameManager.locked_record_stars >= 0:
 		stars_earned = clampi(GameManager.locked_record_stars, 0, stars_max)
+	if GameManager.is_onboarding_session():
+		stars_earned = 0
+	if GameManager.should_award_onboarding_stars() or (
+		not GameManager.is_onboarding_session() and not GameManager.skips_progress()
+	):
+		stars_earned += 1
+		stars_max += 1
 	var puzzle_id := int(GameManager.id_frase)
 	return {
 		"brand": "CifraLetra",

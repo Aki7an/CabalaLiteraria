@@ -20,7 +20,27 @@ func _ready() -> void:
 	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	grid.add_theme_constant_override("h_separation", SEPARACION)
 	grid.add_theme_constant_override("v_separation", SEPARACION)
+	_fill_keys()
 
+	resized.connect(_fit_key_heights)
+	grid.resized.connect(_fit_key_heights)
+	call_deferred("_fit_key_heights")
+	# Second pass after one frame so container sizes are final.
+	get_tree().process_frame.connect(_fit_key_heights, CONNECT_ONE_SHOT)
+
+
+func rebuild_from_alphabet() -> void:
+	if grid == null:
+		return
+	for child in grid.get_children():
+		grid.remove_child(child)
+		child.free()
+	grid.columns = COLUMNAS_POR_FILA
+	_fill_keys()
+	_fit_key_heights()
+
+
+func _fill_keys() -> void:
 	for i in range(GameManager.letters_aphabet_array.size()):
 		var celda_node := letra_scene.instantiate()
 		if !(celda_node is Control):
@@ -33,21 +53,12 @@ func _ready() -> void:
 		celda.offset_top = 0
 		celda.offset_right = 0
 		celda.offset_bottom = 0
-
 		if celda.has_method("set_letter"):
 			celda.call("set_letter", GameManager.letters_aphabet_array[i])
-
 		celda.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		celda.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		celda.custom_minimum_size = Vector2(0, ALTO_CELDA)
-
 		grid.add_child(celda)
-
-	resized.connect(_fit_key_heights)
-	grid.resized.connect(_fit_key_heights)
-	call_deferred("_fit_key_heights")
-	# Second pass after one frame so container sizes are final.
-	get_tree().process_frame.connect(_fit_key_heights, CONNECT_ONE_SHOT)
 
 
 func _fit_key_heights() -> void:

@@ -77,12 +77,13 @@ func _on_button_salir_pressed() -> void:
 	var tree := get_tree()
 	var leaving_onboarding := GameManager.is_onboarding_session()
 	if leaving_onboarding:
-		for node in tree.get_nodes_in_group("OnboardingGuide"):
+		GameManager.session_source = GameManager.SOURCE_NONE
+		GameManager.onboarding_stage = 0
+	for group_name in ["OnboardingGuide", "BasicStartTutorial"]:
+		for node in tree.get_nodes_in_group(group_name):
 			if is_instance_valid(node):
 				node.process_mode = Node.PROCESS_MODE_DISABLED
 				node.queue_free()
-		GameManager.session_source = GameManager.SOURCE_NONE
-		GameManager.onboarding_stage = 0
 	# La subida de la traza usa HTTPRequest, que no avanza con el árbol en pausa.
 	tree.paused = false
 	EventLoggerAutoload.submit_if_consented(EventLoggerAutoload.OUTCOME_ABANDONED)

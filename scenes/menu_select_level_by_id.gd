@@ -1084,10 +1084,7 @@ func _on_replay_play_pressed(
 			play.disabled = false
 			cancel.disabled = false
 			play.text = _copy("lock_play_ad")
-			ad_note.text = _tr_ad(
-				"DailyAdFailed",
-				"No hay anuncio disponible. Inténtalo de nuevo o compra el juego."
-			)
+			ad_note.text = AdManager.reward_failure_message()
 			ad_note.add_theme_color_override("font_color", Color(0.72, 0.22, 0.14, 1))
 			return
 	var chosen: Dictionary = pool.pick_random()

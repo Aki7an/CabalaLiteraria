@@ -65,8 +65,6 @@ script = ExtResource("1_script")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1334631257]
 script = ExtResource("2_error")
-shake_duration = 1.0
-flash_cycles = 4
 
 [node name="Background" type="Panel" parent="CanvasLayer" unique_id=1914206028]
 offset_right = 1206.0

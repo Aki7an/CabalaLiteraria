@@ -28,6 +28,9 @@ func play_block() -> void:
 	var question := %Question as Label
 	clip_contents = false
 	_prepare_puzzle()
+	var keyboard := phone.get_node_or_null("PanelLetras")
+	if keyboard != null and keyboard.has_method("rebuild_from_alphabet"):
+		keyboard.rebuild_from_alphabet()
 	await phone.reload_board()
 	phone.show_game_background()
 	phone.hide_chrome()
@@ -78,9 +81,12 @@ func get_phone() -> Control:
 func _prepare_puzzle() -> void:
 	if GameManager == null:
 		return
+	TranslationServer.set_locale("es")
 	GameManager.reset_game_paremeters()
 	GameManager.resetear_partida_terminada()
 	GameManager.session_source = GameManager.SOURCE_NONE
+	GameManager.puzzle_locale = "es"
+	GameManager.letters_aphabet_array = GameManager.get_letters_for_lang("es")
 	GameManager.set_game_mode_actual(GameManager.MODE_QUICK)
 	GameManager.seleccionar_frase_por_indice_db(puzzle_id)
 	GameManager.frase_original_til = moon_phrase

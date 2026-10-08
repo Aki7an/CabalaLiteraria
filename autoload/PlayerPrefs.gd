@@ -7,6 +7,8 @@ var mute_musica: bool = true
 var mute_fx: bool = true
 var mostrar_tuto_antes_partida: bool = true
 var onboarding_completed: bool = false
+var tutorial_star_stage1: bool = false
+var tutorial_star_stage2: bool = false
 ## Displayed as "1.0.X". Starts at 1 → 1.0.1. F2 increases X by 1.
 ## Source of truth is project.godot + data/app_version.json so exports and Git stay in sync.
 var app_version_code: int = 1
@@ -192,6 +194,8 @@ func save_prefs() -> void:
 	cfg.set_value("general", "mostrar_tutorial_antes_de_partida", mostrar_tuto_antes_partida)
 	cfg.set_value("general", "tutorial_before_play_on_v026", true)
 	cfg.set_value("general", "onboarding_completed", onboarding_completed)
+	cfg.set_value("general", "tutorial_star_stage1", tutorial_star_stage1)
+	cfg.set_value("general", "tutorial_star_stage2", tutorial_star_stage2)
 	cfg.set_value("audio", "volumen_musica", volumen_musica)
 	cfg.set_value("audio", "volumen_fx", volumen_fx)
 	cfg.set_value("audio", "mute_musica", mute_musica)
@@ -232,6 +236,8 @@ func load_prefs() -> void:
 			onboarding_completed = bool(cfg.get_value("general", "onboarding_completed", false))
 		else:
 			onboarding_completed = true
+		tutorial_star_stage1 = bool(cfg.get_value("general", "tutorial_star_stage1", false))
+		tutorial_star_stage2 = bool(cfg.get_value("general", "tutorial_star_stage2", false))
 		volumen_musica = cfg.get_value("audio", "volumen_musica", volumen_musica)
 		volumen_fx = cfg.get_value("audio", "volumen_fx", volumen_fx)
 		mute_musica = bool(cfg.get_value("audio", "mute_musica", mute_musica))
@@ -334,11 +340,12 @@ func reset_player_progress() -> void:
 	daily_completed = false
 	daily_stars = 0
 	daily_ids = PackedInt32Array()
-	full_game = false
 	ads_quick_streak = 0
 	daily_rewarded_date = ""
 	mostrar_tuto_antes_partida = true
 	onboarding_completed = false
+	tutorial_star_stage1 = false
+	tutorial_star_stage2 = false
 	GameManager.set_level_normal_unlocked(false)
 	GameManager.set_level_dificil_unlocked(false)
 	GameManager.set_level_pro_unlocked(false)
@@ -368,6 +375,20 @@ func set_onboarding_completed(enabled: bool) -> void:
 		GameManager.set_mostrar_tuto_antes_partida_enable()
 	else:
 		GameManager.set_mostrar_tuto_antes_partida_disable()
+	save_prefs()
+
+
+func should_award_tutorial_stars(stage: int = 1) -> bool:
+	if stage <= 1:
+		return not tutorial_star_stage1
+	return not tutorial_star_stage2
+
+
+func mark_tutorial_stars_awarded(stage: int) -> void:
+	if stage <= 1:
+		tutorial_star_stage1 = true
+	else:
+		tutorial_star_stage2 = true
 	save_prefs()
 
 

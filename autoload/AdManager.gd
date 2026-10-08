@@ -14,6 +14,14 @@ var _interstitial_shown := false
 var _rewarded_waiting := false
 var _rewarded_earned := false
 var _rewarded_closed := false
+var _ad_on_screen := false
+var _ad_was_shown := false
+var _saw_focus_loss := false
+var _app_focused := true
+var _game_silenced := false
+var _master_muted_before := false
+## earned | closed | unavailable. Las pantallas lo usan para el texto tras el anuncio.
+var reward_result := ""
 var _mock_layer: CanvasLayer = null
 var _mobile_init_started := false
 var _ump_updated := false
@@ -100,10 +108,12 @@ func present_interstitial() -> void:
 
 func show_rewarded() -> bool:
 	if ads_removed():
+		reward_result = "earned"
 		return true
-	if _busy:
-		return false
+	while _busy:
+		await get_tree().process_frame
 	_busy = true
+	reward_result = "unavailable"
 	var ok := false
 	if OS.get_name() == "iOS" or OS.get_name() == "Android":
 		await _boot_mobile()
@@ -114,8 +124,21 @@ func show_rewarded() -> bool:
 	elif _can_mock():
 		await _present_mock(true)
 		ok = true
+		reward_result = "earned"
+	_silence_game(false)
 	_busy = false
 	return ok
+
+
+func reward_failure_message() -> String:
+	var key := "DailyAdClosedEarly" if reward_result == "closed" else "DailyAdFailed"
+	var fallback := (
+		"Hay que ver el anuncio hasta el final para jugar."
+		if reward_result == "closed"
+		else "No hay anuncio disponible. Inténtalo de nuevo o compra el juego."
+	)
+	var value := tr(key)
+	return fallback if value == key or value.is_empty() else value
 
 
 func note_puzzle_completed_for_ads() -> void:
@@ -201,20 +224,20 @@ func _boot_mobile() -> void:
 		var wait := 0.0
 		while not _mobile_ready and wait < 12.0:
 			await get_tree().process_frame
-			wait += get_process_delta_time()
+			wait += minf(get_process_delta_time(), 0.05)
 		return
 	_boot_started = true
 	var elapsed := 0.0
 	while not _has_mobile_ads() and elapsed < 8.0:
 		await get_tree().process_frame
-		elapsed += get_process_delta_time()
+		elapsed += minf(get_process_delta_time(), 0.05)
 	_log_poing_singletons()
 	if _has_mobile_ads():
 		_init_mobile()
 		var init_wait := 0.0
 		while not _mobile_ready and init_wait < 8.0:
 			await get_tree().process_frame
-			init_wait += get_process_delta_time()
+			init_wait += minf(get_process_delta_time(), 0.05)
 		return
 	push_error("[AdMob] native plugin not present after wait; interstitial cannot show")
 
@@ -224,8 +247,93 @@ func _loc(key: String, fallback: String) -> String:
 	return fallback if value == key or value.is_empty() else value
 
 
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+			_app_focused = false
+			if _ad_on_screen:
+				_saw_focus_loss = true
+		NOTIFICATION_APPLICATION_FOCUS_IN, NOTIFICATION_WM_WINDOW_FOCUS_IN, NOTIFICATION_APPLICATION_RESUMED:
+			_app_focused = true
+
+
 func _wait(seconds: float) -> void:
 	await get_tree().create_timer(seconds, true, false, true).timeout
+
+
+func _interstitial_is_waiting() -> bool:
+	return _interstitial_waiting
+
+
+func _rewarded_is_waiting() -> bool:
+	return _rewarded_waiting
+
+
+func _reset_ad_watch() -> void:
+	_ad_on_screen = false
+	_ad_was_shown = false
+	_saw_focus_loss = false
+
+
+func _mark_ad_shown() -> void:
+	_ad_on_screen = true
+	_ad_was_shown = true
+	_silence_game(true)
+
+
+func _mark_ad_closed() -> void:
+	_ad_on_screen = false
+
+
+func _silence_game(silent: bool) -> void:
+	var bus := AudioServer.get_bus_index("Master")
+	if bus < 0:
+		return
+	if silent:
+		if _game_silenced:
+			return
+		_master_muted_before = AudioServer.is_bus_mute(bus)
+		AudioServer.set_bus_mute(bus, true)
+		_game_silenced = true
+		return
+	if not _game_silenced:
+		return
+	AudioServer.set_bus_mute(bus, _master_muted_before)
+	_game_silenced = false
+
+
+## Espera al cierre. El tiempo del vídeo no cuenta: en Android el primer fotograma
+## al volver trae toda la duración, y en iOS el juego seguía contando durante el anuncio.
+func _await_fullscreen_close(still_waiting: Callable, load_timeout_sec: float) -> void:
+	var loading := 0.0
+	var return_grace := 0.0
+	while still_waiting.call():
+		var tree := get_tree()
+		if tree == null:
+			break
+		await tree.process_frame
+		if not is_inside_tree():
+			break
+		if _ad_on_screen and not _app_focused:
+			return_grace = 0.0
+			continue
+		var delta := minf(get_process_delta_time(), 0.05)
+		if _ad_on_screen and _saw_focus_loss and _app_focused:
+			return_grace += delta
+			if return_grace >= 1.5:
+				print("[AdMob] fullscreen closed after focus returned")
+				break
+			continue
+		if _ad_on_screen:
+			continue
+		loading += delta
+		if loading >= load_timeout_sec:
+			print("[AdMob] fullscreen did not show within %.0fs" % load_timeout_sec)
+			break
+	for _i in 4:
+		if get_tree() == null or not is_inside_tree():
+			break
+		await get_tree().process_frame
 
 
 # --- HTML / H5 Games Ads -------------------------------------------------
@@ -262,7 +370,7 @@ func _present_web_interstitial() -> void:
 	var elapsed := 0.0
 	while not done and elapsed < AdsConfig.INTERSTITIAL_TIMEOUT_SEC:
 		await get_tree().process_frame
-		elapsed += get_process_delta_time()
+		elapsed += minf(get_process_delta_time(), 0.05)
 	if not done and _can_mock():
 		await _present_mock(false)
 
@@ -283,12 +391,15 @@ func _present_web_rewarded() -> bool:
 	var elapsed := 0.0
 	while not done and elapsed < AdsConfig.REWARDED_TIMEOUT_SEC:
 		await get_tree().process_frame
-		elapsed += get_process_delta_time()
+		elapsed += minf(get_process_delta_time(), 0.05)
 	if done:
+		reward_result = "earned" if earned else "closed"
 		return earned
 	if _can_mock():
 		await _present_mock(true)
+		reward_result = "earned"
 		return true
+	reward_result = "unavailable"
 	return false
 
 
@@ -333,7 +444,7 @@ func _request_ump_then_initialize() -> void:
 	var elapsed := 0.0
 	while not _ump_updated and elapsed < AdsConfig.UMP_UPDATE_TIMEOUT_SEC:
 		await get_tree().process_frame
-		elapsed += get_process_delta_time()
+		elapsed += minf(get_process_delta_time(), 0.05)
 	if not _ump_updated:
 		push_warning("[AdMob] UMP update timed out")
 		_finish_mobile_init()
@@ -375,8 +486,9 @@ func _finish_mobile_init() -> void:
 		_load_interstitial()
 		_load_rewarded()
 	_mobile_keep.append(listener)
+	# Pausar la app entera congela el vídeo del anuncio en iOS y esconde el cierre.
 	if OS.get_name() == "iOS":
-		MobileAds.set_ios_app_pause_on_background(true)
+		MobileAds.set_ios_app_pause_on_background(false)
 	MobileAds.initialize(listener)
 	_ensure_sdk_ready_fallback()
 
@@ -395,7 +507,7 @@ func _ensure_sdk_ready_fallback() -> void:
 	var elapsed := 0.0
 	while not _mobile_ready and elapsed < 6.0:
 		await get_tree().process_frame
-		elapsed += get_process_delta_time()
+		elapsed += minf(get_process_delta_time(), 0.05)
 	if _mobile_ready:
 		return
 	push_warning("[AdMob] SDK init callback missing; loading ads anyway")
@@ -429,20 +541,19 @@ func _bind_interstitial_callbacks(ad: InterstitialAd) -> void:
 	if ad == null:
 		return
 	var cb := FullScreenContentCallback.new()
+	_mobile_keep.append(cb)
+	cb.on_ad_showed_full_screen_content = func() -> void:
+		_mark_ad_shown()
 	cb.on_ad_dismissed_full_screen_content = func() -> void:
 		print("[AdMob] interstitial dismissed")
+		_mark_ad_closed()
 		_interstitial_shown = true
 		_interstitial_waiting = false
-		_destroy_ad(_interstitial_ad)
-		_interstitial_ad = null
-		_load_interstitial()
 	cb.on_ad_failed_to_show_full_screen_content = func(err) -> void:
 		push_warning("[AdMob] interstitial failed to show: %s" % _ad_error_text(err))
+		_mark_ad_closed()
 		_interstitial_shown = false
 		_interstitial_waiting = false
-		_destroy_ad(_interstitial_ad)
-		_interstitial_ad = null
-		_load_interstitial()
 	ad.full_screen_content_callback = cb
 
 
@@ -452,13 +563,13 @@ func _present_mobile_interstitial() -> void:
 		var elapsed_init := 0.0
 		while not _mobile_ready and elapsed_init < 6.0:
 			await get_tree().process_frame
-			elapsed_init += get_process_delta_time()
+			elapsed_init += minf(get_process_delta_time(), 0.05)
 	if _interstitial_ad == null:
 		_load_interstitial()
 		var elapsed := 0.0
 		while _interstitial_ad == null and elapsed < AdsConfig.INTERSTITIAL_TIMEOUT_SEC:
 			await get_tree().process_frame
-			elapsed += get_process_delta_time()
+			elapsed += minf(get_process_delta_time(), 0.05)
 	if _interstitial_ad == null:
 		push_warning("[AdMob] interstitial not ready to show")
 		if _can_mock():
@@ -466,13 +577,16 @@ func _present_mobile_interstitial() -> void:
 		return
 	_interstitial_waiting = true
 	_interstitial_shown = false
+	_reset_ad_watch()
 	print("[AdMob] showing interstitial")
 	_interstitial_ad.show()
-	var elapsed_show := 0.0
-	while _interstitial_waiting and elapsed_show < AdsConfig.INTERSTITIAL_TIMEOUT_SEC:
-		await get_tree().process_frame
-		elapsed_show += get_process_delta_time()
+	await _await_fullscreen_close(_interstitial_is_waiting, AdsConfig.INTERSTITIAL_TIMEOUT_SEC)
+	_silence_game(false)
+	if _ad_was_shown:
+		_interstitial_shown = true
 	_interstitial_waiting = false
+	_mark_ad_closed()
+	_release_shown_ad(false)
 
 
 func _load_rewarded() -> void:
@@ -500,21 +614,20 @@ func _bind_rewarded_callbacks(ad: RewardedAd) -> void:
 	if ad == null:
 		return
 	var cb := FullScreenContentCallback.new()
+	_mobile_keep.append(cb)
+	cb.on_ad_showed_full_screen_content = func() -> void:
+		_mark_ad_shown()
 	cb.on_ad_dismissed_full_screen_content = func() -> void:
 		print("[AdMob] rewarded dismissed earned=%s" % _rewarded_earned)
+		_mark_ad_closed()
 		_rewarded_closed = true
 		_rewarded_waiting = false
-		_destroy_ad(_rewarded_ad)
-		_rewarded_ad = null
-		_load_rewarded()
 	cb.on_ad_failed_to_show_full_screen_content = func(err) -> void:
 		push_warning("[AdMob] rewarded failed to show: %s" % _ad_error_text(err))
+		_mark_ad_closed()
 		_rewarded_earned = false
 		_rewarded_closed = true
 		_rewarded_waiting = false
-		_destroy_ad(_rewarded_ad)
-		_rewarded_ad = null
-		_load_rewarded()
 	ad.full_screen_content_callback = cb
 
 
@@ -523,32 +636,56 @@ func _present_mobile_rewarded() -> bool:
 		var elapsed_init := 0.0
 		while not _mobile_ready and elapsed_init < 6.0:
 			await get_tree().process_frame
-			elapsed_init += get_process_delta_time()
+			elapsed_init += minf(get_process_delta_time(), 0.05)
 	if _rewarded_ad == null:
 		_load_rewarded()
 		var elapsed := 0.0
 		while _rewarded_ad == null and elapsed < AdsConfig.REWARDED_TIMEOUT_SEC:
 			await get_tree().process_frame
-			elapsed += get_process_delta_time()
+			elapsed += minf(get_process_delta_time(), 0.05)
 	if _rewarded_ad == null:
 		if _can_mock():
 			await _present_mock(true)
+			reward_result = "earned"
 			return true
+		reward_result = "unavailable"
 		return false
 	_rewarded_waiting = true
 	_rewarded_earned = false
 	_rewarded_closed = false
+	_reset_ad_watch()
 	var listener := OnUserEarnedRewardListener.new()
 	listener.on_user_earned_reward = func(_item) -> void:
 		_rewarded_earned = true
+		print("[AdMob] rewarded earned")
 	_mobile_keep.append(listener)
 	_rewarded_ad.show(listener)
-	var elapsed_show := 0.0
-	while _rewarded_waiting and elapsed_show < AdsConfig.REWARDED_TIMEOUT_SEC:
-		await get_tree().process_frame
-		elapsed_show += get_process_delta_time()
+	await _await_fullscreen_close(_rewarded_is_waiting, AdsConfig.REWARDED_TIMEOUT_SEC)
+	_silence_game(false)
 	_rewarded_waiting = false
-	return _rewarded_earned
+	_mark_ad_closed()
+	var earned := _rewarded_earned
+	var was_shown := _ad_was_shown
+	_release_shown_ad(true)
+	if earned:
+		reward_result = "earned"
+	elif was_shown:
+		reward_result = "closed"
+	else:
+		reward_result = "unavailable"
+	print("[AdMob] rewarded result=%s" % reward_result)
+	return earned
+
+
+func _release_shown_ad(rewarded: bool) -> void:
+	if rewarded:
+		_destroy_ad(_rewarded_ad)
+		_rewarded_ad = null
+		_load_rewarded()
+		return
+	_destroy_ad(_interstitial_ad)
+	_interstitial_ad = null
+	_load_interstitial()
 
 
 func _destroy_ad(ad: Object) -> void:

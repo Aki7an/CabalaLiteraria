@@ -78,11 +78,14 @@ func _ready() -> void:
 		SignalManager.puzzle_input.connect(_on_puzzle_input)
 	if not SignalManager.game_finished.is_connected(_dismiss):
 		SignalManager.game_finished.connect(_dismiss)
-	await get_tree().process_frame
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
+	if not await GameManager.await_process_frame(self):
+		return
 	var tries := 0
-	while get_tree().get_nodes_in_group("Celda").is_empty() and tries < 50:
-		await get_tree().process_frame
+	while get_tree() != null and get_tree().get_nodes_in_group("Celda").is_empty() and tries < 50:
+		if not await GameManager.await_process_frame(self):
+			return
 		tries += 1
 	var gift_wait := 0
 	while gift_wait < 40:
@@ -92,7 +95,8 @@ func _ready() -> void:
 				gifted += 1
 		if gifted > 0:
 			break
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		gift_wait += 1
 	if GameManager.onboarding_stage == 2:
 		_hide_intro()
@@ -303,7 +307,8 @@ func _fade_filter(target: float) -> void:
 			return
 		elapsed += get_process_delta_time()
 		_set_filter_alpha(lerpf(start, target, clampf(elapsed / FADE_SEC, 0.0, 1.0)))
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 	if _flow_token != token:
 		return
 	_set_filter_alpha(target)
@@ -395,12 +400,14 @@ func _on_cell_picked() -> void:
 		if _flow_token != token or _state != STATE_CLEAR_CELL:
 			return
 		if _later_tools_visible() or _has_stray_overlay():
-			await get_tree().process_frame
+			if not await GameManager.await_process_frame(self):
+				return
 			continue
 		if not _target_cell_selected():
 			_recover_from_offpath()
 			return
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		elapsed += get_process_delta_time()
 	if _flow_token != token or _state != STATE_CLEAR_CELL:
 		return
@@ -453,8 +460,10 @@ func _on_letter_assigned() -> void:
 	_hole = Rect2()
 	_click_through = Rect2()
 	queue_redraw()
-	await get_tree().process_frame
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
+	if not await GameManager.await_process_frame(self):
+		return
 	if GameManager.onboarding_stage == 2 and not _reveal_shown and _letters_solved >= 2:
 		_reveal_shown = true
 		_show_reveal()
@@ -469,9 +478,11 @@ func _on_letter_assigned() -> void:
 		if _flow_token != token or _state != STATE_CLEAR_LETTER:
 			return
 		if _later_tools_visible() or _has_stray_overlay():
-			await get_tree().process_frame
+			if not await GameManager.await_process_frame(self):
+				return
 			continue
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		elapsed += get_process_delta_time()
 	if _flow_token != token or _state != STATE_CLEAR_LETTER:
 		return
@@ -527,10 +538,11 @@ func _start_theme_wait() -> void:
 	if _flow_token != token:
 		return
 	var guard := 0
-	while get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty() and guard < 90:
+	while get_tree() != null and get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty() and guard < 90:
 		if _flow_token != token:
 			return
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		guard += 1
 	if get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty():
 		_begin_cells_after_theme()
@@ -542,7 +554,8 @@ func _start_theme_wait() -> void:
 		if get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty():
 			_begin_cells_after_theme()
 			return
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		elapsed += get_process_delta_time()
 	if _flow_token != token:
 		return
@@ -571,7 +584,8 @@ func _show_theme_continue() -> void:
 		_refresh_hole()
 		if _hole.size.x > 4.0:
 			break
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		tries += 1
 	if _flow_token != token or _state != STATE_THEME_CONTINUE:
 		return
@@ -597,10 +611,11 @@ func _press_theme_continue() -> void:
 func _wait_theme_closed() -> void:
 	var token := _flow_token
 	var guard := 0
-	while not get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty() and guard < 800:
+	while get_tree() != null and not get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty() and guard < 800:
 		if _flow_token != token:
 			return
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		guard += 1
 	if _flow_token != token:
 		return
@@ -656,8 +671,9 @@ func _start_reveal_read() -> void:
 	if _flow_token != token:
 		return
 	var guard := 0
-	while get_tree().get_nodes_in_group("RevealOverlay").is_empty() and guard < 90:
-		await get_tree().process_frame
+	while get_tree() != null and get_tree().get_nodes_in_group("RevealOverlay").is_empty() and guard < 90:
+		if not await GameManager.await_process_frame(self):
+			return
 		if _flow_token != token:
 			return
 		guard += 1
@@ -674,7 +690,8 @@ func _start_reveal_read() -> void:
 		if get_tree().get_nodes_in_group("RevealOverlay").is_empty():
 			_retry_hud_reveal()
 			return
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		elapsed += get_process_delta_time()
 	if _flow_token != token or _state != STATE_REVEAL_READ:
 		return
@@ -712,7 +729,8 @@ func _show_reveal_dialog_button() -> void:
 		_refresh_hole()
 		if _hole.size.x > 4.0:
 			break
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		tries += 1
 	if _flow_token != token or _state != STATE_REVEAL_CONFIRM:
 		return
@@ -781,26 +799,31 @@ func _begin_reveal_wait() -> void:
 
 func _wait_reveal_closed() -> void:
 	var token := _flow_token
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
 	var guard := 0
-	while not get_tree().get_nodes_in_group("RevealOverlay").is_empty() and guard < 400:
+	while get_tree() != null and not get_tree().get_nodes_in_group("RevealOverlay").is_empty() and guard < 400:
 		if _flow_token != token:
 			return
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		guard += 1
 	for _i in 16:
 		if _flow_token != token:
 			return
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
 			break
 	guard = 0
-	while not get_tree().get_nodes_in_group("RevealSequence").is_empty() and guard < 400:
+	while get_tree() != null and not get_tree().get_nodes_in_group("RevealSequence").is_empty() and guard < 400:
 		if _flow_token != token:
 			return
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 		guard += 1
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
 	if _state == STATE_DONE or _flow_token != token:
 		return
 	_pick_and_show_cell()
@@ -974,8 +997,10 @@ func _ensure_board_visible() -> void:
 	_filter_hidden_for_overlay = false
 	_close_blocking_overlays()
 	if get_tree():
-		await get_tree().process_frame
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
+		if not await GameManager.await_process_frame(self):
+			return
 
 
 func _sync_overlay_vs_filter() -> void:
@@ -1024,8 +1049,10 @@ func _recover_from_offpath() -> void:
 	var token := _flow_token
 	_hide_hand()
 	_close_blocking_overlays()
-	await get_tree().process_frame
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
+	if not await GameManager.await_process_frame(self):
+		return
 	if not is_inside_tree() or _flow_token != token or _state == STATE_DONE:
 		_recovering = false
 		return

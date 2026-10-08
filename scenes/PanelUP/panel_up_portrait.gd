@@ -59,8 +59,6 @@ func _ready() -> void:
 		SignalManager.update_puzzle_stars.connect(_update_stars)
 	if not SignalManager.update_resting_characters.is_connected(_update_letters_filled):
 		SignalManager.update_resting_characters.connect(_update_letters_filled)
-	if not SignalManager.insert_letter_in_number.is_connected(_on_letter_placed):
-		SignalManager.insert_letter_in_number.connect(_on_letter_placed)
 	if not SignalManager.board_filled.is_connected(_on_board_filled):
 		SignalManager.board_filled.connect(_on_board_filled)
 	if not SignalManager.game_finished.is_connected(_on_game_finished):
@@ -452,11 +450,9 @@ func _on_theme_pressed() -> void:
 		control.mouse_filter = Control.MOUSE_FILTER_STOP
 
 
-func _on_letter_placed(_letter: String, _number: int) -> void:
-	_blink_reveal_button()
-
-
 func _blink_reveal_button() -> void:
+	if _is_trailer_phone():
+		return
 	if not is_instance_valid(reveal_button):
 		return
 	if GameManager.partida_terminada:
@@ -483,7 +479,19 @@ func _stop_reveal_blink() -> void:
 			reveal_button.modulate = REVEAL_BLINK_FULL
 
 
+func _is_trailer_phone() -> bool:
+	var node: Node = self
+	while node != null:
+		var path := str(node.scene_file_path)
+		if path.begins_with("res://scenes/trailer/"):
+			return true
+		node = node.get_parent()
+	return false
+
+
 func _on_reveal_pressed() -> void:
+	if _is_trailer_phone():
+		return
 	if _block_onboarding_advanced():
 		return
 	var tutorial := get_tree().get_first_node_in_group("BasicStartTutorial")
@@ -545,7 +553,7 @@ func _on_game_finished() -> void:
 	var mode := GameManager.game_mode_actual
 	var key := "stars_cryptogram" if mode == GameManager.MODE_CRYPTOGRAM else "stars_quick"
 	var before := int(HistoryManager.get_stats_dashboard().get(key, 0))
-	if not GameManager.skips_progress():
+	if not GameManager.skips_progress() or GameManager.should_award_onboarding_stars():
 		HistoryManager.add_result(GameManager.player_name, GameManager.score)
 		PlayFabTools.submit_competitive_rankings(GameManager.player_name)
 	var after := int(HistoryManager.get_stats_dashboard().get(key, 0))

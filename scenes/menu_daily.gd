@@ -341,7 +341,7 @@ func _on_unlock_pressed() -> void:
 	_apply_lock_texts()
 	var lock_body := lock_overlay.get_node_or_null("Card/Body") as Label
 	if lock_body:
-		lock_body.text = _t("DailyAdFailed", "No hay anuncio disponible. Inténtalo de nuevo o compra el juego.")
+		lock_body.text = AdManager.reward_failure_message()
 
 
 func _on_view_sheet_pressed() -> void:
@@ -371,7 +371,7 @@ func _on_play_pressed() -> void:
 				play_button.disabled = false
 			_apply_play_button(true)
 			if ad_thanks:
-				ad_thanks.text = _t("DailyAdFailed", "No hay anuncio disponible. Inténtalo de nuevo o compra el juego.")
+				ad_thanks.text = AdManager.reward_failure_message()
 				ad_thanks.add_theme_color_override("font_color", AD_FAIL)
 			return
 		PlayerPrefs.mark_daily_rewarded_today()

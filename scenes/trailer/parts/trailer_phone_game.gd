@@ -167,6 +167,7 @@ func show_play_chrome() -> void:
 		if node:
 			node.visible = true
 			node.modulate.a = 1.0
+	_lock_reveal_button()
 	var header := get_node_or_null("PanelUP/GameHeader") as CanvasItem
 	if header:
 		header.visible = false
@@ -174,6 +175,26 @@ func show_play_chrome() -> void:
 	var rail := get_node_or_null("BoardFrame/ScrollRail") as CanvasItem
 	if rail:
 		rail.visible = false
+
+
+func _lock_reveal_button() -> void:
+	var button := get_node_or_null("PanelUP/ButtonReveal") as BaseButton
+	if button == null:
+		return
+	var hud := get_node_or_null("PanelUP")
+	if hud != null and hud.has_method("_stop_reveal_blink"):
+		hud.call("_stop_reveal_blink")
+	button.focus_mode = Control.FOCUS_NONE
+	button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.disabled = true
+	var normal := button.get_theme_stylebox("normal")
+	if normal != null:
+		button.add_theme_stylebox_override("hover", normal)
+		button.add_theme_stylebox_override("pressed", normal)
+		button.add_theme_stylebox_override("focus", normal)
+		button.add_theme_stylebox_override("disabled", normal)
+	button.modulate = Color.WHITE
+	button.scale = Vector2.ONE
 
 
 func hide_chrome() -> void:
@@ -417,6 +438,7 @@ func apply_gift_letters(letters: String) -> void:
 
 
 func reveal_letter(letter: String, color: Color, lock: bool = true) -> Array[Celda]:
+	_lock_reveal_button()
 	var found := cells_for(letter)
 	var shown := letter.strip_edges().to_upper()
 	if GameManager:

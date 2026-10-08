@@ -115,11 +115,14 @@ func _ready() -> void:
 	_build()
 	if not SignalManager.puzzle_input.is_connected(_on_puzzle_input):
 		SignalManager.puzzle_input.connect(_on_puzzle_input)
-	await get_tree().process_frame
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
+	if not await GameManager.await_process_frame(self):
+		return
 	var tries := 0
-	while get_tree().get_nodes_in_group("Celda").is_empty() and tries < 40:
-		await get_tree().process_frame
+	while get_tree() != null and get_tree().get_nodes_in_group("Celda").is_empty() and tries < 40:
+		if not await GameManager.await_process_frame(self):
+			return
 		tries += 1
 	await _load_tutorial_puzzle()
 	_pick_targets()
@@ -713,7 +716,8 @@ func _kill_footer_tween() -> void:
 
 
 func _run_step3_intro(token: int) -> void:
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
 	if token != _anim_token or not is_inside_tree() or _footer == null:
 		return
 	await _lower_footer_to_rest(token, true)
@@ -740,7 +744,8 @@ func _run_step3_intro(token: int) -> void:
 
 
 func _run_step4_intro(token: int, fade_in: bool) -> void:
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
 	if token != _anim_token or not is_inside_tree():
 		return
 	_fit_play_button(false)
@@ -1000,8 +1005,10 @@ func _load_tutorial_puzzle() -> void:
 	var canvas := get_tree().get_first_node_in_group("PuzzleCanvas")
 	if canvas != null and canvas.has_method("rebuild_puzzle_board"):
 		await canvas.rebuild_puzzle_board()
-		await get_tree().process_frame
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
+		if not await GameManager.await_process_frame(self):
+			return
 
 
 func _restore_real_puzzle() -> void:
@@ -1011,7 +1018,8 @@ func _restore_real_puzzle() -> void:
 	var canvas := get_tree().get_first_node_in_group("PuzzleCanvas")
 	if canvas != null and canvas.has_method("rebuild_puzzle_board"):
 		await canvas.rebuild_puzzle_board()
-		await get_tree().process_frame
+		if not await GameManager.await_process_frame(self):
+			return
 	await PuzzleSaveManager.restore_current_puzzle()
 	SignalManager.añade_las_letras_iniciales.emit()
 	GameManager.update_numero_letras_reveladas()
@@ -1077,7 +1085,8 @@ func _stop_reveal_blink() -> void:
 
 
 func _start_play_blink() -> void:
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
 	if _play == null or not is_instance_valid(_play) or not (_step == 1 or _step == 6):
 		return
 	_play.pivot_offset = _play.size * 0.5
@@ -1096,7 +1105,8 @@ func _stop_play_blink() -> void:
 
 
 func _start_next_blink() -> void:
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
 	if _next == null or not is_instance_valid(_next):
 		return
 	if not (_step == 1 or _step == 5 or (_step == 3 and _letter_placed)):
@@ -1795,8 +1805,10 @@ func _fit_play_button(compact: bool) -> void:
 func _capture_play_ref_width() -> void:
 	if _play == null:
 		return
-	await get_tree().process_frame
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
+	if not await GameManager.await_process_frame(self):
+		return
 	if (_step == 2 or _step == 3) and _play.size.x > 20.0:
 		_play_ref_width = _play.size.x
 
@@ -1970,8 +1982,10 @@ func _layout_play_centered() -> void:
 func _capture_play_step1_width() -> void:
 	if _play == null:
 		return
-	await get_tree().process_frame
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
+	if not await GameManager.await_process_frame(self):
+		return
 	if _step != 1:
 		return
 	if _play.size.x > 20.0:
@@ -2382,7 +2396,8 @@ func _show_tutorial_later_dialog() -> void:
 
 	overlay.modulate.a = 0.0
 	card.scale = Vector2(0.88, 0.88)
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
 	if not is_instance_valid(card):
 		return
 	card.pivot_offset = card.size * 0.5

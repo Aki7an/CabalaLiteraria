@@ -79,6 +79,23 @@ func skips_progress() -> bool:
 	return is_practice_session() or is_onboarding_session()
 
 
+func should_award_onboarding_stars() -> bool:
+	if not is_onboarding_session():
+		return false
+	return PlayerPrefs.should_award_tutorial_stars(onboarding_stage)
+
+
+func await_process_frame(node: Node = null) -> bool:
+	var host := node if node != null else self
+	if host == null or not is_instance_valid(host):
+		return false
+	var tree := host.get_tree()
+	if tree == null:
+		return false
+	await tree.process_frame
+	return is_instance_valid(host) and host.get_tree() != null
+
+
 func is_daily_puzzle(item: Dictionary) -> bool:
 	return str(item.get("pack", "")).strip_edges().to_lower() == PACK_DAILY
 
@@ -564,7 +581,23 @@ func reset_player_data() -> void:
 	reset_game_paremeters()
 	resetear_partida_terminada()
 	reset_numero_letras_reveladas()
+	session_source = SOURCE_NONE
+	onboarding_stage = 0
+	locked_record_stars = -1
 	HistoryManager.stats_updated.emit()
+
+
+func reset_to_fresh_install() -> void:
+	if typeof(EventLoggerAutoload) != TYPE_NIL:
+		EventLoggerAutoload.discard_session()
+	if FileAccess.file_exists("user://logs/pending_trace.json"):
+		DirAccess.remove_absolute("user://logs/pending_trace.json")
+	if typeof(StarCollectOverlay) != TYPE_NIL:
+		StarCollectOverlay.clear()
+	reset_player_data()
+	var tree := get_tree()
+	if tree != null:
+		tree.change_scene_to_file("res://scenes/MenuMain.tscn")
 
 
 func is_puzzle_playable(_item: Dictionary) -> bool:
@@ -2191,10 +2224,9 @@ func get_letters_for_lang(lang: String, opts := {}) -> Array:
 
 	match L:
 		"es", "spa", "es_es":
-			var base := _letters_a_z()
 			if include_enye:
-				base.insert(15, "Ñ") # después de la N
-			return base
+				return ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+			return _letters_a_z()
 
 		"en", "eng", "en_us", "en_gb":
 			return _letters_a_z()

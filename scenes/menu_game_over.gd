@@ -38,6 +38,7 @@ const INTRO_CONTINUE_AT := 5.0
 @onready var share_more_button: Button = $MainCard/ButtonShareMore
 @onready var description_label: RichTextLabel = $MainCard/StarsCard/InfoCard/Description
 @onready var time_text: Label = $MainCard/StarsCard/TimePill/TimeText
+@onready var stars_box: HBoxContainer = $MainCard/StarsCard/Stars
 @onready var stars: Array[TextureRect] = [
 	$MainCard/StarsCard/Stars/Star1,
 	$MainCard/StarsCard/Stars/Star2,
@@ -45,6 +46,8 @@ const INTRO_CONTINUE_AT := 5.0
 	$MainCard/StarsCard/Stars/Star4,
 	$MainCard/StarsCard/Stars/Star5
 ]
+var _completion_star: TextureRect
+var _bonus_label: Label
 
 var _phrase := ""
 var _stamp: Control
@@ -102,13 +105,10 @@ func _ready() -> void:
 	for index in range(stars.size()):
 		var star := stars[index]
 		star.visible = index < maximum
-		if GameManager.is_onboarding_session():
-			star.texture = STAR_OUTLINE
-			star.self_modulate = Color(0.72, 0.58, 0.38, 0.55)
-		else:
-			star.self_modulate = STAR_EMPTY
+		star.self_modulate = STAR_EMPTY
 		star.scale = Vector2.ONE
 
+	_install_completion_star()
 	await get_tree().process_frame
 	await _fit_phrase_card()
 	await _fit_stars_card()
@@ -116,6 +116,9 @@ func _ready() -> void:
 	_install_body_scroll()
 	for star in stars:
 		star.pivot_offset = star.size * 0.5
+	if _completion_star:
+		_completion_star.pivot_offset = _completion_star.size * 0.5
+	_place_bonus_over_skill_stars()
 	_prepare_intro_pose()
 	main_card.modulate.a = 1.0
 	await _play_victory_intro(earned, maximum)
@@ -552,6 +555,11 @@ func _prepare_intro_pose() -> void:
 	_hide_node(info_card)
 	for star in stars:
 		star.modulate.a = 0.0
+	if _completion_star:
+		_completion_star.modulate.a = 0.0
+	if _bonus_label:
+		_bonus_label.visible = true
+		_bonus_label.modulate.a = 0.0
 
 	_banner_rest = {
 		"banner": banner.position,
@@ -643,8 +651,7 @@ func _play_victory_intro(earned: int, maximum: int) -> void:
 	await get_tree().create_timer(0.82).timeout
 	_animate_banner()
 	await get_tree().create_timer(0.90).timeout
-	_animate_stars_intro(earned, maximum)
-	await get_tree().create_timer(0.50).timeout
+	await _animate_stars_intro(earned, maximum)
 	await _animate_info_intro()
 
 
@@ -734,33 +741,186 @@ func _animate_banner() -> void:
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
+func _install_completion_star() -> void:
+	if stars_box == null or stars_card == null:
+		return
+	var skill_gap := stars_box.get_theme_constant("separation")
+	if skill_gap <= 0:
+		skill_gap = 24
+	var line := HBoxContainer.new()
+	line.name = "StarsLine"
+	line.alignment = BoxContainer.ALIGNMENT_CENTER
+	line.add_theme_constant_override("separation", 0)
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	line.position = Vector2(0.0, stars_box.position.y - 8.0)
+	line.size = Vector2(stars_card.size.x, maxf(stars_box.size.y, 128.0))
+	stars_card.add_child(line)
+	line.move_to_front()
+
+	var wrap := Control.new()
+	wrap.custom_minimum_size = Vector2(128, 128)
+	wrap.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	wrap.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	_completion_star = TextureRect.new()
+	_completion_star.name = "CompletionStar"
+	_completion_star.texture = preload("res://images/estrella_plano.png")
+	_completion_star.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_completion_star.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_completion_star.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_completion_star.offset_left = 12.0
+	_completion_star.offset_top = 12.0
+	_completion_star.offset_right = -12.0
+	_completion_star.offset_bottom = -12.0
+	_completion_star.self_modulate = STAR_EMPTY
+	_completion_star.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	wrap.add_child(_completion_star)
+
+	var frame := DottedStarFrame.new()
+	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	wrap.add_child(frame)
+
+	var gap := Control.new()
+	gap.custom_minimum_size = Vector2(skill_gap * 2, 10)
+	gap.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	_bonus_label = Label.new()
+	_bonus_label.name = "BonusPuzzleCompleted"
+	_bonus_label.text = _bonus_completed_text()
+	_bonus_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_bonus_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_bonus_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_bonus_label.add_theme_font_override("font", FONT_UI)
+	_bonus_label.add_theme_font_size_override("font_size", 28)
+	_bonus_label.add_theme_color_override("font_color", Color(0.78, 0.52, 0.16, 0.95))
+	_bonus_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_bonus_label.modulate.a = 0.0
+	_bonus_label.z_index = 1
+
+	line.add_child(wrap)
+	line.add_child(gap)
+	stars_box.reparent(line)
+	stars_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	stars_box.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	stars_box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	stars_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stars_card.add_child(_bonus_label)
+	_place_bonus_over_skill_stars.call_deferred()
+
+
+func _place_bonus_over_skill_stars() -> void:
+	if _bonus_label == null or stars_box == null or not is_instance_valid(_bonus_label):
+		return
+	_bonus_label.position = stars_box.global_position - stars_card.global_position
+	_bonus_label.size = stars_box.size
+	_bonus_label.visible = true
+
+
+func _bonus_completed_text() -> String:
+	var text := tr("BonusPuzzleCompleted")
+	if text == "BonusPuzzleCompleted":
+		return "BONUS Puzle terminado"
+	return text
+
+
+func _collectable_stars() -> Array[TextureRect]:
+	var list: Array[TextureRect] = []
+	if _completion_star != null and _awards_completion_star():
+		list.append(_completion_star)
+	for index in range(mini(_earned, stars.size())):
+		var star := stars[index]
+		if star != null and star.visible:
+			list.append(star)
+	return list
+
+
+func _awards_completion_star() -> bool:
+	if GameManager.is_practice_session():
+		return false
+	if GameManager.is_onboarding_session():
+		return GameManager.should_award_onboarding_stars()
+	return not GameManager.skips_progress()
+
+
 func _animate_stars_intro(earned: int, maximum: int) -> void:
-	var tween := create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(stars_card, "modulate:a", 1.0, 0.42)
+	for index in range(stars.size()):
+		var star := stars[index]
+		star.visible = index < maximum
+		if index < earned:
+			star.self_modulate = STAR_EMPTY
+		else:
+			star.texture = STAR_OUTLINE
+			star.self_modulate = Color(0.72, 0.58, 0.38, 0.55)
+		star.modulate.a = 0.0
+		star.scale = Vector2.ONE
+	if _bonus_label:
+		_bonus_label.visible = true
+		_bonus_label.modulate.a = 0.0
+
+	var fade := create_tween()
+	fade.set_parallel(true)
+	fade.tween_property(stars_card, "modulate:a", 1.0, 0.42)
 	if stars_title:
 		stars_title.modulate.a = 1.0
 	if time_pill:
 		time_pill.modulate.a = 1.0
 	info_card.modulate.a = 0.0
+	if _completion_star:
+		fade.tween_property(_completion_star, "modulate:a", 1.0, 0.22)
+	if _bonus_label:
+		fade.tween_property(_bonus_label, "modulate:a", 1.0, 0.28)
+	await fade.finished
+
+	if _completion_star:
+		await _blink_filled_star(_completion_star, 2)
+
+	if _bonus_label:
+		var hide_bonus := create_tween()
+		hide_bonus.tween_property(_bonus_label, "modulate:a", 0.0, 0.22)
+		await hide_bonus.finished
+		_bonus_label.visible = false
+
+	var show_perf := create_tween()
+	show_perf.set_parallel(true)
 	for index in range(stars.size()):
-		var star := stars[index]
 		if index >= maximum:
 			continue
-		if index < earned:
-			star.self_modulate = GameManager.star_fill_color()
-			star.scale = Vector2(0.68, 0.68)
-			tween.tween_property(star, "modulate:a", 1.0, 0.22)
-			var pop := create_tween()
-			pop.tween_property(star, "scale", Vector2(1.08, 1.08), 0.32)\
-				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-			pop.tween_property(star, "scale", Vector2.ONE, 0.28)\
-				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-			_flash_star(star)
-		else:
-			star.texture = STAR_OUTLINE
-			star.self_modulate = Color(0.72, 0.58, 0.38, 0.55)
-			tween.tween_property(star, "modulate:a", 1.0, 0.40)
+		show_perf.tween_property(stars[index], "modulate:a", 1.0, 0.28)
+	await show_perf.finished
+
+	var earned_stars: Array[TextureRect] = []
+	for index in range(mini(earned, stars.size())):
+		if stars[index].visible:
+			earned_stars.append(stars[index])
+	if earned_stars.is_empty():
+		return
+	for i in range(1, earned_stars.size()):
+		_blink_filled_star(earned_stars[i], 2)
+	await _blink_filled_star(earned_stars[0], 2)
+
+
+func _blink_filled_star(star: TextureRect, times: int) -> void:
+	if star == null:
+		return
+	star.self_modulate = GameManager.star_fill_color()
+	star.scale = Vector2(0.72, 0.72)
+	var tween := create_tween()
+	_queue_star_blink(tween, star, times)
+	await tween.finished
+	_flash_star(star)
+
+
+func _queue_star_blink(tween: Tween, star: TextureRect, times: int) -> void:
+	star.self_modulate = GameManager.star_fill_color()
+	tween.tween_property(star, "scale", Vector2(1.08, 1.08), 0.18)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	for _i in range(times):
+		tween.tween_property(star, "modulate:a", 0.22, 0.11)
+		tween.tween_property(star, "modulate:a", 1.0, 0.11)
+	tween.tween_property(star, "scale", Vector2.ONE, 0.16)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 
 func _flash_star(star: TextureRect) -> void:
@@ -829,12 +989,21 @@ func _on_button_back_pressed() -> void:
 		await _leave_onboarding()
 		return
 	await _ask_share_if_needed()
-	var collect_count := _earned
+	var collect_stars := _collectable_stars()
+	var collect_count := collect_stars.size()
 	if GameManager.skips_progress():
 		collect_count = 0
 	if collect_count > 0:
 		await _ask_online_name_if_needed()
-		StarCollectOverlay.capture_earned(stars, collect_count, GameManager.game_mode_actual)
+		if _awards_completion_star():
+			HistoryManager.grant_completion_star()
+			var mode := GameManager.game_mode_actual
+			var key := "stars_cryptogram" if mode == GameManager.MODE_CRYPTOGRAM else "stars_quick"
+			var after := int(HistoryManager.get_stats_dashboard().get(key, 0))
+			if StarCollectOverlay.from_total >= 0:
+				StarCollectOverlay.to_total = after
+			PlayFabTools.submit_competitive_rankings(GameManager.player_name)
+		StarCollectOverlay.capture_earned(collect_stars, collect_count, GameManager.game_mode_actual)
 	StarCollectOverlay.show_white_cover()
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -844,6 +1013,21 @@ func _on_button_back_pressed() -> void:
 
 
 func _leave_onboarding() -> void:
+	var award_tutorial := GameManager.should_award_onboarding_stars()
+	var collect_stars: Array[TextureRect] = []
+	if award_tutorial:
+		collect_stars = _collectable_stars()
+		HistoryManager.grant_completion_star()
+		PlayerPrefs.mark_tutorial_stars_awarded(GameManager.onboarding_stage)
+		var after := int(HistoryManager.get_stats_dashboard().get("stars_quick", 0))
+		if StarCollectOverlay.from_total >= 0:
+			StarCollectOverlay.to_total = after
+		PlayFabTools.submit_competitive_rankings(GameManager.player_name)
+	if GameManager.onboarding_stage > 1 and award_tutorial and collect_stars.size() > 0:
+		StarCollectOverlay.capture_earned(collect_stars, collect_stars.size(), GameManager.MODE_QUICK)
+		StarCollectOverlay.show_white_cover()
+		await get_tree().process_frame
+		await get_tree().process_frame
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	if GameManager.onboarding_stage <= 1:

@@ -13,7 +13,7 @@ class_name Celda
 @export var letra: String = ""
 @export var letter_user: String = ""
 
-@export var color_error: Color = Color(0.81, 0.0, 0.0, 0.42)
+@export var color_error: Color = Color(0.82, 0.12, 0.12, 1)
 @export var color_font_default: Color = Color(0.169, 0.18, 0.188)
 
 @export var font_size_inicial: int = 40
