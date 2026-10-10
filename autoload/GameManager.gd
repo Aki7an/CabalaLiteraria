@@ -1049,6 +1049,16 @@ func active_puzzle_locale() -> String:
 	return locked if locked != "" else locale_code()
 
 
+func puzzle_language_is_locked() -> bool:
+	return _puzzle_board_is_open()
+
+
+func locked_puzzle_language() -> String:
+	if not puzzle_language_is_locked():
+		return ""
+	return active_puzzle_locale()
+
+
 func export_cipher_state() -> Dictionary:
 	return {
 		"numbers": lista_numeros.duplicate(),

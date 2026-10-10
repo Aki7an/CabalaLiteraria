@@ -1402,6 +1402,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
 theme_override_font_sizes/font_size = 38
+theme_override_constants/line_spacing = -12
 text = "Reto diario"
 horizontal_alignment = 1
 vertical_alignment = 1

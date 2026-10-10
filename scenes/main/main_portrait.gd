@@ -4,6 +4,7 @@ const scene_to_load = preload("res://scenes/MenuResults.tscn")
 const ONBOARDING_GUIDE := preload("res://scenes/onboarding_guide.tscn")
 const LEVEL_INTRO := preload("res://scenes/level_start_intro.gd")
 const ENTER_ANIM := preload("res://scenes/game/puzzle_enter_animation.gd")
+const LANGUAGE_NOTICE := preload("res://scenes/puzzle_language_notice.gd")
 
 func _ready():
 	SignalManager.game_finished_to_results.connect(_game_finished_to_results)
@@ -12,6 +13,7 @@ func _ready():
 	if play_enter:
 		_prepare_enter_chrome()
 	var show_intro := _should_show_level_intro()
+	var warn_language := _paused_puzzle_in_other_language()
 	await get_tree().process_frame
 	await get_tree().process_frame
 	PuzzleSaveManager.begin_current_puzzle()
@@ -36,6 +38,8 @@ func _ready():
 		panel_up.call("resume_saved_time")
 	if panel_up != null and panel_up.has_method("refresh_hud"):
 		panel_up.call("refresh_hud")
+	if warn_language:
+		_show_language_lock_notice()
 	if GameManager.is_onboarding_session():
 		call_deferred("_show_onboarding_guide")
 	elif show_intro:
@@ -51,6 +55,35 @@ func _prepare_enter_chrome() -> void:
 		if node:
 			node.visible = false
 			node.modulate.a = 0.0
+
+
+func _paused_puzzle_in_other_language() -> bool:
+	if GameManager.is_onboarding_session():
+		return false
+	if Engine.has_meta("video_trailer") and bool(Engine.get_meta("video_trailer")):
+		return false
+	if Engine.has_meta("store_screenshot") and bool(Engine.get_meta("store_screenshot")):
+		return false
+	var saved := PuzzleSaveManager.in_progress_locale(int(GameManager.id_frase))
+	if saved == "":
+		return false
+	return saved != GameManager.locale_code() and GameManager.active_puzzle_locale() == saved
+
+
+func _show_language_lock_notice() -> void:
+	var host := _overlay_host()
+	if host == null or host.get_node_or_null("PuzzleLanguageNotice") != null:
+		return
+	var puzzle_lang := GameManager.active_puzzle_locale()
+	var previous := GameManager.locale_code()
+	if previous != puzzle_lang:
+		GameManager.apply_language(puzzle_lang)
+		var panel_up := get_node_or_null("CanvasLayer/PanelUP")
+		if panel_up != null and panel_up.has_method("apply_interface_language"):
+			panel_up.call("apply_interface_language")
+	var notice := LANGUAGE_NOTICE.new()
+	host.add_child(notice)
+	notice.open(puzzle_lang, previous, true)
 
 
 func _should_show_level_intro() -> bool:

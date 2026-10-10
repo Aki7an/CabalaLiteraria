@@ -83,20 +83,8 @@ func _ready() -> void:
 	if not SignalManager.audio_prefs_changed.is_connected(_refresh_music_button):
 		SignalManager.audio_prefs_changed.connect(_refresh_music_button)
 	_refresh_music_button()
-	if category_label:
-		category_label.text = GameManager.category_display_name()
+	apply_interface_language()
 	_apply_category_icon()
-	if stars_title:
-		stars_title.text = tr("TutStarsPuzzle")
-	var theme_title := get_node_or_null("ButtonTheme/Title") as Label
-	if theme_title:
-		theme_title.text = tr("ThemeAction")
-	var hint_title := get_node_or_null("ButtonHint/Title") as Label
-	if hint_title:
-		hint_title.text = tr("TutHint")
-	var reveal_title := get_node_or_null("ButtonReveal/Title") as Label
-	if reveal_title:
-		reveal_title.text = tr("TutReveal")
 	_apply_category_color()
 	_apply_practice_lock()
 	_apply_onboarding_tool_lock()
@@ -166,6 +154,23 @@ func _process(_delta: float) -> void:
 	var elapsed_seconds := _elapsed_play_seconds()
 	GameManager.set_tiempo_partida(elapsed_seconds)
 	_update_timer_label(float(elapsed_seconds))
+
+
+func apply_interface_language() -> void:
+	if category_label:
+		category_label.text = GameManager.category_display_name()
+	if stars_title:
+		stars_title.text = tr("TutStarsPuzzle")
+	var theme_title := get_node_or_null("ButtonTheme/Title") as Label
+	if theme_title:
+		theme_title.text = tr("ThemeAction")
+	var hint_title := get_node_or_null("ButtonHint/Title") as Label
+	if hint_title:
+		hint_title.text = tr("TutHint")
+	var reveal_title := get_node_or_null("ButtonReveal/Title") as Label
+	if reveal_title:
+		reveal_title.text = tr("TutReveal")
+	refresh_hud()
 
 
 func refresh_hud() -> void:

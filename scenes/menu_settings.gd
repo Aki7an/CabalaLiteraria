@@ -1,6 +1,7 @@
 extends Control
 
 const CREDITS_SCENE := preload("res://scenes/MenuCredits.tscn")
+const LANGUAGE_NOTICE := preload("res://scenes/puzzle_language_notice.gd")
 const CREDITS_BLINK_EVERY := 3.0
 
 @onready var button_español: Button = $Panel/LanguageCard/ButtonEspañol
@@ -225,6 +226,11 @@ func _is_overlay() -> bool:
 func _select_language(code: String, button: Button) -> void:
 	GameManager.button_blink(button)
 	SoundManager.play("ButtonClick")
+	var locked := GameManager.locked_puzzle_language()
+	if locked != "":
+		if code != locked:
+			_show_language_notice(locked, code)
+		return
 	GameManager.apply_language(code)
 	_update_language_selection()
 
@@ -376,7 +382,11 @@ func _on_button_reset_pressed() -> void:
 	SoundManager.set_fx_enabled(true)
 	SoundManager.apply_audio_prefs()
 	PlayerPrefs.save_prefs()
-	GameManager.apply_language("es")
+	var locked := GameManager.locked_puzzle_language()
+	if locked == "":
+		GameManager.apply_language("es")
+	elif locked != "es":
+		_show_language_notice(locked, "es")
 	check_button_tutorial.button_pressed = true
 	check_button_reveal.button_pressed = true
 	check_button_share.button_pressed = false
@@ -589,11 +599,22 @@ func _process(_delta: float) -> void:
 		_refresh_name_slots()
 
 
+func _show_language_notice(puzzle_lang: String, other_lang: String) -> void:
+	if get_node_or_null("PuzzleLanguageNotice") != null:
+		return
+	var notice := LANGUAGE_NOTICE.new()
+	add_child(notice)
+	notice.open(puzzle_lang, other_lang, false)
+
+
 func _update_language_selection() -> void:
-	var current_locale := TranslationServer.get_locale().left(2).to_lower()
+	var locked := GameManager.locked_puzzle_language()
+	var current_locale := locked if locked != "" else TranslationServer.get_locale().left(2).to_lower()
 	for code in _language_buttons:
 		var button: Button = _language_buttons[code]
 		var is_selected: bool = code == current_locale
+		var blocked: bool = locked != "" and code != locked
+		button.modulate = Color(1, 1, 1, 0.38) if blocked else Color.WHITE
 		button.get_node("Selected").visible = is_selected
 		button.add_theme_stylebox_override(
 			"normal",
