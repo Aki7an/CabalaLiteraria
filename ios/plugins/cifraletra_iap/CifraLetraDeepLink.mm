@@ -2,6 +2,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <objc/runtime.h>
 
 static NSString *const kDeepLinkInbox = @"cifraletra_deeplink.url";
 
@@ -10,7 +11,64 @@ static NSString *const kDeepLinkInbox = @"cifraletra_deeplink.url";
 - (void)storeURL:(NSURL *)url;
 @end
 
+static void cifraletra_store_argument(NSString *arg) {
+	if (arg.length == 0) {
+		return;
+	}
+	if ([arg rangeOfString:@"cifraletra:" options:NSCaseInsensitiveSearch].location == NSNotFound) {
+		return;
+	}
+	NSString *text = arg;
+	if ([text hasPrefix:@"--uri="]) {
+		text = [text substringFromIndex:6];
+	}
+	text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	text = [text stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\"'"]];
+	NSURL *url = [NSURL URLWithString:text];
+	if (url == nil) {
+		NSString *encoded = [text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+		url = [NSURL URLWithString:encoded];
+	}
+	[[CifraLetraDeepLink shared] storeURL:url];
+}
+
+static BOOL cifraletra_filtering_arguments = NO;
+static IMP cifraletra_original_arguments = NULL;
+
+static NSArray *cifraletra_arguments(id self, SEL cmd) {
+	NSArray *(*original)(id, SEL) = (NSArray *(*)(id, SEL))cifraletra_original_arguments;
+	NSArray *args = original != NULL ? original(self, cmd) : @[];
+	if (cifraletra_filtering_arguments || args.count == 0) {
+		return args;
+	}
+	cifraletra_filtering_arguments = YES;
+	NSMutableArray *kept = [NSMutableArray arrayWithCapacity:args.count];
+	for (id item in args) {
+		if (![item isKindOfClass:[NSString class]]) {
+			[kept addObject:item];
+			continue;
+		}
+		NSString *arg = (NSString *)item;
+		if ([arg rangeOfString:@"cifraletra:" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+			cifraletra_store_argument(arg);
+			continue;
+		}
+		[kept addObject:arg];
+	}
+	cifraletra_filtering_arguments = NO;
+	return kept;
+}
+
 @implementation CifraLetraDeepLink
+
++ (void)load {
+	Method method = class_getInstanceMethod([NSProcessInfo class], @selector(arguments));
+	if (method == NULL || cifraletra_original_arguments != NULL) {
+		return;
+	}
+	cifraletra_original_arguments = method_getImplementation(method);
+	method_setImplementation(method, (IMP)cifraletra_arguments);
+}
 
 + (instancetype)shared {
 	static CifraLetraDeepLink *instance;
@@ -21,11 +79,35 @@ static NSString *const kDeepLinkInbox = @"cifraletra_deeplink.url";
 	return instance;
 }
 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	(void)application;
+	id url = launchOptions[UIApplicationLaunchOptionsURLKey];
+	if ([url isKindOfClass:[NSURL class]]) {
+		[self storeURL:(NSURL *)url];
+	}
+	return YES;
+}
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary *)options {
 	(void)application;
 	(void)options;
 	[self storeURL:url];
 	return YES;
+}
+
+- (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions API_AVAILABLE(ios(13.0)) {
+	(void)scene;
+	(void)session;
+	for (UIOpenURLContext *context in connectionOptions.URLContexts) {
+		[self storeURL:context.URL];
+	}
+}
+
+- (void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts API_AVAILABLE(ios(13.0)) {
+	(void)scene;
+	for (UIOpenURLContext *context in URLContexts) {
+		[self storeURL:context.URL];
+	}
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -38,6 +120,13 @@ static NSString *const kDeepLinkInbox = @"cifraletra_deeplink.url";
 		return YES;
 	}
 	return NO;
+}
+
+- (void)scene:(UIScene *)scene continueUserActivity:(NSUserActivity *)userActivity API_AVAILABLE(ios(13.0)) {
+	(void)scene;
+	if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+		[self storeURL:userActivity.webpageURL];
+	}
 }
 
 - (void)storeURL:(NSURL *)url {

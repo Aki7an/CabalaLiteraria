@@ -18,17 +18,19 @@ var _cmdline_checked := false
 
 
 func _ready() -> void:
-	_capture()
+	# El intent de Android no se lee aquí: hacerlo en el primer _ready
+	# tumba el proceso mientras sigue visible la pantalla de Godot.
+	_remember_stored_urls()
 	var timer := Timer.new()
 	timer.wait_time = 0.5
 	timer.autostart = true
-	timer.timeout.connect(_capture)
+	timer.timeout.connect(_capture_and_open)
 	add_child(timer)
 
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_RESUMED:
-		_capture()
+		_capture_and_open()
 
 
 func has_pending() -> bool:
@@ -120,23 +122,40 @@ static func _valid_id(puzzle_id: int) -> int:
 	return puzzle_id if puzzle_id >= 0 else -1
 
 
-func _capture() -> void:
-	for url in [_read_inbox(), _android_url(), _cmdline_url()]:
+func pull() -> void:
+	_remember_urls()
+
+
+func _capture_and_open() -> void:
+	_remember_urls()
+	if _pending_id < 0 or _launching:
+		return
+	var tree := get_tree()
+	if tree == null or tree.current_scene == null:
+		return
+	open_pending()
+
+
+func _remember_stored_urls() -> void:
+	for url in [_read_inbox(), _cmdline_url()]:
 		if url != "":
-			_offer(url)
-	if _pending_id >= 0 and not _launching and get_tree() != null and get_tree().current_scene != null:
-		open_pending()
+			_remember(url)
 
 
-func _offer(url: String) -> void:
+func _remember_urls() -> void:
+	_remember_stored_urls()
+	var android := _android_url()
+	if android != "":
+		_remember(android)
+
+
+func _remember(url: String) -> void:
 	var puzzle_id := puzzle_id_from_url(url)
 	if puzzle_id < 0 or _recently_opened(puzzle_id) or _already_playing(puzzle_id):
 		return
 	if puzzle_id != _pending_id:
 		print("[DeepLink] ", url, " -> ", puzzle_id)
 		_pending_id = puzzle_id
-	if get_tree() != null and get_tree().current_scene != null:
-		open_pending()
 
 
 func _recently_opened(puzzle_id: int) -> bool:
@@ -159,9 +178,14 @@ func _go_home() -> void:
 	if tree.paused:
 		tree.paused = false
 	var scene := tree.current_scene
-	if scene != null and scene.scene_file_path == MENU_SCENE:
+	if scene != null and (
+		scene.scene_file_path == MENU_SCENE
+		or scene.has_method("reveal_main_menu")
+	):
+		if scene.has_method("reveal_main_menu"):
+			scene.call_deferred("reveal_main_menu")
 		return
-	tree.change_scene_to_file(MENU_SCENE)
+	tree.call_deferred("change_scene_to_file", MENU_SCENE)
 
 
 func _launch(puzzle_id: int) -> bool:
@@ -297,20 +321,17 @@ func _android_url() -> String:
 	if url.is_empty() or url == "null" or url == "<null>":
 		_android_stamp = ""
 		return ""
-	var token := url
-	var system := JavaClassWrapper.wrap("java.lang.System")
-	if system != null:
-		var identity: Variant = system.identityHashCode(intent)
-		if JavaClassWrapper.get_exception() == null and identity != null:
-			token = "%s|%s" % [str(identity), url]
-	if token == _android_stamp:
+	if url == _android_stamp:
 		return ""
-	_android_stamp = token
-	intent.setData(null)
-	if JavaClassWrapper.get_exception() == null:
-		activity.setIntent(intent)
-		JavaClassWrapper.get_exception()
+	_android_stamp = url
+	# setData(null) cierra el proceso en Godot 4. Una cadena vacía sí es válida.
+	intent.call("setAction", "android.intent.action.MAIN")
+	_java_failed()
 	return url
+
+
+func _java_failed() -> bool:
+	return JavaClassWrapper.get_exception() != null
 
 
 func _cmdline_url() -> String:

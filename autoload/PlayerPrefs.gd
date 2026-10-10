@@ -5,6 +5,8 @@ var volumen_musica: float = 0.8
 var volumen_fx: float = 0.8
 var mute_musica: bool = true
 var mute_fx: bool = true
+## Paths of game tracks left out of the background loop.
+var music_excluded: PackedStringArray = PackedStringArray()
 var mostrar_tuto_antes_partida: bool = true
 var onboarding_completed: bool = false
 var tutorial_star_stage1: bool = false
@@ -200,6 +202,7 @@ func save_prefs() -> void:
 	cfg.set_value("audio", "volumen_fx", volumen_fx)
 	cfg.set_value("audio", "mute_musica", mute_musica)
 	cfg.set_value("audio", "mute_fx", mute_fx)
+	cfg.set_value("audio", "music_excluded", Array(music_excluded))
 	cfg.set_value("levels","levelNormalUnlocked", GameManager.level_normal_unlocked )
 	cfg.set_value("levels","levelDificilUnlocked", GameManager.level_dificil_unlocked )
 	cfg.set_value("levels","levelProUnlocked", GameManager.level_pro_unlocked)
@@ -242,6 +245,7 @@ func load_prefs() -> void:
 		volumen_fx = cfg.get_value("audio", "volumen_fx", volumen_fx)
 		mute_musica = bool(cfg.get_value("audio", "mute_musica", mute_musica))
 		mute_fx = bool(cfg.get_value("audio", "mute_fx", mute_fx))
+		music_excluded = _load_string_list(cfg, "audio", "music_excluded")
 		level_normal_unlocked = cfg.get_value("levels","levelNormalUnlocked", level_normal_unlocked )
 		GameManager.set_level_normal_unlocked(level_normal_unlocked)
 		level_dificil_unlocked = cfg.get_value("levels","levelDificilUnlocked", level_dificil_unlocked )
@@ -390,6 +394,19 @@ func mark_tutorial_stars_awarded(stage: int) -> void:
 	else:
 		tutorial_star_stage2 = true
 	save_prefs()
+
+
+func _load_string_list(cfg: ConfigFile, section: String, key: String) -> PackedStringArray:
+	var loaded := PackedStringArray()
+	var raw: Variant = cfg.get_value(section, key, [])
+	if raw is PackedStringArray:
+		return raw
+	if raw is Array:
+		for value in raw:
+			var text := str(value).strip_edges()
+			if not text.is_empty() and not loaded.has(text):
+				loaded.append(text)
+	return loaded
 
 
 func _load_favorite_ids(cfg: ConfigFile) -> PackedInt32Array:

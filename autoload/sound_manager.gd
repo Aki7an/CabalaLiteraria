@@ -5,6 +5,8 @@ class SoundEntry:
 	var prototype: AudioStreamPlayer2D
 	var poly: bool
 
+signal now_playing_changed
+
 enum MusicContext { MENU, GAME }
 
 const MENU_MUSIC_PATH := "res://audio/music/menus_flying_by.ogg"
@@ -58,8 +60,10 @@ var _outgoing_player: AudioStreamPlayer
 var _menu_stream: AudioStream
 var _celebration_stream: AudioStream
 var _game_tracks: Array[AudioStream] = []
+var _game_track_paths: PackedStringArray = PackedStringArray()
 var _music_order: Array[int] = []
 var _music_index: int = -1
+var _current_music_path := ""
 var _music_context: int = -1
 var _music_tween: Tween
 var _outgoing_tween: Tween
@@ -437,27 +441,194 @@ func toggle_music_enabled() -> void:
 func toggle_fx_enabled() -> void:
 	set_fx_enabled(not is_fx_enabled())
 
+
+func current_track_line() -> String:
+	_ensure_current_path()
+	if _music_player == null or not _music_player.playing:
+		return ""
+	return _format_track_line(_current_music_path)
+
+
+func local_music_catalog() -> Array:
+	_ensure_current_path()
+	var rows: Array = []
+	for index in _game_track_paths.size():
+		var path := _game_track_paths[index]
+		rows.append({
+			"index": index,
+			"number": track_number_label(path),
+			"title": track_display_title(path),
+			"included": _track_included(index),
+			"playing": path == _current_music_path and _music_player != null and _music_player.playing,
+		})
+	return rows
+
+
+func play_local_track(index: int) -> void:
+	if index < 0 or index >= _game_tracks.size() or _music_player == null:
+		return
+	if _game_tracks[index] == null:
+		return
+	if not is_music_enabled():
+		PlayerPrefs.mute_musica = true
+		_apply_buses()
+		PlayerPrefs.save_prefs()
+		if Engine.get_main_loop() != null:
+			SignalManager.audio_prefs_changed.emit()
+	_music_blocked = false
+	_awaiting_celebration = false
+	_music_context = MusicContext.GAME
+	_music_switch_id += 1
+	_switching_music = true
+	if _music_tween:
+		_music_tween.kill()
+		_music_tween = null
+	if _outgoing_tween:
+		_outgoing_tween.kill()
+		_outgoing_tween = null
+	if _outgoing_player and _outgoing_player.playing:
+		_outgoing_player.stop()
+	var at := _music_order.find(index)
+	_music_index = at
+	_current_music_path = _game_track_paths[index]
+	_music_player.stream = _game_tracks[index]
+	_music_player.volume_db = 0.0
+	_music_player.play()
+	_switching_music = false
+	now_playing_changed.emit()
+
+
+func set_track_included(index: int, included: bool) -> void:
+	if index < 0 or index >= _game_track_paths.size():
+		return
+	var path := _game_track_paths[index]
+	var excluded := PlayerPrefs.music_excluded.duplicate()
+	var at := excluded.find(path)
+	if included:
+		if at < 0:
+			return
+		excluded.remove_at(at)
+	elif at < 0:
+		excluded.append(path)
+	else:
+		return
+	PlayerPrefs.music_excluded = excluded
+	PlayerPrefs.save_prefs()
+	_rebuild_order_around_current()
+	if included and is_music_enabled() and (_music_player == null or not _music_player.playing):
+		play_local_track(index)
+		return
+	now_playing_changed.emit()
+
+
+func track_number_label(path: String) -> String:
+	var base := path.get_file().get_basename()
+	if base.length() >= 3 and base.substr(0, 2).is_valid_int() and base.substr(2, 1) == "_":
+		return str(int(base.substr(0, 2)))
+	return ""
+
+
+func track_display_title(path: String) -> String:
+	if path == MENU_MUSIC_PATH:
+		return "Flying By"
+	if path == CELEBRATION_MUSIC_PATH:
+		return "Celebration"
+	var base := path.get_file().get_basename()
+	if base.length() >= 3 and base.substr(0, 2).is_valid_int() and base.substr(2, 1) == "_":
+		base = base.substr(3)
+	base = base.replace("—", " - ").replace("_", " ")
+	while "  " in base:
+		base = base.replace("  ", " ")
+	return _title_case(base.strip_edges())
+
+
+func _title_case(text: String) -> String:
+	var words := text.split(" ", false)
+	var out := PackedStringArray()
+	for word in words:
+		var piece := str(word)
+		if piece.is_empty() or piece == "-" or _has_digit(piece):
+			out.append(piece)
+			continue
+		if piece.substr(0, 1) == piece.substr(0, 1).to_upper():
+			out.append(piece)
+		else:
+			out.append(piece.substr(0, 1).to_upper() + piece.substr(1))
+	return " ".join(out)
+
+
+func _has_digit(text: String) -> bool:
+	for index in text.length():
+		if text.substr(index, 1).is_valid_int():
+			return true
+	return false
+
+
+func _format_track_line(path: String) -> String:
+	if path.is_empty():
+		return ""
+	var number := track_number_label(path)
+	var title := track_display_title(path)
+	if number.is_empty():
+		return title
+	return "%s. %s" % [number, title]
+
+
+func _ensure_current_path() -> void:
+	if not _current_music_path.is_empty() or _music_player == null or _music_player.stream == null:
+		return
+	if _music_player.stream == _menu_stream:
+		_current_music_path = MENU_MUSIC_PATH
+		return
+	if _music_player.stream == _celebration_stream:
+		_current_music_path = CELEBRATION_MUSIC_PATH
+		return
+	var at := _game_tracks.find(_music_player.stream)
+	if at >= 0 and at < _game_track_paths.size():
+		_current_music_path = _game_track_paths[at]
+
+
+func _track_included(index: int) -> bool:
+	if index < 0 or index >= _game_track_paths.size():
+		return false
+	return not PlayerPrefs.music_excluded.has(_game_track_paths[index])
+
+
+func _rebuild_order_around_current() -> void:
+	var current := _game_track_paths.find(_current_music_path)
+	_reshuffle_game_music()
+	if current < 0:
+		_music_index = -1
+		return
+	var at := _music_order.find(current)
+	_music_index = at if at >= 0 else -1
+
 func _setup_background_music() -> void:
 	_menu_stream = _load_audio_stream(MENU_MUSIC_PATH)
 	_set_stream_loop(_menu_stream, true)
 	_celebration_stream = _load_audio_stream(CELEBRATION_MUSIC_PATH)
 	_set_stream_loop(_celebration_stream, false)
+	_game_tracks.clear()
+	_game_track_paths = PackedStringArray()
 	for path in GAME_MUSIC_PATHS:
 		var stream := _load_audio_stream(path)
 		if stream == null:
 			continue
 		_set_stream_loop(stream, false)
 		_game_tracks.append(stream)
+		_game_track_paths.append(path)
 	if _menu_stream == null and _game_tracks.is_empty():
 		return
 	_music_player = AudioStreamPlayer.new()
 	_music_player.name = "BackgroundMusic"
 	_music_player.bus = "Music"
+	_music_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	_music_player.finished.connect(_on_music_finished)
 	add_child(_music_player)
 	_outgoing_player = AudioStreamPlayer.new()
 	_outgoing_player.name = "BackgroundMusicOutgoing"
 	_outgoing_player.bus = "Music"
+	_outgoing_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_outgoing_player)
 	_reshuffle_game_music()
 
@@ -587,8 +758,10 @@ func play_victory_then_menu_music() -> void:
 		_fade_to_context_track()
 		return
 	_music_player.volume_db = 0.0
+	_current_music_path = CELEBRATION_MUSIC_PATH
 	_music_player.stream = _celebration_stream
 	_music_player.play()
+	now_playing_changed.emit()
 
 
 func _begin_outgoing_fade(duration: float) -> void:
@@ -669,8 +842,14 @@ func _fade_to_context_track() -> void:
 func _start_context_track() -> void:
 	if _music_context == MusicContext.GAME:
 		if _music_index >= 0 and _music_index < _music_order.size():
-			_music_player.stream = _game_tracks[_music_order[_music_index]]
-			_music_player.play()
+			var track := int(_music_order[_music_index])
+			if _track_included(track):
+				_current_music_path = _game_track_paths[track]
+				_music_player.stream = _game_tracks[track]
+				_music_player.play()
+				now_playing_changed.emit()
+			else:
+				_play_next_game_track()
 		else:
 			_play_next_game_track()
 	else:
@@ -687,8 +866,10 @@ func _resume_current_music() -> void:
 func _play_menu_music() -> void:
 	if _music_player == null or _menu_stream == null:
 		return
+	_current_music_path = MENU_MUSIC_PATH
 	_music_player.stream = _menu_stream
 	_music_player.play()
+	now_playing_changed.emit()
 
 
 func _on_music_finished() -> void:
@@ -709,7 +890,10 @@ func _on_music_finished() -> void:
 		_music_tween.kill()
 		_music_tween = null
 	_music_player.volume_db = MUSIC_SILENT_DB
-	_play_next_game_track()
+	if not _play_next_game_track():
+		_switching_music = false
+		now_playing_changed.emit()
+		return
 	if not _music_player.playing:
 		_music_player.play()
 	_music_tween = create_tween()
@@ -725,25 +909,44 @@ func _on_music_finished() -> void:
 
 func _reshuffle_game_music() -> void:
 	_music_order.clear()
-	for i in _game_tracks.size():
-		_music_order.append(i)
-	_music_order.shuffle()
+	var pool: Array[int] = []
+	for index in _game_tracks.size():
+		if _game_tracks[index] != null and _track_included(index):
+			pool.append(index)
+	pool.shuffle()
+	for index in pool:
+		_music_order.append(index)
 	_music_index = -1
 
 
-func _play_next_game_track() -> void:
+func _play_next_game_track() -> bool:
 	if _music_player == null or _game_tracks.is_empty():
-		return
-	_music_index += 1
-	if _music_order.is_empty() or _music_index >= _music_order.size():
-		var last_track := _music_order[_music_order.size() - 1] if not _music_order.is_empty() else -1
-		_reshuffle_game_music()
-		if _music_order.size() > 1 and _music_order[0] == last_track:
-			_music_order.remove_at(0)
-			_music_order.append(last_track)
-		_music_index = 0
-	_music_player.stream = _game_tracks[_music_order[_music_index]]
-	_music_player.play()
+		return false
+	var guard := 0
+	var limit := _game_tracks.size() * 2 + 2
+	while guard < limit:
+		guard += 1
+		_music_index += 1
+		if _music_order.is_empty() or _music_index >= _music_order.size():
+			var last_track := _music_order[_music_order.size() - 1] if not _music_order.is_empty() else -1
+			_reshuffle_game_music()
+			if _music_order.size() > 1 and _music_order[0] == last_track:
+				_music_order.remove_at(0)
+				_music_order.append(last_track)
+			_music_index = 0
+		if _music_order.is_empty() or _music_index < 0 or _music_index >= _music_order.size():
+			return false
+		var track := int(_music_order[_music_index])
+		if track < 0 or track >= _game_tracks.size() or _game_tracks[track] == null:
+			continue
+		if not _track_included(track):
+			continue
+		_current_music_path = _game_track_paths[track]
+		_music_player.stream = _game_tracks[track]
+		_music_player.play()
+		now_playing_changed.emit()
+		return true
+	return false
 
 
 func _load_audio_stream(path: String) -> AudioStream:

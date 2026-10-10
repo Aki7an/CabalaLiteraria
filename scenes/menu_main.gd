@@ -33,6 +33,7 @@ var _title_letter_font: FontVariation
 var _play_blink_token := 0
 var _intro_token := 0
 var _intro_running := false
+var _boot_cancelled := false
 var _intro_rest: Dictionary = {}
 var _intro_tweens: Array[Tween] = []
 
@@ -66,8 +67,18 @@ func _ready() -> void:
 	SignalManager.fit_text.emit()
 	GameManager.reset_game_paremeters()
 	GameManager.resetear_partida_terminada()
-	if linked:
-		_open_linked_puzzle()
+	if not RenderingServer.frame_post_draw.is_connected(_open_linked_after_first_frame):
+		RenderingServer.frame_post_draw.connect(_open_linked_after_first_frame, CONNECT_ONE_SHOT)
+
+
+func _open_linked_after_first_frame() -> void:
+	DeepLink.pull()
+	if not DeepLink.has_pending():
+		return
+	_boot_cancelled = true
+	_skip_intro()
+	hide_for_puzzle_link()
+	_open_linked_puzzle()
 
 
 func hide_for_puzzle_link() -> void:
@@ -77,6 +88,7 @@ func hide_for_puzzle_link() -> void:
 
 
 func reveal_main_menu() -> void:
+	_boot_cancelled = false
 	var panel := get_node_or_null("Panel") as CanvasItem
 	if panel:
 		panel.visible = true
@@ -607,11 +619,19 @@ func _on_button_tutorial_pressed() -> void:
 
 
 func _boot_visuals() -> void:
+	if _boot_cancelled:
+		return
 	await _apply_title_tiles()
+	if _boot_cancelled:
+		return
 	if _should_play_main_intro():
 		await _play_main_intro()
+		if _boot_cancelled:
+			return
 		GameManager.main_menu_intro_played = true
 	await _play_pending_star_collect()
+	if _boot_cancelled:
+		return
 	_start_play_blink_loop()
 	UpdateCheck.prompt(self)
 

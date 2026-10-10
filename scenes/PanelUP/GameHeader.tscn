@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://fjjkguxyahu3" path="res://images/ui_icon_quotes_white.svg" id="3_quotes"]
 [ext_resource type="Texture2D" uid="uid://duj5gi84s5bqf" path="res://images/mode_quick.svg" id="4_mode_quick"]
 [ext_resource type="PackedScene" path="res://scenes/PanelUP/Hourglass.tscn" id="5_hourglass"]
+[ext_resource type="Texture2D" uid="uid://hqwatbm1ab1y" path="res://images/ui_icon_music_note.svg" id="6_music"]
+[ext_resource type="Texture2D" uid="uid://dvtuv0l5fovjd" path="res://images/ui_icon_mute_slash.svg" id="7_slash"]
 
 [sub_resource type="StyleBoxFlat" id="Style_card"]
 bg_color = Color(1, 0.949, 0.804, 0.98)
@@ -253,36 +255,100 @@ theme_override_font_sizes/font_size = 32
 text = "Partida rápida"
 vertical_alignment = 1
 
-[node name="TimerRow" type="HBoxContainer" parent="Margin/Main/Top" unique_id=1803027369]
+[node name="TimerColumn" type="VBoxContainer" parent="Margin/Main/Top" unique_id=1803027369]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_constants/separation = 8
+theme_override_constants/separation = 0
 alignment = 1
 
-[node name="TimeIcon" parent="Margin/Main/Top/TimerRow" unique_id=1681202910 instance=ExtResource("5_hourglass")]
+[node name="TimeIcon" parent="Margin/Main/Top/TimerColumn" unique_id=1681202910 instance=ExtResource("5_hourglass")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 118)
+layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="TimeValue" type="Label" parent="Margin/Main/Top/TimerRow" unique_id=322042263]
+[node name="TimeLine" type="HBoxContainer" parent="Margin/Main/Top/TimerColumn"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="TimeValue" type="Label" parent="Margin/Main/Top/TimerColumn/TimeLine" unique_id=322042263]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.2, 0.13, 0.08, 1)
 theme_override_fonts/font = ExtResource("1_font")
-theme_override_font_sizes/font_size = 56
+theme_override_font_sizes/font_size = 40
 text = "0"
+horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TimeUnit" type="Label" parent="Margin/Main/Top/TimerRow" unique_id=1669127630]
+[node name="TimeUnit" type="Label" parent="Margin/Main/Top/TimerColumn/TimeLine" unique_id=1669127630]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
 theme_override_fonts/font = ExtResource("1_font")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 22
 text = "min"
-vertical_alignment = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimeLift" type="Control" parent="Margin/Main/Top/TimerColumn"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ButtonMusic" type="Button" parent="Margin/Main/Top"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(122, 133)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_styles/normal = SubResource("Style_pause")
+theme_override_styles/pressed = SubResource("Style_pause_pressed")
+theme_override_styles/hover = SubResource("Style_pause")
+theme_override_styles/focus = SubResource("Style_empty")
+
+[node name="Icon" type="TextureRect" parent="Margin/Main/Top/ButtonMusic"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = -36.0
+offset_right = 36.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_music")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MusicSlash" type="TextureRect" parent="Margin/Main/Top/ButtonMusic"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_slash")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Control3" type="Control" parent="Margin/Main/Top" unique_id=507960961]
-custom_minimum_size = Vector2(30, 30)
+custom_minimum_size = Vector2(8, 8)
 layout_mode = 2
 
 [node name="ButtonPause" type="Button" parent="Margin/Main/Top" unique_id=224151839]

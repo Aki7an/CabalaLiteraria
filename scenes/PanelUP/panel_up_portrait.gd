@@ -8,6 +8,7 @@ const OVERLAY_HINTS := preload("res://scenes/CuadroPistas.tscn")
 const OVERLAY_REVEAL := preload("res://scenes/CuadroRevelar.tscn")
 const OVERLAY_BOARD_FILL := preload("res://scenes/fondo_tablero_completo.tscn")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
+const MUSIC_PANEL := preload("res://scenes/music_panel.gd")
 const ICON_CITA: Texture2D = preload("res://images/Ilustres.png")
 const ICON_EFEM: Texture2D = preload("res://images/Efemerides.png")
 const ICON_CURIO: Texture2D = preload("res://images/Adivinanza.png")
@@ -29,6 +30,9 @@ var mode_icon: TextureRect
 var mode_label: Label
 var stars: Array[TextureRect] = []
 var pause_button: Button
+var music_button: Button
+var music_slash: CanvasItem
+var music_icon: CanvasItem
 
 const REVEAL_BLINK_COUNT := 2
 const REVEAL_BLINK_DIM := Color(1, 1, 1, 0.28)
@@ -74,6 +78,11 @@ func _ready() -> void:
 	_start_ms = Time.get_ticks_msec()
 	if pause_button and not pause_button.pressed.is_connected(_on_pause_pressed):
 		pause_button.pressed.connect(_on_pause_pressed)
+	if music_button and not music_button.pressed.is_connected(_on_music_pressed):
+		music_button.pressed.connect(_on_music_pressed)
+	if not SignalManager.audio_prefs_changed.is_connected(_refresh_music_button):
+		SignalManager.audio_prefs_changed.connect(_refresh_music_button)
+	_refresh_music_button()
 	if category_label:
 		category_label.text = GameManager.category_display_name()
 	_apply_category_icon()
@@ -122,7 +131,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _has_blocking_overlay() -> bool:
-	for group_name in ["HintsOverlay", "RevealOverlay", "RevealSequence", "BoardFillPrompt", "ShareSolveDialog", "GameMenu", "LevelStartIntro"]:
+	for group_name in ["HintsOverlay", "RevealOverlay", "RevealSequence", "BoardFillPrompt", "ShareSolveDialog", "GameMenu", "MusicPanel", "LevelStartIntro"]:
 		if not get_tree().get_nodes_in_group(group_name).is_empty():
 			return true
 	return false
@@ -174,12 +183,16 @@ func _bind_header_nodes() -> void:
 	letters_label = _header_node("LettersFilled", "Margin/Main/Bottom/LettersFilled") as Label
 	letters_progress = _header_node("LettersProgress", "Margin/Main/Bottom/LettersProgress") as ProgressBar
 	stars_title = _header_node("StarsTitle", "Margin/Main/Top/StarsBlock/StarsTitle") as Label
-	time_value = _header_node("TimeValue", "Margin/Main/Top/TimerRow/TimeValue") as Label
-	time_unit = _header_node("TimeUnit", "Margin/Main/Top/TimerRow/TimeUnit") as Label
-	hourglass = _header_node("TimeIcon", "Margin/Main/Top/TimerRow/TimeIcon") as Control
+	time_value = _header_node("TimeValue", "Margin/Main/Top/TimerColumn/TimeLine/TimeValue") as Label
+	time_unit = _header_node("TimeUnit", "Margin/Main/Top/TimerColumn/TimeLine/TimeUnit") as Label
+	hourglass = _header_node("TimeIcon", "Margin/Main/Top/TimerColumn/TimeIcon") as Control
 	mode_icon = _header_node("ModeIcon", "Margin/Main/Top/StarsBlock/ModeRow/ModeIcon") as TextureRect
 	mode_label = _header_node("ModeLabel", "Margin/Main/Top/StarsBlock/ModeRow/ModeLabel") as Label
 	pause_button = _header_node("ButtonPause", "Margin/Main/Top/ButtonPause") as Button
+	music_button = _header_node("ButtonMusic", "Margin/Main/Top/ButtonMusic") as Button
+	music_slash = _header_node("MusicSlash", "Margin/Main/Top/ButtonMusic/MusicSlash") as CanvasItem
+	if music_button != null:
+		music_icon = music_button.get_node_or_null("Icon") as CanvasItem
 	stars.clear()
 	for index in range(1, 6):
 		var star := _header_node(
@@ -535,11 +548,52 @@ func animate_star_loss() -> void:
 func _on_pause_pressed() -> void:
 	if not get_tree().get_nodes_in_group("GameMenu").is_empty():
 		return
+	if not get_tree().get_nodes_in_group("MusicPanel").is_empty():
+		return
 	if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
 		return
 	SoundManager.play("ButtonClick")
 	SignalManager.puzzle_input.emit("options", {})
 	_add_overlay(OVERLAY_EXIT)
+
+
+func _on_music_pressed() -> void:
+	if not get_tree().get_nodes_in_group("GameMenu").is_empty():
+		return
+	if not get_tree().get_nodes_in_group("MusicPanel").is_empty():
+		return
+	if not get_tree().get_nodes_in_group("RevealSequence").is_empty():
+		return
+	SoundManager.play("ButtonClick")
+	pause_play_clock()
+	var panel = MUSIC_PANEL.new()
+	panel.connect("closed", _on_music_panel_closed)
+	var host := _overlay_host()
+	host.process_mode = Node.PROCESS_MODE_ALWAYS
+	host.add_child(panel)
+	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel.size = host.size
+	panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	panel.z_index = 130
+	get_tree().paused = true
+
+
+func _on_music_panel_closed() -> void:
+	resume_play_clock()
+	var host := _overlay_host()
+	host.process_mode = Node.PROCESS_MODE_INHERIT
+	var tree := get_tree()
+	if tree != null and tree.get_nodes_in_group("GameMenu").is_empty():
+		tree.paused = false
+
+
+func _refresh_music_button() -> void:
+	var enabled: bool = SoundManager.is_music_enabled()
+	if music_slash != null:
+		music_slash.visible = not enabled
+	if music_icon != null:
+		var alpha := 1.0 if enabled else 0.38
+		music_icon.modulate = Color(1, 1, 1, alpha)
 
 
 func _on_game_finished() -> void:
