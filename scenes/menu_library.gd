@@ -1247,6 +1247,13 @@ func _create_ficha_summary_card() -> Panel:
 	stars.alignment = BoxContainer.ALIGNMENT_END
 	stars.add_theme_constant_override("separation", 4)
 	side.add_child(stars)
+	var puzzle_id_label := Label.new()
+	puzzle_id_label.name = "PuzzleId"
+	puzzle_id_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	puzzle_id_label.add_theme_font_override("font", FONT_UI)
+	puzzle_id_label.add_theme_font_size_override("font_size", 32)
+	puzzle_id_label.add_theme_color_override("font_color", Color(0.42, 0.38, 0.24, 0.88))
+	side.add_child(puzzle_id_label)
 	return card
 
 
@@ -1331,6 +1338,9 @@ func _fill_ficha_summary(item: Dictionary) -> void:
 		var total := clampi(int(summary.get("stars_max", 2)), 1, 5)
 		for i in range(total):
 			stars.add_child(_outlined_star(i < earned, mode == GameManager.MODE_CRYPTOGRAM))
+	var id_label := card.find_child("PuzzleId", true, false) as Label
+	if id_label:
+		id_label.text = "ID %d" % puzzle_id if puzzle_id >= 0 else ""
 
 
 func _outlined_star(filled: bool, cryptogram: bool) -> Control:

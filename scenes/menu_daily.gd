@@ -335,6 +335,7 @@ func _on_unlock_pressed() -> void:
 	if unlock_btn:
 		unlock_btn.disabled = false
 	if ok:
+		get_tree().paused = false
 		PlayerPrefs.mark_daily_rewarded_today()
 		_refresh_content()
 		return
@@ -376,6 +377,7 @@ func _on_play_pressed() -> void:
 			return
 		PlayerPrefs.mark_daily_rewarded_today()
 		_needs_ad = false
+	get_tree().paused = false
 	var puzzle_id := int(_item.get("index", -1))
 	if puzzle_id < 0:
 		return

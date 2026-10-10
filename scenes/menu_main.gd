@@ -38,6 +38,9 @@ var _intro_tweens: Array[Tween] = []
 
 func _ready() -> void:
 	SoundManager.apply_audio_prefs()
+	var linked := DeepLink.has_pending()
+	if linked:
+		hide_for_puzzle_link()
 	_refresh_audio_buttons()
 	if not SignalManager.audio_prefs_changed.is_connected(_refresh_audio_buttons):
 		SignalManager.audio_prefs_changed.connect(_refresh_audio_buttons)
@@ -46,11 +49,12 @@ func _ready() -> void:
 	_apply_labels()
 	_update_version_label()
 	_refresh_star_totals()
-	if _should_play_main_intro():
+	if not linked and _should_play_main_intro():
 		_prepare_intro_hidden()
-	else:
+		call_deferred("_boot_visuals")
+	elif not linked:
 		_hide_intro_words()
-	call_deferred("_boot_visuals")
+		call_deferred("_boot_visuals")
 	_refresh_daily_button()
 	if not SignalManager.full_game_changed.is_connected(_refresh_daily_button):
 		SignalManager.full_game_changed.connect(_refresh_daily_button)
@@ -62,6 +66,29 @@ func _ready() -> void:
 	SignalManager.fit_text.emit()
 	GameManager.reset_game_paremeters()
 	GameManager.resetear_partida_terminada()
+	if linked:
+		_open_linked_puzzle()
+
+
+func hide_for_puzzle_link() -> void:
+	var panel := get_node_or_null("Panel") as CanvasItem
+	if panel:
+		panel.visible = false
+
+
+func reveal_main_menu() -> void:
+	var panel := get_node_or_null("Panel") as CanvasItem
+	if panel:
+		panel.visible = true
+	if _should_play_main_intro():
+		_prepare_intro_hidden()
+	call_deferred("_boot_visuals")
+
+
+func _open_linked_puzzle() -> void:
+	if DeepLink.open_pending():
+		return
+	reveal_main_menu()
 
 
 func _refresh_star_totals(_unused: Variant = null) -> void:
@@ -586,6 +613,7 @@ func _boot_visuals() -> void:
 		GameManager.main_menu_intro_played = true
 	await _play_pending_star_collect()
 	_start_play_blink_loop()
+	UpdateCheck.prompt(self)
 
 
 func _should_play_main_intro() -> bool:

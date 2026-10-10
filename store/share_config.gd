@@ -3,6 +3,7 @@ extends RefCounted
 ## Store links used in the share text.
 const STORE_URL_ANDROID := "https://play.google.com/store/apps/details?id=com.akidev.cifraletra"
 const STORE_URL_IOS := "https://apps.apple.com/app/id6807821718"
+const PUZZLE_URL := "cifraletra://p/%d"
 const TWITTER_PACKAGE_ANDROID := "com.twitter.android"
 const INSTAGRAM_PACKAGE_ANDROID := "com.instagram.android"
 const FACEBOOK_PACKAGE_ANDROID := "com.facebook.katana"
@@ -13,6 +14,10 @@ const PNG_NAME := "cifraletra_share.png"
 const IOS_INBOX := "cifraletra_share_inbox.json"
 const STUDIO := "Arima Play"
 const FILE_PROVIDER_SUFFIX := ".fileprovider"
+
+
+static func puzzle_url(puzzle_id: int) -> String:
+	return PUZZLE_URL % puzzle_id
 
 
 static func store_url() -> String:

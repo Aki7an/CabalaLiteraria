@@ -1009,6 +1009,7 @@ func _on_button_back_pressed() -> void:
 	await get_tree().process_frame
 	await AdManager.show_interstitial_after_puzzle()
 	await EventLoggerAutoload.submit_if_consented(EventLoggerAutoload.OUTCOME_COMPLETED)
+	get_tree().paused = false
 	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
 
 

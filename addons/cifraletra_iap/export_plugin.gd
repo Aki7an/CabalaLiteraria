@@ -5,12 +5,17 @@ const SRC_IAP_MM := "res://ios/plugins/cifraletra_iap/CifraLetraIAP.mm"
 const SRC_IAP_H := "res://ios/plugins/cifraletra_iap/cifraletra_iap.h"
 const SRC_SHARE_MM := "res://ios/plugins/cifraletra_iap/CifraLetraShare.mm"
 const SRC_SHARE_H := "res://ios/plugins/cifraletra_iap/cifraletra_share.h"
+const SRC_DEEPLINK_MM := "res://ios/plugins/cifraletra_iap/CifraLetraDeepLink.mm"
+const SRC_DEEPLINK_H := "res://ios/plugins/cifraletra_iap/cifraletra_deeplink.h"
 const BUILD_IAP := "C1F4A1EA0000000000000001"
 const FILE_IAP := "C1F4A1EA0000000000000002"
 const FILE_IAP_H := "C1F4A1EA0000000000000004"
 const BUILD_SHARE := "C1F4A1EA0000000000000011"
 const FILE_SHARE := "C1F4A1EA0000000000000012"
 const FILE_SHARE_H := "C1F4A1EA0000000000000014"
+const BUILD_DEEPLINK := "C1F4A1EA0000000000000021"
+const FILE_DEEPLINK := "C1F4A1EA0000000000000022"
+const FILE_DEEPLINK_H := "C1F4A1EA0000000000000024"
 
 var _pending_export_path := ""
 
@@ -21,6 +26,17 @@ func _get_name() -> String:
 
 func _supports_platform(platform: EditorExportPlatform) -> bool:
 	return platform is EditorExportPlatformIOS or platform is EditorExportPlatformAndroid
+
+
+func _get_android_manifest_activity_element_contents(_platform: EditorExportPlatform, _debug: bool) -> String:
+	return """
+		<intent-filter>
+			<action android:name="android.intent.action.VIEW"/>
+			<category android:name="android.intent.category.DEFAULT"/>
+			<category android:name="android.intent.category.BROWSABLE"/>
+			<data android:scheme="cifraletra"/>
+		</intent-filter>
+	"""
 
 
 func _export_begin(features: PackedStringArray, _is_debug: bool, path: String, _flags: int) -> void:
@@ -78,6 +94,8 @@ func _install_native_sources(path: String) -> void:
 	_copy_if_exists(SRC_IAP_H, source_dir.path_join("cifraletra_iap.h"))
 	_copy_if_exists(SRC_SHARE_MM, source_dir.path_join("CifraLetraShare.mm"))
 	_copy_if_exists(SRC_SHARE_H, source_dir.path_join("cifraletra_share.h"))
+	_copy_if_exists(SRC_DEEPLINK_MM, source_dir.path_join("CifraLetraDeepLink.mm"))
+	_copy_if_exists(SRC_DEEPLINK_H, source_dir.path_join("cifraletra_deeplink.h"))
 	var pbx := export_dir.path_join(project_name + ".xcodeproj/project.pbxproj")
 	if not FileAccess.file_exists(pbx) and path.ends_with(".xcodeproj"):
 		pbx = path.path_join("project.pbxproj")
@@ -111,6 +129,14 @@ func _patch_pbxproj(pbx_path: String) -> void:
 		FILE_SHARE,
 		FILE_SHARE_H,
 		"cifraletra_share.h"
+	)
+	content = _ensure_source(
+		content,
+		"CifraLetraDeepLink.mm",
+		BUILD_DEEPLINK,
+		FILE_DEEPLINK,
+		FILE_DEEPLINK_H,
+		"cifraletra_deeplink.h"
 	)
 	content = _with_storekit_ldflags(content)
 	var file := FileAccess.open(pbx_path, FileAccess.WRITE)

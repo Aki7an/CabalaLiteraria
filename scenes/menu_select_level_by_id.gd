@@ -1087,6 +1087,7 @@ func _on_replay_play_pressed(
 			ad_note.text = AdManager.reward_failure_message()
 			ad_note.add_theme_color_override("font_color", Color(0.72, 0.22, 0.14, 1))
 			return
+	get_tree().paused = false
 	var chosen: Dictionary = pool.pick_random()
 	overlay.queue_free()
 	_on_level_pressed(chosen, true)

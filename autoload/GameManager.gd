@@ -826,8 +826,11 @@ func set_go_to_game_disable() -> void:
 func launch_prepared_game() -> void:
 	set_go_to_game_disable()
 	puzzle_enter_pending = true
+	var tree := get_tree()
+	if tree.paused:
+		tree.paused = false
 	SignalManager.partida_iniciada.emit()
-	get_tree().change_scene_to_file("res://scenes/App.tscn")
+	tree.change_scene_to_file("res://scenes/App.tscn")
 
 
 func gifts_leaving_letters(phrase: String, leave_count: int, leave_vowels: int = 1, filled_word: String = "") -> String:

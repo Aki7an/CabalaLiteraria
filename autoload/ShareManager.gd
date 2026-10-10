@@ -327,7 +327,10 @@ func _share_text(payload: Dictionary) -> String:
 		"ShareResultText",
 		"He resuelto el puzle %s en CifraLetra. ¿Puedes descifrarlo mejor que yo? %s"
 	)
-	return template % [str(payload.get("puzzle_id_text", "")), ShareConfig.store_url()]
+	return _with_puzzle_link(
+		template % [str(payload.get("puzzle_id_text", "")), ShareConfig.store_url()],
+		payload
+	)
 
 
 func _social_share_text(payload: Dictionary) -> String:
@@ -338,7 +341,17 @@ func _social_share_text(payload: Dictionary) -> String:
 		"He resuelto el criptograma de hoy en CifraLetra %s" if is_daily else "He resuelto un criptograma en CifraLetra %s"
 	) % stars
 	var beat := _t("ShareTwitterBeatMe", "¿Puedes superarme?")
-	return "%s\n%s\n#CifraLetra #Criptogramas\n%s" % [line, beat, ShareConfig.store_url()]
+	return _with_puzzle_link(
+		"%s\n%s\n#CifraLetra #Criptogramas\n%s" % [line, beat, ShareConfig.store_url()],
+		payload
+	)
+
+
+func _with_puzzle_link(text: String, payload: Dictionary) -> String:
+	var puzzle_id := int(payload.get("puzzle_id", -1))
+	if puzzle_id < 0:
+		return text
+	return "%s\n%s" % [text, ShareConfig.puzzle_url(puzzle_id)]
 
 
 func _star_glyphs(count: int) -> String:
