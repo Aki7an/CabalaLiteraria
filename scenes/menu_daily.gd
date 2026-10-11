@@ -1,6 +1,5 @@
 extends Control
 
-const PATH_MAIN := "res://scenes/MenuMain.tscn"
 const PATH_SHOP := "res://scenes/MenuShop.tscn"
 const PATH_LIBRARY := "res://scenes/MenuLibrary.tscn"
 const ICON_CITA: Texture2D = preload("res://images/Ilustres.png")
@@ -312,7 +311,7 @@ func _t(key: String, fallback: String) -> String:
 
 
 func _on_button_back_pressed() -> void:
-	_go_to(PATH_MAIN)
+	_go_to(Distribution.home_scene())
 
 
 func _on_shop_pressed() -> void:
@@ -320,7 +319,7 @@ func _on_shop_pressed() -> void:
 
 
 func _on_lock_back_pressed() -> void:
-	_go_to(PATH_MAIN)
+	_go_to(Distribution.home_scene())
 
 
 func _on_unlock_pressed() -> void:
@@ -331,7 +330,7 @@ func _on_unlock_pressed() -> void:
 	if unlock_btn:
 		unlock_btn.disabled = true
 		unlock_btn.text = _t("DailyAdLoading", "Cargando anuncio...")
-	var ok: bool = await AdManager.show_rewarded()
+	var ok: bool = await PlatformServices.show_rewarded()
 	if unlock_btn:
 		unlock_btn.disabled = false
 	if ok:
@@ -365,7 +364,7 @@ func _on_play_pressed() -> void:
 			play_button.disabled = true
 		if play_caption:
 			play_caption.text = _t("DailyAdLoading", "Cargando anuncio...")
-		var ok: bool = await AdManager.show_rewarded()
+		var ok: bool = await PlatformServices.show_rewarded()
 		_ad_busy = false
 		if not ok:
 			if play_button:

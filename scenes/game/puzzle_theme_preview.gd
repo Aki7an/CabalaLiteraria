@@ -81,6 +81,97 @@ func _ready() -> void:
 		var wait_text := get_node_or_null("Card/WaitText") as Label
 		if wait_text:
 			wait_text.text = _t("ObserveTheme")
+	if Distribution.is_horizontal():
+		call_deferred("_layout_horizontal_theme")
+
+
+func _layout_horizontal_theme() -> void:
+	var layer := _game_canvas()
+	var card := get_node_or_null("Card") as Control
+	var frame := get_node_or_null("Card/ImageFrame") as Control
+	var back := get_node_or_null("Card/ButtonBack") as Control
+	if layer == null or card == null or frame == null or back == null or start_button == null:
+		return
+	if get_parent() != layer:
+		reparent(layer)
+	set_anchors_preset(Control.PRESET_TOP_LEFT)
+	position = Vector2.ZERO
+	size = layer.size
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	z_index = 2000
+	var backdrop := get_node_or_null("Backdrop") as ColorRect
+	if backdrop:
+		backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
+		backdrop.offset_left = 0.0
+		backdrop.offset_top = 0.0
+		backdrop.offset_right = 0.0
+		backdrop.offset_bottom = 0.0
+		backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	card.visible = false
+	frame.reparent(self)
+	frame.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	frame.clip_contents = true
+	image.set_anchors_preset(Control.PRESET_FULL_RECT)
+	image.offset_left = 0.0
+	image.offset_top = 0.0
+	image.offset_right = 0.0
+	image.offset_bottom = 0.0
+	image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	back.reparent(self)
+	start_button.reparent(self)
+	var margin := 22.0
+	var back_size := Vector2(88.0, 88.0)
+	var start_size := Vector2(300.0, 84.0)
+	back.custom_minimum_size = back_size
+	back.z_index = 5
+	back.position = Vector2(margin, margin)
+	back.size = back_size
+	start_button.custom_minimum_size = start_size
+	start_button.z_index = 5
+	start_button.add_theme_font_size_override("font_size", 40)
+	start_button.position = Vector2(size.x - start_size.x - margin, size.y - start_size.y - margin)
+	start_button.size = start_size
+	var reserved := [
+		Rect2(back.position, back.size).grow(12.0),
+		Rect2(start_button.position, start_button.size).grow(12.0),
+	]
+	var aspect := _image_aspect()
+	var image_rect := _centered_image_rect(size, aspect, size.y * 0.92, reserved)
+	frame.position = image_rect.position
+	frame.size = image_rect.size
+
+
+func _game_canvas() -> Control:
+	var host := get_parent()
+	if host != null and host.get_parent() is Control:
+		return host.get_parent() as Control
+	return null
+
+
+func _image_aspect() -> float:
+	if image != null and image.texture != null:
+		var tex_size := image.texture.get_size()
+		if tex_size.y > 1.0:
+			return tex_size.x / tex_size.y
+	return 1.0
+
+
+func _centered_image_rect(screen: Vector2, aspect: float, height: float, blocked: Array) -> Rect2:
+	var fitted := height
+	var rect := Rect2()
+	for _i in 24:
+		var width := fitted * aspect
+		rect = Rect2((screen.x - width) * 0.5, (screen.y - fitted) * 0.5, width, fitted)
+		var overlaps := false
+		for area in blocked:
+			if rect.intersects(area):
+				overlaps = true
+				break
+		if not overlaps and rect.position.x >= 8.0 and rect.end.x <= screen.x - 8.0:
+			return rect
+		fitted *= 0.94
+	return rect
 
 
 func _t(key: String) -> String:

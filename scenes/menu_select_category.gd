@@ -1,6 +1,5 @@
 extends Control
 
-const PATH_MENU_MAIN := "res://scenes/MenuMain.tscn"
 const PATH_SETTINGS := "res://scenes/MenuSettings.tscn"
 const PATH_SELECT_LEVEL := "res://scenes/MenuSelectLevelByID.tscn"
 const MODE_QUICK := "quick"
@@ -218,7 +217,7 @@ func _on_button_exit_pressed() -> void:
 	SoundManager.play("ButtonClick")
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	if scene_menu_main == null:
-		scene_menu_main = load(PATH_MENU_MAIN)
+		scene_menu_main = load(Distribution.home_scene())
 	get_tree().change_scene_to_packed(scene_menu_main)
 
 

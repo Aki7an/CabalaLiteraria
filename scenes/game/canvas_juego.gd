@@ -385,14 +385,14 @@ func _input(event: InputEvent) -> void:
 			# rueda arriba -> mover contenido hacia arriba (Y menor)
 			canvas_juego.position.y -= SCROLL_STEP
 			_clamp_canvas_y()
-			PuzzleSaveManager.request_autosave()
+			PlatformServices.save_progress()
 			_notify_onboarding_pan_ended()
 			accept_event()
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			# rueda abajo -> mover contenido hacia abajo (Y mayor)
 			canvas_juego.position.y += SCROLL_STEP
 			_clamp_canvas_y()
-			PuzzleSaveManager.request_autosave()
+			PlatformServices.save_progress()
 			_notify_onboarding_pan_ended()
 			accept_event()
 		elif mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
@@ -430,7 +430,7 @@ func _input(event: InputEvent) -> void:
 			# Pan SOLO en eje Y
 			canvas_juego.position.y += delta.y
 			_clamp_canvas_y()
-			PuzzleSaveManager.request_autosave()
+			PlatformServices.save_progress()
 			ultima_posicion = drag.position
 
 	elif event is InputEventMagnifyGesture and _is_over_canvas(pos):
@@ -512,7 +512,7 @@ func set_scroll_normalized(value: float) -> void:
 		normalized
 	)
 	_clamp_canvas_y()
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 
 
 func get_scroll_normalized() -> float:
@@ -690,7 +690,7 @@ func pan_to_y(target_y: float, duration: float = 0.5) -> void:
 	_move_tween = create_tween()
 	_move_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_move_tween.tween_property(self, "position:y", target_y, duration)
-	_move_tween.finished.connect(PuzzleSaveManager.request_autosave)
+	_move_tween.finished.connect(PlatformServices.save_progress)
 
 func _cell_width() -> float:
 	var cols: int = max(1, grid_container.columns)

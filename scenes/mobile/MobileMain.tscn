@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://c4mobilescene1"]
+
+[ext_resource type="Script" path="res://distribution/home_shell.gd" id="1_shell"]
+[ext_resource type="PackedScene" uid="uid://bvpri1mtnymgf" path="res://scenes/MenuMain.tscn" id="2_menu"]
+
+[node name="MobileMain" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_shell")
+profile = 0
+
+[node name="Menu" parent="." instance=ExtResource("2_menu")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

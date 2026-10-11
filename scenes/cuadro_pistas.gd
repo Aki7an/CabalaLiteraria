@@ -340,7 +340,7 @@ func _buy_hint(index: int) -> void:
 	GameManager.set_pistas_utilizadas(
 		int(GameManager.pista_1) + int(GameManager.pista_2) + int(GameManager.pista_3)
 	)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 	call_deferred("_rebuild")
 
 

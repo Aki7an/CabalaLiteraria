@@ -1,6 +1,5 @@
 extends Control
 
-const PATH_MAIN := "res://scenes/MenuMain.tscn"
 const PATH_GAME := "res://scenes/App.tscn"
 
 @export var style_next: StyleBoxFlat
@@ -179,7 +178,7 @@ func _go_to_main() -> void:
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	GameManager.set_go_to_game_disable()
-	get_tree().change_scene_to_file(PATH_MAIN)
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
 func _on_button_back_pressed() -> void:

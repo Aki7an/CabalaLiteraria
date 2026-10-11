@@ -597,7 +597,7 @@ func reset_to_fresh_install() -> void:
 	reset_player_data()
 	var tree := get_tree()
 	if tree != null:
-		tree.change_scene_to_file("res://scenes/MenuMain.tscn")
+		tree.change_scene_to_file(Distribution.home_scene())
 
 
 func is_puzzle_playable(_item: Dictionary) -> bool:
@@ -1128,7 +1128,7 @@ func subtract_puzzle_stars(amount: int) -> void:
 		return
 	puzzle_stars = maxi(0, puzzle_stars - amount)
 	SignalManager.update_puzzle_stars.emit(puzzle_stars)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 
 
 func register_hint_used(hint_id: String) -> void:
@@ -1518,7 +1518,7 @@ func consume_reveal_error_star(number: int, letter: String) -> bool:
 
 func finish_reveal_sequence() -> void:
 	update_numero_letras_reveladas(true)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 
 
 func _clear_fill_color_slots_for_numbers(correct_numbers: Dictionary) -> void:
@@ -1694,7 +1694,7 @@ func pinta_celdas(numero_en_celda: int, color_a_pintar: int) -> void:
 		#print("numero en celda " + str(numero_en_celda))
 		if lista_celdas[i].numero == numero_en_celda:
 			lista_celdas[i].cambia_color(color_a_pintar)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 	SignalManager.update_rubber.emit()
 
 
@@ -1732,7 +1732,7 @@ func borrar_color_de_numero(numero_en_celda: int) -> bool:
 		number_4 = 0
 	if number_5 == numero_en_celda:
 		number_5 = 0
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 	return true
 
 

@@ -1076,7 +1076,7 @@ func _on_replay_play_pressed(
 		play.disabled = true
 		cancel.disabled = true
 		play.text = _tr_ad("DailyAdLoading", "Cargando anuncio...")
-		var ok: bool = await AdManager.show_rewarded()
+		var ok: bool = await PlatformServices.show_rewarded()
 		_replay_ad_busy = false
 		if not is_instance_valid(overlay):
 			return

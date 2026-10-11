@@ -1,7 +1,6 @@
 extends ColorRect
 
 const SCENE_FEEDBACK := "res://scenes/MenuFeedback.tscn"
-const SCENE_MENU_MAIN := "res://scenes/MenuMain.tscn"
 const SHARE_DIALOG := preload("res://scenes/share_solve_dialog.gd")
 const ONLINE_NAME_DIALOG := preload("res://scenes/online_name_prompt.gd")
 const STAR_EMPTY := Color(0.62, 0.51, 0.34, 0.28)
@@ -1007,10 +1006,10 @@ func _on_button_back_pressed() -> void:
 	StarCollectOverlay.show_white_cover()
 	await get_tree().process_frame
 	await get_tree().process_frame
-	await AdManager.show_interstitial_after_puzzle()
+	await PlatformServices.show_interstitial_after_puzzle()
 	await EventLoggerAutoload.submit_if_consented(EventLoggerAutoload.OUTCOME_COMPLETED)
 	get_tree().paused = false
-	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
 func _leave_onboarding() -> void:
@@ -1038,7 +1037,7 @@ func _leave_onboarding() -> void:
 	PlayerPrefs.set_onboarding_completed(true)
 	GameManager.session_source = GameManager.SOURCE_NONE
 	GameManager.onboarding_stage = 0
-	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
 func _on_share_x_pressed() -> void:

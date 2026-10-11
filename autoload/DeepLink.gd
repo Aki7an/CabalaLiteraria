@@ -6,7 +6,6 @@ extends Node
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
 const INBOX_NAME := "cifraletra_deeplink.url"
 const GAME_SCENE := "res://scenes/App.tscn"
-const MENU_SCENE := "res://scenes/MenuMain.tscn"
 const _QUERY_KEYS: PackedStringArray = ["puzzle", "puzzle_id", "level", "id"]
 
 var _pending_id := -1
@@ -178,14 +177,10 @@ func _go_home() -> void:
 	if tree.paused:
 		tree.paused = false
 	var scene := tree.current_scene
-	if scene != null and (
-		scene.scene_file_path == MENU_SCENE
-		or scene.has_method("reveal_main_menu")
-	):
-		if scene.has_method("reveal_main_menu"):
-			scene.call_deferred("reveal_main_menu")
+	if scene != null and scene.has_method("reveal_main_menu"):
+		scene.call_deferred("reveal_main_menu")
 		return
-	tree.call_deferred("change_scene_to_file", MENU_SCENE)
+	tree.call_deferred("change_scene_to_file", Distribution.home_scene())
 
 
 func _launch(puzzle_id: int) -> bool:
