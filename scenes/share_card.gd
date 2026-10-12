@@ -35,8 +35,8 @@ func apply_payload(data: Dictionary) -> void:
 
 func _apply_theme_image(path: String) -> void:
 	var texture: Texture2D = null
-	if path != "" and (ResourceLoader.exists(path) or FileAccess.file_exists(path)):
-		texture = load(path) as Texture2D
+	if path != "":
+		texture = GameManager.level_texture(path)
 	if texture == null:
 		texture = APP_ICON
 	theme_image.texture = texture

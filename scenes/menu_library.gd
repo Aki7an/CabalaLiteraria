@@ -683,7 +683,7 @@ func _create_thumb(item: Dictionary) -> Button:
 	image.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var path := GameManager.find_level_image_path(int(item.get("image_number", -1)))
 	if path != "":
-		var tex := load(path) as Texture2D
+		var tex := GameManager.level_texture(path)
 		if tex:
 			image.texture = tex
 	frame.add_child(image)
@@ -1408,7 +1408,7 @@ func _open_ficha(item: Dictionary) -> void:
 
 	var path := GameManager.find_level_image_path(int(item.get("image_number", -1)))
 	if path != "":
-		var tex := load(path) as Texture2D
+		var tex := GameManager.level_texture(path)
 		ficha_image.texture = tex
 		ficha_image_frame.visible = tex != null
 	else:

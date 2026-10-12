@@ -11,9 +11,9 @@ var mostrar_tuto_antes_partida: bool = true
 var onboarding_completed: bool = false
 var tutorial_star_stage1: bool = false
 var tutorial_star_stage2: bool = false
-## Displayed as "1.0.X". Starts at 1 → 1.0.1. F2 increases X by 1.
+## Displayed as "1.1.XX". Starts at 0 → 1.1.00. F2 increases the last number by 1.
 ## Source of truth is project.godot + data/app_version.json so exports and Git stay in sync.
-var app_version_code: int = 1
+var app_version_code: int = 0
 
 var level_normal_unlocked: bool = false
 var level_dificil_unlocked: bool = false
@@ -50,11 +50,11 @@ func version_display() -> String:
 
 
 func version_name() -> String:
-	return "1.0.%d" % maxi(app_version_code, 1)
+	return "1.1.%02d" % maxi(app_version_code, 0)
 
 
 func store_version_code() -> int:
-	return 1000 + maxi(app_version_code, 1)
+	return 11000 + maxi(app_version_code, 0)
 
 
 func bump_app_version() -> void:
@@ -67,19 +67,19 @@ func bump_app_version() -> void:
 
 func load_version_file() -> void:
 	var loaded := _code_from_project_settings()
-	if loaded <= 0:
+	if loaded < 0:
 		loaded = _code_from_json()
-	if loaded <= 0:
+	if loaded < 0:
 		loaded = _code_from_text(_read_text(VERSION_TXT_PATH))
-	if loaded <= 0:
-		loaded = 1
+	if loaded < 0:
+		loaded = 0
 	app_version_code = loaded
 
 
 func save_version_file() -> void:
 	if not OS.has_feature("editor"):
 		return
-	var code := maxi(app_version_code, 1)
+	var code := maxi(app_version_code, 0)
 	var name := version_name()
 	_write_text(VERSION_JSON_PATH, JSON.stringify({"code": code}, "\t") + "\n")
 	_write_text(VERSION_TXT_PATH, "%d\n" % code)
@@ -90,16 +90,18 @@ func save_version_file() -> void:
 
 func _code_from_project_settings() -> int:
 	if not ProjectSettings.has_setting("application/config/version"):
-		return 0
+		return -1
 	return _code_from_text(str(ProjectSettings.get_setting("application/config/version", "")))
 
 
 func _code_from_json() -> int:
 	var raw := _read_text(VERSION_JSON_PATH)
 	if raw.is_empty():
-		return 0
+		return -1
 	var parsed: Variant = JSON.parse_string(raw)
 	if parsed is Dictionary:
+		if not parsed.has("code"):
+			return -1
 		return maxi(int(parsed.get("code", 0)), 0)
 	return _code_from_text(raw)
 
@@ -107,14 +109,14 @@ func _code_from_json() -> int:
 func _code_from_text(raw: String) -> int:
 	var text := raw.strip_edges()
 	if text.is_empty():
-		return 0
+		return -1
 	if text.is_valid_int():
-		return maxi(int(text), 1)
+		return maxi(int(text), 0)
 	var digits := text.get_slice(".", text.get_slice_count(".") - 1)
 	digits = digits.replace("\"", "")
 	if digits.is_valid_int():
-		return maxi(int(digits), 1)
-	return 0
+		return maxi(int(digits), 0)
+	return -1
 
 
 func _sync_project_settings(name: String) -> void:

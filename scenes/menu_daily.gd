@@ -156,7 +156,7 @@ func _fill_image() -> void:
 	var path := GameManager.find_level_image_path(int(_item.get("image_number", -1)))
 	var tex: Texture2D = _category_icon_for(cat_id)
 	if path != "":
-		var loaded := load(path) as Texture2D
+		var loaded := GameManager.level_texture(path)
 		if loaded:
 			tex = loaded
 	puzzle_image.texture = tex

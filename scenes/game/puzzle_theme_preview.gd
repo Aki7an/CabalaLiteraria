@@ -239,7 +239,7 @@ func _load_image() -> void:
 		resolved_path = find_image_path(GameManager.id_image, GameManager.id_frase)
 	if resolved_path == "":
 		return
-	var texture := load(resolved_path) as Texture2D
+	var texture := GameManager.level_texture(resolved_path)
 	if texture != null:
 		image.texture = texture
 
