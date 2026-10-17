@@ -1,6 +1,5 @@
 extends Control
 
-const PATH_MAIN := "res://scenes/MenuMain.tscn"
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
 const ICON_CITA: Texture2D = preload("res://images/Ilustres.png")
 const ICON_EFEM: Texture2D = preload("res://images/Efemerides.png")
@@ -684,7 +683,7 @@ func _create_thumb(item: Dictionary) -> Button:
 	image.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var path := GameManager.find_level_image_path(int(item.get("image_number", -1)))
 	if path != "":
-		var tex := load(path) as Texture2D
+		var tex := GameManager.level_texture(path)
 		if tex:
 			image.texture = tex
 	frame.add_child(image)
@@ -1409,7 +1408,7 @@ func _open_ficha(item: Dictionary) -> void:
 
 	var path := GameManager.find_level_image_path(int(item.get("image_number", -1)))
 	if path != "":
-		var tex := load(path) as Texture2D
+		var tex := GameManager.level_texture(path)
 		ficha_image.texture = tex
 		ficha_image_frame.visible = tex != null
 	else:
@@ -1484,7 +1483,7 @@ func _on_index_back_pressed() -> void:
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	SoundManager.play("ButtonClick")
-	get_tree().change_scene_to_file(PATH_MAIN)
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
 func _on_button_favorites_pressed() -> void:

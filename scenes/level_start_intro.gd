@@ -250,7 +250,15 @@ func _hud_action_button(
 	label.text = title
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 52)
+	var font_size := 52
+	var available := size.x - icon_size.x - 36.0
+	while font_size > 32:
+		var line := TextLine.new()
+		line.add_string(title, FONT_UI, font_size)
+		if line.get_size().x <= available:
+			break
+		font_size -= 1
+	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", Color(1, 1, 0.96, 1))
 	label.add_theme_color_override("font_shadow_color", shadow)
 	label.add_theme_constant_override("shadow_offset_y", 3)

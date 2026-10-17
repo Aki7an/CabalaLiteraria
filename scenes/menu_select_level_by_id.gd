@@ -560,7 +560,7 @@ func _assign_real_texture(button: Button) -> void:
 	var path: String = str(button.get_meta("image_path", ""))
 	if path == "":
 		return
-	var texture := load(path) as Texture2D
+	var texture := GameManager.level_texture(path)
 	if texture != null:
 		texture_rect.texture = texture
 
@@ -1076,7 +1076,7 @@ func _on_replay_play_pressed(
 		play.disabled = true
 		cancel.disabled = true
 		play.text = _tr_ad("DailyAdLoading", "Cargando anuncio...")
-		var ok: bool = await AdManager.show_rewarded()
+		var ok: bool = await PlatformServices.show_rewarded()
 		_replay_ad_busy = false
 		if not is_instance_valid(overlay):
 			return
@@ -1130,7 +1130,7 @@ func _replay_thumb(item: Dictionary) -> Panel:
 	var path := _find_image_path(int(item.get("image_number", -1)), index_number)
 	var texture: Texture2D = PLACEHOLDER_TEX
 	if path != "":
-		var loaded := load(path) as Texture2D
+		var loaded := GameManager.level_texture(path)
 		if loaded != null:
 			texture = loaded
 	image.texture = texture

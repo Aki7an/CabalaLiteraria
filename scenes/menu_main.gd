@@ -28,6 +28,8 @@ const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
 const FONT_TITLE_LETTER: Font = preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
 const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
 const PATH_SHOP := "res://scenes/MenuShop.tscn"
+const CZ_PUZZLE_SCENE := "res://scenes/crazygames/CrazyGamesPuzzle.tscn"
+const CZ_DIRECT_PUZZLE_ID := 3085
 
 var _title_letter_font: FontVariation
 var _play_blink_token := 0
@@ -51,8 +53,11 @@ func _ready() -> void:
 	_update_version_label()
 	_refresh_star_totals()
 	if not linked and _should_play_main_intro():
-		_prepare_intro_hidden()
-		call_deferred("_boot_visuals")
+		if bool(get_meta("compact_title", false)):
+			call_deferred("_start_compact_intro")
+		else:
+			_prepare_intro_hidden()
+			call_deferred("_boot_visuals")
 	elif not linked:
 		_hide_intro_words()
 		call_deferred("_boot_visuals")
@@ -195,15 +200,39 @@ func _apply_title_tiles() -> void:
 		return
 	var cipher_word := _title_word("Cipher", "CIFRA")
 	var letter_word := _title_word("Letter", "LETRA")
-	_fill_tile_row(cipher_row, cipher_word, false)
-	var letter_row := _ensure_letter_row(cipher_row)
-	if letter_row:
-		_fill_tile_row(letter_row, letter_word, true)
+	if _single_line_title():
+		_fill_tile_row(cipher_row, cipher_word + letter_word, false)
+		_paint_title_tail(cipher_row, cipher_word.length())
+		var extra := cipher_row.get_parent().get_node_or_null("ShowcaseLetra") as CanvasItem
+		if extra:
+			extra.visible = false
+	else:
+		_fill_tile_row(cipher_row, cipher_word, false)
+		var letter_row := _ensure_letter_row(cipher_row)
+		if letter_row:
+			letter_row.visible = true
+			_fill_tile_row(letter_row, letter_word, true)
 	await get_tree().process_frame
 	_layout_title_row(cipher_row)
-	if letter_row:
-		_layout_title_row(letter_row)
+	if not _single_line_title():
+		var letter_row := cipher_row.get_parent().get_node_or_null("ShowcaseLetra") as HBoxContainer
+		if letter_row:
+			_layout_title_row(letter_row)
 	await get_tree().process_frame
+
+
+func _single_line_title() -> bool:
+	return bool(get_meta("cz_simple_home", false))
+
+
+func _paint_title_tail(row: HBoxContainer, start_index: int) -> void:
+	var tiles := _visible_tiles(row)
+	for i in tiles.size():
+		if i < start_index:
+			continue
+		var letter_label := tiles[i].find_child("Letter", true, false) as Label
+		if letter_label:
+			_style_title_letter(letter_label, _base_letter_size(), TITLE_LETTER_GREEN)
 
 
 func _ensure_letter_row(cipher_row: HBoxContainer) -> HBoxContainer:
@@ -236,6 +265,34 @@ func _style_title_letter(letter_label: Label, letter_size: int, color: Color) ->
 	letter_label.add_theme_color_override("font_outline_color", color)
 
 
+func _compact_title() -> bool:
+	return bool(get_meta("compact_title", false))
+
+
+func _ui_scale() -> float:
+	return float(get_meta("ui_scale", 1.0))
+
+
+func _base_letter_size() -> int:
+	if not _compact_title():
+		return TITLE_LETTER_SIZE
+	return maxi(roundi(54.0 * _ui_scale()), 18)
+
+
+func _base_number_size() -> int:
+	if not _compact_title():
+		return TITLE_NUMBER_SIZE
+	return maxi(roundi(22.0 * _ui_scale()), 12)
+
+
+func _start_compact_intro() -> void:
+	await get_tree().process_frame
+	if _boot_cancelled:
+		return
+	_prepare_intro_hidden()
+	await _boot_visuals()
+
+
 func _fill_tile_row(row: HBoxContainer, word: String, revealed_green: bool) -> void:
 	var letters: Array[String] = []
 	for i in word.length():
@@ -248,8 +305,8 @@ func _fill_tile_row(row: HBoxContainer, word: String, revealed_green: bool) -> v
 	var template := row.get_child(0) as Control
 	while row.get_child_count() < letters.size():
 		row.add_child(template.duplicate())
-	var letter_size := TITLE_LETTER_SIZE
-	var number_size := TITLE_NUMBER_SIZE
+	var letter_size := _base_letter_size()
+	var number_size := _base_number_size()
 	for i in row.get_child_count():
 		var tile := row.get_child(i) as Control
 		if i >= letters.size():
@@ -276,7 +333,7 @@ func _title_row_metrics(row: HBoxContainer) -> Dictionary:
 	available = maxf(available - TITLE_SAFETY_PX * 2.0, 1.0)
 	var count := _visible_tiles(row).size()
 	if count <= 0:
-		return {"width": 0.0, "letter": TITLE_LETTER_SIZE, "number": TITLE_NUMBER_SIZE}
+		return {"width": 0.0, "letter": _base_letter_size(), "number": _base_number_size()}
 	var sep := float(row.get_theme_constant("separation"))
 	var spanish_max := (
 		(available - sep * float(TITLE_SPANISH_LETTERS - 1))
@@ -288,8 +345,8 @@ func _title_row_metrics(row: HBoxContainer) -> Dictionary:
 	var font_scale := clampf(tile_width / maxf(spanish_max, 1.0), 0.42, 1.0)
 	return {
 		"width": tile_width,
-		"letter": maxi(roundi(float(TITLE_LETTER_SIZE) * font_scale), 32),
-		"number": maxi(roundi(float(TITLE_NUMBER_SIZE) * font_scale), 16),
+		"letter": maxi(roundi(float(_base_letter_size()) * font_scale), roundi((28.0 if _compact_title() else 32.0) * _ui_scale())),
+		"number": maxi(roundi(float(_base_number_size()) * font_scale), roundi((14.0 if _compact_title() else 16.0) * _ui_scale())),
 	}
 
 
@@ -302,14 +359,24 @@ func _layout_title_row(row: HBoxContainer) -> void:
 	if visible_tiles.is_empty():
 		return
 	var metrics := _title_row_metrics(row)
-	var tile_width: float = metrics["width"]
+	var tile_size := _title_tile_size(row, float(metrics["width"]))
+	var tile_width: float = tile_size.x
 	var letter_size: int = metrics["letter"]
 	var number_size: int = metrics["number"]
+	if _single_line_title():
+		letter_size = maxi(roundi(float(letter_size) * 1.69), 1)
+		number_size = maxi(number_size * 2, 1)
+		row.custom_minimum_size.y = tile_size.y
 	for tile in visible_tiles:
 		tile.size_flags_horizontal = 0
-		tile.custom_minimum_size.x = tile_width
-		tile.size.x = tile_width
-		tile.clip_contents = true
+		tile.clip_contents = not _single_line_title()
+		if _single_line_title():
+			tile.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			tile.custom_minimum_size = tile_size
+			tile.size = tile_size
+		else:
+			tile.custom_minimum_size.x = tile_width
+			tile.size.x = tile_width
 		var letter_label := tile.find_child("Letter", true, false) as Label
 		var number_label := tile.find_child("Number", true, false) as Label
 		if letter_label:
@@ -355,6 +422,10 @@ func _nudge_title_number(tile: Control, number_size: int) -> void:
 
 func _update_version_label() -> void:
 	if version_label == null:
+		return
+	if _single_line_title():
+		version_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		version_label.text = "%s %s" % [tr("Version"), PlayerPrefs.version_display()]
 		return
 	version_label.text = "%s\n%s" % [tr("Version"), PlayerPrefs.version_display()]
 
@@ -410,10 +481,44 @@ func _on_button_settings_pressed() -> void:
 
 func _on_button_play_pressed() -> void:
 	_skip_intro()
+	if bool(get_meta("cz_simple_home", false)):
+		_start_crazygames_puzzle()
+		return
 	if not PlayerPrefs.onboarding_completed:
 		_start_onboarding()
 		return
 	_go_to("res://scenes/MenuSelectCategory.tscn", button_play)
+
+
+func _start_crazygames_puzzle() -> void:
+	_skip_intro()
+	_play_blink_token += 1
+	TransitionScreen.transition_to_black()
+	if button_play is Button:
+		GameManager.button_blink(button_play)
+	SoundManager.play("ButtonClick")
+	await TransitionScreen._on_animation_finished("fade_to_black", 1)
+	GameManager.session_source = GameManager.SOURCE_NONE
+	GameManager.allow_completed_replay = false
+	GameManager.onboarding_stage = 0
+	for raw in GameManager.frases_db:
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		var item: Dictionary = raw
+		if int(item.get("index", -1)) != CZ_DIRECT_PUZZLE_ID:
+			continue
+		GameManager.set_game_mode_actual(GameManager.level_game_mode(item))
+		GameManager.set_dificultad_actual(int(item.get("difficulty", 1)))
+		break
+	GameManager.seleccionar_por_index(CZ_DIRECT_PUZZLE_ID)
+	PuzzleSaveManager.prepare_current_puzzle_cipher()
+	GameManager.puzzle_enter_pending = true
+	GameManager.set_go_to_game_disable()
+	var tree := get_tree()
+	if tree.paused:
+		tree.paused = false
+	SignalManager.partida_iniciada.emit()
+	tree.change_scene_to_file(CZ_PUZZLE_SCENE)
 
 
 func _start_onboarding() -> void:
@@ -504,7 +609,8 @@ func _show_daily_locked_dialog() -> void:
 	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	overlay.add_child(center)
 	var card := PanelContainer.new()
-	card.custom_minimum_size = Vector2(980, 0)
+	var compact := Distribution.is_horizontal()
+	card.custom_minimum_size = Vector2(640 if compact else 980, 0)
 	var card_style := StyleBoxFlat.new()
 	card_style.bg_color = Color(1, 0.965, 0.86, 1)
 	card_style.border_color = Color(0.62, 0.4, 0.16, 0.46)
@@ -531,7 +637,7 @@ func _show_daily_locked_dialog() -> void:
 	inner.add_child(lock)
 	var title := Label.new()
 	title.add_theme_font_override("font", FONT_UI)
-	title.add_theme_font_size_override("font_size", 48)
+	title.add_theme_font_size_override("font_size", 32 if compact else 48)
 	title.add_theme_color_override("font_color", Color(0.24, 0.14, 0.08, 1))
 	title.text = tr("DailyChallenge")
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -539,7 +645,7 @@ func _show_daily_locked_dialog() -> void:
 	inner.add_child(title)
 	var body := Label.new()
 	body.add_theme_font_override("font", FONT_UI)
-	body.add_theme_font_size_override("font_size", 36)
+	body.add_theme_font_size_override("font_size", 24 if compact else 36)
 	body.add_theme_color_override("font_color", Color(0.28, 0.17, 0.1, 1))
 	body.text = tr("DailyLockedBody")
 	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -552,9 +658,9 @@ func _show_daily_locked_dialog() -> void:
 	cancel.text = tr("Back")
 	cancel.focus_mode = Control.FOCUS_NONE
 	cancel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	cancel.custom_minimum_size = Vector2(0, 110)
+	cancel.custom_minimum_size = Vector2(0, 78 if compact else 110)
 	cancel.add_theme_font_override("font", FONT_UI)
-	cancel.add_theme_font_size_override("font_size", 36)
+	cancel.add_theme_font_size_override("font_size", 28 if compact else 36)
 	cancel.add_theme_color_override("font_color", Color(0.32, 0.18, 0.08, 1))
 	var cancel_style := StyleBoxFlat.new()
 	cancel_style.bg_color = Color(1, 0.982, 0.92, 1)
@@ -577,9 +683,9 @@ func _show_daily_locked_dialog() -> void:
 	shop.text = shop_text
 	shop.focus_mode = Control.FOCUS_NONE
 	shop.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	shop.custom_minimum_size = Vector2(0, 110)
+	shop.custom_minimum_size = Vector2(0, 78 if compact else 110)
 	shop.add_theme_font_override("font", FONT_UI)
-	shop.add_theme_font_size_override("font_size", 36)
+	shop.add_theme_font_size_override("font_size", 28 if compact else 36)
 	shop.add_theme_color_override("font_color", Color.WHITE)
 	var shop_style := StyleBoxFlat.new()
 	shop_style.bg_color = Color(0.96, 0.51, 0.01, 1)
@@ -658,9 +764,15 @@ func _intro_chrome() -> Array[Control]:
 		$Panel/Actions,
 		version_label,
 	]:
-		if node is Control:
+		if node is Control and not _hidden_on_simple_home(node):
 			nodes.append(node)
 	return nodes
+
+
+func _hidden_on_simple_home(node: Node) -> bool:
+	if not bool(get_meta("cz_simple_home", false)) or node == null:
+		return false
+	return node.name == "StarTotals" or node.name == "Shortcuts"
 
 
 func _prepare_intro_hidden() -> void:
@@ -668,6 +780,22 @@ func _prepare_intro_hidden() -> void:
 	_cache_intro_rest()
 	_set_menu_interactive(false)
 	_hide_intro_words()
+	if _single_line_title():
+		for node in _intro_chrome():
+			if node == null or node.name == "PlayWrap":
+				continue
+			node.visible = true
+			node.modulate.a = 1.0
+		var cipher_row := _title_cipher_row()
+		_set_row_tiles_alpha(cipher_row, 1.0)
+		var tagline := get_node_or_null("Panel/TaglineRow") as Control
+		if tagline:
+			tagline.visible = true
+			tagline.modulate.a = 1.0
+		if button_play:
+			button_play.disabled = true
+			button_play.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		return
 	for node in _intro_chrome():
 		node.modulate.a = 0.0
 		if node != get_node_or_null("Panel/PlayWrap"):
@@ -683,6 +811,17 @@ func _prepare_intro_hidden() -> void:
 func _play_main_intro() -> void:
 	_intro_running = true
 	var token := _intro_token
+	if _single_line_title():
+		_hide_intro_words()
+		if button_play:
+			button_play.disabled = false
+			button_play.mouse_filter = Control.MOUSE_FILTER_STOP
+		await _animate_play_entrance()
+		if not _intro_alive(token):
+			_finish_intro_cleanup()
+			return
+		_finish_intro_cleanup()
+		return
 	var panel := $Panel as Control
 	if panel:
 		panel.clip_contents = false
@@ -936,11 +1075,24 @@ func _set_row_tiles_alpha(row: HBoxContainer, alpha: float) -> void:
 		tile.modulate.a = alpha
 
 
+func _title_tile_size(row: HBoxContainer, width: float) -> Vector2:
+	if not _single_line_title():
+		return Vector2(width, 0.0)
+	var height := width * 2.5
+	var parent := row.get_parent() as Control
+	if parent != null and parent.size.y > 40.0 and height > parent.size.y - 8.0:
+		height = parent.size.y - 8.0
+		width = height / 2.5
+	return Vector2(width, height)
+
+
 func _row_final_tile_size(row: HBoxContainer) -> Vector2:
 	if row == null:
 		return Vector2.ZERO
 	var metrics := _title_row_metrics(row)
 	var width: float = metrics["width"]
+	if _single_line_title():
+		return _title_tile_size(row, width)
 	var tiles := _visible_tiles(row)
 	var height := 0.0
 	if not tiles.is_empty():
@@ -1086,11 +1238,11 @@ func _slide_chrome_in() -> void:
 	var token := _intro_token
 	var from_above: Array[Control] = []
 	for node in [$Panel/StarTotals, button_fx, button_music, button_settings]:
-		if node is Control:
+		if node is Control and not _hidden_on_simple_home(node):
 			from_above.append(node)
 	var from_below: Array[Control] = []
 	for node in [$Panel/Shortcuts, $Panel/Actions, version_label]:
-		if node is Control:
+		if node is Control and not _hidden_on_simple_home(node):
 			from_below.append(node)
 	var play_wrap := get_node_or_null("Panel/PlayWrap") as Control
 	if play_wrap:

@@ -145,6 +145,76 @@ func count_finished_puzzles_excluding_onboarding() -> int:
 		ids[puzzle_id] = true
 	return ids.size()
 
+
+## Fechas y puzles únicos ganados, sin práctica ni tutorial.
+## tutorial_unix es la primera victoria del segundo paso del tutorial.
+func milestone_snapshot() -> Dictionary:
+	var puzzle_ids: Array[int] = []
+	var seen := {}
+	var first_unix := 0
+	var last_unix := 0
+	var tutorial_unix := 0
+	for entry_value in _historial:
+		if not (entry_value is Dictionary):
+			continue
+		var entry: Dictionary = entry_value
+		if not bool(entry.get("partida_ganada", false)):
+			continue
+		var source := str(entry.get("source", ""))
+		var puzzle_id := int(entry.get("id", -1))
+		var unix := _entry_completed_unix(entry)
+		var onboarding := (
+			source == GameManager.SOURCE_ONBOARDING
+			or puzzle_id == GameManager.ONBOARDING_ID_PUZZLE_1
+			or puzzle_id == GameManager.ONBOARDING_ID_PUZZLE_2
+		)
+		if onboarding:
+			if puzzle_id == GameManager.ONBOARDING_ID_PUZZLE_2 and unix > 0:
+				if tutorial_unix <= 0 or unix < tutorial_unix:
+					tutorial_unix = unix
+			continue
+		if source == GameManager.SOURCE_PRACTICE or puzzle_id < 0:
+			continue
+		if not seen.has(puzzle_id):
+			seen[puzzle_id] = true
+			puzzle_ids.append(puzzle_id)
+		if unix <= 0:
+			continue
+		if first_unix <= 0 or unix < first_unix:
+			first_unix = unix
+		if unix > last_unix:
+			last_unix = unix
+	puzzle_ids.sort()
+	return {
+		"puzzle_ids": puzzle_ids,
+		"first_unix": first_unix,
+		"last_unix": last_unix,
+		"tutorial_unix": tutorial_unix,
+	}
+
+
+func _entry_completed_unix(entry: Dictionary) -> int:
+	var unix := int(entry.get("completed_unix", 0))
+	if unix > 0:
+		return unix
+	var fecha: Variant = entry.get("fecha", {})
+	if not (fecha is Dictionary):
+		return 0
+	var year := int((fecha as Dictionary).get("anio", 0))
+	var month := int((fecha as Dictionary).get("mes", 0))
+	var day := int((fecha as Dictionary).get("dia", 0))
+	if year < 2000 or month < 1 or month > 12 or day < 1 or day > 31:
+		return 0
+	return int(Time.get_unix_time_from_datetime_dict({
+		"year": year,
+		"month": month,
+		"day": day,
+		"hour": 0,
+		"minute": 0,
+		"second": 0,
+	}))
+
+
 func onboarding_score_stars() -> int:
 	var best_by_id := {}
 	for entry_value in _historial:
@@ -233,6 +303,11 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 		PuzzleSaveManager.mark_completed(int(GameManager.id_frase))
 		if GameManager.session_source == GameManager.SOURCE_DAILY:
 			PlayerPrefs.mark_daily_completed(int(GameManager.id_frase), int(GameManager.puzzle_stars))
+	if typeof(PlayFabTools) != TYPE_NIL and PlayFabTools.has_method("note_puzzle_completed"):
+		if resultado and not GameManager.is_onboarding_session() and not GameManager.is_practice_session():
+			PlayFabTools.note_puzzle_completed()
+		else:
+			PlayFabTools.note_player_activity()
 
 
 func grant_completion_star() -> void:

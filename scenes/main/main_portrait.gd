@@ -19,7 +19,7 @@ func _ready():
 	PuzzleSaveManager.begin_current_puzzle()
 	await PuzzleSaveManager.restore_current_puzzle()
 	if play_enter:
-		var layer := get_node_or_null("CanvasLayer") as CanvasLayer
+		var layer := get_node_or_null("CanvasLayer") as Node
 		var anim: Node = ENTER_ANIM.new()
 		if layer:
 			layer.add_child(anim)

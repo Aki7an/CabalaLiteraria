@@ -55,7 +55,7 @@ const LOCALIZED_COPY := {
 		"reset": "RESTABLECER VALORES",
 		"game_title": "JUEGO",
 		"tutorial": "Mostrar tutorial antes de jugar.",
-		"reveal": "Mostrar explicación botón REVELAR.",
+		"reveal": "Mostrar explicación botón COMPROBAR.",
 		"share": "Compartir datos de resolución con el desarrollador.",
 	},
 	"en": {
@@ -64,7 +64,7 @@ const LOCALIZED_COPY := {
 		"reset": "RESET VALUES",
 		"game_title": "GAME",
 		"tutorial": "Show tutorial before playing.",
-		"reveal": "Show REVEAL button explanation.",
+		"reveal": "Show CHECK button explanation.",
 		"share": "Share puzzle solve data with the developer.",
 	},
 	"eu": {
@@ -73,7 +73,7 @@ const LOCALIZED_COPY := {
 		"reset": "BERREZARRI BALIOAK",
 		"game_title": "JOKOA",
 		"tutorial": "Erakutsi tutoriala jokatu aurretik.",
-		"reveal": "Erakutsi REVELAR botoiaren azalpena.",
+		"reveal": "Erakutsi EGIAZTATU botoiaren azalpena.",
 		"share": "Partekatu puzzlearen ebazpen-datuak garatzailearekin.",
 	},
 	"de": {
@@ -82,7 +82,7 @@ const LOCALIZED_COPY := {
 		"reset": "WERTE ZURÜCKSETZEN",
 		"game_title": "SPIEL",
 		"tutorial": "Tutorial vor dem Spielen anzeigen.",
-		"reveal": "Erklärung der LÖSEN-Taste anzeigen.",
+		"reveal": "Erklärung der PRÜFEN-Taste anzeigen.",
 		"share": "Lösedaten mit dem Entwickler teilen.",
 	},
 	"fr": {
@@ -91,7 +91,7 @@ const LOCALIZED_COPY := {
 		"reset": "RÉINITIALISER",
 		"game_title": "JEU",
 		"tutorial": "Afficher le tutoriel avant de jouer.",
-		"reveal": "Afficher l'explication du bouton REVELAR.",
+		"reveal": "Afficher l'explication du bouton VÉRIFIER.",
 		"share": "Partager les données de résolution avec le développeur.",
 	},
 	"it": {
@@ -100,7 +100,7 @@ const LOCALIZED_COPY := {
 		"reset": "RIPRISTINA VALORI",
 		"game_title": "GIOCO",
 		"tutorial": "Mostra il tutorial prima di giocare.",
-		"reveal": "Mostra la spiegazione del pulsante REVELAR.",
+		"reveal": "Mostra la spiegazione del pulsante VERIFICA.",
 		"share": "Condividi i dati di risoluzione con lo sviluppatore.",
 	},
 	"pt": {
@@ -109,7 +109,7 @@ const LOCALIZED_COPY := {
 		"reset": "REPOR VALORES",
 		"game_title": "JOGO",
 		"tutorial": "Mostrar tutorial antes de jogar.",
-		"reveal": "Mostrar explicação do botão REVELAR.",
+		"reveal": "Mostrar explicação do botão VERIFICAR.",
 		"share": "Partilhar dados de resolução com o programador.",
 	},
 }
@@ -160,7 +160,7 @@ func _on_button_back_pressed() -> void:
 		return
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
 func _on_button_credits_pressed() -> void:

@@ -16,7 +16,7 @@ func _on_button_back_pressed():
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	SoundManager.play("ButtonClick")
-	get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 func _ready():
 	label_2.text = GameManager.difficulty_display_name().to_upper() + " - " + GameManager.category_display_name()

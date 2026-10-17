@@ -39,6 +39,11 @@ var _dimmer: ColorRect
 var _halo: Control
 var _letter_label: Label
 var _running := false
+var _horizontal := false
+var _letter_size := LETTER_SIZE
+var _letter_box := LETTER_BOX
+var _ff_diameter := FF_BUTTON_DIAMETER
+var _letter_center := Vector2.ZERO
 var _keyboard_panel: Control
 var _keyboard_z := 0
 var _ff_button: Button
@@ -59,6 +64,11 @@ class WhiteHalo extends Control:
 
 func _ready() -> void:
 	add_to_group("RevealSequence")
+	_horizontal = Distribution.is_horizontal()
+	if _horizontal:
+		_letter_size = 176
+		_letter_box = 280.0
+		_ff_diameter = 136.0
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	color = Color(0, 0, 0, 0)
@@ -125,7 +135,7 @@ func _build() -> void:
 	_letter_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_letter_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_letter_label.add_theme_font_override("font", FONT_LETTER)
-	_letter_label.add_theme_font_size_override("font_size", LETTER_SIZE)
+	_letter_label.add_theme_font_size_override("font_size", _letter_size)
 	_letter_label.add_theme_color_override("font_shadow_color", Color(0.05, 0.03, 0.02, 0.55))
 	_letter_label.add_theme_constant_override("shadow_offset_y", 10)
 	_letter_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -155,7 +165,8 @@ func _fit_vhs_to_screen() -> void:
 		return
 	var bleed := Vector2(VHS_BLEED, VHS_BLEED)
 	_vhs.position = -bleed
-	_vhs.size = get_viewport_rect().size + bleed * 2.0
+	var target := size if _horizontal and size.x > 2.0 else get_viewport_rect().size
+	_vhs.size = target + bleed * 2.0
 
 
 func _build_ff_button() -> void:
@@ -194,14 +205,15 @@ func _ff_style(face: Color, edge: Color, sunken: bool) -> StyleBoxFlat:
 		style.shadow_color = FF_SHADOW
 		style.shadow_size = 10
 		style.shadow_offset = Vector2(0, 8)
-	style.set_corner_radius_all(int(FF_BUTTON_DIAMETER))
+	style.set_corner_radius_all(int(_ff_diameter))
 	return style
 
 
 ## The sunken style moves the face down by the border difference (9 - 4 px).
 func _layout_ff_icon(sunken: bool) -> void:
 	var shift := 4.0 if sunken else 0.0
-	var pad := FF_BUTTON_DIAMETER * 0.24
+	var diameter := _ff_button.size.x if _ff_button != null and _ff_button.size.x > 1.0 else _ff_diameter
+	var pad := diameter * 0.24
 	_ff_icon.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_ff_icon.offset_left = pad
 	_ff_icon.offset_top = pad - 2.0 + shift
@@ -214,7 +226,10 @@ func _run_sequence() -> void:
 		return
 	_running = true
 	await get_tree().process_frame
-	_clip_above_keyboard()
+	if _horizontal:
+		_layout_letter_stack()
+	else:
+		_clip_above_keyboard()
 	var assignments := _player_assignments()
 	var steps := _count_green_reveal_steps(assignments)
 	SoundManager.begin_green_letter_sequence(steps)
@@ -372,8 +387,15 @@ func _on_resized() -> void:
 func _layout_letter_stack() -> void:
 	if _letter_label == null:
 		return
+	if _horizontal:
+		var slots := _horizontal_slots()
+		_letter_center = slots["center"]
+		_place_centered(_letter_label, _letter_center, float(slots["box"]))
+		_letter_label.add_theme_font_size_override("font_size", int(slots["font"]))
+		_layout_ff_button()
+		return
 	var ay := _letter_anchor_y()
-	var half := LETTER_BOX * 0.5
+	var half := _letter_box * 0.5
 	_letter_label.anchor_left = 0.5
 	_letter_label.anchor_top = ay
 	_letter_label.anchor_right = 0.5
@@ -384,6 +406,72 @@ func _layout_letter_stack() -> void:
 	_letter_label.offset_bottom = half
 	_letter_label.pivot_offset = Vector2(half, half)
 	_layout_ff_button()
+
+
+func _horizontal_slots() -> Dictionary:
+	var stage := _horizontal_stage()
+	var margin := 18.0
+	var gap := 14.0
+	var diameter := minf(_ff_diameter, minf(stage.size.x * 0.34, stage.size.y * 0.24))
+	var button := Rect2(
+		stage.position.x + (stage.size.x - diameter) * 0.5,
+		stage.position.y + stage.size.y - margin - diameter,
+		diameter,
+		diameter
+	)
+	var top := stage.position.y + margin
+	var room := maxf(48.0, button.position.y - gap - top)
+	var box := minf(_letter_box, room)
+	var center := Vector2(
+		stage.position.x + stage.size.x * 0.5,
+		top + (button.position.y - gap - top) * 0.5
+	)
+	return {
+		"center": center,
+		"box": box,
+		"button": button,
+		"font": int(round(float(_letter_size) * box / _letter_box)),
+	}
+
+
+func _horizontal_stage() -> Rect2:
+	var bounds := Rect2(Vector2.ZERO, size if size.x > 2.0 else Vector2(1280, 720))
+	var board := _board_visual_rect()
+	if board.size.x < 2.0 or board.size.y < 2.0:
+		return Rect2(bounds.position, Vector2(bounds.size.x * 0.54, bounds.size.y)).intersection(bounds)
+	if board.intersects(bounds):
+		var fitted := board.intersection(bounds)
+		if fitted.size.x > 2.0 and fitted.size.y > 2.0:
+			return fitted
+	return board
+
+
+func _board_visual_rect() -> Rect2:
+	var board := _board_frame()
+	if board == null or board.size.x < 2.0:
+		return Rect2()
+	if board.get_parent() == get_parent():
+		return Rect2(board.position, board.size * board.scale)
+	var to_local := get_global_transform().affine_inverse()
+	var origin: Vector2 = to_local * board.global_position
+	var overlay_scale := get_global_transform().get_scale()
+	var local_size := board.get_global_rect().size
+	if overlay_scale.x > 0.01 and overlay_scale.y > 0.01:
+		local_size = Vector2(local_size.x / overlay_scale.x, local_size.y / overlay_scale.y)
+	return Rect2(origin, local_size)
+
+
+func _place_centered(node: Control, center: Vector2, box: float) -> void:
+	var half := box * 0.5
+	node.anchor_left = 0.0
+	node.anchor_top = 0.0
+	node.anchor_right = 0.0
+	node.anchor_bottom = 0.0
+	node.offset_left = center.x - half
+	node.offset_top = center.y - half
+	node.offset_right = center.x + half
+	node.offset_bottom = center.y + half
+	node.pivot_offset = Vector2(half, half)
 
 
 func _layout_ff_button() -> void:
@@ -398,10 +486,13 @@ func _layout_ff_button() -> void:
 	_ff_button.offset_top = place.position.y
 	_ff_button.offset_right = place.position.x + place.size.x
 	_ff_button.offset_bottom = place.position.y + place.size.y
+	_layout_ff_icon(_ff_button.button_pressed)
 
 
 func _ff_button_rect() -> Rect2:
-	var diameter := FF_BUTTON_DIAMETER
+	if _horizontal:
+		return _horizontal_slots()["button"]
+	var diameter := _ff_diameter
 	var board := _board_frame()
 	var center_x := size.x * 0.5
 	var bottom := size.y - FF_BUTTON_BOARD_MARGIN
@@ -420,10 +511,15 @@ func _board_frame() -> Control:
 
 
 func _layout_halo(letter: String) -> void:
+	var font_size := int(_letter_label.get_theme_font_size("font_size")) if _letter_label else _letter_size
 	var box := FONT_LETTER.get_string_size(
-		letter.to_upper(), HORIZONTAL_ALIGNMENT_LEFT, -1, LETTER_SIZE
+		letter.to_upper(), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size
 	)
 	var diameter := maxf(box.x, box.y) * HALO_SCALE
+	if _horizontal:
+		_place_centered(_halo, _letter_center, diameter)
+		_halo.queue_redraw()
+		return
 	var ay := _letter_anchor_y()
 	_halo.anchor_left = 0.5
 	_halo.anchor_top = ay

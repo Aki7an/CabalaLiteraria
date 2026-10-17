@@ -20,7 +20,7 @@ func _ready():
 	
 
 func _process(delta) -> void:
-	if _is_trailer_scene():
+	if _is_trailer_scene() or _is_horizontal_board():
 		return
 	if Canvas_juego_position_in_screen != canvas_juego.position.y:
 		Canvas_juego_position_in_screen = canvas_juego.position.y
@@ -48,8 +48,12 @@ func _is_trailer_scene() -> bool:
 	return false
 
 
+func _is_horizontal_board() -> bool:
+	return Distribution.is_horizontal()
+
+
 func _intro_canvas_juego_tween() -> void:
-	if _is_trailer_scene():
+	if _is_trailer_scene() or _is_horizontal_board():
 		return
 		# retrasa este código
 	canvas_juego.position = Vector2(canvas_juego.position.x, 1400 - color_rect_down.position.y )

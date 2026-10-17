@@ -1,5 +1,4 @@
 extends Node2D
-const scene_to_load_MenuMain = preload("res://scenes/MenuMain.tscn")
 @onready var label_score = $Panel/LabelScore
 @onready var nombre: LineEdit = $Panel/LabelNuevoRecord/Nombre
 @onready var nombre_remarcar: Label = $Panel/LabelNuevoRecord/NombreRemarcar
@@ -11,12 +10,12 @@ const scene_to_load_MenuMain = preload("res://scenes/MenuMain.tscn")
 @onready var button_back = $ButtonBack
 
 func go_to_main_menu() -> void:
-	await AdManager.show_interstitial_after_puzzle()
+	await PlatformServices.show_interstitial_after_puzzle()
 	get_tree().paused = false
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	SoundManager.play("ButtonClick")
-	get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 func go_to_name_record_online() -> void:
 	TransitionScreen.transition_to_black()

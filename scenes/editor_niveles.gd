@@ -1,6 +1,5 @@
 extends Control
 
-const PATH_MAIN := "res://scenes/MenuMain.tscn"
 const JSON_DIR := "res://data"
 const IMAGE_DIR := "res://data/images"
 const EDITOR_DESIGN_SIZE := Vector2i(2412, 1620)
@@ -1023,4 +1022,4 @@ func _on_button_back_pressed() -> void:
 		)
 		_dirty = false
 		return
-	get_tree().change_scene_to_file(PATH_MAIN)
+	get_tree().change_scene_to_file(Distribution.home_scene())

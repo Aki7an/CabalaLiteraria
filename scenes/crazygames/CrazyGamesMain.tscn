@@ -1,0 +1,266 @@
+[gd_scene format=3 uid="uid://o8iuys1ali2w"]
+
+[ext_resource type="Script" uid="uid://dhumyv2au4jxh" path="res://scenes/crazygames/crazygames_main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://bvpri1mtnymgf" path="res://scenes/MenuMain.tscn" id="2_menu"]
+
+[node name="CrazyGamesMain" type="Control" unique_id=1166175238]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+script = ExtResource("1_main")
+
+[node name="Menu" parent="." unique_id=1631788429 instance=ExtResource("2_menu")]
+layout_mode = 1
+
+[node name="StarTotals" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="1" unique_id=72463766]
+visible = false
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.025
+anchor_right = 0.3
+anchor_bottom = 0.155
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Rows" parent="Menu/Panel/StarTotals" index="0" unique_id=664443035]
+offset_right = 0.0
+theme_override_constants/separation = 4
+
+[node name="ButtonFx" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="2" unique_id=1229123532]
+custom_minimum_size = Vector2(58, 58)
+anchors_preset = -1
+anchor_left = 0.795
+anchor_top = 0.02
+anchor_right = 0.846
+anchor_bottom = 0.114
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Icon" parent="Menu/Panel/ButtonFx" index="0" unique_id=1837548168]
+offset_left = -22.0
+offset_top = -22.0
+offset_right = 22.0
+offset_bottom = 22.0
+
+[node name="Slash" parent="Menu/Panel/ButtonFx" index="1" unique_id=1564844680]
+offset_left = -23.0
+offset_top = -23.0
+offset_right = 23.0
+offset_bottom = 23.0
+
+[node name="ButtonMusic" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="3" unique_id=722059117]
+custom_minimum_size = Vector2(58, 58)
+anchors_preset = -1
+anchor_left = 0.858
+anchor_top = 0.02
+anchor_right = 0.909
+anchor_bottom = 0.114
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Icon" parent="Menu/Panel/ButtonMusic" index="0" unique_id=1753302883]
+offset_left = -22.0
+offset_top = -22.0
+offset_right = 22.0
+offset_bottom = 22.0
+
+[node name="Slash" parent="Menu/Panel/ButtonMusic" index="1" unique_id=963081189]
+offset_left = -23.0
+offset_top = -23.0
+offset_right = 23.0
+offset_bottom = 23.0
+
+[node name="ButtonSettings" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="4" unique_id=2125989302]
+custom_minimum_size = Vector2(58, 58)
+anchors_preset = -1
+anchor_left = 0.921
+anchor_top = 0.02
+anchor_right = 0.972
+anchor_bottom = 0.114
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="IconShadow" parent="Menu/Panel/ButtonSettings" index="1" unique_id=1556351517]
+offset_left = -16.0
+offset_top = -14.0
+offset_right = 19.0
+offset_bottom = 21.0
+
+[node name="Icon" parent="Menu/Panel/ButtonSettings" index="2" unique_id=1312134945]
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+
+[node name="TaglineRow" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="6" unique_id=1613632247]
+anchor_left = 0.18
+anchor_top = 0.46
+anchor_right = 0.82
+anchor_bottom = 0.52
+grow_vertical = 2
+
+[node name="Tagline" parent="Menu/Panel/TaglineRow" index="1" unique_id=387766671]
+visible = false
+theme_override_font_sizes/font_size = 32
+autowrap_mode = 3
+
+[node name="IntroWords" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="7" unique_id=1200882567]
+visible = false
+anchor_left = 0.08
+anchor_top = 0.18
+anchor_right = 0.92
+anchor_bottom = 0.82
+offset_top = 0.0
+offset_bottom = 0.0
+
+[node name="TitleBlock" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="8" unique_id=549680608]
+anchor_left = 0.06
+anchor_top = 0.15
+anchor_right = 0.94
+anchor_bottom = 0.44
+theme_override_constants/separation = 6
+
+[node name="Showcase" parent="Menu/Panel/TitleBlock" index="0" unique_id=1237930159]
+custom_minimum_size = Vector2(0, 180)
+
+[node name="PlayWrap" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="9" unique_id=250601888]
+anchor_left = 0.26
+anchor_top = 0.56
+anchor_right = 0.74
+anchor_bottom = 0.74
+offset_left = 0.2000122
+offset_top = -32.200012
+offset_right = 0.2000122
+offset_bottom = -21.799988
+
+[node name="ButtonPlay" parent="Menu/Panel/PlayWrap" index="0" unique_id=910780092]
+custom_minimum_size = Vector2(480, 140)
+
+[node name="SymbolShadow" parent="Menu/Panel/PlayWrap/ButtonPlay" index="2" unique_id=1457339217]
+anchor_left = 0.12
+anchor_top = 0.3
+anchor_right = 0.24
+anchor_bottom = 0.7
+offset_left = 3.0
+offset_top = 4.0
+offset_right = 3.0
+offset_bottom = 4.0
+
+[node name="Symbol" parent="Menu/Panel/PlayWrap/ButtonPlay" index="3" unique_id=1659968170]
+anchor_left = 0.12
+anchor_top = 0.3
+anchor_right = 0.24
+anchor_bottom = 0.7
+
+[node name="Play" parent="Menu/Panel/PlayWrap/ButtonPlay" index="4" unique_id=594824019]
+theme_override_font_sizes/font_size = 72
+min_font_size = 40
+max_font_size = 72
+available_x = 460
+
+[node name="LastGame" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="10" unique_id=56618810]
+anchor_left = 0.05
+anchor_top = 0.94
+anchor_right = 0.59
+anchor_bottom = 0.99
+
+[node name="Shortcuts" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="11" unique_id=1888001001]
+visible = false
+anchor_left = 0.62
+anchor_top = 0.18
+anchor_right = 0.98
+anchor_bottom = 0.54
+theme_override_constants/separation = 16
+
+[node name="ColDaily" parent="Menu/Panel/Shortcuts" index="0" unique_id=1888001008]
+visible = false
+
+[node name="ColLibrary" parent="Menu/Panel/Shortcuts" index="1" unique_id=1888001014]
+visible = false
+
+[node name="ColShop" parent="Menu/Panel/Shortcuts" index="2" unique_id=1888001002]
+visible = false
+
+[node name="Actions" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="12" unique_id=996565079]
+anchor_left = 0.38
+anchor_top = 0.8
+anchor_right = 0.62
+anchor_bottom = 0.93
+offset_left = -0.3999939
+offset_top = -1.0
+offset_right = -0.4000244
+offset_bottom = -1.0
+theme_override_constants/separation = 16
+
+[node name="ColStats" parent="Menu/Panel/Actions" index="0" unique_id=1563455219]
+visible = false
+
+[node name="ColRanking" parent="Menu/Panel/Actions" index="1" unique_id=235300302]
+visible = false
+
+[node name="IconCircle" parent="Menu/Panel/Actions/ColTutorial/ButtonTutorial" parent_id_path=PackedInt32Array(1631788429, 44804427) index="1" unique_id=127275813]
+anchor_left = 0.18
+anchor_top = 0.5
+anchor_right = 0.18
+anchor_bottom = 0.5
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+
+[node name="IconShadow" parent="Menu/Panel/Actions/ColTutorial/ButtonTutorial" parent_id_path=PackedInt32Array(1631788429, 44804427) index="2" unique_id=1089735586]
+anchor_left = 0.18
+anchor_top = 0.5
+anchor_right = 0.18
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -12.0
+offset_right = 18.0
+offset_bottom = 20.0
+scale = Vector2(1, 1)
+
+[node name="Icon" parent="Menu/Panel/Actions/ColTutorial/ButtonTutorial" parent_id_path=PackedInt32Array(1631788429, 44804427) index="3" unique_id=743024439]
+anchor_left = 0.18
+anchor_top = 0.5
+anchor_right = 0.18
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+scale = Vector2(1, 1)
+
+[node name="Label" parent="Menu/Panel/Actions/ColTutorial/ButtonTutorial" parent_id_path=PackedInt32Array(1631788429, 44804427) index="4" unique_id=2050057292]
+anchor_left = 0.3
+anchor_top = 0.12
+anchor_bottom = 0.88
+theme_override_font_sizes/font_size = 28
+
+[node name="VersionLabel" parent="Menu/Panel" parent_id_path=PackedInt32Array(1631788429, 8884425) index="13" unique_id=1050956595]
+anchor_left = 0.02
+anchor_top = 0.94
+anchor_right = 0.36
+anchor_bottom = 0.99
+theme_override_font_sizes/font_size = 18
+text = "VERSION 0.25"
+horizontal_alignment = 0
+
+[editable path="Menu"]

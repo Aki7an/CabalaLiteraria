@@ -1,16 +1,20 @@
 extends Node
 
 ## On the main menu, compares the installed version with the one published
-## on the store. iOS reads Apple's lookup. Android reads docs/version.json
-## on the support site. A failed request leaves the game as it is.
+## on the store. iOS reads Apple's lookup. Android reads the version shown
+## on the Play listing. The support-site file is only used if that page
+## does not include a version. A failed request leaves the game as it is.
 
 const IOS_LOOKUP := "https://itunes.apple.com/lookup?id=6807821718"
+const PLAY_DETAILS := "https://play.google.com/store/apps/details?id=com.akidev.cifraletra&hl=en&gl=us"
 const ANDROID_VERSION_URL := "https://aki7an.github.io/CabalaLiteraria/version.json"
+const PLAY_VERSION_PATTERN := "\\[\\[\\[\"(\\d+\\.\\d+(?:\\.\\d+)*)\"\\]\\]"
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
 const ShareConfig := preload("res://store/share_config.gd")
 
 var _dismissed := false
 var _attempted := false
+var _used_json_fallback := false
 var _latest_version := ""
 var _request: HTTPRequest
 var _host: Node
@@ -31,18 +35,28 @@ func prompt(host: Node) -> void:
 	if _request != null or _attempted:
 		return
 	_attempted = true
-	_request = HTTPRequest.new()
-	_request.timeout = 8.0
-	_request.request_completed.connect(_on_completed)
-	add_child(_request)
-	if _request.request(_url_for(os_name)) != OK:
-		_clear_request()
+	_start_request(_url_for(os_name))
 
 
 func _url_for(os_name: String) -> String:
 	if os_name == "iOS":
 		return IOS_LOOKUP
-	return ANDROID_VERSION_URL
+	return PLAY_DETAILS
+
+
+func _start_request(url: String) -> void:
+	_clear_request()
+	_request = HTTPRequest.new()
+	_request.timeout = 12.0
+	_request.request_completed.connect(_on_completed)
+	add_child(_request)
+	var headers := PackedStringArray()
+	if url == PLAY_DETAILS:
+		headers.append("User-Agent: Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36")
+		headers.append("Accept-Language: en-US,en;q=0.9")
+	if _request.request(url, headers) != OK:
+		_clear_request()
+		_try_android_fallback()
 
 
 func _on_completed(result: int, code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
@@ -50,10 +64,20 @@ func _on_completed(result: int, code: int, _headers: PackedStringArray, body: Pa
 	if result == HTTPRequest.RESULT_SUCCESS and code == 200:
 		latest = _parse_latest(body.get_string_from_utf8())
 	_clear_request()
-	if latest.is_empty() or not _is_newer(latest, _installed_version()):
+	if latest.is_empty():
+		_try_android_fallback()
+		return
+	if not _is_newer(latest, _installed_version()):
 		return
 	_latest_version = latest
 	_present()
+
+
+func _try_android_fallback() -> void:
+	if OS.get_name() != "Android" or _used_json_fallback or _dismissed:
+		return
+	_used_json_fallback = true
+	_start_request(ANDROID_VERSION_URL)
 
 
 func _clear_request() -> void:
@@ -63,16 +87,31 @@ func _clear_request() -> void:
 
 
 func _parse_latest(raw: String) -> String:
-	var parsed: Variant = JSON.parse_string(raw.strip_edges())
-	if OS.get_name() == "iOS":
-		if parsed is Dictionary:
+	var trimmed := raw.strip_edges()
+	if trimmed.begins_with("{"):
+		return _parse_json_version(trimmed)
+	return _parse_play_version(trimmed)
+
+
+func _parse_json_version(raw: String) -> String:
+	var parsed: Variant = JSON.parse_string(raw)
+	if parsed is Dictionary:
+		if OS.get_name() == "iOS":
 			var results: Variant = parsed.get("results", [])
 			if results is Array and not results.is_empty() and results[0] is Dictionary:
 				return str(results[0].get("version", "")).strip_edges()
-		return ""
-	if parsed is Dictionary:
 		return str(parsed.get("android", "")).strip_edges()
 	return ""
+
+
+func _parse_play_version(html: String) -> String:
+	var expression := RegEx.new()
+	if expression.compile(PLAY_VERSION_PATTERN) != OK:
+		return ""
+	var found := expression.search(html)
+	if found == null:
+		return ""
+	return found.get_string(1).strip_edges()
 
 
 func _installed_version() -> String:

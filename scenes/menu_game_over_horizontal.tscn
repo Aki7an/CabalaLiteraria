@@ -1,0 +1,754 @@
+[gd_scene format=3 uid="uid://wj4ppc4baryr"]
+
+[ext_resource type="Script" uid="uid://dp8350faic2ec" path="res://scenes/menu_game_over.gd" id="1_script"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="3_star"]
+[ext_resource type="Texture2D" uid="uid://br1sokjc4hmqj" path="res://images/ui_icon_x.svg" id="4_x"]
+[ext_resource type="Texture2D" uid="uid://bmw1urq3uhm7" path="res://images/ui_icon_instagram.svg" id="5_ig"]
+[ext_resource type="Texture2D" uid="uid://bsmmou8oij67y" path="res://images/ui_icon_facebook.svg" id="6_fb"]
+
+[sub_resource type="StyleBoxFlat" id="Style_main"]
+bg_color = Color(1, 0.955, 0.82, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 9
+border_color = Color(0.8, 0.62, 0.34, 0.62)
+corner_radius_top_left = 42
+corner_radius_top_right = 42
+corner_radius_bottom_right = 42
+corner_radius_bottom_left = 42
+shadow_color = Color(0.19, 0.11, 0.04, 0.34)
+shadow_size = 24
+shadow_offset = Vector2(0, 16)
+
+[sub_resource type="StyleBoxFlat" id="Style_banner_tail"]
+bg_color = Color(0.045, 0.48, 0.51, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 7
+border_color = Color(0.025, 0.31, 0.34, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_banner"]
+bg_color = Color(0.08, 0.62, 0.64, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 11
+border_color = Color(0.035, 0.36, 0.39, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0.02, 0.22, 0.24, 0.28)
+shadow_size = 11
+shadow_offset = Vector2(0, 9)
+
+[sub_resource type="StyleBoxFlat" id="Style_phrase"]
+bg_color = Color(1, 0.972, 0.88, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.78, 0.58, 0.3, 0.52)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.35, 0.21, 0.08, 0.14)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_stars"]
+bg_color = Color(1, 0.968, 0.86, 0.96)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.79, 0.61, 0.36, 0.4)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.31, 0.18, 0.06, 0.12)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_pill"]
+bg_color = Color(0.96, 0.88, 0.67, 0.72)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 3
+border_color = Color(0.77, 0.57, 0.28, 0.38)
+corner_radius_top_left = 27
+corner_radius_top_right = 27
+corner_radius_bottom_right = 27
+corner_radius_bottom_left = 27
+
+[sub_resource type="StyleBoxFlat" id="Style_info"]
+bg_color = Color(0.78, 0.9, 0.97, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.42, 0.62, 0.78, 0.62)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="StyleBoxFlat" id="Style_info_badge"]
+bg_color = Color(0.12, 0.63, 0.64, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 5
+border_color = Color(0.04, 0.38, 0.4, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="Style_continue"]
+bg_color = Color(1, 0.53, 0.08, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.74, 0.3, 0.025, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.39, 0.18, 0.025, 0.3)
+shadow_size = 14
+shadow_offset = Vector2(0, 11)
+
+[sub_resource type="StyleBoxFlat" id="Style_continue_pressed"]
+bg_color = Color(0.9, 0.4, 0.045, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.64, 0.23, 0.015, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[sub_resource type="StyleBoxFlat" id="Style_feedback"]
+bg_color = Color(0.08, 0.62, 0.64, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.035, 0.36, 0.39, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.02, 0.22, 0.24, 0.28)
+shadow_size = 14
+shadow_offset = Vector2(0, 11)
+
+[sub_resource type="StyleBoxFlat" id="Style_feedback_pressed"]
+bg_color = Color(0.06, 0.5, 0.52, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03, 0.3, 0.32, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_x"]
+bg_color = Color(0.07, 0.07, 0.08, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.02, 0.02, 0.03, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.02, 0.02, 0.03, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_x_pressed"]
+bg_color = Color(0.03, 0.03, 0.04, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.01, 0.01, 0.015, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_ig"]
+bg_color = Color(0.86, 0.22, 0.48, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.58, 0.08, 0.3, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.42, 0.05, 0.18, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_ig_pressed"]
+bg_color = Color(0.72, 0.14, 0.38, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.48, 0.06, 0.24, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_fb"]
+bg_color = Color(0.09, 0.47, 0.95, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.05, 0.3, 0.7, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.04, 0.16, 0.4, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_fb_pressed"]
+bg_color = Color(0.06, 0.36, 0.78, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.04, 0.22, 0.52, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_tt"]
+bg_color = Color(1, 0.53, 0.08, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.74, 0.3, 0.025, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.45, 0.18, 0.02, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_tt_pressed"]
+bg_color = Color(0.9, 0.4, 0.045, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.62, 0.22, 0.02, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[node name="MenuGameOver" type="ColorRect" unique_id=421351761]
+custom_minimum_size = Vector2(1280, 720)
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0.12, 0.085, 0.045, 1)
+script = ExtResource("1_script")
+
+[node name="MainCard" type="Panel" parent="." unique_id=2029514034]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 1266.0
+offset_bottom = 706.0
+theme_override_styles/panel = SubResource("Style_main")
+
+[node name="ConfettiLeft" type="Label" parent="MainCard" unique_id=1462427947]
+layout_mode = 0
+offset_left = 211.0
+offset_top = 51.0
+offset_right = 331.0
+offset_bottom = 89.0
+theme_override_colors/font_color = Color(0.77, 0.52, 0.23, 0.55)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 22
+text = "◆  ·  ◆"
+horizontal_alignment = 1
+
+[node name="ConfettiRight" type="Label" parent="MainCard" unique_id=354641130]
+layout_mode = 0
+offset_left = 968.0
+offset_top = 52.0
+offset_right = 1088.0
+offset_bottom = 90.0
+theme_override_colors/font_color = Color(0.08, 0.49, 0.51, 0.55)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 22
+text = "◆  ·  ◆"
+horizontal_alignment = 1
+
+[node name="BannerLeft" type="Panel" parent="MainCard" unique_id=85198709]
+layout_mode = 0
+offset_left = 356.0
+offset_top = 56.0
+offset_right = 448.0
+offset_bottom = 92.0
+rotation = -0.18
+theme_override_styles/panel = SubResource("Style_banner_tail")
+
+[node name="BannerRight" type="Panel" parent="MainCard" unique_id=752132743]
+layout_mode = 0
+offset_left = 868.0
+offset_top = 43.0
+offset_right = 960.0
+offset_bottom = 79.0
+rotation = 0.18
+theme_override_styles/panel = SubResource("Style_banner_tail")
+
+[node name="Banner" type="Panel" parent="MainCard" unique_id=1283080365]
+layout_mode = 0
+offset_left = 435.0
+offset_top = 11.0
+offset_right = 874.0
+offset_bottom = 94.0
+theme_override_styles/panel = SubResource("Style_banner")
+
+[node name="Title" type="Label" parent="MainCard/Banner" unique_id=1884708321]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 0.93, 1)
+theme_override_colors/font_shadow_color = Color(0.015, 0.22, 0.24, 0.62)
+theme_override_constants/shadow_offset_y = 6
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+text = "¡FELICIDADES!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Solved" type="Label" parent="MainCard" unique_id=865964240]
+visible = false
+layout_mode = 0
+offset_left = 19.0
+offset_top = 84.0
+offset_right = 1239.0
+offset_bottom = 116.0
+theme_override_colors/font_color = Color(0.29, 0.2, 0.13, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "Has resuelto la frase"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PhraseCard" type="Panel" parent="MainCard" unique_id=683814025]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 112.0
+offset_right = 715.0
+offset_bottom = 602.0
+theme_override_styles/panel = SubResource("Style_phrase")
+
+[node name="QuoteOpen" type="Label" parent="MainCard/PhraseCard" unique_id=979919173]
+layout_mode = 0
+offset_left = 8.0
+offset_right = 56.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0.94, 0.43, 0.06, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 48
+text = "“"
+horizontal_alignment = 1
+
+[node name="QuoteClose" type="Label" parent="MainCard/PhraseCard" unique_id=1072839330]
+layout_mode = 0
+offset_left = 624.0
+offset_top = 325.0
+offset_right = 670.0
+offset_bottom = 408.0
+theme_override_colors/font_color = Color(0.94, 0.43, 0.06, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 48
+text = "”"
+horizontal_alignment = 1
+
+[node name="Phrase" type="RichTextLabel" parent="MainCard/PhraseCard" unique_id=2088555047]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 36.0
+offset_right = 655.0
+offset_bottom = 440.0
+theme_override_colors/default_color = Color(0.18, 0.12, 0.08, 1)
+theme_override_constants/line_separation = 6
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 28
+bbcode_enabled = true
+text = "[center]La frase resuelta aparecerá aquí[/center]"
+
+[node name="Category" type="Label" parent="MainCard/PhraseCard" unique_id=100941462]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 448.0
+offset_right = 384.0
+offset_bottom = 478.0
+theme_override_colors/font_color = Color(0.84, 0.38, 0.07, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "— Categoría —"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StampSlot" type="Control" parent="MainCard/PhraseCard" unique_id=189560235]
+anchors_preset = 0
+offset_left = 419.0
+offset_top = 367.0
+offset_right = 639.0
+offset_bottom = 439.0
+mouse_filter = 2
+
+[node name="Plate" type="ColorRect" parent="MainCard/PhraseCard/StampSlot" unique_id=854044508]
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 72.0
+mouse_filter = 2
+color = Color(0.78, 0.16, 0.12, 0.12)
+
+[node name="Label" type="Label" parent="MainCard/PhraseCard/StampSlot" unique_id=1972997269]
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 72.0
+theme_override_colors/font_color = Color(0.72, 0.13, 0.1, 0.92)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 26
+text = "¡RESUELTO!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StarsCard" type="Panel" parent="MainCard" unique_id=732921205]
+layout_mode = 0
+offset_left = 729.0
+offset_top = 112.0
+offset_right = 1236.0
+offset_bottom = 602.0
+theme_override_styles/panel = SubResource("Style_stars")
+
+[node name="Title" type="Label" parent="MainCard/StarsCard" unique_id=115874536]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 495.0
+offset_bottom = 36.0
+theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "ESTRELLAS CONSEGUIDAS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stars" type="HBoxContainer" parent="MainCard/StarsCard" unique_id=1407842632]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 46.0
+offset_right = 376.0
+offset_bottom = 100.0
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="CompletionStar" type="TextureRect" parent="MainCard/StarsCard/Stars" unique_id=1982368652]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star1" type="TextureRect" parent="MainCard/StarsCard/Stars" unique_id=81926958]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="MainCard/StarsCard/Stars" unique_id=815594529]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="MainCard/StarsCard/Stars" unique_id=757897861]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="MainCard/StarsCard/Stars" unique_id=1865710744]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star5" type="TextureRect" parent="MainCard/StarsCard/Stars" unique_id=1970957507]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+texture = ExtResource("3_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TimePill" type="Panel" parent="MainCard/StarsCard" unique_id=46664346]
+layout_mode = 0
+offset_left = 152.0
+offset_top = 113.0
+offset_right = 352.0
+offset_bottom = 149.0
+theme_override_styles/panel = SubResource("Style_pill")
+
+[node name="TimeText" type="Label" parent="MainCard/StarsCard/TimePill" unique_id=262599304]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Tiempo: 0:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InfoCard" type="Panel" parent="MainCard/StarsCard" unique_id=1125223186]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 160.0
+offset_right = 495.0
+offset_bottom = 478.0
+theme_override_styles/panel = SubResource("Style_info")
+
+[node name="InfoBadge" type="Panel" parent="MainCard/StarsCard/InfoCard" unique_id=2045117127]
+layout_mode = 0
+offset_left = 7.0
+offset_top = -50.0
+offset_right = 41.0
+offset_bottom = -16.0
+scale = Vector2(1.76, 1.76)
+theme_override_styles/panel = SubResource("Style_info_badge")
+
+[node name="Text" type="Label" parent="MainCard/StarsCard/InfoCard/InfoBadge" unique_id=1348545012]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "i"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="MainCard/StarsCard/InfoCard" unique_id=590836154]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 24.0
+offset_right = 469.0
+offset_bottom = 300.0
+theme_override_colors/default_color = Color(0.08, 0.32, 0.68, 1)
+theme_override_constants/line_separation = 4
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "[center]Información adicional sobre la frase.[/center]"
+
+[node name="BonusPuzzleCompleted" type="Label" parent="MainCard/StarsCard" unique_id=201166762]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 40.0
+offset_right = 499.0
+offset_bottom = 106.0
+theme_override_colors/font_color = Color(0.78, 0.52, 0.16, 0.95)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "BONUS PUZLE TERMINADO"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="ButtonBack" type="Button" parent="MainCard" unique_id=550130457]
+layout_mode = 0
+offset_left = 936.0
+offset_top = 607.0
+offset_right = 1236.0
+offset_bottom = 678.0
+pivot_offset = Vector2(147, 34)
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("Style_continue")
+theme_override_styles/pressed = SubResource("Style_continue_pressed")
+theme_override_styles/hover = SubResource("Style_continue")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "CONTINUAR"
+
+[node name="ButtonFeedback" type="Button" parent="MainCard" unique_id=1770254074]
+layout_mode = 0
+offset_left = 714.0
+offset_top = 607.0
+offset_right = 924.0
+offset_bottom = 676.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("Style_feedback")
+theme_override_styles/pressed = SubResource("Style_feedback_pressed")
+theme_override_styles/hover = SubResource("Style_feedback")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "Valora puzle"
+
+[node name="ShareTitle" type="Label" parent="MainCard" unique_id=1832074194]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 32.0
+offset_top = 619.0
+offset_right = 316.0
+offset_bottom = 643.0
+theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "Compartir Resultados en RRSS"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ButtonShareX" type="Button" parent="MainCard" unique_id=850939576]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 334.0
+offset_top = 610.0
+offset_right = 392.0
+offset_bottom = 662.0
+tooltip_text = "X"
+focus_mode = 0
+theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_constants/icon_max_width = 26
+theme_override_styles/normal = SubResource("Style_share_x")
+theme_override_styles/pressed = SubResource("Style_share_x_pressed")
+theme_override_styles/hover = SubResource("Style_share_x")
+theme_override_styles/focus = SubResource("Style_empty")
+icon = ExtResource("4_x")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ButtonShareInstagram" type="Button" parent="MainCard" unique_id=550363970]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 400.0
+offset_top = 610.0
+offset_right = 458.0
+offset_bottom = 662.0
+tooltip_text = "Instagram"
+focus_mode = 0
+theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_constants/icon_max_width = 26
+theme_override_styles/normal = SubResource("Style_share_ig")
+theme_override_styles/pressed = SubResource("Style_share_ig_pressed")
+theme_override_styles/hover = SubResource("Style_share_ig")
+theme_override_styles/focus = SubResource("Style_empty")
+icon = ExtResource("5_ig")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ButtonShareFacebook" type="Button" parent="MainCard" unique_id=351989795]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 466.0
+offset_top = 610.0
+offset_right = 524.0
+offset_bottom = 662.0
+tooltip_text = "Facebook"
+focus_mode = 0
+theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_constants/icon_max_width = 26
+theme_override_styles/normal = SubResource("Style_share_fb")
+theme_override_styles/pressed = SubResource("Style_share_fb_pressed")
+theme_override_styles/hover = SubResource("Style_share_fb")
+theme_override_styles/focus = SubResource("Style_empty")
+icon = ExtResource("6_fb")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ButtonShareMore" type="Button" parent="MainCard" unique_id=798971863]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 532.0
+offset_top = 610.0
+offset_right = 590.0
+offset_bottom = 677.0
+tooltip_text = "Más redes"
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 0.96, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("Style_share_tt")
+theme_override_styles/pressed = SubResource("Style_share_tt_pressed")
+theme_override_styles/hover = SubResource("Style_share_tt")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "···"
+
+[connection signal="pressed" from="MainCard/ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="MainCard/ButtonFeedback" to="." method="_on_button_feedback_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareX" to="." method="_on_share_x_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareInstagram" to="." method="_on_share_instagram_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareFacebook" to="." method="_on_share_facebook_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareMore" to="." method="_on_share_more_pressed"]

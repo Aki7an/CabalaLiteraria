@@ -18,7 +18,7 @@ const BEATS := [
 	{
 		"time": "4–7 s",
 		"title": "ESPERA",
-		"body": "Aparecen TEMA, PISTA y REVELAR. TEMA pulsa.",
+		"body": "Aparecen TEMA, PISTA y COMPROBAR. TEMA pulsa.",
 		"file": "res://images/trailer_resumen/02_espera.png",
 	},
 	{

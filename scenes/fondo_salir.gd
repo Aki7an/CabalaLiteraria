@@ -92,6 +92,6 @@ func _on_button_salir_pressed() -> void:
 	if not is_instance_valid(tree):
 		return
 	if leaving_onboarding:
-		tree.change_scene_to_file("res://scenes/MenuMain.tscn")
+		tree.change_scene_to_file(Distribution.home_scene())
 		return
 	tree.change_scene_to_file(PUZZLE_SELECTION)

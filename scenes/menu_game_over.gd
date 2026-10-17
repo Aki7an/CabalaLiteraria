@@ -1,7 +1,6 @@
 extends ColorRect
 
 const SCENE_FEEDBACK := "res://scenes/MenuFeedback.tscn"
-const SCENE_MENU_MAIN := "res://scenes/MenuMain.tscn"
 const SHARE_DIALOG := preload("res://scenes/share_solve_dialog.gd")
 const ONLINE_NAME_DIALOG := preload("res://scenes/online_name_prompt.gd")
 const STAR_EMPTY := Color(0.62, 0.51, 0.34, 0.28)
@@ -109,16 +108,20 @@ func _ready() -> void:
 		star.scale = Vector2.ONE
 
 	_install_completion_star()
-	await get_tree().process_frame
-	await _fit_phrase_card()
-	await _fit_stars_card()
-	_layout_top_down()
-	_install_body_scroll()
+	if _uses_authored_layout():
+		call_deferred("_pin_authored_overlay")
+	else:
+		await get_tree().process_frame
+		await _fit_phrase_card()
+		await _fit_stars_card()
+		_layout_top_down()
+		_install_body_scroll()
 	for star in stars:
 		star.pivot_offset = star.size * 0.5
 	if _completion_star:
 		_completion_star.pivot_offset = _completion_star.size * 0.5
-	_place_bonus_over_skill_stars()
+	if not _uses_authored_layout():
+		_place_bonus_over_skill_stars()
 	_prepare_intro_pose()
 	main_card.modulate.a = 1.0
 	await _play_victory_intro(earned, maximum)
@@ -143,10 +146,11 @@ func _apply_locale() -> void:
 		stars_title.text = tr("StarsEarned")
 	continue_button.text = tr("ContinueAction") if GameManager.is_onboarding_session() else tr("RecogerEstrellas")
 	continue_button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	continue_button.add_theme_font_size_override(
-		"font_size",
-		36 if GameManager.is_onboarding_session() else 58
-	)
+	if not _uses_authored_layout():
+		continue_button.add_theme_font_size_override(
+			"font_size",
+			36 if GameManager.is_onboarding_session() else 58
+		)
 	if feedback_button:
 		feedback_button.visible = not GameManager.is_onboarding_session()
 		feedback_button.text = tr("RatePuzzle")
@@ -166,7 +170,8 @@ func _apply_locale() -> void:
 	if share_more_button:
 		share_more_button.text = "···"
 		share_more_button.clip_text = true
-		share_more_button.add_theme_font_size_override("font_size", 52)
+		if not _uses_authored_layout():
+			share_more_button.add_theme_font_size_override("font_size", 52)
 		share_more_button.tooltip_text = tr("ShareMore")
 
 
@@ -203,6 +208,26 @@ func _format_play_time(total_sec: int) -> String:
 	if hours > 0:
 		return "%d:%02d:%02d" % [hours, minutes, rest]
 	return "%d:%02d" % [minutes, rest]
+
+
+
+func _uses_authored_layout() -> bool:
+	return scene_file_path.ends_with("menu_game_over_horizontal.tscn")
+
+
+func _pin_authored_overlay() -> void:
+	var host := get_parent()
+	if host != null and host.get_parent() is Control and get_parent() != host.get_parent():
+		reparent(host.get_parent())
+	var parent_control := get_parent() as Control
+	var canvas := Vector2(1280, 720)
+	if parent_control != null and parent_control.size.x > 2.0 and parent_control.size.y > 2.0:
+		canvas = parent_control.size
+	set_anchors_preset(Control.PRESET_TOP_LEFT)
+	position = Vector2.ZERO
+	size = canvas
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	z_index = 2000
 
 
 func _fit_phrase_card() -> void:
@@ -605,11 +630,23 @@ func _make_stamp() -> Control:
 	var stamp := Control.new()
 	stamp.name = "ResolvedStamp"
 	stamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	stamp.size = Vector2(340, 108)
-	stamp.position = Vector2(
-		maxf(phrase_card.size.x - 390.0, 40.0),
-		maxf(phrase_card.size.y - 168.0, 40.0)
-	)
+	var slot := phrase_card.get_node_or_null("StampSlot") as Control
+	if slot:
+		stamp.size = slot.size
+		stamp.position = slot.position
+		stamp.rotation = slot.rotation
+		slot.visible = false
+	else:
+		var compact := Distribution.is_horizontal()
+		stamp.size = Vector2(220, 72) if compact else Vector2(340, 108)
+		stamp.position = Vector2(
+			maxf(phrase_card.size.x - stamp.size.x - 18.0, 40.0),
+			maxf(phrase_card.size.y - stamp.size.y - 14.0, 40.0)
+		) if compact else Vector2(
+			maxf(phrase_card.size.x - 390.0, 40.0),
+			maxf(phrase_card.size.y - 168.0, 40.0)
+		)
+		stamp.rotation_degrees = -13.0
 	stamp.pivot_offset = stamp.size * 0.5
 	stamp.rotation_degrees = -13.0
 	stamp.modulate.a = 0.0
@@ -634,7 +671,7 @@ func _make_stamp() -> Control:
 	if label.text == "SolvedStamp":
 		label.text = "¡RESUELTO!"
 	label.add_theme_font_override("font", FONT_UI)
-	label.add_theme_font_size_override("font_size", 42)
+	label.add_theme_font_size_override("font_size", 26 if Distribution.is_horizontal() else 42)
 	label.add_theme_color_override("font_color", Color(0.72, 0.13, 0.1, 0.92))
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	stamp.add_child(label)
@@ -744,6 +781,9 @@ func _animate_banner() -> void:
 func _install_completion_star() -> void:
 	if stars_box == null or stars_card == null:
 		return
+	if _uses_authored_layout():
+		_bind_authored_completion_star()
+		return
 	var skill_gap := stars_box.get_theme_constant("separation")
 	if skill_gap <= 0:
 		skill_gap = 24
@@ -791,7 +831,8 @@ func _install_completion_star() -> void:
 	_bonus_label.text = _bonus_completed_text()
 	_bonus_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_bonus_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_bonus_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_bonus_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_bonus_label.clip_text = false
 	_bonus_label.add_theme_font_override("font", FONT_UI)
 	_bonus_label.add_theme_font_size_override("font_size", 28)
 	_bonus_label.add_theme_color_override("font_color", Color(0.78, 0.52, 0.16, 0.95))
@@ -810,18 +851,41 @@ func _install_completion_star() -> void:
 	_place_bonus_over_skill_stars.call_deferred()
 
 
+func _bind_authored_completion_star() -> void:
+	var existing := stars_card.get_node_or_null("CompletionStar") as TextureRect
+	if existing:
+		_completion_star = existing
+		_completion_star.self_modulate = STAR_EMPTY
+		_completion_star.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if existing.get_node_or_null("DottedFrame") == null:
+			var frame := DottedStarFrame.new()
+			frame.name = "DottedFrame"
+			frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			existing.add_child(frame)
+	_bonus_label = stars_card.get_node_or_null("BonusPuzzleCompleted") as Label
+	if _bonus_label:
+		_bonus_label.text = _bonus_completed_text()
+		_bonus_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
 func _place_bonus_over_skill_stars() -> void:
 	if _bonus_label == null or stars_box == null or not is_instance_valid(_bonus_label):
 		return
-	_bonus_label.position = stars_box.global_position - stars_card.global_position
-	_bonus_label.size = stars_box.size
+	var stars_pos := stars_box.global_position - stars_card.global_position
+	var center_y := stars_pos.y + stars_box.size.y * 0.5
+	_bonus_label.size = Vector2(stars_card.size.x, maxf(stars_box.size.y, 48.0))
+	_bonus_label.position = Vector2(0.0, center_y - _bonus_label.size.y * 0.5)
 	_bonus_label.visible = true
 
 
 func _bonus_completed_text() -> String:
+	var locale := TranslationServer.get_locale()
+	if locale.begins_with("es"):
+		return "BONUS PUZLE TERMINADO"
 	var text := tr("BonusPuzzleCompleted")
 	if text == "BonusPuzzleCompleted":
-		return "BONUS Puzle terminado"
+		return "BONUS PUZLE TERMINADO"
 	return text
 
 
@@ -1007,10 +1071,10 @@ func _on_button_back_pressed() -> void:
 	StarCollectOverlay.show_white_cover()
 	await get_tree().process_frame
 	await get_tree().process_frame
-	await AdManager.show_interstitial_after_puzzle()
+	await PlatformServices.show_interstitial_after_puzzle()
 	await EventLoggerAutoload.submit_if_consented(EventLoggerAutoload.OUTCOME_COMPLETED)
 	get_tree().paused = false
-	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
 func _leave_onboarding() -> void:
@@ -1036,9 +1100,11 @@ func _leave_onboarding() -> void:
 		GameManager.launch_prepared_game()
 		return
 	PlayerPrefs.set_onboarding_completed(true)
+	if typeof(PlayFabTools) != TYPE_NIL and PlayFabTools.has_method("note_tutorial_completed"):
+		PlayFabTools.note_tutorial_completed()
 	GameManager.session_source = GameManager.SOURCE_NONE
 	GameManager.onboarding_stage = 0
-	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
 func _on_share_x_pressed() -> void:

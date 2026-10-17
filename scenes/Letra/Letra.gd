@@ -155,7 +155,7 @@ func _on_button_pressed() -> void:
 		GameManager.frase_original,
 		GameManager.recoger_letras_mostradas()
 	)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 
 
 func apply_from_keyboard() -> void:
@@ -186,7 +186,7 @@ func _erase_letter() -> void:
 	SoundManager.play("Erase")
 	SignalManager.update_cambios.emit()
 	SignalManager.update_rubber.emit()
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 
 
 func reset_for_new_puzzle() -> void:

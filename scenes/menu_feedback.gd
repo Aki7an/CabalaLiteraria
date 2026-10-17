@@ -1,6 +1,5 @@
 extends Control
 
-const SCENE_MENU_MAIN := "res://scenes/MenuMain.tscn"
 const DRAG_THRESHOLD := 14.0
 
 @onready var title_label: Label = $Card/Header/Title
@@ -449,4 +448,4 @@ func _leave_after_feedback() -> void:
 		return
 	TransitionScreen.transition_to_black()
 	await SignalManager.on_transition_finished
-	get_tree().change_scene_to_file(SCENE_MENU_MAIN)
+	get_tree().change_scene_to_file(Distribution.home_scene())

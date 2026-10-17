@@ -25,6 +25,7 @@ const TRACE_CHUNK_CHARS := 8500
 
 var newly_created: bool = false
 var _login_finished := false
+var _milestones: Node
 var language_cache: Dictionary = {}
 var leaderboard_cache: Dictionary = {}
 const LEADERBOARD_CACHE_MS := 25000
@@ -32,8 +33,12 @@ const LEADERBOARD_CACHE_MS := 25000
 @onready var http: HTTPRequest = HTTPRequest.new()
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(http)
 	http.timeout = 30
+	_milestones = preload("res://autoload/playfab_milestones.gd").new()
+	_milestones.name = "Milestones"
+	add_child(_milestones)
 	#login_with_custom_id(playfab_id,true)
 	print("playfabid: " , playfab_id)
 	var ok: bool = await PlayFabTools.login_with_custom_id(playfab_id, true)
@@ -44,19 +49,33 @@ func _ready() -> void:
 			sync_player_display_name(GameManager.player_name)
 			sync_player_language(GameManager.locale_code())
 		await sync_server_time()
+		_milestones.request_sync()
 	else:
 		print("No se pudo iniciar sesión en PlayFab.")
 		await sync_server_time()
 	_login_finished = true
-	
 
 
-	#randomize()
-	#await seed_all()
-	#print("✅ Seeding terminado.")
-	
-	
-	
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED:
+		note_player_activity()
+
+
+func note_tutorial_completed() -> void:
+	if _milestones != null:
+		_milestones.note_tutorial_completed()
+
+
+func note_puzzle_completed() -> void:
+	if _milestones != null:
+		_milestones.note_puzzle_completed()
+
+
+func note_player_activity() -> void:
+	if _milestones != null:
+		_milestones.note_player_activity()
+
+
 ## (Opcional) Cambiar TitleId en runtime
 func set_title_id(id: String) -> void:
 	TITLE_ID = id

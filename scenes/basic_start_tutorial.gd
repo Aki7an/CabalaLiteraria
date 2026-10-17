@@ -1254,7 +1254,7 @@ func _set_step1_card() -> void:
 
 func _set_step4_card() -> void:
 	_hide_card_extras()
-	var reveal := _bb_orange(_t("TutReveal", "REVELAR"), 66)
+	var reveal := _bb_orange(_t("TutReveal", "COMPROBAR"), 66)
 	var body := _break_after_first_sentence(_t("TutBasicHypothesis", "Has puesto tu primera letra.\nDe momento es solo una hipótesis: todavía no está comprobada.\n\nPara saber si has acertado, pulsa %s.\n\nSi es correcta, esa letra se pondrá verde en todo el tablero."))
 	_card_lead.visible = false
 	_card_letter.visible = false
@@ -1266,7 +1266,7 @@ func _set_step4_card() -> void:
 
 func _set_step6_card() -> void:
 	_hide_card_extras()
-	var reveal := _bb_orange(_t("TutReveal", "REVELAR"))
+	var reveal := _bb_orange(_t("TutReveal", "COMPROBAR"))
 	var red := _bb_red(_t("TutBasicRed", "rojo").to_upper())
 	var star_word := _bb_orange(_t("TutBasicStar", "estrella"))
 	var hit := _t("TutBasicHitHypothesis", "¡Has acertado tu hipótesis!")
@@ -1407,7 +1407,7 @@ func _set_select_cell_prompt() -> void:
 
 func _set_press_reveal_prompt() -> void:
 	_apply_action_prompt_style(HORIZONTAL_ALIGNMENT_CENTER)
-	_prompt.text = "%s\n%s" % [_t("TutBasicPress", "Pulsa"), _hero_bbcode(_t("TutReveal", "REVELAR"))]
+	_prompt.text = "%s\n%s" % [_t("TutBasicPress", "Pulsa"), _hero_bbcode(_t("TutReveal", "COMPROBAR"))]
 
 
 func _set_prompt_plain(text: String) -> void:

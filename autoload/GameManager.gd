@@ -597,7 +597,7 @@ func reset_to_fresh_install() -> void:
 	reset_player_data()
 	var tree := get_tree()
 	if tree != null:
-		tree.change_scene_to_file("res://scenes/MenuMain.tscn")
+		tree.change_scene_to_file(Distribution.home_scene())
 
 
 func is_puzzle_playable(_item: Dictionary) -> bool:
@@ -773,11 +773,51 @@ func find_level_image_path(image_number: int) -> String:
 			var path: String = stem + str(extension)
 			if ResourceLoader.exists(path) or FileAccess.file_exists(path):
 				return path
+	var remote := "user://remote_puzzles/%d.webp" % image_number
+	if FileAccess.file_exists(remote):
+		return remote
 	return ""
 
 
 func level_has_image(item: Dictionary) -> bool:
 	return find_level_image_path(int(item.get("image_number", -1))) != ""
+
+
+func level_texture(path: String) -> Texture2D:
+	if path.is_empty():
+		return null
+	if ResourceLoader.exists(path):
+		var loaded: Variant = load(path)
+		if loaded is Texture2D:
+			return loaded
+	var image := Image.new()
+	if image.load(path) != OK:
+		return null
+	return ImageTexture.create_from_image(image)
+
+
+func install_saved_remote(puzzle_id: int) -> bool:
+	var files = preload("res://store/remote_puzzles.gd")
+	if not files.has_files(puzzle_id) or not files.image_decodes(puzzle_id):
+		return false
+	var pack: Dictionary = files.read_pack(puzzle_id)
+	if not files.pack_is_playable(pack, puzzle_id):
+		return false
+	return adopt_remote_pack(pack)
+
+
+func adopt_remote_pack(pack: Dictionary) -> bool:
+	var item := _phrase_from_remote(pack)
+	if item.is_empty() or not level_has_image(item):
+		return false
+	var puzzle_id := int(item.get("index", -1))
+	for i in frases_db.size():
+		if int(frases_db[i].get("index", -1)) == puzzle_id:
+			frases_db[i] = item
+			return true
+	frases_db.append(item)
+	rebuild_free_puzzle_ids()
+	return true
 
 
 func set_dificultad_actual(dificultad: int) -> void:
@@ -1128,7 +1168,7 @@ func subtract_puzzle_stars(amount: int) -> void:
 		return
 	puzzle_stars = maxi(0, puzzle_stars - amount)
 	SignalManager.update_puzzle_stars.emit(puzzle_stars)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 
 
 func register_hint_used(hint_id: String) -> void:
@@ -1518,7 +1558,7 @@ func consume_reveal_error_star(number: int, letter: String) -> bool:
 
 func finish_reveal_sequence() -> void:
 	update_numero_letras_reveladas(true)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 
 
 func _clear_fill_color_slots_for_numbers(correct_numbers: Dictionary) -> void:
@@ -1694,7 +1734,7 @@ func pinta_celdas(numero_en_celda: int, color_a_pintar: int) -> void:
 		#print("numero en celda " + str(numero_en_celda))
 		if lista_celdas[i].numero == numero_en_celda:
 			lista_celdas[i].cambia_color(color_a_pintar)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 	SignalManager.update_rubber.emit()
 
 
@@ -1732,7 +1772,7 @@ func borrar_color_de_numero(numero_en_celda: int) -> bool:
 		number_4 = 0
 	if number_5 == numero_en_celda:
 		number_5 = 0
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 	return true
 
 
@@ -1971,6 +2011,8 @@ func cargar_frases_desde_json() -> void:
 		if d.language.is_empty() or d.language == loc or String(d.language).begins_with(loc):
 			frases_db.append(d)
 
+	for puzzle_id in preload("res://store/remote_puzzles.gd").saved_ids():
+		install_saved_remote(puzzle_id)
 	print("Frases JSON cargadas: ", frases_db.size())
 	rebuild_free_puzzle_ids()
 
@@ -2172,6 +2214,9 @@ func change_letters_aphabet_array() -> void:
 
 
 func phrase_record(index: int, locale: String) -> Dictionary:
+	var remote := _remote_phrase_record(index, locale)
+	if not remote.is_empty():
+		return remote
 	var path := phrases_json_path(locale)
 	if not FileAccess.file_exists(path):
 		return {}
@@ -2210,6 +2255,75 @@ func _phrase_from_dict(dict: Dictionary, locale: String, fallback_index: int) ->
 	d.hint_3 = String(dict.get("hint_3", ""))
 	d.hint_4 = String(dict.get("hint_4", ""))
 	return d
+
+
+func _remote_phrase_record(index: int, locale: String) -> Dictionary:
+	var files = preload("res://store/remote_puzzles.gd")
+	if not files.has_files(index):
+		return {}
+	var pack: Dictionary = files.read_pack(index)
+	if not files.pack_is_playable(pack, index):
+		return {}
+	return _phrase_from_remote(pack, locale)
+
+
+func _phrase_from_remote(pack: Dictionary, locale: String = "") -> Dictionary:
+	var languages: Variant = pack.get("languages", {})
+	if not languages is Dictionary or (languages as Dictionary).is_empty():
+		return {}
+	var lang := locale.strip_edges().to_lower()
+	if lang == "":
+		lang = locale_code()
+	var block: Variant = (languages as Dictionary).get(lang, {})
+	if not _remote_block_has_phrase(block):
+		block = (languages as Dictionary).get("es", {})
+		lang = "es"
+	if not _remote_block_has_phrase(block):
+		for key in (languages as Dictionary).keys():
+			var candidate: Variant = (languages as Dictionary)[key]
+			if _remote_block_has_phrase(candidate):
+				block = candidate
+				lang = str(key)
+				break
+	if not block is Dictionary:
+		return {}
+	var entry: Dictionary = block
+	var letters := ""
+	var free: Variant = entry.get("free_letters", [])
+	if free is Array:
+		for letter in free:
+			letters += str(letter)
+	var puzzle_id := int(pack.get("id", -1))
+	var author := _remote_text(pack.get("author", null))
+	var source := _remote_text(pack.get("source", ""))
+	if author != "" and author != source:
+		source = author if source == "" else "%s\n%s" % [author, source]
+	return _phrase_from_dict({
+		"index": puzzle_id,
+		"image_number": puzzle_id,
+		"text": str(entry.get("phrase", "")),
+		"letters_init": letters,
+		"description_init": str(entry.get("title", "")).strip_edges(),
+		"description_end": "",
+		"source": source,
+		"category": str(pack.get("category", "")),
+		"language": lang,
+		"difficulty": int(entry.get("difficulty", 1)),
+		"hint_1": str(entry.get("hint", "")),
+	}, lang, puzzle_id)
+
+
+func _remote_block_has_phrase(block: Variant) -> bool:
+	return block is Dictionary and str((block as Dictionary).get("phrase", "")).strip_edges() != ""
+
+
+func _remote_text(value: Variant) -> String:
+	if value == null:
+		return ""
+	var text := str(value).strip_edges()
+	if text == "<null>" or text.to_lower() == "null":
+		return ""
+	return text
 
 # Devuelve un Array[String] con las letras (MAYÚSCULAS) del idioma pedido,
 # sin tildes/diacríticos. Puedes ajustar opciones en 'opts'.

@@ -1,6 +1,5 @@
 extends Control
 
-const PATH_MAIN := "res://scenes/MenuMain.tscn"
 
 var _buy_blink: Tween
 var _tpl_puzzles := ""
@@ -215,4 +214,4 @@ func _go_to(path: String) -> void:
 
 
 func _on_button_back_pressed() -> void:
-	_go_to(PATH_MAIN)
+	_go_to(Distribution.home_scene())
