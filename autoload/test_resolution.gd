@@ -45,6 +45,9 @@ func _is_trailer_scene() -> bool:
 
 
 func _apply_game_window() -> void:
+	if not Engine.has_meta("store_screenshot") and Distribution.is_horizontal():
+		Distribution.apply_display()
+		return
 	var win := get_window()
 	if win == null:
 		return

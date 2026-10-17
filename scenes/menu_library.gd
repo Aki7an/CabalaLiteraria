@@ -1,6 +1,5 @@
 extends Control
 
-const PATH_MAIN := "res://scenes/MenuMain.tscn"
 const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
 const ICON_CITA: Texture2D = preload("res://images/Ilustres.png")
 const ICON_EFEM: Texture2D = preload("res://images/Efemerides.png")
@@ -684,7 +683,7 @@ func _create_thumb(item: Dictionary) -> Button:
 	image.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var path := GameManager.find_level_image_path(int(item.get("image_number", -1)))
 	if path != "":
-		var tex := load(path) as Texture2D
+		var tex := GameManager.level_texture(path)
 		if tex:
 			image.texture = tex
 	frame.add_child(image)
@@ -1247,6 +1246,13 @@ func _create_ficha_summary_card() -> Panel:
 	stars.alignment = BoxContainer.ALIGNMENT_END
 	stars.add_theme_constant_override("separation", 4)
 	side.add_child(stars)
+	var puzzle_id_label := Label.new()
+	puzzle_id_label.name = "PuzzleId"
+	puzzle_id_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	puzzle_id_label.add_theme_font_override("font", FONT_UI)
+	puzzle_id_label.add_theme_font_size_override("font_size", 32)
+	puzzle_id_label.add_theme_color_override("font_color", Color(0.42, 0.38, 0.24, 0.88))
+	side.add_child(puzzle_id_label)
 	return card
 
 
@@ -1331,6 +1337,9 @@ func _fill_ficha_summary(item: Dictionary) -> void:
 		var total := clampi(int(summary.get("stars_max", 2)), 1, 5)
 		for i in range(total):
 			stars.add_child(_outlined_star(i < earned, mode == GameManager.MODE_CRYPTOGRAM))
+	var id_label := card.find_child("PuzzleId", true, false) as Label
+	if id_label:
+		id_label.text = "ID %d" % puzzle_id if puzzle_id >= 0 else ""
 
 
 func _outlined_star(filled: bool, cryptogram: bool) -> Control:
@@ -1399,7 +1408,7 @@ func _open_ficha(item: Dictionary) -> void:
 
 	var path := GameManager.find_level_image_path(int(item.get("image_number", -1)))
 	if path != "":
-		var tex := load(path) as Texture2D
+		var tex := GameManager.level_texture(path)
 		ficha_image.texture = tex
 		ficha_image_frame.visible = tex != null
 	else:
@@ -1474,7 +1483,7 @@ func _on_index_back_pressed() -> void:
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	SoundManager.play("ButtonClick")
-	get_tree().change_scene_to_file(PATH_MAIN)
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
 func _on_button_favorites_pressed() -> void:

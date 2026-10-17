@@ -1,6 +1,7 @@
 extends Control
 
 const CREDITS_SCENE := preload("res://scenes/MenuCredits.tscn")
+const LANGUAGE_NOTICE := preload("res://scenes/puzzle_language_notice.gd")
 const CREDITS_BLINK_EVERY := 3.0
 
 @onready var button_español: Button = $Panel/LanguageCard/ButtonEspañol
@@ -54,7 +55,7 @@ const LOCALIZED_COPY := {
 		"reset": "RESTABLECER VALORES",
 		"game_title": "JUEGO",
 		"tutorial": "Mostrar tutorial antes de jugar.",
-		"reveal": "Mostrar explicación botón REVELAR.",
+		"reveal": "Mostrar explicación botón COMPROBAR.",
 		"share": "Compartir datos de resolución con el desarrollador.",
 	},
 	"en": {
@@ -63,7 +64,7 @@ const LOCALIZED_COPY := {
 		"reset": "RESET VALUES",
 		"game_title": "GAME",
 		"tutorial": "Show tutorial before playing.",
-		"reveal": "Show REVEAL button explanation.",
+		"reveal": "Show CHECK button explanation.",
 		"share": "Share puzzle solve data with the developer.",
 	},
 	"eu": {
@@ -72,7 +73,7 @@ const LOCALIZED_COPY := {
 		"reset": "BERREZARRI BALIOAK",
 		"game_title": "JOKOA",
 		"tutorial": "Erakutsi tutoriala jokatu aurretik.",
-		"reveal": "Erakutsi REVELAR botoiaren azalpena.",
+		"reveal": "Erakutsi EGIAZTATU botoiaren azalpena.",
 		"share": "Partekatu puzzlearen ebazpen-datuak garatzailearekin.",
 	},
 	"de": {
@@ -81,7 +82,7 @@ const LOCALIZED_COPY := {
 		"reset": "WERTE ZURÜCKSETZEN",
 		"game_title": "SPIEL",
 		"tutorial": "Tutorial vor dem Spielen anzeigen.",
-		"reveal": "Erklärung der LÖSEN-Taste anzeigen.",
+		"reveal": "Erklärung der PRÜFEN-Taste anzeigen.",
 		"share": "Lösedaten mit dem Entwickler teilen.",
 	},
 	"fr": {
@@ -90,7 +91,7 @@ const LOCALIZED_COPY := {
 		"reset": "RÉINITIALISER",
 		"game_title": "JEU",
 		"tutorial": "Afficher le tutoriel avant de jouer.",
-		"reveal": "Afficher l'explication du bouton REVELAR.",
+		"reveal": "Afficher l'explication du bouton VÉRIFIER.",
 		"share": "Partager les données de résolution avec le développeur.",
 	},
 	"it": {
@@ -99,7 +100,7 @@ const LOCALIZED_COPY := {
 		"reset": "RIPRISTINA VALORI",
 		"game_title": "GIOCO",
 		"tutorial": "Mostra il tutorial prima di giocare.",
-		"reveal": "Mostra la spiegazione del pulsante REVELAR.",
+		"reveal": "Mostra la spiegazione del pulsante VERIFICA.",
 		"share": "Condividi i dati di risoluzione con lo sviluppatore.",
 	},
 	"pt": {
@@ -108,7 +109,7 @@ const LOCALIZED_COPY := {
 		"reset": "REPOR VALORES",
 		"game_title": "JOGO",
 		"tutorial": "Mostrar tutorial antes de jogar.",
-		"reveal": "Mostrar explicação do botão REVELAR.",
+		"reveal": "Mostrar explicação do botão VERIFICAR.",
 		"share": "Partilhar dados de resolução com o programador.",
 	},
 }
@@ -159,7 +160,7 @@ func _on_button_back_pressed() -> void:
 		return
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
 func _on_button_credits_pressed() -> void:
@@ -185,16 +186,23 @@ func _on_button_credits_pressed() -> void:
 func _start_credits_blink() -> void:
 	if button_credits == null:
 		return
-	await get_tree().process_frame
+	if not await GameManager.await_process_frame(self):
+		return
 	if not is_instance_valid(button_credits):
 		return
 	button_credits.pivot_offset = button_credits.size * 0.5
-	await get_tree().create_timer(0.7).timeout
+	var tree := get_tree()
+	if tree == null:
+		return
+	await tree.create_timer(0.7).timeout
 	while is_instance_valid(button_credits):
 		await _pulse_credits_button()
 		if not is_instance_valid(button_credits):
 			return
-		await get_tree().create_timer(CREDITS_BLINK_EVERY).timeout
+		tree = get_tree()
+		if tree == null:
+			return
+		await tree.create_timer(CREDITS_BLINK_EVERY).timeout
 
 
 func _pulse_credits_button() -> void:
@@ -218,6 +226,11 @@ func _is_overlay() -> bool:
 func _select_language(code: String, button: Button) -> void:
 	GameManager.button_blink(button)
 	SoundManager.play("ButtonClick")
+	var locked := GameManager.locked_puzzle_language()
+	if locked != "":
+		if code != locked:
+			_show_language_notice(locked, code)
+		return
 	GameManager.apply_language(code)
 	_update_language_selection()
 
@@ -369,7 +382,11 @@ func _on_button_reset_pressed() -> void:
 	SoundManager.set_fx_enabled(true)
 	SoundManager.apply_audio_prefs()
 	PlayerPrefs.save_prefs()
-	GameManager.apply_language("es")
+	var locked := GameManager.locked_puzzle_language()
+	if locked == "":
+		GameManager.apply_language("es")
+	elif locked != "es":
+		_show_language_notice(locked, "es")
 	check_button_tutorial.button_pressed = true
 	check_button_reveal.button_pressed = true
 	check_button_share.button_pressed = false
@@ -409,7 +426,8 @@ func _save_online_name() -> void:
 func _commit_online_name() -> bool:
 	if _name_commit_running:
 		while _name_commit_running:
-			await get_tree().process_frame
+			if not await GameManager.await_process_frame(self):
+				return false
 		return _name_commit_ok
 	_name_commit_running = true
 	_name_commit_ok = await _commit_online_name_now()
@@ -581,11 +599,22 @@ func _process(_delta: float) -> void:
 		_refresh_name_slots()
 
 
+func _show_language_notice(puzzle_lang: String, other_lang: String) -> void:
+	if get_node_or_null("PuzzleLanguageNotice") != null:
+		return
+	var notice := LANGUAGE_NOTICE.new()
+	add_child(notice)
+	notice.open(puzzle_lang, other_lang, false)
+
+
 func _update_language_selection() -> void:
-	var current_locale := TranslationServer.get_locale().left(2).to_lower()
+	var locked := GameManager.locked_puzzle_language()
+	var current_locale := locked if locked != "" else TranslationServer.get_locale().left(2).to_lower()
 	for code in _language_buttons:
 		var button: Button = _language_buttons[code]
 		var is_selected: bool = code == current_locale
+		var blocked: bool = locked != "" and code != locked
+		button.modulate = Color(1, 1, 1, 0.38) if blocked else Color.WHITE
 		button.get_node("Selected").visible = is_selected
 		button.add_theme_stylebox_override(
 			"normal",

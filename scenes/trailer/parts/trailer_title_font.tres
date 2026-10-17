@@ -1,8 +1,6 @@
-[gd_resource type="FontVariation" format=3]
+[gd_resource type="FontVariation" format=3 uid="uid://cn77102lamvhw"]
 
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="1_nunito"]
 
 [resource]
 base_font = ExtResource("1_nunito")
-spacing_glyph = 0
-spacing_space = 0

@@ -1,6 +1,5 @@
 extends Control
 
-const PATH_MAIN := "res://scenes/MenuMain.tscn"
 const MODE_QUICK := "quick"
 const MODE_CRYPTOGRAM := "cryptogram"
 const COLOR_INK := Color(0.325, 0.2, 0.125, 1)
@@ -473,7 +472,7 @@ func _on_button_back_pressed() -> void:
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	SoundManager.play("ButtonClick")
-	get_tree().change_scene_to_file(PATH_MAIN)
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
 func _play_intro_motion() -> void:

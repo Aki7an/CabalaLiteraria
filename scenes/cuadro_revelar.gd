@@ -9,8 +9,8 @@ const ZOOM_S := 0.7
 const ZOOM_FROM := 0.65
 const COPY := {
 	"TutReveal": {
-		"es": "REVELAR", "en": "REVEAL", "de": "LÖSEN",
-		"fr": "RÉVÉLER", "eu": "AGERTU", "it": "RIVELA", "pt": "REVELAR",
+		"es": "COMPROBAR", "en": "CHECK", "de": "PRÜFEN",
+		"fr": "VÉRIFIER", "eu": "EGIAZTATU", "it": "VERIFICA", "pt": "VERIFICAR",
 	},
 	"RevealDlgIntro": {
 		"es": "Se comprobará si las [b]LETRAS[/b] puestas en negro en la frase están bien o no.",
@@ -75,13 +75,13 @@ const COPY := {
 		"pt": "Será retirada uma estrela por cada [b]LETRA[/b] errada e aparecerá a [b]VERMELHO[/b].",
 	},
 	"RevealDlgSkip": {
-		"es": "No mostrar este cuadro en el futuro y revelar directamente",
-		"en": "Don't show this dialog again and reveal directly",
-		"de": "Dieses Fenster künftig nicht mehr anzeigen und direkt lösen",
-		"fr": "Ne plus afficher cette fenêtre et révéler directement",
-		"eu": "Ez erakutsi berriro koadro hau eta agertu zuzenean",
-		"it": "Non mostrare più questa finestra e rivela direttamente",
-		"pt": "Não voltar a mostrar este quadro e revelar diretamente",
+		"es": "No mostrar este cuadro en el futuro y comprobar directamente",
+		"en": "Don't show this dialog again and check directly",
+		"de": "Dieses Fenster künftig nicht mehr anzeigen und direkt prüfen",
+		"fr": "Ne plus afficher cette fenêtre et vérifier directement",
+		"eu": "Ez erakutsi berriro koadro hau eta egiaztatu zuzenean",
+		"it": "Non mostrare più questa finestra e verifica direttamente",
+		"pt": "Não voltar a mostrar este quadro e verificar diretamente",
 	},
 	"RevealDlgCancel": {
 		"es": "CANCELAR", "en": "CANCEL", "de": "ABBRECHEN",
@@ -131,6 +131,26 @@ func _apply_locale() -> void:
 	_skip_text.text = _t("RevealDlgSkip")
 	_cancel.text = _t("RevealDlgCancel")
 	_reveal_title.text = _t("TutReveal")
+	_fit_single_line(_reveal_title)
+
+
+func _fit_single_line(label: Label, max_size: int = 52, min_size: int = 34) -> void:
+	var font := label.get_theme_font("font")
+	if font == null:
+		return
+	var available := label.offset_right - label.offset_left
+	if available < 8.0:
+		available = label.size.x
+	var size := max_size
+	while size > min_size and _text_width(font, label.text, size) > available:
+		size -= 1
+	label.add_theme_font_size_override("font_size", size)
+
+
+func _text_width(font: Font, text: String, size: int) -> float:
+	var line := TextLine.new()
+	line.add_string(text, font, size)
+	return line.get_size().x
 
 
 func _update_letters() -> void:

@@ -116,17 +116,9 @@ func _ready():
 
 
 func set_texture_from_index(texrect: TextureRect, index: int) -> void:
-	var path := GameManager.find_level_image_path(index)
-	if path.is_empty():
-		path = "%s/image%d.png" % [IMG_DIR, index]
-	if ResourceLoader.exists(path):
-		var tex := load(path)
-		if tex is Texture2D:
-			texrect.texture = tex
-		else:
-			push_warning("El recurso no es Texture2D: %s" % path)
-	else:
-		push_warning("No existe la imagen: %s" % path)
+	var tex := GameManager.level_texture(GameManager.find_level_image_path(index))
+	if tex != null:
+		texrect.texture = tex
 
 
 func _load_image() -> void:

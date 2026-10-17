@@ -8,6 +8,7 @@ const DEBUG_NEARLY_SOLVED_LETTER := "A"
 var _states: Dictionary = {}
 var _save_queued := false
 var _restoring := false
+var _discard_until_new_puzzle := false
 
 
 func _ready() -> void:
@@ -21,6 +22,7 @@ func _ready() -> void:
 
 
 func begin_current_puzzle() -> void:
+	_discard_until_new_puzzle = false
 	if GameManager.is_onboarding_session():
 		return
 	var puzzle_id := int(GameManager.id_frase)
@@ -247,7 +249,7 @@ func _flush_autosave() -> void:
 
 
 func save_current_now() -> void:
-	if _restoring or not _is_gameplay_active():
+	if _discard_until_new_puzzle or _restoring or not _is_gameplay_active():
 		return
 	if GameManager.tutorial_board_active or GameManager.is_onboarding_session():
 		return
@@ -561,6 +563,12 @@ func _capture_resolution() -> Dictionary:
 	}
 
 
+func _apply_saved_cell_color(cell: Celda, saved: Dictionary) -> void:
+	var color_id := int(saved.get("color_id", 0))
+	if color_id > 0 and color_id < GameManager.lista_tonos_colores.size():
+		cell.cambia_color(color_id)
+
+
 func _apply_resolution(resolution: Dictionary) -> void:
 	var saved_cells: Dictionary = resolution.get("cells", {})
 	var assigned_letters := {}
@@ -581,6 +589,7 @@ func _apply_resolution(resolution: Dictionary) -> void:
 				cell.numero
 			):
 				cell.mostrar_letra_especifica(saved_initial_letter)
+				_apply_saved_cell_color(cell, saved)
 				continue
 			# Repair saves created when an incorrect use of an initial letter
 			# was mistakenly stored as a locked initial cell.
@@ -598,9 +607,7 @@ func _apply_resolution(resolution: Dictionary) -> void:
 				cell.mostrar_letra_errada()
 			_:
 				cell.limpiar_letra_usuario()
-		var color_id := int(saved.get("color_id", 0))
-		if color_id > 0 and color_id < GameManager.lista_tonos_colores.size():
-			cell.cambia_color(color_id)
+		_apply_saved_cell_color(cell, saved)
 
 	for node in get_tree().get_nodes_in_group("Letra"):
 		if not node is Letra:
@@ -667,6 +674,19 @@ func _load_from_disk() -> void:
 
 func clear_all() -> void:
 	_states.clear()
+	_save_queued = false
+	_write_to_disk()
+
+
+func discard_all_progress() -> void:
+	_states.clear()
+	_save_queued = false
+	_discard_until_new_puzzle = true
+	_write_to_disk()
+
+
+func clear_puzzle_state(puzzle_id: int) -> void:
+	_states.erase(str(puzzle_id))
 	_save_queued = false
 	_write_to_disk()
 

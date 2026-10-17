@@ -1,6 +1,5 @@
 extends Control
 
-const PATH_MAIN := "res://scenes/MenuMain.tscn"
 const PATH_SHOP := "res://scenes/MenuShop.tscn"
 const PATH_LIBRARY := "res://scenes/MenuLibrary.tscn"
 const ICON_CITA: Texture2D = preload("res://images/Ilustres.png")
@@ -157,7 +156,7 @@ func _fill_image() -> void:
 	var path := GameManager.find_level_image_path(int(_item.get("image_number", -1)))
 	var tex: Texture2D = _category_icon_for(cat_id)
 	if path != "":
-		var loaded := load(path) as Texture2D
+		var loaded := GameManager.level_texture(path)
 		if loaded:
 			tex = loaded
 	puzzle_image.texture = tex
@@ -312,7 +311,7 @@ func _t(key: String, fallback: String) -> String:
 
 
 func _on_button_back_pressed() -> void:
-	_go_to(PATH_MAIN)
+	_go_to(Distribution.home_scene())
 
 
 func _on_shop_pressed() -> void:
@@ -320,7 +319,7 @@ func _on_shop_pressed() -> void:
 
 
 func _on_lock_back_pressed() -> void:
-	_go_to(PATH_MAIN)
+	_go_to(Distribution.home_scene())
 
 
 func _on_unlock_pressed() -> void:
@@ -331,17 +330,18 @@ func _on_unlock_pressed() -> void:
 	if unlock_btn:
 		unlock_btn.disabled = true
 		unlock_btn.text = _t("DailyAdLoading", "Cargando anuncio...")
-	var ok: bool = await AdManager.show_rewarded()
+	var ok: bool = await PlatformServices.show_rewarded()
 	if unlock_btn:
 		unlock_btn.disabled = false
 	if ok:
+		get_tree().paused = false
 		PlayerPrefs.mark_daily_rewarded_today()
 		_refresh_content()
 		return
 	_apply_lock_texts()
 	var lock_body := lock_overlay.get_node_or_null("Card/Body") as Label
 	if lock_body:
-		lock_body.text = _t("DailyAdFailed", "No hay anuncio disponible. Inténtalo de nuevo o compra el juego.")
+		lock_body.text = AdManager.reward_failure_message()
 
 
 func _on_view_sheet_pressed() -> void:
@@ -364,18 +364,19 @@ func _on_play_pressed() -> void:
 			play_button.disabled = true
 		if play_caption:
 			play_caption.text = _t("DailyAdLoading", "Cargando anuncio...")
-		var ok: bool = await AdManager.show_rewarded()
+		var ok: bool = await PlatformServices.show_rewarded()
 		_ad_busy = false
 		if not ok:
 			if play_button:
 				play_button.disabled = false
 			_apply_play_button(true)
 			if ad_thanks:
-				ad_thanks.text = _t("DailyAdFailed", "No hay anuncio disponible. Inténtalo de nuevo o compra el juego.")
+				ad_thanks.text = AdManager.reward_failure_message()
 				ad_thanks.add_theme_color_override("font_color", AD_FAIL)
 			return
 		PlayerPrefs.mark_daily_rewarded_today()
 		_needs_ad = false
+	get_tree().paused = false
 	var puzzle_id := int(_item.get("index", -1))
 	if puzzle_id < 0:
 		return

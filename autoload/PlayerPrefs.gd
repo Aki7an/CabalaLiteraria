@@ -5,11 +5,15 @@ var volumen_musica: float = 0.8
 var volumen_fx: float = 0.8
 var mute_musica: bool = true
 var mute_fx: bool = true
+## Paths of game tracks left out of the background loop.
+var music_excluded: PackedStringArray = PackedStringArray()
 var mostrar_tuto_antes_partida: bool = true
 var onboarding_completed: bool = false
-## Displayed as "1.0.X". Starts at 1 → 1.0.1. F2 increases X by 1.
+var tutorial_star_stage1: bool = false
+var tutorial_star_stage2: bool = false
+## Displayed as "1.1.XX". Starts at 0 → 1.1.00. F2 increases the last number by 1.
 ## Source of truth is project.godot + data/app_version.json so exports and Git stay in sync.
-var app_version_code: int = 1
+var app_version_code: int = 0
 
 var level_normal_unlocked: bool = false
 var level_dificil_unlocked: bool = false
@@ -46,11 +50,11 @@ func version_display() -> String:
 
 
 func version_name() -> String:
-	return "1.0.%d" % maxi(app_version_code, 1)
+	return "1.1.%02d" % maxi(app_version_code, 0)
 
 
 func store_version_code() -> int:
-	return 1000 + maxi(app_version_code, 1)
+	return 11000 + maxi(app_version_code, 0)
 
 
 func bump_app_version() -> void:
@@ -63,19 +67,19 @@ func bump_app_version() -> void:
 
 func load_version_file() -> void:
 	var loaded := _code_from_project_settings()
-	if loaded <= 0:
+	if loaded < 0:
 		loaded = _code_from_json()
-	if loaded <= 0:
+	if loaded < 0:
 		loaded = _code_from_text(_read_text(VERSION_TXT_PATH))
-	if loaded <= 0:
-		loaded = 1
+	if loaded < 0:
+		loaded = 0
 	app_version_code = loaded
 
 
 func save_version_file() -> void:
 	if not OS.has_feature("editor"):
 		return
-	var code := maxi(app_version_code, 1)
+	var code := maxi(app_version_code, 0)
 	var name := version_name()
 	_write_text(VERSION_JSON_PATH, JSON.stringify({"code": code}, "\t") + "\n")
 	_write_text(VERSION_TXT_PATH, "%d\n" % code)
@@ -86,16 +90,18 @@ func save_version_file() -> void:
 
 func _code_from_project_settings() -> int:
 	if not ProjectSettings.has_setting("application/config/version"):
-		return 0
+		return -1
 	return _code_from_text(str(ProjectSettings.get_setting("application/config/version", "")))
 
 
 func _code_from_json() -> int:
 	var raw := _read_text(VERSION_JSON_PATH)
 	if raw.is_empty():
-		return 0
+		return -1
 	var parsed: Variant = JSON.parse_string(raw)
 	if parsed is Dictionary:
+		if not parsed.has("code"):
+			return -1
 		return maxi(int(parsed.get("code", 0)), 0)
 	return _code_from_text(raw)
 
@@ -103,14 +109,14 @@ func _code_from_json() -> int:
 func _code_from_text(raw: String) -> int:
 	var text := raw.strip_edges()
 	if text.is_empty():
-		return 0
+		return -1
 	if text.is_valid_int():
-		return maxi(int(text), 1)
+		return maxi(int(text), 0)
 	var digits := text.get_slice(".", text.get_slice_count(".") - 1)
 	digits = digits.replace("\"", "")
 	if digits.is_valid_int():
-		return maxi(int(digits), 1)
-	return 0
+		return maxi(int(digits), 0)
+	return -1
 
 
 func _sync_project_settings(name: String) -> void:
@@ -192,10 +198,13 @@ func save_prefs() -> void:
 	cfg.set_value("general", "mostrar_tutorial_antes_de_partida", mostrar_tuto_antes_partida)
 	cfg.set_value("general", "tutorial_before_play_on_v026", true)
 	cfg.set_value("general", "onboarding_completed", onboarding_completed)
+	cfg.set_value("general", "tutorial_star_stage1", tutorial_star_stage1)
+	cfg.set_value("general", "tutorial_star_stage2", tutorial_star_stage2)
 	cfg.set_value("audio", "volumen_musica", volumen_musica)
 	cfg.set_value("audio", "volumen_fx", volumen_fx)
 	cfg.set_value("audio", "mute_musica", mute_musica)
 	cfg.set_value("audio", "mute_fx", mute_fx)
+	cfg.set_value("audio", "music_excluded", Array(music_excluded))
 	cfg.set_value("levels","levelNormalUnlocked", GameManager.level_normal_unlocked )
 	cfg.set_value("levels","levelDificilUnlocked", GameManager.level_dificil_unlocked )
 	cfg.set_value("levels","levelProUnlocked", GameManager.level_pro_unlocked)
@@ -232,10 +241,13 @@ func load_prefs() -> void:
 			onboarding_completed = bool(cfg.get_value("general", "onboarding_completed", false))
 		else:
 			onboarding_completed = true
+		tutorial_star_stage1 = bool(cfg.get_value("general", "tutorial_star_stage1", false))
+		tutorial_star_stage2 = bool(cfg.get_value("general", "tutorial_star_stage2", false))
 		volumen_musica = cfg.get_value("audio", "volumen_musica", volumen_musica)
 		volumen_fx = cfg.get_value("audio", "volumen_fx", volumen_fx)
 		mute_musica = bool(cfg.get_value("audio", "mute_musica", mute_musica))
 		mute_fx = bool(cfg.get_value("audio", "mute_fx", mute_fx))
+		music_excluded = _load_string_list(cfg, "audio", "music_excluded")
 		level_normal_unlocked = cfg.get_value("levels","levelNormalUnlocked", level_normal_unlocked )
 		GameManager.set_level_normal_unlocked(level_normal_unlocked)
 		level_dificil_unlocked = cfg.get_value("levels","levelDificilUnlocked", level_dificil_unlocked )
@@ -310,6 +322,16 @@ func reset_completed_replay_today() -> void:
 	save_prefs()
 
 
+func clear_puzzle_records() -> void:
+	last_completed_replay_date = ""
+	daily_date = ""
+	daily_puzzle_id = -1
+	daily_completed = false
+	daily_stars = 0
+	daily_ids = PackedInt32Array()
+	save_prefs()
+
+
 func reset_player_progress() -> void:
 	level_normal_unlocked = false
 	level_dificil_unlocked = false
@@ -324,11 +346,12 @@ func reset_player_progress() -> void:
 	daily_completed = false
 	daily_stars = 0
 	daily_ids = PackedInt32Array()
-	full_game = false
 	ads_quick_streak = 0
 	daily_rewarded_date = ""
 	mostrar_tuto_antes_partida = true
 	onboarding_completed = false
+	tutorial_star_stage1 = false
+	tutorial_star_stage2 = false
 	GameManager.set_level_normal_unlocked(false)
 	GameManager.set_level_dificil_unlocked(false)
 	GameManager.set_level_pro_unlocked(false)
@@ -359,6 +382,33 @@ func set_onboarding_completed(enabled: bool) -> void:
 	else:
 		GameManager.set_mostrar_tuto_antes_partida_disable()
 	save_prefs()
+
+
+func should_award_tutorial_stars(stage: int = 1) -> bool:
+	if stage <= 1:
+		return not tutorial_star_stage1
+	return not tutorial_star_stage2
+
+
+func mark_tutorial_stars_awarded(stage: int) -> void:
+	if stage <= 1:
+		tutorial_star_stage1 = true
+	else:
+		tutorial_star_stage2 = true
+	save_prefs()
+
+
+func _load_string_list(cfg: ConfigFile, section: String, key: String) -> PackedStringArray:
+	var loaded := PackedStringArray()
+	var raw: Variant = cfg.get_value(section, key, [])
+	if raw is PackedStringArray:
+		return raw
+	if raw is Array:
+		for value in raw:
+			var text := str(value).strip_edges()
+			if not text.is_empty() and not loaded.has(text):
+				loaded.append(text)
+	return loaded
 
 
 func _load_favorite_ids(cfg: ConfigFile) -> PackedInt32Array:

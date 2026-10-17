@@ -79,6 +79,23 @@ func skips_progress() -> bool:
 	return is_practice_session() or is_onboarding_session()
 
 
+func should_award_onboarding_stars() -> bool:
+	if not is_onboarding_session():
+		return false
+	return PlayerPrefs.should_award_tutorial_stars(onboarding_stage)
+
+
+func await_process_frame(node: Node = null) -> bool:
+	var host := node if node != null else self
+	if host == null or not is_instance_valid(host):
+		return false
+	var tree := host.get_tree()
+	if tree == null:
+		return false
+	await tree.process_frame
+	return is_instance_valid(host) and host.get_tree() != null
+
+
 func is_daily_puzzle(item: Dictionary) -> bool:
 	return str(item.get("pack", "")).strip_edges().to_lower() == PACK_DAILY
 
@@ -395,6 +412,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode == KEY_F3:
 			PlayerPrefs.reset_completed_replay_today()
 			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_F4:
+			reset_all_puzzles_pending()
+			get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_F5:
 			PuzzleSaveManager.seed_category_replayable(CAT_EFEMERIDE)
 			PlayerPrefs.reset_completed_replay_today()
@@ -446,7 +466,11 @@ func decrease_live() -> void:
 
 func set_calculo_letras_iniciales() -> void:
 	if id_frase == 116:
-		letras_iniciales = InitialLettersPicker.pick_unused_consonants(frase_original, 2) + "J"
+		letras_iniciales = InitialLettersPicker.pick_unused_consonants(frase_original, 2)
+		if not letras_iniciales.contains("J"):
+			letras_iniciales += "J"
+		if not letras_iniciales.contains("L"):
+			letras_iniciales += "L"
 		print ("LETRAS INICIALES CALCULADAS:" ,letras_iniciales)
 		return
 	if letras_iniciales != "" or dificultad_actual ==4:
@@ -534,6 +558,22 @@ func lock_full_game() -> void:
 	SignalManager.full_game_changed.emit()
 
 
+func reset_all_puzzles_pending() -> void:
+	HistoryManager.clear_history()
+	PuzzleSaveManager.discard_all_progress()
+	if typeof(PlayerPrefs) != TYPE_NIL:
+		PlayerPrefs.clear_puzzle_records()
+	score_ultima_partida = 0
+	if typeof(StarCollectOverlay) != TYPE_NIL:
+		StarCollectOverlay.clear()
+	var tree := get_tree()
+	if tree == null:
+		return
+	for node in tree.get_nodes_in_group("LevelSelect"):
+		if node.has_method("refresh_from_gamemanager"):
+			node.call("refresh_from_gamemanager")
+
+
 func reset_player_data() -> void:
 	HistoryManager.clear_history()
 	PuzzleSaveManager.clear_all()
@@ -541,25 +581,31 @@ func reset_player_data() -> void:
 	reset_game_paremeters()
 	resetear_partida_terminada()
 	reset_numero_letras_reveladas()
+	session_source = SOURCE_NONE
+	onboarding_stage = 0
+	locked_record_stars = -1
 	HistoryManager.stats_updated.emit()
 
 
-func is_web_demo() -> bool:
-	return OS.has_feature("web")
+func reset_to_fresh_install() -> void:
+	if typeof(EventLoggerAutoload) != TYPE_NIL:
+		EventLoggerAutoload.discard_session()
+	if FileAccess.file_exists("user://logs/pending_trace.json"):
+		DirAccess.remove_absolute("user://logs/pending_trace.json")
+	if typeof(StarCollectOverlay) != TYPE_NIL:
+		StarCollectOverlay.clear()
+	reset_player_data()
+	var tree := get_tree()
+	if tree != null:
+		tree.change_scene_to_file(Distribution.home_scene())
 
 
-func is_puzzle_playable(item: Dictionary) -> bool:
-	if not is_web_demo():
-		return true
-	if _free_puzzle_ids.is_empty() and not frases_db.is_empty():
-		rebuild_free_puzzle_ids()
-	return _free_puzzle_ids.has(int(item.get("index", -1)))
+func is_puzzle_playable(_item: Dictionary) -> bool:
+	return true
 
 
 func rebuild_free_puzzle_ids() -> void:
 	_free_puzzle_ids.clear()
-	if not is_web_demo():
-		return
 	var groups: Dictionary = {}
 	for raw in frases_db:
 		if typeof(raw) != TYPE_DICTIONARY:
@@ -567,25 +613,22 @@ func rebuild_free_puzzle_ids() -> void:
 		var item: Dictionary = raw
 		if is_daily_puzzle(item):
 			continue
-		var key := normalize_category(str(item.get("category", "")))
-		if key == "":
-			continue
+		var key := "%s|%s" % [normalize_category(str(item.get("category", ""))), level_game_mode(item)]
 		if not groups.has(key):
 			groups[key] = []
 		groups[key].append(item)
 	for key in groups.keys():
 		var arr: Array = groups[key]
 		arr.sort_custom(_free_content_sort)
-		if arr.is_empty():
-			continue
-		_free_puzzle_ids[int(arr[0].get("index", -1))] = true
+		var parts := str(key).split("|")
+		var cat := parts[0] if parts.size() > 0 else ""
+		var mode := parts[1] if parts.size() > 1 else ""
+		var quota := 2 if mode == MODE_QUICK and (cat == CAT_CITA or cat == CAT_CURIOSIDADES) else 1
+		for i in range(mini(quota, arr.size())):
+			_free_puzzle_ids[int(arr[i].get("index", -1))] = true
 
 
 func _free_content_sort(a: Dictionary, b: Dictionary) -> bool:
-	var quick_a := level_game_mode(a) == MODE_QUICK
-	var quick_b := level_game_mode(b) == MODE_QUICK
-	if quick_a != quick_b:
-		return quick_a
 	var image_a := int(a.get("image_number", 0))
 	var image_b := int(b.get("image_number", 0))
 	if image_a != image_b:
@@ -730,11 +773,51 @@ func find_level_image_path(image_number: int) -> String:
 			var path: String = stem + str(extension)
 			if ResourceLoader.exists(path) or FileAccess.file_exists(path):
 				return path
+	var remote := "user://remote_puzzles/%d.webp" % image_number
+	if FileAccess.file_exists(remote):
+		return remote
 	return ""
 
 
 func level_has_image(item: Dictionary) -> bool:
 	return find_level_image_path(int(item.get("image_number", -1))) != ""
+
+
+func level_texture(path: String) -> Texture2D:
+	if path.is_empty():
+		return null
+	if ResourceLoader.exists(path):
+		var loaded: Variant = load(path)
+		if loaded is Texture2D:
+			return loaded
+	var image := Image.new()
+	if image.load(path) != OK:
+		return null
+	return ImageTexture.create_from_image(image)
+
+
+func install_saved_remote(puzzle_id: int) -> bool:
+	var files = preload("res://store/remote_puzzles.gd")
+	if not files.has_files(puzzle_id) or not files.image_decodes(puzzle_id):
+		return false
+	var pack: Dictionary = files.read_pack(puzzle_id)
+	if not files.pack_is_playable(pack, puzzle_id):
+		return false
+	return adopt_remote_pack(pack)
+
+
+func adopt_remote_pack(pack: Dictionary) -> bool:
+	var item := _phrase_from_remote(pack)
+	if item.is_empty() or not level_has_image(item):
+		return false
+	var puzzle_id := int(item.get("index", -1))
+	for i in frases_db.size():
+		if int(frases_db[i].get("index", -1)) == puzzle_id:
+			frases_db[i] = item
+			return true
+	frases_db.append(item)
+	rebuild_free_puzzle_ids()
+	return true
 
 
 func set_dificultad_actual(dificultad: int) -> void:
@@ -783,8 +866,11 @@ func set_go_to_game_disable() -> void:
 func launch_prepared_game() -> void:
 	set_go_to_game_disable()
 	puzzle_enter_pending = true
+	var tree := get_tree()
+	if tree.paused:
+		tree.paused = false
 	SignalManager.partida_iniciada.emit()
-	get_tree().change_scene_to_file("res://scenes/App.tscn")
+	tree.change_scene_to_file("res://scenes/App.tscn")
 
 
 func gifts_leaving_letters(phrase: String, leave_count: int, leave_vowels: int = 1, filled_word: String = "") -> String:
@@ -1003,6 +1089,16 @@ func active_puzzle_locale() -> String:
 	return locked if locked != "" else locale_code()
 
 
+func puzzle_language_is_locked() -> bool:
+	return _puzzle_board_is_open()
+
+
+func locked_puzzle_language() -> String:
+	if not puzzle_language_is_locked():
+		return ""
+	return active_puzzle_locale()
+
+
 func export_cipher_state() -> Dictionary:
 	return {
 		"numbers": lista_numeros.duplicate(),
@@ -1072,7 +1168,7 @@ func subtract_puzzle_stars(amount: int) -> void:
 		return
 	puzzle_stars = maxi(0, puzzle_stars - amount)
 	SignalManager.update_puzzle_stars.emit(puzzle_stars)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 
 
 func register_hint_used(hint_id: String) -> void:
@@ -1462,7 +1558,7 @@ func consume_reveal_error_star(number: int, letter: String) -> bool:
 
 func finish_reveal_sequence() -> void:
 	update_numero_letras_reveladas(true)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 
 
 func _clear_fill_color_slots_for_numbers(correct_numbers: Dictionary) -> void:
@@ -1638,8 +1734,18 @@ func pinta_celdas(numero_en_celda: int, color_a_pintar: int) -> void:
 		#print("numero en celda " + str(numero_en_celda))
 		if lista_celdas[i].numero == numero_en_celda:
 			lista_celdas[i].cambia_color(color_a_pintar)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 	SignalManager.update_rubber.emit()
+
+
+func numero_tiene_letra_asignada(numero_en_celda: int) -> bool:
+	if numero_en_celda <= 0 or numero_en_celda >= 100:
+		return false
+	for cell in lista_celdas:
+		if cell is Celda and cell.numero == numero_en_celda \
+				and cell.letter_user.strip_edges() != "":
+			return true
+	return false
 
 
 ## Removes the annotation color from every cell sharing the cipher number.
@@ -1666,7 +1772,7 @@ func borrar_color_de_numero(numero_en_celda: int) -> bool:
 		number_4 = 0
 	if number_5 == numero_en_celda:
 		number_5 = 0
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 	return true
 
 
@@ -1905,6 +2011,8 @@ func cargar_frases_desde_json() -> void:
 		if d.language.is_empty() or d.language == loc or String(d.language).begins_with(loc):
 			frases_db.append(d)
 
+	for puzzle_id in preload("res://store/remote_puzzles.gd").saved_ids():
+		install_saved_remote(puzzle_id)
 	print("Frases JSON cargadas: ", frases_db.size())
 	rebuild_free_puzzle_ids()
 
@@ -2106,6 +2214,9 @@ func change_letters_aphabet_array() -> void:
 
 
 func phrase_record(index: int, locale: String) -> Dictionary:
+	var remote := _remote_phrase_record(index, locale)
+	if not remote.is_empty():
+		return remote
 	var path := phrases_json_path(locale)
 	if not FileAccess.file_exists(path):
 		return {}
@@ -2145,6 +2256,75 @@ func _phrase_from_dict(dict: Dictionary, locale: String, fallback_index: int) ->
 	d.hint_4 = String(dict.get("hint_4", ""))
 	return d
 
+
+func _remote_phrase_record(index: int, locale: String) -> Dictionary:
+	var files = preload("res://store/remote_puzzles.gd")
+	if not files.has_files(index):
+		return {}
+	var pack: Dictionary = files.read_pack(index)
+	if not files.pack_is_playable(pack, index):
+		return {}
+	return _phrase_from_remote(pack, locale)
+
+
+func _phrase_from_remote(pack: Dictionary, locale: String = "") -> Dictionary:
+	var languages: Variant = pack.get("languages", {})
+	if not languages is Dictionary or (languages as Dictionary).is_empty():
+		return {}
+	var lang := locale.strip_edges().to_lower()
+	if lang == "":
+		lang = locale_code()
+	var block: Variant = (languages as Dictionary).get(lang, {})
+	if not _remote_block_has_phrase(block):
+		block = (languages as Dictionary).get("es", {})
+		lang = "es"
+	if not _remote_block_has_phrase(block):
+		for key in (languages as Dictionary).keys():
+			var candidate: Variant = (languages as Dictionary)[key]
+			if _remote_block_has_phrase(candidate):
+				block = candidate
+				lang = str(key)
+				break
+	if not block is Dictionary:
+		return {}
+	var entry: Dictionary = block
+	var letters := ""
+	var free: Variant = entry.get("free_letters", [])
+	if free is Array:
+		for letter in free:
+			letters += str(letter)
+	var puzzle_id := int(pack.get("id", -1))
+	var author := _remote_text(pack.get("author", null))
+	var source := _remote_text(pack.get("source", ""))
+	if author != "" and author != source:
+		source = author if source == "" else "%s\n%s" % [author, source]
+	return _phrase_from_dict({
+		"index": puzzle_id,
+		"image_number": puzzle_id,
+		"text": str(entry.get("phrase", "")),
+		"letters_init": letters,
+		"description_init": str(entry.get("title", "")).strip_edges(),
+		"description_end": "",
+		"source": source,
+		"category": str(pack.get("category", "")),
+		"language": lang,
+		"difficulty": int(entry.get("difficulty", 1)),
+		"hint_1": str(entry.get("hint", "")),
+	}, lang, puzzle_id)
+
+
+func _remote_block_has_phrase(block: Variant) -> bool:
+	return block is Dictionary and str((block as Dictionary).get("phrase", "")).strip_edges() != ""
+
+
+func _remote_text(value: Variant) -> String:
+	if value == null:
+		return ""
+	var text := str(value).strip_edges()
+	if text == "<null>" or text.to_lower() == "null":
+		return ""
+	return text
+
 # Devuelve un Array[String] con las letras (MAYÚSCULAS) del idioma pedido,
 # sin tildes/diacríticos. Puedes ajustar opciones en 'opts'.
 #
@@ -2171,10 +2351,9 @@ func get_letters_for_lang(lang: String, opts := {}) -> Array:
 
 	match L:
 		"es", "spa", "es_es":
-			var base := _letters_a_z()
 			if include_enye:
-				base.insert(15, "Ñ") # después de la N
-			return base
+				return ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+			return _letters_a_z()
 
 		"en", "eng", "en_us", "en_gb":
 			return _letters_a_z()

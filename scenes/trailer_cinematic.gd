@@ -271,7 +271,7 @@ func _build_hud() -> Control:
 	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_btn_tema = _hud_button("TEMA", THEME_ICON, Color(0.12, 0.62, 0.58, 1), Color(0.05, 0.38, 0.36, 1))
 	_btn_pista = _hud_button("PISTA", BULB_ICON, Color(1.0, 0.72, 0.08, 1), Color(0.82, 0.42, 0.02, 1))
-	_btn_revelar = _hud_button("REVELAR", EYE_ICON, Color(0.38, 0.25, 0.72, 1), Color(0.22, 0.13, 0.49, 1))
+	_btn_revelar = _hud_button("COMPROBAR", EYE_ICON, Color(0.38, 0.25, 0.72, 1), Color(0.22, 0.13, 0.49, 1))
 	var total_w := 340.0 * 3.0 + 24.0 * 2.0
 	var x0 := (SIZE.x - total_w) * 0.5
 	_btn_tema.position = Vector2(x0, 28)
@@ -312,7 +312,14 @@ func _hud_button(title: String, icon: Texture2D, fill: Color, border: Color) -> 
 	lab.size = Vector2(220, 72)
 	lab.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	lab.add_theme_font_override("font", FONT_UI)
-	lab.add_theme_font_size_override("font_size", 40)
+	var font_size := 40
+	while font_size > 28:
+		var line := TextLine.new()
+		line.add_string(title, FONT_UI, font_size)
+		if line.get_size().x <= lab.size.x:
+			break
+		font_size -= 1
+	lab.add_theme_font_size_override("font_size", font_size)
 	lab.add_theme_color_override("font_color", Color(1, 1, 0.96, 1))
 	btn.add_child(lab)
 	return btn

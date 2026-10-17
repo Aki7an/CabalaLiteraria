@@ -289,7 +289,7 @@ func _on_button_back_pressed() -> void:
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
 	SoundManager.play("ButtonClick")
-	get_tree().change_scene_to_file("res://scenes/MenuMain.tscn")
+	get_tree().change_scene_to_file(Distribution.home_scene())
 
 # Señal del botón (si la usas)
 func _on_dificultad_pressed() -> void:

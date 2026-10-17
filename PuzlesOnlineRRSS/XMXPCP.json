@@ -1,0 +1,61 @@
+
+{
+  "id": 5000,
+  "version": 1,
+  "category": "efemerides",
+  "image": "5000.webp",
+  "date": "2026-09-30",
+  "author": null,
+  "source": "MIT",
+  "languages": {
+    "es": {
+      "title": "Adiós Margaret Hamilton",
+      "phrase": "30-9-2026. Fallece a los 90 años Margaret Hamilton, pionera de la ingeniería de software. Dirigió el equipo que desarrolló el programa del Apolo 11, capaz de gestionar errores críticos durante el alunizaje de 1969. Su legado cambió para siempre la informática y la exploración espacial.",
+      "hint": "Pionera en la exploración espacial",
+      "difficulty": 2,
+      "free_letters": ["U", "G", "M"]
+    },
+    "en": {
+      "title": "Farewell to Margaret Hamilton",
+      "phrase": "September 30, 2026. Margaret Hamilton, a pioneer of software engineering, dies at the age of 90. She led the team that developed the software for Apollo 11, capable of handling critical errors during the 1969 Moon landing. Her legacy forever changed computing and space exploration.",
+      "hint": "A pioneer of space exploration",
+      "difficulty": 2,
+      "free_letters": ["U", "C", "F"]
+    },
+    "eu": {
+      "title": "Agur Margaret Hamilton",
+      "phrase": "2026ko irailaren 30ean Margaret Hamilton hil zen, 90 urte zituela. Software ingeniaritzaren aitzindaria izan zen. Apollo 11 misiorako softwarea garatu zuen taldea zuzendu zuen, 1969ko Ilargiratzean akats larriak kudeatzeko gai zena. Haren ondareak informatika eta espazioaren esplorazioa betiko aldatu zituen.",
+      "hint": "Espazioaren esplorazioaren aitzindaria",
+      "difficulty": 2,
+      "free_letters": ["U", "D", "G"]
+    },
+    "fr": {
+      "title": "Adieu Margaret Hamilton",
+      "phrase": "Le 30 septembre 2026, Margaret Hamilton, pionnière du génie logiciel, meurt à 90 ans. Elle dirigeait l'équipe qui développa le logiciel d'Apollo 11, capable de gérer des erreurs critiques lors de l'alunissage de 1969. Son héritage a transformé à jamais l'informatique et l'exploration spatiale.",
+      "hint": "Une pionnière de l'exploration spatiale",
+      "difficulty": 2,
+      "free_letters": ["U", "Q", "C"]
+    },
+    "de": {
+      "title": "Abschied von Margaret Hamilton",
+      "phrase": "Am 30. September 2026 stirbt Margaret Hamilton im Alter von 90 Jahren. Sie war eine Pionierin der Softwaretechnik und leitete das Team, das die Software für Apollo 11 entwickelte. Diese konnte bei der Mondlandung 1969 kritische Fehler bewältigen. Ihr Vermächtnis veränderte Informatik und Raumfahrt nachhaltig.",
+      "hint": "Eine Pionierin der Weltraumforschung",
+      "difficulty": 2,
+      "free_letters": ["U", "C", "K"]
+    },
+    "pt": {
+      "title": "Adeus a Margaret Hamilton",
+      "phrase": "Em 30 de setembro de 2026, Margaret Hamilton, pioneira da engenharia de software, morre aos 90 anos. Liderou a equipa que desenvolveu o software da Apollo 11, capaz de gerir erros críticos durante a alunagem de 1969. O seu legado transformou para sempre a informática e a exploração espacial.",
+      "hint": "Pioneira da exploração espacial",
+      "difficulty": 2,
+      "free_letters": ["U", "G", "C"]
+    },
+    "it": {
+      "title": "Addio a Margaret Hamilton",
+      "phrase": "Il 30 settembre 2026 muore a 90 anni Margaret Hamilton, pioniera dell'ingegneria del software. Guidò il gruppo che sviluppò il software dell'Apollo 11, capace di gestire errori critici durante l'allunaggio del 1969. La sua eredità ha cambiato per sempre l'informatica e l'esplorazione spaziale.",
+      "hint": "Pioniera dell'esplorazione spaziale",
+      "difficulty": 2,
+      "free_letters": ["U", "C", "F"]
+    }
+  }
+}

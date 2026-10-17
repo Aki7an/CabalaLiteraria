@@ -26,7 +26,6 @@ extends Node2D
 @onready var blanco_3 = $Panel/ButtonDifficulty3/Blanco3
 
 # Rutas de escena (antes usabas preload de PackedScene)
-const PATH_MENU_MAIN := "res://scenes/MenuMain.tscn"
 const PATH_APP := "res://scenes/App.tscn"
 const PATH_TUTORIAL := "res://scenes/MenuTutorial.tscn"
 const PATH_SELECT_LEVEL := "res://scenes/MenuSelectLevelByID.tscn"
@@ -192,7 +191,7 @@ func _on_button_home_pressed():
 
 	# Carga perezosa de MenuMain
 	if scene_menu_main == null:
-		scene_menu_main = load(PATH_MENU_MAIN)
+		scene_menu_main = load(Distribution.home_scene())
 	get_tree().change_scene_to_packed(scene_menu_main)
 
 
@@ -216,5 +215,5 @@ func _on_button_exit_pressed():
 
 	# Carga perezosa de MenuMain
 	if scene_menu_main == null:
-		scene_menu_main = load(PATH_MENU_MAIN)
+		scene_menu_main = load(Distribution.home_scene())
 	get_tree().change_scene_to_packed(scene_menu_main)

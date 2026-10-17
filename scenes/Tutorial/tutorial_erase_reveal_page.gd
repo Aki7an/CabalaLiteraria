@@ -126,7 +126,27 @@ func apply_locale() -> void:
 	_wrong_rest.text = tr("TutLoseStar")
 	_erase_label.text = tr("TutEraseButton")
 	_reveal_title.text = tr("TutReveal")
+	_fit_single_line(_reveal_title)
 	_apply_demo_words()
+
+
+func _fit_single_line(label: Label, max_size: int = 52, min_size: int = 34) -> void:
+	var font := label.get_theme_font("font")
+	if font == null:
+		return
+	var available := label.offset_right - label.offset_left
+	if available < 8.0:
+		available = label.size.x
+	var size := max_size
+	while size > min_size and _text_width(font, label.text, size) > available:
+		size -= 1
+	label.add_theme_font_size_override("font_size", size)
+
+
+func _text_width(font: Font, text: String, size: int) -> float:
+	var line := TextLine.new()
+	line.add_string(text, font, size)
+	return line.get_size().x
 
 
 func _apply_demo_words() -> void:

@@ -65,10 +65,16 @@ func _on_rubber_feedback() -> void:
 		GameManager.button_blink_repeat(button_0, 2)
 
 
-func _on_button_0_pressed():
-	
-		#primero borra la casilla anterior de este color
-	GameManager.pinta_celdas(GameManager.celda_seleccionada_numero,0)
+func _on_button_0_pressed() -> void:
+	if GameManager.numero_tiene_letra_asignada(GameManager.celda_seleccionada_numero):
+		return
+	if not GameManager.borrar_color_de_numero(GameManager.celda_seleccionada_numero):
+		return
+	color1_usado = GameManager.number_1 != 0
+	color2_usado = GameManager.number_2 != 0
+	color3_usado = GameManager.number_3 != 0
+	color4_usado = GameManager.number_4 != 0
+	color5_usado = GameManager.number_5 != 0
 		
 
 	
@@ -141,9 +147,9 @@ func _on_btn_erase_pressed() -> void:
 			or GameManager.celda_seleccionada_numero == 0:
 		return
 
-	# A colored cell uses the eraser to remove that annotation first.
-	# The color is shared by cipher number, so all matching cells are cleared.
-	if GameManager.borrar_color_de_numero(GameManager.celda_seleccionada_numero):
+	# El color solo se quita en una casilla vacía. Si ya hay letra, se borra la letra.
+	if not GameManager.numero_tiene_letra_asignada(GameManager.celda_seleccionada_numero) \
+			and GameManager.borrar_color_de_numero(GameManager.celda_seleccionada_numero):
 		color1_usado = GameManager.number_1 != 0
 		color2_usado = GameManager.number_2 != 0
 		color3_usado = GameManager.number_3 != 0

@@ -222,6 +222,7 @@ const LOCALIZED_COPY := {
 
 
 func _ready() -> void:
+	add_to_group("LevelSelect")
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	if FileAccess.file_exists("user://reset_replay_today"):
 		PlayerPrefs.reset_completed_replay_today()
@@ -559,7 +560,7 @@ func _assign_real_texture(button: Button) -> void:
 	var path: String = str(button.get_meta("image_path", ""))
 	if path == "":
 		return
-	var texture := load(path) as Texture2D
+	var texture := GameManager.level_texture(path)
 	if texture != null:
 		texture_rect.texture = texture
 
@@ -841,15 +842,9 @@ func _show_purchase_lock_dialog() -> void:
 	body.add_theme_font_override("font", _title_label.get_theme_font("font"))
 	body.add_theme_font_size_override("font_size", 36)
 	body.add_theme_color_override("font_color", Color(0.28, 0.17, 0.1, 1))
-	var web_demo := GameManager.is_web_demo()
-	if web_demo:
-		body.text = tr("WebDemoLockBody")
-		if body.text == "WebDemoLockBody":
-			body.text = "Para jugar a estos puzles, instala la versión de Android o Apple desde las tiendas. El juego es gratuito con anuncios."
-	else:
-		body.text = tr("ShopLockedBody")
-		if body.text == "ShopLockedBody":
-			body.text = "Para jugar a este puzle hay que comprar el juego completo."
+	body.text = tr("ShopLockedBody")
+	if body.text == "ShopLockedBody":
+		body.text = "Para jugar a este puzle hay que comprar el juego completo."
 	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	inner.add_child(body)
@@ -867,24 +862,23 @@ func _show_purchase_lock_dialog() -> void:
 		overlay.queue_free()
 	)
 	buttons.add_child(cancel)
-	if not web_demo:
-		var shop_text := tr("ShopGoToStore")
-		if shop_text == "ShopGoToStore":
-			shop_text = "Ir a la tienda"
-		var shop := _make_dialog_button(
-			shop_text,
-			Color(0.96, 0.51, 0.01, 1),
-			Color(0.83, 0.41, 0.02, 1),
-			Color.WHITE
-		)
-		shop.pressed.connect(func() -> void:
-			SoundManager.play("ButtonClick")
-			overlay.queue_free()
-			TransitionScreen.transition_to_black()
-			await TransitionScreen._on_animation_finished("fade_to_black", 1)
-			get_tree().change_scene_to_file(PATH_SHOP)
-		)
-		buttons.add_child(shop)
+	var shop_text := tr("ShopGoToStore")
+	if shop_text == "ShopGoToStore":
+		shop_text = "Ir a la tienda"
+	var shop := _make_dialog_button(
+		shop_text,
+		Color(0.96, 0.51, 0.01, 1),
+		Color(0.83, 0.41, 0.02, 1),
+		Color.WHITE
+	)
+	shop.pressed.connect(func() -> void:
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+		TransitionScreen.transition_to_black()
+		await TransitionScreen._on_animation_finished("fade_to_black", 1)
+		get_tree().change_scene_to_file(PATH_SHOP)
+	)
+	buttons.add_child(shop)
 	overlay.gui_input.connect(func(event: InputEvent) -> void:
 		if not (event is InputEventMouseButton and event.pressed):
 			return
@@ -1082,7 +1076,7 @@ func _on_replay_play_pressed(
 		play.disabled = true
 		cancel.disabled = true
 		play.text = _tr_ad("DailyAdLoading", "Cargando anuncio...")
-		var ok: bool = await AdManager.show_rewarded()
+		var ok: bool = await PlatformServices.show_rewarded()
 		_replay_ad_busy = false
 		if not is_instance_valid(overlay):
 			return
@@ -1090,12 +1084,10 @@ func _on_replay_play_pressed(
 			play.disabled = false
 			cancel.disabled = false
 			play.text = _copy("lock_play_ad")
-			ad_note.text = _tr_ad(
-				"DailyAdFailed",
-				"No hay anuncio disponible. Inténtalo de nuevo o compra el juego."
-			)
+			ad_note.text = AdManager.reward_failure_message()
 			ad_note.add_theme_color_override("font_color", Color(0.72, 0.22, 0.14, 1))
 			return
+	get_tree().paused = false
 	var chosen: Dictionary = pool.pick_random()
 	overlay.queue_free()
 	_on_level_pressed(chosen, true)
@@ -1138,7 +1130,7 @@ func _replay_thumb(item: Dictionary) -> Panel:
 	var path := _find_image_path(int(item.get("image_number", -1)), index_number)
 	var texture: Texture2D = PLACEHOLDER_TEX
 	if path != "":
-		var loaded := load(path) as Texture2D
+		var loaded := GameManager.level_texture(path)
 		if loaded != null:
 			texture = loaded
 	image.texture = texture

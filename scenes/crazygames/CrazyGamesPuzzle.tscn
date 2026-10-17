@@ -1,0 +1,173 @@
+[gd_scene format=3 uid="uid://x24t8c0je0to"]
+
+[ext_resource type="Script" uid="uid://d3y1bnew6bgv2" path="res://scenes/crazygames/crazygames_puzzle.gd" id="1_fit"]
+[ext_resource type="Script" uid="uid://bk8npk8rjf1wj" path="res://scenes/main/main_portrait.gd" id="2_game"]
+[ext_resource type="Script" uid="uid://cgf78xtxi5uo5" path="res://scenes/main/ErrorFeedback.gd" id="3_error"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="4_bg"]
+[ext_resource type="PackedScene" uid="uid://csvvjjmaptuc4" path="res://scenes/game/CanvasJuego.tscn" id="5_board"]
+[ext_resource type="PackedScene" uid="uid://3ivcwblmuoh0" path="res://scenes/PanelUP/panel_up_portrait.tscn" id="6_hud"]
+[ext_resource type="PackedScene" path="res://scenes/game/PanelColorsPortrait.tscn" id="7_colors"]
+[ext_resource type="PackedScene" path="res://scenes/game/panel_letras_portrait.tscn" id="8_letters"]
+[ext_resource type="Script" uid="uid://b3o0jxdhl1rdw" path="res://scenes/main/puzzle_scrollbar.gd" id="9_scroll"]
+
+[sub_resource type="StyleBoxFlat" id="Style_background"]
+bg_color = Color(0.971, 0.895, 0.696, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_board_frame"]
+bg_color = Color(0.11, 0.12, 0.13, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 12
+border_color = Color(0.05, 0.055, 0.06, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.05, 0.05, 0.06, 0.4)
+shadow_size = 14
+shadow_offset = Vector2(0, 11)
+
+[sub_resource type="StyleBoxFlat" id="Style_board_inner"]
+bg_color = Color(0.14, 0.145, 0.155, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.08, 0.085, 0.09, 1)
+corner_radius_top_left = 13
+corner_radius_top_right = 13
+corner_radius_bottom_right = 13
+corner_radius_bottom_left = 13
+
+[sub_resource type="StyleBoxFlat" id="Style_rail"]
+bg_color = Color(0.971, 0.895, 0.696, 1)
+border_color = Color(0.78, 0.58, 0.28, 0)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="Style_thumb"]
+bg_color = Color(0.82, 0.38, 0.04, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.58, 0.24, 0.02, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0)
+
+[node name="CrazyGamesPuzzle" type="Control" unique_id=1889823984]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+script = ExtResource("1_fit")
+
+[node name="Game" type="Node2D" parent="." unique_id=2131745423]
+script = ExtResource("2_game")
+
+[node name="CanvasLayer" type="Control" parent="Game" unique_id=264060383]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+
+[node name="Background" type="Panel" parent="Game/CanvasLayer" unique_id=1354989344]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_background")
+
+[node name="Pattern" parent="Game/CanvasLayer/Background" unique_id=1500688644 instance=ExtResource("4_bg")]
+modulate = Color(1, 1, 1, 0.38)
+layout_mode = 0
+
+[node name="BoardFrame" type="Panel" parent="Game/CanvasLayer" unique_id=207861637]
+clip_contents = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 1186.0
+offset_bottom = 1207.0
+scale = Vector2(0.578, 0.578)
+theme_override_styles/panel = SubResource("Style_board_frame")
+
+[node name="CanvasJuego" parent="Game/CanvasLayer/BoardFrame" unique_id=481953044 instance=ExtResource("5_board")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 14.0
+offset_top = 11.0
+offset_right = 1084.0
+offset_bottom = 1182.0
+grow_horizontal = 1
+grow_vertical = 1
+theme_override_styles/panel = SubResource("Style_board_inner")
+
+[node name="ScrollRail" type="Panel" parent="Game/CanvasLayer/BoardFrame" unique_id=945001645]
+layout_mode = 0
+offset_left = 1096.0
+offset_top = 10.0
+offset_right = 1156.0
+offset_bottom = 1177.0
+theme_override_styles/panel = SubResource("Style_rail")
+script = ExtResource("9_scroll")
+
+[node name="Thumb" type="Control" parent="Game/CanvasLayer/BoardFrame/ScrollRail" unique_id=714339845]
+custom_minimum_size = Vector2(72, 240)
+anchors_preset = 0
+offset_left = -7.0
+offset_right = 65.0
+offset_bottom = 240.0
+mouse_default_cursor_shape = 6
+
+[node name="Visual" type="Panel" parent="Game/CanvasLayer/BoardFrame/ScrollRail/Thumb" unique_id=1698056030]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 4.0
+offset_right = 60.0
+offset_bottom = 244.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_thumb")
+
+[node name="PanelUP" parent="Game/CanvasLayer" unique_id=1886383320 instance=ExtResource("6_hud")]
+layout_mode = 0
+offset_left = 704.0
+offset_top = 16.0
+offset_right = 1878.0
+offset_bottom = 564.0
+scale = Vector2(0.46, 0.46)
+
+[node name="PanelColors" parent="Game/CanvasLayer" unique_id=1130936767 instance=ExtResource("7_colors")]
+layout_mode = 0
+offset_left = 704.0
+offset_top = 266.0
+offset_right = 1874.0
+offset_bottom = 552.0
+scale = Vector2(0.46, 0.46)
+
+[node name="PanelLetras" parent="Game/CanvasLayer" unique_id=1396186002 instance=ExtResource("8_letters")]
+layout_mode = 0
+offset_left = 704.0
+offset_top = 416.0
+offset_right = 1874.0
+offset_bottom = 998.0
+scale = Vector2(0.46, 0.46)
+
+[node name="OverlayHost" type="Control" parent="Game/CanvasLayer" unique_id=64802513]
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+
+[node name="ErrorFeedback" type="CanvasLayer" parent="Game" unique_id=8214556]
+script = ExtResource("3_error")

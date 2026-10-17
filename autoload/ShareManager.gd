@@ -48,6 +48,13 @@ func build_payload() -> Dictionary:
 	var stars_earned: int = clampi(GameManager.puzzle_stars, 0, stars_max)
 	if GameManager.is_practice_session() and GameManager.locked_record_stars >= 0:
 		stars_earned = clampi(GameManager.locked_record_stars, 0, stars_max)
+	if GameManager.is_onboarding_session():
+		stars_earned = 0
+	if GameManager.should_award_onboarding_stars() or (
+		not GameManager.is_onboarding_session() and not GameManager.skips_progress()
+	):
+		stars_earned += 1
+		stars_max += 1
 	var puzzle_id := int(GameManager.id_frase)
 	return {
 		"brand": "CifraLetra",
@@ -320,7 +327,10 @@ func _share_text(payload: Dictionary) -> String:
 		"ShareResultText",
 		"He resuelto el puzle %s en CifraLetra. ¿Puedes descifrarlo mejor que yo? %s"
 	)
-	return template % [str(payload.get("puzzle_id_text", "")), ShareConfig.store_url()]
+	return _with_puzzle_link(
+		template % [str(payload.get("puzzle_id_text", "")), ShareConfig.store_url()],
+		payload
+	)
 
 
 func _social_share_text(payload: Dictionary) -> String:
@@ -331,7 +341,17 @@ func _social_share_text(payload: Dictionary) -> String:
 		"He resuelto el criptograma de hoy en CifraLetra %s" if is_daily else "He resuelto un criptograma en CifraLetra %s"
 	) % stars
 	var beat := _t("ShareTwitterBeatMe", "¿Puedes superarme?")
-	return "%s\n%s\n#CifraLetra #Criptogramas\n%s" % [line, beat, ShareConfig.store_url()]
+	return _with_puzzle_link(
+		"%s\n%s\n#CifraLetra #Criptogramas\n%s" % [line, beat, ShareConfig.store_url()],
+		payload
+	)
+
+
+func _with_puzzle_link(text: String, payload: Dictionary) -> String:
+	var puzzle_id := int(payload.get("puzzle_id", -1))
+	if puzzle_id < 0:
+		return text
+	return "%s\n%s" % [text, ShareConfig.puzzle_url(puzzle_id)]
 
 
 func _star_glyphs(count: int) -> String:

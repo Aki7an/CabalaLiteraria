@@ -807,7 +807,7 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
 theme_override_fonts/font = ExtResource("2_title")
 theme_override_font_sizes/font_size = 34
-text = "REVELA TU SOLUCIÓN"
+text = "COMPRUEBA TU SOLUCIÓN"
 autowrap_mode = 3
 
 [node name="Body2" type="Label" parent="Card2/Box" unique_id=60754654]
@@ -816,7 +816,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.38, 0.26, 0.18, 0.94)
 theme_override_fonts/font = ExtResource("3_body")
 theme_override_font_sizes/font_size = 32
-text = "Pulsa REVELAR en cualquier momento para comprobar las letras introducidas."
+text = "Pulsa COMPROBAR en cualquier momento para comprobar las letras introducidas."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -878,7 +878,7 @@ theme_override_colors/font_shadow_color = Color(0.12, 0.06, 0.27, 0.58)
 theme_override_constants/shadow_offset_y = 4
 theme_override_fonts/font = ExtResource("2_title")
 theme_override_font_sizes/font_size = 52
-text = "REVELAR"
+text = "COMPROBAR"
 vertical_alignment = 1
 
 
