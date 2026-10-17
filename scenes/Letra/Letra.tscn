@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://b4707jdpu10es"]
+[gd_scene load_steps=9 format=3 uid="uid://b4707jdpu10es"]
 
 [ext_resource type="Script" uid="uid://1gggswfp2io1" path="res://scenes/Letra/Letra.gd" id="1_jcy3o"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jcy3o"]
 bg_color = Color(0.97, 0.91, 0.8, 1)
@@ -38,6 +39,9 @@ bg_color = Color(0.769222, 0.769996, 0.302051, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omubc"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="Theme" id="Theme_font"]
+default_font = ExtResource("2_font")
+
 [node name="Letra" type="Control" groups=["Letra"]]
 custom_minimum_size = Vector2(64, 104)
 layout_mode = 3
@@ -48,6 +52,7 @@ offset_bottom = 0.32
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_jcy3o")
+theme = SubResource("Theme_font")
 
 [node name="PanelLetra" type="Panel" parent="."]
 custom_minimum_size = Vector2(20, 20)

@@ -2,14 +2,18 @@ extends Node
 
 const SAVE_PATH := "user://puzzle_states.json"
 const SAVE_VERSION := 1
+const DEBUG_NEARLY_SOLVED_IDS: Array[int] = []
+const DEBUG_NEARLY_SOLVED_LETTER := "A"
 
 var _states: Dictionary = {}
 var _save_queued := false
 var _restoring := false
+var _discard_until_new_puzzle := false
 
 
 func _ready() -> void:
 	_load_from_disk()
+	_reopen_debug_nearly_solved()
 	var safety_timer := Timer.new()
 	safety_timer.wait_time = 5.0
 	safety_timer.autostart = true
@@ -18,12 +22,21 @@ func _ready() -> void:
 
 
 func begin_current_puzzle() -> void:
+	_discard_until_new_puzzle = false
+	if GameManager.is_onboarding_session():
+		return
 	var puzzle_id := int(GameManager.id_frase)
 	if puzzle_id < 0:
 		return
 	var key := str(puzzle_id)
 	var existing: Dictionary = get_puzzle_state(puzzle_id)
-	if existing.is_empty() or str(existing.get("status", "")) == "completed":
+	var was_completed := str(existing.get("status", "")) == "completed"
+	if was_completed and not GameManager.allow_completed_replay:
+		if not _is_debug_nearly_solved(puzzle_id):
+			return
+	if GameManager.is_practice_session() and was_completed:
+		return
+	if existing.is_empty() or was_completed:
 		_states[key] = {
 			"status": "in_progress",
 			"resolution": {},
@@ -31,24 +44,49 @@ func begin_current_puzzle() -> void:
 			"cipher": GameManager.export_cipher_state(),
 			"meta": _current_meta(),
 		}
+		GameManager.allow_completed_replay = false
 		_write_to_disk()
 
 
+func in_progress_locale(puzzle_id: int) -> String:
+	var state := get_puzzle_state(puzzle_id)
+	if str(state.get("status", "")) != "in_progress":
+		return ""
+	var cipher: Dictionary = state.get("cipher", {})
+	var locale := str(cipher.get("locale", "")).strip_edges().to_lower()
+	if locale == "":
+		var meta: Dictionary = state.get("meta", {})
+		locale = str(meta.get("locale", "")).strip_edges().to_lower()
+	return locale
+
+
 func prepare_current_puzzle_cipher() -> bool:
-	var state := get_puzzle_state(int(GameManager.id_frase))
+	var puzzle_id := int(GameManager.id_frase)
+	var state := get_puzzle_state(puzzle_id)
 	if state.is_empty() or str(state.get("status", "")) != "in_progress":
 		return false
 	var cipher: Dictionary = state.get("cipher", {})
-	if str(cipher.get("locale", GameManager.locale_code())) != GameManager.locale_code():
+	if cipher.is_empty():
 		return false
+	var saved_locale := in_progress_locale(puzzle_id)
+	if saved_locale != "":
+		GameManager.puzzle_locale = saved_locale
 	return GameManager.import_cipher_state(cipher)
 
 
 func restore_current_puzzle() -> void:
+	if GameManager.is_onboarding_session():
+		GameManager.update_numero_letras_reveladas()
+		SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
+		return
 	var puzzle_id := int(GameManager.id_frase)
 	var state := get_puzzle_state(puzzle_id)
 	if state.is_empty() or str(state.get("status", "")) == "completed":
 		begin_current_puzzle()
+		_apply_debug_nearly_solved()
+		GameManager.update_numero_letras_reveladas()
+		SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
+		request_autosave()
 		return
 	_restoring = true
 	GameManager.import_attempt_state(state.get("attempt", {}))
@@ -61,9 +99,140 @@ func restore_current_puzzle() -> void:
 			"set_scroll_normalized",
 			float(state.get("resolution", {}).get("scroll", 0.0))
 		)
+	_apply_debug_nearly_solved()
 	GameManager.update_numero_letras_reveladas()
 	SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
 	_restoring = false
+	request_autosave()
+
+
+func _is_debug_nearly_solved(puzzle_id: int) -> bool:
+	return OS.is_debug_build() and DEBUG_NEARLY_SOLVED_IDS.has(puzzle_id)
+
+
+## Debug only: leave the debug puzzle with letter A unassigned so one tap solves it.
+func _apply_debug_nearly_solved() -> void:
+	if not _is_debug_nearly_solved(int(GameManager.id_frase)):
+		return
+	_reopen_debug_nearly_solved()
+	var leave := GameManager._hint_letter_key(DEBUG_NEARLY_SOLVED_LETTER)
+	var assigned_letters := {}
+	var first_empty: Celda = null
+	for node in get_tree().get_nodes_in_group("Celda"):
+		if not node is Celda:
+			continue
+		var cell := node as Celda
+		if cell.numero >= 100:
+			continue
+		if GameManager.is_excluded_character(cell.letra):
+			continue
+		var key := GameManager._hint_letter_key(cell.letra)
+		if key == leave:
+			cell.limpiar_letra_usuario()
+			if first_empty == null:
+				first_empty = cell
+			continue
+		cell.set_letter_user(key)
+		cell.mostrar_letra_jugador()
+		assigned_letters[key] = true
+	for node in get_tree().get_nodes_in_group("Letra"):
+		if not node is Letra:
+			continue
+		var keyboard_letter := node as Letra
+		var key := keyboard_letter.letra.to_upper()
+		if assigned_letters.has(key):
+			keyboard_letter.restore_as_assigned()
+		elif key == leave:
+			keyboard_letter.mark_as_unassigned()
+	if first_empty != null:
+		GameManager.set_celda_seleccionada(first_empty.orden, first_empty.numero)
+		GameManager.set_selected_letter_user("")
+
+
+func _reopen_debug_nearly_solved() -> void:
+	if not OS.is_debug_build():
+		return
+	for puzzle_id in DEBUG_NEARLY_SOLVED_IDS:
+		_reopen_debug_nearly_solved_id(puzzle_id)
+	_write_to_disk()
+
+
+func _reopen_debug_nearly_solved_id(puzzle_id: int) -> void:
+	var key := str(puzzle_id)
+	var state: Dictionary = get_puzzle_state(puzzle_id)
+	if state.is_empty():
+		state = {
+			"status": "in_progress",
+			"resolution": {},
+			"attempt": {},
+			"cipher": {},
+			"meta": {},
+		}
+	state["status"] = "in_progress"
+	var attempt: Dictionary = state.get("attempt", {})
+	if attempt is Dictionary:
+		attempt["board_fill_prompt_shown"] = false
+		state["attempt"] = attempt
+	var meta: Dictionary = state.get("meta", {})
+	if meta is Dictionary:
+		meta.erase("completed_at")
+		var leftover := _debug_letter_count(puzzle_id, DEBUG_NEARLY_SOLVED_LETTER)
+		var total := int(meta.get("letters_total", 0))
+		if total <= 0:
+			total = _debug_playable_letter_count(puzzle_id)
+		meta["letters_filled"] = maxi(total - leftover, 0)
+		meta["letters_total"] = total
+		state["meta"] = meta
+	var resolution: Dictionary = state.get("resolution", {})
+	if resolution is Dictionary:
+		var cells: Dictionary = resolution.get("cells", {})
+		var leave_number := _debug_cipher_number_for_letter(
+			state.get("cipher", {}),
+			DEBUG_NEARLY_SOLVED_LETTER
+		)
+		if leave_number > 0 and cells is Dictionary:
+			cells[str(leave_number)] = {
+				"letter": "",
+				"color_id": 0,
+				"visual_state": "empty",
+			}
+			resolution["cells"] = cells
+			resolution["selected_number"] = leave_number
+			state["resolution"] = resolution
+	_states[key] = state
+
+
+func _debug_playable_letter_count(puzzle_id: int) -> int:
+	var text := str(GameManager.get_phrase_item(puzzle_id).get("text", ""))
+	var count := 0
+	for i in text.length():
+		if not GameManager.is_excluded_character(text.substr(i, 1)):
+			count += 1
+	return count
+
+
+func _debug_letter_count(puzzle_id: int, letter: String) -> int:
+	var text := str(GameManager.get_phrase_item(puzzle_id).get("text", ""))
+	var leave := GameManager._hint_letter_key(letter)
+	var count := 0
+	for i in text.length():
+		var ch := text.substr(i, 1)
+		if GameManager.is_excluded_character(ch):
+			continue
+		if GameManager._hint_letter_key(ch) == leave:
+			count += 1
+	return count
+
+
+func _debug_cipher_number_for_letter(cipher: Variant, letter: String) -> int:
+	if not (cipher is Dictionary):
+		return 0
+	var alphabet: Array = (cipher as Dictionary).get("alphabet", [])
+	var numbers: Array = (cipher as Dictionary).get("numbers", [])
+	var index := alphabet.find(letter)
+	if index < 0 or index >= numbers.size():
+		return 0
+	return int(numbers[index]) + 1
 
 
 func request_autosave() -> void:
@@ -80,14 +249,18 @@ func _flush_autosave() -> void:
 
 
 func save_current_now() -> void:
-	if _restoring or not _is_gameplay_active():
+	if _discard_until_new_puzzle or _restoring or not _is_gameplay_active():
 		return
+	if GameManager.tutorial_board_active or GameManager.is_onboarding_session():
+		return
+	_sync_play_time_from_hud()
 	var puzzle_id := int(GameManager.id_frase)
 	if puzzle_id < 0:
 		return
 	var existing := get_puzzle_state(puzzle_id)
 	if str(existing.get("status", "")) == "completed":
-		return
+		if GameManager.is_practice_session() or not _is_debug_nearly_solved(puzzle_id):
+			return
 	_states[str(puzzle_id)] = {
 		"status": "in_progress",
 		"resolution": _capture_resolution(),
@@ -96,6 +269,8 @@ func save_current_now() -> void:
 		"meta": _current_meta(),
 	}
 	_write_to_disk()
+	if typeof(EventLoggerAutoload) != TYPE_NIL:
+		EventLoggerAutoload.persist_unfinished()
 
 
 func reset_resolution_keep_attempt() -> void:
@@ -119,13 +294,21 @@ func reset_resolution_keep_attempt() -> void:
 func mark_completed(puzzle_id: int) -> void:
 	if puzzle_id < 0:
 		return
+	if GameManager.is_practice_session() or GameManager.is_onboarding_session():
+		return
 	var state: Dictionary = get_puzzle_state(puzzle_id)
 	state["status"] = "completed"
 	state["resolution"] = {}
 	if puzzle_id == int(GameManager.id_frase):
 		state["attempt"] = GameManager.export_attempt_state()
 	var meta: Dictionary = state.get("meta", {})
+	if meta.is_empty():
+		meta = _current_meta()
 	meta["letters_filled"] = int(meta.get("letters_total", 0))
+	meta["completed_at"] = int(Time.get_unix_time_from_system())
+	if GameManager.session_source == GameManager.SOURCE_DAILY:
+		meta["source"] = GameManager.SOURCE_DAILY
+		meta["daily"] = true
 	state["meta"] = meta
 	_states[str(puzzle_id)] = state
 	_write_to_disk()
@@ -136,30 +319,190 @@ func get_puzzle_state(puzzle_id: int) -> Dictionary:
 	return (value as Dictionary).duplicate(true) if value is Dictionary else {}
 
 
+func in_progress_ids() -> Dictionary:
+	var result := {}
+	for key in _states.keys():
+		var state: Variant = _states[key]
+		if state is Dictionary and str((state as Dictionary).get("status", "")) == "in_progress":
+			result[int(str(key))] = true
+	return result
+
+
 func get_puzzle_summary(puzzle_id: int) -> Dictionary:
 	var state := get_puzzle_state(puzzle_id)
 	var maximum := _maximum_stars_for_puzzle(puzzle_id)
+	var history := _history_completion(puzzle_id)
 	if state.is_empty():
-		return {
-			"status": "new",
-			"stars_remaining": maximum,
-			"stars_max": maximum,
-			"letters_filled": 0,
-			"letters_total": 0,
-		}
+		if history.is_empty():
+			return {
+				"status": "new",
+				"stars_remaining": maximum,
+				"stars_max": maximum,
+				"letters_filled": 0,
+				"letters_total": 0,
+				"tiempo_partida": 0,
+				"completed_at": 0,
+				"hours_since_completed": -1,
+				"aids_used": 0,
+				"failed_letters": 0,
+				"is_perfect": false,
+			}
+		return _summary_from_history(puzzle_id, history, maximum)
 	var attempt: Dictionary = state.get("attempt", {})
 	var meta: Dictionary = state.get("meta", {})
+	var status := str(state.get("status", "in_progress"))
+	if status != "in_progress" and status != "completed" and not history.is_empty():
+		return _summary_from_history(puzzle_id, history, maximum)
+	var stars_remaining := clampi(
+		int(attempt.get("puzzle_stars", maximum)),
+		0,
+		maximum
+	)
+	if not attempt.has("puzzle_stars") and not history.is_empty():
+		stars_remaining = clampi(int(history.get("estrellas", maximum)), 0, maximum)
+	var completed_at := completed_unix(puzzle_id)
+	var completed := status == "completed"
 	return {
-		"status": str(state.get("status", "in_progress")),
-		"stars_remaining": clampi(
-			int(attempt.get("puzzle_stars", maximum)),
-			0,
-			maximum
-		),
+		"status": status,
+		"stars_remaining": stars_remaining,
 		"stars_max": maximum,
 		"letters_filled": int(meta.get("letters_filled", 0)),
 		"letters_total": int(meta.get("letters_total", 0)),
+		"tiempo_partida": int(attempt.get("tiempo_partida", meta.get("tiempo_partida", 0))),
+		"completed_at": completed_at,
+		"hours_since_completed": hours_since_completed(puzzle_id),
+		"aids_used": _attempt_aids(attempt) if _attempt_aids(attempt) > 0 else _history_aids(history),
+		"failed_letters": int(attempt.get("reveal_errors_count", history.get("revelaciones_falladas", 0))),
+		"is_perfect": completed and stars_remaining >= maximum,
 	}
+
+
+func completed_unix(puzzle_id: int) -> int:
+	var state := get_puzzle_state(puzzle_id)
+	var stored := int(state.get("meta", {}).get("completed_at", 0))
+	if stored > 0:
+		return stored
+	if typeof(HistoryManager) == TYPE_NIL:
+		return 0
+	var latest := 0
+	for value in HistoryManager.get_history():
+		if not (value is Dictionary):
+			continue
+		var entry: Dictionary = value
+		if int(entry.get("id", -1)) != puzzle_id:
+			continue
+		if not bool(entry.get("partida_ganada", false)):
+			continue
+		var unix := int(entry.get("completed_unix", 0))
+		if unix <= 0:
+			unix = _unix_from_history_fecha(entry.get("fecha", {}))
+		latest = maxi(latest, unix)
+	return latest
+
+
+func hours_since_completed(puzzle_id: int) -> int:
+	var unix := completed_unix(puzzle_id)
+	if unix > 0:
+		var elapsed := int(Time.get_unix_time_from_system()) - unix
+		return maxi(int(elapsed / 3600.0), 0)
+	if str(get_puzzle_state(puzzle_id).get("status", "")) == "completed":
+		return 48
+	if not _history_completion(puzzle_id).is_empty():
+		return 48
+	return -1
+
+
+func can_replay_completed(puzzle_id: int) -> bool:
+	var summary := get_puzzle_summary(puzzle_id)
+	if str(summary.get("status", "")) != "completed":
+		return false
+	return int(summary.get("hours_since_completed", -1)) >= 48
+
+
+func _attempt_aids(attempt: Dictionary) -> int:
+	return (
+		int(attempt.get("pistas_utilizadas_1", 0))
+		+ int(attempt.get("pistas_utilizadas_2", 0))
+		+ int(attempt.get("consonantes_compradas", 0))
+		+ int(attempt.get("vocalesAE_compradas", 0))
+		+ int(attempt.get("vocalesIOU_compradas", 0))
+	)
+
+
+func _history_aids(entry: Dictionary) -> int:
+	if entry.is_empty():
+		return 0
+	return (
+		int(entry.get("pistas_consumidas_1", 0))
+		+ int(entry.get("pistas_consumidas_2", 0))
+		+ int(entry.get("consonantes_compradas", 0))
+		+ int(entry.get("vocales_compradas_AE", 0))
+		+ int(entry.get("vocales_compradas_IOU", 0))
+	)
+
+
+func _history_completion(puzzle_id: int) -> Dictionary:
+	if typeof(HistoryManager) == TYPE_NIL:
+		return {}
+	var latest := {}
+	var latest_unix := -1
+	for value in HistoryManager.get_history():
+		if not (value is Dictionary):
+			continue
+		var entry: Dictionary = value
+		if int(entry.get("id", -1)) != puzzle_id:
+			continue
+		if not bool(entry.get("partida_ganada", false)):
+			continue
+		var unix := int(entry.get("completed_unix", 0))
+		if unix <= 0:
+			unix = _unix_from_history_fecha(entry.get("fecha", {}))
+		if unix >= latest_unix:
+			latest = entry
+			latest_unix = unix
+	return latest
+
+
+func _summary_from_history(puzzle_id: int, history: Dictionary, maximum: int) -> Dictionary:
+	var stars_remaining := clampi(int(history.get("estrellas", maximum)), 0, maximum)
+	return {
+		"status": "completed",
+		"stars_remaining": stars_remaining,
+		"stars_max": maximum,
+		"letters_filled": 0,
+		"letters_total": 0,
+		"tiempo_partida": int(history.get("tiempo_partida", 0)),
+		"completed_at": completed_unix(puzzle_id),
+		"hours_since_completed": hours_since_completed(puzzle_id),
+		"aids_used": _history_aids(history),
+		"failed_letters": int(history.get("revelaciones_falladas", 0)),
+		"is_perfect": stars_remaining >= maximum,
+	}
+
+
+func _unix_from_history_fecha(fecha: Variant) -> int:
+	if not (fecha is Dictionary):
+		return 0
+	var date: Dictionary = fecha
+	var year := int(date.get("anio", 0))
+	var month := int(date.get("mes", 0))
+	var day := int(date.get("dia", 0))
+	if year <= 0 or month <= 0 or day <= 0:
+		var iso := str(date.get("iso", ""))
+		if iso.length() >= 10:
+			year = int(iso.substr(0, 4))
+			month = int(iso.substr(5, 2))
+			day = int(iso.substr(8, 2))
+	if year <= 0 or month <= 0 or day <= 0:
+		return 0
+	return int(Time.get_unix_time_from_datetime_dict({
+		"year": year,
+		"month": month,
+		"day": day,
+		"hour": 12,
+		"minute": 0,
+		"second": 0,
+	}))
 
 
 func _maximum_stars_for_puzzle(puzzle_id: int) -> int:
@@ -189,12 +532,10 @@ func _capture_resolution() -> Dictionary:
 				cell.letter_user,
 				cell.numero
 			)
-			if is_correct and GameManager.letras_iniciales.to_upper().contains(
-				cell.letter_user.to_upper()
-			):
-				visual_state = "initial"
-			elif cell.bloqueada and is_correct:
+			if cell.revelada_verde or (cell.bloqueada and is_correct and not cell.es_regalo_inicial):
 				visual_state = "correct"
+			elif cell.es_regalo_inicial:
+				visual_state = "initial"
 			elif cell.celda_mostrada:
 				visual_state = "player"
 			else:
@@ -222,6 +563,12 @@ func _capture_resolution() -> Dictionary:
 	}
 
 
+func _apply_saved_cell_color(cell: Celda, saved: Dictionary) -> void:
+	var color_id := int(saved.get("color_id", 0))
+	if color_id > 0 and color_id < GameManager.lista_tonos_colores.size():
+		cell.cambia_color(color_id)
+
+
 func _apply_resolution(resolution: Dictionary) -> void:
 	var saved_cells: Dictionary = resolution.get("cells", {})
 	var assigned_letters := {}
@@ -241,6 +588,8 @@ func _apply_resolution(resolution: Dictionary) -> void:
 				saved_initial_letter,
 				cell.numero
 			):
+				cell.mostrar_letra_especifica(saved_initial_letter)
+				_apply_saved_cell_color(cell, saved)
 				continue
 			# Repair saves created when an incorrect use of an initial letter
 			# was mistakenly stored as a locked initial cell.
@@ -258,9 +607,7 @@ func _apply_resolution(resolution: Dictionary) -> void:
 				cell.mostrar_letra_errada()
 			_:
 				cell.limpiar_letra_usuario()
-		var color_id := int(saved.get("color_id", 0))
-		if color_id > 0 and color_id < GameManager.lista_tonos_colores.size():
-			cell.cambia_color(color_id)
+		_apply_saved_cell_color(cell, saved)
 
 	for node in get_tree().get_nodes_in_group("Letra"):
 		if not node is Letra:
@@ -289,10 +636,12 @@ func _current_meta() -> Dictionary:
 		"category": GameManager.normalize_category(GameManager.categoria_actual),
 		"mode": GameManager.game_mode_actual,
 		"difficulty": int(GameManager.dificultad_actual),
-		"locale": GameManager.locale_code(),
+		"locale": GameManager.active_puzzle_locale(),
 		"letters_filled": int(GameManager.numero_letras_reveladas),
 		"letters_total": int(GameManager.numero_letras_a_revelar_originales),
+		"tiempo_partida": int(GameManager.tiempo_partida),
 		"updated_at": Time.get_unix_time_from_system(),
+		"source": str(GameManager.session_source),
 	}
 
 
@@ -303,6 +652,13 @@ func _find_canvas() -> Node:
 
 func _is_gameplay_active() -> bool:
 	return not get_tree().get_nodes_in_group("PuzzleCanvas").is_empty()
+
+
+func _sync_play_time_from_hud() -> void:
+	for node in get_tree().get_nodes_in_group("GameHUD"):
+		if node.has_method("sync_play_time"):
+			node.call("sync_play_time")
+			return
 
 
 func _load_from_disk() -> void:
@@ -316,6 +672,113 @@ func _load_from_disk() -> void:
 		_states = (parsed as Dictionary).get("states", {})
 
 
+func clear_all() -> void:
+	_states.clear()
+	_save_queued = false
+	_write_to_disk()
+
+
+func discard_all_progress() -> void:
+	_states.clear()
+	_save_queued = false
+	_discard_until_new_puzzle = true
+	_write_to_disk()
+
+
+func clear_puzzle_state(puzzle_id: int) -> void:
+	_states.erase(str(puzzle_id))
+	_save_queued = false
+	_write_to_disk()
+
+
+func seed_category_replayable(category_id: String) -> void:
+	if typeof(GameManager) == TYPE_NIL or GameManager.frases_db.is_empty():
+		return
+	var completed_at := int(Time.get_unix_time_from_system()) - (50 * 3600)
+	var date := Time.get_datetime_dict_from_unix_time(completed_at)
+	var fecha := {
+		"dia": int(date.get("day", 1)),
+		"mes": int(date.get("month", 1)),
+		"anio": int(date.get("year", 2026)),
+		"iso": "%04d-%02d-%02d" % [
+			int(date.get("year", 2026)),
+			int(date.get("month", 1)),
+			int(date.get("day", 1)),
+		],
+	}
+	var history_entries: Array = []
+	for raw in GameManager.frases_db:
+		if typeof(raw) != TYPE_DICTIONARY:
+			continue
+		var item: Dictionary = raw
+		if not GameManager.categories_match(str(item.get("category", "")), category_id):
+			continue
+		if GameManager.is_daily_puzzle(item):
+			continue
+		var puzzle_id := int(item.get("index", -1))
+		if puzzle_id < 0:
+			continue
+		var difficulty := int(item.get("difficulty", 1))
+		var stars := GameManager.get_puzzle_difficulty_stars(difficulty)
+		var mode := GameManager.level_game_mode(item)
+		var letters_total := _count_item_letters(str(item.get("text", "")))
+		_states[str(puzzle_id)] = {
+			"status": "completed",
+			"resolution": {},
+			"attempt": {
+				"puzzle_stars": stars,
+				"puzzle_max_stars": stars,
+				"tiempo_partida": 180,
+			},
+			"cipher": {},
+			"meta": {
+				"category": GameManager.CAT_EFEMERIDE,
+				"mode": mode,
+				"difficulty": difficulty,
+				"letters_filled": letters_total,
+				"letters_total": letters_total,
+				"tiempo_partida": 180,
+				"completed_at": completed_at,
+				"source": GameManager.SOURCE_NONE,
+			},
+		}
+		history_entries.append({
+			"id": puzzle_id,
+			"fecha": fecha,
+			"jugador_nombre": str(GameManager.player_name),
+			"categoria": GameManager.CAT_EFEMERIDE,
+			"score": 1000,
+			"partida_ganada": true,
+			"tiempo_partida": 180,
+			"dificultad": difficulty,
+			"game_mode": mode,
+			"estrellas": stars,
+			"star_system_version": 2,
+			"consonantes_compradas": 0,
+			"vocales_compradas_AE": 0,
+			"vocales_compradas_IOU": 0,
+			"pistas_consumidas_1": 0,
+			"pistas_consumidas_2": 0,
+			"revelaciones_falladas": 0,
+			"revelaciones_correctas": 0,
+			"gomas_utilizadas": 0,
+			"vidas_perdidas": 0,
+			"completed_unix": completed_at,
+			"source": GameManager.SOURCE_NONE,
+		})
+	_write_to_disk()
+	if typeof(HistoryManager) != TYPE_NIL:
+		HistoryManager.seed_completed_entries(history_entries)
+
+
+func _count_item_letters(text: String) -> int:
+	var count := 0
+	for character in GameManager.normalizar_frase_idioma(text, GameManager.locale_code()):
+		if not GameManager.is_excluded_character(character):
+			count += 1
+	return count
+
+
 func _write_to_disk() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file == null:
@@ -327,5 +790,5 @@ func _write_to_disk() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED:
 		save_current_now()

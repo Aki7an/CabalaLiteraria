@@ -115,14 +115,28 @@ func _on_button_pressed() -> void:
 
 	var previous_letter := GameManager.selected_letra.strip_edges()
 	var target_number := GameManager.celda_seleccionada_numero
+	var replacing := (
+		previous_letter != ""
+		and previous_letter.to_upper() != letra.to_upper()
+	)
 
-	# Changing an existing unverified assignment: free the old keyboard letter first.
-	if previous_letter != "" and previous_letter.to_upper() != letra.to_upper():
+	# Changing an existing unverified assignment counts as using the eraser.
+	if replacing:
+		GameManager.cambios_increase()
+		SignalManager.update_cambios.emit()
+		SoundManager.play("Erase")
+		SignalManager.rubber_feedback.emit()
 		GameManager.liberar_letra_teclado(previous_letter)
 
 	print("Tocada LETRA con letra:", letra)
+	SignalManager.puzzle_input.emit("letter", {
+		"letter": letra,
+		"numero": target_number,
+		"orden": GameManager.selected_celda_number,
+	})
 	GameManager.set_selected_letter_user(letra)
-	SoundManager.play("ClickLetra")
+	if not replacing:
+		SoundManager.play("ClickLetra")
 	_apply_panel_color(color_selected)
 	letra_mostrada = true
 	verificada_correcta = false
@@ -134,13 +148,18 @@ func _on_button_pressed() -> void:
 		SignalManager.update_rubber.emit()
 	SignalManager.asignar_letra.emit(
 		GameManager.tiempo_partida,
-		GameManager.selected_letra
+		target_number,
+		letra
 	)
 	SignalManager.update_difficulty.emit(
 		GameManager.frase_original,
 		GameManager.recoger_letras_mostradas()
 	)
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
+
+
+func apply_from_keyboard() -> void:
+	_on_button_pressed()
 
 
 func _erase_letter() -> void:
@@ -151,6 +170,8 @@ func _erase_letter() -> void:
 		return
 
 	# Clear this letter from every editable cell on the board.
+	GameManager.cambios_increase()
+	SignalManager.update_cambios.emit()
 	GameManager.borrar_letra_en_tablero(selected)
 	GameManager.reset_cell_select()
 	SignalManager.update_resting_characters.emit()
@@ -162,10 +183,18 @@ func _erase_letter() -> void:
 		GameManager.frase_original,
 		GameManager.recoger_letras_mostradas()
 	)
-	SoundManager.play("LoseLive")
+	SoundManager.play("Erase")
 	SignalManager.update_cambios.emit()
 	SignalManager.update_rubber.emit()
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
+
+
+func reset_for_new_puzzle() -> void:
+	letra_mostrada = false
+	verificada_correcta = false
+	letra_selected.visible = false
+	_inicializar_letra()
+	_apply_panel_color(color_normal)
 
 
 func liberar_para_reuso() -> void:
@@ -195,6 +224,25 @@ func muestra_letra() -> void:
 	letra_mostrada = true
 	letra_selected.visible = false
 	_apply_panel_color(color_selected_por_inicio)
+
+
+func apply_enter_letter_look(orange: Color) -> void:
+	letra_mostrada = true
+	letra_selected.visible = false
+	_apply_panel_color(orange)
+	if label_letra:
+		label_letra.add_theme_color_override("font_color", orange)
+	clip_contents = true
+	if size.x > 1.0:
+		pivot_offset = size * 0.5
+
+
+func finish_enter_letter_look() -> void:
+	clip_contents = false
+	scale = Vector2.ONE
+	if label_letra:
+		label_letra.remove_theme_color_override("font_color")
+	muestra_letra()
 
 
 func mark_as_correct() -> void:

@@ -25,10 +25,10 @@ func _on_check_button_2_pressed():
 	if check_button_fx.button_pressed:
 		PlayerPrefs.mute_fx = true
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundFx"), false)
-		PlayerPrefs.save_prefs()
 	else:
 		PlayerPrefs.mute_fx = false
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("SoundFx"), true)
+	PlayerPrefs.save_prefs()
 		
 	
 
@@ -38,6 +38,12 @@ func _ready():
 	_set_image(GameManager.NUM_COLUMNAS)
 	
 	labe_columns.text = str(GameManager.NUM_COLUMNAS)
+	$Panel/LabelSound2.text = tr("GAME SETTINGS")
+	$Panel/TextureRect3/LabeLanguage.text = tr("COLUMNS")
+	$Panel/TextureRect4/LabeLanguage.text = tr("OnlineName")
+	$Panel/TextureRect2/LabelSound.text = tr("SOUND")
+	$Panel/ButtonRefranesPopulares2/Label2.text = tr("Music")
+	$Panel/ButtonBack.text = tr("Back")
 	
 	h_slider_fx.value = PlayerPrefs.volumen_fx
 	h_slider_sound.value = PlayerPrefs.volumen_musica
@@ -52,10 +58,10 @@ func _ready():
 	else:
 		check_button_music.button_pressed = false
 	
-	if GameManager.player_name != "":
+	if GameManager.has_chosen_online_name():
 		nombre.placeholder_text = GameManager.player_name
 	else:
-		nombre.placeholder_text = "Enter Name ..."
+		nombre.placeholder_text = tr("Enter Name")
 
 func _on_check_button_music_pressed():
 	SoundManager.play("ButtonClick")
@@ -71,14 +77,13 @@ func _on_check_button_music_pressed():
 
 func _on_h_slider_fx_value_changed(value):
 	PlayerPrefs.volumen_fx = h_slider_fx.value
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SoundFx"), linear_to_db(h_slider_fx.value))
+	SoundManager.apply_audio_prefs()
 	PlayerPrefs.save_prefs()
-	#print("Changed" , h_slider_fx.value)
 
 
 func _on_h_slider_sound_value_changed(value):
 	PlayerPrefs.volumen_musica = h_slider_sound.value
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(h_slider_sound.value))
+	SoundManager.apply_audio_prefs()
 	PlayerPrefs.save_prefs()
 
 
@@ -123,4 +128,5 @@ func _set_image(cols: int) -> void:
 
 
 func _on_nombre_text_submitted(new_text):
-	GameManager.player_name = nombre.text
+	GameManager.set_player_name(nombre.text)
+	PlayerPrefs.save_prefs()

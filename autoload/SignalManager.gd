@@ -27,6 +27,10 @@ signal update_puzzle_stars(stars:int)
 signal fit_text
 
 signal app_version_changed(version_text: String)
+signal audio_prefs_changed
+signal full_game_changed
+signal store_price_changed
+signal daily_puzzle_changed
 
 signal update_score
 
@@ -39,6 +43,8 @@ signal erase_selected_letter
 signal player_name_for_records
 
 signal update_rubber
+
+signal rubber_feedback
 
 signal añade_las_letras_iniciales
 
@@ -58,6 +64,7 @@ signal borrar_letra(t_game_ms:int, celda:int, letra:String)
 signal asignar_letra(t_game_ms:int, celda:int, letra:String) 
 signal partida_iniciada()
 signal partida_finalizada(resultado:String) # "win" / "lose" / "abort"
+signal puzzle_input(action: String, meta: Dictionary)
 
 signal mueve_filas(rows: int, time: float)
 

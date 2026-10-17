@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scenes/trailer/blocks/01_pregunta.gd" id="script"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_backdrop.tscn" id="bg"]
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_phone_game.tscn" id="phone"]
+[ext_resource type="FontVariation" path="res://scenes/trailer/parts/trailer_title_font.tres" id="font"]
+[ext_resource type="Theme" path="res://scenes/trailer/parts/trailer_theme.tres" id="theme"]
+
+[node name="01_Pregunta" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+clip_contents = false
+mouse_filter = 2
+theme = ExtResource("theme")
+script = ExtResource("script")
+
+[node name="Backdrop" parent="." instance=ExtResource("bg")]
+
+[node name="Phone" parent="." instance=ExtResource("phone")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 711.0
+offset_top = 0.0
+offset_right = 1917.0
+offset_bottom = 2622.0
+scale = Vector2(0.412, 0.412)
+
+[node name="QuestionStart" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-1920, 740)
+
+[node name="QuestionCenter" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, 740)
+
+[node name="QuestionExit" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(1920, 740)
+
+[node name="Question" type="Label" parent="."]
+unique_name_in_owner = true
+z_index = 8
+layout_mode = 0
+offset_left = -1920.0
+offset_top = 740.0
+offset_right = 0.0
+offset_bottom = 960.0
+theme_override_colors/font_color = Color(0.1, 0.22, 0.28, 1)
+theme_override_fonts/font = ExtResource("font")
+theme_override_font_sizes/font_size = 74
+text = "¿Puedes descifrarlo?"
+horizontal_alignment = 1
+vertical_alignment = 1

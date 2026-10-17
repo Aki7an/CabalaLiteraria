@@ -1,0 +1,82 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Texture2D" path="res://data/images/image5.png" id="1_img"]
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(1, 0.949, 0.804, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 10
+border_color = Color(0.76, 0.56, 0.28, 0.78)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
+shadow_color = Color(0, 0, 0, 0.28)
+shadow_size = 20
+shadow_offset = Vector2(0, 14)
+
+[sub_resource type="StyleBoxFlat" id="Style_foot"]
+bg_color = Color(0.92, 0.48, 0.08, 0.12)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.92, 0.48, 0.08, 0.95)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+
+[sub_resource type="StyleBoxFlat" id="Style_module"]
+bg_color = Color(1, 0.86, 0.18, 0.14)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 0.86, 0.18, 0.95)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[node name="ThemeCard" type="Panel"]
+custom_minimum_size = Vector2(620, 620)
+offset_right = 620.0
+offset_bottom = 620.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Image" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 28.0
+offset_right = 592.0
+offset_bottom = 592.0
+mouse_filter = 2
+texture = ExtResource("1_img")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="FootprintHighlight" type="Panel" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 168.0
+offset_top = 368.0
+offset_right = 452.0
+offset_bottom = 572.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_foot")
+
+[node name="ModuleHighlight" type="Panel" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 48.0
+offset_right = 236.0
+offset_bottom = 392.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_module")

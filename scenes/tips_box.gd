@@ -122,7 +122,7 @@ func _on_pause_play_pressed() -> void:
 		else:
 			_progress_tween.play()
 	pause_play_button.text = "▶" if _is_paused else "Ⅱ"
-	pause_play_button.tooltip_text = "Reanudar consejos" if _is_paused else "Pausar consejos"
+	pause_play_button.tooltip_text = tr("ResumeTips") if _is_paused else tr("PauseTips")
 
 func _refresh_dots() -> void:
 	var active := Color(0.364706, 0.25098, 0.215686, 1)

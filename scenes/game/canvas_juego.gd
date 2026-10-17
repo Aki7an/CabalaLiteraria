@@ -25,7 +25,9 @@ var _move_tween: Tween
 const DRAG_THRESHOLD := 8.0  # píxeles para considerar que es drag
 const SCROLL_STEP := 80.0  # píxeles por “tic” de rueda (ajústalo a gusto)
 const STRIPE_WIDTH := 18.0
-const CELL_HEIGHT_RATIO := 1.5
+const TARGET_FULL_ROWS := 7
+const NEXT_ROW_PEEK := 10.0
+const FALLBACK_HEIGHT_RATIO := 1.5
 
 # ------------------ Estado input ------------------
 var tocando: bool = false
@@ -33,6 +35,10 @@ var dragging: bool = false
 var start_pos: Vector2 = Vector2.ZERO
 var ultima_posicion: Vector2 = Vector2.ZERO
 var _rest_y: float = 0.0
+var _suppress_cell_selection := false
+var _drag_end_queued := false
+var _selection_before_numero := 100
+var _selection_before_orden := 100
 
 
 signal global_position_changed(new_global_pos: Vector2)
@@ -59,6 +65,7 @@ var escena_celda: PackedScene = preload("res://scenes/Celda/Celda.tscn")
 @export var curve_override: Curve
 
 var _tween: Tween
+var _gift_tries: int = 0
 
 ## Mueve canvasJuego de X=inicio a X=fin en 'duration' segundos.
 ## Si 'start_from_current' es true, parte desde la X actual del nodo.
@@ -172,16 +179,13 @@ func _rebuild_side_stripes() -> void:
 		c.queue_free()
 
 	# Calcula alturas como en _update_cell_min_heights()
-	var cols: int = max(1, grid_container.columns)
-	var total_w: float = grid_container.size.x
-	var hsep: int = _grid_hsep()
-	var usable_w: float = total_w - float(hsep) * float(cols - 1)
-	if usable_w <= 0.0:
+	var cell_w: float = _cell_width()
+	var cell_h: float = _cell_height()
+	if cell_w <= 0.0 or cell_h <= 0.0:
 		return
-	var cell_w: float = usable_w / float(cols)
-	var cell_h: float = cell_w * CELL_HEIGHT_RATIO
 
 	# Número de filas actuales
+	var cols: int = max(1, grid_container.columns)
 	var filas: int = int(ceil(float(GameManager.TOTAL_CELDAS) / float(cols)))
 
 	# Crea las tiras fila a fila, alternando color
@@ -227,24 +231,49 @@ func change_grid(step: int) -> void:
 	_update_scroll_bounds()
 	SignalManager.update_size_celdas.emit()
 
+func rebuild_puzzle_board() -> void:
+	for child in grid_container.get_children():
+		grid_container.remove_child(child)
+		child.free()
+	GameManager.lista_celdas.clear()
+	_reset_keyboard_keys()
+	crear_linea_horizontal()
+	reset_grid()
+	await get_tree().process_frame
+	_update_cell_min_heights()
+	_update_scroll_bounds()
+	_clamp_canvas_y()
+	update_position_botton_red_line()
+	_gift_tries = 20
+	_añade_las_letras_iniciales()
+	SignalManager.update_size_celdas.emit()
+	SignalManager.update_resting_characters.emit()
+	position.y = _rest_y
+	_clamp_canvas_y()
+
+
+func _reset_keyboard_keys() -> void:
+	for node in get_tree().get_nodes_in_group("Letra"):
+		if node is Letra and node.has_method("reset_for_new_puzzle"):
+			(node as Letra).reset_for_new_puzzle()
+
+
 func reset_grid() -> void:
 	grid_container.columns = max(1, GameManager.NUM_COLUMNAS)
 	_update_cell_min_heights()
 	_clamp_canvas_y()
 
 func _update_cell_min_heights() -> void:
-	var cols: int = max(1, grid_container.columns)
-	var total_w: float = grid_container.size.x
-	var hsep: int = _grid_hsep()
-	var usable_w: float = total_w - float(hsep) * float(cols - 1)
-	if usable_w <= 0.0:
+	var cell_w: float = _cell_width()
+	var cell_h: float = _cell_height()
+	if cell_w <= 0.0 or cell_h <= 0.0:
 		return
-	var cell_w: float = usable_w / float(cols)
-	var cell_h: float = cell_w * CELL_HEIGHT_RATIO
+	var ratio: float = cell_w / cell_h
 
 	for child in grid_container.get_children():
 		if child is AspectRatioContainer:
 			var arc := child as AspectRatioContainer
+			arc.ratio = ratio
 			arc.custom_minimum_size = Vector2(cell_w, cell_h)
 		elif child is Control:
 			var c := child as Control
@@ -254,75 +283,100 @@ func _update_cell_min_heights() -> void:
 
 	
 func _añade_las_letras_iniciales() -> void:
-	#falta revisar las Letras y pintarlas en pantalla independientemente de si hay o no letras en la frase
-		# Buscar todos los nodos que pertenezcan al grupo "Letra"
-	var letras := get_tree().get_nodes_in_group("Letra")
-	
-	for letra in letras:
-		for caracter in GameManager.letras_iniciales:
-			if letra.letra == caracter:
-				letra.muestra_letra()
-				#print(caracter)
-			
-			
-	
-	# Asegúrate de tener celdas en el árbol
+	if GameManager.puzzle_enter_pending:
+		return
 	var celdas := get_tree().get_nodes_in_group("Celda")
-	if celdas.is_empty():
-		# Reintenta en el siguiente frame (evita llamar en bucle si nunca se instancian)
+	var initials := GameManager.letras_iniciales.strip_edges()
+	var expects_gifts := GameManager.dificultad_actual <= 2
+	if celdas.is_empty() or (expects_gifts and initials == "" and _gift_tries < 10):
+		_gift_tries += 1
 		call_deferred("_añade_las_letras_iniciales")
 		return
 
-	# Nada que hacer si no hay letras iniciales
-	if GameManager.letras_iniciales.strip_edges() == "":
+	var letras := get_tree().get_nodes_in_group("Letra")
+	for node in letras:
+		if not node is Letra:
+			continue
+		var key := node as Letra
+		for caracter in GameManager.letras_iniciales:
+			if GameManager._hint_letter_key(key.letra) == GameManager._hint_letter_key(str(caracter)):
+				key.muestra_letra()
+
+	if initials == "":
+		GameManager.update_numero_letras_reveladas()
+		SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
 		return
 
-	# Normaliza y evita duplicados (por si "ATDBA" repite A)
 	var letras_set := {}
-	var s : String = GameManager.letras_iniciales.to_upper()
+	var s := initials.to_upper()
 	for i in s.length():
-		var ch := s[i]
-		if not GameManager.EXCLUIR.has(ch):
+		var ch := GameManager._hint_letter_key(s[i])
+		if ch != "" and not GameManager.is_excluded_character(ch):
 			letras_set[ch] = true
 
-	# Para cada letra inicial, calcula su número (mapeo dinámico actual)
 	for letter in letras_set.keys():
-		var num_objetivo := GameManager.letra_a_numero(letter) + 1  # tus celdas usan +1
+		var gift_key := GameManager._hint_letter_key(str(letter))
+		var num_objetivo := GameManager.letra_a_numero(gift_key) + 1
 		if num_objetivo <= 0:
-			continue  # letra no encontrada en el alfabeto actual
-
-		# Rellena todas las celdas cuyo número coincida
+			continue
 		for celda in celdas:
-			# Saltar signos/espacios (tu convenio usa >=100 para no-jugables)
-			#if not celda.has_variable("numero"):
-				#continue
-			if celda.numero >= 100:
+			if celda == null or not (celda is Celda):
 				continue
-			if celda.numero != num_objetivo:
+			if celda.numero >= 100 or celda.numero != num_objetivo:
 				continue
-			
-			if (String(celda.letra) == letter):
-				celda.mostrar_letra_especifica(letter)
-				#print("LETRA:" , letter)
-				#celda.set_user_letter(letter)
-				
-				
-			elif celda.has_method("set_letter"):
-				# Si tu set_letter está pensada para "cargar" la frase, úsala solo si en tu UI es correcto
-				celda.set_letter(letter)
-			else:
-				# Fallback directo a la propiedad (asumiendo que el Label interno se actualiza al settear letra)
-				celda.letra = letter
+			var cell_key := GameManager._hint_letter_key(str(celda.letra))
+			if cell_key == gift_key:
+				celda.mostrar_letra_especifica(gift_key)
 
-			# Cuenta esta revelación
-			GameManager.update_numero_letras_reveladas()
+	GameManager.update_numero_letras_reveladas()
+	SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
 
 # ----------------------------------------------------
 #                     INPUT
 # ----------------------------------------------------
+func _blocks_board_pan() -> bool:
+	if get_tree().get_first_node_in_group("OnboardingGuide") != null:
+		return false
+	return get_tree().get_first_node_in_group("BasicStartTutorial") != null
+
+
+func _notify_onboarding_pan_ended() -> void:
+	var guide := get_tree().get_first_node_in_group("OnboardingGuide")
+	if guide and guide.has_method("on_board_pan_ended"):
+		guide.call("on_board_pan_ended")
+
+
+func pan_cell_into_view(cell: Control, pad: float = 56.0) -> void:
+	if cell == null or not is_instance_valid(cell):
+		return
+	var parent_ctrl := get_parent() as Control
+	var view := parent_ctrl.get_global_rect() if parent_ctrl else get_global_rect()
+	var cell_rect := cell.get_global_rect()
+	var delta := 0.0
+	if cell_rect.size.y + pad * 2.0 >= view.size.y:
+		delta = view.get_center().y - cell_rect.get_center().y
+	elif cell_rect.position.y < view.position.y + pad:
+		delta = (view.position.y + pad) - cell_rect.position.y
+	elif cell_rect.end.y > view.end.y - pad:
+		delta = -(cell_rect.end.y - (view.end.y - pad))
+	if absf(delta) < 1.0:
+		return
+	position.y += delta
+	_clamp_canvas_y()
+
+
 func _input(event: InputEvent) -> void:
+	if _blocks_board_pan():
+		return
 	var pos: Vector2 = _event_pos(event)
-	
+
+	if event is InputEventMouseButton:
+		var drag_button := event as InputEventMouseButton
+		if drag_button.button_index == MOUSE_BUTTON_LEFT and (dragging or _suppress_cell_selection or _drag_end_queued):
+			if not drag_button.pressed:
+				_finish_drag_pointer()
+			accept_event()
+			return
 
 	# Desplazar solo si el puntero/gesto está sobre el canvas
 	if event is InputEventMouseButton and _is_over_canvas(_event_pos(event)):
@@ -331,48 +385,52 @@ func _input(event: InputEvent) -> void:
 			# rueda arriba -> mover contenido hacia arriba (Y menor)
 			canvas_juego.position.y -= SCROLL_STEP
 			_clamp_canvas_y()
-			PuzzleSaveManager.request_autosave()
+			PlatformServices.save_progress()
+			_notify_onboarding_pan_ended()
 			accept_event()
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			# rueda abajo -> mover contenido hacia abajo (Y mayor)
 			canvas_juego.position.y += SCROLL_STEP
 			_clamp_canvas_y()
-			PuzzleSaveManager.request_autosave()
+			PlatformServices.save_progress()
+			_notify_onboarding_pan_ended()
+			accept_event()
+		elif mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
+			_begin_board_gesture(pos)
+		elif mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed and (dragging or _suppress_cell_selection):
+			_finish_drag_pointer()
 			accept_event()
 
 	if event is InputEventScreenTouch:
 		var touch := event as InputEventScreenTouch
+		if touch.pressed and (_suppress_cell_selection or _drag_end_queued):
+			accept_event()
+			return
 		if touch.pressed and _is_over_canvas(pos):
-			tocando = true
-			dragging = false
-			start_pos = pos
-			ultima_posicion = pos
-			# No mostramos el blocker aquí; dejamos pasar el press a las celdas.
+			_begin_board_gesture(pos)
 		elif not touch.pressed and tocando:
-			# Fin del gesto
-			if dragging:
-				# Fue drag: ocultar y CONSUMIR el release (evita click fantasma)
-				_input_blocker.hide()
+			if dragging or _suppress_cell_selection:
+				_finish_drag_pointer()
 				accept_event()
 			else:
-				# Fue tap: permitir selección normal
 				_input_blocker.hide()
 			tocando = false
 			dragging = false
 
 	elif event is InputEventScreenDrag and tocando:
 		var drag := event as InputEventScreenDrag
-		# Activar bloqueo cuando superamos el umbral
 		if not dragging and (pos - start_pos).length() >= DRAG_THRESHOLD:
 			dragging = true
+			_suppress_cell_selection = true
 			_input_blocker.show()
+			_release_dragged_cell_press()
 
 		if dragging:
 			var delta: Vector2 = drag.position - ultima_posicion
 			# Pan SOLO en eje Y
 			canvas_juego.position.y += delta.y
 			_clamp_canvas_y()
-			PuzzleSaveManager.request_autosave()
+			PlatformServices.save_progress()
 			ultima_posicion = drag.position
 
 	elif event is InputEventMagnifyGesture and _is_over_canvas(pos):
@@ -454,7 +512,7 @@ func set_scroll_normalized(value: float) -> void:
 		normalized
 	)
 	_clamp_canvas_y()
-	PuzzleSaveManager.request_autosave()
+	PlatformServices.save_progress()
 
 
 func get_scroll_normalized() -> float:
@@ -484,7 +542,7 @@ func _update_scroll_bounds() -> void:
 func crear_linea_horizontal() -> void:
 	for i in range(GameManager.lista_letras_frase_original.size()):
 		var aspect_container := AspectRatioContainer.new()
-		aspect_container.ratio = 1.0 / CELL_HEIGHT_RATIO
+		aspect_container.ratio = 1.0 / FALLBACK_HEIGHT_RATIO
 		aspect_container.stretch_mode = AspectRatioContainer.STRETCH_WIDTH_CONTROLS_HEIGHT
 		aspect_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		aspect_container.size_flags_vertical   = Control.SIZE_EXPAND_FILL
@@ -506,7 +564,10 @@ func crear_linea_horizontal() -> void:
 # ----------------------------------------------------
 
 func _insert_letter_in_number(letter2: String, number: int) -> void:
-	for celda: Celda in get_tree().get_nodes_in_group("Celda"):
+	for node in get_tree().get_nodes_in_group("Celda"):
+		if not node is Celda:
+			continue
+		var celda := node as Celda
 		if celda.numero != number:
 			continue
 		if celda.bloqueada:
@@ -540,6 +601,9 @@ func _is_over_canvas(pos: Vector2) -> bool:
 	var hovered := get_viewport().gui_get_hovered_control()
 	if hovered and (hovered == canvas_juego or canvas_juego.is_ancestor_of(hovered)):
 		return true
+	var board := get_parent() as Control
+	if board:
+		return board.get_global_rect().has_point(pos)
 	return canvas_juego.get_global_rect().has_point(pos)
 
 func _event_pos(event: InputEvent) -> Vector2:
@@ -550,13 +614,61 @@ func _event_pos(event: InputEvent) -> Vector2:
 func reset_zoom_scale() -> void:
 	canvas_juego.scale = Vector2.ONE
 
+func is_suppressing_cell_selection() -> bool:
+	return dragging or _suppress_cell_selection
+
+
+func _begin_board_gesture(pos: Vector2) -> void:
+	if tocando or _suppress_cell_selection or _drag_end_queued:
+		return
+	tocando = true
+	dragging = false
+	_suppress_cell_selection = false
+	start_pos = pos
+	ultima_posicion = pos
+	_selection_before_numero = int(GameManager.celda_seleccionada_numero)
+	_selection_before_orden = int(GameManager.selected_celda_number)
+
+
+func _finish_drag_pointer() -> void:
+	_suppress_cell_selection = true
+	if _input_blocker:
+		_input_blocker.hide()
+	_release_dragged_cell_press()
+	if _drag_end_queued:
+		return
+	_drag_end_queued = true
+	_notify_onboarding_pan_ended()
+	call_deferred("_end_drag_gesture")
+
+
+func _end_drag_gesture() -> void:
+	_drag_end_queued = false
+	_suppress_cell_selection = false
+	dragging = false
+
+
+func _release_dragged_cell_press() -> void:
+	for node in get_tree().get_nodes_in_group("Celda"):
+		if node is Celda:
+			(node as Celda).release_pointer_press()
+	_restore_selection_before_gesture()
+
+
+func _restore_selection_before_gesture() -> void:
+	var numero := _selection_before_numero
+	if numero <= 0 or numero >= 100:
+		GameManager.reset_cell_select()
+		return
+	GameManager.set_celda_seleccionada(_selection_before_orden, numero)
+
+
 func deselect_all_cels() -> void:
 	if get_tree() == null:
 		return
-	
 	for c in get_tree().get_nodes_in_group("Celda"):
-		if is_instance_valid(c) and c.has_node("CeldaSelected"):
-			c.celda_selected.visible = false
+		if is_instance_valid(c) and c is Celda:
+			(c as Celda).deselect_cell()
 	 
 func _move_canvas(wide:int) -> void:
 	var v:float = position.y - wide
@@ -578,18 +690,46 @@ func pan_to_y(target_y: float, duration: float = 0.5) -> void:
 	_move_tween = create_tween()
 	_move_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_move_tween.tween_property(self, "position:y", target_y, duration)
-	_move_tween.finished.connect(PuzzleSaveManager.request_autosave)
+	_move_tween.finished.connect(PlatformServices.save_progress)
+
+func _cell_width() -> float:
+	var cols: int = max(1, grid_container.columns)
+	var hsep: int = _grid_hsep()
+	var usable_w: float = grid_container.size.x - float(hsep) * float(cols - 1)
+	if usable_w <= 0.0:
+		return 0.0
+	return usable_w / float(cols)
+
+
+func _visible_grid_height() -> float:
+	var board := get_parent() as Control
+	var grid_top := _rest_y + grid_container.position.y
+	if board == null:
+		return maxf(0.0, size.y - grid_container.position.y)
+	var inset := 0.0
+	var style := board.get_theme_stylebox("panel")
+	if style is StyleBoxFlat:
+		inset = float((style as StyleBoxFlat).border_width_bottom)
+	return maxf(0.0, board.size.y - grid_top - inset)
+
+
+func _cell_height() -> float:
+	var cell_w: float = _cell_width()
+	if cell_w <= 0.0:
+		return 0.0
+	var visible := _visible_grid_height()
+	if visible <= 1.0:
+		return cell_w * FALLBACK_HEIGHT_RATIO
+	var vsep := float(_grid_vsep())
+	var rows := float(TARGET_FULL_ROWS)
+	return maxf((visible - NEXT_ROW_PEEK - vsep * (rows - 1.0)) / rows, 1.0)
+
 
 # --- Cálculo de alto de una fila (celda + separación vertical) ---
 func _row_height() -> float:
-	var cols: int = max(1, grid_container.columns)
-	var total_w: float = grid_container.size.x
-	var hsep: int = _grid_hsep()
-	var usable_w: float = total_w - float(hsep) * float(cols - 1)
-	if usable_w <= 0.0:
+	var cell_h: float = _cell_height()
+	if cell_h <= 0.0:
 		return 0.0
-	var cell_w: float = usable_w / float(cols)
-	var cell_h: float = cell_w * CELL_HEIGHT_RATIO
 	return cell_h + float(_grid_vsep())
 
 # --- Mueve el canvas N filas (positivas hacia abajo, negativas hacia arriba) con tween ---
@@ -664,14 +804,7 @@ func move_canvas_juego(
 
 # Alto SOLO de la celda (sin separación)
 func _cell_height_only() -> float:
-	var cols: int = max(1, grid_container.columns)
-	var total_w: float = grid_container.size.x
-	var hsep: int = _grid_hsep()
-	var usable_w: float = total_w - float(hsep) * float(cols - 1)
-	if usable_w <= 0.0:
-		return 0.0
-	var cell_w: float = usable_w / float(cols)
-	return cell_w * CELL_HEIGHT_RATIO
+	return _cell_height()
 
 # Rango de filas potenciales
 func _rows_count() -> int:

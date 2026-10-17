@@ -1,0 +1,1627 @@
+[
+  {
+    "index": 4,
+    "mode": "cryptogram",
+    "category": "Ereignis",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "CHRISTOPH",
+      "KOLUMBUS"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (CHRISTOPH, KOLUMBUS); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(12.10.1492) Christoph Kolumbus erreichte mit drei Schiffen – der Santa María, der Pint…",
+    "lang": "de"
+  },
+  {
+    "index": 28,
+    "mode": "cryptogram",
+    "category": "Ereignis",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "RUCKZUG"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (RUCKZUG); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(9-1914) In den ersten Monaten des Ersten Weltkriegs wurden deutsche Truppen über die M…",
+    "lang": "de"
+  },
+  {
+    "index": 55,
+    "mode": "cryptogram",
+    "category": "Ereignis",
+    "old": 4,
+    "stars": 3,
+    "changed": true,
+    "hits": [
+      "MAGELLAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MAGELLAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(21.10.1520) Ferdinand Magellan führte seine Flotte durch die Meerenge, die später sein…",
+    "lang": "de"
+  },
+  {
+    "index": 72,
+    "mode": "cryptogram",
+    "category": "Ereignis",
+    "old": 4,
+    "stars": 3,
+    "changed": true,
+    "hits": [
+      "ERZHERZOG"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ERZHERZOG); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Am 28. Juli 1914 brach nach der Ermordung Erzherzog Franz Ferdinands der Erste Weltkrie…",
+    "lang": "de"
+  },
+  {
+    "index": 77,
+    "mode": "quick",
+    "category": "Ereignis",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "BOGART"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (BOGART); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Am 25. Dezember 1899 wurde Humphrey Bogart geboren. Er sollte zu einer der größten Holl…",
+    "lang": "de"
+  },
+  {
+    "index": 89,
+    "mode": "quick",
+    "category": "Ereignis",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "GORBATSCHOW"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (GORBATSCHOW); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Am 25. Dezember 1991 verkündete Michail Gorbatschow die Auflösung der Sowjetunion. Nach…",
+    "lang": "de"
+  },
+  {
+    "index": 118,
+    "mode": "quick",
+    "category": "Ereignis",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "ROGER",
+      "BANNISTER"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROGER, BANNISTER); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Am 6. Mai 1954 durchbrach Roger Bannister in Oxford die Vier-Minuten-Grenze über die Me…",
+    "lang": "de"
+  },
+  {
+    "index": 2008,
+    "mode": "cryptogram",
+    "category": "Zitat",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MICHAEL",
+      "JORDAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MICHAEL, JORDAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Ich habe in meiner Karriere mehr als 9000 Würfe verfehlt. Ich habe fast 300 Spiele verl…",
+    "lang": "de"
+  },
+  {
+    "index": 3064,
+    "mode": "quick",
+    "category": "Zitat",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ALBERT",
+      "EINSTEIN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ALBERT, EINSTEIN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Die Fantasie ist wichtiger als das Wissen. Das Wissen ist begrenzt; die Fantasie umfass…",
+    "lang": "de"
+  },
+  {
+    "index": 3070,
+    "mode": "quick",
+    "category": "Literarisches Fragment",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "MANCHA"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MANCHA); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "An einem Ort der Mancha, an dessen Namen ich mich nicht erinnern will, lebte vor nicht …",
+    "lang": "de"
+  },
+  {
+    "index": 3077,
+    "mode": "quick",
+    "category": "Kuriositäten",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "JOHN",
+      "SEDGWICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (JOHN, SEDGWICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "General John Sedgwick tadelte seine Männer, weil sie den feindlichen Schüssen auswichen…",
+    "lang": "de"
+  },
+  {
+    "index": 3104,
+    "mode": "quick",
+    "category": "Literarisches Fragment",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "HAMLET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (HAMLET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Prinz Hamlet entdeckt, dass sein Vater ermordet wurde, und steht vor der Pflicht, ihn z…",
+    "lang": "de"
+  },
+  {
+    "index": 3105,
+    "mode": "quick",
+    "category": "Literarisches Fragment",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "DESCARTES"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (DESCARTES); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Descartes beschließt, alles anzuzweifeln, was falsch sein könnte, bis er eine Gewisshei…",
+    "lang": "de"
+  },
+  {
+    "index": 3106,
+    "mode": "quick",
+    "category": "Literarisches Fragment",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "MOBY",
+      "DICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MOBY, DICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Kapitän Ahab verfolgt obsessiv Moby Dick, den großen weißen Wal, der ihm ein Bein riss.…",
+    "lang": "de"
+  },
+  {
+    "index": 3108,
+    "mode": "quick",
+    "category": "Literarisches Fragment",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROBINSON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROBINSON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Nach einem Schiffbruch bleibt Robinson auf einer einsamen Insel isoliert. Mit Geduld un…",
+    "lang": "de"
+  },
+  {
+    "index": 3113,
+    "mode": "quick",
+    "category": "Literarisches Fragment",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "SANDOKAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (SANDOKAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Sandokan, bekannt als der Tiger von Malaysia, kämpft von den Meeren Südostasiens aus ge…",
+    "lang": "de"
+  },
+  {
+    "index": 4,
+    "mode": "cryptogram",
+    "category": "Event",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "CHRISTOPHER",
+      "COLUMBUS"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (CHRISTOPHER, COLUMBUS); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(12-10-1492) Christopher Columbus, commanding three ships—the Santa María, the Pinta, a…",
+    "lang": "en"
+  },
+  {
+    "index": 48,
+    "mode": "cryptogram",
+    "category": "Event",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "EGYPTIAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (EGYPTIAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Around 3150 BC, Pharaoh Menes, identified by many with Narmer, achieved the unification…",
+    "lang": "en"
+  },
+  {
+    "index": 52,
+    "mode": "cryptogram",
+    "category": "Event",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "WALL",
+      "STREET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (WALL, STREET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(10/24/1929) The New York Stock Exchange officially opened in the neoclassical Wall Str…",
+    "lang": "en"
+  },
+  {
+    "index": 55,
+    "mode": "cryptogram",
+    "category": "Event",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MAGELLAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MAGELLAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(21-10-1520) Ferdinand Magellan led his fleet through the strait that would later bear …",
+    "lang": "en"
+  },
+  {
+    "index": 77,
+    "mode": "quick",
+    "category": "Event",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "BOGART"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (BOGART); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "On December 25, 1899, Humphrey Bogart was born. He would become one of Hollywood's grea…",
+    "lang": "en"
+  },
+  {
+    "index": 89,
+    "mode": "quick",
+    "category": "Event",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "GORBACHEV"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (GORBACHEV); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "On December 25, 1991, Mikhail Gorbachev announced the dissolution of the Soviet Union. …",
+    "lang": "en"
+  },
+  {
+    "index": 118,
+    "mode": "quick",
+    "category": "Event",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROGER",
+      "BANNISTER"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROGER, BANNISTER); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "On May 6, 1954, Roger Bannister broke the four-minute mile barrier, recording 3:59.4 in…",
+    "lang": "en"
+  },
+  {
+    "index": 1019,
+    "mode": "cryptogram",
+    "category": "Curiosities",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MONTY",
+      "PYTHON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MONTY, PYTHON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "The Python programming language, created in 1991 by Guido van Rossum, was named in hono…",
+    "lang": "en"
+  },
+  {
+    "index": 1022,
+    "mode": "quick",
+    "category": "Curiosities",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "BAIKAL"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (BAIKAL); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Lake Baikal, in Siberia, is the oldest and deepest lake on the planet. Its waters hold …",
+    "lang": "en"
+  },
+  {
+    "index": 2008,
+    "mode": "cryptogram",
+    "category": "Famous Quote",
+    "old": 4,
+    "stars": 3,
+    "changed": true,
+    "hits": [
+      "MICHAEL",
+      "JORDAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MICHAEL, JORDAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "I've missed more than 9000 shots in my career. I've lost almost 300 games. 26 times, I'…",
+    "lang": "en"
+  },
+  {
+    "index": 3064,
+    "mode": "quick",
+    "category": "Famous Quote",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ALBERT",
+      "EINSTEIN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ALBERT, EINSTEIN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Imagination is more important than knowledge. Knowledge is limited; imagination encircl…",
+    "lang": "en"
+  },
+  {
+    "index": 3070,
+    "mode": "quick",
+    "category": "Literary Fragment",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "MANCHA"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MANCHA); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "In a village of La Mancha, the name of which I have no desire to recall, there lived no…",
+    "lang": "en"
+  },
+  {
+    "index": 3077,
+    "mode": "quick",
+    "category": "Curiosities",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "JOHN",
+      "SEDGWICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (JOHN, SEDGWICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "General John Sedgwick rebuked his men for ducking enemy fire, saying that they couldn't…",
+    "lang": "en"
+  },
+  {
+    "index": 3104,
+    "mode": "quick",
+    "category": "Literary Fragment",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "HAMLET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (HAMLET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Prince Hamlet discovers that his father was murdered and faces the duty of avenging him…",
+    "lang": "en"
+  },
+  {
+    "index": 3105,
+    "mode": "quick",
+    "category": "Literary Fragment",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "DESCARTES"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (DESCARTES); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Descartes decides to doubt everything that might be false until he finds a certainty im…",
+    "lang": "en"
+  },
+  {
+    "index": 3106,
+    "mode": "quick",
+    "category": "Literary Fragment",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "MOBY",
+      "DICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MOBY, DICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Captain Ahab obsessively pursues Moby Dick, the great white whale that tore off one of …",
+    "lang": "en"
+  },
+  {
+    "index": 3108,
+    "mode": "quick",
+    "category": "Literary Fragment",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROBINSON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROBINSON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "After surviving a shipwreck, Robinson is left isolated on a desert island. With patienc…",
+    "lang": "en"
+  },
+  {
+    "index": 3113,
+    "mode": "quick",
+    "category": "Literary Fragment",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "SANDOKAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (SANDOKAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Sandokan, known as the Tiger of Malaysia, fights from the seas of Southeast Asia agains…",
+    "lang": "en"
+  },
+  {
+    "index": 4,
+    "mode": "cryptogram",
+    "category": "Efeméride",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "CRISTOBAL",
+      "COLON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (CRISTOBAL, COLON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(12-10-1492) Cristóbal Colón, al mando de tres naves —la Santa María, la Pinta y la Niñ…",
+    "lang": "es"
+  },
+  {
+    "index": 52,
+    "mode": "cryptogram",
+    "category": "Efeméride",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "WALL",
+      "STREET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (WALL, STREET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(24-10-1929) Se inauguró oficialmente la Bolsa de Valores de Nueva York en el edificio …",
+    "lang": "es"
+  },
+  {
+    "index": 77,
+    "mode": "quick",
+    "category": "Efeméride",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "BOGART"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (BOGART); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "El 25 de diciembre de 1899, nació Humphrey Bogart, quien se convertiría en una de las m…",
+    "lang": "es"
+  },
+  {
+    "index": 89,
+    "mode": "quick",
+    "category": "Efeméride",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "GORBACHOV"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (GORBACHOV); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "El 25 de diciembre de 1991, Mijaíl Gorbachov anunció la disolución de la Unión Soviétic…",
+    "lang": "es"
+  },
+  {
+    "index": 118,
+    "mode": "quick",
+    "category": "Efeméride",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROGER",
+      "BANNISTER"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROGER, BANNISTER); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "El 6 de mayo de 1954, Roger Bannister rompió la barrera de los cuatro minutos en la mil…",
+    "lang": "es"
+  },
+  {
+    "index": 1019,
+    "mode": "cryptogram",
+    "category": "Curiosidades",
+    "old": 5,
+    "stars": 3,
+    "changed": true,
+    "hits": [
+      "MONTY",
+      "PYTHON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MONTY, PYTHON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "El lenguaje de programación Python, creado en 1991 por Guido van Rossum, fue nombrado e…",
+    "lang": "es"
+  },
+  {
+    "index": 2008,
+    "mode": "cryptogram",
+    "category": "Cita célebre",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MICHAEL",
+      "JORDAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MICHAEL, JORDAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "He fallado más de 9000 tiros en mi carrera. He perdido casi 300 partidos. 26 veces me c…",
+    "lang": "es"
+  },
+  {
+    "index": 3060,
+    "mode": "cryptogram",
+    "category": "Fragmento literario",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "CID"
+    ],
+    "obvious": false,
+    "why": "el texto nombra el tema (CID)",
+    "preview": "Por el val de las Estacas pasó el Cid a mediodía, en su caballo Babieca: ¡oh, qué bien …",
+    "lang": "es"
+  },
+  {
+    "index": 3064,
+    "mode": "quick",
+    "category": "Cita célebre",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ALBERT",
+      "EINSTEIN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ALBERT, EINSTEIN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "La imaginación es más importante que el conocimiento. El conocimiento es limitado; la i…",
+    "lang": "es"
+  },
+  {
+    "index": 3070,
+    "mode": "quick",
+    "category": "Fragmento literario",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "MANCHA"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MANCHA); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vi…",
+    "lang": "es"
+  },
+  {
+    "index": 3077,
+    "mode": "quick",
+    "category": "Curiosidades",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "JOHN",
+      "SEDGWICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (JOHN, SEDGWICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "El general John Sedgwick reprendió a sus hombres por esquivar los disparos enemigos dic…",
+    "lang": "es"
+  },
+  {
+    "index": 3104,
+    "mode": "quick",
+    "category": "Fragmento literario",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "HAMLET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (HAMLET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "El príncipe Hamlet descubre que su padre fue asesinado y se enfrenta al deber de vengar…",
+    "lang": "es"
+  },
+  {
+    "index": 3105,
+    "mode": "quick",
+    "category": "Fragmento literario",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "DESCARTES"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (DESCARTES); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Descartes decide poner en duda todo aquello que pueda ser falso hasta encontrar una cer…",
+    "lang": "es"
+  },
+  {
+    "index": 3106,
+    "mode": "quick",
+    "category": "Fragmento literario",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "MOBY",
+      "DICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MOBY, DICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "El capitán Ahab persigue obsesivamente a Moby Dick, la gran ballena blanca que le arran…",
+    "lang": "es"
+  },
+  {
+    "index": 3108,
+    "mode": "quick",
+    "category": "Fragmento literario",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROBINSON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROBINSON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Tras sobrevivir a un naufragio, Robinson queda aislado en una isla desierta. Con pacien…",
+    "lang": "es"
+  },
+  {
+    "index": 3113,
+    "mode": "quick",
+    "category": "Fragmento literario",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "SANDOKAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (SANDOKAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Sandokán, conocido como el Tigre de Malasia, combate desde los mares del sudeste asiáti…",
+    "lang": "es"
+  },
+  {
+    "index": 52,
+    "mode": "cryptogram",
+    "category": "Gertaera",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "WALL"
+    ],
+    "obvious": false,
+    "why": "el texto nombra el tema (WALL)",
+    "preview": "(10/24/1929) The New York Stock Exchange officially opened in the neoclassical Wall Str…",
+    "lang": "eu"
+  },
+  {
+    "index": 118,
+    "mode": "quick",
+    "category": "Gertaera",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROGER",
+      "BANNISTERREK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROGER, BANNISTERREK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "1954ko maiatzaren 6an, Roger Bannisterrek lau minutuko hesia hautsi zuen milian, 3:59.4…",
+    "lang": "eu"
+  },
+  {
+    "index": 1019,
+    "mode": "cryptogram",
+    "category": "Kuriositateak",
+    "old": 4,
+    "stars": 3,
+    "changed": true,
+    "hits": [
+      "MONTY",
+      "PYTHON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MONTY, PYTHON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Python programazio-lengoaia, Guido van Rossumek 1991n sortua, Monty Python komedia-tald…",
+    "lang": "eu"
+  },
+  {
+    "index": 2008,
+    "mode": "cryptogram",
+    "category": "Aipu ospetsua",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MICHAEL",
+      "JORDAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MICHAEL, JORDAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Nire ibilbidean 9000 jaurtiketa baino gehiago huts egin ditut. Ia 300 partida galdu dit…",
+    "lang": "eu"
+  },
+  {
+    "index": 3064,
+    "mode": "quick",
+    "category": "Aipu ospetsua",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ALBERT",
+      "EINSTEIN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ALBERT, EINSTEIN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Irudimena ezagutza baino garrantzitsuagoa da. Ezagutza mugatua da; irudimenak mundua in…",
+    "lang": "eu"
+  },
+  {
+    "index": 3077,
+    "mode": "quick",
+    "category": "Kuriositateak",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "JOHN",
+      "SEDGWICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (JOHN, SEDGWICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "John Sedgwick jeneralak gizonei errieta egin zien etsaien tiroetatik ihesi ibiltzeagati…",
+    "lang": "eu"
+  },
+  {
+    "index": 3104,
+    "mode": "quick",
+    "category": "Fragmentu literarioa",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "HAMLET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (HAMLET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Hamlet printzeak aita hil zutela deskubritzen du eta mendekatzeko betebeharrari aurre e…",
+    "lang": "eu"
+  },
+  {
+    "index": 3106,
+    "mode": "quick",
+    "category": "Fragmentu literarioa",
+    "old": 3,
+    "stars": 2,
+    "changed": true,
+    "hits": [
+      "MOBY"
+    ],
+    "obvious": false,
+    "why": "el texto nombra el tema (MOBY)",
+    "preview": "Ahab kapitainak obsesiboki jarraitzen dio Moby Dicki, hanka bat kendu zion balea zuri h…",
+    "lang": "eu"
+  },
+  {
+    "index": 3108,
+    "mode": "quick",
+    "category": "Fragmentu literarioa",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROBINSON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROBINSON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Itsasontzi-hondamenditik bizirik atera ondoren, Robinson uharte huts batean geratzen da…",
+    "lang": "eu"
+  },
+  {
+    "index": 3113,
+    "mode": "quick",
+    "category": "Fragmentu literarioa",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "SANDOKAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (SANDOKAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Sandokan, Malaysiako Tigrea izenez ezaguna, Asia hego-ekialdeko itsasoetatik borrokatze…",
+    "lang": "eu"
+  },
+  {
+    "index": 4,
+    "mode": "cryptogram",
+    "category": "Événement",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "CHRISTOPHE",
+      "COLOMB"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (CHRISTOPHE, COLOMB); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(12-10-1492) Christophe Colomb, à la tête de trois navires – la Santa María, la Pinta e…",
+    "lang": "fr"
+  },
+  {
+    "index": 48,
+    "mode": "cryptogram",
+    "category": "Événement",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "EMPIRE"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (EMPIRE); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Vers 3150 av. J.-C., le pharaon Ménès, souvent identifié à Narmer, parvint à unifier la…",
+    "lang": "fr"
+  },
+  {
+    "index": 52,
+    "mode": "cryptogram",
+    "category": "Événement",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "WALL",
+      "STREET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (WALL, STREET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(24/10/1929) La Bourse de New York a officiellement ouvert ses portes dans le bâtiment …",
+    "lang": "fr"
+  },
+  {
+    "index": 77,
+    "mode": "quick",
+    "category": "Événement",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "BOGART"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (BOGART); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Le 25 décembre 1899 naissait Humphrey Bogart. Il allait devenir l'une des plus grandes …",
+    "lang": "fr"
+  },
+  {
+    "index": 118,
+    "mode": "quick",
+    "category": "Événement",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROGER",
+      "BANNISTER"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROGER, BANNISTER); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Le 6 mai 1954, Roger Bannister a franchi la barrière des quatre minutes au mile, en enr…",
+    "lang": "fr"
+  },
+  {
+    "index": 1019,
+    "mode": "cryptogram",
+    "category": "Curiosités",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MONTY",
+      "PYTHON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MONTY, PYTHON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Le langage de programmation Python, créé en 1991 par Guido van Rossum, fut nommé en l'h…",
+    "lang": "fr"
+  },
+  {
+    "index": 2008,
+    "mode": "cryptogram",
+    "category": "Citation célèbre",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MICHAEL",
+      "JORDAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MICHAEL, JORDAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "J'ai manqué plus de 9000 tirs dans ma carrière. J'ai perdu près de 300 matches. 26 fois…",
+    "lang": "fr"
+  },
+  {
+    "index": 3064,
+    "mode": "quick",
+    "category": "Citation célèbre",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ALBERT",
+      "EINSTEIN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ALBERT, EINSTEIN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "L'imagination est plus importante que le savoir. Le savoir est limité ; l'imagination e…",
+    "lang": "fr"
+  },
+  {
+    "index": 3077,
+    "mode": "quick",
+    "category": "Curiosités",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "JOHN",
+      "SEDGWICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (JOHN, SEDGWICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Le général John Sedgwick réprimanda ses hommes qui se baissaient pour éviter les tirs e…",
+    "lang": "fr"
+  },
+  {
+    "index": 3104,
+    "mode": "quick",
+    "category": "Fragment littéraire",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "HAMLET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (HAMLET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Le prince Hamlet découvre que son père a été assassiné et se trouve face au devoir de l…",
+    "lang": "fr"
+  },
+  {
+    "index": 3105,
+    "mode": "quick",
+    "category": "Fragment littéraire",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "DESCARTES"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (DESCARTES); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Descartes décide de mettre en doute tout ce qui pourrait être faux jusqu'à trouver une …",
+    "lang": "fr"
+  },
+  {
+    "index": 3106,
+    "mode": "quick",
+    "category": "Fragment littéraire",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "MOBY",
+      "DICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MOBY, DICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Le capitaine Achab poursuit obsessivement Moby Dick, la grande baleine blanche qui lui …",
+    "lang": "fr"
+  },
+  {
+    "index": 3108,
+    "mode": "quick",
+    "category": "Fragment littéraire",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROBINSON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROBINSON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Après avoir survécu à un naufrage, Robinson se retrouve isolé sur une île déserte. Avec…",
+    "lang": "fr"
+  },
+  {
+    "index": 3113,
+    "mode": "quick",
+    "category": "Fragment littéraire",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "SANDOKAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (SANDOKAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Sandokan, connu comme le Tigre de Malaisie, combat depuis les mers de l'Asie du Sud-Est…",
+    "lang": "fr"
+  },
+  {
+    "index": 4,
+    "mode": "cryptogram",
+    "category": "Evento",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "CRISTOFORO",
+      "COLOMBO"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (CRISTOFORO, COLOMBO); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(12-10-1492) Cristoforo Colombo, al comando di tre navi – la Santa María, la Pinta e la…",
+    "lang": "it"
+  },
+  {
+    "index": 52,
+    "mode": "cryptogram",
+    "category": "Evento",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "WALL",
+      "STREET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (WALL, STREET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(24/10/1929) La Borsa di New York aprì ufficialmente i battenti nell'edificio neoclassi…",
+    "lang": "it"
+  },
+  {
+    "index": 55,
+    "mode": "cryptogram",
+    "category": "Evento",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MAGELLANO"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MAGELLANO); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(21-10-1520) Ferdinando Magellano guidò la sua flotta attraverso lo stretto che in segu…",
+    "lang": "it"
+  },
+  {
+    "index": 77,
+    "mode": "quick",
+    "category": "Evento",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "BOGART"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (BOGART); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Il 25 dicembre 1899 nacque Humphrey Bogart, che sarebbe diventato una delle più grandi …",
+    "lang": "it"
+  },
+  {
+    "index": 89,
+    "mode": "quick",
+    "category": "Evento",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "GORBACIOV"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (GORBACIOV); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Il 25 dicembre 1991, Mikhail Gorbaciov annunciò lo scioglimento dell'Unione Sovietica. …",
+    "lang": "it"
+  },
+  {
+    "index": 118,
+    "mode": "quick",
+    "category": "Evento",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROGER",
+      "BANNISTER"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROGER, BANNISTER); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Il 6 maggio 1954 Roger Bannister ruppe la barriera dei quattro minuti nel miglio, regis…",
+    "lang": "it"
+  },
+  {
+    "index": 1019,
+    "mode": "cryptogram",
+    "category": "Curiosità",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MONTY",
+      "PYTHON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MONTY, PYTHON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Il linguaggio di programmazione Python, creato nel 1991 da Guido van Rossum, fu battezz…",
+    "lang": "it"
+  },
+  {
+    "index": 2008,
+    "mode": "cryptogram",
+    "category": "Citazione celebre",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MICHAEL",
+      "JORDAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MICHAEL, JORDAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Ho sbagliato più di 9000 tiri nella mia carriera. Ho perso quasi 300 partite. 26 volte …",
+    "lang": "it"
+  },
+  {
+    "index": 3060,
+    "mode": "cryptogram",
+    "category": "Frammento letterario",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "CID"
+    ],
+    "obvious": false,
+    "why": "el texto nombra el tema (CID)",
+    "preview": "Per il val de las Estacas passò il Cid a mezzogiorno, sul suo cavallo Babieca: oh, quan…",
+    "lang": "it"
+  },
+  {
+    "index": 3064,
+    "mode": "quick",
+    "category": "Citazione celebre",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ALBERT",
+      "EINSTEIN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ALBERT, EINSTEIN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "L'immaginazione è più importante della conoscenza. La conoscenza è limitata; l'immagina…",
+    "lang": "it"
+  },
+  {
+    "index": 3077,
+    "mode": "quick",
+    "category": "Curiosità",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "JOHN",
+      "SEDGWICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (JOHN, SEDGWICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Il generale John Sedgwick rimproverò i suoi uomini perché schivavano i colpi nemici, di…",
+    "lang": "it"
+  },
+  {
+    "index": 3104,
+    "mode": "quick",
+    "category": "Frammento letterario",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "AMLETO"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (AMLETO); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Il principe Amleto scopre che suo padre è stato assassinato e si trova di fronte al dov…",
+    "lang": "it"
+  },
+  {
+    "index": 3105,
+    "mode": "quick",
+    "category": "Frammento letterario",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "DESCARTES"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (DESCARTES); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Descartes decide di mettere in dubbio tutto ciò che potrebbe essere falso fino a trovar…",
+    "lang": "it"
+  },
+  {
+    "index": 3106,
+    "mode": "quick",
+    "category": "Frammento letterario",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "MOBY",
+      "DICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MOBY, DICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Il capitano Achab insegue ossessivamente Moby Dick, la grande balena bianca che gli str…",
+    "lang": "it"
+  },
+  {
+    "index": 3108,
+    "mode": "quick",
+    "category": "Frammento letterario",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROBINSON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROBINSON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Dopo essere sopravvissuto a un naufragio, Robinson resta isolato su un'isola deserta. C…",
+    "lang": "it"
+  },
+  {
+    "index": 3113,
+    "mode": "quick",
+    "category": "Frammento letterario",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "SANDOKAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (SANDOKAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Sandokan, noto come la Tigre della Malesia, combatte dai mari del Sud-est asiatico cont…",
+    "lang": "it"
+  },
+  {
+    "index": 48,
+    "mode": "cryptogram",
+    "category": "Evento",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "IMPERIO"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (IMPERIO); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Por volta de 3150 a.C., o faraó Menés, identificado por muitos com Narmer, unificou o A…",
+    "lang": "pt"
+  },
+  {
+    "index": 52,
+    "mode": "cryptogram",
+    "category": "Evento",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "WALL",
+      "STREET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (WALL, STREET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "(24/10/1929) A Bolsa de Valores de Nova York foi inaugurada oficialmente no edifício ne…",
+    "lang": "pt"
+  },
+  {
+    "index": 77,
+    "mode": "quick",
+    "category": "Evento",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "BOGART"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (BOGART); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Em 25 de dezembro de 1899, nasceu Humphrey Bogart. Ele se tornaria uma das maiores lend…",
+    "lang": "pt"
+  },
+  {
+    "index": 89,
+    "mode": "quick",
+    "category": "Evento",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "GORBACHEV"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (GORBACHEV); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Em 25 de dezembro de 1991, Mikhail Gorbachev anunciou a dissolução da União Soviética. …",
+    "lang": "pt"
+  },
+  {
+    "index": 118,
+    "mode": "quick",
+    "category": "Evento",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROGER",
+      "BANNISTER"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROGER, BANNISTER); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "A 6 de maio de 1954, Roger Bannister quebrou a barreira dos quatro minutos na milha, re…",
+    "lang": "pt"
+  },
+  {
+    "index": 1019,
+    "mode": "cryptogram",
+    "category": "Curiosidades",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MONTY",
+      "PYTHON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MONTY, PYTHON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "A linguagem de programação Python, criada em 1991 por Guido van Rossum, foi baptizada e…",
+    "lang": "pt"
+  },
+  {
+    "index": 2008,
+    "mode": "cryptogram",
+    "category": "Citação célebre",
+    "old": 3,
+    "stars": 3,
+    "changed": false,
+    "hits": [
+      "MICHAEL",
+      "JORDAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MICHAEL, JORDAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Falhei mais de 9000 lançamentos na minha carreira. Perdi quase 300 jogos. 26 vezes conf…",
+    "lang": "pt"
+  },
+  {
+    "index": 3064,
+    "mode": "quick",
+    "category": "Citação célebre",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ALBERT",
+      "EINSTEIN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ALBERT, EINSTEIN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "A imaginação é mais importante do que o conhecimento. O conhecimento é limitado; a imag…",
+    "lang": "pt"
+  },
+  {
+    "index": 3070,
+    "mode": "quick",
+    "category": "Fragmento literário",
+    "old": 1,
+    "stars": 1,
+    "changed": false,
+    "hits": [
+      "MANCHA"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MANCHA); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Num lugar da Mancha, de cujo nome não quero lembrar-me, não há muito tempo que vivia um…",
+    "lang": "pt"
+  },
+  {
+    "index": 3077,
+    "mode": "quick",
+    "category": "Curiosidades",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "JOHN",
+      "SEDGWICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (JOHN, SEDGWICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "O general John Sedgwick repreendeu os seus homens por se desviarem dos disparos inimigo…",
+    "lang": "pt"
+  },
+  {
+    "index": 3104,
+    "mode": "quick",
+    "category": "Fragmento literário",
+    "old": 2,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "HAMLET"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (HAMLET); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "O príncipe Hamlet descobre que o pai foi assassinado e enfrenta o dever de o vingar. As…",
+    "lang": "pt"
+  },
+  {
+    "index": 3105,
+    "mode": "quick",
+    "category": "Fragmento literário",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "DESCARTES"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (DESCARTES); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Descartes decide pôr em dúvida tudo aquilo que possa ser falso até encontrar uma certez…",
+    "lang": "pt"
+  },
+  {
+    "index": 3106,
+    "mode": "quick",
+    "category": "Fragmento literário",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "MOBY",
+      "DICK"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (MOBY, DICK); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "O capitão Ahab persegue obsessivamente Moby Dick, a grande baleia branca que lhe arranc…",
+    "lang": "pt"
+  },
+  {
+    "index": 3108,
+    "mode": "quick",
+    "category": "Fragmento literário",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "ROBINSON"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (ROBINSON); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Após sobreviver a um naufrágio, Robinson fica isolado numa ilha deserta. Com paciência …",
+    "lang": "pt"
+  },
+  {
+    "index": 3113,
+    "mode": "quick",
+    "category": "Fragmento literário",
+    "old": 3,
+    "stars": 1,
+    "changed": true,
+    "hits": [
+      "SANDOKAN"
+    ],
+    "obvious": true,
+    "why": "el texto nombra el tema (SANDOKAN); nombre del tema muy evidente: se baja una estrella extra",
+    "preview": "Sandokan, conhecido como o Tigre da Malásia, combate a partir dos mares do sudeste asiá…",
+    "lang": "pt"
+  }
+]

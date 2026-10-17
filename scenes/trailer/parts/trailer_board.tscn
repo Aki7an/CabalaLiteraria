@@ -1,0 +1,461 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/trailer/parts/trailer_cell.tscn" id="1_cell"]
+[ext_resource type="Script" path="res://scenes/trailer/parts/trailer_board.gd" id="2_script"]
+
+[node name="Board" type="Control"]
+custom_minimum_size = Vector2(1269.0, 560.0)
+offset_right = 1269.0
+offset_bottom = 560.0
+mouse_filter = 2
+script = ExtResource("2_script")
+
+[node name="R0C0" parent="." instance=ExtResource("1_cell")]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 86.0
+offset_bottom = 108.0
+cipher_letter = "E"
+cipher_number = 7
+
+[node name="R0C1" parent="." instance=ExtResource("1_cell")]
+offset_left = 91.0
+offset_top = 0.0
+offset_right = 177.0
+offset_bottom = 108.0
+cipher_letter = "L"
+cipher_number = 18
+
+[node name="R0C2" parent="." instance=ExtResource("1_cell")]
+offset_left = 182.0
+offset_top = 0.0
+offset_right = 268.0
+offset_bottom = 108.0
+cipher_letter = " "
+is_space = true
+
+[node name="R0C3" parent="." instance=ExtResource("1_cell")]
+offset_left = 273.0
+offset_top = 0.0
+offset_right = 359.0
+offset_bottom = 108.0
+cipher_letter = "2"
+cipher_number = 0
+start_letter = "2"
+is_fixed = true
+
+[node name="R0C4" parent="." instance=ExtResource("1_cell")]
+offset_left = 364.0
+offset_top = 0.0
+offset_right = 450.0
+offset_bottom = 108.0
+cipher_letter = "0"
+cipher_number = 0
+start_letter = "0"
+is_fixed = true
+
+[node name="R0C5" parent="." instance=ExtResource("1_cell")]
+offset_left = 455.0
+offset_top = 0.0
+offset_right = 541.0
+offset_bottom = 108.0
+cipher_letter = " "
+is_space = true
+
+[node name="R0C6" parent="." instance=ExtResource("1_cell")]
+offset_left = 546.0
+offset_top = 0.0
+offset_right = 632.0
+offset_bottom = 108.0
+cipher_letter = "D"
+cipher_number = 11
+
+[node name="R0C7" parent="." instance=ExtResource("1_cell")]
+offset_left = 637.0
+offset_top = 0.0
+offset_right = 723.0
+offset_bottom = 108.0
+cipher_letter = "E"
+cipher_number = 7
+
+[node name="R0C8" parent="." instance=ExtResource("1_cell")]
+offset_left = 728.0
+offset_top = 0.0
+offset_right = 814.0
+offset_bottom = 108.0
+cipher_letter = " "
+is_space = true
+
+[node name="R0C9" parent="." instance=ExtResource("1_cell")]
+offset_left = 819.0
+offset_top = 0.0
+offset_right = 905.0
+offset_bottom = 108.0
+cipher_letter = "J"
+cipher_number = 19
+
+[node name="R0C10" parent="." instance=ExtResource("1_cell")]
+offset_left = 910.0
+offset_top = 0.0
+offset_right = 996.0
+offset_bottom = 108.0
+cipher_letter = "U"
+cipher_number = 3
+
+[node name="R0C11" parent="." instance=ExtResource("1_cell")]
+offset_left = 1001.0
+offset_top = 0.0
+offset_right = 1087.0
+offset_bottom = 108.0
+cipher_letter = "L"
+cipher_number = 18
+
+[node name="R0C12" parent="." instance=ExtResource("1_cell")]
+offset_left = 1092.0
+offset_top = 0.0
+offset_right = 1178.0
+offset_bottom = 108.0
+cipher_letter = "I"
+cipher_number = 2
+
+[node name="R0C13" parent="." instance=ExtResource("1_cell")]
+offset_left = 1183.0
+offset_top = 0.0
+offset_right = 1269.0
+offset_bottom = 108.0
+cipher_letter = "O"
+cipher_number = 12
+
+[node name="R1C0" parent="." instance=ExtResource("1_cell")]
+offset_left = 0.0
+offset_top = 113.0
+offset_right = 86.0
+offset_bottom = 221.0
+cipher_letter = "D"
+cipher_number = 11
+
+[node name="R1C1" parent="." instance=ExtResource("1_cell")]
+offset_left = 91.0
+offset_top = 113.0
+offset_right = 177.0
+offset_bottom = 221.0
+cipher_letter = "E"
+cipher_number = 7
+
+[node name="R1C2" parent="." instance=ExtResource("1_cell")]
+offset_left = 182.0
+offset_top = 113.0
+offset_right = 268.0
+offset_bottom = 221.0
+cipher_letter = " "
+is_space = true
+
+[node name="R1C3" parent="." instance=ExtResource("1_cell")]
+offset_left = 273.0
+offset_top = 113.0
+offset_right = 359.0
+offset_bottom = 221.0
+cipher_letter = "1"
+cipher_number = 0
+start_letter = "1"
+is_fixed = true
+
+[node name="R1C4" parent="." instance=ExtResource("1_cell")]
+offset_left = 364.0
+offset_top = 113.0
+offset_right = 450.0
+offset_bottom = 221.0
+cipher_letter = "9"
+cipher_number = 0
+start_letter = "9"
+is_fixed = true
+
+[node name="R1C5" parent="." instance=ExtResource("1_cell")]
+offset_left = 455.0
+offset_top = 113.0
+offset_right = 541.0
+offset_bottom = 221.0
+cipher_letter = "6"
+cipher_number = 0
+start_letter = "6"
+is_fixed = true
+
+[node name="R1C6" parent="." instance=ExtResource("1_cell")]
+offset_left = 546.0
+offset_top = 113.0
+offset_right = 632.0
+offset_bottom = 221.0
+cipher_letter = "9"
+cipher_number = 0
+start_letter = "9"
+is_fixed = true
+
+[node name="R1C7" parent="." instance=ExtResource("1_cell")]
+offset_left = 637.0
+offset_top = 113.0
+offset_right = 723.0
+offset_bottom = 221.0
+cipher_letter = ","
+cipher_number = 0
+start_letter = ","
+is_fixed = true
+
+[node name="R2C0" parent="." instance=ExtResource("1_cell")]
+offset_left = 0.0
+offset_top = 226.0
+offset_right = 86.0
+offset_bottom = 334.0
+cipher_letter = "A"
+cipher_number = 4
+
+[node name="R2C1" parent="." instance=ExtResource("1_cell")]
+offset_left = 91.0
+offset_top = 226.0
+offset_right = 177.0
+offset_bottom = 334.0
+cipher_letter = "P"
+cipher_number = 21
+
+[node name="R2C2" parent="." instance=ExtResource("1_cell")]
+offset_left = 182.0
+offset_top = 226.0
+offset_right = 268.0
+offset_bottom = 334.0
+cipher_letter = "O"
+cipher_number = 12
+
+[node name="R2C3" parent="." instance=ExtResource("1_cell")]
+offset_left = 273.0
+offset_top = 226.0
+offset_right = 359.0
+offset_bottom = 334.0
+cipher_letter = "L"
+cipher_number = 18
+
+[node name="R2C4" parent="." instance=ExtResource("1_cell")]
+offset_left = 364.0
+offset_top = 226.0
+offset_right = 450.0
+offset_bottom = 334.0
+cipher_letter = "O"
+cipher_number = 12
+
+[node name="R2C5" parent="." instance=ExtResource("1_cell")]
+offset_left = 455.0
+offset_top = 226.0
+offset_right = 541.0
+offset_bottom = 334.0
+cipher_letter = " "
+is_space = true
+
+[node name="R2C6" parent="." instance=ExtResource("1_cell")]
+offset_left = 546.0
+offset_top = 226.0
+offset_right = 632.0
+offset_bottom = 334.0
+cipher_letter = "1"
+cipher_number = 0
+start_letter = "1"
+is_fixed = true
+
+[node name="R2C7" parent="." instance=ExtResource("1_cell")]
+offset_left = 637.0
+offset_top = 226.0
+offset_right = 723.0
+offset_bottom = 334.0
+cipher_letter = "1"
+cipher_number = 0
+start_letter = "1"
+is_fixed = true
+
+[node name="R3C0" parent="." instance=ExtResource("1_cell")]
+offset_left = 0.0
+offset_top = 339.0
+offset_right = 86.0
+offset_bottom = 447.0
+cipher_letter = "D"
+cipher_number = 11
+
+[node name="R3C1" parent="." instance=ExtResource("1_cell")]
+offset_left = 91.0
+offset_top = 339.0
+offset_right = 177.0
+offset_bottom = 447.0
+cipher_letter = "E"
+cipher_number = 7
+
+[node name="R3C2" parent="." instance=ExtResource("1_cell")]
+offset_left = 182.0
+offset_top = 339.0
+offset_right = 268.0
+offset_bottom = 447.0
+cipher_letter = "J"
+cipher_number = 19
+
+[node name="R3C3" parent="." instance=ExtResource("1_cell")]
+offset_left = 273.0
+offset_top = 339.0
+offset_right = 359.0
+offset_bottom = 447.0
+cipher_letter = "O"
+cipher_number = 12
+
+[node name="R3C4" parent="." instance=ExtResource("1_cell")]
+offset_left = 364.0
+offset_top = 339.0
+offset_right = 450.0
+offset_bottom = 447.0
+cipher_letter = " "
+is_space = true
+
+[node name="R3C5" parent="." instance=ExtResource("1_cell")]
+offset_left = 455.0
+offset_top = 339.0
+offset_right = 541.0
+offset_bottom = 447.0
+cipher_letter = "S"
+cipher_number = 23
+
+[node name="R3C6" parent="." instance=ExtResource("1_cell")]
+offset_left = 546.0
+offset_top = 339.0
+offset_right = 632.0
+offset_bottom = 447.0
+cipher_letter = "U"
+cipher_number = 3
+
+[node name="R3C7" parent="." instance=ExtResource("1_cell")]
+offset_left = 637.0
+offset_top = 339.0
+offset_right = 723.0
+offset_bottom = 447.0
+cipher_letter = " "
+is_space = true
+
+[node name="R3C8" parent="." instance=ExtResource("1_cell")]
+offset_left = 728.0
+offset_top = 339.0
+offset_right = 814.0
+offset_bottom = 447.0
+cipher_letter = "H"
+cipher_number = 16
+
+[node name="R3C9" parent="." instance=ExtResource("1_cell")]
+offset_left = 819.0
+offset_top = 339.0
+offset_right = 905.0
+offset_bottom = 447.0
+cipher_letter = "U"
+cipher_number = 3
+
+[node name="R3C10" parent="." instance=ExtResource("1_cell")]
+offset_left = 910.0
+offset_top = 339.0
+offset_right = 996.0
+offset_bottom = 447.0
+cipher_letter = "E"
+cipher_number = 7
+
+[node name="R3C11" parent="." instance=ExtResource("1_cell")]
+offset_left = 1001.0
+offset_top = 339.0
+offset_right = 1087.0
+offset_bottom = 447.0
+cipher_letter = "L"
+cipher_number = 18
+
+[node name="R3C12" parent="." instance=ExtResource("1_cell")]
+offset_left = 1092.0
+offset_top = 339.0
+offset_right = 1178.0
+offset_bottom = 447.0
+cipher_letter = "L"
+cipher_number = 18
+
+[node name="R3C13" parent="." instance=ExtResource("1_cell")]
+offset_left = 1183.0
+offset_top = 339.0
+offset_right = 1269.0
+offset_bottom = 447.0
+cipher_letter = "A"
+cipher_number = 4
+
+[node name="R4C0" parent="." instance=ExtResource("1_cell")]
+offset_left = 0.0
+offset_top = 452.0
+offset_right = 86.0
+offset_bottom = 560.0
+cipher_letter = "E"
+cipher_number = 7
+
+[node name="R4C1" parent="." instance=ExtResource("1_cell")]
+offset_left = 91.0
+offset_top = 452.0
+offset_right = 177.0
+offset_bottom = 560.0
+cipher_letter = "N"
+cipher_number = 9
+
+[node name="R4C2" parent="." instance=ExtResource("1_cell")]
+offset_left = 182.0
+offset_top = 452.0
+offset_right = 268.0
+offset_bottom = 560.0
+cipher_letter = " "
+is_space = true
+
+[node name="R4C3" parent="." instance=ExtResource("1_cell")]
+offset_left = 273.0
+offset_top = 452.0
+offset_right = 359.0
+offset_bottom = 560.0
+cipher_letter = "L"
+cipher_number = 18
+
+[node name="R4C4" parent="." instance=ExtResource("1_cell")]
+offset_left = 364.0
+offset_top = 452.0
+offset_right = 450.0
+offset_bottom = 560.0
+cipher_letter = "A"
+cipher_number = 4
+
+[node name="R4C5" parent="." instance=ExtResource("1_cell")]
+offset_left = 455.0
+offset_top = 452.0
+offset_right = 541.0
+offset_bottom = 560.0
+cipher_letter = " "
+is_space = true
+
+[node name="R4C6" parent="." instance=ExtResource("1_cell")]
+offset_left = 546.0
+offset_top = 452.0
+offset_right = 632.0
+offset_bottom = 560.0
+cipher_letter = "L"
+cipher_number = 18
+
+[node name="R4C7" parent="." instance=ExtResource("1_cell")]
+offset_left = 637.0
+offset_top = 452.0
+offset_right = 723.0
+offset_bottom = 560.0
+cipher_letter = "U"
+cipher_number = 3
+
+[node name="R4C8" parent="." instance=ExtResource("1_cell")]
+offset_left = 728.0
+offset_top = 452.0
+offset_right = 814.0
+offset_bottom = 560.0
+cipher_letter = "N"
+cipher_number = 9
+
+[node name="R4C9" parent="." instance=ExtResource("1_cell")]
+offset_left = 819.0
+offset_top = 452.0
+offset_right = 905.0
+offset_bottom = 560.0
+cipher_letter = "A"
+cipher_number = 4

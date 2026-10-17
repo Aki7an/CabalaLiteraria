@@ -3,6 +3,10 @@ extends Node
 
 signal login_succeeded(playfab_id: String, newly_created: bool)
 signal login_failed(error_message: String, http_code: int)
+signal display_name_taken(rejected_name: String)
+
+const DISPLAY_NAME_TAKEN := 1058
+const _DIALOG_FONT: Font = preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
 
 @export var COUNT_PER_TABLE: int = 30
 @export var SLEEP_BETWEEN_CALLS_SEC: float = 0.15  # evita throttling
@@ -10,6 +14,7 @@ signal login_failed(error_message: String, http_code: int)
 var _seed_run_nonce: String = ""  # identificador único de esta ejecución
 
 const LEADERBOARD_NAME: String = "Score"  # nombre de la estadística
+const TRACE_CHUNK_CHARS := 8500
 
 ## Ajusta tu TitleId aquí o desde fuera (set_title_id)
 @export var TITLE_ID: String = "1BC2FD"
@@ -19,29 +24,58 @@ const LEADERBOARD_NAME: String = "Score"  # nombre de la estadística
 @export var playfab_id: String = _get_device_custom_id()
 
 var newly_created: bool = false
+var _login_finished := false
+var _milestones: Node
+var language_cache: Dictionary = {}
+var leaderboard_cache: Dictionary = {}
+const LEADERBOARD_CACHE_MS := 25000
 
 @onready var http: HTTPRequest = HTTPRequest.new()
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(http)
 	http.timeout = 30
+	_milestones = preload("res://autoload/playfab_milestones.gd").new()
+	_milestones.name = "Milestones"
+	add_child(_milestones)
 	#login_with_custom_id(playfab_id,true)
 	print("playfabid: " , playfab_id)
 	var ok: bool = await PlayFabTools.login_with_custom_id(playfab_id, true)
 	if ok:
 		print("Listo. Ticket:", PlayFabTools.session_ticket, "ID:", PlayFabTools.playfab_id)
-		# …ya puedes llamar Client APIs con X-Authorization
+		if typeof(GameManager) != TYPE_NIL:
+			GameManager.ensure_online_identity()
+			sync_player_display_name(GameManager.player_name)
+			sync_player_language(GameManager.locale_code())
+		await sync_server_time()
+		_milestones.request_sync()
 	else:
 		print("No se pudo iniciar sesión en PlayFab.")
-	
+		await sync_server_time()
+	_login_finished = true
 
 
-	#randomize()
-	#await seed_all()
-	#print("✅ Seeding terminado.")
-	
-	
-	
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED:
+		note_player_activity()
+
+
+func note_tutorial_completed() -> void:
+	if _milestones != null:
+		_milestones.note_tutorial_completed()
+
+
+func note_puzzle_completed() -> void:
+	if _milestones != null:
+		_milestones.note_puzzle_completed()
+
+
+func note_player_activity() -> void:
+	if _milestones != null:
+		_milestones.note_player_activity()
+
+
 ## (Opcional) Cambiar TitleId en runtime
 func set_title_id(id: String) -> void:
 	TITLE_ID = id
@@ -116,6 +150,7 @@ func login_with_custom_id(custom_id: String, p_create: bool = true) -> bool:
 	session_ticket = str(data["SessionTicket"])
 	playfab_id = str(data.get("PlayFabId", ""))
 	newly_created = bool(data.get("NewlyCreated", false))
+	_apply_http_date_headers(resp_headers)
 
 	# --- Debug/Estado en consola ---
 	print("✅ PlayFab login OK — PlayFabId=%s | NewlyCreated=%s" % [playfab_id, str(newly_created)])
@@ -126,6 +161,433 @@ func login_with_custom_id(custom_id: String, p_create: bool = true) -> bool:
 ## Utilidad: ¿estamos autenticados?
 func is_logged_in() -> bool:
 	return session_ticket != ""
+
+
+func sync_server_time() -> bool:
+	if is_logged_in() and await _sync_time_from_playfab():
+		return true
+	if await _sync_time_from_http_date("https://www.google.com/generate_204"):
+		return true
+	if await _sync_time_from_http_date("https://cloudflare.com"):
+		return true
+	push_warning("No se pudo sincronizar la hora de red; el reto diario usa UTC local.")
+	return false
+
+
+func _sync_time_from_playfab() -> bool:
+	var url := "https://%s.playfabapi.com/Client/GetTime" % TITLE_ID
+	var req := HTTPRequest.new()
+	add_child(req)
+	req.timeout = 12
+	var err := req.request(
+		url,
+		PackedStringArray([
+			"Content-Type: application/json",
+			"Accept: application/json",
+			"Accept-Encoding: identity",
+			"X-Authorization: " + session_ticket,
+			"X-ReportErrorAsSuccess: true",
+		]),
+		HTTPClient.METHOD_POST,
+		"{}"
+	)
+	if err != OK:
+		req.queue_free()
+		return false
+	var r: Array = await req.request_completed
+	req.queue_free()
+	_apply_http_date_headers(r[2])
+	var parsed: Variant = JSON.parse_string((r[3] as PackedByteArray).get_string_from_utf8())
+	if not (parsed is Dictionary):
+		return typeof(GameManager) != TYPE_NIL and GameManager.has_server_time()
+	var json: Dictionary = parsed
+	if int(json.get("code", r[1])) != 200:
+		return typeof(GameManager) != TYPE_NIL and GameManager.has_server_time()
+	var data_any: Variant = json.get("data", {})
+	var data: Dictionary = data_any if data_any is Dictionary else {}
+	var unix := _unix_from_iso8601(str(data.get("Time", "")))
+	if unix <= 0:
+		return typeof(GameManager) != TYPE_NIL and GameManager.has_server_time()
+	_apply_server_unix(unix)
+	print("🕒 PlayFab GetTime UTC unix=%d date=%s" % [unix, GameManager.daily_date_key() if typeof(GameManager) != TYPE_NIL else ""])
+	return true
+
+
+func _sync_time_from_http_date(url: String) -> bool:
+	var req := HTTPRequest.new()
+	add_child(req)
+	req.timeout = 10
+	var err := req.request(url, PackedStringArray(["Accept: */*"]), HTTPClient.METHOD_GET)
+	if err != OK:
+		req.queue_free()
+		return false
+	var r: Array = await req.request_completed
+	req.queue_free()
+	return _apply_http_date_headers(r[2])
+
+
+func _apply_http_date_headers(headers: PackedStringArray) -> bool:
+	for raw in headers:
+		var line := str(raw)
+		if not line.to_lower().begins_with("date:"):
+			continue
+		var unix := _unix_from_http_date(line)
+		if unix > 0:
+			_apply_server_unix(unix)
+			return true
+	return false
+
+
+func _apply_server_unix(unix: int) -> void:
+	if unix > 0 and typeof(GameManager) != TYPE_NIL:
+		GameManager.apply_server_unix(unix)
+
+
+func _unix_from_iso8601(value: String) -> int:
+	var raw := value.strip_edges()
+	if raw.is_empty():
+		return 0
+	raw = raw.replace("Z", "").replace("z", "")
+	if "T" in raw:
+		var head := raw.split("+")[0].split(".")[0]
+		var parts := head.split("T")
+		if parts.size() >= 2:
+			var d := parts[0].split("-")
+			var t := parts[1].split(":")
+			if d.size() >= 3 and t.size() >= 3:
+				return int(Time.get_unix_time_from_datetime_dict({
+					"year": int(d[0]),
+					"month": int(d[1]),
+					"day": int(d[2]),
+					"hour": int(t[0]),
+					"minute": int(t[1]),
+					"second": int(float(t[2])),
+				}))
+	return 0
+
+
+func _unix_from_http_date(header: String) -> int:
+	var s := header.strip_edges()
+	var colon := s.find(":")
+	if colon >= 0:
+		s = s.substr(colon + 1).strip_edges()
+	s = s.replace(",", "")
+	var bits := s.split(" ", false)
+	# Sat 19 Sep 2026 07:57:00 GMT
+	if bits.size() < 5:
+		return 0
+	var months := {
+		"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
+		"Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12,
+	}
+	var day := int(bits[1]) if bits[1].is_valid_int() else int(bits[0])
+	var month_token := bits[2] if bits[1].is_valid_int() else bits[1]
+	var year_token := bits[3] if bits[1].is_valid_int() else bits[2]
+	var time_token := bits[4] if bits[1].is_valid_int() else bits[3]
+	var month := int(months.get(month_token, 0))
+	var hm := time_token.split(":")
+	if month <= 0 or day <= 0 or not year_token.is_valid_int() or hm.size() < 3:
+		return 0
+	return int(Time.get_unix_time_from_datetime_dict({
+		"year": int(year_token),
+		"month": month,
+		"day": day,
+		"hour": int(hm[0]),
+		"minute": int(hm[1]),
+		"second": int(float(hm[2])),
+	}))
+
+
+var _pending_display_name := ""
+var _display_name_dirty := false
+var _display_name_pushing := false
+var _display_name_last_ok := false
+var _last_accepted_display_name := ""
+
+
+func sync_player_display_name(player_name: String = "") -> void:
+	_queue_display_name(player_name)
+
+
+func await_player_display_name(player_name: String = "") -> bool:
+	_queue_display_name(player_name)
+	while _display_name_pushing:
+		await get_tree().process_frame
+	return _display_name_last_ok
+
+
+func claim_player_display_name(player_name: String) -> int:
+	var deadline := Time.get_ticks_msec() + 4000
+	while not _login_finished and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	if not is_logged_in():
+		return 0
+	while _display_name_pushing:
+		await get_tree().process_frame
+	var name := player_name.strip_edges()
+	_display_name_pushing = true
+	var code := await _apply_display_name_result(name, false)
+	if code == 200:
+		_display_name_last_ok = true
+		if not _display_name_dirty:
+			_pending_display_name = name
+	_display_name_pushing = false
+	if _display_name_dirty and is_logged_in():
+		_display_name_pushing = true
+		_pump_display_name()
+	return code
+
+
+func _queue_display_name(player_name: String) -> void:
+	var name := player_name.strip_edges()
+	if name == "" and typeof(GameManager) != TYPE_NIL:
+		name = str(GameManager.player_name).strip_edges()
+	if name == "":
+		return
+	_pending_display_name = name
+	_display_name_dirty = true
+	if _display_name_pushing:
+		return
+	_display_name_pushing = true
+	_pump_display_name()
+
+
+func _pump_display_name() -> void:
+	while _display_name_dirty and is_logged_in():
+		_display_name_dirty = false
+		var name := _pending_display_name
+		var code := await _apply_display_name_result(name, true)
+		_display_name_last_ok = code == 200
+		if _pending_display_name != name:
+			_display_name_dirty = true
+	var pending_left := _display_name_dirty
+	_display_name_pushing = false
+	if pending_left and is_logged_in():
+		_display_name_pushing = true
+		_pump_display_name()
+
+
+const LANGUAGE_STAT_NAME := "PlayerLanguage"
+const LANGUAGE_DATA_KEY := "Language"
+
+
+func language_code_from_locale(code: String = "") -> String:
+	var raw := code.strip_edges().to_lower().replace("-", "_")
+	if raw.is_empty() and typeof(GameManager) != TYPE_NIL:
+		raw = GameManager.locale_code()
+	var base := String(raw.split("_")[0])
+	match base:
+		"es", "en", "eu", "de", "pt", "it", "fr":
+			return base
+		_:
+			return ""
+
+
+func language_stat_value(code: String = "") -> int:
+	match language_code_from_locale(code):
+		"es":
+			return 1
+		"en":
+			return 2
+		"eu":
+			return 3
+		"de":
+			return 4
+		"pt":
+			return 5
+		"it":
+			return 6
+		"fr":
+			return 7
+		_:
+			return 0
+
+
+func language_from_stat_value(value: int) -> String:
+	match value:
+		1:
+			return "es"
+		2:
+			return "en"
+		3:
+			return "eu"
+		4:
+			return "de"
+		5:
+			return "pt"
+		6:
+			return "it"
+		7:
+			return "fr"
+		_:
+			return ""
+
+
+func sync_player_language(code: String = "") -> void:
+	if not is_logged_in():
+		return
+	var lang := language_code_from_locale(code)
+	if lang == "":
+		return
+	if playfab_id != "":
+		language_cache[playfab_id] = lang
+	await _update_public_user_data({LANGUAGE_DATA_KEY: lang})
+
+
+func fetch_player_languages(playfab_ids: Array) -> Dictionary:
+	var unique: Array[String] = []
+	for id_value in playfab_ids:
+		var id := str(id_value).strip_edges()
+		if id == "" or unique.has(id):
+			continue
+		unique.append(id)
+	var missing: Array[String] = []
+	var languages := {}
+	for id in unique:
+		if language_cache.has(id):
+			languages[id] = str(language_cache[id])
+		else:
+			missing.append(id)
+	if not missing.is_empty():
+		await _fetch_languages_parallel(missing)
+		for id in missing:
+			languages[id] = str(language_cache.get(id, ""))
+	return languages
+
+
+func cached_player_languages(playfab_ids: Array) -> Dictionary:
+	var languages := {}
+	for id_value in playfab_ids:
+		var id := str(id_value).strip_edges()
+		if id == "":
+			continue
+		if language_cache.has(id):
+			languages[id] = str(language_cache[id])
+	return languages
+
+
+func get_cached_leaderboard(statistic: String) -> Dictionary:
+	var entry: Variant = leaderboard_cache.get(statistic, {})
+	if not (entry is Dictionary) or entry.is_empty():
+		return {}
+	if Time.get_ticks_msec() - int(entry.get("at_ms", 0)) > LEADERBOARD_CACHE_MS:
+		return {}
+	return entry
+
+
+func store_cached_leaderboard(statistic: String, top: Dictionary, around: Dictionary) -> void:
+	leaderboard_cache[statistic] = {
+		"at_ms": Time.get_ticks_msec(),
+		"top": top,
+		"around": around,
+	}
+
+
+func _fetch_languages_parallel(ids: Array) -> void:
+	if ids.is_empty() or not is_logged_in():
+		return
+	var state := {"left": ids.size()}
+	for id_value in ids:
+		var target := str(id_value)
+		var request := HTTPRequest.new()
+		add_child(request)
+		request.timeout = 10
+		var on_done := func(_result: int, http_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+			language_cache[target] = _language_from_combined_info_text(
+				body.get_string_from_utf8(),
+				http_code
+			)
+			state["left"] = int(state["left"]) - 1
+			request.queue_free()
+		request.request_completed.connect(on_done, CONNECT_ONE_SHOT)
+		var err := request.request(
+			"https://%s.playfabapi.com/Client/GetPlayerCombinedInfo" % TITLE_ID,
+			PackedStringArray([
+				"Content-Type: application/json",
+				"Accept: application/json",
+				"Accept-Encoding: identity",
+				"X-Authorization: " + session_ticket,
+				"X-ReportErrorAsSuccess: true",
+			]),
+			HTTPClient.METHOD_POST,
+			JSON.stringify({
+				"PlayFabId": target,
+				"InfoRequestParameters": {
+					"GetUserData": true,
+					"UserDataKeys": [LANGUAGE_DATA_KEY],
+					"GetPlayerStatistics": true,
+					"PlayerStatisticNames": [LANGUAGE_STAT_NAME],
+				},
+			})
+		)
+		if err != OK:
+			language_cache[target] = ""
+			state["left"] = int(state["left"]) - 1
+			request.queue_free()
+	var started := Time.get_ticks_msec()
+	while int(state["left"]) > 0 and Time.get_ticks_msec() - started < 12000:
+		await get_tree().process_frame
+
+
+func _fetch_one_player_language(target_id: String) -> String:
+	if language_cache.has(target_id):
+		return str(language_cache[target_id])
+	var json := await _client_post_json("GetPlayerCombinedInfo", {
+		"PlayFabId": target_id,
+		"InfoRequestParameters": {
+			"GetUserData": true,
+			"UserDataKeys": [LANGUAGE_DATA_KEY],
+			"GetPlayerStatistics": true,
+			"PlayerStatisticNames": [LANGUAGE_STAT_NAME],
+		},
+	})
+	var lang := _language_from_combined_info_json(json)
+	language_cache[target_id] = lang
+	return lang
+
+
+func _language_from_combined_info_text(text: String, http_code: int) -> String:
+	var parsed: Variant = JSON.parse_string(text)
+	if not (parsed is Dictionary):
+		return ""
+	var json: Dictionary = parsed
+	if int(json.get("code", http_code)) != 200:
+		return ""
+	return _language_from_combined_info_json(json)
+
+
+func _language_from_combined_info_json(json: Dictionary) -> String:
+	if json.is_empty():
+		return ""
+	var data: Variant = json.get("data", {})
+	if not (data is Dictionary):
+		return ""
+	var payload: Variant = data.get("InfoResultPayload", {})
+	if not (payload is Dictionary):
+		return ""
+	var from_data := language_from_user_data_payload(payload)
+	if from_data != "":
+		return from_data
+	var stats_value: Variant = payload.get("PlayerStatistics", [])
+	if stats_value is Array:
+		for stat_value in stats_value:
+			if not (stat_value is Dictionary):
+				continue
+			var stat: Dictionary = stat_value
+			if str(stat.get("StatisticName", "")) != LANGUAGE_STAT_NAME:
+				continue
+			return language_from_stat_value(int(stat.get("Value", 0)))
+	return ""
+
+
+func language_from_user_data_payload(payload: Dictionary) -> String:
+	var user_data: Variant = payload.get("UserData", {})
+	if not (user_data is Dictionary) or not user_data.has(LANGUAGE_DATA_KEY):
+		return ""
+	var entry: Variant = user_data[LANGUAGE_DATA_KEY]
+	if entry is Dictionary:
+		return language_code_from_locale(str(entry.get("Value", "")))
+	return language_code_from_locale(str(entry))
 
 ## Imprime el estado actual del login en consola (con el ID si existe)
 func print_login_status() -> void:
@@ -200,7 +662,7 @@ func submit_player_score(score: int, player_name: String = "", stat_name: String
 
 	# 2) Si viene nombre, intentar guardarlo como DisplayName (no falla la puntuación si esto falla)
 	if player_name.strip_edges() != "":
-		var ok_name := await _update_player_display_name(player_name)
+		var ok_name := await await_player_display_name(player_name)
 		if not ok_name:
 			push_warning("No se pudo actualizar el DisplayName. Continuo con el envío de puntuación…")
 
@@ -252,9 +714,30 @@ func submit_player_score(score: int, player_name: String = "", stat_name: String
 	return true
 
 
-const COMPETITIVE_AVERAGE_BASE := 151
-const COMPETITIVE_AID_BASE := 50
-const COMPETITIVE_FAILED_BASE := 50
+## Packed ranking for PlayFab signed int32 (CompetitiveV3).
+## Order: more stars, fewer puzzles, fewer aids, fewer failed letters,
+## fewer erasers, fewer revealed letters, less play time.
+## stars * 4_000_000
+## + (99 - puzzles) * 40_000
+## + (19 - aids) * 2_000
+## + (7 - failed) * 250
+## + (4 - erasers) * 50
+## + (4 - revealed) * 10
+## + (9 - time_bucket)   time_bucket = clamp(minutes / 15, 0, 9)
+const COMPETITIVE_STAR_PLACE := 4_000_000
+const COMPETITIVE_PUZZLE_PLACE := 40_000
+const COMPETITIVE_AID_PLACE := 2_000
+const COMPETITIVE_FAILED_PLACE := 250
+const COMPETITIVE_ERASER_PLACE := 50
+const COMPETITIVE_REVEALED_PLACE := 10
+const COMPETITIVE_STAR_MAX := 500
+const COMPETITIVE_PUZZLE_MAX := 99
+const COMPETITIVE_AID_MAX := 19
+const COMPETITIVE_FAILED_MAX := 7
+const COMPETITIVE_ERASER_MAX := 4
+const COMPETITIVE_REVEALED_MAX := 4
+const COMPETITIVE_TIME_MAX := 9
+const COMPETITIVE_TIME_BUCKET_SEC := 900
 
 
 func competitive_stat_name(category_filter: String, mode_filter: String) -> String:
@@ -271,48 +754,62 @@ func competitive_stat_name(category_filter: String, mode_filter: String) -> Stri
 			mode = "Cryptogram"
 		_:
 			mode = "All"
-	return "CompetitiveV2_%s_%s" % [category, mode]
+	return "CompetitiveV3_%s_%s" % [category, mode]
+
+
+func _competitive_inv(value: int, maximum: int) -> int:
+	return maximum - clampi(value, 0, maximum)
+
+
+func _competitive_time_bucket(time_sec: int) -> int:
+	return clampi(int(maxi(time_sec, 0) / COMPETITIVE_TIME_BUCKET_SEC), 0, COMPETITIVE_TIME_MAX)
 
 
 func encode_competitive_record(record: Dictionary) -> int:
-	var total_stars := clampi(int(record.get("stars_earned", 0)), 0, 4999)
-	var average_tenths := clampi(
-		int(record.get("stars_per_puzzle_tenths", 0)),
-		0,
-		COMPETITIVE_AVERAGE_BASE - 1
-	)
-	var aids := clampi(int(record.get("aids_used", 0)), 0, COMPETITIVE_AID_BASE - 1)
-	var failed := clampi(int(record.get("failed_letters", 0)), 0, COMPETITIVE_FAILED_BASE - 1)
-	var fewer_aids_rank := COMPETITIVE_AID_BASE - 1 - aids
-	var fewer_failed_rank := COMPETITIVE_FAILED_BASE - 1 - failed
+	var stars := clampi(int(record.get("stars_earned", 0)), 0, COMPETITIVE_STAR_MAX)
+	var puzzles := clampi(int(record.get("completed", 0)), 0, COMPETITIVE_PUZZLE_MAX)
+	var aids := clampi(int(record.get("aids_used", 0)), 0, COMPETITIVE_AID_MAX)
+	var failed := clampi(int(record.get("failed_letters", 0)), 0, COMPETITIVE_FAILED_MAX)
+	var erasers := clampi(int(record.get("erasers_used", 0)), 0, COMPETITIVE_ERASER_MAX)
+	var revealed := clampi(int(record.get("revealed_letters", 0)), 0, COMPETITIVE_REVEALED_MAX)
+	var time_bucket := _competitive_time_bucket(int(record.get("time_sec", 0)))
 	return (
-		(
-			(total_stars * COMPETITIVE_AVERAGE_BASE + average_tenths)
-			* COMPETITIVE_AID_BASE
-			+ fewer_aids_rank
-		)
-		* COMPETITIVE_FAILED_BASE
-		+ fewer_failed_rank
+		stars * COMPETITIVE_STAR_PLACE
+		+ _competitive_inv(puzzles, COMPETITIVE_PUZZLE_MAX) * COMPETITIVE_PUZZLE_PLACE
+		+ _competitive_inv(aids, COMPETITIVE_AID_MAX) * COMPETITIVE_AID_PLACE
+		+ _competitive_inv(failed, COMPETITIVE_FAILED_MAX) * COMPETITIVE_FAILED_PLACE
+		+ _competitive_inv(erasers, COMPETITIVE_ERASER_MAX) * COMPETITIVE_ERASER_PLACE
+		+ _competitive_inv(revealed, COMPETITIVE_REVEALED_MAX) * COMPETITIVE_REVEALED_PLACE
+		+ _competitive_inv(time_bucket, COMPETITIVE_TIME_MAX)
 	)
 
 
 func decode_competitive_value(value: int) -> Dictionary:
 	var remaining := maxi(value, 0)
-	var fewer_failed_rank := remaining % COMPETITIVE_FAILED_BASE
-	remaining = int(remaining / COMPETITIVE_FAILED_BASE)
-	var fewer_aids_rank := remaining % COMPETITIVE_AID_BASE
-	remaining = int(remaining / COMPETITIVE_AID_BASE)
-	var average_tenths := remaining % COMPETITIVE_AVERAGE_BASE
-	var total_stars := int(remaining / COMPETITIVE_AVERAGE_BASE)
-	var completed := 0
-	if average_tenths > 0:
-		completed = int(round(float(total_stars * 10) / float(average_tenths)))
+	var stars := int(remaining / COMPETITIVE_STAR_PLACE)
+	remaining = remaining % COMPETITIVE_STAR_PLACE
+	var puzzles := COMPETITIVE_PUZZLE_MAX - int(remaining / COMPETITIVE_PUZZLE_PLACE)
+	remaining = remaining % COMPETITIVE_PUZZLE_PLACE
+	var aids := COMPETITIVE_AID_MAX - int(remaining / COMPETITIVE_AID_PLACE)
+	remaining = remaining % COMPETITIVE_AID_PLACE
+	var failed := COMPETITIVE_FAILED_MAX - int(remaining / COMPETITIVE_FAILED_PLACE)
+	remaining = remaining % COMPETITIVE_FAILED_PLACE
+	var erasers := COMPETITIVE_ERASER_MAX - int(remaining / COMPETITIVE_ERASER_PLACE)
+	remaining = remaining % COMPETITIVE_ERASER_PLACE
+	var revealed := COMPETITIVE_REVEALED_MAX - int(remaining / COMPETITIVE_REVEALED_PLACE)
+	var time_bucket := COMPETITIVE_TIME_MAX - (remaining % COMPETITIVE_REVEALED_PLACE)
+	var hundredths := 0
+	if puzzles > 0:
+		hundredths = int(round(float(stars) * 100.0 / float(puzzles)))
 	return {
-		"stars_earned": total_stars,
-		"stars_per_puzzle_hundredths": average_tenths * 10,
-		"completed": completed,
-		"aids_used": COMPETITIVE_AID_BASE - 1 - fewer_aids_rank,
-		"failed_letters": COMPETITIVE_FAILED_BASE - 1 - fewer_failed_rank,
+		"stars_earned": stars,
+		"stars_per_puzzle_hundredths": hundredths,
+		"completed": puzzles,
+		"aids_used": aids,
+		"failed_letters": failed,
+		"erasers_used": erasers,
+		"revealed_letters": revealed,
+		"time_bucket": time_bucket,
 	}
 
 
@@ -326,7 +823,9 @@ func submit_competitive_rankings(player_name: String = "") -> bool:
 			push_warning("No se pudo enviar la clasificación: PlayFab no inició sesión.")
 			return false
 	if player_name.strip_edges() != "":
-		await _update_player_display_name(player_name)
+		await await_player_display_name(player_name)
+	var language := language_code_from_locale()
+	await sync_player_language(language)
 
 	var categories := [
 		"global",
@@ -344,6 +843,12 @@ func submit_competitive_rankings(player_name: String = "") -> bool:
 				"StatisticName": competitive_stat_name(category, mode),
 				"Value": encode_competitive_record(record),
 			})
+	var language_value := language_stat_value(language)
+	if language_value > 0:
+		statistics.append({
+			"StatisticName": LANGUAGE_STAT_NAME,
+			"Value": language_value,
+		})
 
 	var request := HTTPRequest.new()
 	add_child(request)
@@ -375,15 +880,117 @@ func submit_competitive_rankings(player_name: String = "") -> bool:
 	return int((parsed as Dictionary).get("code", http_code)) == 200
 
 
-# ----- Helper: fija el DisplayName del jugador en este título -----
-func _update_player_display_name(player_name: String) -> bool:
-	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
-		return false
+func _apply_display_name_result(name: String, revert_on_taken: bool) -> int:
+	var code := await _update_player_display_name(name)
+	if code == 200:
+		_last_accepted_display_name = name
+		return 200
+	if code != DISPLAY_NAME_TAKEN:
+		return code
+	var owned := _last_accepted_display_name.strip_edges().to_lower()
+	if owned != "" and owned == name.strip_edges().to_lower():
+		return 200
+	if revert_on_taken:
+		_revert_local_display_name(name)
+		display_name_taken.emit(name)
+		show_name_taken_dialog()
+	return DISPLAY_NAME_TAKEN
 
-	# PlayFab suele limitar a 3..25 caracteres (evita nombres vacíos o muy largos)
+
+func _revert_local_display_name(rejected: String) -> void:
+	if typeof(GameManager) == TYPE_NIL:
+		return
+	if str(GameManager.player_name).strip_edges().to_lower() != rejected.strip_edges().to_lower():
+		return
+	var fallback := _last_accepted_display_name.strip_edges()
+	if fallback == "" or fallback.to_lower() == rejected.strip_edges().to_lower():
+		GameManager.set_player_name("")
+	else:
+		GameManager.set_player_name(fallback)
+	if typeof(PlayerPrefs) != TYPE_NIL:
+		PlayerPrefs.save_prefs()
+
+
+func show_name_taken_dialog() -> void:
+	if get_node_or_null("NameTakenDialog") != null:
+		return
+	var layer := CanvasLayer.new()
+	layer.name = "NameTakenDialog"
+	layer.layer = 120
+	add_child(layer)
+	var overlay := ColorRect.new()
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.08, 0.04, 0.02, 0.58)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	layer.add_child(overlay)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.add_child(center)
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(980, 0)
+	card.mouse_filter = Control.MOUSE_FILTER_STOP
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(1, 0.965, 0.86, 1)
+	card_style.border_color = Color(0.62, 0.4, 0.16, 0.46)
+	card_style.set_border_width_all(4)
+	card_style.border_width_bottom = 9
+	card_style.set_corner_radius_all(40)
+	card.add_theme_stylebox_override("panel", card_style)
+	center.add_child(card)
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 48)
+	margin.add_theme_constant_override("margin_right", 48)
+	margin.add_theme_constant_override("margin_top", 40)
+	margin.add_theme_constant_override("margin_bottom", 36)
+	card.add_child(margin)
+	var inner := VBoxContainer.new()
+	inner.add_theme_constant_override("separation", 28)
+	margin.add_child(inner)
+	var body := Label.new()
+	body.add_theme_font_override("font", _DIALOG_FONT)
+	body.add_theme_font_size_override("font_size", 40)
+	body.add_theme_color_override("font_color", Color(0.24, 0.14, 0.08, 1))
+	body.text = tr("OnlineNameTaken")
+	if body.text == "OnlineNameTaken":
+		body.text = "Otro usuario ya tiene ese nombre."
+	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inner.add_child(body)
+	var close := Button.new()
+	close.focus_mode = Control.FOCUS_NONE
+	close.custom_minimum_size = Vector2(0, 120)
+	var close_text := tr("OK")
+	close.text = close_text if close_text != "" else "OK"
+	close.add_theme_font_override("font", _DIALOG_FONT)
+	close.add_theme_font_size_override("font_size", 36)
+	close.add_theme_color_override("font_color", Color.WHITE)
+	var close_style := StyleBoxFlat.new()
+	close_style.bg_color = Color(0.96, 0.51, 0.01, 1)
+	close_style.border_color = Color(0.83, 0.41, 0.02, 1)
+	close_style.set_border_width_all(3)
+	close_style.border_width_bottom = 8
+	close_style.set_corner_radius_all(30)
+	close.add_theme_stylebox_override("normal", close_style)
+	close.add_theme_stylebox_override("hover", close_style)
+	close.add_theme_stylebox_override("pressed", close_style)
+	close.pressed.connect(func() -> void:
+		if typeof(SoundManager) != TYPE_NIL:
+			SoundManager.play("ButtonClick")
+		layer.queue_free()
+	)
+	inner.add_child(close)
+
+
+# ----- Helper: fija el DisplayName del jugador en este título -----
+func _update_player_display_name(player_name: String) -> int:
+	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
+		return 0
+
+	# PlayFab solo acepta nombres de 3 a 25 caracteres.
 	var name := player_name.strip_edges()
-	if name == "":
-		return false
+	if name.length() < 3:
+		return 0
 	if name.length() > 25:
 		name = name.substr(0, 25)
 
@@ -403,7 +1010,7 @@ func _update_player_display_name(player_name: String) -> bool:
 	var err := req.request(url_name, headers, HTTPClient.METHOD_POST, JSON.stringify(body_name))
 	if err != OK:
 		req.queue_free()
-		return false
+		return 0
 
 	var r: Array = await req.request_completed
 	var http_code: int = r[1]
@@ -413,11 +1020,66 @@ func _update_player_display_name(player_name: String) -> bool:
 
 	var parsed: Variant = JSON.parse_string(text)
 	if !(parsed is Dictionary):
-		return false
+		return 0
 
 	var json: Dictionary = parsed
 	var pf_code: int = int(json.get("code", http_code))
-	return pf_code == 200
+	if pf_code == 200:
+		return 200
+	var error_code := int(json.get("errorCode", 0))
+	var error_name := str(json.get("error", ""))
+	if error_code == DISPLAY_NAME_TAKEN or error_name == "NameNotAvailable":
+		return DISPLAY_NAME_TAKEN
+	return 0
+
+
+func _update_public_user_data(data: Dictionary) -> bool:
+	var json := await _client_post_json("UpdateUserData", {
+		"Data": data,
+		"Permission": "Public",
+	})
+	return not json.is_empty()
+
+
+func _client_post(endpoint: String, body: Dictionary) -> bool:
+	var json := await _client_post_json(endpoint, body)
+	return not json.is_empty()
+
+
+func _client_post_json(endpoint: String, body: Dictionary) -> Dictionary:
+	if not is_logged_in():
+		return {}
+	var request := HTTPRequest.new()
+	add_child(request)
+	request.timeout = 20
+	var headers := PackedStringArray([
+		"Content-Type: application/json",
+		"Accept: application/json",
+		"Accept-Encoding: identity",
+		"X-Authorization: " + session_ticket,
+		"X-ReportErrorAsSuccess: true",
+	])
+	var url := "https://%s.playfabapi.com/Client/%s" % [TITLE_ID, endpoint]
+	if request.request(url, headers, HTTPClient.METHOD_POST, JSON.stringify(body)) != OK:
+		request.queue_free()
+		return {}
+	var response: Array = await request.request_completed
+	var http_code := int(response[1])
+	var text := (response[3] as PackedByteArray).get_string_from_utf8()
+	request.queue_free()
+	var parsed: Variant = JSON.parse_string(text)
+	if not (parsed is Dictionary):
+		return {}
+	var json: Dictionary = parsed
+	if int(json.get("code", http_code)) != 200:
+		push_warning(
+			"PlayFab %s falló: %s" % [
+				endpoint,
+				str(json.get("errorMessage", json.get("error", http_code))),
+			]
+		)
+		return {}
+	return json
 
 func send_match_event(duration_sec: int, vowelsAE: int, vowelsIOU:int, letras: int, pistas1: int, pistas2: int, dificultad: int, categoria: String) -> bool:
 	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
@@ -452,6 +1114,82 @@ func send_match_event(duration_sec: int, vowelsAE: int, vowelsIOU:int, letras: i
 	var http_code: int = r[1]
 	var parsed: Variant = JSON.parse_string((r[3] as PackedByteArray).get_string_from_utf8())
 	return (parsed is Dictionary) and (int((parsed as Dictionary).get("code", http_code)) == 200)
+
+
+func send_puzzle_trace(payload: Dictionary) -> bool:
+	if typeof(PlayFabTools) == TYPE_NIL or not PlayFabTools.is_logged_in():
+		push_warning("No hay sesión PlayFab para enviar la traza del puzle.")
+		return false
+	var events: Array = payload.get("events", [])
+	var header := payload.duplicate(true)
+	header.erase("events")
+	header["event_count"] = events.size()
+	var chunks := _chunk_trace_events(events)
+	header["chunk_count"] = chunks.size()
+	var ok := await _write_player_event("puzzle_solve_trace", header)
+	if ok:
+		await _client_post_json("UpdateUserData", {
+			"Data": {"LastPuzzleTrace": JSON.stringify(header)},
+			"Permission": "Private",
+		})
+	if not ok:
+		return false
+	for i in chunks.size():
+		var sent := await _write_player_event("puzzle_solve_trace_chunk", {
+			"session_id": str(payload.get("session_id", "")),
+			"puzzle_id": int(payload.get("puzzle_id", -1)),
+			"chunk_index": i,
+			"chunk_count": chunks.size(),
+			"events": chunks[i],
+		})
+		if not sent:
+			ok = false
+	return ok
+
+
+func _chunk_trace_events(events: Array) -> Array:
+	var chunks: Array = []
+	var current: Array = []
+	for ev in events:
+		current.append(ev)
+		if JSON.stringify(current).length() >= TRACE_CHUNK_CHARS:
+			current.pop_back()
+			if current.is_empty():
+				chunks.append([ev])
+				current = []
+			else:
+				chunks.append(current)
+				current = [ev]
+	if not current.is_empty() or chunks.is_empty():
+		chunks.append(current)
+	return chunks
+
+
+func _write_player_event(event_name: String, body: Dictionary) -> bool:
+	if not is_logged_in():
+		return false
+	var json := await _client_post_json("WritePlayerEvent", {
+		"EventName": event_name,
+		"Body": body,
+	})
+	return not json.is_empty()
+
+
+func log_anonymous_event(event_name: String, extra: Dictionary = {}) -> void:
+	_log_anonymous_event_async(event_name, extra)
+
+
+func _log_anonymous_event_async(event_name: String, extra: Dictionary) -> void:
+	if event_name.strip_edges() == "":
+		return
+	if not is_logged_in():
+		return
+	var body := extra.duplicate(true)
+	body["platform"] = OS.get_name()
+	body["locale"] = TranslationServer.get_locale()
+	body["client_ver"] = str(ProjectSettings.get_setting("application/config/version", ""))
+	var ok := await _write_player_event(event_name, body)
+	print("[PlayFab] event ", event_name, " ok=", ok)
 
 # Devuelve la posición (1-based) del jugador en "Score_Facil".
 # Requiere estar logeado (PlayFabLogin.is_logged_in()).
@@ -906,7 +1644,10 @@ func send_phrase_feedback(
 			"rating_hint1": int(ratings.get("hint1", 0)),
 			"rating_hint2": int(ratings.get("hint2", 0)),
 			"rating_hint3": int(ratings.get("hint3", 0)),
+			"rating_interest": int(ratings.get("interest", 0)),
 			"rating_init_letters": int(ratings.get("init_letters", 0)),
+			"difficulty_issue": str(ratings.get("difficulty_issue", "")),
+			"duration_issue": str(ratings.get("duration_issue", "")),
 			"comment": comment,
 			"client_ver": str(ProjectSettings.get_setting("application/config/version", "")),
 			"locale": OS.get_locale(),

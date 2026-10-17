@@ -1,0 +1,602 @@
+[
+  {
+    "lang": "en",
+    "level": "desafio",
+    "category": "cita",
+    "target": 29,
+    "before": 29,
+    "ajuste": 0,
+    "after": 29,
+    "final_index": null
+  },
+  {
+    "lang": "en",
+    "level": "desafio",
+    "category": "curiosidades",
+    "target": 34,
+    "before": 34,
+    "ajuste": 0,
+    "after": 34,
+    "final_index": null
+  },
+  {
+    "lang": "en",
+    "level": "desafio",
+    "category": "efemeride",
+    "target": 29,
+    "before": 29,
+    "ajuste": 0,
+    "after": 29,
+    "final_index": null
+  },
+  {
+    "lang": "en",
+    "level": "desafio",
+    "category": "fragmento",
+    "target": 31,
+    "before": 31,
+    "ajuste": 0,
+    "after": 31,
+    "final_index": null
+  },
+  {
+    "lang": "en",
+    "level": "diario-desafio",
+    "category": "daily",
+    "target": 48,
+    "before": 48,
+    "ajuste": 0,
+    "after": 48,
+    "final_index": null
+  },
+  {
+    "lang": "en",
+    "level": "diario-rapido",
+    "category": "daily",
+    "target": 33,
+    "before": 33,
+    "ajuste": 0,
+    "after": 33,
+    "final_index": null
+  },
+  {
+    "lang": "en",
+    "level": "rapido",
+    "category": "cita",
+    "target": 47,
+    "before": 47,
+    "ajuste": 0,
+    "after": 47,
+    "final_index": null
+  },
+  {
+    "lang": "en",
+    "level": "rapido",
+    "category": "curiosidades",
+    "target": 40,
+    "before": 40,
+    "ajuste": 0,
+    "after": 40,
+    "final_index": null
+  },
+  {
+    "lang": "en",
+    "level": "rapido",
+    "category": "efemeride",
+    "target": 26,
+    "before": 26,
+    "ajuste": 0,
+    "after": 26,
+    "final_index": null
+  },
+  {
+    "lang": "en",
+    "level": "rapido",
+    "category": "fragmento",
+    "target": 47,
+    "before": 47,
+    "ajuste": 0,
+    "after": 47,
+    "final_index": null
+  },
+  {
+    "lang": "de",
+    "level": "desafio",
+    "category": "cita",
+    "target": 29,
+    "before": 29,
+    "ajuste": 0,
+    "after": 29,
+    "final_index": null
+  },
+  {
+    "lang": "de",
+    "level": "desafio",
+    "category": "curiosidades",
+    "target": 34,
+    "before": 34,
+    "ajuste": 0,
+    "after": 34,
+    "final_index": null
+  },
+  {
+    "lang": "de",
+    "level": "desafio",
+    "category": "efemeride",
+    "target": 29,
+    "before": 29,
+    "ajuste": 0,
+    "after": 29,
+    "final_index": null
+  },
+  {
+    "lang": "de",
+    "level": "desafio",
+    "category": "fragmento",
+    "target": 31,
+    "before": 31,
+    "ajuste": 0,
+    "after": 31,
+    "final_index": null
+  },
+  {
+    "lang": "de",
+    "level": "diario-desafio",
+    "category": "daily",
+    "target": 48,
+    "before": 48,
+    "ajuste": 0,
+    "after": 48,
+    "final_index": null
+  },
+  {
+    "lang": "de",
+    "level": "diario-rapido",
+    "category": "daily",
+    "target": 33,
+    "before": 33,
+    "ajuste": 0,
+    "after": 33,
+    "final_index": null
+  },
+  {
+    "lang": "de",
+    "level": "rapido",
+    "category": "cita",
+    "target": 47,
+    "before": 47,
+    "ajuste": 0,
+    "after": 47,
+    "final_index": null
+  },
+  {
+    "lang": "de",
+    "level": "rapido",
+    "category": "curiosidades",
+    "target": 40,
+    "before": 40,
+    "ajuste": 0,
+    "after": 40,
+    "final_index": null
+  },
+  {
+    "lang": "de",
+    "level": "rapido",
+    "category": "efemeride",
+    "target": 26,
+    "before": 26,
+    "ajuste": 0,
+    "after": 26,
+    "final_index": null
+  },
+  {
+    "lang": "de",
+    "level": "rapido",
+    "category": "fragmento",
+    "target": 47,
+    "before": 47,
+    "ajuste": 0,
+    "after": 47,
+    "final_index": null
+  },
+  {
+    "lang": "fr",
+    "level": "desafio",
+    "category": "cita",
+    "target": 29,
+    "before": 29,
+    "ajuste": 0,
+    "after": 29,
+    "final_index": null
+  },
+  {
+    "lang": "fr",
+    "level": "desafio",
+    "category": "curiosidades",
+    "target": 34,
+    "before": 34,
+    "ajuste": 0,
+    "after": 34,
+    "final_index": null
+  },
+  {
+    "lang": "fr",
+    "level": "desafio",
+    "category": "efemeride",
+    "target": 29,
+    "before": 29,
+    "ajuste": 0,
+    "after": 29,
+    "final_index": null
+  },
+  {
+    "lang": "fr",
+    "level": "desafio",
+    "category": "fragmento",
+    "target": 31,
+    "before": 31,
+    "ajuste": 0,
+    "after": 31,
+    "final_index": null
+  },
+  {
+    "lang": "fr",
+    "level": "diario-desafio",
+    "category": "daily",
+    "target": 48,
+    "before": 48,
+    "ajuste": 0,
+    "after": 48,
+    "final_index": null
+  },
+  {
+    "lang": "fr",
+    "level": "diario-rapido",
+    "category": "daily",
+    "target": 33,
+    "before": 33,
+    "ajuste": 0,
+    "after": 33,
+    "final_index": null
+  },
+  {
+    "lang": "fr",
+    "level": "rapido",
+    "category": "cita",
+    "target": 47,
+    "before": 47,
+    "ajuste": 0,
+    "after": 47,
+    "final_index": null
+  },
+  {
+    "lang": "fr",
+    "level": "rapido",
+    "category": "curiosidades",
+    "target": 40,
+    "before": 40,
+    "ajuste": 0,
+    "after": 40,
+    "final_index": null
+  },
+  {
+    "lang": "fr",
+    "level": "rapido",
+    "category": "efemeride",
+    "target": 26,
+    "before": 26,
+    "ajuste": 0,
+    "after": 26,
+    "final_index": null
+  },
+  {
+    "lang": "fr",
+    "level": "rapido",
+    "category": "fragmento",
+    "target": 47,
+    "before": 47,
+    "ajuste": 0,
+    "after": 47,
+    "final_index": null
+  },
+  {
+    "lang": "it",
+    "level": "desafio",
+    "category": "cita",
+    "target": 29,
+    "before": 30,
+    "ajuste": -1,
+    "after": 29,
+    "final_index": 2008
+  },
+  {
+    "lang": "it",
+    "level": "desafio",
+    "category": "curiosidades",
+    "target": 34,
+    "before": 30,
+    "ajuste": 4,
+    "after": 34,
+    "final_index": 1003
+  },
+  {
+    "lang": "it",
+    "level": "desafio",
+    "category": "efemeride",
+    "target": 29,
+    "before": 30,
+    "ajuste": -1,
+    "after": 29,
+    "final_index": 20
+  },
+  {
+    "lang": "it",
+    "level": "desafio",
+    "category": "fragmento",
+    "target": 31,
+    "before": 33,
+    "ajuste": -2,
+    "after": 31,
+    "final_index": 3062
+  },
+  {
+    "lang": "it",
+    "level": "diario-desafio",
+    "category": "daily",
+    "target": 48,
+    "before": 46,
+    "ajuste": 2,
+    "after": 48,
+    "final_index": 4011
+  },
+  {
+    "lang": "it",
+    "level": "diario-rapido",
+    "category": "daily",
+    "target": 33,
+    "before": 35,
+    "ajuste": -2,
+    "after": 33,
+    "final_index": 4001
+  },
+  {
+    "lang": "it",
+    "level": "rapido",
+    "category": "cita",
+    "target": 47,
+    "before": 43,
+    "ajuste": 4,
+    "after": 47,
+    "final_index": 3089
+  },
+  {
+    "lang": "it",
+    "level": "rapido",
+    "category": "curiosidades",
+    "target": 40,
+    "before": 33,
+    "ajuste": 7,
+    "after": 40,
+    "final_index": 1005
+  },
+  {
+    "lang": "it",
+    "level": "rapido",
+    "category": "efemeride",
+    "target": 26,
+    "before": 31,
+    "ajuste": -5,
+    "after": 26,
+    "final_index": 81
+  },
+  {
+    "lang": "it",
+    "level": "rapido",
+    "category": "fragmento",
+    "target": 47,
+    "before": 53,
+    "ajuste": -6,
+    "after": 47,
+    "final_index": 3073
+  },
+  {
+    "lang": "pt",
+    "level": "desafio",
+    "category": "cita",
+    "target": 29,
+    "before": 29,
+    "ajuste": 0,
+    "after": 29,
+    "final_index": null
+  },
+  {
+    "lang": "pt",
+    "level": "desafio",
+    "category": "curiosidades",
+    "target": 34,
+    "before": 31,
+    "ajuste": 3,
+    "after": 34,
+    "final_index": 1018
+  },
+  {
+    "lang": "pt",
+    "level": "desafio",
+    "category": "efemeride",
+    "target": 29,
+    "before": 30,
+    "ajuste": -1,
+    "after": 29,
+    "final_index": 20
+  },
+  {
+    "lang": "pt",
+    "level": "desafio",
+    "category": "fragmento",
+    "target": 31,
+    "before": 33,
+    "ajuste": -2,
+    "after": 31,
+    "final_index": 3062
+  },
+  {
+    "lang": "pt",
+    "level": "diario-desafio",
+    "category": "daily",
+    "target": 48,
+    "before": 48,
+    "ajuste": 0,
+    "after": 48,
+    "final_index": null
+  },
+  {
+    "lang": "pt",
+    "level": "diario-rapido",
+    "category": "daily",
+    "target": 33,
+    "before": 33,
+    "ajuste": 0,
+    "after": 33,
+    "final_index": null
+  },
+  {
+    "lang": "pt",
+    "level": "rapido",
+    "category": "cita",
+    "target": 47,
+    "before": 48,
+    "ajuste": -1,
+    "after": 47,
+    "final_index": 3064
+  },
+  {
+    "lang": "pt",
+    "level": "rapido",
+    "category": "curiosidades",
+    "target": 40,
+    "before": 29,
+    "ajuste": 11,
+    "after": 40,
+    "final_index": 1009
+  },
+  {
+    "lang": "pt",
+    "level": "rapido",
+    "category": "efemeride",
+    "target": 26,
+    "before": 30,
+    "ajuste": -4,
+    "after": 26,
+    "final_index": 81
+  },
+  {
+    "lang": "pt",
+    "level": "rapido",
+    "category": "fragmento",
+    "target": 47,
+    "before": 53,
+    "ajuste": -6,
+    "after": 47,
+    "final_index": 3073
+  },
+  {
+    "lang": "eu",
+    "level": "desafio",
+    "category": "cita",
+    "target": 29,
+    "before": 29,
+    "ajuste": 0,
+    "after": 29,
+    "final_index": null
+  },
+  {
+    "lang": "eu",
+    "level": "desafio",
+    "category": "curiosidades",
+    "target": 34,
+    "before": 33,
+    "ajuste": 1,
+    "after": 34,
+    "final_index": 1003
+  },
+  {
+    "lang": "eu",
+    "level": "desafio",
+    "category": "efemeride",
+    "target": 29,
+    "before": 30,
+    "ajuste": -1,
+    "after": 29,
+    "final_index": 4
+  },
+  {
+    "lang": "eu",
+    "level": "desafio",
+    "category": "fragmento",
+    "target": 31,
+    "before": 31,
+    "ajuste": 0,
+    "after": 31,
+    "final_index": null
+  },
+  {
+    "lang": "eu",
+    "level": "diario-desafio",
+    "category": "daily",
+    "target": 48,
+    "before": 46,
+    "ajuste": 2,
+    "after": 48,
+    "final_index": 4010
+  },
+  {
+    "lang": "eu",
+    "level": "diario-rapido",
+    "category": "daily",
+    "target": 33,
+    "before": 35,
+    "ajuste": -2,
+    "after": 33,
+    "final_index": 4001
+  },
+  {
+    "lang": "eu",
+    "level": "rapido",
+    "category": "cita",
+    "target": 47,
+    "before": 38,
+    "ajuste": 9,
+    "after": 47,
+    "final_index": 3092
+  },
+  {
+    "lang": "eu",
+    "level": "rapido",
+    "category": "curiosidades",
+    "target": 40,
+    "before": 37,
+    "ajuste": 3,
+    "after": 40,
+    "final_index": 1008
+  },
+  {
+    "lang": "eu",
+    "level": "rapido",
+    "category": "efemeride",
+    "target": 26,
+    "before": 49,
+    "ajuste": -23,
+    "after": 26,
+    "final_index": 73
+  },
+  {
+    "lang": "eu",
+    "level": "rapido",
+    "category": "fragmento",
+    "target": 47,
+    "before": 36,
+    "ajuste": 11,
+    "after": 47,
+    "final_index": 3074
+  }
+]

@@ -1,8 +1,11 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=31 format=3]
 
 [ext_resource type="Script" path="res://scenes/menu_game_over.gd" id="1_script"]
 [ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="2_font"]
 [ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="3_star"]
+[ext_resource type="Texture2D" uid="uid://br1sokjc4hmqj" path="res://images/ui_icon_x.svg" id="4_x"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_instagram.svg" id="5_ig"]
+[ext_resource type="Texture2D" path="res://images/ui_icon_facebook.svg" id="6_fb"]
 
 [sub_resource type="StyleBoxFlat" id="Style_backdrop"]
 bg_color = Color(0.12, 0.085, 0.045, 0.72)
@@ -80,12 +83,12 @@ shadow_size = 10
 shadow_offset = Vector2(0, 7)
 
 [sub_resource type="StyleBoxFlat" id="Style_info"]
-bg_color = Color(0.839, 0.788, 0.722, 1)
+bg_color = Color(0.78, 0.9, 0.97, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 4
-border_color = Color(0.55, 0.47, 0.38, 0.68)
+border_color = Color(0.42, 0.62, 0.78, 0.62)
 corner_radius_top_left = 25
 corner_radius_top_right = 25
 corner_radius_bottom_right = 25
@@ -102,21 +105,6 @@ corner_radius_top_left = 32
 corner_radius_top_right = 32
 corner_radius_bottom_right = 32
 corner_radius_bottom_left = 32
-
-[sub_resource type="StyleBoxFlat" id="Style_unlock"]
-bg_color = Color(1, 0.968, 0.86, 0.92)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 7
-border_color = Color(0.79, 0.61, 0.36, 0.34)
-corner_radius_top_left = 32
-corner_radius_top_right = 32
-corner_radius_bottom_right = 32
-corner_radius_bottom_left = 32
-shadow_color = Color(0.31, 0.18, 0.06, 0.11)
-shadow_size = 9
-shadow_offset = Vector2(0, 7)
 
 [sub_resource type="StyleBoxFlat" id="Style_pill"]
 bg_color = Color(0.96, 0.88, 0.67, 0.72)
@@ -152,6 +140,168 @@ border_width_top = 13
 border_width_right = 6
 border_width_bottom = 6
 border_color = Color(0.64, 0.23, 0.015, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_feedback"]
+bg_color = Color(0.08, 0.62, 0.64, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.035, 0.36, 0.39, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.02, 0.22, 0.24, 0.28)
+shadow_size = 14
+shadow_offset = Vector2(0, 11)
+
+[sub_resource type="StyleBoxFlat" id="Style_feedback_pressed"]
+bg_color = Color(0.06, 0.5, 0.52, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03, 0.3, 0.32, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share"]
+bg_color = Color(0.08, 0.62, 0.64, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.035, 0.36, 0.39, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.02, 0.22, 0.24, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_pressed"]
+bg_color = Color(0.06, 0.5, 0.52, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.03, 0.3, 0.32, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_x"]
+bg_color = Color(0.07, 0.07, 0.08, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.02, 0.02, 0.03, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.02, 0.02, 0.03, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_x_pressed"]
+bg_color = Color(0.03, 0.03, 0.04, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.01, 0.01, 0.015, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_ig"]
+bg_color = Color(0.86, 0.22, 0.48, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.58, 0.08, 0.3, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.42, 0.05, 0.18, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_ig_pressed"]
+bg_color = Color(0.72, 0.14, 0.38, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.48, 0.06, 0.24, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_fb"]
+bg_color = Color(0.09, 0.47, 0.95, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.05, 0.3, 0.7, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.04, 0.16, 0.4, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_fb_pressed"]
+bg_color = Color(0.06, 0.36, 0.78, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.04, 0.22, 0.52, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+
+[sub_resource type="StyleBoxFlat" id="Style_share_tt"]
+bg_color = Color(1, 0.53, 0.08, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 13
+border_color = Color(0.74, 0.3, 0.025, 1)
+corner_radius_top_left = 38
+corner_radius_top_right = 38
+corner_radius_bottom_right = 38
+corner_radius_bottom_left = 38
+shadow_color = Color(0.45, 0.18, 0.02, 0.28)
+shadow_size = 12
+shadow_offset = Vector2(0, 10)
+
+[sub_resource type="StyleBoxFlat" id="Style_share_tt_pressed"]
+bg_color = Color(0.9, 0.4, 0.045, 1)
+border_width_left = 6
+border_width_top = 13
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.62, 0.22, 0.02, 1)
 corner_radius_top_left = 38
 corner_radius_top_right = 38
 corner_radius_bottom_right = 38
@@ -278,7 +428,7 @@ offset_right = 133.0
 offset_bottom = 132.0
 theme_override_colors/font_color = Color(0.94, 0.43, 0.06, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 98
+theme_override_font_sizes/font_size = 112
 text = "“"
 horizontal_alignment = 1
 
@@ -290,20 +440,21 @@ offset_right = 965.0
 offset_bottom = 397.0
 theme_override_colors/font_color = Color(0.94, 0.43, 0.06, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 98
+theme_override_font_sizes/font_size = 112
 text = "”"
 horizontal_alignment = 1
 
 [node name="Phrase" type="RichTextLabel" parent="MainCard/PhraseCard"]
 layout_mode = 0
-offset_left = 70.0
-offset_top = 56.0
-offset_right = 926.0
+offset_left = 56.0
+offset_top = 52.0
+offset_right = 940.0
 offset_bottom = 300.0
 mouse_filter = 2
-theme_override_colors/default_color = Color(0.22, 0.16, 0.12, 1)
+theme_override_colors/default_color = Color(0.18, 0.12, 0.08, 1)
+theme_override_constants/line_separation = 26
 theme_override_fonts/normal_font = ExtResource("2_font")
-theme_override_font_sizes/normal_font_size = 44
+theme_override_font_sizes/normal_font_size = 62
 bbcode_enabled = true
 text = "[center]La frase resuelta aparecerá aquí[/center]"
 fit_content = true
@@ -388,15 +539,15 @@ texture = ExtResource("3_star")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="StarsPill" type="Panel" parent="MainCard/StarsCard"]
+[node name="TimePill" type="Panel" parent="MainCard/StarsCard"]
 layout_mode = 0
-offset_left = 278.0
-offset_top = 231.0
-offset_right = 718.0
-offset_bottom = 298.0
+offset_left = 198.0
+offset_top = 222.0
+offset_right = 798.0
+offset_bottom = 312.0
 theme_override_styles/panel = SubResource("Style_pill")
 
-[node name="StarsText" type="Label" parent="MainCard/StarsCard/StarsPill"]
+[node name="TimeText" type="Label" parent="MainCard/StarsCard/TimePill"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -405,25 +556,25 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 29
-text = "Resultado: 5 de 5"
+theme_override_font_sizes/font_size = 36
+text = "Tiempo: 0:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="InfoCard" type="Panel" parent="MainCard/StarsCard"]
 layout_mode = 0
 offset_left = 40.0
-offset_top = 329.0
+offset_top = 392.0
 offset_right = 956.0
-offset_bottom = 669.0
+offset_bottom = 732.0
 theme_override_styles/panel = SubResource("Style_info")
 
 [node name="InfoBadge" type="Panel" parent="MainCard/StarsCard/InfoCard"]
 layout_mode = 0
 offset_left = 421.0
-offset_top = -30.0
+offset_top = -70.0
 offset_right = 495.0
-offset_bottom = 48.0
+offset_bottom = 8.0
 theme_override_styles/panel = SubResource("Style_info_badge")
 
 [node name="Text" type="Label" parent="MainCard/StarsCard/InfoCard/InfoBadge"]
@@ -442,174 +593,166 @@ vertical_alignment = 1
 
 [node name="Description" type="RichTextLabel" parent="MainCard/StarsCard/InfoCard"]
 layout_mode = 0
-offset_left = 45.0
-offset_top = 53.0
-offset_right = 871.0
+offset_left = 36.0
+offset_top = 56.0
+offset_right = 880.0
 offset_bottom = 306.0
 mouse_filter = 2
-theme_override_colors/default_color = Color(0.22, 0.17, 0.12, 1)
+theme_override_colors/default_color = Color(0.08, 0.32, 0.68, 1)
+theme_override_constants/line_separation = 14
 theme_override_fonts/normal_font = ExtResource("2_font")
-theme_override_font_sizes/normal_font_size = 44
-text = "Información adicional sobre la frase."
+theme_override_font_sizes/normal_font_size = 52
+bbcode_enabled = true
+text = "[center]Información adicional sobre la frase.[/center]"
 fit_content = true
 scroll_active = false
-
-[node name="UnlockCard" type="Panel" parent="MainCard"]
-layout_mode = 0
-offset_left = 75.0
-offset_top = 1953.0
-offset_right = 1071.0
-offset_bottom = 2239.0
-theme_override_styles/panel = SubResource("Style_unlock")
-
-[node name="LineLeft" type="HSeparator" parent="MainCard/UnlockCard"]
-layout_mode = 0
-offset_left = 56.0
-offset_top = 56.0
-offset_right = 345.0
-offset_bottom = 62.0
-theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.52)
-
-[node name="Title" type="Label" parent="MainCard/UnlockCard"]
-layout_mode = 0
-offset_left = 343.0
-offset_top = 18.0
-offset_right = 653.0
-offset_bottom = 90.0
-theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 32
-text = "HAS DESBLOQUEADO"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="LineRight" type="HSeparator" parent="MainCard/UnlockCard"]
-layout_mode = 0
-offset_left = 651.0
-offset_top = 56.0
-offset_right = 940.0
-offset_bottom = 62.0
-theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.52)
-
-[node name="Divider1" type="VSeparator" parent="MainCard/UnlockCard"]
-layout_mode = 0
-offset_left = 498.0
-offset_top = 100.0
-offset_right = 504.0
-offset_bottom = 260.0
-theme_override_colors/separator = Color(0.72, 0.53, 0.28, 0.33)
-
-[node name="RewardXP" type="Control" parent="MainCard/UnlockCard"]
-layout_mode = 0
-offset_left = 40.0
-offset_top = 96.0
-offset_right = 490.0
-offset_bottom = 270.0
-
-[node name="Icon" type="Label" parent="MainCard/UnlockCard/RewardXP"]
-layout_mode = 0
-offset_left = 20.0
-offset_top = 8.0
-offset_right = 160.0
-offset_bottom = 150.0
-theme_override_colors/font_color = Color(1, 0.82, 0.12, 1)
-theme_override_colors/font_outline_color = Color(0.72, 0.34, 0.02, 1)
-theme_override_constants/outline_size = 5
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 110
-text = "★"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Title" type="Label" parent="MainCard/UnlockCard/RewardXP"]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 30.0
-offset_right = 430.0
-offset_bottom = 100.0
-theme_override_colors/font_color = Color(0.91, 0.39, 0.06, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 48
-text = "+50 XP"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Subtitle" type="Label" parent="MainCard/UnlockCard/RewardXP"]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 100.0
-offset_right = 430.0
-offset_bottom = 150.0
-theme_override_colors/font_color = Color(0.31, 0.22, 0.14, 0.85)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 28
-text = "Experiencia"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="RewardMap" type="Control" parent="MainCard/UnlockCard"]
-layout_mode = 0
-offset_left = 510.0
-offset_top = 96.0
-offset_right = 960.0
-offset_bottom = 270.0
-
-[node name="Icon" type="Label" parent="MainCard/UnlockCard/RewardMap"]
-layout_mode = 0
-offset_left = 20.0
-offset_top = 8.0
-offset_right = 160.0
-offset_bottom = 150.0
-theme_override_colors/font_color = Color(0.28, 0.7, 0.55, 1)
-theme_override_colors/font_outline_color = Color(0.12, 0.45, 0.36, 1)
-theme_override_constants/outline_size = 4
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 100
-text = "◇"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Title" type="Label" parent="MainCard/UnlockCard/RewardMap"]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 30.0
-offset_right = 430.0
-offset_bottom = 100.0
-theme_override_colors/font_color = Color(0.26, 0.2, 0.15, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 34
-text = "Progreso del mapa"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Subtitle" type="Label" parent="MainCard/UnlockCard/RewardMap"]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 100.0
-offset_right = 430.0
-offset_bottom = 150.0
-theme_override_colors/font_color = Color(0.12, 0.53, 0.42, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 26
-text = "0 % por completar"
-horizontal_alignment = 1
+selection_enabled = false
+autowrap_mode = 3
 
 [node name="ButtonBack" type="Button" parent="MainCard"]
 layout_mode = 0
-offset_left = 238.0
+offset_left = 36.0
 offset_top = 2263.0
-offset_right = 908.0
+offset_right = 640.0
 offset_bottom = 2483.0
 focus_mode = 0
 theme_override_colors/font_color = Color(1, 1, 0.94, 1)
 theme_override_colors/font_shadow_color = Color(0.42, 0.17, 0.01, 0.52)
 theme_override_constants/shadow_offset_y = 5
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 66
+theme_override_font_sizes/font_size = 58
 theme_override_styles/normal = SubResource("Style_continue")
 theme_override_styles/hover = SubResource("Style_continue")
 theme_override_styles/pressed = SubResource("Style_continue_pressed")
 theme_override_styles/focus = SubResource("Style_empty")
 text = "CONTINUAR"
 
+[node name="ButtonFeedback" type="Button" parent="MainCard"]
+layout_mode = 0
+offset_left = 664.0
+offset_top = 2263.0
+offset_right = 1110.0
+offset_bottom = 2483.0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 0.94, 1)
+theme_override_colors/font_shadow_color = Color(0.02, 0.22, 0.24, 0.52)
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("Style_feedback")
+theme_override_styles/hover = SubResource("Style_feedback")
+theme_override_styles/pressed = SubResource("Style_feedback_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "Valora puzle"
+
+[node name="ShareTitle" type="Label" parent="MainCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 36.0
+offset_top = 2010.0
+offset_right = 1110.0
+offset_bottom = 2078.0
+theme_override_colors/font_color = Color(0.28, 0.18, 0.1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+text = "Compartir Resultados en RRSS"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ButtonShareX" type="Button" parent="MainCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 36.0
+offset_top = 2088.0
+offset_right = 286.0
+offset_bottom = 2238.0
+focus_mode = 0
+icon = ExtResource("4_x")
+expand_icon = true
+icon_alignment = 1
+vertical_icon_alignment = 1
+theme_override_constants/icon_max_width = 64
+theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_styles/normal = SubResource("Style_share_x")
+theme_override_styles/hover = SubResource("Style_share_x")
+theme_override_styles/pressed = SubResource("Style_share_x_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+tooltip_text = "X"
+
+[node name="ButtonShareInstagram" type="Button" parent="MainCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 310.0
+offset_top = 2088.0
+offset_right = 560.0
+offset_bottom = 2238.0
+focus_mode = 0
+icon = ExtResource("5_ig")
+expand_icon = true
+icon_alignment = 1
+vertical_icon_alignment = 1
+theme_override_constants/icon_max_width = 64
+theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_styles/normal = SubResource("Style_share_ig")
+theme_override_styles/hover = SubResource("Style_share_ig")
+theme_override_styles/pressed = SubResource("Style_share_ig_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+tooltip_text = "Instagram"
+
+[node name="ButtonShareFacebook" type="Button" parent="MainCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 584.0
+offset_top = 2088.0
+offset_right = 834.0
+offset_bottom = 2238.0
+focus_mode = 0
+icon = ExtResource("6_fb")
+expand_icon = true
+icon_alignment = 1
+vertical_icon_alignment = 1
+theme_override_constants/icon_max_width = 64
+theme_override_colors/icon_normal_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_styles/normal = SubResource("Style_share_fb")
+theme_override_styles/hover = SubResource("Style_share_fb")
+theme_override_styles/pressed = SubResource("Style_share_fb_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+tooltip_text = "Facebook"
+
+[node name="ButtonShareMore" type="Button" parent="MainCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 858.0
+offset_top = 2088.0
+offset_right = 1110.0
+offset_bottom = 2238.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 52
+theme_override_colors/font_color = Color(1, 1, 0.96, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 0.96, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0.96, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 0.96, 0.45)
+theme_override_styles/normal = SubResource("Style_share_tt")
+theme_override_styles/hover = SubResource("Style_share_tt")
+theme_override_styles/pressed = SubResource("Style_share_tt_pressed")
+theme_override_styles/focus = SubResource("Style_empty")
+text = "···"
+tooltip_text = "Más redes"
+
 [connection signal="pressed" from="MainCard/ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="MainCard/ButtonFeedback" to="." method="_on_button_feedback_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareX" to="." method="_on_share_x_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareInstagram" to="." method="_on_share_instagram_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareFacebook" to="." method="_on_share_facebook_pressed"]
+[connection signal="pressed" from="MainCard/ButtonShareMore" to="." method="_on_share_more_pressed"]

@@ -127,7 +127,135 @@ func _recompute_games_won() -> void:
 
 # ------------------- API PÚBLICA -------------------
 
+func count_finished_puzzles_excluding_onboarding() -> int:
+	var ids := {}
+	for entry_value in _historial:
+		if not (entry_value is Dictionary):
+			continue
+		var entry: Dictionary = entry_value
+		if not bool(entry.get("partida_ganada", false)):
+			continue
+		if str(entry.get("source", "")) == GameManager.SOURCE_ONBOARDING:
+			continue
+		var puzzle_id := int(entry.get("id", -1))
+		if puzzle_id == GameManager.ONBOARDING_ID_PUZZLE_1 or puzzle_id == GameManager.ONBOARDING_ID_PUZZLE_2:
+			continue
+		if puzzle_id < 0:
+			continue
+		ids[puzzle_id] = true
+	return ids.size()
+
+
+## Fechas y puzles únicos ganados, sin práctica ni tutorial.
+## tutorial_unix es la primera victoria del segundo paso del tutorial.
+func milestone_snapshot() -> Dictionary:
+	var puzzle_ids: Array[int] = []
+	var seen := {}
+	var first_unix := 0
+	var last_unix := 0
+	var tutorial_unix := 0
+	for entry_value in _historial:
+		if not (entry_value is Dictionary):
+			continue
+		var entry: Dictionary = entry_value
+		if not bool(entry.get("partida_ganada", false)):
+			continue
+		var source := str(entry.get("source", ""))
+		var puzzle_id := int(entry.get("id", -1))
+		var unix := _entry_completed_unix(entry)
+		var onboarding := (
+			source == GameManager.SOURCE_ONBOARDING
+			or puzzle_id == GameManager.ONBOARDING_ID_PUZZLE_1
+			or puzzle_id == GameManager.ONBOARDING_ID_PUZZLE_2
+		)
+		if onboarding:
+			if puzzle_id == GameManager.ONBOARDING_ID_PUZZLE_2 and unix > 0:
+				if tutorial_unix <= 0 or unix < tutorial_unix:
+					tutorial_unix = unix
+			continue
+		if source == GameManager.SOURCE_PRACTICE or puzzle_id < 0:
+			continue
+		if not seen.has(puzzle_id):
+			seen[puzzle_id] = true
+			puzzle_ids.append(puzzle_id)
+		if unix <= 0:
+			continue
+		if first_unix <= 0 or unix < first_unix:
+			first_unix = unix
+		if unix > last_unix:
+			last_unix = unix
+	puzzle_ids.sort()
+	return {
+		"puzzle_ids": puzzle_ids,
+		"first_unix": first_unix,
+		"last_unix": last_unix,
+		"tutorial_unix": tutorial_unix,
+	}
+
+
+func _entry_completed_unix(entry: Dictionary) -> int:
+	var unix := int(entry.get("completed_unix", 0))
+	if unix > 0:
+		return unix
+	var fecha: Variant = entry.get("fecha", {})
+	if not (fecha is Dictionary):
+		return 0
+	var year := int((fecha as Dictionary).get("anio", 0))
+	var month := int((fecha as Dictionary).get("mes", 0))
+	var day := int((fecha as Dictionary).get("dia", 0))
+	if year < 2000 or month < 1 or month > 12 or day < 1 or day > 31:
+		return 0
+	return int(Time.get_unix_time_from_datetime_dict({
+		"year": year,
+		"month": month,
+		"day": day,
+		"hour": 0,
+		"minute": 0,
+		"second": 0,
+	}))
+
+
+func onboarding_score_stars() -> int:
+	var best_by_id := {}
+	for entry_value in _historial:
+		if not (entry_value is Dictionary):
+			continue
+		var entry: Dictionary = entry_value
+		if str(entry.get("source", "")) != GameManager.SOURCE_ONBOARDING:
+			continue
+		if not bool(entry.get("partida_ganada", false)):
+			continue
+		var puzzle_id := int(entry.get("id", -1))
+		var stars := 1 if bool(entry.get("completion_star", false)) else 0
+		best_by_id[puzzle_id] = maxi(int(best_by_id.get(puzzle_id, 0)), stars)
+	var total := 0
+	for stars_value in best_by_id.values():
+		total += int(stars_value)
+	return total
+
+
+func _has_onboarding_win(puzzle_id: int) -> bool:
+	for entry_value in _historial:
+		if not (entry_value is Dictionary):
+			continue
+		var entry: Dictionary = entry_value
+		if str(entry.get("source", "")) != GameManager.SOURCE_ONBOARDING:
+			continue
+		if int(entry.get("id", -1)) != puzzle_id:
+			continue
+		if bool(entry.get("partida_ganada", false)):
+			return true
+	return false
+
+
 func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> void:
+	if GameManager.is_practice_session():
+		return
+	if GameManager.is_onboarding_session():
+		if not PlayerPrefs.should_award_tutorial_stars(GameManager.onboarding_stage):
+			return
+		if _has_onboarding_win(int(GameManager.id_frase)):
+			return
 	var now: Dictionary = Time.get_datetime_dict_from_system()
 	var fecha: Dictionary = {
 		"dia": now["day"],
@@ -152,7 +280,8 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 		"tiempo_partida": int(GameManager.tiempo_partida), # segundos
 		"dificultad": int(GameManager.dificultad_actual),   # 1,2,3,4
 		"game_mode": str(GameManager.game_mode_actual),
-		"estrellas": int(GameManager.puzzle_stars),
+		"estrellas": 0 if GameManager.is_onboarding_session() else int(GameManager.puzzle_stars),
+		"completion_star": false,
 		"star_system_version": 2,
 		"consonantes_compradas": GameManager.consonantes_compradas,
 		"vocales_compradas_AE": GameManager.vocalesAE_compradas,
@@ -160,13 +289,53 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 		"pistas_consumidas_1": GameManager.pistas_utilizadas_1,
 		"pistas_consumidas_2": GameManager.pistas_utilizadas_2,
 		"revelaciones_falladas": int(GameManager.reveal_errors_count),
-		"vidas_perdidas": _calcula_vidas_perdidas()
+		"revelaciones_correctas": int(GameManager.reveal_success_count),
+		"gomas_utilizadas": int(GameManager.cambios_hechos),
+		"vidas_perdidas": _calcula_vidas_perdidas(),
+		"completed_unix": int(Time.get_unix_time_from_system()),
+		"source": str(GameManager.session_source),
+		"counts_for_score": GameManager.should_award_onboarding_stars() or not GameManager.is_onboarding_session(),
 	}
 	_historial.append(entry)
 	_save_history(_historial)
 	_recompute_stats()
-	if resultado:
+	if resultado and not GameManager.is_onboarding_session():
 		PuzzleSaveManager.mark_completed(int(GameManager.id_frase))
+		if GameManager.session_source == GameManager.SOURCE_DAILY:
+			PlayerPrefs.mark_daily_completed(int(GameManager.id_frase), int(GameManager.puzzle_stars))
+	if typeof(PlayFabTools) != TYPE_NIL and PlayFabTools.has_method("note_puzzle_completed"):
+		if resultado and not GameManager.is_onboarding_session() and not GameManager.is_practice_session():
+			PlayFabTools.note_puzzle_completed()
+		else:
+			PlayFabTools.note_player_activity()
+
+
+func grant_completion_star() -> void:
+	if GameManager.is_practice_session():
+		return
+	if GameManager.is_onboarding_session():
+		if not PlayerPrefs.should_award_tutorial_stars(GameManager.onboarding_stage):
+			return
+	elif GameManager.skips_progress():
+		return
+	var puzzle_id := int(GameManager.id_frase)
+	for i in range(_historial.size() - 1, -1, -1):
+		var entry: Variant = _historial[i]
+		if not (entry is Dictionary):
+			continue
+		var row: Dictionary = entry
+		if int(row.get("id", -1)) != puzzle_id:
+			continue
+		if not bool(row.get("partida_ganada", false)):
+			continue
+		if bool(row.get("completion_star", false)):
+			return
+		row["completion_star"] = true
+		row["star_system_version"] = 3
+		_historial[i] = row
+		_save_history(_historial)
+		_recompute_stats()
+		return
 
 func _calcula_vidas_perdidas() -> int:
 	if GameManager.dificultad_actual == 1:
@@ -180,6 +349,29 @@ func _calcula_vidas_perdidas() -> int:
 
 func get_history() -> Array:
 	return _historial.duplicate(true)
+
+
+func seed_completed_entries(entries: Array) -> void:
+	var ids := {}
+	for value in entries:
+		if value is Dictionary:
+			ids[int((value as Dictionary).get("id", -1))] = true
+	if ids.is_empty():
+		return
+	var kept: Array = []
+	for value in _historial:
+		if not (value is Dictionary):
+			continue
+		var entry: Dictionary = value
+		if ids.has(int(entry.get("id", -1))):
+			continue
+		kept.append(entry)
+	for value in entries:
+		if value is Dictionary:
+			kept.append(value)
+	_historial = kept
+	_save_history(_historial)
+	_recompute_stats()
 
 func clear_history() -> void:
 	_historial.clear()
@@ -215,6 +407,9 @@ func _load_history() -> Array:
 			e["pistas_consumidas_2"] = int(e.get("pistas_consumidas_2", 0))
 			e["consonantes_compradas"] = int(e.get("consonantes_compradas", 0))
 			e["tiempo_partida"] = int(e.get("tiempo_partida", int(e.get("tiempo_partida_seg", 0))))
+			e["revelaciones_falladas"] = int(e.get("revelaciones_falladas", 0))
+			e["revelaciones_correctas"] = int(e.get("revelaciones_correctas", 0))
+			e["gomas_utilizadas"] = int(e.get("gomas_utilizadas", e.get("cambios_hechos", 0)))
 			e["score"] = int(e.get("score", 0))
 			e["partida_ganada"] = bool(e.get("partida_ganada"))
 			e["vidas_perdidas"] = int(e.get("vidas_perdidas", 0))
@@ -524,6 +719,8 @@ func _count_levels_for(category_id: String, mode: String) -> int:
 			continue
 		if GameManager.level_game_mode(item) != mode:
 			continue
+		if GameManager.is_daily_puzzle(item):
+			continue
 		total += 1
 	return total
 
@@ -542,6 +739,21 @@ func get_stats_dashboard() -> Dictionary:
 	var recent_times: Array[int] = []
 	var completed_puzzles := {}
 	var best_stars_by_puzzle := {}
+	var perfect_ids := {}
+	var fastest_sec := 0
+	var fastest_id := -1
+	var perfect_by_mode := {
+		GameManager.MODE_QUICK: {},
+		GameManager.MODE_CRYPTOGRAM: {},
+	}
+	var fastest_by_mode := {
+		GameManager.MODE_QUICK: {"sec": 0, "id": -1},
+		GameManager.MODE_CRYPTOGRAM: {"sec": 0, "id": -1},
+	}
+	var perf_by_mode := {
+		GameManager.MODE_QUICK: _empty_perf_bucket(),
+		GameManager.MODE_CRYPTOGRAM: _empty_perf_bucket(),
+	}
 	var time_by_mode := {
 		GameManager.MODE_QUICK: 0,
 		GameManager.MODE_CRYPTOGRAM: 0,
@@ -563,6 +775,8 @@ func get_stats_dashboard() -> Dictionary:
 		if not (entry is Dictionary):
 			continue
 		var e: Dictionary = entry
+		if str(e.get("source", "")) == GameManager.SOURCE_ONBOARDING:
+			continue
 		var won := bool(e.get("partida_ganada", false))
 		if won:
 			wins += 1
@@ -570,21 +784,28 @@ func get_stats_dashboard() -> Dictionary:
 		total_play_sec += secs
 		recent_times.append(secs)
 		var entry_mode := _entry_game_mode(e)
-		if time_by_mode.has(entry_mode):
-			time_by_mode[entry_mode] = int(time_by_mode[entry_mode]) + secs
-			matches_by_mode[entry_mode] = int(matches_by_mode[entry_mode]) + 1
-
-		hints_used += (
+		var hints_entry := (
 			int(e.get("pistas_consumidas_1", 0))
 			+ int(e.get("pistas_consumidas_2", 0))
 		)
+		var revealed_entry := int(e.get("revelaciones_correctas", 0))
+		var failed_entry := int(e.get("revelaciones_falladas", 0))
+		var gomas_entry := int(e.get("gomas_utilizadas", e.get("cambios_hechos", 0)))
+		if time_by_mode.has(entry_mode):
+			time_by_mode[entry_mode] = int(time_by_mode[entry_mode]) + secs
+			matches_by_mode[entry_mode] = int(matches_by_mode[entry_mode]) + 1
+		if perf_by_mode.has(entry_mode):
+			var bucket: Dictionary = perf_by_mode[entry_mode]
+			bucket["hints"] = int(bucket.get("hints", 0)) + hints_entry
+			bucket["revealed"] = int(bucket.get("revealed", 0)) + revealed_entry
+			bucket["failed"] = int(bucket.get("failed", 0)) + failed_entry
+			bucket["gomas"] = int(bucket.get("gomas", 0)) + gomas_entry
+			bucket["time_sec"] = int(bucket.get("time_sec", 0)) + secs
+
+		hints_used += hints_entry
 		searches += int(e.get("pistas_consumidas_2", 0))
-		letters_revealed += (
-			int(e.get("consonantes_compradas", 0))
-			+ int(e.get("vocales_compradas_AE", 0))
-			+ int(e.get("vocales_compradas_IOU", 0))
-		)
-		letters_failed += int(e.get("revelaciones_falladas", 0))
+		letters_revealed += revealed_entry
+		letters_failed += failed_entry
 
 		var stars := int(e.get("estrellas", -1))
 		var score_val := int(e.get("score", 0))
@@ -604,6 +825,8 @@ func get_stats_dashboard() -> Dictionary:
 				var completed_key := str(completed_id)
 				completed_puzzles[completed_key] = true
 				var result_stars := clampi(int(e.get("estrellas", 0)), 1, 5)
+				if bool(e.get("completion_star", false)):
+					result_stars += 1
 				best_stars_by_puzzle[completed_key] = maxi(
 					int(best_stars_by_puzzle.get(completed_key, 0)),
 					result_stars
@@ -612,6 +835,24 @@ func get_stats_dashboard() -> Dictionary:
 				var phrase_id := int(e.get("id", -1))
 				if phrase_id >= 0:
 					completed_by_mode[mode][category][phrase_id] = true
+			var max_stars := GameManager.get_puzzle_difficulty_stars(int(e.get("dificultad", 1)))
+			if (
+				completed_id >= 0
+				and int(e.get("estrellas", 0)) >= max_stars
+				and _competitive_help_count(e) <= 0
+				and int(e.get("revelaciones_falladas", 0)) <= 0
+			):
+				perfect_ids[str(completed_id)] = true
+				if perfect_by_mode.has(mode):
+					perfect_by_mode[mode][str(completed_id)] = true
+			if secs > 0 and (fastest_sec <= 0 or secs < fastest_sec):
+				fastest_sec = secs
+				fastest_id = completed_id
+			if secs > 0 and fastest_by_mode.has(mode):
+				var fastest_mode: Dictionary = fastest_by_mode[mode]
+				if int(fastest_mode.get("sec", 0)) <= 0 or secs < int(fastest_mode.get("sec", 0)):
+					fastest_mode["sec"] = secs
+					fastest_mode["id"] = completed_id
 
 	var avg_sec := int(total_play_sec / matches) if matches > 0 else 0
 	var win_rate := (100.0 * float(wins) / float(matches)) if matches > 0 else 0.0
@@ -638,6 +879,8 @@ func get_stats_dashboard() -> Dictionary:
 				"stars_earned": int(record.get("stars_earned", 0)),
 				"stars_available": int(record.get("stars_available", 0)),
 				"percent": int(round(float(record.get("percentage", 0.0)))),
+				"maps_done": int(record.get("catalog_completed", record.get("completed", 0))),
+				"maps_total": int(record.get("available_puzzles", 0)),
 			})
 
 	var star_distribution := {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
@@ -694,8 +937,22 @@ func get_stats_dashboard() -> Dictionary:
 			elif score_est > 0:
 				best["stars"] = 1
 
+	var stars_quick := 0
+	var stars_cryptogram := 0
+	for row_value in progress.get(GameManager.MODE_QUICK, []):
+		if row_value is Dictionary:
+			stars_quick += int(row_value.get("stars_earned", 0))
+	for row_value in progress.get(GameManager.MODE_CRYPTOGRAM, []):
+		if row_value is Dictionary:
+			stars_cryptogram += int(row_value.get("stars_earned", 0))
+	stars_quick += onboarding_score_stars()
+
 	return {
 		"matches": matches,
+		"matches_quick": int(matches_by_mode[GameManager.MODE_QUICK]),
+		"matches_cryptogram": int(matches_by_mode[GameManager.MODE_CRYPTOGRAM]),
+		"stars_quick": stars_quick,
+		"stars_cryptogram": stars_cryptogram,
 		"wins": wins,
 		"completed_puzzles": int(global_record.get("completed", completed_puzzles.size())),
 		"total_puzzles": int(global_record.get("available_puzzles", 0)),
@@ -707,9 +964,20 @@ func get_stats_dashboard() -> Dictionary:
 		"avg_play_label": _format_duration_friendly(avg_sec),
 		"avg_quick_label": _format_duration_friendly(avg_quick_sec),
 		"avg_cryptogram_label": _format_duration_friendly(avg_crypto_sec),
+		"perfect_puzzles": perfect_ids.size(),
+		"perfect_quick": int(perfect_by_mode[GameManager.MODE_QUICK].size()),
+		"perfect_cryptogram": int(perfect_by_mode[GameManager.MODE_CRYPTOGRAM].size()),
+		"fastest_label": (
+			_format_duration_friendly(fastest_sec) if fastest_sec > 0 else "—"
+		),
+		"fastest_id": fastest_id,
+		"fastest_quick_label": _fastest_label_for(fastest_by_mode[GameManager.MODE_QUICK]),
+		"fastest_cryptogram_label": _fastest_label_for(fastest_by_mode[GameManager.MODE_CRYPTOGRAM]),
 		"hints_used": hints_used,
 		"letters_revealed": letters_revealed,
 		"letters_failed": letters_failed,
+		"perf_quick": _pack_perf_bucket(perf_by_mode[GameManager.MODE_QUICK]),
+		"perf_cryptogram": _pack_perf_bucket(perf_by_mode[GameManager.MODE_CRYPTOGRAM]),
 		"searches": searches,
 		"avg_series_minutes": series,
 		"progress": progress,
@@ -721,6 +989,33 @@ func get_stats_dashboard() -> Dictionary:
 		},
 		"best": best,
 	}
+
+
+func _empty_perf_bucket() -> Dictionary:
+	return {
+		"hints": 0,
+		"failed": 0,
+		"revealed": 0,
+		"gomas": 0,
+		"time_sec": 0,
+	}
+
+
+func _pack_perf_bucket(bucket: Dictionary) -> Dictionary:
+	var time_sec := int(bucket.get("time_sec", 0))
+	return {
+		"hints": int(bucket.get("hints", 0)),
+		"failed": int(bucket.get("failed", 0)),
+		"revealed": int(bucket.get("revealed", 0)),
+		"gomas": int(bucket.get("gomas", 0)),
+		"time_sec": time_sec,
+		"time_label": _format_duration_friendly(time_sec) if time_sec > 0 else "—",
+	}
+
+
+func _fastest_label_for(data: Dictionary) -> String:
+	var secs := int(data.get("sec", 0))
+	return _format_duration_friendly(secs) if secs > 0 else "—"
 
 
 func get_competitive_record(
@@ -746,10 +1041,12 @@ func get_competitive_record(
 			continue
 		if not filter_all_modes and mode != normalized_mode:
 			continue
+		if GameManager.is_daily_puzzle(item):
+			continue
 		var phrase_id := int(item.get("index", -1))
 		if phrase_id >= 0:
 			available_puzzles["%s|%s|%d" % [category, mode, phrase_id]] = (
-				GameManager.get_puzzle_difficulty_stars(difficulty)
+				GameManager.get_puzzle_difficulty_stars(difficulty) + 1
 			)
 
 	var best_by_puzzle := {}
@@ -758,6 +1055,8 @@ func get_competitive_record(
 			continue
 		var entry: Dictionary = entry_value
 		if not bool(entry.get("partida_ganada", false)):
+			continue
+		if str(entry.get("source", "")) == GameManager.SOURCE_ONBOARDING:
 			continue
 		var category := GameManager.normalize_category(str(entry.get("categoria", "")))
 		var mode := _entry_game_mode(entry)
@@ -792,47 +1091,54 @@ func get_competitive_record(
 				0,
 				difficulty_stars
 			)
+		if bool(entry.get("completion_star", false)):
+			stars += 1
 		var aids := _competitive_help_count(entry)
 		var failed_letters := int(entry.get("revelaciones_falladas", 0))
-		if not best_by_puzzle.has(key):
-			best_by_puzzle[key] = {
-				"stars": stars,
-				"aids": aids,
-				"failed_letters": failed_letters,
-				"difficulty": difficulty,
-			}
-			continue
-		var previous: Dictionary = best_by_puzzle[key]
-		if stars > int(previous.get("stars", 0)) or (
-			stars == int(previous.get("stars", 0))
-			and (
-				aids < int(previous.get("aids", 0))
-				or (
-					aids == int(previous.get("aids", 0))
-					and failed_letters < int(previous.get("failed_letters", 0))
-				)
-			)
-		):
-			best_by_puzzle[key] = {
-				"stars": stars,
-				"aids": aids,
-				"failed_letters": failed_letters,
-				"difficulty": difficulty,
-			}
+		var revealed_letters := int(entry.get("revelaciones_correctas", 0))
+		var erasers := int(entry.get("gomas_utilizadas", 0))
+		var time_sec := int(entry.get("tiempo_partida", 0))
+		var attempt := {
+			"stars": stars,
+			"aids": aids,
+			"failed_letters": failed_letters,
+			"erasers": erasers,
+			"revealed_letters": revealed_letters,
+			"time_sec": time_sec,
+			"difficulty": difficulty,
+		}
+		if not best_by_puzzle.has(key) or _competitive_attempt_better(attempt, best_by_puzzle[key]):
+			best_by_puzzle[key] = attempt
 
 	var stars_earned := 0
 	var aids_used := 0
 	var failed_letters := 0
+	var erasers_used := 0
+	var revealed_letters := 0
+	var time_sec := 0
 	var hard_completed := 0
 	for result_value in best_by_puzzle.values():
 		var result: Dictionary = result_value
 		stars_earned += int(result.get("stars", 0))
 		aids_used += int(result.get("aids", 0))
 		failed_letters += int(result.get("failed_letters", 0))
+		erasers_used += int(result.get("erasers", 0))
+		revealed_letters += int(result.get("revealed_letters", 0))
+		time_sec += int(result.get("time_sec", 0))
 		if int(result.get("difficulty", 0)) >= 3:
 			hard_completed += 1
 
+	if (
+		filter_all_categories
+		and (filter_all_modes or normalized_mode == GameManager.MODE_QUICK)
+	):
+		stars_earned += onboarding_score_stars()
+
 	var completed := best_by_puzzle.size()
+	var catalog_completed := 0
+	for puzzle_key in best_by_puzzle.keys():
+		if available_puzzles.has(str(puzzle_key)):
+			catalog_completed += 1
 	var stars_available := 0
 	for maximum_value in available_puzzles.values():
 		stars_available += int(maximum_value)
@@ -851,14 +1157,34 @@ func get_competitive_record(
 		"percentage": percentage,
 		"percentage_tenths": clampi(int(round(percentage * 10.0)), 0, 1000),
 		"completed": completed,
+		"catalog_completed": catalog_completed,
 		"hard_completed": hard_completed,
 		"aids_used": aids_used,
 		"failed_letters": failed_letters,
+		"erasers_used": erasers_used,
+		"revealed_letters": revealed_letters,
+		"time_sec": time_sec,
 		"stars_per_puzzle": stars_per_puzzle,
 		"available_puzzles": available_puzzles.size(),
 		"stars_per_puzzle_hundredths": int(round(stars_per_puzzle * 100.0)),
 		"stars_per_puzzle_tenths": int(round(stars_per_puzzle * 10.0)),
 	}
+
+
+func _competitive_attempt_better(next: Dictionary, previous: Dictionary) -> bool:
+	if int(next.get("stars", 0)) != int(previous.get("stars", 0)):
+		return int(next.get("stars", 0)) > int(previous.get("stars", 0))
+	if int(next.get("aids", 0)) != int(previous.get("aids", 0)):
+		return int(next.get("aids", 0)) < int(previous.get("aids", 0))
+	if int(next.get("failed_letters", 0)) != int(previous.get("failed_letters", 0)):
+		return int(next.get("failed_letters", 0)) < int(previous.get("failed_letters", 0))
+	if int(next.get("erasers", 0)) != int(previous.get("erasers", 0)):
+		return int(next.get("erasers", 0)) < int(previous.get("erasers", 0))
+	if int(next.get("revealed_letters", 0)) != int(previous.get("revealed_letters", 0)):
+		return int(next.get("revealed_letters", 0)) < int(previous.get("revealed_letters", 0))
+	if int(next.get("time_sec", 0)) != int(previous.get("time_sec", 0)):
+		return int(next.get("time_sec", 0)) < int(previous.get("time_sec", 0))
+	return false
 
 
 func _competitive_help_count(entry: Dictionary) -> int:

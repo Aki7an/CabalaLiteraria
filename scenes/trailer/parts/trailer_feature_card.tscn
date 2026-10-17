@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="FontVariation" path="res://scenes/trailer/parts/trailer_title_font.tres" id="1_font"]
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(0.12, 0.62, 0.58, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 18
+shadow_offset = Vector2(0, 12)
+
+[node name="FeatureCard" type="Panel"]
+custom_minimum_size = Vector2(420, 360)
+offset_right = 420.0
+offset_bottom = 360.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Value" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 80.0
+offset_right = 400.0
+offset_bottom = 180.0
+theme_override_colors/font_color = Color(1, 1, 0.96, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 72
+text = "6"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 200.0
+offset_right = 400.0
+offset_bottom = 270.0
+theme_override_colors/font_color = Color(1, 1, 0.96, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 36
+text = "IDIOMAS"
+horizontal_alignment = 1
+vertical_alignment = 1

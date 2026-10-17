@@ -1,23 +1,29 @@
 extends Control
 
 const PATH_CATEGORY := "res://scenes/MenuSelectCategory.tscn"
+const PATH_SHOP := "res://scenes/MenuShop.tscn"
 const MODE_QUICK := "quick"
 const MODE_CRYPTOGRAM := "cryptogram"
 const STAR_TEXTURE: Texture2D = preload("res://images/estrella_plano.png")
 const STAR_OFF_TEXTURE: Texture2D = preload("res://images/contorno_estrella.png")
+const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock_gray.svg")
 const THEME_PREVIEW := preload("res://scenes/game/PuzzleThemePreview.tscn")
-const COLOR_STAR_YELLOW := Color(1.0, 0.78, 0.12, 1)
 const COLOR_STAR_EMPTY := Color(0.50, 0.38, 0.24, 0.55)
+const COLOR_RECOMMEND := Color(0.878, 0.443, 0.102, 1)
 const DRAG_THRESHOLD := 14.0
+const RECOMMEND_COMPLETED_LIMIT := 4
+const RECOMMEND_TOP_MARGIN := 132
 
 @export_dir var IMAGES_DIR: String = "res://data/images/"
 @export var FILE_EXTS: PackedStringArray = [".png", ".jpg", ".jpeg", ".webp"]
-@export_file("*.json") var JSON_PATH: String = "res://data/frases.json"
+@export_file("*.json") var JSON_PATH: String = "res://data/frases_es.json"
 @export var LOAD_BATCH_SIZE: int = 12
 @export var PLACEHOLDER_TEX: Texture2D
 
 @onready var _grid: GridContainer = $ContentFrame/Scroll/GridWrapper/Grid
 @onready var _scroll: ScrollContainer = $ContentFrame/Scroll
+@onready var _content_frame: Panel = $ContentFrame
+@onready var _progress_card: Panel = $Header/ProgressCard
 @onready var _empty_state: Label = $ContentFrame/EmptyState
 @onready var _title_label: Label = $Header/Title
 @onready var _subtitle_label: Label = $Header/SubtitleRow/Subtitle
@@ -25,6 +31,7 @@ const DRAG_THRESHOLD := 14.0
 @onready var _progress_bar: ProgressBar = $Header/ProgressCard/ProgressBar
 @onready var _random_text: Label = $ButtonRandom/Row/Text
 @onready var _random_button: Button = $ButtonRandom
+@onready var _tap_hint: Label = %TapHint
 
 var _pending_textures: Array[Button] = []
 var _image_path_cache: Dictionary = {}
@@ -34,6 +41,11 @@ var _drag_held := false
 var _drag_active := false
 var _drag_origin := Vector2.ZERO
 var _drag_scroll_origin := 0
+var _recommend_card: Button
+var _recommend_callout: Control
+var _recommend_blink: Tween
+var _recommend_item: Dictionary = {}
+var _replay_ad_busy := false
 
 var _scene_to_category: PackedScene
 
@@ -41,79 +53,193 @@ const LOCALIZED_COPY := {
 	"es": {
 		"title": "Colección",
 		"quick": "Rápido",
-		"cryptogram": "Criptograma",
+		"cryptogram": "Desafío",
 		"progress": "%d de %d descubiertos",
 		"random": "Elegir al azar",
+		"tap_puzzle": "Selecciona un puzle",
+		"or_word": "o",
 		"empty": "No hay niveles disponibles",
-		"level": "Nivel"
+		"level": "Nivel",
+		"lock_title": "Puzle ya completado",
+		"lock_body": "Este puzle ya está completado. Para que la repetición cuente en la puntuación hay que esperar 48 horas y jugar desde Jugar.\n\nNo se puede elegir cuál: se elige al azar entre todos los puzles completados hace más de 48 horas.\n\nSolo se puede repetir un puzle al día.",
+		"lock_body_random": "No hay puzles nuevos ni en curso.\n\nPara repetir uno terminado de forma que cuente hay que esperar 48 horas y jugar desde Jugar. No se puede elegir cuál: se elige al azar entre todos los completados hace más de 48 horas.\n\nSolo se puede repetir un puzle al día.",
+		"lock_pool": "Puzles que se pueden repetir",
+		"lock_empty": "No hay puzles disponibles para repetir.",
+		"lock_daily": "Hoy ya has repetido un puzle. Vuelve mañana.",
+		"lock_play": "JUGAR AL AZAR",
+		"lock_play_ad": "VER ANUNCIO REWARDED Y JUGAR",
+		"lock_rank": "La puntuación del puzle que vas a jugar influirá en tu clasificación online.",
+		"lock_ad": "Para jugar este puzle repetido vas a ver un anuncio rewarded.",
+		"lock_cancel": "CANCELAR",
+		"lock_ok": "ENTENDIDO",
+		"recommended": "Puzle recomendado"
 	},
 	"en": {
 		"title": "Collection",
 		"quick": "Quick",
-		"cryptogram": "Cryptogram",
+		"cryptogram": "Challenge",
 		"progress": "%d of %d discovered",
 		"random": "Choose at random",
+		"tap_puzzle": "Select a puzzle",
+		"or_word": "or",
 		"empty": "No levels available",
-		"level": "Level"
+		"level": "Level",
+		"lock_title": "Puzzle already completed",
+		"lock_body": "This puzzle is already completed. For a replay to count toward the score you must wait 48 hours and play from Play.\n\nYou cannot pick which one: a random puzzle is chosen among all puzzles completed more than 48 hours ago.\n\nYou can replay only one puzzle per day.",
+		"lock_body_random": "There are no new or in-progress puzzles.\n\nTo replay a finished one so it counts you must wait 48 hours and play from Play. You cannot pick which one: a random puzzle is chosen among all puzzles completed more than 48 hours ago.\n\nYou can replay only one puzzle per day.",
+		"lock_pool": "Puzzles you can replay",
+		"lock_empty": "There are no puzzles available to replay.",
+		"lock_daily": "You already replayed a puzzle today. Come back tomorrow.",
+		"lock_play": "PLAY RANDOM",
+		"lock_play_ad": "WATCH REWARDED AD AND PLAY",
+		"lock_rank": "The score of the puzzle you are about to play will count toward your online ranking.",
+		"lock_ad": "To play this repeated puzzle you will watch a rewarded ad.",
+		"lock_cancel": "CANCEL",
+		"lock_ok": "GOT IT",
+		"recommended": "Recommended puzzle"
 	},
 	"eu": {
 		"title": "Bilduma",
 		"quick": "Azkarra",
-		"cryptogram": "Kriptograma",
+		"cryptogram": "Erronka",
 		"progress": "%d / %d aurkituta",
 		"random": "Ausaz aukeratu",
+		"tap_puzzle": "Hautatu puzzle bat",
+		"or_word": "edo",
 		"empty": "Ez dago mailarik",
-		"level": "Maila"
+		"level": "Maila",
+		"lock_title": "Puzzlea jada osatuta",
+		"lock_body": "Puzzle hau jada osatuta dago. Amaitutako bat berriro jokatzeko, osatu zenetik 48 ordu itxaron behar da.\n\nEzin da zehatz aukeratu zein: ausaz aukeratzen da izar gutxien eta puntuazio txarrena duten 5en artean, 48 ordu baino gehiago daramatzatenak eta puntuazio perfektua ez dutenak.\n\nEguneko puzzle bakarra errepika daiteke.",
+		"lock_body_random": "Ez dago puzzle berririk ez eta martxan dagoenik.\n\nAmaitutako bat errepikatzeko 48 ordu itxaron behar da. Ezin da zehatz aukeratu: ausaz aukeratzen da izar gutxien eta puntuazio txarrena duten 5en artean.\n\nEguneko puzzle bakarra errepika daiteke.",
+		"lock_pool": "Errepika daitezkeen puzzleak",
+		"lock_empty": "Ez dago errepikatzeko puzzle erabilgarririk.",
+		"lock_daily": "Gaur jada puzzle bat errepikatu duzu. Bihar itzuli.",
+		"lock_play": "AUSAZ JOKATU",
+		"lock_play_ad": "IRAGARKI REWARDED IKUSI ETA JOLASTU",
+		"lock_rank": "Jokatuko duzun puzzlearen puntuazioak zure lineako sailkapenean eragingo du.",
+		"lock_ad": "Puzzle errepikatu hau jokatzeko iragarki rewarded bat ikusiko duzu.",
+		"lock_cancel": "UTZI",
+		"lock_ok": "ULERTUTA",
+		"recommended": "Puzzle gomendatua"
 	},
 	"fr": {
 		"title": "Collection",
 		"quick": "Rapide",
-		"cryptogram": "Cryptogramme",
+		"cryptogram": "Défi",
 		"progress": "%d sur %d découverts",
 		"random": "Choisir au hasard",
+		"tap_puzzle": "Sélectionne un puzzle",
+		"or_word": "ou",
 		"empty": "Aucun niveau disponible",
-		"level": "Niveau"
+		"level": "Niveau",
+		"lock_title": "Puzzle déjà terminé",
+		"lock_body": "Ce puzzle est déjà terminé. Pour en rejouer un, il faut attendre 48 heures après l'avoir fini.\n\nOn ne peut pas choisir lequel : un puzzle est tiré au hasard parmi les 5 avec le moins d'étoiles et le pire score (plus d'aides, plus d'erreurs), s'ils ont plus de 48 h et n'ont pas un score parfait.\n\nOn ne peut rejouer qu'un seul puzzle par jour.",
+		"lock_body_random": "Il n'y a ni puzzle nouveau ni puzzle en cours.\n\nPour en rejouer un déjà terminé, il faut attendre 48 heures. On ne peut pas choisir lequel : un puzzle est tiré au hasard parmi les 5 avec le moins d'étoiles et le pire score.\n\nOn ne peut rejouer qu'un seul puzzle par jour.",
+		"lock_pool": "Puzzles que l'on peut rejouer",
+		"lock_empty": "Aucun puzzle n'est disponible à rejouer.",
+		"lock_daily": "Tu as déjà rejoué un puzzle aujourd'hui. Reviens demain.",
+		"lock_play": "JOUER AU HASARD",
+		"lock_play_ad": "VOIR LA PUB REWARDED ET JOUER",
+		"lock_rank": "Le score du puzzle que tu vas jouer comptera dans ton classement en ligne.",
+		"lock_ad": "Pour jouer ce puzzle répété, tu vas voir une pub rewarded.",
+		"lock_cancel": "ANNULER",
+		"lock_ok": "COMPRIS",
+		"recommended": "Puzzle recommandé"
 	},
 	"de": {
 		"title": "Sammlung",
 		"quick": "Schnell",
-		"cryptogram": "Kryptogramm",
+		"cryptogram": "Knifflig",
 		"progress": "%d von %d entdeckt",
 		"random": "Zufällig wählen",
+		"tap_puzzle": "Wähle ein Rätsel",
+		"or_word": "oder",
 		"empty": "Keine Level verfügbar",
-		"level": "Level"
+		"level": "Level",
+		"lock_title": "Rätsel bereits abgeschlossen",
+		"lock_body": "Dieses Rätsel ist bereits abgeschlossen. Um ein fertiges erneut zu spielen, musst du 48 Stunden warten.\n\nDu kannst keines gezielt wählen: Es wird zufällig unter den 5 mit den wenigsten Sternen und der schlechtesten Wertung gewählt, sofern sie vor mehr als 48 Stunden abgeschlossen wurden und nicht perfekt sind.\n\nPro Tag kann nur ein Rätsel wiederholt werden.",
+		"lock_body_random": "Es gibt keine neuen oder laufenden Rätsel.\n\nUm ein abgeschlossenes erneut zu spielen, musst du 48 Stunden warten. Du kannst keines gezielt wählen: Es wird zufällig unter den 5 mit den wenigsten Sternen und der schlechtesten Wertung gewählt.\n\nPro Tag kann nur ein Rätsel wiederholt werden.",
+		"lock_pool": "Rätsel, die wiederholt werden können",
+		"lock_empty": "Es gibt keine Rätsel zum Wiederholen.",
+		"lock_daily": "Du hast heute schon ein Rätsel wiederholt. Komm morgen wieder.",
+		"lock_play": "ZUFÄLLIG SPIELEN",
+		"lock_play_ad": "REWARDED-WERBUNG ANSEHEN UND SPIELEN",
+		"lock_rank": "Die Wertung des Rätsels, das du spielen wirst, zählt für deine Online-Rangliste.",
+		"lock_ad": "Um dieses wiederholte Rätsel zu spielen, siehst du eine Rewarded-Werbung.",
+		"lock_cancel": "ABBRECHEN",
+		"lock_ok": "VERSTANDEN",
+		"recommended": "Empfohlenes Rätsel"
 	},
 	"it": {
 		"title": "Collezione",
 		"quick": "Rapida",
-		"cryptogram": "Crittogramma",
+		"cryptogram": "Sfida",
 		"progress": "%d di %d scoperti",
 		"random": "Scegli a caso",
+		"tap_puzzle": "Seleziona un puzzle",
+		"or_word": "o",
 		"empty": "Nessun livello disponibile",
-		"level": "Livello"
+		"level": "Livello",
+		"lock_title": "Puzzle già completato",
+		"lock_body": "Questo puzzle è già completato. Per ripeterne uno finito bisogna aspettare 48 ore dal completamento.\n\nNon si può scegliere quale: viene scelto a caso tra i 5 con meno stelle e il punteggio peggiore (più aiuti, più errori), se sono completati da più di 48 ore e non hanno un punteggio perfetto.\n\nSi può ripetere un solo puzzle al giorno.",
+		"lock_body_random": "Non ci sono puzzle nuovi né in corso.\n\nPer ripetere uno già finito bisogna aspettare 48 ore. Non si può scegliere quale: viene scelto a caso tra i 5 con meno stelle e il punteggio peggiore.\n\nSi può ripetere un solo puzzle al giorno.",
+		"lock_pool": "Puzzle che si possono ripetere",
+		"lock_empty": "Non ci sono puzzle disponibili da ripetere.",
+		"lock_daily": "Oggi hai già ripetuto un puzzle. Torna domani.",
+		"lock_play": "GIOCA A CASO",
+		"lock_play_ad": "GUARDA ANNUNCIO REWARDED E GIOCA",
+		"lock_rank": "Il punteggio del puzzle che stai per giocare influirà sulla tua classifica online.",
+		"lock_ad": "Per giocare questo puzzle ripetuto vedrai un annuncio rewarded.",
+		"lock_cancel": "ANNULLA",
+		"lock_ok": "CAPITO",
+		"recommended": "Puzzle consigliato"
 	},
 	"pt": {
 		"title": "Coleção",
 		"quick": "Rápido",
-		"cryptogram": "Criptograma",
+		"cryptogram": "Desafio",
 		"progress": "%d de %d descobertos",
 		"random": "Escolher ao acaso",
+		"tap_puzzle": "Seleciona um puzzle",
+		"or_word": "ou",
 		"empty": "Nenhum nível disponível",
-		"level": "Nível"
+		"level": "Nível",
+		"lock_title": "Puzzle já concluído",
+		"lock_body": "Este puzzle já está concluído. Para repetir um terminado é preciso esperar 48 horas após o completar.\n\nNão se pode escolher qual: é escolhido ao acaso entre os 5 com menos estrelas e pior pontuação (mais ajudas, mais erros), desde que tenham mais de 48 h e não sejam perfeitos.\n\nSó se pode repetir um puzzle por dia.",
+		"lock_body_random": "Não há puzzles novos nem em curso.\n\nPara repetir um já terminado é preciso esperar 48 horas. Não se pode escolher qual: é escolhido ao acaso entre os 5 com menos estrelas e pior pontuação.\n\nSó se pode repetir um puzzle por dia.",
+		"lock_pool": "Puzzles que se podem repetir",
+		"lock_empty": "Não há puzzles disponíveis para repetir.",
+		"lock_daily": "Já repetiste um puzzle hoje. Volta amanhã.",
+		"lock_play": "JOGAR AO ACASO",
+		"lock_play_ad": "VER ANÚNCIO REWARDED E JOGAR",
+		"lock_rank": "A pontuação do puzzle que vais jogar vai contar para a tua classificação online.",
+		"lock_ad": "Para jogar este puzzle repetido vais ver um anúncio rewarded.",
+		"lock_cancel": "CANCELAR",
+		"lock_ok": "ENTENDIDO",
+		"recommended": "Puzzle recomendado"
 	}
 }
 
 
 func _ready() -> void:
+	add_to_group("LevelSelect")
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	if FileAccess.file_exists("user://reset_replay_today"):
+		PlayerPrefs.reset_completed_replay_today()
+		DirAccess.remove_absolute("user://reset_replay_today")
 	_random_button.disabled = true
 	_load_completed_ids()
 	_update_localized_copy()
 	await get_tree().process_frame
 
 	_scroll.scroll_deadzone = 16
-	if not _populate_from_gamemanager() and JSON_PATH != "":
-		_load_and_populate_from_path(JSON_PATH)
+	ScrollOverflowHint.attach(_scroll)
+	if not SignalManager.full_game_changed.is_connected(refresh_from_gamemanager):
+		SignalManager.full_game_changed.connect(refresh_from_gamemanager)
+	if not _populate_from_gamemanager():
+		var fallback := GameManager.frases_json_path if GameManager.frases_json_path != "" else JSON_PATH
+		if fallback != "":
+			_load_and_populate_from_path(fallback)
 	set_process(true)
 
 
@@ -164,7 +290,8 @@ func _process(_delta: float) -> void:
 	for _i in range(amount):
 		var button: Button = _pending_textures.pop_front()
 		_assign_real_texture(button)
-	if _pending_textures.is_empty():
+	_update_recommend_callout_position()
+	if _pending_textures.is_empty() and not is_instance_valid(_recommend_callout):
 		set_process(false)
 
 
@@ -219,13 +346,18 @@ func _populate_from_parsed(parsed: Variant) -> void:
 				filtered_items.append(item)
 
 	_visible_items = filtered_items
+	_load_completed_ids()
 
 	_visible_items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		var stars_a := _difficulty_to_stars(int(a.get("difficulty", 1)))
+		var stars_b := _difficulty_to_stars(int(b.get("difficulty", 1)))
+		if stars_a != stars_b:
+			return stars_a < stars_b
 		var image_a: int = int(a.get("image_number", 0))
 		var image_b: int = int(b.get("image_number", 0))
-		if image_a == image_b:
-			return int(a.get("difficulty", 1)) < int(b.get("difficulty", 1))
-		return image_a < image_b
+		if image_a != image_b:
+			return image_a < image_b
+		return int(a.get("index", 0)) < int(b.get("index", 0))
 	)
 
 	for item in _visible_items:
@@ -235,7 +367,8 @@ func _populate_from_parsed(parsed: Variant) -> void:
 	_scroll.visible = not _visible_items.is_empty()
 	_random_button.disabled = _visible_items.is_empty()
 	_update_header_progress()
-	set_process(not _pending_textures.is_empty())
+	_maybe_show_recommended()
+	set_process(not _pending_textures.is_empty() or is_instance_valid(_recommend_callout))
 
 
 func _passes_filters(item: Dictionary) -> bool:
@@ -244,6 +377,8 @@ func _passes_filters(item: Dictionary) -> bool:
 	if image_number < 0 or index_number < 0:
 		return false
 	if not GameManager.level_has_image(item):
+		return false
+	if GameManager.is_daily_puzzle(item):
 		return false
 
 	var target_category: String = str(GameManager.categoria_actual).strip_edges()
@@ -259,13 +394,10 @@ func _create_level_card(item: Dictionary) -> Button:
 	var index_number: int = int(item.get("index", -1))
 	var image_number: int = int(item.get("image_number", -1))
 	var difficulty: int = int(item.get("difficulty", 1))
-	var completed: bool = _completed_ids.has(index_number)
 	var saved_summary: Dictionary = PuzzleSaveManager.get_puzzle_summary(index_number)
-	var puzzle_status := (
-		"completed"
-		if completed
-		else str(saved_summary.get("status", "new"))
-	)
+	var puzzle_status := _puzzle_status(index_number)
+	var playable := GameManager.is_puzzle_playable(item)
+	var completed := playable and puzzle_status == "completed"
 	var stars_max := _difficulty_to_stars(difficulty)
 	var stars_remaining := clampi(
 		int(saved_summary.get("stars_remaining", stars_max)),
@@ -322,6 +454,10 @@ func _create_level_card(item: Dictionary) -> Button:
 	if PLACEHOLDER_TEX != null:
 		texture.texture = PLACEHOLDER_TEX
 	image_frame.add_child(texture)
+	if not playable:
+		image_frame.add_child(_purchase_lock_overlay())
+	elif puzzle_status == "completed":
+		image_frame.add_child(_hours_badge(index_number))
 
 	var id_badge := Panel.new()
 	id_badge.name = "IdBadge"
@@ -348,7 +484,9 @@ func _create_level_card(item: Dictionary) -> Button:
 	status.size = Vector2(286, 48)
 	status.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var status_color := Color(0.92, 0.43, 0.035, 1)
-	if puzzle_status == "completed":
+	if not playable:
+		status_color = Color(0.42, 0.36, 0.32, 1)
+	elif puzzle_status == "completed":
 		status_color = Color(0.08, 0.63, 0.64, 1)
 	elif puzzle_status == "in_progress":
 		status_color = Color(0.25, 0.58, 0.78, 1)
@@ -360,10 +498,15 @@ func _create_level_card(item: Dictionary) -> Button:
 	status_label.add_theme_font_override("font", _title_label.get_theme_font("font"))
 	status_label.add_theme_font_size_override("font_size", 22)
 	status_label.add_theme_color_override("font_color", Color.WHITE)
-	status_label.text = {
-		"completed": "✓  COMPLETADO",
-		"in_progress": "▶  CONTINUAR",
-	}.get(puzzle_status, "NUEVO")
+	if not playable:
+		status_label.text = tr("StatusLocked")
+		if status_label.text == "StatusLocked":
+			status_label.text = "BLOQUEADO"
+	else:
+		status_label.text = {
+			"completed": tr("StatusCompleted"),
+			"in_progress": tr("StatusContinue"),
+		}.get(puzzle_status, tr("StatusNew"))
 	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	status_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -371,7 +514,7 @@ func _create_level_card(item: Dictionary) -> Button:
 
 	var status_star_size := 54 if puzzle_status == "completed" else 27
 	var status_star_color := (
-		COLOR_STAR_YELLOW
+		GameManager.star_fill_color()
 		if puzzle_status == "completed"
 		else Color(0.12, 0.09, 0.06, 1)
 	)
@@ -386,12 +529,19 @@ func _create_level_card(item: Dictionary) -> Button:
 	button.add_child(status_stars)
 
 	var letters_progress := Label.new()
-	letters_progress.position = Vector2(18, 418)
-	letters_progress.size = Vector2(294, 42)
+	letters_progress.position = Vector2(18, 400 if puzzle_status == "in_progress" else 418)
+	letters_progress.size = Vector2(294, 70 if puzzle_status == "in_progress" else 42)
 	letters_progress.add_theme_font_override("font", _title_label.get_theme_font("font"))
 	letters_progress.add_theme_font_size_override("font_size", 23)
 	letters_progress.add_theme_color_override("font_color", Color(0.25, 0.16, 0.11, 0.82))
-	letters_progress.text = "%d / %d letras" % [letters_filled, letters_total]
+	var letters_text := tr("LettersProgress") % [letters_filled, letters_total]
+	if puzzle_status == "in_progress":
+		letters_progress.text = "%s\n%s" % [
+			letters_text,
+			_format_continue_time(int(saved_summary.get("tiempo_partida", 0)))
+		]
+	else:
+		letters_progress.text = letters_text
 	letters_progress.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	letters_progress.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	letters_progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -410,20 +560,33 @@ func _assign_real_texture(button: Button) -> void:
 	var path: String = str(button.get_meta("image_path", ""))
 	if path == "":
 		return
-	var texture := load(path) as Texture2D
+	var texture := GameManager.level_texture(path)
 	if texture != null:
 		texture_rect.texture = texture
 
 
-func _on_level_pressed(item: Dictionary) -> void:
+func _on_level_pressed(item: Dictionary, allow_completed := false) -> void:
 	if _drag_active:
 		return
 	var index_number: int = int(item.get("index", -1))
 	if index_number < 0:
 		return
+	if not GameManager.is_puzzle_playable(item):
+		_show_purchase_lock_dialog()
+		return
 	if not get_tree().get_nodes_in_group("PuzzleThemePreview").is_empty():
 		return
+	if _is_completed(index_number) and not allow_completed:
+		_show_completed_lock_dialog()
+		return
+	if allow_completed and not PlayerPrefs.can_replay_completed_today():
+		_show_completed_lock_dialog()
+		return
 	SoundManager.play("ButtonClick")
+	GameManager.session_source = GameManager.SOURCE_NONE
+	GameManager.allow_completed_replay = allow_completed and _is_completed(index_number)
+	if GameManager.allow_completed_replay:
+		PlayerPrefs.mark_completed_replay_today()
 	GameManager.id_frase = index_number
 	GameManager.set_dificultad_actual(int(item.get("difficulty", 1)))
 	GameManager.seleccionar_por_index(index_number)
@@ -439,9 +602,14 @@ func _on_level_pressed(item: Dictionary) -> void:
 
 
 func _on_button_random_pressed() -> void:
-	if _visible_items.is_empty():
+	if _playable_items().is_empty():
+		_show_purchase_lock_dialog()
 		return
-	var chosen: Dictionary = _visible_items.pick_random()
+	var pool := _random_pool()
+	if pool.is_empty() or _is_completed(int(pool[0].get("index", -1))):
+		_show_completed_lock_dialog(true)
+		return
+	var chosen: Dictionary = pool.pick_random()
 	_on_level_pressed(chosen)
 
 
@@ -456,13 +624,558 @@ func _on_button_back_pressed() -> void:
 
 func _load_completed_ids() -> void:
 	_completed_ids.clear()
-	if typeof(HistoryManager) == TYPE_NIL:
+	if typeof(HistoryManager) != TYPE_NIL:
+		for value in HistoryManager.get_history():
+			if value is Dictionary:
+				var entry: Dictionary = value
+				if bool(entry.get("partida_ganada", false)):
+					_completed_ids[int(entry.get("id", -1))] = true
+	if typeof(PuzzleSaveManager) == TYPE_NIL:
 		return
-	for value in HistoryManager.get_history():
-		if value is Dictionary:
-			var entry: Dictionary = value
-			if bool(entry.get("partida_ganada", false)):
-				_completed_ids[int(entry.get("id", -1))] = true
+	for item in _visible_items:
+		var puzzle_id := int(item.get("index", -1))
+		if str(PuzzleSaveManager.get_puzzle_summary(puzzle_id).get("status", "")) == "completed":
+			_completed_ids[puzzle_id] = true
+
+
+func _is_completed(puzzle_id: int) -> bool:
+	return _puzzle_status(puzzle_id) == "completed"
+
+
+func _puzzle_status(puzzle_id: int) -> String:
+	if typeof(PuzzleSaveManager) != TYPE_NIL:
+		var save_status := str(
+			PuzzleSaveManager.get_puzzle_summary(puzzle_id).get("status", "new")
+		)
+		if save_status == "in_progress":
+			return "in_progress"
+		if save_status == "completed":
+			return "completed"
+	if _completed_ids.has(puzzle_id):
+		return "completed"
+	return "new"
+
+
+func _playable_items() -> Array[Dictionary]:
+	var playable: Array[Dictionary] = []
+	for item in _visible_items:
+		if GameManager.is_puzzle_playable(item):
+			playable.append(item)
+	return playable
+
+
+func _random_pool() -> Array[Dictionary]:
+	var not_started: Array[Dictionary] = []
+	var in_progress: Array[Dictionary] = []
+	var completed: Array[Dictionary] = []
+	for item in _playable_items():
+		var status := _puzzle_status(int(item.get("index", -1)))
+		match status:
+			"completed":
+				completed.append(item)
+			"in_progress":
+				in_progress.append(item)
+			_:
+				not_started.append(item)
+	if not not_started.is_empty():
+		return not_started
+	if not in_progress.is_empty():
+		return in_progress
+	return _replay_pool(completed)
+
+
+func _replay_pool(completed_items: Array[Dictionary]) -> Array[Dictionary]:
+	var eligible: Array[Dictionary] = []
+	for item in completed_items:
+		if not GameManager.is_puzzle_playable(item):
+			continue
+		var puzzle_id := int(item.get("index", -1))
+		if PuzzleSaveManager.can_replay_completed(puzzle_id):
+			eligible.append(item)
+	return eligible
+
+
+func _replay_sort_key(item: Dictionary) -> Array:
+	var summary: Dictionary = PuzzleSaveManager.get_puzzle_summary(
+		int(item.get("index", -1))
+	)
+	return [
+		1 if bool(summary.get("is_perfect", false)) else 0,
+		int(summary.get("stars_remaining", 99)),
+		int(summary.get("aids_used", 0)),
+		int(summary.get("failed_letters", 0)),
+	]
+
+
+func _all_completed_items() -> Array[Dictionary]:
+	var completed: Array[Dictionary] = []
+	var seen: Dictionary = {}
+	var source: Array = GameManager.frases_db if typeof(GameManager) != TYPE_NIL else []
+	for value in source:
+		if not (value is Dictionary):
+			continue
+		var item: Dictionary = value
+		var puzzle_id := int(item.get("index", -1))
+		if puzzle_id < 0 or seen.has(puzzle_id):
+			continue
+		if _puzzle_status(puzzle_id) != "completed":
+			continue
+		if not GameManager.level_has_image(item):
+			continue
+		if GameManager.is_daily_puzzle(item):
+			continue
+		seen[puzzle_id] = true
+		completed.append(item)
+	return completed
+
+
+func _eligible_replay_pool() -> Array[Dictionary]:
+	return _replay_pool(_all_completed_items())
+
+
+func _hours_badge(puzzle_id: int) -> Panel:
+	var hours := PuzzleSaveManager.hours_since_completed(puzzle_id)
+	if hours < 0:
+		hours = 0
+	var ready := hours >= 48
+	var badge := Panel.new()
+	badge.name = "HoursBadge"
+	badge.position = Vector2(10, 10)
+	badge.size = Vector2(108, 44)
+	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	badge.add_theme_stylebox_override(
+		"panel",
+		_make_overlay_style(
+			Color(0.08, 0.52, 0.32, 0.92) if ready else Color(0.82, 0.16, 0.12, 0.92),
+			16
+		)
+	)
+	var label := Label.new()
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	label.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	label.add_theme_font_size_override("font_size", 24)
+	label.add_theme_color_override("font_color", Color.WHITE)
+	label.text = "+48H" if ready else "%dH" % hours
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	badge.add_child(label)
+	return badge
+
+
+func _purchase_lock_overlay() -> Control:
+	var overlay := ColorRect.new()
+	overlay.name = "PurchaseLock"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.12, 0.08, 0.05, 0.42)
+	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var icon := TextureRect.new()
+	icon.texture = ICON_LOCK
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon.anchor_left = 0.5
+	icon.anchor_top = 0.5
+	icon.anchor_right = 0.5
+	icon.anchor_bottom = 0.5
+	icon.offset_left = -40
+	icon.offset_top = -40
+	icon.offset_right = 40
+	icon.offset_bottom = 40
+	overlay.add_child(icon)
+	return overlay
+
+
+func _show_purchase_lock_dialog() -> void:
+	if get_node_or_null("PurchaseLockDialog") != null:
+		return
+	SoundManager.play("ButtonClick")
+	var overlay := ColorRect.new()
+	overlay.name = "PurchaseLockDialog"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.08, 0.04, 0.02, 0.58)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	overlay.z_index = 80
+	add_child(overlay)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.add_child(center)
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(980, 0)
+	card.mouse_filter = Control.MOUSE_FILTER_STOP
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(1, 0.965, 0.86, 1)
+	card_style.border_color = Color(0.62, 0.4, 0.16, 0.46)
+	card_style.set_border_width_all(4)
+	card_style.border_width_bottom = 9
+	card_style.set_corner_radius_all(40)
+	card.add_theme_stylebox_override("panel", card_style)
+	center.add_child(card)
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 48)
+	margin.add_theme_constant_override("margin_right", 48)
+	margin.add_theme_constant_override("margin_top", 40)
+	margin.add_theme_constant_override("margin_bottom", 36)
+	card.add_child(margin)
+	var inner := VBoxContainer.new()
+	inner.add_theme_constant_override("separation", 24)
+	margin.add_child(inner)
+	var lock := TextureRect.new()
+	lock.texture = ICON_LOCK
+	lock.custom_minimum_size = Vector2(80, 80)
+	lock.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	lock.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	lock.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	inner.add_child(lock)
+	var title := Label.new()
+	title.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	title.add_theme_font_size_override("font_size", 48)
+	title.add_theme_color_override("font_color", Color(0.24, 0.14, 0.08, 1))
+	title.text = tr("ShopLockedTitle")
+	if title.text == "ShopLockedTitle":
+		title.text = "Puzle bloqueado"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inner.add_child(title)
+	var body := Label.new()
+	body.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	body.add_theme_font_size_override("font_size", 36)
+	body.add_theme_color_override("font_color", Color(0.28, 0.17, 0.1, 1))
+	body.text = tr("ShopLockedBody")
+	if body.text == "ShopLockedBody":
+		body.text = "Para jugar a este puzle hay que comprar el juego completo."
+	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inner.add_child(body)
+	var buttons := HBoxContainer.new()
+	buttons.add_theme_constant_override("separation", 24)
+	inner.add_child(buttons)
+	var cancel := _make_dialog_button(
+		_copy("lock_cancel"),
+		Color(1, 0.982, 0.92, 1),
+		Color(0.66, 0.44, 0.2, 0.7),
+		Color(0.32, 0.18, 0.08, 1)
+	)
+	cancel.pressed.connect(func() -> void:
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+	)
+	buttons.add_child(cancel)
+	var shop_text := tr("ShopGoToStore")
+	if shop_text == "ShopGoToStore":
+		shop_text = "Ir a la tienda"
+	var shop := _make_dialog_button(
+		shop_text,
+		Color(0.96, 0.51, 0.01, 1),
+		Color(0.83, 0.41, 0.02, 1),
+		Color.WHITE
+	)
+	shop.pressed.connect(func() -> void:
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+		TransitionScreen.transition_to_black()
+		await TransitionScreen._on_animation_finished("fade_to_black", 1)
+		get_tree().change_scene_to_file(PATH_SHOP)
+	)
+	buttons.add_child(shop)
+	overlay.gui_input.connect(func(event: InputEvent) -> void:
+		if not (event is InputEventMouseButton and event.pressed):
+			return
+		var mouse := event as InputEventMouseButton
+		if card.get_global_rect().has_point(mouse.global_position):
+			return
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+	)
+
+
+func _show_completed_lock_dialog(from_random := false) -> void:
+	if get_node_or_null("ReplayLockDialog") != null:
+		return
+	GameManager.allow_completed_replay = false
+	SoundManager.play("ButtonClick")
+	var pool := _eligible_replay_pool()
+	var can_play := (
+		not pool.is_empty()
+		and PlayerPrefs.can_replay_completed_today()
+	)
+
+	var overlay := ColorRect.new()
+	overlay.name = "ReplayLockDialog"
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0.08, 0.04, 0.02, 0.58)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	overlay.z_index = 80
+	add_child(overlay)
+
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.add_child(center)
+
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(1080, 0)
+	card.mouse_filter = Control.MOUSE_FILTER_STOP
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(1, 0.965, 0.86, 1)
+	card_style.border_color = Color(0.62, 0.4, 0.16, 0.46)
+	card_style.set_border_width_all(4)
+	card_style.border_width_bottom = 9
+	card_style.set_corner_radius_all(48)
+	card_style.shadow_color = Color(0.14, 0.08, 0.03, 0.34)
+	card_style.shadow_size = 24
+	card_style.shadow_offset = Vector2(0, 17)
+	card.add_theme_stylebox_override("panel", card_style)
+	center.add_child(card)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 48)
+	margin.add_theme_constant_override("margin_right", 48)
+	margin.add_theme_constant_override("margin_top", 36)
+	margin.add_theme_constant_override("margin_bottom", 32)
+	card.add_child(margin)
+
+	var inner := VBoxContainer.new()
+	inner.add_theme_constant_override("separation", 16)
+	margin.add_child(inner)
+
+	var title := Label.new()
+	title.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	title.add_theme_font_size_override("font_size", 44)
+	title.add_theme_color_override("font_color", Color(0.24, 0.14, 0.08, 1))
+	title.text = _copy("lock_title")
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inner.add_child(title)
+
+	var body := Label.new()
+	body.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	body.add_theme_font_size_override("font_size", 36)
+	body.add_theme_color_override("font_color", Color(0.28, 0.17, 0.1, 1))
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.text = _copy("lock_body_random" if from_random else "lock_body")
+	inner.add_child(body)
+
+	var pool_title := Label.new()
+	pool_title.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	pool_title.add_theme_font_size_override("font_size", 30)
+	pool_title.add_theme_color_override("font_color", Color(0.24, 0.14, 0.08, 0.88))
+	pool_title.text = _copy("lock_pool")
+	pool_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	inner.add_child(pool_title)
+
+	if pool.is_empty():
+		var empty := Label.new()
+		empty.add_theme_font_override("font", _title_label.get_theme_font("font"))
+		empty.add_theme_font_size_override("font_size", 32)
+		empty.add_theme_color_override("font_color", Color(0.72, 0.22, 0.14, 1))
+		empty.text = _copy("lock_empty")
+		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		inner.add_child(empty)
+	else:
+		inner.add_child(_replay_thumb_row(pool))
+
+	if not PlayerPrefs.can_replay_completed_today():
+		var daily := Label.new()
+		daily.add_theme_font_override("font", _title_label.get_theme_font("font"))
+		daily.add_theme_font_size_override("font_size", 30)
+		daily.add_theme_color_override("font_color", Color(0.72, 0.22, 0.14, 1))
+		daily.text = _copy("lock_daily")
+		daily.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		daily.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		inner.add_child(daily)
+
+	var needs_ad := can_play and not GameManager.has_full_game()
+	var ad_note := Label.new()
+	ad_note.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	ad_note.add_theme_font_size_override("font_size", 32)
+	ad_note.add_theme_color_override("font_color", Color(0.62, 0.28, 0.1, 1))
+	ad_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ad_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	if can_play:
+		ad_note.text = _copy("lock_ad") if needs_ad else _copy("lock_rank")
+		inner.add_child(ad_note)
+		if needs_ad:
+			var rank := Label.new()
+			rank.add_theme_font_override("font", _title_label.get_theme_font("font"))
+			rank.add_theme_font_size_override("font_size", 28)
+			rank.add_theme_color_override("font_color", Color(0.28, 0.17, 0.1, 0.82))
+			rank.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			rank.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			rank.text = _copy("lock_rank")
+			inner.add_child(rank)
+
+	var buttons: BoxContainer
+	if needs_ad:
+		buttons = VBoxContainer.new()
+	else:
+		buttons = HBoxContainer.new()
+	buttons.add_theme_constant_override("separation", 20 if needs_ad else 28)
+	inner.add_child(buttons)
+
+	var cancel := _make_dialog_button(
+		_copy("lock_cancel"),
+		Color(1, 0.982, 0.92, 1),
+		Color(0.66, 0.44, 0.2, 0.7),
+		Color(0.32, 0.18, 0.08, 1)
+	)
+	cancel.pressed.connect(func() -> void:
+		if _replay_ad_busy:
+			return
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+	)
+
+	var play := _make_dialog_button(
+		_copy("lock_play_ad" if needs_ad else "lock_play"),
+		Color(0.18, 0.65, 0.46, 1) if can_play else Color(0.62, 0.58, 0.52, 1),
+		Color(0.1, 0.42, 0.3, 1) if can_play else Color(0.42, 0.38, 0.34, 1),
+		Color.WHITE
+	)
+	play.disabled = not can_play
+	if needs_ad:
+		play.add_theme_font_size_override("font_size", 30)
+	play.pressed.connect(func() -> void:
+		await _on_replay_play_pressed(overlay, pool, play, cancel, ad_note, needs_ad)
+	)
+	if needs_ad:
+		buttons.add_child(play)
+		buttons.add_child(cancel)
+	else:
+		buttons.add_child(cancel)
+		buttons.add_child(play)
+
+	overlay.gui_input.connect(func(event: InputEvent) -> void:
+		if _replay_ad_busy:
+			return
+		if not (event is InputEventMouseButton and event.pressed):
+			return
+		var mouse := event as InputEventMouseButton
+		if card.get_global_rect().has_point(mouse.global_position):
+			return
+		SoundManager.play("ButtonClick")
+		overlay.queue_free()
+	)
+
+
+func _on_replay_play_pressed(
+	overlay: Control,
+	pool: Array,
+	play: Button,
+	cancel: Button,
+	ad_note: Label,
+	needs_ad: bool
+) -> void:
+	if _replay_ad_busy or pool.is_empty():
+		return
+	SoundManager.play("ButtonClick")
+	if needs_ad:
+		_replay_ad_busy = true
+		play.disabled = true
+		cancel.disabled = true
+		play.text = _tr_ad("DailyAdLoading", "Cargando anuncio...")
+		var ok: bool = await PlatformServices.show_rewarded()
+		_replay_ad_busy = false
+		if not is_instance_valid(overlay):
+			return
+		if not ok:
+			play.disabled = false
+			cancel.disabled = false
+			play.text = _copy("lock_play_ad")
+			ad_note.text = AdManager.reward_failure_message()
+			ad_note.add_theme_color_override("font_color", Color(0.72, 0.22, 0.14, 1))
+			return
+	get_tree().paused = false
+	var chosen: Dictionary = pool.pick_random()
+	overlay.queue_free()
+	_on_level_pressed(chosen, true)
+
+
+func _tr_ad(key: String, fallback: String) -> String:
+	var translated := tr(key)
+	if translated == key or translated.is_empty():
+		return fallback
+	return translated
+
+
+func _replay_thumb_row(pool: Array[Dictionary]) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 14)
+	row.custom_minimum_size = Vector2(0, 210)
+	var shown: Array[Dictionary] = pool.duplicate()
+	shown.shuffle()
+	var limit := mini(5, shown.size())
+	for index in range(limit):
+		row.add_child(_replay_thumb(shown[index]))
+	return row
+
+
+func _replay_thumb(item: Dictionary) -> Panel:
+	var index_number := int(item.get("index", -1))
+	var frame := Panel.new()
+	frame.custom_minimum_size = Vector2(176, 210)
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.add_theme_stylebox_override("panel", _make_image_frame_style())
+	frame.clip_contents = true
+
+	var image := TextureRect.new()
+	image.position = Vector2(6, 6)
+	image.size = Vector2(164, 164)
+	image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	image.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var path := _find_image_path(int(item.get("image_number", -1)), index_number)
+	var texture: Texture2D = PLACEHOLDER_TEX
+	if path != "":
+		var loaded := GameManager.level_texture(path)
+		if loaded != null:
+			texture = loaded
+	image.texture = texture
+	frame.add_child(image)
+
+	var summary: Dictionary = PuzzleSaveManager.get_puzzle_summary(index_number)
+	var stars_max := _difficulty_to_stars(int(item.get("difficulty", 1)))
+	var stars := _star_icons(
+		clampi(int(summary.get("stars_remaining", 0)), 0, stars_max),
+		stars_max,
+		22,
+		GameManager.star_fill_color()
+	)
+	stars.position = Vector2(4, 172)
+	stars.size = Vector2(168, 32)
+	frame.add_child(stars)
+	return frame
+
+
+func _make_dialog_button(
+	text: String,
+	fill: Color,
+	border: Color,
+	font_color: Color
+) -> Button:
+	var button := Button.new()
+	button.text = text
+	button.focus_mode = Control.FOCUS_NONE
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button.custom_minimum_size = Vector2(0, 120)
+	button.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	button.add_theme_font_size_override("font_size", 34)
+	button.add_theme_color_override("font_color", font_color)
+	button.add_theme_color_override("font_disabled_color", Color(1, 1, 1, 0.72))
+	var style := StyleBoxFlat.new()
+	style.bg_color = fill
+	style.border_color = border
+	style.set_border_width_all(3)
+	style.border_width_bottom = 8
+	style.set_corner_radius_all(30)
+	button.add_theme_stylebox_override("normal", style)
+	button.add_theme_stylebox_override("hover", style)
+	button.add_theme_stylebox_override("pressed", style)
+	button.add_theme_stylebox_override("disabled", style)
+	return button
 
 
 func _update_header_progress() -> void:
@@ -482,17 +1195,283 @@ func _update_localized_copy() -> void:
 	_title_label.text = _copy("title")
 	_subtitle_label.text = "%s · %s" % [category_name, _copy(mode_key)]
 	_random_text.text = _copy("random")
+	_tap_hint.text = "%s\n%s" % [_copy("tap_puzzle"), _copy("or_word")]
 	_empty_state.text = _copy("empty")
 
 
 func _copy(key: String) -> String:
+	const MAP := {
+		"title": "Collection",
+		"quick": "Quick",
+		"cryptogram": "Cryptogram",
+		"progress": "ProgressDiscovered",
+		"random": "ChooseRandom",
+		"empty": "NoLevels",
+		"recommended": "RecommendedPuzzle",
+	}
+	if MAP.has(key):
+		var translated := tr(MAP[key])
+		if translated != MAP[key]:
+			return translated
 	var locale: String = TranslationServer.get_locale().left(2).to_lower()
 	var translations: Dictionary = LOCALIZED_COPY.get(locale, LOCALIZED_COPY["es"])
 	return str(translations.get(key, LOCALIZED_COPY["es"].get(key, key)))
 
 
+func _finished_puzzles_excluding_onboarding() -> int:
+	if typeof(HistoryManager) == TYPE_NIL:
+		return 0
+	return HistoryManager.count_finished_puzzles_excluding_onboarding()
+
+
+func _find_recommended_item() -> Dictionary:
+	if GameManager.suggests_first_puzzle():
+		for item in _visible_items:
+			if int(item.get("index", -1)) == GameManager.FIRST_PUZZLE_ID and GameManager.is_puzzle_playable(item):
+				return item
+	var best: Dictionary = {}
+	var best_stars := 99
+	var best_status := 99
+	var best_image := 999999
+	var best_index := 999999
+	for item in _visible_items:
+		if not GameManager.is_puzzle_playable(item):
+			continue
+		var puzzle_id := int(item.get("index", -1))
+		var status := _puzzle_status(puzzle_id)
+		if status == "completed":
+			continue
+		var stars := _difficulty_to_stars(int(item.get("difficulty", 1)))
+		var status_rank := 1 if status == "in_progress" else 0
+		var image_number := int(item.get("image_number", 0))
+		if (
+			stars < best_stars
+			or (stars == best_stars and status_rank < best_status)
+			or (stars == best_stars and status_rank == best_status and image_number < best_image)
+			or (
+				stars == best_stars
+				and status_rank == best_status
+				and image_number == best_image
+				and puzzle_id < best_index
+			)
+		):
+			best = item
+			best_stars = stars
+			best_status = status_rank
+			best_image = image_number
+			best_index = puzzle_id
+	return best
+
+
+func _maybe_show_recommended() -> void:
+	_clear_recommend_hint()
+	if _finished_puzzles_excluding_onboarding() >= RECOMMEND_COMPLETED_LIMIT:
+		return
+	var item := _find_recommended_item()
+	if item.is_empty():
+		return
+	var card := _grid.get_node_or_null("Level_%d" % int(item.get("index", -1))) as Button
+	if card == null:
+		return
+	_recommend_item = item
+	_recommend_card = card
+	_style_recommended_card(card)
+	if card.get_index() < _grid.columns:
+		_set_grid_recommend_margin(RECOMMEND_TOP_MARGIN)
+	_recommend_callout = _create_recommend_callout()
+	_content_frame.add_child(_recommend_callout)
+	set_process(true)
+	call_deferred("_place_recommend_hint")
+
+
+func _place_recommend_hint() -> void:
+	if not is_instance_valid(_recommend_card):
+		return
+	if _recommend_card.get_index() < _grid.columns:
+		_set_grid_recommend_margin(RECOMMEND_TOP_MARGIN)
+	_recommend_card.pivot_offset = _recommend_card.size * 0.5
+	_start_recommend_blink(_recommend_card)
+	if is_instance_valid(_scroll):
+		_scroll.scroll_vertical = maxi(0, int(_recommend_card.position.y) - 24)
+	call_deferred("_update_recommend_callout_position")
+
+
+func _style_recommended_card(card: Button) -> void:
+	var style := _make_recommend_card_style()
+	card.add_theme_stylebox_override("normal", style)
+	card.add_theme_stylebox_override("hover", style)
+	card.add_theme_stylebox_override("pressed", _make_card_pressed_style())
+
+
+func _make_recommend_card_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(1, 0.965, 0.82, 1)
+	style.border_color = COLOR_RECOMMEND
+	style.set_border_width_all(7)
+	style.set_corner_radius_all(28)
+	style.shadow_color = Color(0.88, 0.44, 0.10, 0.38)
+	style.shadow_size = 18
+	style.shadow_offset = Vector2(0, 10)
+	return style
+
+
+func _start_recommend_blink(card: Button) -> void:
+	if is_instance_valid(_recommend_blink):
+		_recommend_blink.kill()
+	card.pivot_offset = card.size * 0.5
+	_recommend_blink = create_tween()
+	_recommend_blink.set_loops()
+	_recommend_blink.set_trans(Tween.TRANS_SINE)
+	_recommend_blink.set_ease(Tween.EASE_IN_OUT)
+	_recommend_blink.tween_property(card, "modulate", Color(1.18, 1.04, 0.72, 1), 0.42)
+	_recommend_blink.parallel().tween_property(card, "scale", Vector2(1.04, 1.04), 0.42)
+	_recommend_blink.tween_property(card, "modulate", Color.WHITE, 0.42)
+	_recommend_blink.parallel().tween_property(card, "scale", Vector2.ONE, 0.42)
+
+
+func _create_recommend_callout() -> Control:
+	var root := Button.new()
+	root.name = "RecommendCallout"
+	root.custom_minimum_size = Vector2(392, 124)
+	root.size = Vector2(392, 124)
+	root.focus_mode = Control.FOCUS_NONE
+	root.mouse_filter = Control.MOUSE_FILTER_STOP
+	root.z_index = 40
+	root.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+	root.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
+	root.add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
+	root.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	root.pressed.connect(_on_recommend_callout_pressed)
+
+	var box := Panel.new()
+	box.name = "Box"
+	box.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	box.offset_bottom = 90
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var box_style := StyleBoxFlat.new()
+	box_style.bg_color = Color(0.996, 0.941, 0.776, 1)
+	box_style.border_color = COLOR_RECOMMEND
+	box_style.set_border_width_all(5)
+	box_style.set_corner_radius_all(28)
+	box_style.shadow_color = Color(0.41, 0.22, 0.05, 0.28)
+	box_style.shadow_size = 12
+	box_style.shadow_offset = Vector2(0, 6)
+	box.add_theme_stylebox_override("panel", box_style)
+	root.add_child(box)
+
+	var label := Label.new()
+	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	label.text = _copy("recommended")
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.add_theme_font_override("font", _title_label.get_theme_font("font"))
+	label.add_theme_font_size_override("font_size", 34)
+	label.add_theme_color_override("font_color", Color(0.42, 0.18, 0.05, 1))
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(label)
+
+	var arrow_border := Polygon2D.new()
+	arrow_border.color = COLOR_RECOMMEND
+	arrow_border.polygon = PackedVector2Array([
+		Vector2(-24, 0),
+		Vector2(24, 0),
+		Vector2(0, 30),
+	])
+	arrow_border.position = Vector2(196, 86)
+	root.add_child(arrow_border)
+
+	var arrow_fill := Polygon2D.new()
+	arrow_fill.color = Color(0.996, 0.941, 0.776, 1)
+	arrow_fill.polygon = PackedVector2Array([
+		Vector2(-16, 0),
+		Vector2(16, 0),
+		Vector2(0, 20),
+	])
+	arrow_fill.position = Vector2(196, 86)
+	root.add_child(arrow_fill)
+
+	root.pivot_offset = root.size * 0.5
+	root.modulate = Color.WHITE
+	var pulse := root.create_tween()
+	pulse.set_loops()
+	pulse.set_trans(Tween.TRANS_SINE)
+	pulse.set_ease(Tween.EASE_IN_OUT)
+	pulse.tween_property(root, "scale", Vector2(1.04, 1.04), 0.42)
+	pulse.parallel().tween_property(root, "modulate", Color(1.18, 1.04, 0.72, 1), 0.42)
+	pulse.tween_property(root, "scale", Vector2.ONE, 0.42)
+	pulse.parallel().tween_property(root, "modulate", Color.WHITE, 0.42)
+	return root
+
+
+func _on_recommend_callout_pressed() -> void:
+	if _drag_active or _recommend_item.is_empty():
+		return
+	_on_level_pressed(_recommend_item)
+
+
+func _recommend_min_y() -> float:
+	var min_y := 0.0
+	if is_instance_valid(_content_frame):
+		min_y = _content_frame.get_global_rect().position.y + 8.0
+	if is_instance_valid(_progress_card):
+		min_y = maxf(min_y, _progress_card.get_global_rect().end.y + 10.0)
+	return min_y
+
+
+func _update_recommend_callout_position() -> void:
+	if not is_instance_valid(_recommend_callout) or not is_instance_valid(_recommend_card):
+		return
+	if not is_instance_valid(_scroll):
+		return
+	var card_rect := _recommend_card.get_global_rect()
+	var scroll_rect := _scroll.get_global_rect()
+	var visible := card_rect.intersects(scroll_rect)
+	_recommend_callout.visible = visible
+	if not visible:
+		return
+	var callout_size := _recommend_callout.size
+	if callout_size == Vector2.ZERO:
+		callout_size = _recommend_callout.custom_minimum_size
+	var pos := Vector2(
+		card_rect.position.x + (card_rect.size.x - callout_size.x) * 0.5,
+		card_rect.position.y - callout_size.y + 22.0
+	)
+	pos.y = maxf(pos.y, _recommend_min_y())
+	if is_instance_valid(_content_frame):
+		var content_rect := _content_frame.get_global_rect()
+		pos.x = clampf(
+			pos.x,
+			content_rect.position.x + 8.0,
+			maxf(content_rect.position.x + 8.0, content_rect.end.x - callout_size.x - 8.0)
+		)
+	_recommend_callout.global_position = pos
+
+
+func _set_grid_recommend_margin(extra: int) -> void:
+	var wrapper := _grid.get_parent() as MarginContainer
+	if wrapper == null:
+		return
+	wrapper.add_theme_constant_override("margin_top", 10 + extra)
+
+
+func _clear_recommend_hint() -> void:
+	if is_instance_valid(_recommend_blink):
+		_recommend_blink.kill()
+	_recommend_blink = null
+	if is_instance_valid(_recommend_card):
+		_recommend_card.modulate = Color.WHITE
+		_recommend_card.scale = Vector2.ONE
+	_recommend_card = null
+	_recommend_item = {}
+	if is_instance_valid(_recommend_callout):
+		_recommend_callout.queue_free()
+	_recommend_callout = null
+	_set_grid_recommend_margin(0)
+
+
 func _difficulty_to_stars(difficulty: int) -> int:
-	return clampi(difficulty, 1, 4)
+	return clampi(difficulty, 1, 5)
 
 
 func _star_icons(filled: int, total: int, size: int, color: Color) -> HBoxContainer:
@@ -513,13 +1492,25 @@ func _star_icons(filled: int, total: int, size: int, color: Color) -> HBoxContai
 	return row
 
 
+func _format_continue_time(total_sec: int) -> String:
+	var seconds := maxi(total_sec, 0)
+	var hours := seconds / 3600
+	var minutes := (seconds % 3600) / 60
+	var rest := seconds % 60
+	var elapsed := "%d:%02d:%02d" % [hours, minutes, rest] if hours > 0 else "%d:%02d" % [minutes, rest]
+	var template := tr("TimeTaken")
+	if "%s" in template:
+		return template % elapsed
+	return "%s: %s" % [tr("Time"), elapsed]
+
+
 func _count_puzzle_letters(text: String) -> int:
 	var count := 0
 	for character in GameManager.normalizar_frase_idioma(
 		text,
 		GameManager.locale_code()
 	):
-		if not GameManager.EXCLUIR.has(character):
+		if not GameManager.is_excluded_character(character):
 			count += 1
 	return count
 
@@ -528,24 +1519,11 @@ func _find_image_path(image_number: int, index_number: int) -> String:
 	var cache_key := "%d:%d" % [image_number, index_number]
 	if _image_path_cache.has(cache_key):
 		return str(_image_path_cache[cache_key])
-	var directory := IMAGES_DIR.trim_suffix("/")
-	var candidate_numbers: Array[int] = [image_number]
-	if index_number != image_number:
-		candidate_numbers.append(index_number)
-	for candidate_number in candidate_numbers:
-		var basename := "image%d" % candidate_number
-		if candidate_number == 1:
-			var uppercase_png := "%s/%s.PNG" % [directory, basename]
-			if ResourceLoader.exists(uppercase_png):
-				_image_path_cache[cache_key] = uppercase_png
-				return uppercase_png
-		for extension in FILE_EXTS:
-			var candidate := "%s/%s%s" % [directory, basename, extension]
-			if ResourceLoader.exists(candidate):
-				_image_path_cache[cache_key] = candidate
-				return candidate
-	_image_path_cache[cache_key] = ""
-	return ""
+	var path := GameManager.find_level_image_path(image_number)
+	if path == "" and index_number >= 0 and index_number != image_number:
+		path = GameManager.find_level_image_path(index_number)
+	_image_path_cache[cache_key] = path
+	return path
 
 
 func _load_and_populate_from_path(path: String) -> void:
@@ -560,6 +1538,7 @@ func _load_and_populate_from_path(path: String) -> void:
 
 
 func _clear_grid_children() -> void:
+	_clear_recommend_hint()
 	for child in _grid.get_children():
 		child.queue_free()
 

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/Tutorial/tutorial_dashed_line.gd" id="1_script"]
+
+[node name="TutorialDashedLine" type="Control"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_script")

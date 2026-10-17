@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://images/estrella_plano.png" id="1_star"]
+
+[node name="Star" type="TextureRect"]
+modulate = Color(1, 0.82, 0.12, 1)
+offset_right = 56.0
+offset_bottom = 56.0
+mouse_filter = 2
+texture = ExtResource("1_star")
+expand_mode = 1
+stretch_mode = 5

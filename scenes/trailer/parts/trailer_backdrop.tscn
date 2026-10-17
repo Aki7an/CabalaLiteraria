@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scenes/trailer/parts/trailer_backdrop.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cf81sgcawr5lp" path="res://images/Fondo.png" id="2_fondo"]
+
+[node name="Backdrop" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+clip_contents = true
+mouse_filter = 2
+script = ExtResource("1_script")
+start_offset = Vector2(0, 0)
+end_offset = Vector2(584, -1200)
+travel_sec = 20.0
+speed_scale = 0.5
+ping_pong = true
+
+[node name="Paper" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.960784, 0.913725, 0.854902, 1)
+
+[node name="Container" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Fondo" type="Sprite2D" parent="Container"]
+modulate = Color(0.59, 0.377403, 0.3127, 0.101961)
+position = Vector2(676, 728)
+rotation = 0.523598
+scale = Vector2(3.81806, 3.81806)
+texture = ExtResource("2_fondo")
+
+[node name="Fondo2" type="Sprite2D" parent="Container"]
+modulate = Color(0.59, 0.377403, 0.3127, 0.101961)
+position = Vector2(-120, 2056)
+rotation = 0.523598
+scale = Vector2(3.81806, 3.81806)
+texture = ExtResource("2_fondo")

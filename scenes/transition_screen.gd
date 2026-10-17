@@ -4,6 +4,8 @@ extends CanvasLayer
 @onready var animation_player = $AnimationPlayer
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	animation_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	color_rect.visible = false
 	animation_player.animation_finished.connect(_on_animation_finished)
 	

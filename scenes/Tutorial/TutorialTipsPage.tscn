@@ -1,0 +1,1773 @@
+[gd_scene format=3 uid="uid://btuttipspage3"]
+
+[ext_resource type="Script" uid="uid://ctuojhk5ty4rj" path="res://scenes/Tutorial/tutorial_tips_page.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="2_title"]
+[ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="3_body"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="3_heavy"]
+[ext_resource type="Texture2D" uid="uid://b0soua8jbd3g5" path="res://images/tutorial/hand_pointer.png" id="4_hand"]
+[ext_resource type="Texture2D" uid="uid://6u7c6kanthrg" path="res://images/ui_icon_eraser.svg" id="5_eraser"]
+[ext_resource type="Texture2D" uid="uid://bleel54et1r8d" path="res://images/tutorial/tut_ballena.jpg" id="7_whale"]
+
+[sub_resource type="StyleBoxFlat" id="Style_tile"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.42, 0.28, 0.78)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_tile_selected"]
+bg_color = Color(1, 0.92, 0.38, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.86, 0.62, 0.08, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_chip1"]
+bg_color = Color(1, 0.6, 0.6, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.12, 0.12, 0.7)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="Style_chip2"]
+bg_color = Color(0.6, 0.8, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.1, 0.22, 0.55, 0.7)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="Style_key_normal"]
+bg_color = Color(0.996, 0.973, 0.91, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.42, 0.28, 0.78)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_key_used"]
+bg_color = Color(0.85882354, 0.7411765, 0.5803922, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.42, 0.26, 0.12, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_key_pressed"]
+bg_color = Color(0.95, 0.55, 0.18, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.36, 0.08, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+content_margin_left = 22.0
+content_margin_top = 18.0
+content_margin_right = 22.0
+content_margin_bottom = 18.0
+bg_color = Color(1, 0.984, 0.94, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78, 0.61, 0.36, 0.45)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.25, 0.14, 0.06, 0.14)
+shadow_size = 8
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="Style_badge"]
+bg_color = Color(0.93, 0.48, 0.12, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="Style_chip3"]
+bg_color = Color(0.6, 1, 0.6, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.08, 0.42, 0.12, 0.7)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="Style_chip4"]
+bg_color = Color(1, 0.8, 0.6, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.62, 0.28, 0.05, 0.7)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="Style_chip5"]
+bg_color = Color(1, 0.6, 0.8, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.52, 0.08, 0.28, 0.7)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="Style_bar_bg"]
+bg_color = Color(0.82, 0.72, 0.52, 0.42)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_bar_fill"]
+bg_color = Color(0.93, 0.48, 0.12, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="Style_pause_empty"]
+
+[sub_resource type="StyleBoxFlat" id="Style_green"]
+bg_color = Color(0.62, 0.86, 0.62, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.28, 0.58, 0.28, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="TutorialTipsPage" type="VBoxContainer" unique_id=1377333400]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 18
+script = ExtResource("1_script")
+style_tile_normal = SubResource("Style_tile")
+style_tile_selected = SubResource("Style_tile_selected")
+style_color1 = SubResource("Style_chip1")
+style_color2 = SubResource("Style_chip2")
+style_key_normal = SubResource("Style_key_normal")
+style_key_used = SubResource("Style_key_used")
+style_key_pressed = SubResource("Style_key_pressed")
+
+[node name="PageTitle" type="Label" parent="." unique_id=1377333401]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 52
+text = "CÓMO JUGAR"
+horizontal_alignment = 1
+
+[node name="Card1" type="PanelContainer" parent="." unique_id=1377333402]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.25
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="Card1" unique_id=1377333403]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="Card1/Box" unique_id=1377333404]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Badge" type="Label" parent="Card1/Box/Header" unique_id=1377333405]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("Style_badge")
+text = "5."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title1" type="Label" parent="Card1/Box/Header" unique_id=1377333406]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 34
+text = "BUSCA PATRONES"
+autowrap_mode = 3
+
+[node name="SpacerH" type="Control" parent="Card1/Box" unique_id=1377333407]
+custom_minimum_size = Vector2(12, 8)
+layout_mode = 2
+
+[node name="Body1" type="Label" parent="Card1/Box" unique_id=1377333408]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.38, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 32
+text = "Utiliza los botones de colores para identificar más claramente posibles posiciones de letras o vocales."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Demo" type="Control" parent="Card1/Box" unique_id=1377333409]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Demo" unique_id=1377333410]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="Control12" type="Control" parent="Card1/Box/Demo/Col" unique_id=252074078]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+
+[node name="Phrase" type="HBoxContainer" parent="Card1/Box/Demo/Col" unique_id=1377333411]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="GapStart" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=1825532780]
+custom_minimum_size = Vector2(20, 10)
+layout_mode = 2
+
+[node name="C" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase" unique_id=1377334001]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card1/Box/Demo/Col/Phrase/C" unique_id=1377334002]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase/C/Panel" unique_id=1377334003]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Demo/Col/Phrase/C/Panel/HBoxContainer" unique_id=1377334004]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "3"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Phrase/C/Panel/HBoxContainer" unique_id=1377334005]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+text = "C"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap1" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=26889532]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="I" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase" unique_id=1377334006]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card1/Box/Demo/Col/Phrase/I" unique_id=1377334007]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase/I/Panel" unique_id=1377334008]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Demo/Col/Phrase/I/Panel/HBoxContainer" unique_id=1377334009]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "9"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Phrase/I/Panel/HBoxContainer" unique_id=1377334010]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap2" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=2103919891]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="F" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase" unique_id=1377334011]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card1/Box/Demo/Col/Phrase/F" unique_id=1377334012]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase/F/Panel" unique_id=1377334013]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Demo/Col/Phrase/F/Panel/HBoxContainer" unique_id=1377334014]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "6"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Phrase/F/Panel/HBoxContainer" unique_id=1377334015]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+text = "F"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap3" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=1438072228]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="R1" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase" unique_id=1377334016]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card1/Box/Demo/Col/Phrase/R1" unique_id=1377334017]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase/R1/Panel" unique_id=1377334018]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Demo/Col/Phrase/R1/Panel/HBoxContainer" unique_id=1377334019]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "18"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Phrase/R1/Panel/HBoxContainer" unique_id=1377334020]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap4" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=1069925434]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="A1" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase" unique_id=1377334021]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card1/Box/Demo/Col/Phrase/A1" unique_id=1377334022]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase/A1/Panel" unique_id=1377334023]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Demo/Col/Phrase/A1/Panel/HBoxContainer" unique_id=1377334024]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "1"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Phrase/A1/Panel/HBoxContainer" unique_id=1377334025]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap5" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=2098518531]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="L" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase" unique_id=1377334026]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card1/Box/Demo/Col/Phrase/L" unique_id=1377334027]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase/L/Panel" unique_id=1377334028]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Demo/Col/Phrase/L/Panel/HBoxContainer" unique_id=1377334029]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "12"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Phrase/L/Panel/HBoxContainer" unique_id=1377334030]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap6" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=1818011158]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="E" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase" unique_id=1377334031]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card1/Box/Demo/Col/Phrase/E" unique_id=1377334032]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase/E/Panel" unique_id=1377334033]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Demo/Col/Phrase/E/Panel/HBoxContainer" unique_id=1377334034]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "5"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Phrase/E/Panel/HBoxContainer" unique_id=1377334035]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap7" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=1014270320]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="T" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase" unique_id=1377334036]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card1/Box/Demo/Col/Phrase/T" unique_id=1377334037]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase/T/Panel" unique_id=1377334038]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Demo/Col/Phrase/T/Panel/HBoxContainer" unique_id=1377334039]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "20"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Phrase/T/Panel/HBoxContainer" unique_id=1377334040]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+text = "T"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap8" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=799407742]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="R2" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase" unique_id=1377334041]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card1/Box/Demo/Col/Phrase/R2" unique_id=1377334042]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase/R2/Panel" unique_id=1377334043]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Demo/Col/Phrase/R2/Panel/HBoxContainer" unique_id=1377334044]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "18"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Phrase/R2/Panel/HBoxContainer" unique_id=1377334045]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap9" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=1688019906]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="A2" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase" unique_id=1377334046]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card1/Box/Demo/Col/Phrase/A2" unique_id=1377334047]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card1/Box/Demo/Col/Phrase/A2/Panel" unique_id=1377334048]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Demo/Col/Phrase/A2/Panel/HBoxContainer" unique_id=1377334049]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "1"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Phrase/A2/Panel/HBoxContainer" unique_id=1377334050]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GapEnd" type="Control" parent="Card1/Box/Demo/Col/Phrase" unique_id=1300084744]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+
+[node name="Control13" type="Control" parent="Card1/Box/Demo/Col" unique_id=503388333]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+
+[node name="Colors" type="HBoxContainer" parent="Card1/Box/Demo/Col" unique_id=1377333500]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Chip1" type="Panel" parent="Card1/Box/Demo/Col/Colors" unique_id=1377334051]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_chip1")
+
+[node name="Label" type="Label" parent="Card1/Box/Demo/Col/Colors/Chip1" unique_id=1377334052]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.95)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Chip2" type="Panel" parent="Card1/Box/Demo/Col/Colors" unique_id=1377334053]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_chip2")
+
+[node name="Label" type="Label" parent="Card1/Box/Demo/Col/Colors/Chip2" unique_id=1377334054]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.95)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Chip3" type="Panel" parent="Card1/Box/Demo/Col/Colors" unique_id=1377334055]
+custom_minimum_size = Vector2(130, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_chip3")
+
+[node name="Label" type="Label" parent="Card1/Box/Demo/Col/Colors/Chip3" unique_id=1377334056]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.95)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Chip4" type="Panel" parent="Card1/Box/Demo/Col/Colors" unique_id=1377334057]
+custom_minimum_size = Vector2(130, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_chip4")
+
+[node name="Label" type="Label" parent="Card1/Box/Demo/Col/Colors/Chip4" unique_id=1377334058]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.95)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Chip5" type="Panel" parent="Card1/Box/Demo/Col/Colors" unique_id=1377334059]
+custom_minimum_size = Vector2(130, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_chip5")
+
+[node name="Label" type="Label" parent="Card1/Box/Demo/Col/Colors/Chip5" unique_id=1377334060]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.95)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Eraser" type="TextureRect" parent="Card1/Box/Demo/Col/Colors" unique_id=1377334061]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("5_eraser")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Control14" type="Control" parent="Card1/Box/Demo/Col" unique_id=2099820257]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+
+[node name="Keyboard" type="VBoxContainer" parent="Card1/Box/Demo/Col" unique_id=1377334062]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Row1" type="HBoxContainer" parent="Card1/Box/Demo/Col/Keyboard" unique_id=1377334063]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="KeyA" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row1" unique_id=1377334064]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row1/KeyA" unique_id=1377334065]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyB" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row1" unique_id=1377334066]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row1/KeyB" unique_id=1377334067]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "B"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyC" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row1" unique_id=1377334068]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_used")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row1/KeyC" unique_id=1377334069]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.99, 0.94, 0.86, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "C"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyD" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row1" unique_id=1377334070]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row1/KeyD" unique_id=1377334071]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "D"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyE" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row1" unique_id=1377334072]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row1/KeyE" unique_id=1377334073]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyF" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row1" unique_id=1377334074]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_used")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row1/KeyF" unique_id=1377334075]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.99, 0.94, 0.86, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "F"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyG" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row1" unique_id=1377334076]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row1/KeyG" unique_id=1377334077]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "G"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyH" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row1" unique_id=1377334078]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row1/KeyH" unique_id=1377334079]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "H"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyI" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row1" unique_id=1377334080]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row1/KeyI" unique_id=1377334081]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "I"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Row2" type="HBoxContainer" parent="Card1/Box/Demo/Col/Keyboard" unique_id=1377334082]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="KeyJ" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row2" unique_id=1377334083]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row2/KeyJ" unique_id=1377334084]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "J"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyK" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row2" unique_id=1377334085]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row2/KeyK" unique_id=1377334086]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "K"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyL" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row2" unique_id=1377334087]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row2/KeyL" unique_id=1377334088]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "L"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyM" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row2" unique_id=1377334089]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row2/KeyM" unique_id=1377334090]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "M"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyN" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row2" unique_id=1377334091]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row2/KeyN" unique_id=1377334092]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "N"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyÑ" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row2" unique_id=1377334093]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row2/KeyÑ" unique_id=1377334094]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "Ñ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyO" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row2" unique_id=1377334095]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row2/KeyO" unique_id=1377334096]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "O"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyP" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row2" unique_id=1377334097]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row2/KeyP" unique_id=1377334098]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "P"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyQ" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row2" unique_id=1377334099]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row2/KeyQ" unique_id=1377334100]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "Q"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Row3" type="HBoxContainer" parent="Card1/Box/Demo/Col/Keyboard" unique_id=1377334101]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="KeyR" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row3" unique_id=1377334102]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row3/KeyR" unique_id=1377334103]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "R"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyS" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row3" unique_id=1377334104]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row3/KeyS" unique_id=1377334105]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "S"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyT" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row3" unique_id=1377334106]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_used")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row3/KeyT" unique_id=1377334107]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.99, 0.94, 0.86, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "T"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyU" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row3" unique_id=1377334108]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row3/KeyU" unique_id=1377334109]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "U"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyV" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row3" unique_id=1377334110]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row3/KeyV" unique_id=1377334111]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "V"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyW" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row3" unique_id=1377334112]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row3/KeyW" unique_id=1377334113]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "W"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyX" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row3" unique_id=1377334114]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row3/KeyX" unique_id=1377334115]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyY" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row3" unique_id=1377334116]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row3/KeyY" unique_id=1377334117]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "Y"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeyZ" type="Panel" parent="Card1/Box/Demo/Col/Keyboard/Row3" unique_id=1377334118]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_key_normal")
+
+[node name="Letter" type="Label" parent="Card1/Box/Demo/Col/Keyboard/Row3/KeyZ" unique_id=1377334119]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 36
+text = "Z"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hand" type="TextureRect" parent="Card1/Box/Demo" unique_id=1377334120]
+unique_name_in_owner = true
+z_index = 20
+custom_minimum_size = Vector2(258, 330)
+layout_mode = 0
+offset_right = 258.0
+offset_bottom = 330.0
+mouse_filter = 2
+texture = ExtResource("4_hand")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimRow5" type="HBoxContainer" parent="Card1/Box" unique_id=1377334121]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AnimBar5" type="ProgressBar" parent="Card1/Box/AnimRow5" unique_id=1377334122]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/background = SubResource("Style_bar_bg")
+theme_override_styles/fill = SubResource("Style_bar_fill")
+max_value = 1.0
+step = 0.001
+show_percentage = false
+
+[node name="Pause5" type="Button" parent="Card1/Box/AnimRow5" unique_id=1377334123]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.4, 0.26, 0.14, 0.5)
+theme_override_colors/font_pressed_color = Color(0.4, 0.26, 0.14, 1)
+theme_override_colors/font_hover_color = Color(0.4, 0.26, 0.14, 0.82)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("Style_pause_empty")
+theme_override_styles/pressed = SubResource("Style_pause_empty")
+theme_override_styles/hover = SubResource("Style_pause_empty")
+theme_override_styles/focus = SubResource("Style_pause_empty")
+text = "⏸"
+
+[node name="Card2" type="PanelContainer" parent="." unique_id=1377334124]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="Card2" unique_id=1377334125]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="Card2/Box" unique_id=1377334126]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Badge" type="Label" parent="Card2/Box/Header" unique_id=1377334127]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("Style_badge")
+text = "6."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title2" type="Label" parent="Card2/Box/Header" unique_id=1377334128]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 34
+text = "OBSERVA LA IMAGEN"
+autowrap_mode = 3
+
+[node name="Body2" type="Label" parent="Card2/Box" unique_id=1377334129]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.38, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 32
+text = "La imagen te da pistas sobre el tema del puzle y puede ayudarte a pensar en alguna palabra."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Picture" type="TextureRect" parent="Card2/Box" unique_id=1377334130]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+texture = ExtResource("7_whale")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Phrase" type="HBoxContainer" parent="Card2/Box" unique_id=1377334131]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="GapStart" type="Control" parent="Card2/Box/Phrase" unique_id=1402800181]
+custom_minimum_size = Vector2(120, 10)
+layout_mode = 2
+
+[node name="B" type="VBoxContainer" parent="Card2/Box/Phrase" unique_id=1377334132]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card2/Box/Phrase/B" unique_id=1377334133]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card2/Box/Phrase/B/Panel" unique_id=1377334134]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card2/Box/Phrase/B/Panel/HBoxContainer" unique_id=1377334135]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "4"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card2/Box/Phrase/B/Panel/HBoxContainer" unique_id=1377334136]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap1" type="Control" parent="Card2/Box/Phrase" unique_id=90573016]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="WA1" type="VBoxContainer" parent="Card2/Box/Phrase" unique_id=1377334137]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card2/Box/Phrase/WA1" unique_id=1377334138]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_green")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card2/Box/Phrase/WA1/Panel" unique_id=1377334139]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card2/Box/Phrase/WA1/Panel/HBoxContainer" unique_id=1377334140]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "1"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card2/Box/Phrase/WA1/Panel/HBoxContainer" unique_id=1377334141]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap2" type="Control" parent="Card2/Box/Phrase" unique_id=1601213479]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="WL1" type="VBoxContainer" parent="Card2/Box/Phrase" unique_id=1377334142]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card2/Box/Phrase/WL1" unique_id=1377334143]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card2/Box/Phrase/WL1/Panel" unique_id=1377334144]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card2/Box/Phrase/WL1/Panel/HBoxContainer" unique_id=1377334145]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "8"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card2/Box/Phrase/WL1/Panel/HBoxContainer" unique_id=1377334146]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap3" type="Control" parent="Card2/Box/Phrase" unique_id=830350231]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="WL2" type="VBoxContainer" parent="Card2/Box/Phrase" unique_id=1377334147]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card2/Box/Phrase/WL2" unique_id=1377334148]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card2/Box/Phrase/WL2/Panel" unique_id=1377334149]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card2/Box/Phrase/WL2/Panel/HBoxContainer" unique_id=1377334150]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "8"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card2/Box/Phrase/WL2/Panel/HBoxContainer" unique_id=1377334151]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap4" type="Control" parent="Card2/Box/Phrase" unique_id=108308204]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="WE" type="VBoxContainer" parent="Card2/Box/Phrase" unique_id=1377334152]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card2/Box/Phrase/WE" unique_id=1377334153]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_green")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card2/Box/Phrase/WE/Panel" unique_id=1377334154]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card2/Box/Phrase/WE/Panel/HBoxContainer" unique_id=1377334155]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "5"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card2/Box/Phrase/WE/Panel/HBoxContainer" unique_id=1377334156]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap5" type="Control" parent="Card2/Box/Phrase" unique_id=1357322113]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="WN" type="VBoxContainer" parent="Card2/Box/Phrase" unique_id=1377334157]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card2/Box/Phrase/WN" unique_id=1377334158]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_green")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card2/Box/Phrase/WN/Panel" unique_id=1377334159]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card2/Box/Phrase/WN/Panel/HBoxContainer" unique_id=1377334160]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "2"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card2/Box/Phrase/WN/Panel/HBoxContainer" unique_id=1377334161]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+text = "N"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gap6" type="Control" parent="Card2/Box/Phrase" unique_id=2048101471]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="WA2" type="VBoxContainer" parent="Card2/Box/Phrase" unique_id=1377334162]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Panel" type="Panel" parent="Card2/Box/Phrase/WA2" unique_id=1377334163]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_green")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Card2/Box/Phrase/WA2/Panel" unique_id=1377334164]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Number" type="Label" parent="Card2/Box/Phrase/WA2/Panel/HBoxContainer" unique_id=1377334165]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 30
+text = "1"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card2/Box/Phrase/WA2/Panel/HBoxContainer" unique_id=1377334166]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 60
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GapEnd" type="Control" parent="Card2/Box/Phrase" unique_id=724037082]
+custom_minimum_size = Vector2(120, 20)
+layout_mode = 2

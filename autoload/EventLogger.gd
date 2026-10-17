@@ -1,146 +1,303 @@
 extends Node
 class_name EventLogger
 
-enum EventType {
-	COMPRA_VOCAL_AE,
-	COMPRA_VOCAL_IOU,
-	COMPRA_CONSONANTE,
-	COMPRA_PISTA_2,
-	COMPRA_PISTA_3,
-	BORRAR_LETRA,
-	ASIGNAR_LETRA,
-	PARTIDA_INICIADA,
-	PARTIDA_FINALIZADA
-}
+const MAX_EVENTS := 4000
+const PENDING_PATH := "user://logs/pending_trace.json"
+const OUTCOME_COMPLETED := "COMPLETADA"
+const OUTCOME_ABANDONED := "ABANDONADA"
+const OUTCOME_UNFINISHED := "NO TERMINADA"
 
 var session_id: String = ""
 var events: Array = []
 var started: bool = false
+var finished: bool = false
+var _start_ms: int = 0
+var _pending_submit: bool = false
+var _outcome: String = ""
+var _flushing := false
+var _boot_flush_done := false
 
-# Opcional: límites de seguridad
-@export var max_events: int = 5000
 
 func _ready() -> void:
-	# Conexiones a SignalManager
-	SignalManager.compra_vocal_ae.connect(func(t:int): _log(EventType.COMPRA_VOCAL_AE, {"coste": _coins_diff()}, t))
-	SignalManager.compra_vocal_iou.connect(func(t:int): _log(EventType.COMPRA_VOCAL_IOU, {"coste": _coins_diff()}, t))
-	SignalManager.compra_consonante.connect(func(t:int): _log(EventType.COMPRA_CONSONANTE, {"coste": _coins_diff()}, t))
-	SignalManager.compra_pista_2.connect(func(t:int): _log(EventType.COMPRA_PISTA_2, {"coste": _coins_diff()}, t))
-	SignalManager.compra_pista_3.connect(func(t:int): _log(EventType.COMPRA_PISTA_3, {"coste": _coins_diff()}, t))
-	SignalManager.borrar_letra.connect(
-		func(t:int, celda:int, letra:String):
-			_log(EventType.BORRAR_LETRA, {"celda": celda, "letra": letra}, t)
-	)
-	SignalManager.asignar_letra.connect(
-		func(t:int, celda:int, letra:String):
-			_log(EventType.ASIGNAR_LETRA, {"celda": celda, "letra": letra}, t)
-	)
-	SignalManager.partida_iniciada.connect(func(): start_session())
-	SignalManager.partida_finalizada.connect(func(resultado:String): _log(EventType.PARTIDA_FINALIZADA, {"resultado": resultado}, _t_game()); end_session_and_export())
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	if not SignalManager.puzzle_input.is_connected(_on_puzzle_input):
+		SignalManager.puzzle_input.connect(_on_puzzle_input)
+	_flush_pending()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED:
+		persist_unfinished()
+
 
 func start_session() -> void:
 	events.clear()
 	session_id = _make_session_id()
 	started = true
-	_log(EventType.PARTIDA_INICIADA, {}, _t_game())
+	finished = false
+	_pending_submit = false
+	_outcome = ""
+	_start_ms = Time.get_ticks_msec()
+	_log("session_start", {
+		"puzzle_id": _puzzle_id(),
+		"locale": TranslationServer.get_locale(),
+	})
 
-func _log(t:EventType, meta:Dictionary, t_game_ms:int) -> void:
+
+func finish_session(outcome: String = "") -> void:
+	if not started or finished:
+		if outcome != "":
+			_outcome = outcome
+		return
+	finished = true
+	if outcome != "":
+		_outcome = outcome
+	_log("session_end", {
+		"puzzle_id": _puzzle_id(),
+		"duration_sec": _game_sec(),
+		"outcome": _current_outcome(),
+	})
+
+
+func discard_session() -> void:
+	started = false
+	finished = false
+	_pending_submit = false
+	_outcome = ""
+	events.clear()
+	session_id = ""
+
+
+func log_action(action: String, meta: Dictionary = {}) -> void:
 	if not started:
 		start_session()
-	var ev := {
-		"id": events.size(),
-		"type": t,
-		"t_game_ms": t_game_ms,
-		"t_wall_ms": Time.get_ticks_msec(),
-		"meta": meta
-	}
-	events.append(ev)
-	# Cap seguridad
-	if events.size() > max_events:
-		events.pop_front()
+	_log(action, meta)
 
-# ---- Exportar & PlayFab ----
-func end_session_and_export() -> void:
-	if not started: return
-	started = false
-	var payload := {
+
+func persist_unfinished() -> void:
+	if _flushing or not _should_share() or not started or finished:
+		return
+	if events.size() <= 1:
+		return
+	_write_pending(build_payload(OUTCOME_UNFINISHED))
+
+
+func submit_if_consented(outcome: String = OUTCOME_COMPLETED) -> void:
+	if not _should_share():
+		discard_session()
+		if _boot_flush_done:
+			_clear_pending_if_session(session_id)
+		return
+	if not started and events.is_empty():
+		return
+	_outcome = outcome
+	if not finished:
+		finish_session(outcome)
+	_pending_submit = true
+	await _submit_async(outcome)
+
+
+func build_payload(outcome: String = "") -> Dictionary:
+	var resolved := outcome if outcome != "" else _current_outcome()
+	return {
 		"session_id": session_id,
-		"phrase_ID": GameManager.id_frase,
-		"player": GameManager.player_name if typeof(GameManager) != TYPE_NIL else "unknown",
+		"puzzle_id": _puzzle_id(),
+		"outcome": resolved,
+		"player": GameManager.player_name if typeof(GameManager) != TYPE_NIL else "",
 		"category": GameManager.categoria_actual if typeof(GameManager) != TYPE_NIL else "",
 		"difficulty": GameManager.dificultad_actual if typeof(GameManager) != TYPE_NIL else 0,
-		"score": GameManager.score if typeof(GameManager) != TYPE_NIL else 0,
+		"game_mode": str(GameManager.game_mode_actual) if typeof(GameManager) != TYPE_NIL else "",
+		"duration_sec": _game_sec(),
+		"letters_shown": _letters_shown(),
+		"board": _board_snapshot(),
 		"locale": TranslationServer.get_locale(),
-		"events": events
+		"client_ver": str(ProjectSettings.get_setting("application/config/version", "")),
+		"platform": OS.get_name(),
+		"playfab_id": str(PlayFabTools.playfab_id) if typeof(PlayFabTools) != TYPE_NIL else "",
+		"events": events.duplicate(true),
 	}
 
-	# 1) Persistir local (backup / reintento)
-	var path := "user://logs/%s.json" % session_id
+
+func _on_puzzle_input(action: String, meta: Dictionary) -> void:
+	log_action(action, meta)
+
+
+func _log(action: String, meta: Dictionary) -> void:
+	if not started:
+		return
+	var ev := {
+		"id": events.size(),
+		"action": action,
+		"t_ms": _elapsed_ms(),
+		"t_game_sec": _game_sec(),
+	}
+	for key in meta.keys():
+		ev[key] = meta[key]
+	events.append(ev)
+	if events.size() > MAX_EVENTS:
+		events.pop_front()
+
+
+func _should_share() -> bool:
+	if typeof(PlayerPrefs) == TYPE_NIL or not PlayerPrefs.share_solve_data:
+		return false
+	if typeof(GameManager) != TYPE_NIL and GameManager.skips_progress():
+		return false
+	return true
+
+
+func _current_outcome() -> String:
+	if _outcome != "":
+		return _outcome
+	return OUTCOME_COMPLETED if finished else OUTCOME_UNFINISHED
+
+
+func _submit_async(outcome: String) -> void:
+	var payload := build_payload(outcome)
+	_write_local(payload)
+	_write_pending(payload)
+	var playfab_ok := await _send_payload(payload)
+	print("PlayFab trace: ", playfab_ok, " outcome=", outcome)
+	if playfab_ok:
+		_clear_pending_if_session(str(payload.get("session_id", "")))
+	discard_session()
+
+
+func _flush_pending() -> void:
+	if _flushing:
+		return
+	_flushing = true
+	var payload := _read_pending()
+	if payload.is_empty():
+		_flushing = false
+		_boot_flush_done = true
+		return
+	if typeof(PlayerPrefs) == TYPE_NIL or not PlayerPrefs.share_solve_data:
+		_clear_pending()
+		_flushing = false
+		_boot_flush_done = true
+		return
+	if str(payload.get("outcome", "")).strip_edges() == "":
+		payload["outcome"] = OUTCOME_UNFINISHED
+	var playfab_ok := await _send_payload(payload)
+	print("PlayFab pending trace: ", playfab_ok, " outcome=", payload.get("outcome", ""))
+	if playfab_ok:
+		_clear_pending()
+	_flushing = false
+	_boot_flush_done = true
+
+
+func _send_payload(payload: Dictionary) -> bool:
+	if typeof(PlayFabTools) == TYPE_NIL:
+		return false
+	if not PlayFabTools.is_logged_in():
+		for _attempt in range(50):
+			await get_tree().create_timer(0.1).timeout
+			if PlayFabTools.is_logged_in():
+				break
+	if not PlayFabTools.is_logged_in():
+		return false
+	return await PlayFabTools.send_puzzle_trace(payload)
+
+
+func _write_local(payload: Dictionary) -> void:
 	DirAccess.make_dir_recursive_absolute("user://logs")
-	var f := FileAccess.open(path, FileAccess.WRITE)
-	if f:
-		f.store_string(JSON.stringify(payload, "\t"))
-		f.close()
-
-	# 2) Enviar a PlayFab (telemetría / event write)
-	_send_to_playfab_async(payload)
-
-# --- PlayFab (ejemplo básico con HTTPRequest) ---
-func _send_to_playfab_async(payload:Dictionary) -> void:
-	# Nota: Para producción usa el SDK oficial de PlayFab (GDScript o REST).
-	# Aquí va un ejemplo REST “genérico” para WritePlayerEvent.
-	var http := HTTPRequest.new()
-	add_child(http)
-
-	# Rellena con tus credenciales PlayFab:
-	var title_id := "XXXX"  # tu Title ID
-	var entity_type := "title_player_account"
-	var entity_id := _playfab_entity_id() # guárdalo antes al autenticar
-	var secret_key := "" # NUNCA en cliente; en cliente usa Entity Token, no secret key
-
-	var url := "https://%s.playfabapi.com/Event/WriteEvents" % title_id
-	var headers := [
-		"Content-Type: application/json",
-		"X-EntityToken: %s" % _playfab_entity_token()  # obtenido tras login
+	var path := "user://logs/puzzle_%s_%s.json" % [
+		str(payload.get("puzzle_id", _puzzle_id())),
+		str(payload.get("session_id", session_id)),
 	]
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		return
+	file.store_string(JSON.stringify(payload))
+	file.close()
 
-	var events_pf: Array = []
-	for ev in events:
-		events_pf.append({
-			"EventName": "game_action",
-			# “Body” puede ser tu ev completo, o solo meta
-			"Payload": ev,
-			"Timestamp": Time.get_datetime_string_from_system()
+
+func _write_pending(payload: Dictionary) -> void:
+	DirAccess.make_dir_recursive_absolute("user://logs")
+	var file := FileAccess.open(PENDING_PATH, FileAccess.WRITE)
+	if file == null:
+		return
+	file.store_string(JSON.stringify(payload))
+	file.close()
+
+
+func _read_pending() -> Dictionary:
+	if not FileAccess.file_exists(PENDING_PATH):
+		return {}
+	var file := FileAccess.open(PENDING_PATH, FileAccess.READ)
+	if file == null:
+		return {}
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	return parsed if parsed is Dictionary else {}
+
+
+func _clear_pending() -> void:
+	if FileAccess.file_exists(PENDING_PATH):
+		DirAccess.remove_absolute(PENDING_PATH)
+
+
+func _clear_pending_if_session(sid: String) -> void:
+	if sid == "":
+		_clear_pending()
+		return
+	var pending := _read_pending()
+	if pending.is_empty() or str(pending.get("session_id", "")) == sid:
+		_clear_pending()
+
+
+func _letters_shown() -> String:
+	if typeof(GameManager) == TYPE_NIL or not is_inside_tree() or get_tree() == null:
+		return ""
+	if get_tree().get_nodes_in_group("Letra").is_empty():
+		return ""
+	return str(GameManager.recoger_letras_mostradas())
+
+
+func _board_snapshot() -> Dictionary:
+	if not is_inside_tree() or get_tree() == null:
+		return {}
+	var cells: Array = []
+	for node in get_tree().get_nodes_in_group("Celda"):
+		if not node is Celda:
+			continue
+		var cell := node as Celda
+		if cell.numero >= 100:
+			continue
+		var letter := str(cell.letter_user)
+		if letter == "":
+			continue
+		cells.append({
+			"orden": int(cell.orden),
+			"numero": int(cell.numero),
+			"letter": letter,
+			"shown": bool(cell.celda_mostrada),
+			"gift": bool(cell.es_regalo_inicial),
 		})
-
-	var body := {
-		"Events": events_pf,
-		"Entity": {"Type": entity_type, "Id": entity_id}
+	cells.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		return int(a.get("orden", 0)) < int(b.get("orden", 0))
+	)
+	return {
+		"assigned": cells,
+		"assigned_count": cells.size(),
 	}
 
-	http.request_completed.connect(func(_result:int, _code:int, _headers:PackedStringArray, _body:PackedByteArray):
-		http.queue_free()
-	)
 
-	var err := http.request(url, headers, HTTPClient.METHOD_POST, JSON.stringify(body))
-	if err != OK:
-		push_warning("PlayFab request error: %s" % str(err))
+func _elapsed_ms() -> int:
+	return maxi(Time.get_ticks_msec() - _start_ms, 0)
 
-# ---- Helpers ----
-func _make_session_id() -> String:
-	return "%s_%s" % [Time.get_datetime_string_from_system().replace(":","-"), str(randi())]
 
-func _t_game() -> int:
+func _game_sec() -> int:
 	return GameManager.tiempo_partida if typeof(GameManager) != TYPE_NIL else 0
 
-func _coins_diff() -> Dictionary:
-	# Si quieres guardar economía antes/después, puedes capturar aquí:
-	return {"coins": GameManager.coins} if typeof(GameManager) != TYPE_NIL else {}
 
-func _playfab_entity_token() -> String:
-	# Implementa según tu login
-	return ProjectSettings.get_setting("playfab/entity_token", "")
+func _puzzle_id() -> int:
+	return int(GameManager.id_frase) if typeof(GameManager) != TYPE_NIL else -1
 
-func _playfab_entity_id() -> String:
-	# Implementa según tu login
-	return ProjectSettings.get_setting("playfab/entity_id", "")
+
+func _make_session_id() -> String:
+	return "%s_%d" % [
+		Time.get_datetime_string_from_system().replace(":", "-"),
+		randi()
+	]

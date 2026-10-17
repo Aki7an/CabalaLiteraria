@@ -12,16 +12,52 @@
 [ext_resource type="Script" uid="uid://bt4vf7weivebq" path="res://scenes/AdjustSize.gd" id="11_11y0k"]
 [ext_resource type="Texture2D" uid="uid://djgesm36twvkd" path="res://images/Leaderboard2Shadow.png" id="15_1f17j"]
 [ext_resource type="Texture2D" uid="uid://bc5r1ladqsipe" path="res://images/TutorialShadow.png" id="18_8myay"]
-[ext_resource type="Script" uid="uid://brd14tiskdrxk" path="res://scenes/tips_box.gd" id="20_1hsi3"]
 [ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="21_title"]
 [ext_resource type="Script" uid="uid://b6hh3e70444pq" path="res://scenes/button_fx.gd" id="22_btnfx"]
-[ext_resource type="Theme" uid="uid://ee1jw2q2fqbb" path="res://Label_Monserrat.tres" id="23_mont"]
-[ext_resource type="Texture2D" uid="uid://b224a7f08tbwq" path="res://images/Bombilla_1.png" id="24_bulb"]
-[ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="25_tip_font"]
-[ext_resource type="Script" uid="uid://tjdclh16sy1s" path="res://scenes/tapered_line.gd" id="26_taper"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="27_star"]
+[ext_resource type="Texture2D" uid="uid://hqwatbm1ab1y" path="res://images/ui_icon_music_note.svg" id="28_music"]
+[ext_resource type="Texture2D" uid="uid://dm7gsouiq18gi" path="res://images/ui_icon_speaker.svg" id="29_fx"]
+[ext_resource type="Texture2D" uid="uid://dvtuv0l5fovjd" path="res://images/ui_icon_mute_slash.svg" id="30_slash"]
+[ext_resource type="Texture2D" uid="uid://rihcct8nat2h" path="res://images/ui_icon_shop.svg" id="31_shop"]
+[ext_resource type="Texture2D" uid="uid://dxivvuw5oykyh" path="res://images/ui_icon_daily.svg" id="32_daily"]
+[ext_resource type="Texture2D" uid="uid://cwpp1jnlww7fk" path="res://images/ui_icon_library.svg" id="33_library"]
+[ext_resource type="Texture2D" uid="uid://df4vbm1p11hlt" path="res://images/ui_icon_lock_gray.svg" id="34_lock_white"]
+[ext_resource type="Script" uid="uid://co25alfdnjuqv" path="res://scenes/dotted_frame.gd" id="35_dotframe"]
+[ext_resource type="PackedScene" uid="uid://d0q2sjp54c1qx" path="res://scenes/IntroWords.tscn" id="36_intro_words"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.960784, 0.913725, 0.854902, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_audio_quiet"]
+bg_color = Color(0.960784, 0.913725, 0.854902, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 10
+border_color = Color(0.847059, 0.776471, 0.694118, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.1)
+shadow_size = 6
+shadow_offset = Vector2(0, 5)
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxFlat" id="Style_audio_quiet_pressed"]
+bg_color = Color(0.921569, 0.870588, 0.807843, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.776471, 0.701961, 0.615686, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0.364706, 0.25098, 0.215686, 0.07)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings"]
 bg_color = Color(1, 0.643137, 0.0156863, 1)
@@ -91,19 +127,11 @@ corner_radius_bottom_right = 19
 corner_radius_bottom_left = 19
 anti_aliasing_size = 0.5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ornament_dot"]
-bg_color = Color(0.737255, 0.552941, 0.333333, 0.72)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-anti_aliasing_size = 0.5
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile"]
-content_margin_left = 6.0
-content_margin_top = 10.0
-content_margin_right = 6.0
-content_margin_bottom = 14.0
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 6.0
 bg_color = Color(0.996078, 0.972549, 0.92549, 1)
 border_width_left = 3
 border_width_top = 3
@@ -204,118 +232,43 @@ anti_aliasing_size = 0.5
 [sub_resource type="FontVariation" id="FontVariation_play"]
 base_font = ExtResource("10_87486")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip"]
-content_margin_left = 22.0
-content_margin_top = 16.0
-content_margin_right = 22.0
-content_margin_bottom = 16.0
-bg_color = Color(0.996078, 0.972549, 0.92549, 0.98)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.760784, 0.603922, 0.439216, 1)
-corner_radius_top_left = 26
-corner_radius_top_right = 26
-corner_radius_bottom_right = 26
-corner_radius_bottom_left = 26
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
-shadow_size = 14
-shadow_offset = Vector2(0, 10)
-anti_aliasing_size = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip_inset"]
-bg_color = Color(1, 1, 1, 0)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.705882, 0.521569, 0.345098, 0.5)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-anti_aliasing_size = 0.5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip_pause"]
-bg_color = Color(1, 1, 1, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 3
-border_color = Color(0.705882, 0.376471, 0.0705882, 1)
-corner_radius_top_left = 11
-corner_radius_top_right = 11
-corner_radius_bottom_right = 11
-corner_radius_bottom_left = 11
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.2)
-shadow_size = 3
-shadow_offset = Vector2(0, 2)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tip_pause_pressed"]
-bg_color = Color(0.364706, 0.25098, 0.215686, 0.1)
-border_width_left = 2
-border_width_top = 3
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.580392, 0.290196, 0.0470588, 1)
-corner_radius_top_left = 11
-corner_radius_top_right = 11
-corner_radius_bottom_right = 11
-corner_radius_bottom_left = 11
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
-bg_color = Color(0.364706, 0.25098, 0.215686, 0.14)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
-bg_color = Color(0.94902, 0.54902, 0.0862745, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_blue"]
-bg_color = Color(0.509804, 0.772549, 0.862745, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_gold"]
+bg_color = Color(0.99607843, 0.8901961, 0.6862745, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 12
-border_color = Color(0.286275, 0.568627, 0.682353, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
-shadow_size = 10
-shadow_offset = Vector2(0, 8)
+border_color = Color(0.65098, 0.494118, 0.219608, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.07)
+shadow_size = 6
+shadow_offset = Vector2(0, 4)
 anti_aliasing_size = 0.5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_blue_pressed"]
-bg_color = Color(0.439216, 0.701961, 0.807843, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_gold_pressed"]
+bg_color = Color(0.945098, 0.87451, 0.737255, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 6
-border_color = Color(0.243137, 0.501961, 0.607843, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
-shadow_size = 5
-shadow_offset = Vector2(0, 4)
+border_color = Color(0.556863, 0.411765, 0.172549, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.04)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
 
-[sub_resource type="Theme" id="Theme_btn_blue"]
-Button/styles/disabled = SubResource("StyleBoxFlat_btn_blue")
-Button/styles/focus = SubResource("StyleBoxFlat_btn_blue")
-Button/styles/hover = SubResource("StyleBoxFlat_btn_blue")
-Button/styles/normal = SubResource("StyleBoxFlat_btn_blue")
-Button/styles/pressed = SubResource("StyleBoxFlat_btn_blue_pressed")
+[sub_resource type="Theme" id="Theme_btn_gold"]
+Button/styles/disabled = SubResource("StyleBoxFlat_btn_gold")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_gold")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_gold")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_gold")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_gold_pressed")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_inset"]
 bg_color = Color(1, 1, 1, 0)
@@ -331,36 +284,130 @@ corner_radius_bottom_right = 27
 corner_radius_bottom_left = 27
 anti_aliasing_size = 0.5
 
+[sub_resource type="StyleBoxFlat" id="Style_circle_cream"]
+bg_color = Color(0.9882353, 0.84705883, 0.5921569, 1)
+corner_radius_top_left = 200
+corner_radius_top_right = 200
+corner_radius_bottom_right = 200
+corner_radius_bottom_left = 200
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apv0w"]
+bg_color = Color(0.84313726, 0.5411765, 0.12941177, 1)
+corner_radius_top_left = 200
+corner_radius_top_right = 200
+corner_radius_bottom_right = 200
+corner_radius_bottom_left = 200
+
+[sub_resource type="StyleBoxFlat" id="Style_today_badge"]
+bg_color = Color(0.82, 0.16, 0.14, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.29, 0.12, 0.08, 0.28)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="Style_completed_stamp"]
+bg_color = Color(0.16, 0.5, 0.3, 0.14)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.16, 0.5, 0.3, 0.92)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="Style_completed_stamp_inner"]
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.16, 0.5, 0.3, 0.88)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_mint"]
+bg_color = Color(0.819608, 0.909804, 0.866667, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 12
+border_color = Color(0.368627, 0.643137, 0.498039, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.07)
+shadow_size = 6
+shadow_offset = Vector2(0, 4)
+anti_aliasing_size = 0.5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_mint_pressed"]
+bg_color = Color(0.752941, 0.858824, 0.807843, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 6
+border_color = Color(0.309804, 0.552941, 0.419608, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.04)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="Theme" id="Theme_btn_mint"]
+Button/styles/disabled = SubResource("StyleBoxFlat_btn_mint")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_mint")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_mint")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_mint")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_mint_pressed")
+
+[sub_resource type="StyleBoxFlat" id="Style_circle_mint"]
+bg_color = Color(0.5803922, 0.8, 0.7058824, 1)
+corner_radius_top_left = 200
+corner_radius_top_right = 200
+corner_radius_bottom_right = 200
+corner_radius_bottom_left = 200
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_salmon"]
-bg_color = Color(0.960784, 0.552941, 0.407843, 1)
+bg_color = Color(0.9843137, 0.73333335, 0.61960787, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 12
 border_color = Color(0.788235, 0.388235, 0.286275, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
-shadow_size = 10
-shadow_offset = Vector2(0, 8)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.07)
+shadow_size = 6
+shadow_offset = Vector2(0, 4)
 anti_aliasing_size = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_salmon_pressed"]
-bg_color = Color(0.898039, 0.486275, 0.345098, 1)
+bg_color = Color(0.94902, 0.807843, 0.741176, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 6
 border_color = Color(0.705882, 0.321569, 0.231373, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
-shadow_size = 5
-shadow_offset = Vector2(0, 4)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.04)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
 
 [sub_resource type="Theme" id="Theme_btn_salmon"]
 Button/styles/disabled = SubResource("StyleBoxFlat_btn_salmon")
@@ -369,43 +416,57 @@ Button/styles/hover = SubResource("StyleBoxFlat_btn_salmon")
 Button/styles/normal = SubResource("StyleBoxFlat_btn_salmon")
 Button/styles/pressed = SubResource("StyleBoxFlat_btn_salmon_pressed")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_mint"]
-bg_color = Color(0.619608, 0.843137, 0.729412, 1)
+[sub_resource type="StyleBoxFlat" id="Style_circle_peach"]
+bg_color = Color(0.93333334, 0.6392157, 0.4745098, 1)
+corner_radius_top_left = 200
+corner_radius_top_right = 200
+corner_radius_bottom_right = 200
+corner_radius_bottom_left = 200
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_blue"]
+bg_color = Color(0.75963086, 0.84979177, 0.9152265, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 12
-border_color = Color(0.368627, 0.643137, 0.498039, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.12)
-shadow_size = 10
-shadow_offset = Vector2(0, 8)
+border_color = Color(0.286275, 0.568627, 0.682353, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.07)
+shadow_size = 6
+shadow_offset = Vector2(0, 4)
 anti_aliasing_size = 0.5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_mint_pressed"]
-bg_color = Color(0.541176, 0.772549, 0.654902, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_blue_pressed"]
+bg_color = Color(0.705882, 0.811765, 0.882353, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 6
-border_color = Color(0.309804, 0.552941, 0.419608, 1)
-corner_radius_top_left = 34
-corner_radius_top_right = 34
-corner_radius_bottom_right = 34
-corner_radius_bottom_left = 34
-shadow_color = Color(0.286275, 0.184314, 0.129412, 0.09)
-shadow_size = 5
-shadow_offset = Vector2(0, 4)
+border_color = Color(0.243137, 0.501961, 0.607843, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0.286275, 0.184314, 0.129412, 0.04)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
 
-[sub_resource type="Theme" id="Theme_btn_mint"]
-Button/styles/disabled = SubResource("StyleBoxFlat_btn_mint")
-Button/styles/focus = SubResource("StyleBoxFlat_btn_mint")
-Button/styles/hover = SubResource("StyleBoxFlat_btn_mint")
-Button/styles/normal = SubResource("StyleBoxFlat_btn_mint")
-Button/styles/pressed = SubResource("StyleBoxFlat_btn_mint_pressed")
+[sub_resource type="Theme" id="Theme_btn_blue"]
+Button/styles/disabled = SubResource("StyleBoxFlat_btn_blue")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_blue")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_blue")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_blue")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_blue_pressed")
+
+[sub_resource type="StyleBoxFlat" id="Style_circle_blue"]
+bg_color = Color(0.56078434, 0.7176471, 0.8235294, 1)
+corner_radius_top_left = 200
+corner_radius_top_right = 200
+corner_radius_bottom_right = 200
+corner_radius_bottom_left = 200
 
 [node name="MenuMain" type="Control" unique_id=1741371593]
 layout_mode = 3
@@ -436,6 +497,203 @@ offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="StarTotals" type="Control" parent="Panel" unique_id=72463766]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 49.0
+offset_top = 48.0
+offset_right = 280.0
+offset_bottom = 197.0
+mouse_filter = 2
+
+[node name="Rows" type="VBoxContainer" parent="Panel/StarTotals" unique_id=664443035]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -83.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="QuickRow" type="HBoxContainer" parent="Panel/StarTotals/Rows" unique_id=1242344627]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="StarsQuickCount" type="Label" parent="Panel/StarTotals/Rows/QuickRow" unique_id=306467501]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("21_title")
+theme_override_font_sizes/font_size = 52
+text = "0"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Panel/StarTotals/Rows/QuickRow" unique_id=996729817]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Star" type="TextureRect" parent="Panel/StarTotals/Rows/QuickRow" unique_id=2121046252]
+modulate = Color(1, 0.82, 0.12, 1)
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("27_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CryptoRow" type="HBoxContainer" parent="Panel/StarTotals/Rows" unique_id=974562645]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="StarsCryptoCount" type="Label" parent="Panel/StarTotals/Rows/CryptoRow" unique_id=329458901]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.325, 0.2, 0.125, 1)
+theme_override_fonts/font = ExtResource("21_title")
+theme_override_font_sizes/font_size = 52
+text = "0"
+vertical_alignment = 1
+
+[node name="Control2" type="Control" parent="Panel/StarTotals/Rows/CryptoRow" unique_id=448447682]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Star" type="TextureRect" parent="Panel/StarTotals/Rows/CryptoRow" unique_id=1972568744]
+modulate = Color(1, 0.48, 0.08, 1)
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("27_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ButtonFx" type="Button" parent="Panel" unique_id=1229123532]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -480.0
+offset_top = 48.0
+offset_right = -347.0
+offset_bottom = 196.96
+grow_horizontal = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_audio_quiet")
+theme_override_styles/pressed = SubResource("Style_audio_quiet_pressed")
+theme_override_styles/hover = SubResource("Style_audio_quiet")
+theme_override_styles/disabled = SubResource("Style_audio_quiet")
+theme_override_styles/focus = SubResource("Style_audio_quiet")
+script = ExtResource("22_btnfx")
+enable_intro_scale = false
+enable_intro_rotation = false
+
+[node name="Icon" type="TextureRect" parent="Panel/ButtonFx" unique_id=1837548168]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.0
+offset_top = -38.0
+offset_right = 38.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("29_fx")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slash" type="TextureRect" parent="Panel/ButtonFx" unique_id=1564844680]
+visible = false
+modulate = Color(0.55, 0.16, 0.08, 0.95)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("30_slash")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ButtonMusic" type="Button" parent="Panel" unique_id=722059117]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -331.0
+offset_top = 48.0
+offset_right = -198.0
+offset_bottom = 196.96
+grow_horizontal = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_audio_quiet")
+theme_override_styles/pressed = SubResource("Style_audio_quiet_pressed")
+theme_override_styles/hover = SubResource("Style_audio_quiet")
+theme_override_styles/disabled = SubResource("Style_audio_quiet")
+theme_override_styles/focus = SubResource("Style_audio_quiet")
+script = ExtResource("22_btnfx")
+enable_intro_scale = false
+enable_intro_rotation = false
+
+[node name="Icon" type="TextureRect" parent="Panel/ButtonMusic" unique_id=1753302883]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -38.0
+offset_top = -38.0
+offset_right = 38.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("28_music")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slash" type="TextureRect" parent="Panel/ButtonMusic" unique_id=963081189]
+visible = false
+modulate = Color(0.55, 0.16, 0.08, 0.95)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("30_slash")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="ButtonSettings" type="Button" parent="Panel" unique_id=2125989302]
 unique_name_in_owner = true
@@ -507,6 +765,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="Brand" type="HBoxContainer" parent="Panel" unique_id=654575916]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.08
@@ -541,28 +800,12 @@ vertical_alignment = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
-anchor_top = 0.138
+anchor_top = 0.352
 anchor_right = 0.9
-anchor_bottom = 0.175
-offset_top = 31.0
-offset_bottom = 31.0
+anchor_bottom = 0.398
 grow_horizontal = 2
 theme_override_constants/separation = 0
 alignment = 1
-
-[node name="LineL" type="Control" parent="Panel/TaglineRow" unique_id=1676412112]
-custom_minimum_size = Vector2(86, 16)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-script = ExtResource("26_taper")
-
-[node name="DotL" type="Panel" parent="Panel/TaglineRow" unique_id=1696478295]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
 
 [node name="SpacerL" type="Control" parent="Panel/TaglineRow" unique_id=520255485]
 custom_minimum_size = Vector2(20, 0)
@@ -583,74 +826,75 @@ custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="DotR" type="Panel" parent="Panel/TaglineRow" unique_id=2016392330]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
-
-[node name="LineR" type="Control" parent="Panel/TaglineRow" unique_id=1164934531]
-custom_minimum_size = Vector2(86, 16)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-script = ExtResource("26_taper")
-flip_horizontal = true
-
-[node name="Showcase" type="HBoxContainer" parent="Panel" unique_id=1237930159]
+[node name="IntroWords" parent="Panel" unique_id=1200882567 instance=ExtResource("36_intro_words")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.12
-anchor_top = 0.2
-anchor_right = 0.88
-anchor_bottom = 0.38
-offset_left = 101.12
-offset_top = 45.0
-offset_right = -17.119995
-offset_bottom = -60.599976
+anchor_left = 0.04
+anchor_top = 0.372
+anchor_right = 0.96
+anchor_bottom = 0.708
+offset_top = 41.0
+offset_bottom = 41.0
+
+[node name="TitleBlock" type="VBoxContainer" parent="Panel" unique_id=549680608]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.08
+anchor_top = 0.108
+anchor_right = 0.92
+anchor_bottom = 0.348
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 14
 alignment = 1
 
-[node name="TileL" type="Panel" parent="Panel/Showcase" unique_id=1014710418]
-custom_minimum_size = Vector2(150, 0)
+[node name="Showcase" type="HBoxContainer" parent="Panel/TitleBlock" unique_id=1237930159]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 210)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TileC" type="Panel" parent="Panel/TitleBlock/Showcase" unique_id=1014710418]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileL" unique_id=1072026728]
+[node name="Col" type="VBoxContainer" parent="Panel/TitleBlock/Showcase/TileC" unique_id=1072026728]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 6.0
-offset_top = 14.0
+offset_top = 4.0
 offset_right = -6.0
-offset_bottom = -14.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="SpacerR" type="Control" parent="Panel/Showcase/TileL/Col" unique_id=1099666261]
-custom_minimum_size = Vector2(20, 20)
+[node name="SpacerR" type="Control" parent="Panel/TitleBlock/Showcase/TileC/Col" unique_id=1099666261]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Number" type="Label" parent="Panel/Showcase/TileL/Col" unique_id=1538006943]
+[node name="Number" type="Label" parent="Panel/TitleBlock/Showcase/TileC/Col" unique_id=1538006943]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 60
-text = "12"
+theme_override_font_sizes/font_size = 52
+text = "3"
 horizontal_alignment = 1
 
-[node name="Dots" type="Label" parent="Panel/Showcase/TileL/Col" unique_id=623858965]
+[node name="Dots" type="Label" parent="Panel/TitleBlock/Showcase/TileC/Col" unique_id=623858965]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
@@ -658,53 +902,53 @@ theme_override_font_sizes/font_size = 18
 text = "·····"
 horizontal_alignment = 1
 
-[node name="Letter" type="Label" parent="Panel/Showcase/TileL/Col" unique_id=1802530807]
+[node name="Letter" type="Label" parent="Panel/TitleBlock/Showcase/TileC/Col" unique_id=1802530807]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
 theme_override_fonts/font = ExtResource("21_title")
 theme_override_font_sizes/font_size = 140
-text = "L"
+text = "C"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TileU" type="Panel" parent="Panel/Showcase" unique_id=1581422640]
-custom_minimum_size = Vector2(150, 0)
+[node name="TileOAccent" type="Panel" parent="Panel/TitleBlock/Showcase" unique_id=1581422640]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileU" unique_id=1556922029]
+[node name="Col" type="VBoxContainer" parent="Panel/TitleBlock/Showcase/TileOAccent" unique_id=1556922029]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 6.0
-offset_top = 14.0
+offset_top = 4.0
 offset_right = -6.0
-offset_bottom = -14.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="SpacerR2" type="Control" parent="Panel/Showcase/TileU/Col" unique_id=879935440]
-custom_minimum_size = Vector2(20, 20)
+[node name="SpacerR2" type="Control" parent="Panel/TitleBlock/Showcase/TileOAccent/Col" unique_id=879935440]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Number" type="Label" parent="Panel/Showcase/TileU/Col" unique_id=1003837857]
+[node name="Number" type="Label" parent="Panel/TitleBlock/Showcase/TileOAccent/Col" unique_id=1003837857]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 60
-text = "21"
+theme_override_font_sizes/font_size = 52
+text = "15"
 horizontal_alignment = 1
 
-[node name="Dots" type="Label" parent="Panel/Showcase/TileU/Col" unique_id=1634766538]
+[node name="Dots" type="Label" parent="Panel/TitleBlock/Showcase/TileOAccent/Col" unique_id=1634766538]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
@@ -712,53 +956,53 @@ theme_override_font_sizes/font_size = 18
 text = "·····"
 horizontal_alignment = 1
 
-[node name="Letter" type="Label" parent="Panel/Showcase/TileU/Col" unique_id=2040824179]
+[node name="Letter" type="Label" parent="Panel/TitleBlock/Showcase/TileOAccent/Col" unique_id=2040824179]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
 theme_override_fonts/font = ExtResource("21_title")
 theme_override_font_sizes/font_size = 140
-text = "U"
+text = "Ó"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TileN" type="Panel" parent="Panel/Showcase" unique_id=1907476924]
-custom_minimum_size = Vector2(150, 0)
+[node name="TileD" type="Panel" parent="Panel/TitleBlock/Showcase" unique_id=1907476924]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileN" unique_id=689264265]
+[node name="Col" type="VBoxContainer" parent="Panel/TitleBlock/Showcase/TileD" unique_id=689264265]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 6.0
-offset_top = 14.0
+offset_top = 4.0
 offset_right = -6.0
-offset_bottom = -14.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="SpacerR3" type="Control" parent="Panel/Showcase/TileN/Col" unique_id=1661016742]
-custom_minimum_size = Vector2(20, 20)
+[node name="SpacerR3" type="Control" parent="Panel/TitleBlock/Showcase/TileD/Col" unique_id=1661016742]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Number" type="Label" parent="Panel/Showcase/TileN/Col" unique_id=150327002]
+[node name="Number" type="Label" parent="Panel/TitleBlock/Showcase/TileD/Col" unique_id=150327002]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 60
-text = "14"
+theme_override_font_sizes/font_size = 52
+text = "4"
 horizontal_alignment = 1
 
-[node name="Dots" type="Label" parent="Panel/Showcase/TileN/Col" unique_id=1102728287]
+[node name="Dots" type="Label" parent="Panel/TitleBlock/Showcase/TileD/Col" unique_id=1102728287]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
@@ -766,53 +1010,53 @@ theme_override_font_sizes/font_size = 18
 text = "·····"
 horizontal_alignment = 1
 
-[node name="Letter" type="Label" parent="Panel/Showcase/TileN/Col" unique_id=1971019316]
+[node name="Letter" type="Label" parent="Panel/TitleBlock/Showcase/TileD/Col" unique_id=1971019316]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
 theme_override_fonts/font = ExtResource("21_title")
 theme_override_font_sizes/font_size = 140
-text = "N"
+text = "D"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TileA" type="Panel" parent="Panel/Showcase" unique_id=1827365200]
-custom_minimum_size = Vector2(150, 0)
+[node name="TileI" type="Panel" parent="Panel/TitleBlock/Showcase" unique_id=1827365200]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Col" type="VBoxContainer" parent="Panel/Showcase/TileA" unique_id=1209592092]
+[node name="Col" type="VBoxContainer" parent="Panel/TitleBlock/Showcase/TileI" unique_id=1209592092]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 6.0
-offset_top = 14.0
+offset_top = 4.0
 offset_right = -6.0
-offset_bottom = -14.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="SpacerR4" type="Control" parent="Panel/Showcase/TileA/Col" unique_id=1138651436]
-custom_minimum_size = Vector2(20, 20)
+[node name="SpacerR4" type="Control" parent="Panel/TitleBlock/Showcase/TileI/Col" unique_id=1138651436]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Number" type="Label" parent="Panel/Showcase/TileA/Col" unique_id=9907241]
+[node name="Number" type="Label" parent="Panel/TitleBlock/Showcase/TileI/Col" unique_id=9907241]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 60
-text = "1"
+theme_override_font_sizes/font_size = 52
+text = "9"
 horizontal_alignment = 1
 
-[node name="Dots" type="Label" parent="Panel/Showcase/TileA/Col" unique_id=699704161]
+[node name="Dots" type="Label" parent="Panel/TitleBlock/Showcase/TileI/Col" unique_id=699704161]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
@@ -820,13 +1064,121 @@ theme_override_font_sizes/font_size = 18
 text = "·····"
 horizontal_alignment = 1
 
-[node name="Letter" type="Label" parent="Panel/Showcase/TileA/Col" unique_id=1923614580]
+[node name="Letter" type="Label" parent="Panel/TitleBlock/Showcase/TileI/Col" unique_id=1923614580]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
 theme_override_fonts/font = ExtResource("21_title")
 theme_override_font_sizes/font_size = 140
-text = "A"
+text = "I"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TileG" type="Panel" parent="Panel/TitleBlock/Showcase" unique_id=1827365201]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
+
+[node name="Col" type="VBoxContainer" parent="Panel/TitleBlock/Showcase/TileG" unique_id=1209592093]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = -6.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="SpacerR5" type="Control" parent="Panel/TitleBlock/Showcase/TileG/Col" unique_id=1138651437]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Number" type="Label" parent="Panel/TitleBlock/Showcase/TileG/Col" unique_id=9907242]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 52
+text = "7"
+horizontal_alignment = 1
+
+[node name="Dots" type="Label" parent="Panel/TitleBlock/Showcase/TileG/Col" unique_id=699704162]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
+theme_override_font_sizes/font_size = 18
+text = "·····"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Panel/TitleBlock/Showcase/TileG/Col" unique_id=1923614581]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
+theme_override_fonts/font = ExtResource("21_title")
+theme_override_font_sizes/font_size = 140
+text = "G"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TileO" type="Panel" parent="Panel/TitleBlock/Showcase" unique_id=1827365202]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
+
+[node name="Col" type="VBoxContainer" parent="Panel/TitleBlock/Showcase/TileO" unique_id=1209592094]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = -6.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="SpacerR6" type="Control" parent="Panel/TitleBlock/Showcase/TileO/Col" unique_id=1138651438]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Number" type="Label" parent="Panel/TitleBlock/Showcase/TileO/Col" unique_id=9907243]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.9)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 52
+text = "15"
+horizontal_alignment = 1
+
+[node name="Dots" type="Label" parent="Panel/TitleBlock/Showcase/TileO/Col" unique_id=699704163]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.4)
+theme_override_font_sizes/font_size = 18
+text = "·····"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Panel/TitleBlock/Showcase/TileO/Col" unique_id=1923614582]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 1)
+theme_override_fonts/font = ExtResource("21_title")
+theme_override_font_sizes/font_size = 140
+text = "O"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -834,10 +1186,11 @@ vertical_alignment = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.08
-anchor_top = 0.42
+anchor_top = 0.473
 anchor_right = 0.92
-anchor_bottom = 0.575
-offset_top = 2.6000366
+anchor_bottom = 0.617
+offset_top = -37.215942
+offset_bottom = -34.783936
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -940,223 +1293,36 @@ anchor_top = 0.575
 anchor_right = 0.9
 anchor_bottom = 0.605
 grow_horizontal = 2
-mouse_filter = 2
 theme_override_font_sizes/font_size = 1
-text = ""
 
-[node name="TipsBox" type="Panel" parent="Panel" unique_id=1780924533]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.14
-anchor_top = 0.625
-anchor_right = 0.86
-anchor_bottom = 0.755
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_tip")
-script = ExtResource("20_1hsi3")
-
-[node name="Inset" type="Panel" parent="Panel/TipsBox" unique_id=823867733]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_tip_inset")
-
-[node name="Content" type="VBoxContainer" parent="Panel/TipsBox" unique_id=1293669384]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 22.0
-offset_right = -22.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 0
-
-[node name="SpacerTop" type="Control" parent="Panel/TipsBox/Content" unique_id=1418852292]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TitleRow" type="HBoxContainer" parent="Panel/TipsBox/Content" unique_id=936111531]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 6
-alignment = 1
-
-[node name="LineL" type="Control" parent="Panel/TipsBox/Content/TitleRow" unique_id=1897249387]
-custom_minimum_size = Vector2(64, 14)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-script = ExtResource("26_taper")
-line_color = Color(0.658824, 0.454902, 0.235294, 1)
-
-[node name="DotL" type="Panel" parent="Panel/TipsBox/Content/TitleRow" unique_id=1904339012]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
-
-[node name="TipTitle" type="Label" parent="Panel/TipsBox/Content/TitleRow" unique_id=898781458]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
-theme_override_fonts/font = ExtResource("21_title")
-theme_override_font_sizes/font_size = 30
-text = "CONSEJO"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="DotR" type="Panel" parent="Panel/TipsBox/Content/TitleRow" unique_id=499348634]
-custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ornament_dot")
-
-[node name="LineR" type="Control" parent="Panel/TipsBox/Content/TitleRow" unique_id=1046000871]
-custom_minimum_size = Vector2(64, 14)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-script = ExtResource("26_taper")
-flip_horizontal = true
-line_color = Color(0.658824, 0.454902, 0.235294, 1)
-
-[node name="SpacerAfterTitle" type="Control" parent="Panel/TipsBox/Content" unique_id=1914955916]
-custom_minimum_size = Vector2(0, 4)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TipRow" type="HBoxContainer" parent="Panel/TipsBox/Content" unique_id=1216188759]
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-theme_override_constants/separation = 0
-
-[node name="Bulb" type="TextureRect" parent="Panel/TipsBox/Content/TipRow" unique_id=1933859135]
-custom_minimum_size = Vector2(120, 120)
-layout_mode = 2
-size_flags_vertical = 0
-mouse_filter = 2
-texture = ExtResource("24_bulb")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SpacerAfterBulb" type="Control" parent="Panel/TipsBox/Content/TipRow" unique_id=1717272811]
-custom_minimum_size = Vector2(18, 0)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TipCol" type="VBoxContainer" parent="Panel/TipsBox/Content/TipRow" unique_id=1100373877]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-theme_override_constants/separation = 10
-
-[node name="TipText" type="RichTextLabel" parent="Panel/TipsBox/Content/TipRow/TipCol" unique_id=2057266084]
-unique_name_in_owner = true
-auto_translate_mode = 2
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-theme = ExtResource("23_mont")
-theme_override_colors/default_color = Color(0.329412, 0.235294, 0.196078, 1)
-theme_override_fonts/normal_font = ExtResource("25_tip_font")
-theme_override_font_sizes/normal_font_size = 32
-text = "TipShort"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Dots" type="HBoxContainer" parent="Panel/TipsBox/Content/TipRow/TipCol" unique_id=432438741]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 12
-alignment = 1
-
-[node name="PausePlay" type="Button" parent="Panel/TipsBox/Content/TipRow/TipCol/Dots" unique_id=655849331]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(32, 28)
-layout_mode = 2
-tooltip_text = "Pausar consejos"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0.364706, 0.25098, 0.215686, 0.42)
-theme_override_colors/font_pressed_color = Color(0.364706, 0.25098, 0.215686, 0.72)
-theme_override_colors/font_hover_color = Color(0.364706, 0.25098, 0.215686, 0.65)
-theme_override_fonts/font = ExtResource("21_title")
-theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_tip_pause")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_tip_pause_pressed")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tip_pause")
-theme_override_styles/focus = SubResource("StyleBoxFlat_tip_pause")
-text = "Ⅱ"
-
-[node name="Progress" type="ProgressBar" parent="Panel/TipsBox/Content/TipRow/TipCol" unique_id=1369182899]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 5)
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_progress_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
-show_percentage = false
-
-[node name="SpacerRight" type="Control" parent="Panel/TipsBox/Content/TipRow" unique_id=1417714517]
-custom_minimum_size = Vector2(18, 0)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="SpacerBottom" type="Control" parent="Panel/TipsBox/Content" unique_id=1998292624]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-mouse_filter = 2
-
-[node name="Timer" type="Timer" parent="Panel/TipsBox" unique_id=1217258070]
-unique_name_in_owner = true
-one_shot = true
-
-[node name="Actions" type="HBoxContainer" parent="Panel" unique_id=996565079]
+[node name="Shortcuts" type="HBoxContainer" parent="Panel" unique_id=1888001001]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.06
-anchor_top = 0.79
+anchor_top = 0.692
 anchor_right = 0.94
-anchor_bottom = 0.95
+anchor_bottom = 0.807
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 28
 
-[node name="ColRanking" type="VBoxContainer" parent="Panel/Actions" unique_id=235300302]
+[node name="ColDaily" type="VBoxContainer" parent="Panel/Shortcuts" unique_id=1888001008]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="ButtonRanking" type="Button" parent="Panel/Actions/ColRanking" unique_id=1259051893]
+[node name="ButtonDaily" type="Button" parent="Panel/Shortcuts/ColDaily" unique_id=1888001009]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 0
-theme = SubResource("Theme_btn_blue")
+theme = SubResource("Theme_btn_gold")
 script = ExtResource("22_btnfx")
 
-[node name="Inset" type="Panel" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=2130198439]
+[node name="Inset" type="Panel" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=1888001010]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1170,7 +1336,8 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 
-[node name="IconShadow" type="TextureRect" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=1613554999]
+[node name="IconShadow" type="TextureRect" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=1888001011]
+visible = false
 modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
 layout_mode = 1
 anchors_preset = -1
@@ -1178,32 +1345,374 @@ anchor_left = 0.17
 anchor_top = 0.1
 anchor_right = 0.83
 anchor_bottom = 0.62
-offset_left = 4.999996
+offset_left = 5.0
 offset_top = 6.0
 offset_right = 5.0
 offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("15_1f17j")
+texture = ExtResource("32_daily")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Icon" type="TextureRect" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=1835116931]
+[node name="IconCircle" type="Panel" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=2125906544]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.34
+anchor_right = 0.5
+anchor_bottom = 0.34
+offset_left = -88.0
+offset_top = -74.0
+offset_right = 88.0
+offset_bottom = 101.99999
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_circle_cream")
+
+[node name="Icon" type="TextureRect" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=1888001012]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21100001
+anchor_top = 0.125
+anchor_right = 0.795
+anchor_bottom = 0.628
+offset_left = -0.0450058
+offset_top = -0.048988342
+offset_right = 0.06774902
+offset_bottom = -12.999985
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("32_daily")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=1888001013]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.67
+anchor_right = 0.96
+anchor_bottom = 0.93
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
+theme_override_constants/line_spacing = -12
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 38
+text = "Reto diario"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="PurchaseLock" type="Control" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=629122696]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.34
+anchor_right = 0.5
+anchor_bottom = 0.34
+offset_left = -149.0
+offset_top = -89.0
+offset_right = 150.14001
+offset_bottom = 177.23608
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("35_dotframe")
+line_color = Color(0.8745098, 0.6, 0.20392157, 1)
+dash_length = 16.0
+gap_length = 10.0
+
+[node name="IconCircle2" type="Panel" parent="Panel/Shortcuts/ColDaily/ButtonDaily/PurchaseLock" unique_id=1574094722]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.34
+anchor_right = 0.5
+anchor_bottom = 0.34
+offset_left = 28.569992
+offset_top = 5.619728
+offset_right = 116.42999
+offset_bottom = 93.47973
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_apv0w")
+
+[node name="LockIcon" type="TextureRect" parent="Panel/Shortcuts/ColDaily/ButtonDaily/PurchaseLock" unique_id=2037597240]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 29.0
+offset_top = -39.0
+offset_right = 114.57001
+offset_bottom = 51.118042
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("34_lock_white")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TodayBadge" type="Panel" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=2075055104]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.312
+anchor_top = -0.134
+anchor_right = 0.81700003
+anchor_bottom = 0.13100001
+offset_left = -15.880005
+offset_top = -8.08997
+offset_right = -16.054993
+offset_bottom = -7.854973
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_today_badge")
+
+[node name="Label" type="Label" parent="Panel/Shortcuts/ColDaily/ButtonDaily/TodayBadge" unique_id=632983106]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 30
+text = "HOY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CompletedStamp" type="Panel" parent="Panel/Shortcuts/ColDaily/ButtonDaily" unique_id=445263736]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.28
+anchor_right = 0.96
+anchor_bottom = 0.56
+rotation = -0.383972
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_completed_stamp")
+
+[node name="Inner" type="Panel" parent="Panel/Shortcuts/ColDaily/ButtonDaily/CompletedStamp" unique_id=1540352488]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 6.0
+offset_right = -7.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_completed_stamp_inner")
+
+[node name="Label" type="Label" parent="Panel/Shortcuts/ColDaily/ButtonDaily/CompletedStamp" unique_id=101791501]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.14, 0.46, 0.28, 0.95)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 28
+text = "HECHO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColLibrary" type="VBoxContainer" parent="Panel/Shortcuts" unique_id=1888001014]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="ButtonLibrary" type="Button" parent="Panel/Shortcuts/ColLibrary" unique_id=1888001015]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 0
+theme = SubResource("Theme_btn_mint")
+script = ExtResource("22_btnfx")
+
+[node name="Inset" type="Panel" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1888001016]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = -7.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
+
+[node name="IconShadow" type="TextureRect" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1888001017]
+visible = false
+modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.17
 anchor_top = 0.1
 anchor_right = 0.83
 anchor_bottom = 0.62
+offset_left = 5.0
+offset_top = 6.0
+offset_right = 5.0
+offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("10_t01w5")
+texture = ExtResource("33_library")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Label" type="Label" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=1061477640]
+[node name="IconCircle" type="Panel" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1767580402]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.34
+anchor_right = 0.5
+anchor_bottom = 0.34
+offset_left = -88.0
+offset_top = -72.0
+offset_right = 88.0
+offset_bottom = 103.99999
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_circle_mint")
+
+[node name="Icon" type="TextureRect" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1888001018]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.178
+anchor_top = 0.165
+anchor_right = 0.814
+anchor_bottom = 0.665
+offset_left = 0.0099983215
+offset_top = -0.08897781
+offset_right = -0.13461304
+offset_bottom = 0.13699341
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("33_library")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Panel/Shortcuts/ColLibrary/ButtonLibrary" unique_id=1888001019]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.74
+anchor_right = 0.96
+anchor_bottom = 0.96
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 38
+text = "Biblioteca"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ColShop" type="VBoxContainer" parent="Panel/Shortcuts" unique_id=1888001002]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="ButtonShop" type="Button" parent="Panel/Shortcuts/ColShop" unique_id=1888001003]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 0
+theme = SubResource("Theme_btn_salmon")
+script = ExtResource("22_btnfx")
+
+[node name="Inset" type="Panel" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1888001004]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = -7.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
+
+[node name="IconShadow" type="TextureRect" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1888001005]
+visible = false
+modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.1
+anchor_right = 0.83
+anchor_bottom = 0.62
+offset_left = 5.0
+offset_top = 6.0
+offset_right = 5.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("31_shop")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconCircle" type="Panel" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1589575898]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.34
+anchor_right = 0.5
+anchor_bottom = 0.34
+offset_left = -88.0
+offset_top = -71.0
+offset_right = 88.0
+offset_bottom = 104.99999
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_circle_peach")
+
+[node name="Icon" type="TextureRect" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1888001006]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.157
+anchor_top = 0.088
+anchor_right = 0.843
+anchor_bottom = 0.628
+offset_left = -2.0
+offset_right = -2.0
+offset_bottom = 1.5258789e-05
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("31_shop")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Panel/Shortcuts/ColShop/ButtonShop" unique_id=1888001007]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.04
@@ -1214,11 +1723,22 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
-theme_override_font_sizes/font_size = 42
-text = "Leaderboard"
+theme_override_font_sizes/font_size = 38
+text = "Tienda"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="Panel" unique_id=996565079]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.06
+anchor_top = 0.827
+anchor_right = 0.94
+anchor_bottom = 0.942
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 28
 
 [node name="ColStats" type="VBoxContainer" parent="Panel/Actions" unique_id=1563455219]
 layout_mode = 2
@@ -1236,6 +1756,7 @@ theme = SubResource("Theme_btn_salmon")
 script = ExtResource("22_btnfx")
 
 [node name="Inset" type="Panel" parent="Panel/Actions/ColStats/ButtonStats" unique_id=572280223]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1249,18 +1770,34 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 
+[node name="IconCircle" type="Panel" parent="Panel/Actions/ColStats/ButtonStats" unique_id=113157324]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.34
+anchor_right = 0.5
+anchor_bottom = 0.34
+offset_left = -88.0
+offset_top = -78.0
+offset_right = 88.0
+offset_bottom = 97.99999
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_circle_peach")
+
 [node name="IconShadow" type="TextureRect" parent="Panel/Actions/ColStats/ButtonStats" unique_id=2069856542]
 modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
-offset_left = 5.0
-offset_top = 7.0
-offset_right = 5.0
-offset_bottom = 7.0
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
+offset_left = 42.58
+offset_top = -2.0000458
+offset_right = -36.300003
+offset_bottom = -15.362045
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -1271,10 +1808,14 @@ stretch_mode = 5
 [node name="Icon" type="TextureRect" parent="Panel/Actions/ColStats/ButtonStats" unique_id=1290548388]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.28
+anchor_top = 0.152
+anchor_right = 0.71400005
+anchor_bottom = 0.5
+offset_left = -0.16000366
+offset_top = 0.8540039
+offset_right = -0.05230713
+offset_bottom = -0.8939972
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -1299,6 +1840,109 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[node name="ColRanking" type="VBoxContainer" parent="Panel/Actions" unique_id=235300302]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="ButtonRanking" type="Button" parent="Panel/Actions/ColRanking" unique_id=1259051893]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 0
+theme = SubResource("Theme_btn_blue")
+script = ExtResource("22_btnfx")
+
+[node name="Inset" type="Panel" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=2130198439]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = -7.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
+
+[node name="IconCircle" type="Panel" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=632988849]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.34
+anchor_right = 0.5
+anchor_bottom = 0.34
+offset_left = -88.0
+offset_top = -78.999916
+offset_right = 88.0
+offset_bottom = 97.000084
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_circle_blue")
+
+[node name="IconShadow" type="TextureRect" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=1613554999]
+modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
+self_modulate = Color(0.00073191663, 0.00073191663, 0.00073191663, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
+offset_left = 44.580017
+offset_top = 31.853958
+offset_right = 44.580017
+offset_bottom = 31.853958
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.622306, 0.622306)
+mouse_filter = 2
+texture = ExtResource("15_1f17j")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Icon" type="TextureRect" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=1835116931]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
+offset_left = 36.580017
+offset_top = 22.853958
+offset_right = 36.580017
+offset_bottom = 22.853958
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.622306, 0.622306)
+mouse_filter = 2
+texture = ExtResource("10_t01w5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Panel/Actions/ColRanking/ButtonRanking" unique_id=1061477640]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.67
+anchor_right = 0.96
+anchor_bottom = 0.93
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
+theme_override_fonts/font = ExtResource("6_nf8ut")
+theme_override_font_sizes/font_size = 42
+text = "Leaderboard"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [node name="ColTutorial" type="VBoxContainer" parent="Panel/Actions" unique_id=1359941529]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1315,6 +1959,7 @@ theme = SubResource("Theme_btn_mint")
 script = ExtResource("22_btnfx")
 
 [node name="Inset" type="Panel" parent="Panel/Actions/ColTutorial/ButtonTutorial" unique_id=1812204779]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1328,20 +1973,38 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_action_inset")
 
-[node name="IconShadow" type="TextureRect" parent="Panel/Actions/ColTutorial/ButtonTutorial" unique_id=1089735586]
-modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
+[node name="IconCircle" type="Panel" parent="Panel/Actions/ColTutorial/ButtonTutorial" unique_id=127275813]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
-offset_left = 4.999996
-offset_top = 10.0
-offset_right = 5.0
-offset_bottom = 10.0
+anchor_left = 0.5
+anchor_top = 0.34
+anchor_right = 0.5
+anchor_bottom = 0.34
+offset_left = -88.0
+offset_top = -80.999916
+offset_right = 88.0
+offset_bottom = 95.000084
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_circle_mint")
+
+[node name="IconShadow" type="TextureRect" parent="Panel/Actions/ColTutorial/ButtonTutorial" unique_id=1089735586]
+modulate = Color(0.286275, 0.184314, 0.129412, 0.28)
+self_modulate = Color(0.17120467, 0.17120467, 0.17120467, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
+offset_left = 28.580017
+offset_top = 16.854004
+offset_right = 28.580017
+offset_bottom = 16.854004
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.76, 0.76)
 mouse_filter = 2
 texture = ExtResource("18_8myay")
 expand_mode = 1
@@ -1350,12 +2013,17 @@ stretch_mode = 5
 [node name="Icon" type="TextureRect" parent="Panel/Actions/ColTutorial/ButtonTutorial" unique_id=743024439]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.17
-anchor_top = 0.1
-anchor_right = 0.83
-anchor_bottom = 0.62
+anchor_left = 0.236
+anchor_top = 0.152
+anchor_right = 0.764
+anchor_bottom = 0.568
+offset_left = 23.580017
+offset_top = 6.854004
+offset_right = 23.580017
+offset_bottom = 6.854004
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.76, 0.76)
 mouse_filter = 2
 texture = ExtResource("10_ittxv")
 expand_mode = 1
@@ -1373,7 +2041,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 1)
 theme_override_fonts/font = ExtResource("6_nf8ut")
 theme_override_font_sizes/font_size = 42
-text = "Tutorial"
+text = "Cómo jugar"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -1392,12 +2060,17 @@ theme_override_colors/font_color = Color(0.376471, 0.27451, 0.231373, 0.85)
 theme_override_fonts/font = ExtResource("6_nf8ut")
 theme_override_font_sizes/font_size = 28
 text = "VERSION
-Beta 0.01"
+0.25"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[connection signal="pressed" from="Panel/ButtonFx" to="." method="_on_button_fx_pressed"]
+[connection signal="pressed" from="Panel/ButtonMusic" to="." method="_on_button_music_pressed"]
 [connection signal="pressed" from="Panel/ButtonSettings" to="." method="_on_button_settings_pressed"]
 [connection signal="pressed" from="Panel/PlayWrap/ButtonPlay" to="." method="_on_button_play_pressed"]
-[connection signal="pressed" from="Panel/Actions/ColRanking/ButtonRanking" to="." method="_on_button_ranking_pressed"]
+[connection signal="pressed" from="Panel/Shortcuts/ColDaily/ButtonDaily" to="." method="_on_button_daily_pressed"]
+[connection signal="pressed" from="Panel/Shortcuts/ColLibrary/ButtonLibrary" to="." method="_on_button_library_pressed"]
+[connection signal="pressed" from="Panel/Shortcuts/ColShop/ButtonShop" to="." method="_on_button_shop_pressed"]
 [connection signal="pressed" from="Panel/Actions/ColStats/ButtonStats" to="." method="_on_button_stats_pressed"]
+[connection signal="pressed" from="Panel/Actions/ColRanking/ButtonRanking" to="." method="_on_button_ranking_pressed"]
 [connection signal="pressed" from="Panel/Actions/ColTutorial/ButtonTutorial" to="." method="_on_button_tutorial_pressed"]

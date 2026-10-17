@@ -140,6 +140,7 @@ offset_right = 186.0
 offset_bottom = 176.0
 
 [node name="Title" type="Label" parent="Card"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 210.0
 offset_top = 43.0

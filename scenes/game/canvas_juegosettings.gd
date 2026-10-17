@@ -71,6 +71,8 @@ func grid_bottom_in_parent(gc: GridContainer) -> float:
 
 	
 func _añade_las_letras_iniciales() -> void:
+	if GameManager.puzzle_enter_pending:
+		return
 	#falta revisar las Letras y pintarlas en pantalla independientemente de si hay o no letras en la frase
 		# Buscar todos los nodos que pertenezcan al grupo "Letra"
 	
@@ -101,7 +103,7 @@ func _añade_las_letras_iniciales() -> void:
 	var s : String = GameManager.letras_iniciales.to_upper()
 	for i in s.length():
 		var ch := s[i]
-		if not GameManager.EXCLUIR.has(ch):
+		if not GameManager.is_excluded_character(ch):
 			letras_set[ch] = true
 
 	# Para cada letra inicial, calcula su número (mapeo dinámico actual)
@@ -140,6 +142,8 @@ func _añade_las_letras_iniciales() -> void:
 #                     INPUT
 # ----------------------------------------------------
 func _input(event: InputEvent) -> void:
+	if get_tree().get_first_node_in_group("BasicStartTutorial"):
+		return
 	var pos: Vector2 = _event_pos(event)
 
 	# Desplazar solo si el puntero/gesto está sobre el canvas
@@ -343,10 +347,9 @@ func reset_zoom_scale() -> void:
 func deselect_all_cels() -> void:
 	if get_tree() == null:
 		return
-	
 	for c in get_tree().get_nodes_in_group("Celda"):
-		if is_instance_valid(c) and c.has_node("CeldaSelected"):
-			c.celda_selected.visible = false
+		if is_instance_valid(c) and c is Celda:
+			(c as Celda).deselect_cell()
 	 
 func _move_canvas(wide:int) -> void:
 	var v:float = position.y - wide

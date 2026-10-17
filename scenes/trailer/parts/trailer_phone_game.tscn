@@ -1,0 +1,114 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scenes/trailer/parts/trailer_phone_game.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_bg"]
+[ext_resource type="PackedScene" uid="uid://csvvjjmaptuc4" path="res://scenes/game/CanvasJuego.tscn" id="3_board"]
+[ext_resource type="PackedScene" uid="uid://3ivcwblmuoh0" path="res://scenes/PanelUP/panel_up_portrait.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/game/PanelColorsPortrait.tscn" id="5_colors"]
+[ext_resource type="PackedScene" path="res://scenes/game/panel_letras_portrait.tscn" id="6_letters"]
+
+[sub_resource type="StyleBoxFlat" id="Style_background"]
+bg_color = Color(0.971, 0.895, 0.696, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_board_frame"]
+bg_color = Color(0.11, 0.12, 0.13, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 12
+border_color = Color(0.05, 0.055, 0.06, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.05, 0.05, 0.06, 0.4)
+shadow_size = 14
+shadow_offset = Vector2(0, 11)
+
+[sub_resource type="StyleBoxFlat" id="Style_board_inner"]
+bg_color = Color(0.14, 0.145, 0.155, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.08, 0.085, 0.09, 1)
+corner_radius_top_left = 13
+corner_radius_top_right = 13
+corner_radius_bottom_right = 13
+corner_radius_bottom_left = 13
+
+[node name="Phone" type="Control"]
+custom_minimum_size = Vector2(1206, 2622)
+layout_mode = 0
+offset_right = 1206.0
+offset_bottom = 2622.0
+z_index = 12
+clip_contents = true
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="Panel" parent="."]
+visible = true
+modulate = Color(1, 1, 1, 1)
+layout_mode = 0
+offset_right = 1206.0
+offset_bottom = 2622.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_background")
+
+[node name="Pattern" parent="Background" instance=ExtResource("2_bg")]
+modulate = Color(1, 1, 1, 0.38)
+layout_mode = 0
+
+[node name="PanelUP" parent="." instance=ExtResource("4_hud")]
+visible = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = -232.0
+offset_right = 1190.0
+offset_bottom = 316.0
+mouse_filter = 2
+
+[node name="BoardFrame" type="Panel" parent="."]
+clip_contents = true
+layout_mode = 0
+offset_left = 18.0
+offset_top = 288.0
+offset_right = 1188.0
+offset_bottom = 1479.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_board_frame")
+
+[node name="CanvasJuego" parent="BoardFrame" instance=ExtResource("3_board")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 14.0
+offset_top = 11.0
+offset_right = 1156.0
+offset_bottom = 1182.0
+grow_horizontal = 1
+grow_vertical = 1
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_board_inner")
+
+[node name="PanelColors" parent="." instance=ExtResource("5_colors")]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 18.0
+offset_top = 1752.0
+offset_right = 1188.0
+offset_bottom = 2038.0
+mouse_filter = 2
+
+[node name="PanelLetras" parent="." instance=ExtResource("6_letters")]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 18.0
+offset_top = 1495.0
+offset_right = 1188.0
+offset_bottom = 2077.0
+mouse_filter = 2

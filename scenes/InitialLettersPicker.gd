@@ -86,6 +86,22 @@ static func pick_initials_for_level(frase: String, level: int) -> String:
 
 	return _join_letters(chosen)
 
+
+## Consonantes del teclado que no aparecen en la frase (p. ej. "RT").
+static func pick_unused_consonants(frase: String, count: int) -> String:
+	var used: Dictionary = _count_letters(_norm(frase))
+	var pool := PackedStringArray([
+		"R", "T", "C", "M", "B", "G", "D", "F", "H", "S", "N", "L", "P", "V", "Q", "K", "W", "X", "Y", "Z"
+	])
+	var chosen := PackedStringArray()
+	for ch in pool:
+		if used.has(ch) or VOWELS.has(ch):
+			continue
+		chosen.append(ch)
+		if chosen.size() >= count:
+			break
+	return _join_letters(chosen)
+
 # -------------------------
 # Greedy helpers (rápidos)
 # -------------------------

@@ -8,6 +8,33 @@
 
 config_version=5
 
+[admob]
+
+general/android/enabled=true
+general/android/app_id="ca-app-pub-4839644126711617~7447184050"
+general/android/enable_r8_optimization=false
+general/android/disable_initialization_optimization=false
+general/android/disable_ad_loading_optimization=false
+general/ios/enabled=true
+general/ios/app_id="ca-app-pub-4839644126711617~1601271488"
+mediation/applovin=false
+mediation/bidmachine=false
+mediation/chartboost=false
+mediation/dtexchange=false
+mediation/imobile=false
+mediation/inmobi=false
+mediation/ironsource=false
+mediation/line=false
+mediation/maio=false
+mediation/meta=false
+mediation/mintegral=false
+mediation/moloco=false
+mediation/mytarget=false
+mediation/pangle=false
+mediation/pubmatic=false
+mediation/unity_ads=false
+mediation/vungle=false
+
 [animation]
 
 compatibility/default_parent_skeleton_in_mesh_instance_3d=true
@@ -16,23 +43,37 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="CifraLetra"
 config/description="CifraLetra - pasatiempo "
-run/main_scene="uid://bvpri1mtnymgf"
+config/version="1.1.00"
+run/main_scene="res://scenes/boot/Boot.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="uid://dukhln4gxckek"
+config/icon="res://images/Icono.png"
 
 [autoload]
 
+Distribution="*res://distribution/distribution.gd"
 PlayerPrefs="*res://autoload/PlayerPrefs.gd"
 GameManager="*res://autoload/GameManager.gd"
+AdManager="*res://autoload/AdManager.gd"
+StarCollectOverlay="*res://autoload/StarCollectOverlay.gd"
+StoreManager="*res://autoload/StoreManager.gd"
+ShareManager="*res://autoload/ShareManager.gd"
 SoundManager="*res://autoload/SoundManager.tscn"
 SignalManager="*res://autoload/SignalManager.gd"
 TestResolution="*res://autoload/test_resolution.gd"
 TransitionScreen="*res://scenes/transition_screen.tscn"
 HistoryManager="*res://autoload/HistoryManager.gd"
 PuzzleSaveManager="*res://autoload/PuzzleSaveManager.gd"
+PlatformServices="*res://distribution/platform_services.gd"
+DeepLink="*res://autoload/DeepLink.gd"
+UpdateCheck="*res://autoload/UpdateCheck.gd"
 PlayFabTools="*res://autoload/PlayFab.tscn"
 Analyzer="*res://autoload/Analyzer.gd"
 EventLoggerAutoload="*res://autoload/EventLogger.gd"
+ScrollHintService="*res://autoload/ScrollHintService.gd"
+
+[cifraletra]
+
+distribution/editor_preview="crazygames"
 
 [display]
 
@@ -41,12 +82,20 @@ window/size/viewport_height=2622
 window/size/initial_position_type=4
 window/size/initial_position=Vector2i(0, 100)
 window/size/always_on_top=true
+window/size/window_width_override=821
+window/size/window_height_override=462
 window/stretch/mode="viewport"
-window/handheld/orientation=6
+window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/admob/plugin.cfg", "res://addons/alignment-tool/plugin.cfg")
+enabled=PackedStringArray("res://addons/distribution_preview/plugin.cfg", "res://addons/alignment-tool/plugin.cfg", "res://addons/admob/plugin.cfg", "res://addons/cifraletra_iap/plugin.cfg", "res://addons/GodotGooglePlayBilling/plugin.cfg")
+
+[gui]
+
+theme/default_font_subpixel_positioning=0
+theme/custom="res://GUI/app_theme.tres"
+theme/custom_font="res://GUI/new_font_Rubik_semibold.tres"
 
 [input]
 
