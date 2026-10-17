@@ -106,6 +106,7 @@ func _layout_horizontal_theme() -> void:
 		backdrop.offset_top = 0.0
 		backdrop.offset_right = 0.0
 		backdrop.offset_bottom = 0.0
+		backdrop.color = Color(1, 0.965, 0.851, 1)
 		backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
 	card.visible = false
 	frame.reparent(self)

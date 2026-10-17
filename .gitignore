@@ -29,6 +29,7 @@ export_credentials.cfg
 
 # Secrets
 /tools/playfab_secret.txt
+/tools/out/
 /keystores/
 *.jks
 *.keystore

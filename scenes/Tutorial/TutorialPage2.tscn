@@ -1014,7 +1014,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_body")
 theme_override_font_sizes/font_size = 28
-text = "REVELAR"
+text = "COMPROBAR"
 
 [node name="Board" type="HBoxContainer" parent="Preview/Box" unique_id=408372290]
 layout_mode = 2

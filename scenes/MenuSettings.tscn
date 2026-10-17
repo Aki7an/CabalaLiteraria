@@ -1243,7 +1243,7 @@ offset_bottom = 208.0
 theme_override_colors/font_color = Color(0.337255, 0.223529, 0.152941, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 32
-text = "Mostrar explicación botón REVELAR."
+text = "Mostrar explicación botón COMPROBAR."
 vertical_alignment = 1
 autowrap_mode = 2
 

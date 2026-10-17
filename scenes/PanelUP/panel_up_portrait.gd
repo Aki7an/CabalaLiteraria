@@ -2,6 +2,7 @@ extends Panel
 
 const OVERLAY_EXIT := preload("res://scenes/fondo_salir.tscn")
 const OVERLAY_RESULTS := preload("res://scenes/menu_game_over.tscn")
+const OVERLAY_RESULTS_WIDE := preload("res://scenes/menu_game_over_horizontal.tscn")
 const OVERLAY_GAME_OVER := preload("res://scenes/menu_game_over_fail.tscn")
 const OVERLAY_ERASE := preload("res://scenes/fondo_aviso_borrado.tscn")
 const OVERLAY_HINTS := preload("res://scenes/CuadroPistas.tscn")
@@ -170,7 +171,27 @@ func apply_interface_language() -> void:
 	var reveal_title := get_node_or_null("ButtonReveal/Title") as Label
 	if reveal_title:
 		reveal_title.text = tr("TutReveal")
+		_fit_single_line(reveal_title)
 	refresh_hud()
+
+
+func _fit_single_line(label: Label, max_size: int = 52, min_size: int = 34) -> void:
+	var font := label.get_theme_font("font")
+	if font == null:
+		return
+	var available := label.offset_right - label.offset_left
+	if available < 8.0:
+		available = label.size.x
+	var size := max_size
+	while size > min_size and _text_width(font, label.text, size) > available:
+		size -= 1
+	label.add_theme_font_size_override("font_size", size)
+
+
+func _text_width(font: Font, text: String, size: int) -> float:
+	var line := TextLine.new()
+	line.add_string(text, font, size)
+	return line.get_size().x
 
 
 func refresh_hud() -> void:
@@ -619,7 +640,7 @@ func _on_game_finished() -> void:
 	StarCollectOverlay.remember_counter(mode, before, after)
 	AdManager.note_puzzle_completed_for_ads()
 	SoundManager.play("ButtonClick")
-	_add_overlay(OVERLAY_RESULTS)
+	_add_overlay(OVERLAY_RESULTS_WIDE if Distribution.is_horizontal() else OVERLAY_RESULTS)
 
 
 func _on_game_lost() -> void:
