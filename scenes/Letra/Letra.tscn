@@ -151,13 +151,13 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_7lda0")
 
 [node name="Button" type="Button" parent="PanelLetra"]
-custom_minimum_size = Vector2(60, 100)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 0
 theme_override_styles/pressed = SubResource("StyleBoxFlat_of430")
 theme_override_styles/normal = SubResource("StyleBoxFlat_omubc")
 metadata/_edit_lock_ = true

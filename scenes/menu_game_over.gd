@@ -1074,6 +1074,9 @@ func _on_button_back_pressed() -> void:
 	await PlatformServices.show_interstitial_after_puzzle()
 	await EventLoggerAutoload.submit_if_consented(EventLoggerAutoload.OUTCOME_COMPLETED)
 	get_tree().paused = false
+	if Distribution.is_horizontal() and PlayerProgress.has_pending_puzzle():
+		PlayerProgress.open_current_puzzle()
+		return
 	get_tree().change_scene_to_file(Distribution.home_scene())
 
 
@@ -1197,7 +1200,7 @@ func _on_feedback_closed() -> void:
 
 
 func _ask_share_if_needed() -> void:
-	if GameManager.is_onboarding_session():
+	if Distribution.is_horizontal() or GameManager.is_onboarding_session():
 		return
 	if _share_asked or PlayerPrefs.hide_share_solve_dialog:
 		return
@@ -1208,6 +1211,11 @@ func _ask_share_if_needed() -> void:
 
 
 func _ask_online_name_if_needed() -> void:
+	if Distribution.is_horizontal():
+		var crazy_name := str(GameManager.crazygames_username).strip_edges()
+		if crazy_name != "":
+			GameManager.set_player_name(crazy_name)
+		return
 	if GameManager.has_chosen_online_name():
 		return
 	var dialog := ONLINE_NAME_DIALOG.new()

@@ -269,6 +269,8 @@ func save_current_now() -> void:
 		"meta": _current_meta(),
 	}
 	_write_to_disk()
+	if typeof(PlayerProgress) != TYPE_NIL:
+		PlayerProgress.note_match_progress()
 	if typeof(EventLoggerAutoload) != TYPE_NIL:
 		EventLoggerAutoload.persist_unfinished()
 
@@ -311,6 +313,37 @@ func mark_completed(puzzle_id: int) -> void:
 		meta["daily"] = true
 	state["meta"] = meta
 	_states[str(puzzle_id)] = state
+	_write_to_disk()
+
+
+func capture_active_bundle(status: String) -> Dictionary:
+	if int(GameManager.id_frase) < 0:
+		return {}
+	_sync_play_time_from_hud()
+	return {
+		"status": status,
+		"puzzle_id": int(GameManager.id_frase),
+		"resolution": _capture_resolution(),
+		"attempt": GameManager.export_attempt_state(),
+		"cipher": GameManager.export_cipher_state(),
+		"meta": _current_meta(),
+	}
+
+
+func import_external_state(puzzle_id: int, state: Dictionary) -> void:
+	if puzzle_id < 0 or state.is_empty():
+		return
+	var status := str(state.get("status", "in_progress"))
+	if status != "completed":
+		status = "in_progress"
+	_discard_until_new_puzzle = false
+	_states[str(puzzle_id)] = {
+		"status": status,
+		"resolution": state.get("resolution", {}),
+		"attempt": state.get("attempt", {}),
+		"cipher": state.get("cipher", {}),
+		"meta": state.get("meta", {}),
+	}
 	_write_to_disk()
 
 

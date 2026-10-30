@@ -15,6 +15,7 @@ extends Node
 #@export var letras_compradas: int = 0
 @export var vocales_compradas: int = 0
 @export var cambios_hechos: int = 0
+var letras_borradas: Array[String] = []
 
 @export var pistas_utilizadas_1: int = 0 
 @export var pistas_utilizadas_2: int = 0 
@@ -29,6 +30,7 @@ var reveal_errors_count: int = 0
 var reveal_success_count: int = 0
 
 @export var player_name: String = ""
+var crazygames_username := ""
 var guest_online_id: String = ""
 var online_name_chosen: bool = false
 const PLAYER_NAME_MAX_LENGTH := 10
@@ -840,6 +842,7 @@ func reset_game_paremeters() -> void:
 	vocalesIOU_compradas = 0
 	consonantes_compradas = 0
 	cambios_hechos = 0
+	letras_borradas.clear()
 	pistas_utilizadas_2 = 0 
 	tiempo_partida = 0	
 	reset_puzzle_stars()
@@ -990,6 +993,13 @@ func calcula_score() -> void:
 func cambios_increase() -> void:
 	cambios_hechos = cambios_hechos + 1
 
+
+func note_erased_letter(letter: String) -> void:
+	var key := letter.strip_edges().to_upper()
+	if key == "":
+		return
+	letras_borradas.append(key)
+
 func _inicializar_datos():
 	_inicializar_lista_letras(frase_original)
 	_inicializar_lista_numeros()
@@ -1076,6 +1086,7 @@ func export_attempt_state() -> Dictionary:
 		"lives": lives,
 		"score": score,
 		"cambios_hechos": cambios_hechos,
+		"letras_borradas": Array(letras_borradas),
 		"board_fill_prompt_shown": board_fill_prompt_shown,
 		"hint_runtime_word": hint_runtime_word,
 		"hint_runtime_letter": hint_runtime_letter,
@@ -1145,6 +1156,10 @@ func import_attempt_state(state: Dictionary) -> void:
 	lives = int(state.get("lives", lives))
 	score = int(state.get("score", score_init))
 	cambios_hechos = int(state.get("cambios_hechos", 0))
+	letras_borradas.clear()
+	var saved_erased: Array = state.get("letras_borradas", [])
+	for erased_value in saved_erased:
+		letras_borradas.append(str(erased_value))
 	board_fill_prompt_shown = bool(state.get("board_fill_prompt_shown", false))
 	hint_runtime_word = str(state.get("hint_runtime_word", ""))
 	hint_runtime_letter = str(state.get("hint_runtime_letter", ""))
@@ -1926,7 +1941,14 @@ func set_selected_letter_user(letra: String) -> void:
 
 
 func phrases_json_path(locale: String) -> String:
-	match locale.strip_edges().to_lower():
+	var code := locale.strip_edges().to_lower()
+	if code not in ["en", "eu", "fr", "de", "it", "pt"]:
+		code = "es"
+	if Distribution.is_horizontal():
+		var slim := "res://data/cg/frases_%s.json" % code
+		if FileAccess.file_exists(slim):
+			return slim
+	match code:
 		"en":
 			return frases_json_path_en
 		"eu":
@@ -2594,6 +2616,7 @@ func borrar_letra_en_tablero(letra_a_borrar: String) -> void:
 	var key := letra_a_borrar.strip_edges().to_upper()
 	if key == "":
 		return
+	note_erased_letter(key)
 	for node: Node in get_tree().get_nodes_in_group("Celda"):
 		if not node is Celda:
 			continue

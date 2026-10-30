@@ -1,0 +1,353 @@
+[gd_scene format=3 uid="uid://kiyk8ts3o7l7"]
+
+[ext_resource type="Script" uid="uid://ctd5lx31prwe8" path="res://scenes/crazygames/wide_play_column.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(1, 0.949, 0.804, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 7
+border_color = Color(0.77, 0.59, 0.31, 0.58)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="StyleBoxFlat" id="Style_slot"]
+bg_color = Color(0.2, 0.45, 0.75, 0.18)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.45, 0.75, 0.45)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="WidePlayColumn" type="Control" unique_id=1665047951]
+custom_minimum_size = Vector2(368, 704)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 368.0
+offset_bottom = 704.0
+script = ExtResource("1_script")
+
+[node name="TopCard" type="Panel" parent="." unique_id=1294922585]
+layout_mode = 0
+offset_right = 368.0
+offset_bottom = 252.0
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Usuario" type="Control" parent="TopCard" unique_id=714302178]
+anchors_preset = 0
+offset_left = 12.0
+offset_top = 2.0
+offset_right = 170.0
+offset_bottom = 24.0
+
+[node name="Preview" type="Panel" parent="TopCard/Usuario" unique_id=339923317]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Nivel" type="Control" parent="TopCard" unique_id=714302177]
+anchors_preset = 0
+offset_left = 12.0
+offset_top = 24.0
+offset_right = 170.0
+offset_bottom = 52.0
+
+[node name="Preview" type="Panel" parent="TopCard/Nivel" unique_id=339923316]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="CambioDeVista" type="Control" parent="TopCard" unique_id=1132620582]
+anchors_preset = 0
+offset_left = 176.0
+offset_top = 4.0
+offset_right = 362.0
+offset_bottom = 46.0
+
+[node name="Preview" type="Panel" parent="TopCard/CambioDeVista" unique_id=1124324705]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="EstrellasTitulo" type="Control" parent="TopCard" unique_id=1199132836]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 56.0
+offset_right = 360.0
+offset_bottom = 74.0
+
+[node name="Preview" type="Panel" parent="TopCard/EstrellasTitulo" unique_id=2002584008]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Estrellas" type="Control" parent="TopCard" unique_id=943797973]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 76.0
+offset_right = 206.0
+offset_bottom = 122.0
+
+[node name="Preview" type="Panel" parent="TopCard/Estrellas" unique_id=534699954]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -7.0
+offset_top = 3.0
+offset_right = -7.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Musica" type="Control" parent="TopCard" unique_id=153802087]
+anchors_preset = 0
+offset_left = 210.0
+offset_top = 67.0
+offset_right = 268.0
+offset_bottom = 130.0
+
+[node name="Preview" type="Panel" parent="TopCard/Musica" unique_id=1442093308]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_right = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Opciones" type="Control" parent="TopCard" unique_id=1966707695]
+anchors_preset = 0
+offset_left = 274.0
+offset_top = 67.0
+offset_right = 332.0
+offset_bottom = 130.0
+
+[node name="Preview" type="Panel" parent="TopCard/Opciones" unique_id=102199743]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Ilustres" type="Control" parent="TopCard" unique_id=1622412994]
+anchors_preset = 0
+offset_left = 12.0
+offset_top = 127.0
+offset_right = 108.0
+offset_bottom = 245.0
+
+[node name="Preview" type="Panel" parent="TopCard/Ilustres" unique_id=1188411975]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Modo" type="Control" parent="TopCard" unique_id=71555603]
+anchors_preset = 0
+offset_left = 179.0
+offset_top = 134.0
+offset_right = 360.0
+offset_bottom = 168.0
+
+[node name="Preview" type="Panel" parent="TopCard/Modo" unique_id=1122534563]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Reloj" type="Control" parent="TopCard" unique_id=429731705]
+anchors_preset = 0
+offset_left = 248.0
+offset_top = 167.0
+offset_right = 290.0
+offset_bottom = 209.0
+
+[node name="Preview" type="Panel" parent="TopCard/Reloj" unique_id=274492746]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Tiempo" type="Control" parent="TopCard" unique_id=888064485]
+anchors_preset = 0
+offset_left = 278.0
+offset_top = 170.0
+offset_right = 352.0
+offset_bottom = 206.0
+
+[node name="Preview" type="Panel" parent="TopCard/Tiempo" unique_id=491964362]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="BarraLetras" type="Control" parent="TopCard" unique_id=780941464]
+anchors_preset = 0
+offset_left = 121.0
+offset_top = 214.0
+offset_right = 339.0
+offset_bottom = 240.0
+
+[node name="Preview" type="Panel" parent="TopCard/BarraLetras" unique_id=610159532]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="TextoLetras" type="Control" parent="TopCard" unique_id=285452545]
+anchors_preset = 0
+offset_left = 121.0
+offset_top = 183.0
+offset_right = 234.0
+offset_bottom = 215.0
+
+[node name="Preview" type="Panel" parent="TopCard/TextoLetras" unique_id=223741809]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Tema" type="Control" parent="." unique_id=1547419848]
+anchors_preset = 0
+offset_top = 260.0
+offset_right = 118.0
+offset_bottom = 314.0
+
+[node name="Preview" type="Panel" parent="Tema" unique_id=226042860]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Pista" type="Control" parent="." unique_id=2092697653]
+anchors_preset = 0
+offset_left = 124.0
+offset_top = 260.0
+offset_right = 242.0
+offset_bottom = 314.0
+
+[node name="Preview" type="Panel" parent="Pista" unique_id=1107400284]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Comprobar" type="Control" parent="." unique_id=671431172]
+anchors_preset = 0
+offset_left = 248.0
+offset_top = 260.0
+offset_right = 368.0
+offset_bottom = 314.0
+
+[node name="Preview" type="Panel" parent="Comprobar" unique_id=1025677248]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Colores" type="Control" parent="." unique_id=191429027]
+anchors_preset = 0
+offset_top = 322.0
+offset_right = 368.0
+offset_bottom = 376.0
+
+[node name="Preview" type="Panel" parent="Colores" unique_id=304910927]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")
+
+[node name="Teclado" type="Control" parent="." unique_id=290928693]
+anchors_preset = 0
+offset_top = 384.0
+offset_right = 368.0
+offset_bottom = 700.0
+
+[node name="Preview" type="Panel" parent="Teclado" unique_id=557047458]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_slot")

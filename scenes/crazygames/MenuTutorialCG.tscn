@@ -1,0 +1,556 @@
+[gd_scene format=3 uid="uid://cgmenutut0001"]
+
+[ext_resource type="Script" uid="uid://dljh1fsfpnfnj" path="res://scenes/menu_tutorial.gd" id="1_tutorial"]
+[ext_resource type="PackedScene" uid="uid://dxcpxbcwph8ik" path="res://scenes/fondo.tscn" id="2_fondo"]
+[ext_resource type="PackedScene" path="res://scenes/StandardBackButton.tscn" id="3_back"]
+[ext_resource type="PackedScene" uid="uid://cqoigld4i4gcc" path="res://scenes/crazygames/tutorial/TutorialEraseRevealPageCG.tscn" id="4_erase"]
+[ext_resource type="PackedScene" uid="uid://cq1y0li0xv08a" path="res://scenes/crazygames/tutorial/TutorialHowToPageCG.tscn" id="4_howto"]
+[ext_resource type="PackedScene" uid="uid://cwk1gvb5466a0" path="res://scenes/crazygames/tutorial/TutorialModesHintsPageCG.tscn" id="4_modes"]
+[ext_resource type="PackedScene" uid="uid://1eb088lcny8t" path="res://scenes/crazygames/tutorial/TutorialTipsPageCG.tscn" id="4_tips"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="8_title"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="9_body"]
+
+[sub_resource type="StyleBoxFlat" id="Style_next"]
+bg_color = Color(0.9, 0.5, 0.13, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.65, 0.36, 0.09, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_next_hover"]
+bg_color = Color(0.93, 0.58, 0.22, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.65, 0.36, 0.09, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_next_pressed"]
+bg_color = Color(0.78, 0.38, 0.05, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.56, 0.27, 0.04, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="Style_play"]
+bg_color = Color(0.1, 0.58, 0.5, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.07, 0.42, 0.36, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_play_hover"]
+bg_color = Color(0.18, 0.64, 0.56, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 10
+border_color = Color(0.07, 0.42, 0.36, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="Style_play_pressed"]
+bg_color = Color(0.08, 0.48, 0.42, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0.05, 0.32, 0.28, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="Style_dot_on"]
+bg_color = Color(0.9, 0.5, 0.13, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.9, 0.5, 0.13, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_dot_off"]
+bg_color = Color(1, 0.98, 0.92, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.72, 0.52, 0.28, 0.85)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="Style_check_off"]
+bg_color = Color(1, 0.98, 0.93, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.72, 0.52, 0.28, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_check_on"]
+bg_color = Color(0.93, 0.84, 0.68, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78, 0.38, 0.05, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_bg"]
+bg_color = Color(0.984, 0.949, 0.865, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.996, 0.973, 0.906, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78, 0.61, 0.36, 0.48)
+corner_radius_top_left = 36
+corner_radius_top_right = 36
+corner_radius_bottom_right = 36
+corner_radius_bottom_left = 36
+shadow_color = Color(0.25, 0.14, 0.06, 0.16)
+shadow_size = 10
+shadow_offset = Vector2(0, 7)
+
+[sub_resource type="StyleBoxFlat" id="Style_badge"]
+content_margin_left = 18.0
+content_margin_right = 18.0
+bg_color = Color(0.9, 0.5, 0.13, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78, 0.38, 0.05, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxEmpty" id="Style_skip_empty"]
+
+[sub_resource type="StyleBoxEmpty" id="Style_focus"]
+
+[node name="MenuTutorialCG" type="Control" unique_id=1166697131]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+script = ExtResource("1_tutorial")
+style_next = SubResource("Style_next")
+style_next_hover = SubResource("Style_next_hover")
+style_next_pressed = SubResource("Style_next_pressed")
+style_play = SubResource("Style_play")
+style_play_hover = SubResource("Style_play_hover")
+style_play_pressed = SubResource("Style_play_pressed")
+style_dot_on = SubResource("Style_dot_on")
+style_dot_off = SubResource("Style_dot_off")
+style_check_off = SubResource("Style_check_off")
+style_check_on = SubResource("Style_check_on")
+fit_design = Vector2(1280, 720)
+
+[node name="Background" type="Panel" parent="." unique_id=1024663669]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_bg")
+
+[node name="Pattern" parent="Background" unique_id=116905076 instance=ExtResource("2_fondo")]
+modulate = Color(1, 1, 1, 0.16)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TutorialCard" type="Panel" parent="." unique_id=1552545345]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 16.0
+offset_right = -25.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="StepBadge" type="Label" parent="TutorialCard" unique_id=1293579146]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -70.0
+offset_top = 8.0
+offset_right = 70.0
+offset_bottom = 42.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("8_title")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("Style_badge")
+text = "1 / 4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Pages" type="Control" parent="TutorialCard" unique_id=1100684292]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 48.0
+offset_bottom = -144.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Page1" parent="TutorialCard/Pages" unique_id=848034149 instance=ExtResource("4_howto")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PageTitle" parent="TutorialCard/Pages/Page1" index="0" unique_id=510076753]
+offset_left = 1.0
+offset_right = 1201.0
+offset_bottom = 45.0
+
+[node name="Control11" parent="TutorialCard/Pages/Page1/Card2/Box" parent_id_path=PackedInt32Array(848034149, 439813313) index="1" unique_id=1471376636]
+custom_minimum_size = Vector2(20, 40)
+
+[node name="Body2" parent="TutorialCard/Pages/Page1/Card2/Box" parent_id_path=PackedInt32Array(848034149, 439813313) index="2" unique_id=99554864]
+visible = false
+
+[node name="Control12" parent="TutorialCard/Pages/Page1/Card2/Box" parent_id_path=PackedInt32Array(848034149, 439813313) index="3" unique_id=1750834592]
+visible = false
+
+[node name="Colors" parent="TutorialCard/Pages/Page1/Card2/Box/Demo/Col" parent_id_path=PackedInt32Array(848034149, 855095465) index="2" unique_id=1634547050]
+visible = false
+
+[node name="Control12" parent="TutorialCard/Pages/Page1/Card2/Box/Demo/Col" parent_id_path=PackedInt32Array(848034149, 855095465) index="3" unique_id=309299657]
+visible = false
+
+[node name="Control13" type="Control" parent="TutorialCard/Pages/Page1/Card2/Box/Demo/Col/Keyboard" parent_id_path=PackedInt32Array(848034149, 1108937546) index="3" unique_id=1066945014]
+custom_minimum_size = Vector2(20, 30)
+layout_mode = 2
+
+[node name="Hand" parent="TutorialCard/Pages/Page1/Card2/Box/Demo" parent_id_path=PackedInt32Array(848034149, 538935952) index="1" unique_id=1374775747]
+offset_right = 129.0
+offset_bottom = 165.0
+
+[node name="Page2" parent="TutorialCard/Pages" unique_id=1436571205 instance=ExtResource("4_erase")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hand" parent="TutorialCard/Pages/Page2/Card1/Box/Demo" parent_id_path=PackedInt32Array(1436571205, 715577312) index="1" unique_id=1060067677]
+offset_right = 129.0
+offset_bottom = 165.0
+
+[node name="Icon" parent="TutorialCard/Pages/Page2/Card2/Box/Demo2/Col/RevealWrap/RevealButton" parent_id_path=PackedInt32Array(1436571205, 647165179) index="0" unique_id=2102472992]
+offset_right = 56.0
+offset_bottom = 56.0
+
+[node name="RevealTitle" parent="TutorialCard/Pages/Page2/Card2/Box/Demo2/Col/RevealWrap/RevealButton" parent_id_path=PackedInt32Array(1436571205, 647165179) index="1" unique_id=849247474]
+offset_right = 224.0
+offset_bottom = 56.0
+
+[node name="Hand2" parent="TutorialCard/Pages/Page2/Card2/Box/Demo2" parent_id_path=PackedInt32Array(1436571205, 1586453685) index="1" unique_id=1346030535]
+offset_right = 129.0
+offset_bottom = 165.0
+
+[node name="Page3" parent="TutorialCard/Pages" unique_id=1106081513 instance=ExtResource("4_tips")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hand" parent="TutorialCard/Pages/Page3/Card1/Box/Demo" parent_id_path=PackedInt32Array(1106081513, 1377333409) index="1" unique_id=1377334120]
+offset_right = 129.0
+offset_bottom = 165.0
+
+[node name="Page4" parent="TutorialCard/Pages" unique_id=2044710075 instance=ExtResource("4_modes")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SkipRow" type="Button" parent="TutorialCard" unique_id=412518200]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -520.0
+offset_top = -136.0
+offset_right = 520.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_skip_empty")
+theme_override_styles/pressed = SubResource("Style_skip_empty")
+theme_override_styles/hover = SubResource("Style_skip_empty")
+theme_override_styles/hover_pressed = SubResource("Style_skip_empty")
+theme_override_styles/focus = SubResource("Style_focus")
+toggle_mode = true
+
+[node name="Inner" type="HBoxContainer" parent="TutorialCard/SkipRow" unique_id=412518201]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_right = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="SkipBox" type="Panel" parent="TutorialCard/SkipRow/Inner" unique_id=412518202]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_check_off")
+
+[node name="SkipMark" type="Label" parent="TutorialCard/SkipRow/Inner/SkipBox" unique_id=412518203]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("8_title")
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkipLabel" type="Label" parent="TutorialCard/SkipRow/Inner" unique_id=412518204]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.34, 0.22, 0.15, 1)
+theme_override_fonts/font = ExtResource("9_body")
+theme_override_font_sizes/font_size = 18
+text = "No volver a mostrar tutorial al inicio."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ButtonPlay" type="Button" parent="TutorialCard" unique_id=412518210]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -92.0
+offset_right = 400.0
+offset_bottom = -40.0
+grow_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("8_title")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("Style_play")
+theme_override_styles/pressed = SubResource("Style_play_pressed")
+theme_override_styles/hover = SubResource("Style_play_hover")
+theme_override_styles/focus = SubResource("Style_focus")
+text = "JUGAR"
+
+[node name="ButtonNext" type="Button" parent="TutorialCard" unique_id=412518111]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -92.0
+offset_right = 180.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("8_title")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("Style_next")
+theme_override_styles/pressed = SubResource("Style_next_pressed")
+theme_override_styles/hover = SubResource("Style_next_hover")
+theme_override_styles/focus = SubResource("Style_focus")
+text = "SIGUIENTE"
+
+[node name="Dots" type="HBoxContainer" parent="TutorialCard" unique_id=1759962257]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -32.0
+offset_right = 110.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Dot1" type="Button" parent="TutorialCard/Dots" unique_id=390491893]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_dot_on")
+theme_override_styles/pressed = SubResource("Style_dot_on")
+theme_override_styles/hover = SubResource("Style_dot_on")
+theme_override_styles/focus = SubResource("Style_focus")
+
+[node name="Dot2" type="Button" parent="TutorialCard/Dots" unique_id=780868783]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_dot_off")
+theme_override_styles/pressed = SubResource("Style_dot_off")
+theme_override_styles/hover = SubResource("Style_dot_off")
+theme_override_styles/focus = SubResource("Style_focus")
+
+[node name="Dot3" type="Button" parent="TutorialCard/Dots" unique_id=1121138208]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_dot_off")
+theme_override_styles/pressed = SubResource("Style_dot_off")
+theme_override_styles/hover = SubResource("Style_dot_off")
+theme_override_styles/focus = SubResource("Style_focus")
+
+[node name="Dot4" type="Button" parent="TutorialCard/Dots" unique_id=122306298]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Style_dot_off")
+theme_override_styles/pressed = SubResource("Style_dot_off")
+theme_override_styles/hover = SubResource("Style_dot_off")
+theme_override_styles/focus = SubResource("Style_focus")
+
+[node name="ButtonBack" parent="." unique_id=1819014362 instance=ExtResource("3_back")]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 0
+offset_left = 3.0
+offset_top = 2.0
+offset_right = 107.0
+offset_bottom = 106.0
+
+[connection signal="toggled" from="TutorialCard/SkipRow" to="." method="_on_skip_toggled"]
+[connection signal="pressed" from="TutorialCard/ButtonPlay" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="TutorialCard/ButtonNext" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="TutorialCard/Dots/Dot1" to="." method="_on_dot_pressed" binds= [0]]
+[connection signal="pressed" from="TutorialCard/Dots/Dot2" to="." method="_on_dot_pressed" binds= [1]]
+[connection signal="pressed" from="TutorialCard/Dots/Dot3" to="." method="_on_dot_pressed" binds= [2]]
+[connection signal="pressed" from="TutorialCard/Dots/Dot4" to="." method="_on_dot_pressed" binds= [3]]
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_back_pressed"]
+
+[editable path="TutorialCard/Pages/Page1"]
+[editable path="TutorialCard/Pages/Page2"]
+[editable path="TutorialCard/Pages/Page3"]
+[editable path="TutorialCard/Pages/Page4"]

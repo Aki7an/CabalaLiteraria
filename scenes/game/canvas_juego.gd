@@ -26,8 +26,24 @@ const DRAG_THRESHOLD := 8.0  # píxeles para considerar que es drag
 const SCROLL_STEP := 80.0  # píxeles por “tic” de rueda (ajústalo a gusto)
 const STRIPE_WIDTH := 18.0
 const TARGET_FULL_ROWS := 7
+var _fit_all_rows := false
+var _saved_columns := 0
+var _tile_ratio := 0.0
+var fit_source_size := Vector2.ZERO
+var fit_font_scale := 1.0
 const NEXT_ROW_PEEK := 10.0
 const FALLBACK_HEIGHT_RATIO := 1.5
+const WIDE_TILE_RATIO := 1.0 / 2.0
+var _wide_grid_saved := false
+var _grid_left := 0.0
+var _grid_top := 0.0
+var _grid_right := 0.0
+var _sep_h := 4
+var _sep_v := 4
+var _sep_h_over := false
+var _sep_v_over := false
+var _red_up := true
+var _red_down := true
 
 # ------------------ Estado input ------------------
 var tocando: bool = false
@@ -92,6 +108,8 @@ func _ready() -> void:
 	grid_container.resized.connect(func ():
 		_update_cell_min_heights()
 		_clamp_canvas_y()
+		if _fit_all_rows:
+			_apply_fit_font_scale()
 	)
 
 # Activa las notificaciones de cambio de transform
@@ -268,6 +286,24 @@ func _update_cell_min_heights() -> void:
 	var cell_h: float = _cell_height()
 	if cell_w <= 0.0 or cell_h <= 0.0:
 		return
+	var flags_h := Control.SIZE_EXPAND_FILL
+	var flags_v := Control.SIZE_EXPAND_FILL
+	var inner_min := Vector2(60, 120)
+	if _fit_all_rows:
+		var ratio := WIDE_TILE_RATIO
+		var area := _fit_area()
+		var cols := maxi(1, grid_container.columns)
+		var rows := maxi(1, _fit_rows())
+		var hsep := float(_grid_hsep())
+		var vsep := float(_grid_vsep())
+		var max_w := (area.x - hsep * float(cols - 1)) / float(cols)
+		var max_h := (area.y - vsep * float(rows - 1)) / float(rows)
+		cell_w = maxf(max_w, 1.0)
+		cell_h = minf(max_h, cell_w / ratio)
+		cell_h = maxf(cell_h, 1.0)
+		inner_min = Vector2(cell_w, cell_h)
+		flags_h = Control.SIZE_SHRINK_CENTER
+		flags_v = Control.SIZE_SHRINK_CENTER
 	var ratio: float = cell_w / cell_h
 
 	for child in grid_container.get_children():
@@ -275,6 +311,10 @@ func _update_cell_min_heights() -> void:
 			var arc := child as AspectRatioContainer
 			arc.ratio = ratio
 			arc.custom_minimum_size = Vector2(cell_w, cell_h)
+			arc.size_flags_horizontal = flags_h
+			arc.size_flags_vertical = flags_v
+			if arc.get_child_count() > 0 and arc.get_child(0) is Control:
+				(arc.get_child(0) as Control).custom_minimum_size = inner_min
 		elif child is Control:
 			var c := child as Control
 			c.custom_minimum_size.y = cell_h
@@ -695,7 +735,7 @@ func pan_to_y(target_y: float, duration: float = 0.5) -> void:
 func _cell_width() -> float:
 	var cols: int = max(1, grid_container.columns)
 	var hsep: int = _grid_hsep()
-	var usable_w: float = grid_container.size.x - float(hsep) * float(cols - 1)
+	var usable_w: float = (_fit_area().x if _fit_all_rows else grid_container.size.x) - float(hsep) * float(cols - 1)
 	if usable_w <= 0.0:
 		return 0.0
 	return usable_w / float(cols)
@@ -713,16 +753,155 @@ func _visible_grid_height() -> float:
 	return maxf(0.0, board.size.y - grid_top - inset)
 
 
+func set_fit_all_rows(enabled: bool) -> void:
+	if enabled and not _fit_all_rows:
+		_saved_columns = maxi(1, grid_container.columns)
+		_capture_tile_format()
+		_apply_wide_grid(true)
+	elif not enabled and _fit_all_rows:
+		_apply_wide_grid(false)
+	_fit_all_rows = enabled
+	if not enabled and _saved_columns > 0:
+		grid_container.columns = _saved_columns
+		_saved_columns = 0
+	_relayout_fitted_rows()
+	if _fit_all_rows:
+		call_deferred("_relayout_fitted_rows")
+
+
+func _phrase_cell_count() -> int:
+	return maxi(GameManager.TOTAL_CELDAS, 1)
+
+
+func _fit_rows() -> int:
+	var cols := maxi(1, grid_container.columns)
+	return int(ceil(float(_phrase_cell_count()) / float(cols)))
+
+
+func _fit_area() -> Vector2:
+	return Vector2(
+		maxf(size.x - 2.0, 1.0),
+		maxf(size.y - grid_container.position.y - 2.0, 1.0)
+	)
+
+
+func _capture_tile_format() -> void:
+	for child in grid_container.get_children():
+		if child is AspectRatioContainer:
+			var tile := (child as AspectRatioContainer).custom_minimum_size
+			if tile.x > 2.0 and tile.y > 2.0:
+				_tile_ratio = tile.x / tile.y
+				fit_source_size = tile
+				return
+	_tile_ratio = 1.0 / FALLBACK_HEIGHT_RATIO
+	fit_source_size = Vector2(60.0, 60.0 * FALLBACK_HEIGHT_RATIO)
+
+
+func _best_fit_columns() -> int:
+	var count := _phrase_cell_count()
+	var area := _fit_area()
+	var hsep := float(_grid_hsep())
+	var vsep := float(_grid_vsep())
+	var ratio := WIDE_TILE_RATIO
+	var best_cols := 1
+	var best_w := -1.0
+	var best_gap := 1.0e12
+	for cols in range(1, count + 1):
+		var rows := int(ceil(float(count) / float(cols)))
+		var max_w := (area.x - hsep * float(cols - 1)) / float(cols)
+		var max_h := (area.y - vsep * float(rows - 1)) / float(rows)
+		var cell_w := minf(max_w, max_h * ratio)
+		var gap := area.x - cell_w * float(cols)
+		var larger := cell_w > best_w + 0.5
+		var same_size_fills_more := absf(cell_w - best_w) <= 0.5 and gap < best_gap
+		if larger or same_size_fills_more:
+			best_w = cell_w
+			best_gap = gap
+			best_cols = cols
+	return best_cols
+
+
+func _relayout_fitted_rows() -> void:
+	if _fit_all_rows:
+		var cols := _best_fit_columns()
+		if grid_container.columns != cols:
+			grid_container.columns = cols
+	_update_cell_min_heights()
+	_apply_fit_font_scale()
+	position.y = _rest_y
+	_update_scroll_bounds()
+	_clamp_canvas_y()
+	if not _fit_all_rows:
+		return
+	var scroll_rail := get_parent().get_node_or_null("ScrollRail") as Control
+	if scroll_rail != null:
+		scroll_rail.visible = false
+	if color_rect_up != null:
+		color_rect_up.visible = false
+	if color_rect_down != null:
+		color_rect_down.visible = false
+
+
+func _apply_wide_grid(enabled: bool) -> void:
+	if enabled:
+		if not _wide_grid_saved:
+			_grid_left = grid_container.offset_left
+			_grid_top = grid_container.offset_top
+			_grid_right = grid_container.offset_right
+			_sep_h_over = grid_container.has_theme_constant_override("h_separation")
+			_sep_v_over = grid_container.has_theme_constant_override("v_separation")
+			_sep_h = grid_container.get_theme_constant("h_separation")
+			_sep_v = grid_container.get_theme_constant("v_separation")
+			_red_up = color_rect_up.visible
+			_red_down = color_rect_down.visible
+			_wide_grid_saved = true
+		color_rect_up.visible = false
+		color_rect_down.visible = false
+		grid_container.offset_left = 1.0
+		grid_container.offset_top = 1.0
+		grid_container.offset_right = -1.0
+		grid_container.add_theme_constant_override("h_separation", 0)
+		grid_container.add_theme_constant_override("v_separation", 0)
+		return
+	if not _wide_grid_saved:
+		return
+	color_rect_up.visible = _red_up
+	color_rect_down.visible = _red_down
+	grid_container.offset_left = _grid_left
+	grid_container.offset_top = _grid_top
+	grid_container.offset_right = _grid_right
+	if _sep_h_over:
+		grid_container.add_theme_constant_override("h_separation", _sep_h)
+	else:
+		grid_container.remove_theme_constant_override("h_separation")
+	if _sep_v_over:
+		grid_container.add_theme_constant_override("v_separation", _sep_v)
+	else:
+		grid_container.remove_theme_constant_override("v_separation")
+
+
+func note_layout_rest() -> void:
+	_rest_y = position.y
+
+
+func _apply_fit_font_scale() -> void:
+	fit_font_scale = 1.0
+	SignalManager.update_size_celdas.emit()
+
+
 func _cell_height() -> float:
 	var cell_w: float = _cell_width()
 	if cell_w <= 0.0:
 		return 0.0
 	var visible := _visible_grid_height()
+	if _fit_all_rows:
+		visible = _fit_area().y
 	if visible <= 1.0:
 		return cell_w * FALLBACK_HEIGHT_RATIO
 	var vsep := float(_grid_vsep())
-	var rows := float(TARGET_FULL_ROWS)
-	return maxf((visible - NEXT_ROW_PEEK - vsep * (rows - 1.0)) / rows, 1.0)
+	var rows := float(_fit_rows() if _fit_all_rows else TARGET_FULL_ROWS)
+	var peek := 0.0 if _fit_all_rows else NEXT_ROW_PEEK
+	return maxf((visible - peek - vsep * (rows - 1.0)) / rows, 1.0)
 
 
 # --- Cálculo de alto de una fila (celda + separación vertical) ---

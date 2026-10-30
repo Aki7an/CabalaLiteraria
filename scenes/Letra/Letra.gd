@@ -49,6 +49,35 @@ func _ready():
 	_inicializar_numero()
 	letra_selected.visible = false
 	_apply_panel_color(color_normal)
+	_configure_key_button()
+
+
+func _configure_key_button() -> void:
+	if button == null:
+		return
+	# The scene minimum (60x100) is bigger than a wide-layout key, so the
+	# default hover style was painting outside the cell.
+	button.custom_minimum_size = Vector2.ZERO
+	button.focus_mode = Control.FOCUS_NONE
+	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	if not button.resized.is_connected(_apply_key_hover):
+		button.resized.connect(_apply_key_hover)
+	_apply_key_hover()
+
+
+func _apply_key_hover() -> void:
+	if button == null:
+		return
+	var box: Vector2 = button.size
+	if box.x < 2.0 or box.y < 2.0:
+		return
+	var short_side := minf(box.x, box.y)
+	var inset := clampf(short_side * 0.2, 3.0, 12.0)
+	var hover := StyleBoxFlat.new()
+	hover.bg_color = Color(0.36, 0.24, 0.1, 0.2)
+	hover.set_corner_radius_all(int(clampf(short_side * 0.22, 6.0, 14.0)))
+	hover.set_expand_margin_all(-inset)
+	button.add_theme_stylebox_override("hover", hover)
 	
 func _inicializar_letra() -> void:
 	label_letra.text = letra
@@ -123,6 +152,7 @@ func _on_button_pressed() -> void:
 	# Changing an existing unverified assignment counts as using the eraser.
 	if replacing:
 		GameManager.cambios_increase()
+		GameManager.note_erased_letter(previous_letter)
 		SignalManager.update_cambios.emit()
 		SoundManager.play("Erase")
 		SignalManager.rubber_feedback.emit()

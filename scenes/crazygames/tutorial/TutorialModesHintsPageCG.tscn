@@ -1,0 +1,951 @@
+[gd_scene format=3 uid="uid://cwk1gvb5466a0"]
+
+[ext_resource type="Script" uid="uid://ctutcghintsrungd" path="res://scenes/crazygames/tutorial/tutorial_cg_hints_runs_page.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://bk7opybx7ghxv" path="res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf" id="2_title"]
+[ext_resource type="FontFile" uid="uid://e2b2srd7kyon" path="res://fonts/Fonts/Montserrat/static/Montserrat-Medium.ttf" id="3_body"]
+[ext_resource type="FontFile" uid="uid://bebntxq4vx1kq" path="res://fonts/Fonts/Montserrat/static/Montserrat-SemiBold.ttf" id="3_heavy"]
+[ext_resource type="Texture2D" uid="uid://cikisooltnvf8" path="res://images/tutorial/tut_bulb.svg" id="6_bulb"]
+[ext_resource type="Texture2D" uid="uid://jw8c34iex18f" path="res://images/estrella_plano.png" id="7_star"]
+[ext_resource type="Texture2D" uid="uid://bmxb0omorndri" path="res://images/contorno_estrella.png" id="8_star_off"]
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+content_margin_left = 14
+content_margin_top = 10
+content_margin_right = 14
+content_margin_bottom = 10
+bg_color = Color(1, 0.984, 0.94, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78, 0.61, 0.36, 0.45)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.25, 0.14, 0.06, 0.14)
+shadow_size = 8
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="StyleBoxFlat" id="Style_badge"]
+bg_color = Color(0.93, 0.48, 0.12, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="Style_num"]
+bg_color = Color(0.93, 0.48, 0.12, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="Style_tile"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.42, 0.28, 0.78)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="TutorialModesHintsPage" type="Control" unique_id=1577333401]
+custom_minimum_size = Vector2(1200, 500)
+anchors_preset = 0
+offset_right = 1200.0
+offset_bottom = 500.0
+script = ExtResource("1_script")
+
+[node name="PageTitle" type="Label" parent="." unique_id=1577333402]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1200.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 32
+text = "CÓMO JUGAR"
+horizontal_alignment = 1
+
+[node name="Card1" type="PanelContainer" parent="." unique_id=1577333700]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 52.0
+offset_right = 590.0
+offset_bottom = 496.0
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Box" type="VBoxContainer" parent="Card1" unique_id=1577333701]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="Card1/Box" unique_id=1577333702]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Badge" type="Label" parent="Card1/Box/Header" unique_id=1577333703]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("Style_badge")
+text = "7."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title1" type="Label" parent="Card1/Box/Header" unique_id=1577333704]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 21
+text = "UTILIZA LAS PISTAS"
+autowrap_mode = 3
+
+[node name="Body1" type="Label" parent="Card1/Box" unique_id=1577333705]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.38, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 20
+text = "Hay tres pistas disponibles. Cada pista utilizada cuesta una estrella."
+autowrap_mode = 3
+
+[node name="Hints" type="VBoxContainer" parent="Card1/Box" unique_id=1577333706]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Hint1" type="HBoxContainer" parent="Card1/Box/Hints" unique_id=1577334023]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Bulb" type="TextureRect" parent="Card1/Box/Hints/Hint1" unique_id=1577334024]
+custom_minimum_size = Vector2(24, 28)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("6_bulb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Num" type="Label" parent="Card1/Box/Hints/Hint1" unique_id=1577334025]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("Style_num")
+text = "1."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HintBody1" type="Label" parent="Card1/Box/Hints/Hint1" unique_id=1577333712]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.38, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 20
+text = "Revela una palabra del puzle."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Phrase" type="HBoxContainer" parent="Card1/Box/Hints/Hint1" unique_id=1577334026]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.95
+theme_override_constants/separation = 3
+alignment = 2
+
+[node name="T0" type="VBoxContainer" parent="Card1/Box/Hints/Hint1/Phrase" unique_id=1577334027]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint1/Phrase/T0" unique_id=1577334028]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint1/Phrase/T0/Panel" unique_id=1577334029]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint1/Phrase/T0/Panel/Col" unique_id=1577334030]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "3"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint1/Phrase/T0/Panel/Col" unique_id=1577334031]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.55, 0.5, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T1" type="VBoxContainer" parent="Card1/Box/Hints/Hint1/Phrase" unique_id=1577334032]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint1/Phrase/T1" unique_id=1577334033]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint1/Phrase/T1/Panel" unique_id=1577334034]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint1/Phrase/T1/Panel/Col" unique_id=1577334035]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "1"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint1/Phrase/T1/Panel/Col" unique_id=1577334036]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.55, 0.5, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+text = "L"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T2" type="VBoxContainer" parent="Card1/Box/Hints/Hint1/Phrase" unique_id=1577334037]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint1/Phrase/T2" unique_id=1577334038]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint1/Phrase/T2/Panel" unique_id=1577334039]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint1/Phrase/T2/Panel/Col" unique_id=1577334040]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "7"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint1/Phrase/T2/Panel/Col" unique_id=1577334041]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.55, 0.5, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+text = "M"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T3" type="VBoxContainer" parent="Card1/Box/Hints/Hint1/Phrase" unique_id=1577334042]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint1/Phrase/T3" unique_id=1577334043]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint1/Phrase/T3/Panel" unique_id=1577334044]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint1/Phrase/T3/Panel/Col" unique_id=1577334045]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "3"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint1/Phrase/T3/Panel/Col" unique_id=1577334046]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.55, 0.5, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T4" type="VBoxContainer" parent="Card1/Box/Hints/Hint1/Phrase" unique_id=1577334047]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint1/Phrase/T4" unique_id=1577334048]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint1/Phrase/T4/Panel" unique_id=1577334049]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint1/Phrase/T4/Panel/Col" unique_id=1577334050]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "1"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint1/Phrase/T4/Panel/Col" unique_id=1577334051]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.55, 0.5, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+text = "R"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hint2" type="HBoxContainer" parent="Card1/Box/Hints" unique_id=1577334052]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Bulb" type="TextureRect" parent="Card1/Box/Hints/Hint2" unique_id=1577334053]
+custom_minimum_size = Vector2(24, 28)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("6_bulb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Num" type="Label" parent="Card1/Box/Hints/Hint2" unique_id=1577334054]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("Style_num")
+text = "2."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HintBody2" type="Label" parent="Card1/Box/Hints/Hint2" unique_id=1577333805]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.38, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 20
+text = "Revela la letra más repetida de las que quedan."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Phrase" type="HBoxContainer" parent="Card1/Box/Hints/Hint2" unique_id=1577334055]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.95
+theme_override_constants/separation = 3
+alignment = 2
+
+[node name="T0" type="VBoxContainer" parent="Card1/Box/Hints/Hint2/Phrase" unique_id=1577334056]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint2/Phrase/T0" unique_id=1577334057]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint2/Phrase/T0/Panel" unique_id=1577334058]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint2/Phrase/T0/Panel/Col" unique_id=1577334059]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "5"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint2/Phrase/T0/Panel/Col" unique_id=1577334060]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.55, 0.5, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T1" type="VBoxContainer" parent="Card1/Box/Hints/Hint2/Phrase" unique_id=1577334061]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint2/Phrase/T1" unique_id=1577334062]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint2/Phrase/T1/Panel" unique_id=1577334063]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint2/Phrase/T1/Panel/Col" unique_id=1577334064]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "22"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint2/Phrase/T1/Panel/Col" unique_id=1577334065]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T2" type="VBoxContainer" parent="Card1/Box/Hints/Hint2/Phrase" unique_id=1577334066]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint2/Phrase/T2" unique_id=1577334067]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint2/Phrase/T2/Panel" unique_id=1577334068]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint2/Phrase/T2/Panel/Col" unique_id=1577334069]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "5"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint2/Phrase/T2/Panel/Col" unique_id=1577334070]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.55, 0.5, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T3" type="VBoxContainer" parent="Card1/Box/Hints/Hint2/Phrase" unique_id=1577334071]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint2/Phrase/T3" unique_id=1577334072]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint2/Phrase/T3/Panel" unique_id=1577334073]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint2/Phrase/T3/Panel/Col" unique_id=1577334074]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "17"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint2/Phrase/T3/Panel/Col" unique_id=1577334075]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T4" type="VBoxContainer" parent="Card1/Box/Hints/Hint2/Phrase" unique_id=1577334076]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint2/Phrase/T4" unique_id=1577334077]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint2/Phrase/T4/Panel" unique_id=1577334078]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint2/Phrase/T4/Panel/Col" unique_id=1577334079]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "5"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint2/Phrase/T4/Panel/Col" unique_id=1577334080]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.55, 0.5, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hint3" type="HBoxContainer" parent="Card1/Box/Hints" unique_id=1577334081]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Bulb" type="TextureRect" parent="Card1/Box/Hints/Hint3" unique_id=1577334082]
+custom_minimum_size = Vector2(24, 28)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("6_bulb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Num" type="Label" parent="Card1/Box/Hints/Hint3" unique_id=1577334083]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("Style_num")
+text = "3."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HintBody3" type="Label" parent="Card1/Box/Hints/Hint3" unique_id=1577333905]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.38, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 20
+text = "Revela los números de las vocales, sin indicar su orden."
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Phrase" type="HBoxContainer" parent="Card1/Box/Hints/Hint3" unique_id=1577334084]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.95
+theme_override_constants/separation = 3
+alignment = 2
+
+[node name="T0" type="VBoxContainer" parent="Card1/Box/Hints/Hint3/Phrase" unique_id=1577334085]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint3/Phrase/T0" unique_id=1577334086]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint3/Phrase/T0/Panel" unique_id=1577334087]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint3/Phrase/T0/Panel/Col" unique_id=1577334088]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "3"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint3/Phrase/T0/Panel/Col" unique_id=1577334089]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T1" type="VBoxContainer" parent="Card1/Box/Hints/Hint3/Phrase" unique_id=1577334090]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint3/Phrase/T1" unique_id=1577334091]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint3/Phrase/T1/Panel" unique_id=1577334092]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint3/Phrase/T1/Panel/Col" unique_id=1577334093]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "7"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint3/Phrase/T1/Panel/Col" unique_id=1577334094]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T2" type="VBoxContainer" parent="Card1/Box/Hints/Hint3/Phrase" unique_id=1577334095]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint3/Phrase/T2" unique_id=1577334096]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint3/Phrase/T2/Panel" unique_id=1577334097]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint3/Phrase/T2/Panel/Col" unique_id=1577334098]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "12"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint3/Phrase/T2/Panel/Col" unique_id=1577334099]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T3" type="VBoxContainer" parent="Card1/Box/Hints/Hint3/Phrase" unique_id=1577334100]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint3/Phrase/T3" unique_id=1577334101]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint3/Phrase/T3/Panel" unique_id=1577334102]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint3/Phrase/T3/Panel/Col" unique_id=1577334103]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "18"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint3/Phrase/T3/Panel/Col" unique_id=1577334104]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="T4" type="VBoxContainer" parent="Card1/Box/Hints/Hint3/Phrase" unique_id=1577334105]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+
+[node name="Panel" type="Panel" parent="Card1/Box/Hints/Hint3/Phrase/T4" unique_id=1577334106]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("Style_tile")
+
+[node name="Col" type="VBoxContainer" parent="Card1/Box/Hints/Hint3/Phrase/T4/Panel" unique_id=1577334107]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Number" type="Label" parent="Card1/Box/Hints/Hint3/Phrase/T4/Panel/Col" unique_id=1577334108]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 15
+text = "25"
+horizontal_alignment = 1
+
+[node name="Letter" type="Label" parent="Card1/Box/Hints/Hint3/Phrase/T4/Panel/Col" unique_id=1577334109]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stars" type="HBoxContainer" parent="Card1/Box" unique_id=1577333990]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="Card1/Box/Stars" unique_id=1577334110]
+modulate = Color(1, 0.86, 0.2, 1)
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = ExtResource("7_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="Card1/Box/Stars" unique_id=1577334111]
+modulate = Color(1, 0.86, 0.2, 1)
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = ExtResource("7_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="Card1/Box/Stars" unique_id=1577334112]
+modulate = Color(1, 0.86, 0.2, 1)
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = ExtResource("7_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="Card1/Box/Stars" unique_id=1577334113]
+modulate = Color(1, 0.86, 0.2, 1)
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = ExtResource("7_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star5" type="TextureRect" parent="Card1/Box/Stars" unique_id=1577334114]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+texture = ExtResource("8_star_off")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HintCost" type="Label" parent="Card1/Box" unique_id=1577333996]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.26, 0.12, 1)
+theme_override_fonts/font = ExtResource("3_heavy")
+theme_override_font_sizes/font_size = 19
+text = "UNA PISTA = –1 ESTRELLA"
+horizontal_alignment = 1
+
+[node name="Card2" type="Panel" parent="." unique_id=1577334800]
+layout_mode = 0
+offset_left = 610.0
+offset_top = 52.0
+offset_right = 1200.0
+offset_bottom = 496.0
+theme_override_styles/panel = SubResource("Style_card")
+
+[node name="Badge" type="Label" parent="Card2" unique_id=1577334801]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 14.0
+offset_right = 52.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("Style_badge")
+text = "8."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title2" type="Label" parent="Card2" unique_id=1577334802]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 64.0
+offset_top = 12.0
+offset_right = 560.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0.28, 0.16, 0.09, 1)
+theme_override_fonts/font = ExtResource("2_title")
+theme_override_font_sizes/font_size = 21
+text = "LAS RUNS"
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RunsIntro" type="Label" parent="Card2" unique_id=1577334803]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 560.0
+offset_bottom = 168.0
+theme_override_colors/font_color = Color(0.38, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 18
+text = "El juego consta de RUNS. En cada una has de conseguir un objetivo de estrellas en un número máximo de puzles."
+autowrap_mode = 3
+
+[node name="RunsChoice" type="Label" parent="Card2" unique_id=1577334804]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 176.0
+offset_right = 560.0
+offset_bottom = 272.0
+theme_override_colors/font_color = Color(0.38, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 18
+text = "Después de resolver un puzle puedes elegir uno más fácil (menos estrellas), igual o más difícil (más estrellas)."
+autowrap_mode = 3
+
+[node name="RunsLevel" type="Label" parent="Card2" unique_id=1577334805]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 280.0
+offset_right = 560.0
+offset_bottom = 420.0
+theme_override_colors/font_color = Color(0.38, 0.26, 0.18, 0.94)
+theme_override_fonts/font = ExtResource("3_body")
+theme_override_font_sizes/font_size = 18
+text = "En la run inicial del NIVEL 1 has de ganar 6 estrellas en 3 puzles. Cuando consigas el objetivo subes de nivel y pasas a la siguiente run, con objetivos nuevos."
+autowrap_mode = 3

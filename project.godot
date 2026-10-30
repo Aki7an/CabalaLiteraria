@@ -10,30 +10,8 @@ config_version=5
 
 [admob]
 
-general/android/enabled=true
 general/android/app_id="ca-app-pub-4839644126711617~7447184050"
-general/android/enable_r8_optimization=false
-general/android/disable_initialization_optimization=false
-general/android/disable_ad_loading_optimization=false
-general/ios/enabled=true
 general/ios/app_id="ca-app-pub-4839644126711617~1601271488"
-mediation/applovin=false
-mediation/bidmachine=false
-mediation/chartboost=false
-mediation/dtexchange=false
-mediation/imobile=false
-mediation/inmobi=false
-mediation/ironsource=false
-mediation/line=false
-mediation/maio=false
-mediation/meta=false
-mediation/mintegral=false
-mediation/moloco=false
-mediation/mytarget=false
-mediation/pangle=false
-mediation/pubmatic=false
-mediation/unity_ads=false
-mediation/vungle=false
 
 [animation]
 
@@ -63,17 +41,16 @@ TestResolution="*res://autoload/test_resolution.gd"
 TransitionScreen="*res://scenes/transition_screen.tscn"
 HistoryManager="*res://autoload/HistoryManager.gd"
 PuzzleSaveManager="*res://autoload/PuzzleSaveManager.gd"
+PlayerProgress="*res://autoload/player_progress.gd"
 PlatformServices="*res://distribution/platform_services.gd"
 DeepLink="*res://autoload/DeepLink.gd"
 UpdateCheck="*res://autoload/UpdateCheck.gd"
+CrazyGamesBridge="*uid://ct1w2qi2uoeyp"
+CrazyGames="*uid://dj5v7kwl7y4ef"
 PlayFabTools="*res://autoload/PlayFab.tscn"
 Analyzer="*res://autoload/Analyzer.gd"
 EventLoggerAutoload="*res://autoload/EventLogger.gd"
 ScrollHintService="*res://autoload/ScrollHintService.gd"
-
-[cifraletra]
-
-distribution/editor_preview="crazygames"
 
 [display]
 
@@ -82,14 +59,14 @@ window/size/viewport_height=2622
 window/size/initial_position_type=4
 window/size/initial_position=Vector2i(0, 100)
 window/size/always_on_top=true
-window/size/window_width_override=821
-window/size/window_height_override=462
+window/size/window_width_override=1216
+window/size/window_height_override=684
 window/stretch/mode="viewport"
 window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/distribution_preview/plugin.cfg", "res://addons/alignment-tool/plugin.cfg", "res://addons/admob/plugin.cfg", "res://addons/cifraletra_iap/plugin.cfg", "res://addons/GodotGooglePlayBilling/plugin.cfg")
+enabled=PackedStringArray("res://addons/distribution_preview/plugin.cfg", "res://addons/alignment-tool/plugin.cfg", "res://addons/admob/plugin.cfg", "res://addons/cifraletra_iap/plugin.cfg", "res://addons/GodotGooglePlayBilling/plugin.cfg", "res://addons/crazysdk-godot-4/plugin.cfg")
 
 [gui]
 

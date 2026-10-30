@@ -299,6 +299,8 @@ func add_result(player_name: String, score: int, breakdown: Dictionary = {}) -> 
 	_historial.append(entry)
 	_save_history(_historial)
 	_recompute_stats()
+	if typeof(PlayerProgress) != TYPE_NIL:
+		PlayerProgress.note_match_finished(entry)
 	if resultado and not GameManager.is_onboarding_session():
 		PuzzleSaveManager.mark_completed(int(GameManager.id_frase))
 		if GameManager.session_source == GameManager.SOURCE_DAILY:
@@ -335,6 +337,8 @@ func grant_completion_star() -> void:
 		_historial[i] = row
 		_save_history(_historial)
 		_recompute_stats()
+		if typeof(PlayerProgress) != TYPE_NIL:
+			PlayerProgress.note_completion_star()
 		return
 
 func _calcula_vidas_perdidas() -> int:

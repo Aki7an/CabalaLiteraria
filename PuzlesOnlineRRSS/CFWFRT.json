@@ -1,0 +1,61 @@
+
+{
+  "id": 5001,
+  "version": 1,
+  "category": "efemerides",
+  "image": "CFWFRT.webp",
+  "date": "1903-12-17",
+  "author": null,
+  "source": "Smithsonian National Air and Space Museum",
+  "languages": {
+    "es": {
+      "title": "El primer vuelo de los hermanos Wright",
+      "phrase": "17/12/1903: los hermanos Wright lograron el primer vuelo con motor controlado.",
+      "hint": "Dos pioneros de la aviación despegan en Carolina del Norte.",
+      "difficulty": 2,
+      "free_letters": ["H", "M", "C"]
+    },
+    "en": {
+      "title": "The Wright brothers' first flight",
+      "phrase": "17/12/1903: the Wright brothers achieved the first controlled, powered flight.",
+      "hint": "Two aviation pioneers took off in North Carolina.",
+      "difficulty": 2,
+      "free_letters": ["W", "C", "P"]
+    },
+    "eu": {
+      "title": "Wright anaien lehen hegaldia",
+      "phrase": "17/12/1903: Wright anaiek motordun lehen hegaldi kontrolatua egin zuten.",
+      "hint": "Abiazioaren bi aitzindari Ipar Carolinan aireratu ziren.",
+      "difficulty": 2,
+      "free_letters": ["W", "K", "M"]
+    },
+    "fr": {
+      "title": "Le premier vol des frères Wright",
+      "phrase": "17/12/1903: les frères Wright ont réussi le premier vol motorisé et contrôlé.",
+      "hint": "Deux pionniers de l'aviation ont décollé en Caroline du Nord.",
+      "difficulty": 2,
+      "free_letters": ["W", "M", "C"]
+    },
+    "de": {
+      "title": "Der erste Flug der Brüder Wright",
+      "phrase": "17/12/1903: die Brüder Wright schafften den ersten gesteuerten Motorflug.",
+      "hint": "Zwei Flugpioniere starteten in North Carolina.",
+      "difficulty": 2,
+      "free_letters": ["W", "M", "G"]
+    },
+    "pt": {
+      "title": "O primeiro voo dos irmãos Wright",
+      "phrase": "17/12/1903: os irmãos Wright realizaram o primeiro voo motorizado controlado.",
+      "hint": "Dois pioneiros da aviação descolaram na Carolina do Norte.",
+      "difficulty": 2,
+      "free_letters": ["W", "M", "C"]
+    },
+    "it": {
+      "title": "Il primo volo dei fratelli Wright",
+      "phrase": "17/12/1903: i fratelli Wright realizzarono il primo volo a motore controllato.",
+      "hint": "Due pionieri dell'aviazione decollarono nella Carolina del Nord.",
+      "difficulty": 2,
+      "free_letters": ["W", "M", "C"]
+    }
+  }
+}

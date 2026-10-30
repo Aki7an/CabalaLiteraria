@@ -21,6 +21,13 @@ func show_rewarded() -> bool:
 	return await _service().show_rewarded()
 
 
+func login_user() -> Dictionary:
+	var service := _service()
+	if service.has_method("login_user"):
+		return await service.login_user()
+	return {}
+
+
 func _service() -> RefCounted:
 	if _adapter == null:
 		var path: String = _SCRIPTS.get(Distribution.current(), _SCRIPTS[Distribution.MOBILE])

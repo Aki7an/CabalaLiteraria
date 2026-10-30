@@ -61,6 +61,11 @@ const COLOR_SELECTION := Color(0.769222, 0.769996, 0.302051, 1.0)
 var _remaining_hint_tween: Tween
 var _remaining_hint_active := false
 var _same_number_highlight := false
+var _tile_scaled := false
+var _wide_tile_active := false
+var _wide_layout_saved := false
+var _label_backup: Array[Dictionary] = []
+var _marco_backup: Array[Dictionary] = []
 
 func _ready():
 	add_to_group("Celda")
@@ -68,12 +73,20 @@ func _ready():
 	_inicializar_letra()
 	_inicializar_numero()
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	if not resized.is_connected(_sync_tile_scale):
+		resized.connect(_sync_tile_scale)
 	var button := get_node_or_null("Fondo/Button") as BaseButton
 	if button:
 		button.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
 	SignalManager.update_size_celdas.connect(set_font_size)
 	
 func set_font_size() -> void:
+	if _is_wide_board():
+		_apply_wide_tile()
+		return
+	if _wide_tile_active:
+		_restore_wide_tile()
+	_sync_tile_scale()
 	set_letter_font_size()
 	set_number_font_size()
 	
@@ -93,6 +106,8 @@ func _inicializar_puntuacion() -> void:
 	celda_selected.visible = false
 	
 func set_letter_font_size() -> void:
+	if _use_wide_letter_size():
+		return
 	var size := 85
 	if GameManager.NUM_COLUMNAS == 8:
 		size = 120
@@ -106,6 +121,7 @@ func set_letter_font_size() -> void:
 		size = 90
 	if _displayed_board_letter() == "J":
 		size = maxi(roundi(float(size) * 0.78), 1)
+	size = maxi(roundi(float(size) * _board_font_scale()), 8)
 	label_letra.add_theme_font_size_override("font_size", size)
 
 
@@ -114,7 +130,207 @@ func _displayed_board_letter() -> String:
 	return shown.strip_edges().to_upper() 
 		
 func set_number_font_size() -> void:
-	label_numero.add_theme_font_size_override("font_size", font_size_inicial)
+	if _use_wide_letter_size():
+		return
+	var size := maxi(roundi(float(font_size_inicial) * _board_font_scale()), 8)
+	label_numero.add_theme_font_size_override("font_size", size)
+
+
+func _sync_tile_scale() -> void:
+	if _wide_tile_active:
+		_layout_wide_tile()
+		return
+	if panel_celda == null or not is_inside_tree():
+		return
+	var canvas := get_tree().get_first_node_in_group("PuzzleCanvas")
+	var fitting := canvas != null and bool(canvas.get("_fit_all_rows"))
+	var source := Vector2.ZERO
+	if canvas != null:
+		source = canvas.get("fit_source_size")
+	if not fitting or source.x < 2.0 or source.y < 2.0 or size.x < 2.0 or size.y < 2.0:
+		if _tile_scaled:
+			_restore_tile_scale()
+		return
+	panel_celda.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	panel_celda.position = Vector2.ZERO
+	panel_celda.size = source
+	panel_celda.pivot_offset = Vector2.ZERO
+	panel_celda.scale = Vector2(size.x / source.x, size.y / source.y)
+	_tile_scaled = true
+	clip_contents = true
+
+
+func _restore_tile_scale() -> void:
+	if panel_celda == null:
+		return
+	panel_celda.set_anchors_preset(Control.PRESET_FULL_RECT)
+	panel_celda.offset_left = 0.0
+	panel_celda.offset_top = 0.0
+	panel_celda.offset_right = 0.0
+	panel_celda.offset_bottom = 0.0
+	panel_celda.scale = Vector2.ONE
+	panel_celda.pivot_offset = Vector2.ZERO
+	_tile_scaled = false
+	clip_contents = false
+
+
+func _use_wide_letter_size() -> bool:
+	if not (_wide_tile_active or _is_wide_board()):
+		return false
+	if _wide_tile_active:
+		_layout_wide_tile()
+	else:
+		_apply_wide_tile()
+	return true
+
+
+func _is_wide_board() -> bool:
+	if not is_inside_tree():
+		return false
+	var canvas := get_tree().get_first_node_in_group("PuzzleCanvas")
+	return canvas != null and bool(canvas.get("_fit_all_rows"))
+
+
+func _punctuation_labels() -> Array[Label]:
+	return [
+		label_puntuacion_punto,
+		label_puntuacion_coma,
+		label_puntuacion_punto_coma,
+		label_puntuacion_dos_puntos,
+		label_puntuacion_comillas_inicio,
+		label_puntuacion_comillas_fin,
+		label_puntuacion_exclamación_inicio,
+		label_puntuacion_exclamación_fin,
+		label_puntuacion_e_interrogacion_inicio,
+		label_puntuacion_e_interrogacion_fin,
+	]
+
+
+func _apply_wide_tile() -> void:
+	if panel_celda == null:
+		return
+	_restore_tile_scale()
+	_remember_wide_layout()
+	_wide_tile_active = true
+	_layout_wide_tile()
+
+
+func _layout_wide_tile() -> void:
+	if label_numero == null or label_letra == null or size.x < 2.0:
+		return
+	_place_band(label_numero, 0.0, 0.30)
+	label_numero.add_theme_font_size_override("font_size", maxi(8, int(size.x * 0.42)))
+	_place_band(label_letra, 0.24, 1.0)
+	var letter_size := maxi(10, int(minf(size.x * 0.82, size.y * 0.70)))
+	label_letra.add_theme_font_size_override("font_size", letter_size)
+	for mark in _punctuation_labels():
+		if mark == null:
+			continue
+		_place_band(mark, 0.24, 1.0)
+		mark.add_theme_font_size_override("font_size", letter_size)
+	for marco_name in ["Marco1", "Marco2", "Marco3", "Marco4"]:
+		var marco := panel_celda.get_node_or_null(marco_name) as Control
+		if marco == null:
+			continue
+		if marco_name == "Marco1":
+			marco.custom_minimum_size = Vector2(0, 1)
+			marco.offset_top = 0.0
+			marco.offset_bottom = 1.0
+		elif marco_name == "Marco4":
+			marco.anchor_top = 1.0
+			marco.offset_top = -1.0
+			marco.offset_bottom = 0.0
+		elif marco_name == "Marco2":
+			marco.custom_minimum_size = Vector2(1, 0)
+			marco.offset_left = 0.0
+			marco.offset_right = 1.0
+		else:
+			marco.custom_minimum_size = Vector2(1, 0)
+			marco.offset_left = -1.0
+			marco.offset_right = 0.0
+
+
+func _place_band(label: Label, top: float, bottom: float) -> void:
+	label.layout_mode = 1
+	label.anchor_left = 0.0
+	label.anchor_top = top
+	label.anchor_right = 1.0
+	label.anchor_bottom = bottom
+	label.offset_left = 0.0
+	label.offset_top = 0.0
+	label.offset_right = 0.0
+	label.offset_bottom = 0.0
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+
+
+func _remember_wide_layout() -> void:
+	if _wide_layout_saved or panel_celda == null:
+		return
+	_label_backup.clear()
+	for label in [label_numero, label_letra]:
+		_label_backup.append(_control_snapshot(label))
+	for mark in _punctuation_labels():
+		_label_backup.append(_control_snapshot(mark))
+	_marco_backup.clear()
+	for marco_name in ["Marco1", "Marco2", "Marco3", "Marco4"]:
+		_marco_backup.append(_control_snapshot(panel_celda.get_node_or_null(marco_name) as Control))
+	_wide_layout_saved = true
+
+
+func _control_snapshot(node: Control) -> Dictionary:
+	if node == null:
+		return {}
+	return {
+		"node": node,
+		"layout_mode": node.layout_mode,
+		"anchors": Rect2(node.anchor_left, node.anchor_top, node.anchor_right, node.anchor_bottom),
+		"offsets": Rect2(node.offset_left, node.offset_top, node.offset_right, node.offset_bottom),
+		"min_size": node.custom_minimum_size,
+		"align_h": (node as Label).horizontal_alignment if node is Label else -1,
+		"align_v": (node as Label).vertical_alignment if node is Label else -1,
+	}
+
+
+func _restore_wide_tile() -> void:
+	_wide_tile_active = false
+	for item in _label_backup:
+		_restore_control_snapshot(item)
+	for item in _marco_backup:
+		_restore_control_snapshot(item)
+	_wide_layout_saved = false
+	_label_backup.clear()
+	_marco_backup.clear()
+
+
+func _restore_control_snapshot(item: Dictionary) -> void:
+	if item.is_empty():
+		return
+	var node := item["node"] as Control
+	if node == null:
+		return
+	var anchors: Rect2 = item["anchors"]
+	var offsets: Rect2 = item["offsets"]
+	node.layout_mode = int(item["layout_mode"])
+	node.anchor_left = anchors.position.x
+	node.anchor_top = anchors.position.y
+	node.anchor_right = anchors.size.x
+	node.anchor_bottom = anchors.size.y
+	node.offset_left = offsets.position.x
+	node.offset_top = offsets.position.y
+	node.offset_right = offsets.size.x
+	node.offset_bottom = offsets.size.y
+	node.custom_minimum_size = item["min_size"]
+	if node is Label and int(item["align_h"]) >= 0:
+		(node as Label).horizontal_alignment = int(item["align_h"]) as HorizontalAlignment
+		(node as Label).vertical_alignment = int(item["align_v"]) as VerticalAlignment
+
+
+func _board_font_scale() -> float:
+	var canvas := get_tree().get_first_node_in_group("PuzzleCanvas") if is_inside_tree() else null
+	if canvas != null and canvas.get("fit_font_scale") != null:
+		return maxf(float(canvas.fit_font_scale), 0.12)
+	return 1.0
 		
 		
 func _inicializar_letra() -> void:
@@ -229,7 +445,10 @@ func set_order(order:int) -> void:
 	orden = order
 	
 func asignar_letra(order:int) -> void:
-	label_numero.add_theme_font_size_override("font_size",font_size_asignada)
+	if _use_wide_letter_size():
+		return
+	var size := maxi(roundi(float(font_size_asignada) * _board_font_scale()), 8)
+	label_numero.add_theme_font_size_override("font_size", size)
 
 func _on_button_pressed() -> void:
 	if _board_drag_blocks_selection():

@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" path="res://scenes/game/PanelColorsPortrait.tscn" id="7_colors"]
 [ext_resource type="PackedScene" path="res://scenes/game/panel_letras_portrait.tscn" id="8_letters"]
 [ext_resource type="Script" uid="uid://b3o0jxdhl1rdw" path="res://scenes/main/puzzle_scrollbar.gd" id="9_scroll"]
+[ext_resource type="FontVariation" uid="uid://b30tgh5qseyh0" path="res://GUI/new_font_Rubik_semibold.tres" id="10_font"]
+[ext_resource type="PackedScene" uid="uid://kiyk8ts3o7l7" path="res://scenes/crazygames/WidePlayColumn.tscn" id="11_wide"]
 
 [sub_resource type="StyleBoxFlat" id="Style_background"]
 bg_color = Color(0.971, 0.895, 0.696, 1)
@@ -60,6 +62,30 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 shadow_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="Style_view"]
+bg_color = Color(0.93, 0.42, 0.08, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 8
+border_color = Color(0.62, 0.24, 0.02, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="Style_view_pressed"]
+bg_color = Color(0.78, 0.32, 0.04, 1)
+border_width_left = 4
+border_width_top = 8
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.5, 0.18, 0.02, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
 
 [node name="CrazyGamesPuzzle" type="Control" unique_id=1889823984]
 custom_minimum_size = Vector2(1280, 720)
@@ -141,33 +167,118 @@ theme_override_styles/panel = SubResource("Style_thumb")
 
 [node name="PanelUP" parent="Game/CanvasLayer" unique_id=1886383320 instance=ExtResource("6_hud")]
 layout_mode = 0
-offset_left = 704.0
-offset_top = 16.0
-offset_right = 1878.0
-offset_bottom = 564.0
+offset_left = 714.0
+offset_top = 10.0
+offset_right = 1888.0
+offset_bottom = 694.087
 scale = Vector2(0.46, 0.46)
+
+[node name="GameHeader" parent="Game/CanvasLayer/PanelUP" index="0" unique_id=901576936]
+custom_minimum_size = Vector2(1174, 440)
+offset_bottom = 460.86954
+
+[node name="Margin" parent="Game/CanvasLayer/PanelUP/GameHeader" index="0" unique_id=1806907331]
+metadata/_edit_lock_ = true
+
+[node name="Control" type="Control" parent="Game/CanvasLayer/PanelUP/GameHeader/Margin/Main" parent_id_path=PackedInt32Array(1886383320, 901576936, 1001130713) index="0" unique_id=1938236264]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="CgLevelBar" type="HBoxContainer" parent="Game/CanvasLayer/PanelUP/GameHeader/Margin/Main" parent_id_path=PackedInt32Array(1886383320, 901576936, 1001130713) index="1" unique_id=1270429376]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Control" type="Control" parent="Game/CanvasLayer/PanelUP/GameHeader/Margin/Main/CgLevelBar" unique_id=1996736832]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+
+[node name="UserLabel" type="Label" parent="Game/CanvasLayer/PanelUP/GameHeader/Margin/Main/CgLevelBar" unique_id=1815969058]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.26, 0.12, 1)
+theme_override_fonts/font = ExtResource("10_font")
+theme_override_font_sizes/font_size = 40
+text = "Invitado"
+vertical_alignment = 1
+
+[node name="LevelLabel" type="Label" parent="Game/CanvasLayer/PanelUP/GameHeader/Margin/Main/CgLevelBar" unique_id=1815969057]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.78, 0.28, 0.02, 1)
+theme_override_fonts/font = ExtResource("10_font")
+theme_override_font_sizes/font_size = 55
+text = "NIVEL: 1"
+vertical_alignment = 1
+
+[node name="ViewButton" type="Button" parent="Game/CanvasLayer/PanelUP/GameHeader/Margin/Main/CgLevelBar" unique_id=1846050769]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(350, 80)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 0.98, 0.94, 1)
+theme_override_fonts/font = ExtResource("10_font")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("Style_view")
+theme_override_styles/pressed = SubResource("Style_view_pressed")
+theme_override_styles/hover = SubResource("Style_view")
+text = "CAMBIO DE VISTA"
+
+[node name="CategoryWrap" parent="Game/CanvasLayer/PanelUP/GameHeader/Margin/Main/Top" parent_id_path=PackedInt32Array(1886383320, 901576936, 436517566) index="0" unique_id=810313474]
+theme_override_constants/margin_top = 4
+
+[node name="ButtonTheme" parent="Game/CanvasLayer/PanelUP" index="1" unique_id=1087347642]
+offset_left = 28.26081
+offset_top = 480.43478
+offset_right = 373.2608
+offset_bottom = 668.4348
+
+[node name="ButtonHint" parent="Game/CanvasLayer/PanelUP" index="2" unique_id=848120793]
+offset_left = 400.2608
+offset_top = 480.43478
+offset_right = 745.2608
+offset_bottom = 668.4348
+
+[node name="ButtonReveal" parent="Game/CanvasLayer/PanelUP" index="3" unique_id=128293336]
+offset_left = 772.2608
+offset_top = 480.43478
+offset_right = 1144.2607
+offset_bottom = 668.4348
 
 [node name="PanelColors" parent="Game/CanvasLayer" unique_id=1130936767 instance=ExtResource("7_colors")]
 layout_mode = 0
-offset_left = 704.0
-offset_top = 266.0
-offset_right = 1874.0
-offset_bottom = 552.0
-scale = Vector2(0.46, 0.46)
+offset_left = 715.0
+offset_top = 326.0
+offset_right = 1963.8374
+offset_bottom = 612.0
+scale = Vector2(0.43, 0.43)
 
 [node name="PanelLetras" parent="Game/CanvasLayer" unique_id=1396186002 instance=ExtResource("8_letters")]
 layout_mode = 0
-offset_left = 704.0
-offset_top = 416.0
-offset_right = 1874.0
-offset_bottom = 998.0
-scale = Vector2(0.46, 0.46)
+offset_left = 717.0
+offset_top = 458.0
+offset_right = 1968.1627
+offset_bottom = 1040.0
+scale = Vector2(0.43, 0.43)
+
+[node name="WidePlayColumn" parent="Game/CanvasLayer" unique_id=26334220 instance=ExtResource("11_wide")]
+visible = false
+layout_mode = 0
+offset_left = 904.0
+offset_top = 8.0
+offset_right = 1272.0
+offset_bottom = 712.0
 
 [node name="OverlayHost" type="Control" parent="Game/CanvasLayer" unique_id=64802513]
 anchors_preset = 0
 offset_right = 1280.0
 offset_bottom = 720.0
 mouse_filter = 2
+metadata/_edit_lock_ = true
 
 [node name="ErrorFeedback" type="CanvasLayer" parent="Game" unique_id=8214556]
 script = ExtResource("3_error")
+
+[editable path="Game/CanvasLayer/PanelUP"]
+[editable path="Game/CanvasLayer/PanelUP/GameHeader"]

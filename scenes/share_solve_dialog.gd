@@ -14,9 +14,16 @@ const COLOR_CHECK_OFF := Color(1, 0.98, 0.93, 1)
 var _share_btn: Button
 var _share_box: Panel
 var _share_mark: Label
+var _share_label: Label
 var _hide_btn: Button
 var _hide_box: Panel
 var _hide_mark: Label
+var _hide_label: Label
+var _card: Panel
+var _title: Label
+var _ask: Label
+var _hint: Label
+var _continue: Button
 var _closed := false
 
 
@@ -27,6 +34,12 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	z_index = 40
 	_build()
+	if Distribution.is_horizontal():
+		clip_contents = true
+		if not resized.is_connected(_apply_compact_layout):
+			resized.connect(_apply_compact_layout)
+		_apply_compact_layout()
+		call_deferred("_apply_compact_layout")
 
 
 func _build() -> void:
@@ -36,6 +49,7 @@ func _build() -> void:
 	card.mouse_filter = Control.MOUSE_FILTER_STOP
 	card.add_theme_stylebox_override("panel", _card_style())
 	add_child(card)
+	_card = card
 
 	var title := Label.new()
 	title.position = Vector2(48, 48)
@@ -48,6 +62,7 @@ func _build() -> void:
 	title.add_theme_font_size_override("font_size", 66)
 	title.add_theme_color_override("font_color", COLOR_INK)
 	card.add_child(title)
+	_title = title
 
 	var ask := Label.new()
 	ask.position = Vector2(56, 186)
@@ -63,6 +78,7 @@ func _build() -> void:
 	ask.add_theme_font_size_override("font_size", 42)
 	ask.add_theme_color_override("font_color", COLOR_INK)
 	card.add_child(ask)
+	_ask = ask
 
 	var share_row := _make_check_row(
 		_t("ShareSolveCheck", "Compartir datos de resolución"),
@@ -74,6 +90,7 @@ func _build() -> void:
 	_share_btn = share_row["button"]
 	_share_box = share_row["box"]
 	_share_mark = share_row["mark"]
+	_share_label = share_row["label"]
 	_share_btn.toggled.connect(_on_share_toggled)
 
 	var hide_row := _make_check_row(
@@ -86,6 +103,7 @@ func _build() -> void:
 	_hide_btn = hide_row["button"]
 	_hide_box = hide_row["box"]
 	_hide_mark = hide_row["mark"]
+	_hide_label = hide_row["label"]
 	_hide_btn.toggled.connect(_on_hide_toggled)
 
 	var hint := Label.new()
@@ -102,6 +120,7 @@ func _build() -> void:
 	hint.add_theme_font_size_override("font_size", 34)
 	hint.add_theme_color_override("font_color", COLOR_MUTED)
 	card.add_child(hint)
+	_hint = hint
 
 	var continue_btn := Button.new()
 	continue_btn.position = Vector2(196, 1080)
@@ -119,6 +138,75 @@ func _build() -> void:
 	continue_btn.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	continue_btn.pressed.connect(_on_continue_pressed)
 	card.add_child(continue_btn)
+	_continue = continue_btn
+
+
+func _apply_compact_layout() -> void:
+	if _card == null:
+		return
+	var bounds := size
+	if bounds.x < 8.0 or bounds.y < 8.0:
+		var parent_control := get_parent() as Control
+		if parent_control != null:
+			bounds = parent_control.size
+	if bounds.x < 8.0 or bounds.y < 8.0:
+		bounds = Vector2(1280, 720)
+	var margin := 28.0
+	var avail := Vector2(maxf(bounds.x - margin * 2.0, 320.0), maxf(bounds.y - margin * 2.0, 280.0))
+	# Title, question, both checks, hint and continue, stacked for a 1280x720 frame.
+	var block_h := 500.0
+	var scale_y := 1.0 if avail.y >= block_h else avail.y / block_h
+	var card_w := minf(940.0, avail.x)
+	var card_h := minf(block_h * scale_y, avail.y)
+	_card.position = Vector2((bounds.x - card_w) * 0.5, (bounds.y - card_h) * 0.5)
+	_card.size = Vector2(card_w, card_h)
+	var pad := 36.0 * scale_y
+	var inner_w := card_w - pad * 2.0
+	var title_h := 50.0 * scale_y
+	var ask_h := 124.0 * scale_y
+	var row_h := 54.0 * scale_y
+	var hint_h := 52.0 * scale_y
+	var button_h := 68.0 * scale_y
+	var y := 18.0 * scale_y
+	_place(_title, pad, y, inner_w, title_h)
+	_title.add_theme_font_size_override("font_size", int(round(38.0 * scale_y)))
+	y += title_h + 6.0 * scale_y
+	_place(_ask, pad, y, inner_w, ask_h)
+	_ask.add_theme_font_size_override("font_size", int(round(24.0 * scale_y)))
+	y += ask_h + 10.0 * scale_y
+	_place(_share_btn, pad, y, inner_w, row_h)
+	_fit_check_row(_share_box, _share_mark, _share_label, scale_y)
+	y += row_h + 6.0 * scale_y
+	_place(_hide_btn, pad, y, inner_w, row_h)
+	_fit_check_row(_hide_box, _hide_mark, _hide_label, scale_y)
+	y += row_h + 4.0 * scale_y
+	_place(_hint, pad, y, inner_w, hint_h)
+	_hint.add_theme_font_size_override("font_size", int(round(18.0 * scale_y)))
+	var button_w := minf(440.0, inner_w)
+	var button_y := card_h - button_h - 16.0 * scale_y
+	if button_y < y + hint_h:
+		button_y = y + hint_h + 8.0 * scale_y
+	_continue.position = Vector2((card_w - button_w) * 0.5, button_y)
+	_continue.size = Vector2(button_w, button_h)
+	_continue.custom_minimum_size = Vector2(button_w, button_h)
+	_continue.add_theme_font_size_override("font_size", int(round(30.0 * scale_y)))
+
+
+func _place(control: Control, x: float, y: float, width: float, height: float) -> void:
+	if control == null:
+		return
+	control.position = Vector2(x, y)
+	control.size = Vector2(width, height)
+
+
+func _fit_check_row(box: Panel, mark: Label, label: Label, scale_y: float) -> void:
+	var box_size := 40.0 * scale_y
+	if box != null:
+		box.custom_minimum_size = Vector2(box_size, box_size)
+	if mark != null:
+		mark.add_theme_font_size_override("font_size", int(round(26.0 * scale_y)))
+	if label != null:
+		label.add_theme_font_size_override("font_size", int(round(22.0 * scale_y)))
 
 
 func _make_check_row(text: String, checked: bool) -> Dictionary:
@@ -174,6 +262,7 @@ func _make_check_row(text: String, checked: bool) -> Dictionary:
 		"button": button,
 		"box": box,
 		"mark": mark,
+		"label": label,
 	}
 
 

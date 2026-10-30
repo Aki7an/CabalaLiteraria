@@ -40,8 +40,20 @@ func _ready() -> void:
 	_milestones.name = "Milestones"
 	add_child(_milestones)
 	#login_with_custom_id(playfab_id,true)
-	print("playfabid: " , playfab_id)
-	var ok: bool = await PlayFabTools.login_with_custom_id(playfab_id, true)
+	var custom_id := playfab_id
+	if Distribution.current() == Distribution.CRAZYGAMES:
+		var crazy_login: Dictionary = await PlatformServices.login_user()
+		var crazy_id := str(crazy_login.get("custom_id", "")).strip_edges()
+		if crazy_id != "":
+			custom_id = crazy_id
+			playfab_id = crazy_id
+		var crazy_name := str(crazy_login.get("username", "")).strip_edges()
+		if typeof(GameManager) != TYPE_NIL:
+			GameManager.crazygames_username = crazy_name
+			if crazy_name != "":
+				GameManager.set_player_name(crazy_name)
+	print("playfabid: " , custom_id)
+	var ok: bool = await PlayFabTools.login_with_custom_id(custom_id, true)
 	if ok:
 		print("Listo. Ticket:", PlayFabTools.session_ticket, "ID:", PlayFabTools.playfab_id)
 		if typeof(GameManager) != TYPE_NIL:

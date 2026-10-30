@@ -9,8 +9,8 @@ const SCENE_MOBILE := "res://scenes/mobile/MobileMain.tscn"
 const SCENE_CRAZY := "res://scenes/crazygames/CrazyGamesMain.tscn"
 
 const DESIGN_MOBILE := Vector2i(1206, 2622)
-const DESIGN_WEB := Vector2i(1280, 720)
-const PREVIEW_WEB_WINDOW := Vector2i(821, 462)
+const DESIGN_WEB := Vector2i(1216, 684)
+const PREVIEW_WEB_WINDOW := Vector2i(1216, 684)
 
 var _preview_hold := 0
 

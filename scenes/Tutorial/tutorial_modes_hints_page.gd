@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends Control
 
 @onready var _page_title: Label = %PageTitle
 @onready var _title_1: Label = %Title1

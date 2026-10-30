@@ -28,9 +28,6 @@ const FONT_UI: Font = preload("res://GUI/new_font_Rubik_semibold.tres")
 const FONT_TITLE_LETTER: Font = preload("res://fonts/Fonts/Nunito/static/Nunito-ExtraBold.ttf")
 const ICON_LOCK: Texture2D = preload("res://images/ui_icon_lock.svg")
 const PATH_SHOP := "res://scenes/MenuShop.tscn"
-const CZ_PUZZLE_SCENE := "res://scenes/crazygames/CrazyGamesPuzzle.tscn"
-const CZ_DIRECT_PUZZLE_ID := 3085
-
 var _title_letter_font: FontVariation
 var _play_blink_token := 0
 var _intro_token := 0
@@ -498,27 +495,12 @@ func _start_crazygames_puzzle() -> void:
 		GameManager.button_blink(button_play)
 	SoundManager.play("ButtonClick")
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	GameManager.session_source = GameManager.SOURCE_NONE
-	GameManager.allow_completed_replay = false
-	GameManager.onboarding_stage = 0
-	for raw in GameManager.frases_db:
-		if typeof(raw) != TYPE_DICTIONARY:
-			continue
-		var item: Dictionary = raw
-		if int(item.get("index", -1)) != CZ_DIRECT_PUZZLE_ID:
-			continue
-		GameManager.set_game_mode_actual(GameManager.level_game_mode(item))
-		GameManager.set_dificultad_actual(int(item.get("difficulty", 1)))
-		break
-	GameManager.seleccionar_por_index(CZ_DIRECT_PUZZLE_ID)
-	PuzzleSaveManager.prepare_current_puzzle_cipher()
-	GameManager.puzzle_enter_pending = true
-	GameManager.set_go_to_game_disable()
-	var tree := get_tree()
-	if tree.paused:
-		tree.paused = false
-	SignalManager.partida_iniciada.emit()
-	tree.change_scene_to_file(CZ_PUZZLE_SCENE)
+	_open_crazygames_puzzle()
+
+
+func _open_crazygames_puzzle() -> void:
+	await PlayerProgress.ensure_loaded()
+	PlayerProgress.open_current_puzzle()
 
 
 func _start_onboarding() -> void:
@@ -721,7 +703,8 @@ func _on_button_stats_pressed() -> void:
 
 func _on_button_tutorial_pressed() -> void:
 	GameManager.set_go_to_game_disable()
-	_go_to("res://scenes/MenuTutorial.tscn", button_tutorial)
+	var tutorial_scene := "res://scenes/crazygames/MenuTutorialCG.tscn" if Distribution.is_horizontal() else "res://scenes/MenuTutorial.tscn"
+	_go_to(tutorial_scene, button_tutorial)
 
 
 func _boot_visuals() -> void:

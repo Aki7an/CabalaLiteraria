@@ -30,7 +30,12 @@ func _ready() -> void:
 	_resize_sheen()
 
 	add_to_group(GROUP_SYNC)
-	await get_tree().process_frame
+	var tree := get_tree()
+	if tree == null:
+		return
+	await tree.process_frame
+	if not is_inside_tree():
+		return
 	_schedule_intro_all_synced()
 
 func _on_resized() -> void:

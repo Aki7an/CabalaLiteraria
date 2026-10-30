@@ -87,6 +87,8 @@ func _show_language_lock_notice() -> void:
 
 
 func _should_show_level_intro() -> bool:
+	if Distribution.is_horizontal():
+		return false
 	if Engine.has_meta("store_screenshot") and bool(Engine.get_meta("store_screenshot")):
 		return false
 	if Engine.has_meta("video_trailer") and bool(Engine.get_meta("video_trailer")):

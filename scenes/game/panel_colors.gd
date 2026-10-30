@@ -39,6 +39,48 @@ func _ready() -> void:
 	_apply_onboarding_color_lock()
 
 
+func apply_wide_colors(enabled: bool) -> void:
+	var row := get_node_or_null("HBoxContainer") as HBoxContainer
+	var instruction := get_node_or_null("Instruction") as CanvasItem
+	if row == null or button_0 == null:
+		return
+	var erase_label := button_0.get_node_or_null("Content/Label") as CanvasItem
+	if enabled:
+		if instruction:
+			instruction.visible = false
+		if button_0.get_parent() != row:
+			button_0.reparent(row)
+			var slot := button_5.get_index() + 1 if button_5 != null else row.get_child_count() - 1
+			row.move_child(button_0, clampi(slot, 0, row.get_child_count() - 1))
+		var erase_row := get_node_or_null("EraseRow")
+		if erase_row:
+			erase_row.queue_free()
+		button_0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		button_0.size_flags_stretch_ratio = 1.0
+		button_0.custom_minimum_size = Vector2.ZERO
+		if erase_label:
+			erase_label.visible = false
+		row.offset_bottom = 157.0
+		return
+	if instruction:
+		instruction.visible = true
+	if button_0.get_parent() != row:
+		button_0.reparent(row)
+		var after := button_5.get_index() + 1 if button_5 != null else row.get_child_count() - 1
+		row.move_child(button_0, clampi(after, 0, row.get_child_count() - 1))
+	button_0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	button_0.size_flags_stretch_ratio = 1.55
+	button_0.custom_minimum_size = Vector2.ZERO
+	if erase_label:
+		erase_label.visible = true
+	var erase_row := get_node_or_null("EraseRow")
+	if erase_row:
+		erase_row.queue_free()
+	row.offset_bottom = 157.0
+	offset_bottom = 286.0
+	size.y = 286.0
+
+
 func _apply_onboarding_color_lock() -> void:
 	if not GameManager.is_onboarding_session() or GameManager.onboarding_stage != 1:
 		return

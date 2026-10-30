@@ -12,21 +12,11 @@ const PATH_GAME := "res://scenes/App.tscn"
 @export var style_dot_off: StyleBoxFlat
 @export var style_check_off: StyleBoxFlat
 @export var style_check_on: StyleBoxFlat
+## When set, the scene is a fixed design (CrazyGames, 1280x720) and is only scaled to the window.
+@export var fit_design := Vector2.ZERO
 
-@onready var _pages: Array[Control] = [
-	$TutorialCard/Pages/Page1,
-	$TutorialCard/Pages/Page2,
-	$TutorialCard/Pages/Page3,
-	$TutorialCard/Pages/Page4,
-	$TutorialCard/Pages/Page5,
-]
-@onready var _dots: Array[Button] = [
-	$TutorialCard/Dots/Dot1,
-	$TutorialCard/Dots/Dot2,
-	$TutorialCard/Dots/Dot3,
-	$TutorialCard/Dots/Dot4,
-	$TutorialCard/Dots/Dot5,
-]
+var _pages: Array[Control] = []
+var _dots: Array[Button] = []
 @onready var _step_badge: Label = $TutorialCard/StepBadge
 @onready var _next_button: Button = %ButtonNext
 @onready var _play_button: Button = %ButtonPlay
@@ -39,6 +29,13 @@ var _page_index := 0
 
 
 func _ready() -> void:
+	_pages = _named_controls($TutorialCard/Pages, "Page")
+	_dots = _named_buttons($TutorialCard/Dots, "Dot")
+	if fit_design.x > 2.0:
+		_apply_fit()
+		var viewport := get_viewport()
+		if viewport != null and not viewport.size_changed.is_connected(_apply_fit):
+			viewport.size_changed.connect(_apply_fit)
 	for page in _pages:
 		_fit_page(page)
 		page.visible = true
@@ -144,6 +141,10 @@ func _sync_footer() -> void:
 	var pregame := _is_pregame()
 	_play_button.visible = pregame
 	_play_button.text = tr("Play").to_upper()
+	if fit_design.x > 2.0:
+		_next_button.visible = not (pregame and last)
+		_next_button.text = tr("EXIT") if last and not pregame else tr("Next")
+		return
 	if pregame:
 		_next_button.visible = not last
 		_next_button.text = tr("Next")
@@ -186,3 +187,30 @@ func _on_button_back_pressed() -> void:
 		_go_to_game()
 	else:
 		_go_to_main()
+
+
+func _named_controls(root: Node, prefix: String) -> Array[Control]:
+	var found: Array[Control] = []
+	for child in root.get_children():
+		if child is Control and str(child.name).begins_with(prefix):
+			found.append(child)
+	return found
+
+
+func _named_buttons(root: Node, prefix: String) -> Array[Button]:
+	var found: Array[Button] = []
+	for child in root.get_children():
+		if child is Button and str(child.name).begins_with(prefix):
+			found.append(child)
+	return found
+
+
+func _apply_fit() -> void:
+	var view := get_viewport_rect().size
+	if view.x < 2.0 or view.y < 2.0 or fit_design.x < 2.0 or fit_design.y < 2.0:
+		return
+	var fitted := minf(view.x / fit_design.x, view.y / fit_design.y)
+	scale = Vector2(fitted, fitted)
+	pivot_offset = Vector2.ZERO
+	size = fit_design
+	position = (view - fit_design * fitted) * 0.5

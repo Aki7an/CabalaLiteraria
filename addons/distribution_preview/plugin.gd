@@ -7,7 +7,7 @@ const LABELS := ["Móvil (Android / iOS)", "CrazyGames", "Web demo"]
 const WINDOW_WIDTH := "display/window/size/window_width_override"
 const WINDOW_HEIGHT := "display/window/size/window_height_override"
 const MOBILE_WINDOW := Vector2i(430, 936)
-const CRAZYGAMES_WINDOW := Vector2i(821, 462)
+const CRAZYGAMES_WINDOW := Vector2i(1216, 684)
 
 var _dock: Control
 var _option: OptionButton
@@ -34,7 +34,7 @@ func _enter_tree() -> void:
 	box.add_child(_option)
 	var note := Label.new()
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	note.text = "Las etiquetas del preset de exportación no se activan al pulsar F5. Esta elección decide qué interfaz abre el editor. CrazyGames abre la ventana a 821×462, densidad 1, sobre la base 1280×720."
+	note.text = "Las etiquetas del preset de exportación no se activan al pulsar F5. Esta elección decide qué interfaz abre el editor. CrazyGames abre la ventana a 1216×684."
 	box.add_child(note)
 	_dock = margin
 	_select_current()

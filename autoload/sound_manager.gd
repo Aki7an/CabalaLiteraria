@@ -26,9 +26,14 @@ const GAME_MUSIC_PATHS: PackedStringArray = [
 	"res://audio/music/12_Espacio Silencioso v2.ogg",
 	"res://audio/music/13_Espacio Silencioso.ogg",
 ]
+const CG_GAME_MUSIC_PATHS: PackedStringArray = [
+	"res://audio/music/01_quiet_contemplation.ogg",
+	"res://audio/music/02_revelation.ogg",
+]
 const GAMEPLAY_SCENE_PATHS: PackedStringArray = [
 	"res://scenes/App.tscn",
 	"res://scenes/main/MainPortrait.tscn",
+	"res://scenes/crazygames/CrazyGamesPuzzle.tscn",
 ]
 const MUSIC_FADE_OUT_SEC := 2.0
 const MUSIC_FADE_IN_SEC := 2.0
@@ -57,6 +62,7 @@ const FAST_FORWARD_SPIN_DOWN_TO := 0.5
 var _registry: Dictionary[String, SoundEntry] = {}
 var _music_player: AudioStreamPlayer
 var _outgoing_player: AudioStreamPlayer
+var _active_menu_path := MENU_MUSIC_PATH
 var _menu_stream: AudioStream
 var _celebration_stream: AudioStream
 var _game_tracks: Array[AudioStream] = []
@@ -578,7 +584,7 @@ func _ensure_current_path() -> void:
 	if not _current_music_path.is_empty() or _music_player == null or _music_player.stream == null:
 		return
 	if _music_player.stream == _menu_stream:
-		_current_music_path = MENU_MUSIC_PATH
+		_current_music_path = _active_menu_path
 		return
 	if _music_player.stream == _celebration_stream:
 		_current_music_path = CELEBRATION_MUSIC_PATH
@@ -604,13 +610,21 @@ func _rebuild_order_around_current() -> void:
 	_music_index = at if at >= 0 else -1
 
 func _setup_background_music() -> void:
-	_menu_stream = _load_audio_stream(MENU_MUSIC_PATH)
+	var menu_path := MENU_MUSIC_PATH
+	var game_paths := GAME_MUSIC_PATHS
+	if Distribution.is_horizontal():
+		menu_path = CG_GAME_MUSIC_PATHS[0]
+		game_paths = CG_GAME_MUSIC_PATHS
+	_active_menu_path = menu_path
+	_menu_stream = _load_audio_stream(menu_path)
+	if _menu_stream != null:
+		_menu_stream = _menu_stream.duplicate()
 	_set_stream_loop(_menu_stream, true)
 	_celebration_stream = _load_audio_stream(CELEBRATION_MUSIC_PATH)
 	_set_stream_loop(_celebration_stream, false)
 	_game_tracks.clear()
 	_game_track_paths = PackedStringArray()
-	for path in GAME_MUSIC_PATHS:
+	for path in game_paths:
 		var stream := _load_audio_stream(path)
 		if stream == null:
 			continue
@@ -866,7 +880,7 @@ func _resume_current_music() -> void:
 func _play_menu_music() -> void:
 	if _music_player == null or _menu_stream == null:
 		return
-	_current_music_path = MENU_MUSIC_PATH
+	_current_music_path = _active_menu_path
 	_music_player.stream = _menu_stream
 	_music_player.play()
 	now_playing_changed.emit()

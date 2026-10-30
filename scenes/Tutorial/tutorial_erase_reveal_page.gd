@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends Control
 
 const STAR_ON := preload("res://images/estrella_plano.png")
 const LocaleDemo := preload("res://scenes/Tutorial/tutorial_locale_demo.gd")

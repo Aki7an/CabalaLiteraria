@@ -11,6 +11,7 @@ const CHIME_SFX: AudioStream = preload("res://audio/MultimediaChime_SFXB.2894.wa
 const COLOR_INK := Color(0.24, 0.14, 0.08, 1)
 const COLOR_BODY := Color(0.32, 0.2, 0.12, 1)
 const CARD_WIDTH := 1120.0
+const CARD_WIDTH_COMPACT := 900.0
 const FADE_IN_SEC := 0.35
 const FADE_OUT_SEC := 1.0
 const LINE_DELAY := 0.12
@@ -71,6 +72,8 @@ var _play_button: Button
 var _lines: Array[Control] = []
 var _star_slots: Array[TextureRect] = []
 var _closing := false
+var _compact := false
+var _card_width := CARD_WIDTH
 var _play_blink: Tween
 
 
@@ -80,9 +83,13 @@ func _ready() -> void:
 	color = Color(1, 1, 1, 0)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	z_index = 90
+	_compact = Distribution.is_horizontal()
+	_card_width = CARD_WIDTH_COMPACT if _compact else CARD_WIDTH
 	_build()
 	_hide_animated_bits()
 	_pause_clock(true)
+	resized.connect(_fit_card)
+	call_deferred("_fit_card")
 	_play_sequence()
 
 
@@ -108,52 +115,60 @@ func _build() -> void:
 	add_child(center)
 
 	_card = PanelContainer.new()
-	_card.custom_minimum_size = Vector2(CARD_WIDTH, 0)
+	_card.custom_minimum_size = Vector2(_card_width, 0)
 	_card.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_card.mouse_filter = Control.MOUSE_FILTER_STOP
 	_card.add_theme_stylebox_override("panel", _card_style())
 	center.add_child(_card)
 
 	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 56)
-	margin.add_theme_constant_override("margin_right", 56)
-	margin.add_theme_constant_override("margin_top", 48)
-	margin.add_theme_constant_override("margin_bottom", 44)
+	var margin_x := 32 if _compact else 56
+	var margin_top := 20 if _compact else 48
+	var margin_bottom := 16 if _compact else 44
+	margin.add_theme_constant_override("margin_left", margin_x)
+	margin.add_theme_constant_override("margin_right", margin_x)
+	margin.add_theme_constant_override("margin_top", margin_top)
+	margin.add_theme_constant_override("margin_bottom", margin_bottom)
 	_card.add_child(margin)
 
 	var col := VBoxContainer.new()
-	col.add_theme_constant_override("separation", 26)
+	col.add_theme_constant_override("separation", 10 if _compact else 26)
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	margin.add_child(col)
 
 	var stars := GameManager.get_puzzle_difficulty_stars()
-	var title := _body(_t("LevelStartTitle") % stars, 56, COLOR_INK)
+	var title_size := 34 if _compact else 56
+	var title := _body(_t("LevelStartTitle") % stars, title_size, COLOR_INK)
 	col.add_child(title)
 	_lines.append(title)
 
 	var star_row := _star_row(stars)
 	col.add_child(star_row)
 
+	var hint_button := Vector2(300, 68) if _compact else Vector2(345, 188)
+	var reveal_button := Vector2(320, 68) if _compact else Vector2(372, 188)
+	var hint_icon := Vector2(34, 34) if _compact else Vector2(76, 76)
+	var reveal_icon := Vector2(30, 30) if _compact else Vector2(64, 64)
 	_add_line(col, _body(_t("LevelStartHintsBefore")))
 	_add_line(col, _hud_action_button(
 		tr("TutHint"),
 		ICON_BULB,
-		Vector2(345, 188),
+		hint_button,
 		Color(1, 0.72, 0.08, 1),
 		Color(0.82, 0.42, 0.02, 1),
 		Color(0.45, 0.2, 0.02, 0.45),
-		Vector2(76, 76)
+		hint_icon
 	))
 	_add_line(col, _body(_t("LevelStartHintsAfter")))
 	_add_line(col, _body(_t("LevelStartRevealBefore")))
 	_add_line(col, _hud_action_button(
 		tr("TutReveal"),
 		ICON_EYE,
-		Vector2(372, 188),
+		reveal_button,
 		Color(0.38, 0.25, 0.72, 1),
 		Color(0.22, 0.13, 0.49, 1),
 		Color(0.12, 0.06, 0.27, 0.58),
-		Vector2(64, 64)
+		reveal_icon
 	))
 	_add_line(col, _body(_t("LevelStartRevealAfter")))
 
@@ -162,17 +177,17 @@ func _build() -> void:
 	if _play_button.text == "StartPuzzle":
 		_play_button.text = "EMPEZAR"
 	_play_button.focus_mode = Control.FOCUS_NONE
-	_play_button.custom_minimum_size = Vector2(520, 130)
+	_play_button.custom_minimum_size = Vector2(280, 58) if _compact else Vector2(520, 130)
 	_play_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_play_button.add_theme_font_override("font", FONT_UI)
-	_play_button.add_theme_font_size_override("font_size", 48)
+	_play_button.add_theme_font_size_override("font_size", 24 if _compact else 48)
 	_play_button.add_theme_color_override("font_color", Color.WHITE)
 	var play_style := StyleBoxFlat.new()
 	play_style.bg_color = Color(0.08, 0.63, 0.64, 1)
 	play_style.border_color = Color(0.04, 0.42, 0.43, 1)
-	play_style.set_border_width_all(4)
-	play_style.border_width_bottom = 10
-	play_style.set_corner_radius_all(32)
+	play_style.set_border_width_all(3 if _compact else 4)
+	play_style.border_width_bottom = 6 if _compact else 10
+	play_style.set_corner_radius_all(18 if _compact else 32)
 	_play_button.add_theme_stylebox_override("normal", play_style)
 	_play_button.add_theme_stylebox_override("hover", play_style)
 	_play_button.add_theme_stylebox_override("pressed", play_style)
@@ -192,11 +207,12 @@ func _star_row(count: int) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 16)
-	row.custom_minimum_size = Vector2(0, 86)
+	var star_size := 42.0 if _compact else 78.0
+	row.custom_minimum_size = Vector2(0, star_size + 4.0)
 	var fill := GameManager.star_fill_color()
 	for _i in range(count):
 		var icon := TextureRect.new()
-		icon.custom_minimum_size = Vector2(78, 78)
+		icon.custom_minimum_size = Vector2(star_size, star_size)
 		icon.texture = STAR_TEXTURE
 		icon.self_modulate = fill
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -250,9 +266,10 @@ func _hud_action_button(
 	label.text = title
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_font_override("font", FONT_UI)
-	var font_size := 52
-	var available := size.x - icon_size.x - 36.0
-	while font_size > 32:
+	var font_size := 26 if _compact else 52
+	var font_floor := 16 if _compact else 32
+	var available := size.x - icon_size.x - (20.0 if _compact else 36.0)
+	while font_size > font_floor:
 		var line := TextLine.new()
 		line.add_string(title, FONT_UI, font_size)
 		if line.get_size().x <= available:
@@ -273,28 +290,33 @@ func _hud_button_style(fill: Color, border: Color, pressed: bool) -> StyleBoxFla
 	var style := StyleBoxFlat.new()
 	style.bg_color = fill
 	style.border_color = border
-	style.border_width_left = 4
-	style.border_width_right = 4
+	var edge := 3 if _compact else 4
+	var lip := 6 if _compact else 10
+	style.border_width_left = edge
+	style.border_width_right = edge
 	if pressed:
-		style.border_width_top = 10
-		style.border_width_bottom = 4
+		style.border_width_top = lip
+		style.border_width_bottom = edge
 	else:
-		style.border_width_top = 4
-		style.border_width_bottom = 10
-	style.set_corner_radius_all(28)
+		style.border_width_top = edge
+		style.border_width_bottom = lip
+	style.set_corner_radius_all(16 if _compact else 28)
 	style.shadow_color = Color(border.r, border.g, border.b, 0.26)
-	style.shadow_size = 9
-	style.shadow_offset = Vector2(0, 8)
+	style.shadow_size = 4 if _compact else 9
+	style.shadow_offset = Vector2(0, 4 if _compact else 8)
 	return style
 
 
-func _body(text: String, size: int = 38, color: Color = COLOR_BODY) -> Label:
+func _body(text: String, size: int = -1, color: Color = COLOR_BODY) -> Label:
+	if size < 0:
+		size = 20 if _compact else 38
 	var label := Label.new()
 	label.text = text
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	label.custom_minimum_size = Vector2(CARD_WIDTH - 112.0, 0)
+	var side := 64.0 if _compact else 112.0
+	label.custom_minimum_size = Vector2(_card_width - side, 0)
 	label.add_theme_font_override("font", FONT_UI)
 	label.add_theme_font_size_override("font_size", size)
 	label.add_theme_color_override("font_color", color)
@@ -306,17 +328,38 @@ func _card_style() -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(1, 0.955, 0.82, 1)
 	style.border_color = Color(0.8, 0.62, 0.34, 0.62)
-	style.set_border_width_all(4)
-	style.border_width_bottom = 9
-	style.set_corner_radius_all(42)
+	style.set_border_width_all(3 if _compact else 4)
+	style.border_width_bottom = 6 if _compact else 9
+	style.set_corner_radius_all(24 if _compact else 42)
 	style.shadow_color = Color(0.19, 0.11, 0.04, 0.34)
-	style.shadow_size = 24
-	style.shadow_offset = Vector2(0, 16)
+	style.shadow_size = 12 if _compact else 24
+	style.shadow_offset = Vector2(0, 8 if _compact else 16)
 	style.content_margin_left = 0
 	style.content_margin_right = 0
 	style.content_margin_top = 0
 	style.content_margin_bottom = 0
 	return style
+
+
+func _fit_card() -> void:
+	if not is_instance_valid(_card):
+		return
+	var bounds := size
+	if bounds.x < 8.0 or bounds.y < 8.0:
+		return
+	var content := _card.get_combined_minimum_size()
+	if content.x < 8.0 or content.y < 8.0:
+		content = _card.size
+	if content.x < 8.0 or content.y < 8.0:
+		return
+	var margin := 18.0 if _compact else 24.0
+	var avail := Vector2(
+		maxf(bounds.x - margin * 2.0, 1.0),
+		maxf(bounds.y - margin * 2.0, 1.0)
+	)
+	var fitted := minf(1.0, minf(avail.x / content.x, avail.y / content.y))
+	_card.pivot_offset = content * 0.5
+	_card.scale = Vector2(fitted, fitted)
 
 
 func _hide_animated_bits() -> void:

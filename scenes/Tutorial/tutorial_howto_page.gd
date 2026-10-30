@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends Control
 
 const HAND_MOVE := 0.48
 const TAP_DOWN := 0.09
