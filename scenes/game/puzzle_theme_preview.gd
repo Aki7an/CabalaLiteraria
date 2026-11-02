@@ -90,7 +90,7 @@ func _layout_horizontal_theme() -> void:
 	var card := get_node_or_null("Card") as Control
 	var frame := get_node_or_null("Card/ImageFrame") as Control
 	var back := get_node_or_null("Card/ButtonBack") as Control
-	if layer == null or card == null or frame == null or back == null or start_button == null:
+	if layer == null or card == null or frame == null or back == null or start_button == null or id_label == null:
 		return
 	if get_parent() != layer:
 		reparent(layer)
@@ -133,9 +133,19 @@ func _layout_horizontal_theme() -> void:
 	start_button.add_theme_font_size_override("font_size", 40)
 	start_button.position = Vector2(size.x - start_size.x - margin, size.y - start_size.y - margin)
 	start_button.size = start_size
+	var id_size := Vector2(360.0, 72.0)
+	id_label.reparent(self)
+	id_label.z_index = 5
+	id_label.add_theme_font_size_override("font_size", 40)
+	id_label.add_theme_color_override("font_color", Color(0.42, 0.26, 0.12, 1))
+	id_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	id_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	id_label.position = Vector2(margin, size.y - id_size.y - margin)
+	id_label.size = id_size
 	var reserved := [
 		Rect2(back.position, back.size).grow(12.0),
 		Rect2(start_button.position, start_button.size).grow(12.0),
+		Rect2(id_label.position, id_label.size).grow(12.0),
 	]
 	var aspect := _image_aspect()
 	var image_rect := _centered_image_rect(size, aspect, size.y * 0.92, reserved)

@@ -8,7 +8,7 @@ const LANGUAGE_NOTICE := preload("res://scenes/puzzle_language_notice.gd")
 
 func _ready():
 	SignalManager.game_finished_to_results.connect(_game_finished_to_results)
-	var play_enter: bool = ENTER_ANIM.should_play()
+	var play_enter: bool = bool(GameManager.puzzle_enter_pending) and ENTER_ANIM.should_play()
 	GameManager.puzzle_enter_pending = play_enter
 	if play_enter:
 		_prepare_enter_chrome()
@@ -18,6 +18,9 @@ func _ready():
 	await get_tree().process_frame
 	PuzzleSaveManager.begin_current_puzzle()
 	await PuzzleSaveManager.restore_current_puzzle()
+	var host := get_parent()
+	if host != null and host.has_method("show_all_letters"):
+		await host.show_all_letters()
 	if play_enter:
 		var layer := get_node_or_null("CanvasLayer") as Node
 		var anim: Node = ENTER_ANIM.new()
@@ -31,6 +34,7 @@ func _ready():
 	else:
 		GameManager.puzzle_enter_pending = false
 		SignalManager.añade_las_letras_iniciales.emit()
+	await _show_default_board_view()
 	GameManager.update_numero_letras_reveladas()
 	SignalManager.update_puzzle_stars.emit(GameManager.puzzle_stars)
 	var panel_up := get_node_or_null("CanvasLayer/PanelUP")
@@ -44,6 +48,12 @@ func _ready():
 		call_deferred("_show_onboarding_guide")
 	elif show_intro:
 		call_deferred("_show_level_intro")
+
+
+func _show_default_board_view() -> void:
+	var host := get_parent()
+	if host != null and host.has_method("show_all_letters"):
+		await host.show_all_letters()
 
 
 func _prepare_enter_chrome() -> void:

@@ -840,4 +840,16 @@ PuzzleUnavailableTitle,Puzle no disponible,Puzzle unavailable,Rätsel nicht verf
 PuzzleUnavailableBody,El puzle de este enlace no está en el juego.,The puzzle in this link is not in the game.,Das Rätsel aus diesem Link ist nicht im Spiel.,Le puzzle de ce lien n'est pas dans le jeu.,Esteka honetako puzzlea ez dago jokoan.,Il puzzle di questo link non è nel gioco.,O puzzle deste link não está no jogo.
 PuzzleUnavailableOk,Entendido,Got it,Verstanden,Compris,Ulertuta,Capito,Entendido
 PuzzleDownloadBody,Descargando el puzle…,Downloading the puzzle…,Rätsel wird geladen…,Téléchargement du puzzle…,Puzzlea deskargatzen…,Download del puzzle…,A descarregar o puzzle…
+RunProgressTitle,Progreso de la run,Run progress,Run-Fortschritt,Progression de la run,Runaren aurrerapena,Progresso della run,Progresso da run
+RunLevel,NIVEL %d,LEVEL %d,LEVEL %d,NIVEAU %d,MAILA %d,LIVELLO %d,NÍVEL %d
+RunMatchTitle,Tu partida,Your game,Deine Partie,Ta partie,Zure partida,La tua partita,A tua partida
+RunMatchHeading,Tu partida  ·  Puzle %d de %d,Your game  ·  Puzzle %d of %d,Deine Partie  ·  Rätsel %d von %d,Ta partie  ·  Puzzle %d sur %d,Zure partida  ·  Puzzle %d / %d,La tua partita  ·  Puzzle %d di %d,A tua partida  ·  Puzzle %d de %d
+RunChooseNext,Elige el siguiente puzle,Choose the next puzzle,Wähle das nächste Rätsel,Choisis le puzzle suivant,Aukeratu hurrengo puzzlea,Scegli il puzzle successivo,Escolhe o próximo puzzle
+RunCompleteTitle,Run completa,Run complete,Run abgeschlossen,Run terminée,Runa osatuta,Run completata,Run concluída
+RunCompleteNote,Has terminado los puzles de esta run.,You have finished the puzzles in this run.,Du hast die Rätsel dieser Run beendet.,Tu as terminé les puzzles de cette run.,Run honetako puzzleak amaitu dituzu.,Hai finito i puzzle di questa run.,Terminaste os puzzles desta run.
+RunRestart,Reiniciar run,Restart run,Run neu starten,Recommencer la run,Runa berriz hasi,Ricomincia la run,Reiniciar a run
+RunSlotIndex,PUZLE %d/%d,PUZZLE %d/%d,RÄTSEL %d/%d,PUZZLE %d/%d,PUZZLE %d/%d,PUZZLE %d/%d,PUZZLE %d/%d
+RunSlotPending,Por elegir,To choose,Noch wählen,À choisir,Aukeratzeko,Da scegliere,Por escolher
+RunSlotHint,Selecciona un puzle a la derecha,Select a puzzle on the right,Wähle rechts ein Rätsel,Choisis un puzzle à droite,Aukeratu puzzle bat eskuinean,Scegli un puzzle a destra,Escolhe um puzzle à direita
+RunSlotDone,HECHO,DONE,FERTIG,FAIT,EGINA,FATTO,FEITO
 

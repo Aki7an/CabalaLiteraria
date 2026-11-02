@@ -53,9 +53,25 @@ func show_white_cover() -> void:
 	if _veil_tween != null and _veil_tween.is_valid():
 		_veil_tween.kill()
 	move_child(_veil, 0)
+	_veil.z_index = 80
 	_veil.visible = true
 	_veil.color = Color(1, 1, 1, 1)
 	_veil.mouse_filter = Control.MOUSE_FILTER_STOP
+
+
+func fade_in_white(duration: float = 0.4) -> void:
+	_ensure_veil()
+	if _veil_tween != null and _veil_tween.is_valid():
+		_veil_tween.kill()
+	move_child(_veil, 0)
+	_veil.z_index = 80
+	_veil.visible = true
+	_veil.mouse_filter = Control.MOUSE_FILTER_STOP
+	_veil.color = Color(1, 1, 1, 0)
+	_veil_tween = create_tween()
+	_veil_tween.tween_property(_veil, "color:a", 1.0, duration)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	await _veil_tween.finished
 
 
 func collect_duration() -> float:
@@ -82,6 +98,21 @@ func fade_white_cover(duration: float = -1.0) -> void:
 		_veil.visible = false
 		_veil.color = Color(1, 1, 1, 0)
 		_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+func hold_still() -> void:
+	var holders := _trembling.duplicate()
+	for holder in holders:
+		if not is_instance_valid(holder):
+			continue
+		_stop_tremble(holder)
+		var star := holder.get_node_or_null("Star") as TextureRect
+		if star:
+			star.position = Vector2.ZERO
+
+
+func carried_count() -> int:
+	return _ghosts.size()
 
 
 func has_pending() -> bool:
@@ -182,7 +213,7 @@ func _process(delta: float) -> void:
 		i += 1
 
 
-func play_to_slots(targets: Array) -> void:
+func play_to_slots(targets: Array, on_land: Callable = Callable(), immediate: bool = false) -> void:
 	if _playing:
 		return
 	_playing = true
@@ -191,20 +222,26 @@ func play_to_slots(targets: Array) -> void:
 		return
 	await get_tree().process_frame
 	await get_tree().process_frame
-	await get_tree().create_timer(PRE_FLY_SEC).timeout
+	if not immediate:
+		await get_tree().create_timer(PRE_FLY_SEC).timeout
 	for i in range(_ghosts.size()):
 		if i > 0:
 			await get_tree().create_timer(STAGGER_SEC).timeout
 		var ghost := _ghosts[i]
 		var target: Control = targets[i] if i < targets.size() else null
-		if not is_instance_valid(ghost) or target == null or not is_instance_valid(target):
+		if not is_instance_valid(ghost):
+			continue
+		if target == null or not is_instance_valid(target):
+			ghost.queue_free()
 			continue
 		var target_rect := target.get_global_rect()
 		await _fly_star(ghost, target_rect.get_center(), target_rect.size)
 		pending_count = maxi(0, pending_count - 1)
-		_reveal_slot(target)
 		if is_instance_valid(ghost):
 			ghost.queue_free()
+		_reveal_slot(target)
+		if on_land.is_valid():
+			on_land.call(i)
 	_ghosts.clear()
 	pending_count = 0
 	from_total = -1

@@ -12,6 +12,9 @@ func _on_button_game_over_pressed():
 	get_tree().paused = false
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
+	if Distribution.is_horizontal() and PlayerProgress.has_run():
+		get_tree().change_scene_to_file("res://scenes/crazygames/RunStatus.tscn")
+		return
 	get_tree().change_scene_to_file(Distribution.home_scene())
 
 func _ready():

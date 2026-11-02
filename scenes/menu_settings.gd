@@ -149,6 +149,10 @@ func _ready() -> void:
 	_start_credits_blink()
 	if typeof(PlayFabTools) != TYPE_NIL and not PlayFabTools.display_name_taken.is_connected(_on_display_name_taken):
 		PlayFabTools.display_name_taken.connect(_on_display_name_taken)
+	if Distribution.is_horizontal():
+		if not resized.is_connected(_apply_horizontal_layout):
+			resized.connect(_apply_horizontal_layout)
+		call_deferred("_apply_horizontal_layout")
 
 
 func _on_button_back_pressed() -> void:
@@ -160,7 +164,13 @@ func _on_button_back_pressed() -> void:
 		return
 	TransitionScreen.transition_to_black()
 	await TransitionScreen._on_animation_finished("fade_to_black", 1)
-	get_tree().change_scene_to_file(Distribution.home_scene())
+	var next_scene := Distribution.home_scene()
+	if get_tree().has_meta("cifra_return_scene"):
+		var stored := str(get_tree().get_meta("cifra_return_scene")).strip_edges()
+		get_tree().remove_meta("cifra_return_scene")
+		if stored != "":
+			next_scene = stored
+	get_tree().change_scene_to_file(next_scene)
 
 
 func _on_button_credits_pressed() -> void:
@@ -209,14 +219,131 @@ func _pulse_credits_button() -> void:
 	if not is_instance_valid(button_credits):
 		return
 	button_credits.pivot_offset = button_credits.size * 0.5
+	var resting := button_credits.scale
 	var blink := create_tween()
-	blink.tween_property(button_credits, "scale", Vector2(1.16, 1.16), 0.16).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	blink.tween_property(button_credits, "scale", resting * 1.16, 0.16).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	blink.parallel().tween_property(button_credits, "modulate", Color(1.12, 0.9, 0.45, 1), 0.16)
-	blink.tween_property(button_credits, "scale", Vector2.ONE, 0.22).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	blink.tween_property(button_credits, "scale", resting, 0.22).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	blink.parallel().tween_property(button_credits, "modulate", Color.WHITE, 0.22)
-	blink.tween_property(button_credits, "scale", Vector2(1.08, 1.08), 0.12).set_trans(Tween.TRANS_SINE)
-	blink.tween_property(button_credits, "scale", Vector2.ONE, 0.16).set_trans(Tween.TRANS_SINE)
+	blink.tween_property(button_credits, "scale", resting * 1.08, 0.12).set_trans(Tween.TRANS_SINE)
+	blink.tween_property(button_credits, "scale", resting, 0.16).set_trans(Tween.TRANS_SINE)
 	await blink.finished
+
+
+func _apply_horizontal_layout() -> void:
+	var screen := size
+	if screen.x < 64.0 or screen.y < 64.0:
+		return
+	var margin := 14.0
+	var header_h := 68.0
+	var footer_h := 86.0
+	var gap := 12.0
+	var col_gap := 16.0
+	var top := margin + header_h + 8.0
+	var content_h := screen.y - top - footer_h - margin - 8.0
+	if content_h < 80.0:
+		return
+	var col_w := (screen.x - margin * 2.0 - col_gap) * 0.5
+	var left := [$Panel/LanguageCard as Control, $Panel/OnlineCard as Control]
+	var right := [$Panel/SoundCard as Control, $Panel/GameCard as Control]
+	var stack_h := maxf(_stack_height(left), _stack_height(right))
+	if stack_h < 2.0:
+		return
+	var factor := (content_h - gap) / stack_h
+	var width_factor := col_w / maxf(_control_size(left[0]).x, _control_size(right[0]).x)
+	factor = minf(factor, width_factor)
+	_place_header(Rect2(margin, margin, screen.x - margin * 2.0, header_h))
+	_place_column(left, Rect2(margin, top, col_w, content_h), gap, factor)
+	_place_column(right, Rect2(margin + col_w + col_gap, top, col_w, content_h), gap, factor)
+	_place_footer(Rect2(margin, screen.y - margin - footer_h, screen.x - margin * 2.0, footer_h), factor)
+
+
+func _stack_height(cards: Array) -> float:
+	var total := 0.0
+	for card in cards:
+		total += _control_size(card as Control).y
+	return total
+
+
+func _place_column(cards: Array, area: Rect2, gap: float, factor: float) -> void:
+	var used := 0.0
+	for index in cards.size():
+		used += _control_size(cards[index] as Control).y * factor
+		if index < cards.size() - 1:
+			used += gap
+	var y := area.position.y + maxf(area.size.y - used, 0.0) * 0.5
+	for card in cards:
+		var control := card as Control
+		var box := _control_size(control)
+		var visual := box * factor
+		var x := area.position.x + (area.size.x - visual.x) * 0.5
+		_set_uniform_scale(control, factor, Vector2(x, y))
+		y += visual.y + gap
+
+
+func _place_header(area: Rect2) -> void:
+	var header := $Panel/Header as Control
+	header.scale = Vector2.ONE
+	header.pivot_offset = Vector2.ZERO
+	header.position = area.position
+	header.size = area.size
+	var back := header.get_node("ButtonBack") as Control
+	var credits := header.get_node("ButtonCredits") as Control
+	var title := header.get_node("Title") as Label
+	var back_box := _control_size(back)
+	var credits_box := _control_size(credits)
+	if back_box.y < 2.0 or credits_box.y < 2.0:
+		return
+	var back_factor := area.size.y / back_box.y
+	_set_uniform_scale(back, back_factor, Vector2.ZERO)
+	var credits_factor := area.size.y / credits_box.y
+	var credits_w := credits_box.x * credits_factor
+	_set_uniform_scale(credits, credits_factor, Vector2(area.size.x - credits_w, 0.0))
+	var inset := back_box.x * back_factor + 8.0
+	title.scale = Vector2.ONE
+	title.pivot_offset = Vector2.ZERO
+	title.position = Vector2(inset, 0.0)
+	title.size = Vector2(maxf(area.size.x - inset * 2.0, 40.0), area.size.y)
+	title.add_theme_font_size_override("font_size", int(area.size.y * 0.5))
+
+
+func _place_footer(area: Rect2, factor: float) -> void:
+	var footer := $Panel/Footer as Control
+	footer.scale = Vector2.ONE
+	footer.pivot_offset = Vector2.ZERO
+	footer.position = area.position
+	footer.size = area.size
+	var reset := footer.get_node("ButtonReset") as Control
+	var ok := footer.get_node("ButtonOk") as Control
+	var gap := 18.0
+	var reset_box := _control_size(reset)
+	var ok_box := _control_size(ok)
+	var button_factor := minf(factor, area.size.y / maxf(reset_box.y, ok_box.y))
+	var pair := reset_box.x * button_factor + gap + ok_box.x * button_factor
+	if pair > area.size.x:
+		button_factor *= area.size.x / pair
+		pair = area.size.x
+	var x := (area.size.x - pair) * 0.5
+	_set_uniform_scale(reset, button_factor, Vector2(x, (area.size.y - reset_box.y * button_factor) * 0.5))
+	x += reset_box.x * button_factor + gap
+	_set_uniform_scale(ok, button_factor, Vector2(x, (area.size.y - ok_box.y * button_factor) * 0.5))
+
+
+func _set_uniform_scale(node: Control, factor: float, visual_top_left: Vector2) -> void:
+	var box := _control_size(node)
+	node.pivot_offset = box * 0.5
+	node.scale = Vector2(factor, factor)
+	node.position = visual_top_left - box * 0.5 * (1.0 - factor)
+
+
+func _control_size(node: Control) -> Vector2:
+	var box := node.size
+	if box.x > 2.0 and box.y > 2.0:
+		return box
+	box = Vector2(node.offset_right - node.offset_left, node.offset_bottom - node.offset_top)
+	if box.x > 2.0 and box.y > 2.0:
+		return box
+	return node.custom_minimum_size
 
 
 func _is_overlay() -> bool:

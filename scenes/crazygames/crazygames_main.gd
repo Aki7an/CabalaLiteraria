@@ -10,6 +10,12 @@ func _enter_tree() -> void:
 	menu.set_meta("compact_title", true)
 	menu.set_meta("ui_scale", 1.0)
 	menu.set_meta("cz_simple_home", true)
+	if _cg_logged_in():
+		menu.set_meta("cg_logged_home", true)
+		menu.visible = false
+		var home := get_node_or_null("LoggedHome")
+		if home != null:
+			home.visible = true
 
 
 func _ready() -> void:
@@ -20,15 +26,34 @@ func _ready() -> void:
 
 
 func hide_for_puzzle_link() -> void:
+	var home := get_node_or_null("LoggedHome")
+	if home != null:
+		home.visible = false
 	var menu := get_node_or_null("Menu")
 	if menu != null and menu.has_method("hide_for_puzzle_link"):
 		menu.call("hide_for_puzzle_link")
 
 
 func reveal_main_menu() -> void:
-	var menu := get_node_or_null("Menu")
-	if menu != null and menu.has_method("reveal_main_menu"):
-		menu.call("reveal_main_menu")
+	if _cg_logged_in():
+		var home := get_node_or_null("LoggedHome")
+		if home != null:
+			home.visible = true
+			if home.has_method("refresh"):
+				home.call("refresh")
+		var menu := get_node_or_null("Menu")
+		if menu != null:
+			menu.visible = false
+		return
+	var guest_menu := get_node_or_null("Menu")
+	if guest_menu != null and guest_menu.has_method("reveal_main_menu"):
+		guest_menu.call("reveal_main_menu")
+
+
+func _cg_logged_in() -> bool:
+	if str(GameManager.crazygames_username).strip_edges() != "":
+		return true
+	return Distribution.running_from_editor() and Distribution.is_horizontal()
 
 
 func _fit_to_window() -> void:

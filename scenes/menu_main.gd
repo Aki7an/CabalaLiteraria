@@ -37,6 +37,9 @@ var _intro_rest: Dictionary = {}
 var _intro_tweens: Array[Tween] = []
 
 func _ready() -> void:
+	if bool(get_meta("cg_logged_home", false)):
+		visible = false
+		return
 	SoundManager.apply_audio_prefs()
 	var linked := DeepLink.has_pending()
 	if linked:

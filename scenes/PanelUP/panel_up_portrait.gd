@@ -104,6 +104,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
 	if event.keycode == KEY_0 or event.keycode == KEY_KP_0:
+		if Distribution.is_horizontal():
+			return
 		if not OS.is_debug_build():
 			return
 		get_viewport().set_input_as_handled()

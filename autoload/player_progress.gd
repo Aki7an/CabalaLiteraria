@@ -7,7 +7,7 @@ const CLOUD_KEY := "player_progress"
 const VERSION := 1
 const CLOUD_WAIT_MS := 4000
 const PUZZLE_SCENE := "res://scenes/crazygames/CrazyGamesPuzzle.tscn"
-const RUN_PUZZLES: Array[int] = [3098, 3065, 1009, 4027, 1022, 3109, 3102]
+const CrazyPuzzle := preload("res://scenes/crazygames/crazygames_puzzle.gd")
 
 var total_stars := 0
 var run: Dictionary = {}
@@ -19,6 +19,7 @@ var _last_finish_key := ""
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	_load_local()
 	if OS.has_feature("web") and Distribution.is_horizontal():
 		_pull_cloud()
@@ -46,36 +47,111 @@ func begin_run(number: int = 1) -> void:
 		"number": maxi(number, 1),
 		"puzzles_played": 0,
 		"stars_earned": 0,
+		"steps": [],
 		"last_match": {},
 	}
 	_save()
 
 
+func restart_run() -> void:
+	var number := run_number() if has_run() else 1
+	for puzzle_id in CrazyPuzzle.saved_run_puzzles():
+		PuzzleSaveManager.clear_puzzle_state(puzzle_id)
+	run = {
+		"number": maxi(number, 1),
+		"puzzles_played": 0,
+		"stars_earned": 0,
+		"steps": [],
+		"last_match": {},
+	}
+	_save()
+
+
+func run_steps() -> Array[int]:
+	var steps: Array[int] = []
+	var raw: Variant = run.get("steps", [])
+	if raw is Array:
+		for item in raw:
+			var puzzle_id := int(item)
+			if puzzle_id > 0:
+				steps.append(puzzle_id)
+	return steps
+
+
+func ensure_sequence_run() -> void:
+	if not has_run():
+		begin_run()
+		return
+	if run.has("steps"):
+		return
+	run["steps"] = []
+	run["stars_earned"] = 0
+	run["puzzles_played"] = 0
+	run["last_match"] = {}
+	_save()
+
+
+func reset_as_new_cg_player() -> void:
+	var ids := CrazyPuzzle.all_sequence_ids()
+	for puzzle_id in ids:
+		PuzzleSaveManager.clear_puzzle_state(puzzle_id)
+	HistoryManager.forget_puzzle_ids(ids)
+	total_stars = _stars_from_history()
+	run = {
+		"number": 1,
+		"puzzles_played": 0,
+		"stars_earned": 0,
+		"steps": [],
+		"last_match": {},
+	}
+	_last_finish_key = ""
+	_save()
+	if typeof(StarCollectOverlay) != TYPE_NIL:
+		StarCollectOverlay.clear()
+	GameManager.resetear_partida_terminada()
+	GameManager.session_source = GameManager.SOURCE_NONE
+	var tree := get_tree()
+	if tree == null:
+		return
+	tree.paused = false
+	tree.change_scene_to_file("res://scenes/crazygames/RunStatus.tscn")
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not (event is InputEventKey and event.pressed and not event.echo):
+		return
+	var key := event as InputEventKey
+	if key.keycode != KEY_0 and key.keycode != KEY_KP_0:
+		return
+	if not OS.is_debug_build() or not Distribution.is_horizontal():
+		return
+	var focus := get_viewport().gui_get_focus_owner()
+	if focus is LineEdit or focus is TextEdit:
+		return
+	get_viewport().set_input_as_handled()
+	reset_as_new_cg_player()
+
+
 func puzzle_to_open() -> int:
-	var last_id := -1
-	var last_status := ""
+	var catalog := CrazyPuzzle.all_sequence_ids()
+	if catalog.is_empty():
+		return -1
 	if has_run():
 		var last: Dictionary = run.get("last_match", {})
-		last_id = int(last.get("puzzle_id", -1))
-		last_status = str(last.get("status", ""))
-	var start_at := 0
-	var index := RUN_PUZZLES.find(last_id)
-	if index >= 0:
+		var last_id := int(last.get("puzzle_id", -1))
+		var last_status := str(last.get("status", ""))
 		var retry := last_status == "in_progress" or last_status == "lost"
-		if retry and not _local_completed_newer(last_id):
+		if catalog.has(last_id) and retry and not _local_completed_newer(last_id):
 			return last_id
-		if last_status == "completed" or (retry and _local_completed_newer(last_id)):
-			start_at = index + 1
-	for cursor in range(start_at, RUN_PUZZLES.size()):
-		var puzzle_id := RUN_PUZZLES[cursor]
-		if str(PuzzleSaveManager.get_puzzle_state(puzzle_id).get("status", "")) == "completed":
-			continue
-		return puzzle_id
-	return RUN_PUZZLES[RUN_PUZZLES.size() - 1]
+		if run_steps().is_empty():
+			return CrazyPuzzle.PELE_ID
+	return CrazyPuzzle.PELE_ID
 
 
 func has_pending_puzzle() -> bool:
 	var puzzle_id := puzzle_to_open()
+	if puzzle_id < 0:
+		return false
 	if str(PuzzleSaveManager.get_puzzle_state(puzzle_id).get("status", "")) == "completed":
 		return false
 	if has_run():
@@ -88,11 +164,26 @@ func has_pending_puzzle() -> bool:
 func open_current_puzzle() -> void:
 	if not has_run():
 		begin_run()
-	var puzzle_id := puzzle_to_open()
+	open_run_puzzle(puzzle_to_open())
+
+
+func open_run_puzzle(puzzle_id: int) -> void:
+	if puzzle_id < 0:
+		return
+	ensure_sequence_run()
+	if run_steps().is_empty() and puzzle_id != CrazyPuzzle.PELE_ID:
+		return
+	var tree := get_tree()
+	if tree != null and not tree.get_nodes_in_group("PuzzleCanvas").is_empty():
+		PuzzleSaveManager.save_current_now()
+	var resume := _saved_board_ready(puzzle_id)
 	if puzzle_id == resume_puzzle_id():
 		install_saved_match()
 	GameManager.session_source = GameManager.SOURCE_NONE
 	GameManager.allow_completed_replay = false
+	if not run_steps().has(puzzle_id):
+		var existing := PuzzleSaveManager.get_puzzle_state(puzzle_id)
+		GameManager.allow_completed_replay = str(existing.get("status", "")) == "completed"
 	GameManager.onboarding_stage = 0
 	for raw in GameManager.frases_db:
 		if typeof(raw) != TYPE_DICTIONARY:
@@ -104,10 +195,13 @@ func open_current_puzzle() -> void:
 		GameManager.set_dificultad_actual(int(item.get("difficulty", 1)))
 		break
 	GameManager.seleccionar_por_index(puzzle_id)
-	PuzzleSaveManager.prepare_current_puzzle_cipher()
-	GameManager.puzzle_enter_pending = true
+	if resume and PuzzleSaveManager.prepare_current_puzzle_cipher():
+		# Coming back to a puzzle already in the run keeps its cipher and letters.
+		# A fresh puzzle still plays the entrance animation.
+		GameManager.puzzle_enter_pending = false
+	else:
+		GameManager.puzzle_enter_pending = true
 	GameManager.set_go_to_game_disable()
-	var tree := get_tree()
 	if tree == null:
 		return
 	if tree.paused:
@@ -116,6 +210,17 @@ func open_current_puzzle() -> void:
 		StarCollectOverlay.fade_white_cover(0.6)
 	SignalManager.partida_iniciada.emit()
 	tree.change_scene_to_file(PUZZLE_SCENE)
+
+
+func _saved_board_ready(puzzle_id: int) -> bool:
+	var state := PuzzleSaveManager.get_puzzle_state(puzzle_id)
+	if str(state.get("status", "")) != "in_progress":
+		return false
+	var cipher: Variant = state.get("cipher", {})
+	if not (cipher is Dictionary):
+		return false
+	var numbers: Array = (cipher as Dictionary).get("numbers", [])
+	return not numbers.is_empty()
 
 
 func _local_completed_newer(puzzle_id: int) -> bool:
@@ -200,6 +305,10 @@ func note_match_finished(entry: Dictionary) -> void:
 	if has_run():
 		run["puzzles_played"] = int(run.get("puzzles_played", 0)) + 1
 		run["stars_earned"] = int(run.get("stars_earned", 0)) + stars
+		var steps := run_steps()
+		if won and CrazyPuzzle.all_sequence_ids().has(puzzle_id) and not steps.has(puzzle_id):
+			steps.append(puzzle_id)
+			run["steps"] = steps
 		var snap := _capture(status)
 		if snap.is_empty():
 			snap = _match_from_entry(entry, status, stars)
@@ -214,16 +323,6 @@ func note_match_finished(entry: Dictionary) -> void:
 
 func note_completion_star() -> void:
 	total_stars += 1
-	if has_run():
-		run["stars_earned"] = int(run.get("stars_earned", 0)) + 1
-		var last: Dictionary = run.get("last_match", {})
-		if not last.is_empty():
-			var stats: Dictionary = last.get("stats", {})
-			if not bool(stats.get("completion_star", false)):
-				stats["completion_star"] = true
-				stats["stars"] = int(stats.get("stars", 0)) + 1
-				last["stats"] = stats
-				run["last_match"] = last
 	_save()
 
 

@@ -2,13 +2,44 @@ extends Control
 
 const DESIGN := Vector2(1280, 720)
 const BOARD_SHARE := 0.70
+const PELE_ID := 3098
+const FIRST_RUN_LENGTH := 4
+const FIRST_RUN_STAR_GOAL := 10
+const SEQUENCE_HARD: Array[int] = [3069, 3074, 3066, 3067, 4002]
+const SEQUENCE_MID: Array[int] = [3098, 3068, 4005, 3073, 3094]
+const SEQUENCE_EASY: Array[int] = [116, 3064, 3070, 3108, 3113]
+const DEFAULT_RUN_PUZZLES: Array[int] = [
+	3069, 3074, 3066, 3067, 4002,
+	3098, 3068, 4005, 3073, 3094,
+	116, 3064, 3070, 3108, 3113,
+]
+
+## Catálogo de las tres sucesiones. El orden de una partida lo marca la elección del jugador.
+@export var run_puzzles: Array[int] = DEFAULT_RUN_PUZZLES
 
 var _wide := false
 var _toggle_serial := 0
+var _chrome_ready := false
 var _saved: Array[Dictionary] = []
 var _level_label: Label
 var _user_label: Label
 var _view_button: Button
+
+
+static func sequence(stars: int) -> Array[int]:
+	if stars >= 3:
+		return SEQUENCE_HARD.duplicate()
+	if stars == 2:
+		return SEQUENCE_MID.duplicate()
+	return SEQUENCE_EASY.duplicate()
+
+
+static func all_sequence_ids() -> Array[int]:
+	return DEFAULT_RUN_PUZZLES.duplicate()
+
+
+static func saved_run_puzzles() -> Array[int]:
+	return all_sequence_ids()
 
 
 func _enter_tree() -> void:
@@ -20,6 +51,59 @@ func _ready() -> void:
 	var viewport := get_viewport()
 	if viewport != null and not viewport.size_changed.is_connected(_fit_to_window):
 		viewport.size_changed.connect(_fit_to_window)
+	_ensure_chrome()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not (event is InputEventKey and event.pressed and not event.echo):
+		return
+	if get_tree().paused or GameManager.partida_terminada:
+		return
+	var focus := get_viewport().gui_get_focus_owner()
+	if focus is LineEdit or focus is TextEdit:
+		return
+	var key := event as InputEventKey
+	var step := 0
+	if key.keycode == KEY_1 or key.keycode == KEY_KP_1:
+		step = -1
+	elif key.keycode == KEY_2 or key.keycode == KEY_KP_2:
+		step = 1
+	else:
+		return
+	var puzzle_id := _run_step_target(step)
+	if puzzle_id < 0:
+		return
+	var viewport := get_viewport()
+	if viewport != null:
+		viewport.set_input_as_handled()
+	PlayerProgress.open_run_puzzle(puzzle_id)
+
+
+func _run_step_target(step: int) -> int:
+	var order := run_puzzles.duplicate()
+	if order.is_empty():
+		order = saved_run_puzzles()
+	var index := order.find(int(GameManager.id_frase))
+	if index < 0:
+		return -1
+	var target := index + step
+	if target < 0 or target >= order.size():
+		return -1
+	return order[target]
+
+
+func show_all_letters() -> void:
+	_ensure_chrome()
+	if _wide:
+		return
+	_toggle_serial += 1
+	_wide = true
+	await _apply_wide(_toggle_serial)
+
+
+func _ensure_chrome() -> void:
+	if _chrome_ready:
+		return
 	_saved = _capture($Game/CanvasLayer)
 	_level_label = get_node_or_null("Game/CanvasLayer/PanelUP/GameHeader/Margin/Main/CgLevelBar/LevelLabel") as Label
 	_user_label = get_node_or_null("Game/CanvasLayer/PanelUP/GameHeader/Margin/Main/CgLevelBar/UserLabel") as Label
@@ -27,6 +111,11 @@ func _ready() -> void:
 	_refresh_level_label()
 	if _view_button != null and not _view_button.pressed.is_connected(_on_view_toggle_pressed):
 		_view_button.pressed.connect(_on_view_toggle_pressed)
+	_chrome_ready = true
+
+
+func _enter_pending() -> bool:
+	return typeof(GameManager) != TYPE_NIL and bool(GameManager.puzzle_enter_pending)
 
 
 func _fit_to_window() -> void:
@@ -92,7 +181,8 @@ func _apply_wide(serial: int) -> void:
 	_set_box(canvas, Rect2(inset, inset, board_size.x - inset * 2.0, board_size.y - inset * 2.0), Vector2.ONE)
 	if rail != null:
 		rail.visible = false
-	_show_panel(board)
+	if not _enter_pending():
+		_show_panel(board)
 	await get_tree().process_frame
 	if serial != _toggle_serial or not _wide:
 		return

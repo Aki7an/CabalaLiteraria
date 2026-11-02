@@ -29,12 +29,12 @@ const INTRO_CONTINUE_AT := 5.0
 @onready var time_pill: Panel = $MainCard/StarsCard/TimePill
 @onready var info_card: Panel = $MainCard/StarsCard/InfoCard
 @onready var continue_button: Button = $MainCard/ButtonBack
-@onready var feedback_button: Button = $MainCard/ButtonFeedback
-@onready var share_title: Label = $MainCard/ShareTitle
-@onready var share_x_button: Button = $MainCard/ButtonShareX
-@onready var share_ig_button: Button = $MainCard/ButtonShareInstagram
-@onready var share_fb_button: Button = $MainCard/ButtonShareFacebook
-@onready var share_more_button: Button = $MainCard/ButtonShareMore
+@onready var feedback_button: Button = get_node_or_null("MainCard/ButtonFeedback") as Button
+@onready var share_title: Label = get_node_or_null("MainCard/ShareTitle") as Label
+@onready var share_x_button: Button = get_node_or_null("MainCard/ButtonShareX") as Button
+@onready var share_ig_button: Button = get_node_or_null("MainCard/ButtonShareInstagram") as Button
+@onready var share_fb_button: Button = get_node_or_null("MainCard/ButtonShareFacebook") as Button
+@onready var share_more_button: Button = get_node_or_null("MainCard/ButtonShareMore") as Button
 @onready var description_label: RichTextLabel = $MainCard/StarsCard/InfoCard/Description
 @onready var time_text: Label = $MainCard/StarsCard/TimePill/TimeText
 @onready var stars_box: HBoxContainer = $MainCard/StarsCard/Stars
@@ -144,7 +144,9 @@ func _apply_locale() -> void:
 		solved_label.text = tr("DailyCompleted") if is_daily else tr("You've solved the sentence")
 	if stars_title:
 		stars_title.text = tr("StarsEarned")
-	continue_button.text = tr("ContinueAction") if GameManager.is_onboarding_session() else tr("RecogerEstrellas")
+	continue_button.text = "Continuar" if _uses_authored_layout() else (
+		tr("ContinueAction") if GameManager.is_onboarding_session() else tr("RecogerEstrellas")
+	)
 	continue_button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	if not _uses_authored_layout():
 		continue_button.add_theme_font_size_override(
@@ -900,6 +902,15 @@ func _collectable_stars() -> Array[TextureRect]:
 	return list
 
 
+func _puzzle_stars_only(collected: Array[TextureRect]) -> Array[TextureRect]:
+	var list: Array[TextureRect] = []
+	for star in collected:
+		if star == _completion_star:
+			continue
+		list.append(star)
+	return list
+
+
 func _awards_completion_star() -> bool:
 	if GameManager.is_practice_session():
 		return false
@@ -1067,15 +1078,25 @@ func _on_button_back_pressed() -> void:
 			if StarCollectOverlay.from_total >= 0:
 				StarCollectOverlay.to_total = after
 			PlayFabTools.submit_competitive_rankings(GameManager.player_name)
-		StarCollectOverlay.capture_earned(collect_stars, collect_count, GameManager.game_mode_actual)
-	StarCollectOverlay.show_white_cover()
-	await get_tree().process_frame
-	await get_tree().process_frame
-	await PlatformServices.show_interstitial_after_puzzle()
+		if Distribution.is_horizontal():
+			collect_stars = _puzzle_stars_only(collect_stars)
+			collect_count = collect_stars.size()
+		if collect_count > 0:
+			StarCollectOverlay.capture_earned(collect_stars, collect_count, GameManager.game_mode_actual)
+			if Distribution.is_horizontal():
+				StarCollectOverlay.hold_still()
+	if Distribution.is_horizontal():
+		await StarCollectOverlay.fade_in_white(0.4)
+	else:
+		StarCollectOverlay.show_white_cover()
+		await get_tree().process_frame
+		await get_tree().process_frame
+		await PlatformServices.show_interstitial_after_puzzle()
 	await EventLoggerAutoload.submit_if_consented(EventLoggerAutoload.OUTCOME_COMPLETED)
 	get_tree().paused = false
-	if Distribution.is_horizontal() and PlayerProgress.has_pending_puzzle():
-		PlayerProgress.open_current_puzzle()
+	if Distribution.is_horizontal():
+		PlayerProgress.ensure_sequence_run()
+		get_tree().change_scene_to_file("res://scenes/crazygames/RunStatus.tscn")
 		return
 	get_tree().change_scene_to_file(Distribution.home_scene())
 

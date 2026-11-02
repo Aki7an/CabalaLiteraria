@@ -94,6 +94,7 @@ anchors_preset = 0
 offset_right = 1280.0
 offset_bottom = 720.0
 script = ExtResource("1_fit")
+run_puzzles = Array[int]([3069, 3074, 3066, 3067, 4002, 3098, 3068, 4005, 3073, 3094, 116, 3064, 3070, 3108, 3113])
 
 [node name="Game" type="Node2D" parent="." unique_id=2131745423]
 script = ExtResource("2_game")

@@ -29,6 +29,7 @@ func play(layer: Node, include_board: bool = true, include_header: bool = true, 
 		return
 	var blocker := _make_blocker()
 	_cache_and_hide(include_board)
+	_show_wide_column()
 	await get_tree().process_frame
 	await get_tree().process_frame
 	if _include_letters:
@@ -63,7 +64,30 @@ func _make_blocker() -> ColorRect:
 func _node(path: String) -> Control:
 	if _layer == null:
 		return null
-	return _layer.get_node_or_null(path) as Control
+	var found := _layer.get_node_or_null(path) as Control
+	if found != null:
+		return found
+	return _layer.find_child(path.get_file(), true, false) as Control
+
+
+func _wide_column() -> Control:
+	if _layer == null:
+		return null
+	var column := _layer.get_node_or_null("WidePlayColumn") as Control
+	if column == null:
+		return null
+	var hud := _layer.get_node_or_null("PanelUP") as CanvasItem
+	if column.visible or (hud != null and not hud.visible):
+		return column
+	return null
+
+
+func _show_wide_column() -> void:
+	if _layer == null:
+		return
+	var column := _layer.get_node_or_null("WidePlayColumn") as Control
+	if column != null:
+		column.visible = true
 
 
 func _cache_and_hide(include_board: bool = true) -> void:
@@ -118,6 +142,11 @@ func _restore_all() -> void:
 
 
 func _header() -> Control:
+	var column := _wide_column()
+	if column != null:
+		var card := column.get_node_or_null("TopCard") as Control
+		if card:
+			return card
 	var hud := _node("PanelUP")
 	if hud == null:
 		return null

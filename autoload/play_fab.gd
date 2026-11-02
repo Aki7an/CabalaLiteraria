@@ -68,6 +68,10 @@ func _ready() -> void:
 	_login_finished = true
 
 
+func login_is_finished() -> bool:
+	return _login_finished
+
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED:
 		note_player_activity()

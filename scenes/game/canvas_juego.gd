@@ -38,6 +38,8 @@ var _wide_grid_saved := false
 var _grid_left := 0.0
 var _grid_top := 0.0
 var _grid_right := 0.0
+var _grid_bottom := 0.0
+var _grid_anchor_bottom := 0.0
 var _sep_h := 4
 var _sep_v := 4
 var _sep_h_over := false
@@ -268,6 +270,8 @@ func rebuild_puzzle_board() -> void:
 	SignalManager.update_resting_characters.emit()
 	position.y = _rest_y
 	_clamp_canvas_y()
+	if _fit_all_rows:
+		_relayout_fitted_rows()
 
 
 func _reset_keyboard_keys() -> void:
@@ -290,27 +294,28 @@ func _update_cell_min_heights() -> void:
 	var flags_v := Control.SIZE_EXPAND_FILL
 	var inner_min := Vector2(60, 120)
 	if _fit_all_rows:
-		var ratio := WIDE_TILE_RATIO
 		var area := _fit_area()
 		var cols := maxi(1, grid_container.columns)
 		var rows := maxi(1, _fit_rows())
 		var hsep := float(_grid_hsep())
 		var vsep := float(_grid_vsep())
-		var max_w := (area.x - hsep * float(cols - 1)) / float(cols)
-		var max_h := (area.y - vsep * float(rows - 1)) / float(rows)
-		cell_w = maxf(max_w, 1.0)
-		cell_h = minf(max_h, cell_w / ratio)
-		cell_h = maxf(cell_h, 1.0)
-		inner_min = Vector2(cell_w, cell_h)
-		flags_h = Control.SIZE_SHRINK_CENTER
-		flags_v = Control.SIZE_SHRINK_CENTER
+		# Cada celda ocupa su columna y su fila enteras: el bloque llega al
+		# ancho y al alto útiles del tablero.
+		cell_w = maxf((area.x - hsep * float(cols - 1)) / float(cols), 1.0)
+		cell_h = maxf((area.y - vsep * float(rows - 1)) / float(rows), 1.0)
+		# El mínimo va un píxel por debajo para que la rejilla reparta el resto
+		# y las celdas lleguen al borde sin salirse.
+		inner_min = Vector2(floorf(cell_w), floorf(cell_h))
+		flags_h = Control.SIZE_EXPAND_FILL
+		flags_v = Control.SIZE_EXPAND_FILL
 	var ratio: float = cell_w / cell_h
 
 	for child in grid_container.get_children():
 		if child is AspectRatioContainer:
 			var arc := child as AspectRatioContainer
 			arc.ratio = ratio
-			arc.custom_minimum_size = Vector2(cell_w, cell_h)
+			arc.stretch_mode = AspectRatioContainer.STRETCH_FIT if _fit_all_rows else AspectRatioContainer.STRETCH_WIDTH_CONTROLS_HEIGHT
+			arc.custom_minimum_size = inner_min if _fit_all_rows else Vector2(cell_w, cell_h)
 			arc.size_flags_horizontal = flags_h
 			arc.size_flags_vertical = flags_v
 			if arc.get_child_count() > 0 and arc.get_child(0) is Control:
@@ -773,12 +778,21 @@ func _phrase_cell_count() -> int:
 	return maxi(GameManager.TOTAL_CELDAS, 1)
 
 
+func _board_cell_count() -> int:
+	var count := grid_container.get_child_count()
+	if count <= 0:
+		count = _phrase_cell_count()
+	return maxi(count, 1)
+
+
 func _fit_rows() -> int:
 	var cols := maxi(1, grid_container.columns)
-	return int(ceil(float(_phrase_cell_count()) / float(cols)))
+	return int(ceil(float(_board_cell_count()) / float(cols)))
 
 
 func _fit_area() -> Vector2:
+	if _fit_all_rows:
+		return Vector2(maxf(size.x, 1.0), maxf(size.y, 1.0))
 	return Vector2(
 		maxf(size.x - 2.0, 1.0),
 		maxf(size.y - grid_container.position.y - 2.0, 1.0)
@@ -798,25 +812,36 @@ func _capture_tile_format() -> void:
 
 
 func _best_fit_columns() -> int:
-	var count := _phrase_cell_count()
+	var count := _board_cell_count()
 	var area := _fit_area()
 	var hsep := float(_grid_hsep())
 	var vsep := float(_grid_vsep())
 	var ratio := WIDE_TILE_RATIO
 	var best_cols := 1
 	var best_w := -1.0
-	var best_gap := 1.0e12
+	var best_gap_x := 1.0e12
+	var best_gap_y := 1.0e12
 	for cols in range(1, count + 1):
 		var rows := int(ceil(float(count) / float(cols)))
 		var max_w := (area.x - hsep * float(cols - 1)) / float(cols)
 		var max_h := (area.y - vsep * float(rows - 1)) / float(rows)
 		var cell_w := minf(max_w, max_h * ratio)
-		var gap := area.x - cell_w * float(cols)
-		var larger := cell_w > best_w + 0.5
-		var same_size_fills_more := absf(cell_w - best_w) <= 0.5 and gap < best_gap
-		if larger or same_size_fills_more:
+		var cell_h := cell_w / ratio
+		var gap_x := area.x - (cell_w * float(cols) + hsep * float(cols - 1))
+		var gap_y := area.y - (cell_h * float(rows) + vsep * float(rows - 1))
+		var fills_height := gap_y <= 1.0
+		var best_fills := best_gap_y <= 1.0
+		var better := false
+		if fills_height != best_fills:
+			better = fills_height
+		elif cell_w > best_w + 0.5:
+			better = true
+		elif absf(cell_w - best_w) <= 0.5 and gap_x < best_gap_x:
+			better = true
+		if better:
 			best_w = cell_w
-			best_gap = gap
+			best_gap_x = gap_x
+			best_gap_y = gap_y
 			best_cols = cols
 	return best_cols
 
@@ -848,6 +873,8 @@ func _apply_wide_grid(enabled: bool) -> void:
 			_grid_left = grid_container.offset_left
 			_grid_top = grid_container.offset_top
 			_grid_right = grid_container.offset_right
+			_grid_bottom = grid_container.offset_bottom
+			_grid_anchor_bottom = grid_container.anchor_bottom
 			_sep_h_over = grid_container.has_theme_constant_override("h_separation")
 			_sep_v_over = grid_container.has_theme_constant_override("v_separation")
 			_sep_h = grid_container.get_theme_constant("h_separation")
@@ -857,9 +884,11 @@ func _apply_wide_grid(enabled: bool) -> void:
 			_wide_grid_saved = true
 		color_rect_up.visible = false
 		color_rect_down.visible = false
-		grid_container.offset_left = 1.0
-		grid_container.offset_top = 1.0
-		grid_container.offset_right = -1.0
+		grid_container.anchor_bottom = 1.0
+		grid_container.offset_left = 0.0
+		grid_container.offset_top = 0.0
+		grid_container.offset_right = 0.0
+		grid_container.offset_bottom = 0.0
 		grid_container.add_theme_constant_override("h_separation", 0)
 		grid_container.add_theme_constant_override("v_separation", 0)
 		return
@@ -867,9 +896,11 @@ func _apply_wide_grid(enabled: bool) -> void:
 		return
 	color_rect_up.visible = _red_up
 	color_rect_down.visible = _red_down
+	grid_container.anchor_bottom = _grid_anchor_bottom
 	grid_container.offset_left = _grid_left
 	grid_container.offset_top = _grid_top
 	grid_container.offset_right = _grid_right
+	grid_container.offset_bottom = _grid_bottom
 	if _sep_h_over:
 		grid_container.add_theme_constant_override("h_separation", _sep_h)
 	else:

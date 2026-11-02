@@ -41,6 +41,9 @@ func _ready() -> void:
 	if not SignalManager.partida_iniciada.is_connected(_on_partida_iniciada):
 		SignalManager.partida_iniciada.connect(_on_partida_iniciada)
 	print("[AdMob] AdManager boot os=%s" % OS.get_name())
+	if Distribution.is_horizontal():
+		print("[AdMob] skipped: CrazyGames")
+		return
 	if ads_removed():
 		print("[AdMob] skipped: full game unlocked")
 		return
@@ -69,6 +72,8 @@ func has_daily_access() -> bool:
 
 
 func show_interstitial_after_puzzle() -> void:
+	if Distribution.is_horizontal():
+		return
 	if ads_removed():
 		print("[AdMob] skip interstitial: full game unlocked")
 		return
@@ -112,6 +117,9 @@ func present_interstitial() -> void:
 
 
 func show_rewarded() -> bool:
+	if Distribution.is_horizontal():
+		reward_result = "unavailable"
+		return false
 	if ads_removed():
 		reward_result = "earned"
 		return true

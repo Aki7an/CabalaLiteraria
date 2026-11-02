@@ -100,7 +100,8 @@ func adopt(host: Node) -> void:
 	var panel := host.get_node_or_null("Game/CanvasLayer/PanelUP") as CanvasItem
 	if panel != null:
 		panel.visible = false
-	visible = true
+	var entering := typeof(GameManager) != TYPE_NIL and bool(GameManager.puzzle_enter_pending)
+	visible = not entering
 	_adopted = true
 
 
@@ -120,6 +121,13 @@ func release() -> void:
 		var panel := host.get_node_or_null("PanelUP") as CanvasItem
 		if panel != null:
 			panel.visible = true
+			# The enter animation hides GameHeader before this column adopts its
+			# pieces. Restoring the scroll layout has to show that header again,
+			# or the view button stays invisible.
+			var header := panel.get_node_or_null("GameHeader") as CanvasItem
+			if header != null:
+				header.visible = true
+				header.modulate.a = 1.0
 	visible = false
 	_adopted = false
 

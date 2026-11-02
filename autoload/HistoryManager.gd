@@ -377,6 +377,25 @@ func seed_completed_entries(entries: Array) -> void:
 	_save_history(_historial)
 	_recompute_stats()
 
+
+func forget_puzzle_ids(ids: Array) -> void:
+	var drop := {}
+	for item in ids:
+		var puzzle_id := int(item)
+		if puzzle_id > 0:
+			drop[puzzle_id] = true
+	if drop.is_empty():
+		return
+	var kept: Array = []
+	for value in _historial:
+		if value is Dictionary and drop.has(int((value as Dictionary).get("id", -1))):
+			continue
+		kept.append(value)
+	_historial = kept
+	_save_history(_historial)
+	_recompute_stats()
+
+
 func clear_history() -> void:
 	_historial.clear()
 	_save_history(_historial)
